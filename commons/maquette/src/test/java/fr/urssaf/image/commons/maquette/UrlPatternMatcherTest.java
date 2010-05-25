@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.maquette.urssaf.image.maquette;
+package fr.urssaf.image.commons.maquette;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
