@@ -1,0 +1,27 @@
+#menu {
+	background: cssHeaderBackgroundColor;
+}
+
+#menu ul {
+	background: cssHeaderBackgroundColor;
+}
+
+#menu a.firstrow {
+	border-right: solid 1px cssMenuFirstRowFontColor;
+}
+
+#menu li a.selected {
+    background: cssSelectedMenuBackgroundColor;
+}
+
+#menu li a:hover, #menu li a.active {
+	background: cssInfoboxBackgroundColor;
+}
+
+#menu ul ul li {
+	border-bottom: solid 1px #fff;
+}
+
+#menu ul ul {
+    border: solid 1px #000;
+}

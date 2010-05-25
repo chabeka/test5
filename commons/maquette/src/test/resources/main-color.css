@@ -1,0 +1,14 @@
+body
+{
+	background: cssMainBackgroundColor;
+}
+
+#container
+{
+	background: cssInfoboxBackgroundColor ; /* simule la colonne de gauche */
+}
+
+#test
+{
+	background: cssMainBackgroundColor ;
+}
