@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+	<!--
+		- Application context definition for "springapp" DispatcherServlet.
+	-->
+<beans>
+
+
+	<bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basenames">
+			<list>
+				<value>view</value>
+				<value>forward</value>
+				<value>json</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- les mappings de l'application-->
+	<bean id="simpleMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<bean class="fr.urssaf.image.commons.controller.spring.exemple.interceptor.ExempleInterceptor"/>
+			</list>
+		</property>
+		<property name="mappings">
+			<props>
+				<prop key="/table.do">tableController</prop>
+				<prop key="/form.do">formController</prop>
+				<prop key="/exception.do">exceptionController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="Exception1">exception1View</prop>
+				<prop key="Exception2">exception2View</prop>
+			</props>
+		</property>
+		<property name="exceptionAttribute">
+			<value>exceptionCode</value>
+		</property>
+		<property name="defaultErrorView">
+			<value>exceptionView</value>
+		</property>
+	</bean>
+
+</beans>
