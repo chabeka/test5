@@ -1,0 +1,24 @@
+body
+{
+    color: cssMainFontColor;
+}
+
+#leftcol p.boxContent
+{
+    color: cssHeaderBackgroundColor ;
+}
+
+#content
+{
+	color: cssContentFontColor;
+}
+
+#content div#pagereminder
+{
+	color: cssMainFontColor;
+}
+
+#footer #providedby a
+{
+    color: cssMainFontColor;
+}

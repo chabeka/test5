@@ -1,0 +1,10 @@
+input, textarea, select
+{
+    font-family: Arial,Helvetica,Sans Serif;
+    font-size: .9em;
+}
+
+span.formHelp
+{
+    font-size: smaller;   
+}
