@@ -14,6 +14,10 @@ public final class PopulateExceptionRuleForm {
 	public List<RuleFormulaireException> getExceptions(String rule) {
 		return this.ruleExceptions.get(rule);
 	}
+	
+	public void clearException() {
+		this.ruleExceptions.clear();
+	}
 
 	public void clearException(String rule) {
 		this.ruleExceptions.remove(rule);
