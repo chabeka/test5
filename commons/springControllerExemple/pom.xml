@@ -2,14 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<parent>
-		<artifactId>springProject</artifactId>
-		<groupId>springProject</groupId>
-		<version>0.0.1</version>
+		<groupId>fr.urssaf.image.commons</groupId>
+		<artifactId>commons-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>springProject</groupId>
-	<artifactId>springControllerExemple</artifactId>
+	<groupId>fr.urssaf.image.commons</groupId>
+	<artifactId>commons-controller-spring-exemple</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -20,7 +20,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
-					<projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
+					<projectNameTemplate>controllerExemple</projectNameTemplate>
 					<wtpmanifest>true</wtpmanifest>
 					<wtpapplicationxml>true</wtpapplicationxml>
 					<wtpversion>1.5</wtpversion>
@@ -41,8 +41,8 @@
 					<source>1.6</source>
 					<weaveDependencies>
 						<weaveDependency>
-							<groupId>springProject</groupId>
-							<artifactId>springController</artifactId>
+							<groupId>fr.urssaf.image.commons</groupId>
+							<artifactId>commons-controller-spring</artifactId>
 						</weaveDependency>
 					</weaveDependencies>
 				</configuration>
@@ -62,14 +62,14 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>springProject</groupId>
-			<artifactId>springController</artifactId>
+			<groupId>fr.urssaf.image.commons</groupId>
+			<artifactId>commons-controller-spring</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>springProject</groupId>
-			<artifactId>springTagLib</artifactId>
+			<groupId>fr.urssaf.image.commons</groupId>
+			<artifactId>commons-taglib</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

@@ -29,12 +29,23 @@
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/fr/urssaf/image/commons/commons-controller-spring/0.0.1-SNAPSHOT/commons-controller-spring-0.0.1-SNAPSHOT.jar" sourcepath="M2_REPO/fr/urssaf/image/commons/commons-controller-spring/0.0.1-SNAPSHOT/commons-controller-spring-0.0.1-SNAPSHOT-sources.jar">
+    <attributes>
+      <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
+      <attribute name="org.eclipse.ajdt.inpath" value="true"/>
+    </attributes>
+  </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar">
+    <attributes>
+      <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/fr/urssaf/image/commons/commons-taglib/0.0.1-SNAPSHOT/commons-taglib-0.0.1-SNAPSHOT.jar" sourcepath="M2_REPO/fr/urssaf/image/commons/commons-taglib/0.0.1-SNAPSHOT/commons-taglib-0.0.1-SNAPSHOT-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
@@ -75,12 +86,12 @@
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/2.5.4/spring-context-2.5.4.jar" sourcepath="M2_REPO/org/springframework/spring-context/2.5.4/spring-context-2.5.4-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/2.5.6/spring-context-2.5.6.jar" sourcepath="M2_REPO/org/springframework/spring-context/2.5.6/spring-context-2.5.6-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context-support/2.5.4/spring-context-support-2.5.4.jar" sourcepath="M2_REPO/org/springframework/spring-context-support/2.5.4/spring-context-support-2.5.4-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-context-support/2.5.6/spring-context-support-2.5.6.jar" sourcepath="M2_REPO/org/springframework/spring-context-support/2.5.6/spring-context-support-2.5.6-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
@@ -90,24 +101,22 @@
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/2.5.4/spring-web-2.5.4.jar" sourcepath="M2_REPO/org/springframework/spring-web/2.5.4/spring-web-2.5.4-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/2.5.6/spring-web-2.5.6.jar" sourcepath="M2_REPO/org/springframework/spring-web/2.5.6/spring-web-2.5.6-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/2.5.4/spring-webmvc-2.5.4.jar" sourcepath="M2_REPO/org/springframework/spring-webmvc/2.5.4/spring-webmvc-2.5.4-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/2.5.6/spring-webmvc-2.5.6.jar" sourcepath="M2_REPO/org/springframework/spring-webmvc/2.5.6/spring-webmvc-2.5.6-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="src" path="/springController">
-    <attributes>
-      <attribute name="org.eclipse.ajdt.inpath" value="true"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="src" path="/springTagLib"/>
-  <classpathentry kind="src" path="/springUtil"/>
   <classpathentry kind="var" path="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2.jar" sourcepath="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2-sources.jar">
+    <attributes>
+      <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/fr/urssaf/image/commons/util/0.0.1-SNAPSHOT/util-0.0.1-SNAPSHOT.jar" sourcepath="M2_REPO/fr/urssaf/image/commons/util/0.0.1-SNAPSHOT/util-0.0.1-SNAPSHOT-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
