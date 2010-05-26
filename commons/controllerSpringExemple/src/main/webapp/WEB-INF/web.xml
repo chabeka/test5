@@ -95,5 +95,11 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	
+	<!-- durée de vie de la session -->
+	<session-config>
+      <session-timeout>30</session-timeout> 
+    </session-config>
+	
 
 </web-app>
