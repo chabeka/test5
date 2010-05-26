@@ -15,7 +15,7 @@
     <dependent-module archiveName="commons-collections-3.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-collections/commons-collections/3.2/commons-collections-3.2.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="commons-controller-spring-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/fr/urssaf/image/commons/commons-controller-spring/0.0.1-SNAPSHOT/commons-controller-spring-0.0.1-SNAPSHOT.jar">
+    <dependent-module archiveName="commons-controller-spring.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/commons-controller-spring/commons-controller-spring">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="commons-lang-2.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4.jar">
@@ -24,7 +24,10 @@
     <dependent-module archiveName="commons-logging-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="commons-taglib-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/fr/urssaf/image/commons/commons-taglib/0.0.1-SNAPSHOT/commons-taglib-0.0.1-SNAPSHOT.jar">
+    <dependent-module archiveName="commons-taglib.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/commons-taglib/commons-taglib">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module archiveName="commons-util.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/commons-util/commons-util">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="ezmorph-1.0.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/net/sf/ezmorph/ezmorph/1.0.4/ezmorph-1.0.4.jar">
@@ -70,9 +73,6 @@
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="standard-1.1.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/taglibs/standard/1.1.2/standard-1.1.2.jar">
-      <dependency-type>uses</dependency-type>
-    </dependent-module>
-    <dependent-module archiveName="util-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/fr/urssaf/image/commons/util/0.0.1-SNAPSHOT/util-0.0.1-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
