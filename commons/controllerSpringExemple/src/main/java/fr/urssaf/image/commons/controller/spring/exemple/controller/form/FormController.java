@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import fr.urssaf.image.commons.controller.spring.exemple.controller.base.AbstractExempleController;
+import fr.urssaf.image.commons.controller.spring.exemple.controller.table.TableController;
 import fr.urssaf.image.commons.controller.spring.exemple.formulaire.FormFormulaire;
 import fr.urssaf.image.commons.controller.spring.exemple.service.DocumentService;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.form.ClassForm;
@@ -23,6 +24,9 @@ public class FormController extends AbstractExempleController<FormFormulaire> {
 
 	@Autowired
 	private DocumentService documentService;
+	
+	@Autowired
+	private TableController tableController;
 
 	public FormController() {
 		super(FormFormulaire.class);
@@ -35,8 +39,8 @@ public class FormController extends AbstractExempleController<FormFormulaire> {
 		FormFormulaire formulaire = this.getFormulaire(request, reponse);
 
 		documentService.save(formulaire);
-
-		return new ModelAndView("tableForward", "methode", "populate");
+		tableController.populate(request, reponse);
+		return new ModelAndView("tableForward");
 
 	}
 

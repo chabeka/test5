@@ -2,6 +2,6 @@
 
 <html>
 <c:redirect url="/table.do">
-	<c:param name="action" value="populate"/>
+	
 </c:redirect>
 </html>

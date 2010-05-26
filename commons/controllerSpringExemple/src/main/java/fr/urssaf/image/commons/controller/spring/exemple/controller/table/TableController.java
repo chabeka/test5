@@ -60,7 +60,7 @@ public class TableController extends AbstractExempleController<TableFormulaire> 
 
 		documentService.update(formulaire);
 
-		return new ModelAndView("tableForward");
+		return populate(request,reponse);
 	}
 
 	public ModelAndView add(HttpServletRequest request,

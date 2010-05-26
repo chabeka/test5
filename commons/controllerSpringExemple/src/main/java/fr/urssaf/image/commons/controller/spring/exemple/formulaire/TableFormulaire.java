@@ -66,6 +66,7 @@ public class TableFormulaire extends MyFormulaire {
 			this.comments.put(document.getId(), document.getComment());
 		}
 		this.getException().clearException();
+		this.getExceptionRuleForm().clearException();
 
 	}
 
