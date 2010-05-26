@@ -30,7 +30,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 	protected static String url = "controller";
 
 	public static enum CONTROLLER {
-		action("action"), reset("reset"), nameFormulaire("nameFormulaire");
+		action("action"), reset("reset");
 
 		CONTROLLER(String name) {
 			this.name = name;
@@ -51,7 +51,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 
 	private Class<? extends F> classe;
 
-	private String nameFormulaire = this.getClass().getCanonicalName();
+	private String nameFormulaire;
 
 	public AbstractMyController(Class<? extends F> classe) {
 		this.init(classe);
@@ -130,12 +130,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 			formulaire = this.createFormulaire(request, reponse);
 			formulaire.initClassForm(classForm);
 
-			String nameFormulaire = request
-					.getParameter(CONTROLLER.nameFormulaire.name);
-			if (nameFormulaire == null) {
-				nameFormulaire = this.getNameFormulaire();
-			}
-			request.getSession().setAttribute(nameFormulaire, formulaire);
+			request.getSession().setAttribute(getNameFormulaire(), formulaire);
 
 			// on ajoute les types à controler dans le formulaire
 			completeTypeFactory(this.classForm, request);
