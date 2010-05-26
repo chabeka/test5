@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<parent>
-		<artifactId>springProject</artifactId>
-		<groupId>springProject</groupId>
-		<version>0.0.1</version>
+		<groupId>fr.urssaf.image.commons</groupId>
+		<artifactId>commons-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>springProject</groupId>
-	<artifactId>springTagLib</artifactId>
+	<groupId>fr.urssaf.image.commons</groupId>
+	<artifactId>commons-taglib</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 </project>
