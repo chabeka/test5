@@ -29,11 +29,6 @@
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="src" path="/commons-controller-spring">
-    <attributes>
-      <attribute name="org.eclipse.ajdt.inpath" value="true"/>
-    </attributes>
-  </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
@@ -44,8 +39,6 @@
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="src" path="/commons-taglib"/>
-  <classpathentry kind="src" path="/commons-util"/>
   <classpathentry kind="var" path="M2_REPO/net/sf/ezmorph/ezmorph/1.0.4/ezmorph-1.0.4.jar" sourcepath="M2_REPO/net/sf/ezmorph/ezmorph/1.0.4/ezmorph-1.0.4-sources.jar">
     <attributes>
       <attribute value="/WEB-INF/lib" name="org.eclipse.jst.component.dependency"/>
@@ -114,4 +107,7 @@
   </classpathentry>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
   <classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+  <classpathentry combineaccessrules="false" kind="src" path="/commons-controller-spring"/>
+  <classpathentry combineaccessrules="false" kind="src" path="/commons-taglib"/>
+  <classpathentry combineaccessrules="false" kind="src" path="/commons-util"/>
 </classpath>
