@@ -51,6 +51,11 @@ public class TableController extends AbstractExempleController<TableFormulaire> 
 
 		return this.defaultView();
 	}
+	
+	public void init(HttpServletRequest request,
+			HttpServletResponse reponse){
+		this.getFormulaire(request, reponse).initDocuments(null);
+	}
 
 	@Validation
 	public ModelAndView update(HttpServletRequest request,
@@ -66,7 +71,7 @@ public class TableController extends AbstractExempleController<TableFormulaire> 
 	public ModelAndView add(HttpServletRequest request,
 			HttpServletResponse reponse) {
 
-		formController.getFormulaire(request, reponse).init();
+		formController.resetFormulaire(request, reponse);
 
 		return new ModelAndView("formForward");
 	}

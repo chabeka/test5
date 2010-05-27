@@ -33,19 +33,6 @@ public class FormFormulaire extends MyFormulaire {
 
 	private Set<Etat> etats;
 
-	public void init() {
-		this.getException().clearException();
-		this.titre = null;
-		this.openDate = null;
-		this.closeDate = null;
-		this.etat = null;
-		this.level = null;
-		this.flag = false;
-		this.etats = null;
-		this.getInterneFormulaire().setComment(null);
-
-	}
-
 	@NotEmpty
 	public String getTitre() {
 		return titre;

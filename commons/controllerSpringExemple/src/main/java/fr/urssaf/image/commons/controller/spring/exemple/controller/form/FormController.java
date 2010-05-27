@@ -39,14 +39,14 @@ public class FormController extends AbstractExempleController<FormFormulaire> {
 		FormFormulaire formulaire = this.getFormulaire(request, reponse);
 
 		documentService.save(formulaire);
-		tableController.populate(request, reponse);
+		tableController.init(request, reponse);
 		return new ModelAndView("tableForward");
 
 	}
 
 	public ModelAndView list(HttpServletRequest request,
 			HttpServletResponse reponse) {
-
+		
 		return new ModelAndView("tableForward");
 	}
 
