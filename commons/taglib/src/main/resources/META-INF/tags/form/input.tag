@@ -21,7 +21,7 @@
 %>
 
 <c:set var="field_exception" value= "${name}" />
-<input type="text" id="${name}" name="${name}" class="form"
+<input type="text" id="${name}" name="${name}" class="form" autocomplete="off"
 <c:choose>
 <c:when test="${empty exception[field_exception].value}">
 	value="${value}"
