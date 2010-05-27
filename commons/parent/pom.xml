@@ -7,20 +7,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	
 	<modules>
-		<module>../commons-controller-spring</module>
-		<module>../commons-controller-spring-exemple</module>
-		<module>../commons-dao-spring</module>
-		<module>../commons-taglib</module>
-		<module>../commons-util</module>
+		<module>../controllerSpring</module>
+		<module>../controllerSpringExemple</module>
+		<module>../daoSpring</module>
+		<module>../taglib</module>
+		<module>../util</module>
 	</modules>
-
-	<distributionManagement>
-		<repository>
-			<id>repo</id>
-			<name>Repository</name>
-			<url>file:C:/Documents and Settings/CER6990430/.m2/repository</url>
-		</repository>
-	</distributionManagement>
 
 	<build>
 		<plugins>
