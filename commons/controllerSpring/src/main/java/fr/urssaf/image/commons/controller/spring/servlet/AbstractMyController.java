@@ -140,6 +140,11 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 		return formulaire;
 
 	}
+	
+	public void resetFormulaire(HttpServletRequest request,
+			HttpServletResponse reponse){
+		request.getSession().removeAttribute(this.getNameFormulaire());
+	}
 
 	@SuppressWarnings("unchecked")
 	private F getFormulaire(HttpSession session) {
