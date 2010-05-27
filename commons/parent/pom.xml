@@ -8,7 +8,6 @@
 	
 	<modules>
 		<module>../controllerSpring</module>
-		<module>../controllerSpringExemple</module>
 		<module>../daoSpring</module>
 		<module>../taglib</module>
 		<module>../util</module>
