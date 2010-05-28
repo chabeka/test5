@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="F006_Persistance_en_base"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <fileSets>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory></directory>
+      <includes>
+        <include>.project</include>
+        <include>.classpath</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/main/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/resources</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/resources/mappings</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" packaged="true" encoding="UTF-8">
+      <directory>src/test/java</directory>
+      <includes>
+        <include>**/*.java</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/test/resources</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>.settings</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/config</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/META-INF</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF/lib</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF/tag</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF/tag/form</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF/tag/function</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF/tag/table</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/WEB-INF/tag/text</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/css</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/js</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/webapp/view</directory>
+      <includes>
+        <include>**/*.*</include>
+      </includes>
+    </fileSet>
+    
+  </fileSets>
+  
+  <requiredProperties>
+    
+    <!--
+    <requiredProperty key="property-with-default">
+      <defaultValue>default-value</defaultValue>
+    </requiredProperty>
+    <requiredProperty key="property-without-default"/>
+    -->
+    
+    <requiredProperty key="NomProjetPourBaliseNameDansPomXml" />
+    
+    <requiredProperty key="JDBC_Login" />
+    <requiredProperty key="JDBC_Password" />
+    <requiredProperty key="JDBC_Main_URL" />
+    <requiredProperty key="JDBC_TestsUnitaires_URL" />
+    
+    <requiredProperty key="JDBC_Driver">
+    	<defaultValue>org.postgresql.Driver</defaultValue>
+    </requiredProperty>
+    
+    <requiredProperty key="Hibernate_Dialect">
+    	<defaultValue>org.hibernate.dialect.PostgreSQLDialect</defaultValue>
+    </requiredProperty>
+    
+    <requiredProperty key="Hibernate_DefaultCatalog" />
+    
+    <requiredProperty key="maquetteDecorateur_appTitle" />
+    
+    <requiredProperty key="maquetteDecorateur_appCopyright" />
+    
+    <requiredProperty key="maquetteDecorateur_theme" />
+    
+  </requiredProperties> 
+   
+</archetype-descriptor>
