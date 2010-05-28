@@ -13,11 +13,14 @@ import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 
+import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 
 
 public class MaquetteParserTest {
+	
+	private Logger logger = Logger.getLogger(MaquetteParserTest.class) ;
 	
 	@Test
 	public void setSourceFromHtml()
@@ -150,7 +153,9 @@ public class MaquetteParserTest {
 		
 		assertEquals( 0, elBody.size() );
 		assertEquals( html, scHtml.toString() );
-		System.out.println( scHtml.toString() );
+		
+		logger.debug(scHtml.toString());
+		
 	}
 	
 	@Test
@@ -166,7 +171,8 @@ public class MaquetteParserTest {
 		
 		assertEquals( 0, elBody.size() );
 		assertEquals( html, scHtml.toString() );
-		System.out.println( scHtml.toString() );
+		logger.debug(scHtml.toString());
+		
 	}
 	
 	@Ignore

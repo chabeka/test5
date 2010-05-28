@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+
 /**
  * @author CER6990172
  * @desc classe récupérée sur http://java.sun.com/products/servlet/Filters.html
@@ -14,6 +15,9 @@ import javax.servlet.http.HttpServletResponseWrapper;
  */
 public class CharResponseWrapper extends HttpServletResponseWrapper 
 {
+	
+	// private Logger logger = Logger.getLogger(CharResponseWrapper.class) ;
+	
 	private CharArrayWriter output;
 
 	public String toString() {
@@ -26,14 +30,14 @@ public class CharResponseWrapper extends HttpServletResponseWrapper
 	public CharResponseWrapper(HttpServletResponse response) {
 		super(response);
 		output = new CharArrayWriter();
-// System.out.println( "contenu : " + output.toString() + "<br />" );
+//		logger.debug("contenu : " + output.toString() + "<br />");
 	}
 
 	/**
 	 * @see javax.servlet.ServletResponseWrapper#getWriter()
 	 */
 	public PrintWriter getWriter() {
-// System.out.println( "getWriter appelé : ----------" + output.toString() + "----------<br />" );
+//		logger.debug("getWriter appelé : ----------" + output.toString() + "----------<br />");
 		return new PrintWriter(output);
 	}
 

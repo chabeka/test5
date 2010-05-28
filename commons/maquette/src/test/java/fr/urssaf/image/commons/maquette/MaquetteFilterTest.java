@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
@@ -17,6 +18,8 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 
 public class MaquetteFilterTest{
 
+	private Logger logger = Logger.getLogger(MaquetteFilterTest.class) ;
+	
 	@Test
 	public void getResourceImg_1()
 	{
@@ -26,7 +29,8 @@ public class MaquetteFilterTest{
 			fail("Resource non trouvée");
 			
 	    String filename = u.toString();
-	    System.out.println( filename );
+	    logger.debug(filename);
+	    
 	}
 	
 	@Test
@@ -37,7 +41,7 @@ public class MaquetteFilterTest{
 			fail("Resource non trouvée");
 			
 	    String filename = u.toString();
-	    System.out.println( filename );
+	    logger.debug(filename);
 	}
 	
 	@Test
@@ -48,7 +52,7 @@ public class MaquetteFilterTest{
 			fail("Resource non trouvée");
 			
 	    String filename = u.toString();
-	    System.out.println( filename );
+	    logger.debug(filename);
 	}
 	
 	@Test
@@ -59,7 +63,7 @@ public class MaquetteFilterTest{
 			fail("Resource non trouvée");
 			
 	    String filename = u.toString();
-	    System.out.println( filename );
+	    logger.debug(filename);
 	}
 	
 	/*
@@ -71,7 +75,7 @@ public class MaquetteFilterTest{
 			fail("Resource non trouvée");
 			
 	    String filename = u.toString();
-	    System.out.println( filename );
+	    logger.debug(filename);
 	}
 	*/
 	
@@ -183,7 +187,7 @@ public class MaquetteFilterTest{
 				}
 				
 				myTplContent = out.toString();
-System.out.println("Contenu de mon html : " + myTplContent);
+				logger.debug("Contenu de mon html : " + myTplContent);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
