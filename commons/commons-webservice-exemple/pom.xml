@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>commons-webservice-parent</artifactId>
+		<groupId>fr.urssaf.image.commons</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.urssaf.image.commons</groupId>
+	<artifactId>commons-webservice-rpc-exemple</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<version>2.2.8</version>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${basedir}/src/main/java</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>http://localhost:9999/DocServiceDocument?WSDL</wsdl>
+									<packagenames>
+										<packagename>fr.urssaf.image.commons.webservice.exemple.document.modele</packagename>
+									</packagenames>
+								</wsdlOption>
+								<wsdlOption>
+									<wsdl>http://localhost:9999/DocServiceRpcEncoded?WSDL</wsdl>
+									<packagenames>
+										<packagename>fr.urssaf.image.commons.webservice.exemple.rpc.encoded.modele</packagename>
+									</packagenames>
+								</wsdlOption>
+								<wsdlOption>
+									<wsdl>http://localhost:9999/DocServiceRpcLiteral?WSDL</wsdl>
+									<packagenames>
+										<packagename>fr.urssaf.image.commons.webservice.exemple.rpc.literal.modele</packagename>
+									</packagenames>
+								</wsdlOption>
+							</wsdlOptions>
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
