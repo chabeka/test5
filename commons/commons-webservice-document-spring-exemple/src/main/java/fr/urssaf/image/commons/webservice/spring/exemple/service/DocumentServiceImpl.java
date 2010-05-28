@@ -1,11 +1,7 @@
 package fr.urssaf.image.commons.webservice.spring.exemple.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.jws.WebService;
 
 import org.springframework.stereotype.Service;
 
@@ -14,8 +10,7 @@ import fr.urssaf.image.commons.webservice.spring.exemple.modele.Document;
 import fr.urssaf.image.commons.webservice.spring.exemple.modele.Etat;
 
 @Service
-@WebService(serviceName = "DocumentService", endpointInterface = "fr.urssaf.image.commons.webservice.spring.exemple.service.DocumentService", portName = "DocumentServicePort")
-public class DocumentServiceImpl implements DocumentService {
+public class DocumentServiceImpl{
 
 	private final Map<Integer, Document> documents = new HashMap<Integer, Document>();
 
@@ -61,13 +56,14 @@ public class DocumentServiceImpl implements DocumentService {
 
 	}
 
-	@Override
-	public List<Document> allDocuments() {
+	public Document[] allDocuments() {
 
-		List<Document> docs = new ArrayList<Document>();
+		Document[] docs = new Document[documents.size()];
 
+		int index = 0;
 		for (Document document : documents.values()) {
-			docs.add(document);
+			docs[index] = document;
+			index++;
 		}
 
 		return docs;
