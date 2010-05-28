@@ -7,10 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	
 	<modules>
-		<module>../controllerSpring</module>
-		<module>../daoSpring</module>
-		<module>../taglib</module>
-		<module>../util</module>
+		<module>../commons-controller-spring</module>
+		<module>../commons-dao-spring</module>
+		<module>../commons-taglib</module>
+		<module>../commons-util</module>
 	</modules>
 
 	<build>
