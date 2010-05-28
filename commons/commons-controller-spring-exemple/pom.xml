@@ -20,7 +20,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
-					<projectNameTemplate>controllerExemple</projectNameTemplate>
+					<projectNameTemplate>commons-controller-spring-exemple</projectNameTemplate>
 					<wtpmanifest>true</wtpmanifest>
 					<wtpapplicationxml>true</wtpapplicationxml>
 					<wtpversion>1.5</wtpversion>

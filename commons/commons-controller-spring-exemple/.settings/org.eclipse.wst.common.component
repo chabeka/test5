@@ -1,5 +1,5 @@
 <project-modules id="moduleCoreId" project-version="1.5.0">
-  <wb-module deploy-name="controllerExemple">
+  <wb-module deploy-name="commons-controller-spring-exemple">
     <property name="context-root" value="commons-controller-spring-exemple"/>
     <wb-resource deploy-path="/" source-path="src/main/webapp"/>
     <property name="java-output-path" value="/target/classes"/>
