@@ -438,7 +438,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	 */
 	public ILeftCol getImplLeftcol() {
 		if( implLeftCol == null )
-logger.warn( "L'implémentation de l'interface ILeftCol n'est pas disponible" ) ;
+logger.debug( "L'implémentation de l'interface ILeftCol n'est pas disponible" ) ;
 		
 		return implLeftCol;
 	}
@@ -448,7 +448,7 @@ logger.warn( "L'implémentation de l'interface ILeftCol n'est pas disponible" ) ;
 	 */
 	public IMenu getImplMenu() {
 		if( implMenu == null )
-logger.warn( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
+logger.debug( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
 		
 		return implMenu;
 	}
@@ -465,10 +465,10 @@ logger.warn( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
 			if( listMenuItem != null )
 				html = MenuGenerator.buildMenu(listMenuItem, requestUrl).toString() ;
 			else
-logger.warn( "La méthode getMenuItem de l'implémentation de l'interface IMenu retourne null, aucun menu n'est affichable" ) ;
+logger.debug( "La méthode getMenuItem de l'implémentation de l'interface IMenu retourne null, aucun menu n'est affichable" ) ;
 		}
 		else
-logger.warn( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
+logger.debug( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
 	
 		return html ;
 	}
