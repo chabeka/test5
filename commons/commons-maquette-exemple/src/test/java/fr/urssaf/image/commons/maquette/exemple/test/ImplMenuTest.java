@@ -25,7 +25,6 @@ public class ImplMenuTest {
  
     @After
     public void tearDown(){
-        // 
     }
 
 	private void getList() throws ReferentialIntegrityException
