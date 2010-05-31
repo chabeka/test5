@@ -43,19 +43,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AllDocuments }
-     * 
-     */
-    public AllDocuments createAllDocuments() {
-        return new AllDocuments();
-    }
-
-    /**
      * Create an instance of {@link AllDocumentsResponse }
      * 
      */
     public AllDocumentsResponse createAllDocumentsResponse() {
         return new AllDocumentsResponse();
+    }
+
+    /**
+     * Create an instance of {@link AllDocuments }
+     * 
+     */
+    public AllDocuments createAllDocuments() {
+        return new AllDocuments();
     }
 
     /**
