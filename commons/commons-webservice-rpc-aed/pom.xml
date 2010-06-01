@@ -9,34 +9,33 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-webservice-rpc-aed</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
-	
+
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>fr.urssaf.image.commons</groupId>
 			<artifactId>commons-util</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.urssaf.image.commons</groupId>
 			<artifactId>commons-webservice</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-discovery</groupId>
 			<artifactId>commons-discovery</artifactId>
-			<version>20040218.194635</version>
+			<version>(2,)</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.xml.rpc</groupId>
 			<artifactId>jaxrpc-impl</artifactId>
-			<version>1.1.3_01</version>
+			<version>(1,)</version>
 		</dependency>
 
 	</dependencies>
