@@ -22,5 +22,19 @@ public class DocumentServiceImpl implements DocumentService {
 	public List<Document> allDocuments() throws RemoteException {
 		return port.allDocuments().getItem();
 	}
+	
+	@Override
+	public Document get(
+			int id) throws RemoteException {
+		return port.getDocument(id);
+	}
+
+	@Override
+	public void save(
+			Document document)
+			throws RemoteException {
+		port.save(document);
+		
+	}
 
 }

@@ -8,4 +8,8 @@ import fr.urssaf.image.commons.webservice.exemple.rpc.literal.modele.Document;
 public interface DocumentService {
 
 	public List<Document> allDocuments() throws RemoteException;
+
+	public void save(Document document) throws RemoteException;
+
+	public Document get(int id) throws RemoteException;
 }
