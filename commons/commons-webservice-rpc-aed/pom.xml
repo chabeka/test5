@@ -28,14 +28,14 @@
 		<dependency>
 			<groupId>commons-discovery</groupId>
 			<artifactId>commons-discovery</artifactId>
-			<version>(2,)</version>
+			<version>20040218.194635</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.xml.rpc</groupId>
 			<artifactId>jaxrpc-impl</artifactId>
-			<version>(1,)</version>
+			<version>1.1.3_01</version>
 		</dependency>
 
 	</dependencies>
