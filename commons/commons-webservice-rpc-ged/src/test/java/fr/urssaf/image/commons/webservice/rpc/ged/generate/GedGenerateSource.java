@@ -6,9 +6,9 @@ import org.apache.velocity.texen.util.PropertiesUtil;
 
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceAxis;
 
-public class GenerateSourceGed extends GenerateSourceAxis {
+public class GedGenerateSource extends GenerateSourceAxis {
 
-	public GenerateSourceGed(String path,String url) {
+	public GedGenerateSource(String path,String url) {
 		super(path,url);
 
 	}
@@ -21,7 +21,7 @@ public class GenerateSourceGed extends GenerateSourceAxis {
 		String url = prop.getProperty("url");
 		String path = prop.getProperty("path");
 
-		GenerateSourceGed generateSource = new GenerateSourceGed(path,url);
+		GedGenerateSource generateSource = new GedGenerateSource(path,url);
 		generateSource.generate();
 
 	}
