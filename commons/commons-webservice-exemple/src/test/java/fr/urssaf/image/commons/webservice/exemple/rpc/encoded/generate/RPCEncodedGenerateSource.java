@@ -6,9 +6,9 @@ import org.apache.velocity.texen.util.PropertiesUtil;
 
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceCxf;
 
-public class GenerateSourceRpcEncoded extends GenerateSourceCxf {
+public class RPCEncodedGenerateSource extends GenerateSourceCxf {
 
-	public GenerateSourceRpcEncoded(String path,String url) {
+	public RPCEncodedGenerateSource(String path,String url) {
 		super(path,url);
 
 	}
@@ -21,7 +21,7 @@ public class GenerateSourceRpcEncoded extends GenerateSourceCxf {
 		String url = prop.getProperty("url");
 		String path = prop.getProperty("path");
 
-		GenerateSourceRpcEncoded generateSource = new GenerateSourceRpcEncoded(path,url);
+		RPCEncodedGenerateSource generateSource = new RPCEncodedGenerateSource(path,url);
 		generateSource.generate();
 	}
 

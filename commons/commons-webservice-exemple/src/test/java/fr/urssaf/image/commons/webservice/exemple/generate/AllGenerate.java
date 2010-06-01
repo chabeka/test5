@@ -1,8 +1,8 @@
 package fr.urssaf.image.commons.webservice.exemple.generate;
 
-import fr.urssaf.image.commons.webservice.exemple.document.generate.GenerateSourceDocument;
-import fr.urssaf.image.commons.webservice.exemple.rpc.encoded.generate.GenerateSourceRpcEncoded;
-import fr.urssaf.image.commons.webservice.exemple.rpc.literal.generate.GenerateSourceRpcLiteral;
+import fr.urssaf.image.commons.webservice.exemple.document.generate.DocumentGenerateSource;
+import fr.urssaf.image.commons.webservice.exemple.rpc.encoded.generate.RPCEncodedGenerateSource;
+import fr.urssaf.image.commons.webservice.exemple.rpc.literal.generate.RPCLiteralGenerateSource;
 
 public class AllGenerate {
 
@@ -11,9 +11,9 @@ public class AllGenerate {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		GenerateSourceDocument.generation();
-		GenerateSourceRpcEncoded.generation();
-		GenerateSourceRpcLiteral.generation();
+		DocumentGenerateSource.generation();
+		RPCEncodedGenerateSource.generation();
+		RPCLiteralGenerateSource.generation();
 
 	}
 
