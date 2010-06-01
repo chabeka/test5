@@ -7,7 +7,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.velocity.texen.util.PropertiesUtil;
 
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceAxis;
-import fr.urssaf.image.commons.webservice.rpc.aed.context.AEDContext;
+import fr.urssaf.image.commons.webservice.rpc.aed.context.AEDSSLContext;
 
 public class GenerateSourceAED extends GenerateSourceAxis {
 
@@ -18,7 +18,7 @@ public class GenerateSourceAED extends GenerateSourceAxis {
 
 	public static void main(String[] args) {
 
-		HttpsURLConnection.setDefaultSSLSocketFactory(AEDContext.getSSLContext()
+		HttpsURLConnection.setDefaultSSLSocketFactory(AEDSSLContext.getSSLContext()
 				.getSocketFactory());
 		
 		PropertiesUtil util = new PropertiesUtil();
