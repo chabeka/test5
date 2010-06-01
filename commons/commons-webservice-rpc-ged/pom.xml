@@ -12,7 +12,6 @@
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>axistools-maven-plugin</artifactId>
@@ -32,20 +31,11 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
-
 		</plugins>
 	</build>
 
 	<dependencies>
 
-		<dependency>
-			<groupId>fr.urssaf.image.commons</groupId>
-			<artifactId>commons-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>fr.urssaf.image.commons</groupId>
 			<artifactId>commons-webservice</artifactId>

@@ -6,7 +6,6 @@ import javax.xml.rpc.ServiceException;
 
 import org.apache.log4j.Logger;
 
-import fr.urssaf.image.commons.util.logger.Log;
 import fr.urssaf.image.commons.webservice.rpc.ged.modele.AuthInfo;
 import fr.urssaf.image.commons.webservice.rpc.ged.modele.CategorieTypeZoneWS;
 import fr.urssaf.image.commons.webservice.rpc.ged.modele.FichierWS;
@@ -17,6 +16,9 @@ import fr.urssaf.image.commons.webservice.rpc.ged.modele.TypeZoneWS;
 
 public class GedImageServiceImpl implements GedImageService {
 
+	protected static final Logger log = Logger
+			.getLogger(GedImageServiceImpl.class);
+
 	private GedImagePortType port;
 
 	public GedImageServiceImpl() {
@@ -24,13 +26,10 @@ public class GedImageServiceImpl implements GedImageService {
 		try {
 			port = service.getGedImagePort();
 		} catch (ServiceException e) {
-			Log.exception(log, e);
+			log.error(e);
 		}
 	}
-
-	protected static final Logger log = Logger
-			.getLogger(GedImageServiceImpl.class);
-
+	
 	public String ping() throws RemoteException {
 		return port.ping();
 	}
