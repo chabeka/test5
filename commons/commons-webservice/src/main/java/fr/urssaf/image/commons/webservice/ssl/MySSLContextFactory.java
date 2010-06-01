@@ -20,7 +20,7 @@ import fr.urssaf.image.commons.webservice.util.SecurityUtil;
 
 public class MySSLContextFactory {
 
-	protected static final Logger log = Logger
+	private static final Logger log = Logger
 			.getLogger(MySSLContextFactory.class);
 
 	private SSLContext ctx;
@@ -35,7 +35,7 @@ public class MySSLContextFactory {
 
 		try {
 			keyStore = SecurityUtil.getKeyStore(contextSource.getCertificat(),
-					contextSource.getKeyStorePassword(), keyStoreType);
+					contextSource.getCertificatPassword(), keyStoreType);
 
 		} catch (Exception e) {
 			log.error("Erreur: fichier " + contextSource.getCertificat()

@@ -8,8 +8,6 @@ public class MySSLContextSource {
 
 	private String certificatPassword;
 	
-	private String keyStorePassword;
-
 	public Resource getCertificat() {
 		return certificat;
 	}
@@ -26,16 +24,5 @@ public class MySSLContextSource {
 		this.certificatPassword = certificatPassword;
 	}
 
-	public String getKeyStorePassword() {
-		return keyStorePassword;
-	}
-
-	public void setKeyStorePassword(String keyStorePassword) {
-		this.keyStorePassword = keyStorePassword;
-	}
-	
-	
-
-	
 
 }
