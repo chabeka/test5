@@ -20,5 +20,15 @@ public class DocServiceRpcLiteral implements DocService {
 
 		return impl.allDocuments();
 	}
+	
+	@Override
+	public Document getDocument(int id) {
+		return impl.getDocument(id);
+	}
+
+	@Override
+	public void save(Document document) {
+		impl.save(document);
+	}
 
 }

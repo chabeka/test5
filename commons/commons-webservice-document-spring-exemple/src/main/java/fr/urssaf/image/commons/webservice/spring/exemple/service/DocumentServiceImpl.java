@@ -10,7 +10,7 @@ import fr.urssaf.image.commons.webservice.spring.exemple.modele.Document;
 import fr.urssaf.image.commons.webservice.spring.exemple.modele.Etat;
 
 @Service
-public class DocumentServiceImpl{
+public class DocumentServiceImpl {
 
 	private final Map<Integer, Document> documents = new HashMap<Integer, Document>();
 
@@ -56,7 +56,7 @@ public class DocumentServiceImpl{
 
 	}
 
-	public Document[] allDocuments() {
+	public synchronized Document[] allDocuments() {
 
 		Document[] docs = new Document[documents.size()];
 
@@ -67,6 +67,18 @@ public class DocumentServiceImpl{
 		}
 
 		return docs;
+	}
+
+	public synchronized Document getDocument(int id) {
+
+		return documents.get(id);
+	}
+
+	public synchronized void save(Document document) {
+
+		document.setId(documents.size());
+
+		documents.put(document.getId(), document);
 	}
 
 }
