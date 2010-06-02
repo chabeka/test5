@@ -13,9 +13,10 @@
 
 	<modules>
 		<module>../commons-webservice</module>
+		<module>../commons-webservice-exemple</module>
 		<module>../commons-webservice-rpc-aed</module>
 		<module>../commons-webservice-rpc-ged</module>
-		<module>../commons-webservice-document-spring-exemple</module>
+		<module>../commons-webservice-spring-exemple</module>
 	</modules>
 
 </project>
