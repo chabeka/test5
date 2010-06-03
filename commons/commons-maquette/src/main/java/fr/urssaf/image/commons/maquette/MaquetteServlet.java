@@ -19,7 +19,7 @@ import fr.urssaf.image.commons.maquette.tool.MaquetteTools;
 public class MaquetteServlet extends HttpServlet {
 	
 	public static final Logger logger = Logger.getLogger( MaquetteServlet.class.getName() );
-	
+	 
 	private static final long serialVersionUID = 1L;
 
 	public void doGet(HttpServletRequest rq, HttpServletResponse rs) throws IOException {
