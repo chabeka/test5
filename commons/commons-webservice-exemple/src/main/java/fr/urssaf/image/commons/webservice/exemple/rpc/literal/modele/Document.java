@@ -23,8 +23,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;sequence>
  *         &lt;element name="closeDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="etat" type="{http://literal.rpc.service.exemple.spring.webservice.commons.image.urssaf.fr/}etat" minOccurs="0"/>
- *         &lt;element name="etats" type="{http://literal.rpc.service.exemple.spring.webservice.commons.image.urssaf.fr/}etat" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="etat" type="{http://encoded.rpc.service.exemple.spring.webservice.commons.image.urssaf.fr/}etat" minOccurs="0"/>
+ *         &lt;element name="etats" type="{http://encoded.rpc.service.exemple.spring.webservice.commons.image.urssaf.fr/}etat" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="flag" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="level" type="{http://www.w3.org/2001/XMLSchema}int"/>
