@@ -13,7 +13,7 @@ import fr.urssaf.image.commons.webservice.spring.exemple.service.DocumentService
 
 @Service
 @WebService(serviceName = "DocServiceDocument", endpointInterface = "fr.urssaf.image.commons.webservice.spring.exemple.service.document.DocService", portName = "DocumentServicePort")
-public class DocServicelDocument implements DocService {
+public class DocServiceDocument implements DocService {
 
 	@Autowired
 	private DocumentServiceImpl impl;
