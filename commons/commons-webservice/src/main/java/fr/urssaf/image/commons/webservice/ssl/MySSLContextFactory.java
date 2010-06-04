@@ -3,6 +3,7 @@ package fr.urssaf.image.commons.webservice.ssl;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -90,7 +91,7 @@ public class MySSLContextFactory {
 			TrustManagerFactory tmf = TrustManagerFactory
 					.getInstance("SunX509");
 			tmf.init(jks);
-
+	
 			ctx = SSLContext.getInstance("SSL");
 
 			ctx.init(kmf.getKeyManagers(),
@@ -122,6 +123,35 @@ public class MySSLContextFactory {
 		log.debug("public key:" + publickey);
 	}
 
+	private void initSSLContext() {
+
+		try {
+			ctx = SSLContext.getInstance("SSL");
+			ctx.init(null, new TrustManager[] { new X509TrustManager() {
+
+				@Override
+				public void checkClientTrusted(X509Certificate[] arg0,
+						String arg1) throws CertificateException {
+				}
+
+				@Override
+				public void checkServerTrusted(X509Certificate[] arg0,
+						String arg1) throws CertificateException {
+				}
+
+				@Override
+				public X509Certificate[] getAcceptedIssuers() {
+					return null;
+				}
+			} }, null);
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return;
+		}
+
+	}
+
 	public void setSSLContextSource(MySSLContextSource contextSource) {
 		this.contextSource = contextSource;
 	}
@@ -134,7 +164,12 @@ public class MySSLContextFactory {
 
 		synchronized (this) {
 			if (this.ctx == null) {
-				this.initFactory();
+				if (contextSource == null) {
+					initSSLContext();
+				} else {
+					initFactory();
+				}
+
 			}
 		}
 
