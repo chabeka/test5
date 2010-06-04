@@ -5,15 +5,17 @@ import fr.urssaf.image.commons.webservice.exemple.rpc.encoded.generate.RPCEncode
 import fr.urssaf.image.commons.webservice.exemple.rpc.literal.generate.RPCLiteralGenerateSource;
 
 public class AllGenerate {
-
+	
+	
 	/**
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		DocumentGenerateSource.generation();
-		RPCEncodedGenerateSource.generation();
-		RPCLiteralGenerateSource.generation();
+	
+		DocumentGenerateSource.main(args);
+		RPCEncodedGenerateSource.main(args);
+		RPCLiteralGenerateSource.main(args);
 
 	}
 

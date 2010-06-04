@@ -1,33 +1,13 @@
 package fr.urssaf.image.commons.webservice.exemple.rpc.encoded.generate;
 
-import java.util.Properties;
+import fr.urssaf.image.commons.webservice.exemple.generate.GenerateCxf;
+import fr.urssaf.image.commons.webservice.exemple.generate.GenerateUtil;
 
-import org.apache.velocity.texen.util.PropertiesUtil;
-
-import fr.urssaf.image.commons.webservice.generate.GenerateSourceCxf;
-
-public class RPCEncodedGenerateSource extends GenerateSourceCxf {
-
-	public RPCEncodedGenerateSource(String path,String url) {
-		super(path,url);
-
-	}
-	
-	public static void generation() throws Exception{
-		
-		PropertiesUtil util = new PropertiesUtil();
-		Properties prop = util.load("rpc_encoded.properties");
-
-		String url = prop.getProperty("url");
-		String path = prop.getProperty("path");
-
-		RPCEncodedGenerateSource generateSource = new RPCEncodedGenerateSource(path,url);
-		generateSource.generate();
-	}
+public class RPCEncodedGenerateSource extends GenerateCxf{
 
 	public static void main(String[] args) throws Exception {
 
-		generation();
+		GenerateUtil.execute("rpcEncodedGenerate");
 
 	}
 }

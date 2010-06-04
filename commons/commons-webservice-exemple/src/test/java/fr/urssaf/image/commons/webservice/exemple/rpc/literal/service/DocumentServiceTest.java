@@ -5,21 +5,20 @@ import static org.junit.Assert.assertEquals;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.commons.webservice.exemple.rpc.literal.modele.Document;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class DocumentServiceTest {
 
+	@Autowired
 	private DocumentService service;
-
-	protected static final Logger log = Logger
-			.getLogger(DocumentServiceTest.class);
-
-	public DocumentServiceTest() {
-		service = new DocumentServiceImpl();
-	}
 
 	@Test
 	public void allDocuments() throws RemoteException {

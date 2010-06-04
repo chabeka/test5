@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<!-- bean class="fr.urssaf.image.commons.webservice.ssl.MySSLContextSource"
+		id="SSLContextSource">
+
+		<property name="certificat">
+			<value>classpath:certificat\tomcat.p12</value>
+		</property>
+
+		<property name="certificatPassword">
+			<value>sewapass</value>
+		</property>
+
+	</bean-->
+
+	<bean class="fr.urssaf.image.commons.webservice.ssl.MySSLContextFactory"
+		id="SSLContextFactory">
+	</bean>
+	
+	<bean id="httpConnection" class="fr.urssaf.image.commons.webservice.exemple.generate.HttpConnection">
+		<property name="contextFactory" ref="SSLContextFactory"/>
+	</bean>
+	
+	<!-- GENERATE -->
+	<bean depends-on="httpConnection" id="documentGenerate" class="fr.urssaf.image.commons.webservice.exemple.document.generate.DocumentGenerateSource">
+		<property name="properties" value="document.properties" />
+	</bean>
+	<bean depends-on="httpConnection" id="rpcEncodedGenerate" class="fr.urssaf.image.commons.webservice.exemple.rpc.encoded.generate.RPCEncodedGenerateSource">
+		<property name="properties" value="rpc_encoded.properties" />
+	</bean>
+	<bean depends-on="httpConnection" id="rpcLiteralGenerate" class="fr.urssaf.image.commons.webservice.exemple.rpc.literal.generate.RPCLiteralGenerateSource">
+		<property name="properties" value="rpc_literal.properties" />
+	</bean>
+	
+	<!--  TEST  -->
+	<bean depends-on="httpConnection" id="documentService" class="fr.urssaf.image.commons.webservice.exemple.document.service.DocumentServiceImpl"/>
+	<bean depends-on="httpConnection" id="rpcEncodedService" class="fr.urssaf.image.commons.webservice.exemple.rpc.encoded.service.DocumentServiceImpl"/>
+	<bean depends-on="httpConnection" id="rpcLiteralService" class="fr.urssaf.image.commons.webservice.exemple.rpc.literal.service.DocumentServiceImpl"/>
+
+
+</beans>
