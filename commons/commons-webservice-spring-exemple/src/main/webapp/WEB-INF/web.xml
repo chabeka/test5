@@ -38,7 +38,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>securedapp</web-resource-name>
-			<url-pattern>/essai/*</url-pattern>
+			<url-pattern>/service/*</url-pattern>
 		</web-resource-collection>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
