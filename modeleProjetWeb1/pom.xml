@@ -1,0 +1,205 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>fr.urssaf.image</groupId>
+	<artifactId>modeleProjetWeb1</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Projet modele pour une application web</name>
+	<url>http://www.cirtil.fr/</url>
+
+   <dependencies>
+    
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+			<scope>test</scope>
+	   </dependency>
+	  
+      <!-- log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+      
+      <!-- Spring -->
+      <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.0.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.0.2.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>3.0.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.0.2.RELEASE</version>
+		</dependency>
+		<dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-context</artifactId>
+         <version>3.0.2.RELEASE</version>
+      </dependency>
+			
+      <!-- Implémentation de l'interface javax.sql.DataSource  -->	
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+      
+      <!-- Driver JDBC pour Postgresql -->	
+      <dependency>
+         <groupId>postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+         <version>8.4-701.jdbc4</version>
+      </dependency>	  
+	
+      <!-- Hibernate  -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate</artifactId>
+			<version>3.2.7.ga</version>
+		</dependency>
+		
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.8</version>
+		</dependency>
+		<dependency>
+         <groupId>org.aspectj</groupId>
+         <artifactId>aspectjweaver</artifactId>
+         <version>1.6.8</version>
+      </dependency>
+				
+		<!-- JSTL - JavaServer Pages Standard Tag Library  -->
+      <dependency>
+         <groupId>jstl</groupId>
+         <artifactId>jstl</artifactId>
+         <version>1.1.2</version>
+      </dependency>
+      
+      <!-- taglibs  -->
+      <dependency>
+         <groupId>taglibs</groupId>
+         <artifactId>standard</artifactId>
+         <version>1.1.2</version>
+      </dependency>
+      
+      <!-- Ajax -->
+      <dependency>
+         <groupId>net.sf.json-lib</groupId>
+         <artifactId>json-lib-ext-spring</artifactId>
+         <version>1.0.2</version>
+      </dependency>
+				
+		<!-- JAR internes au CIRTIL -->
+		<!-- Composant maquette pour décorer les vues avec la maquette des IHM web -->
+		<dependency>
+		   <groupId>fr.urssaf.image.commons</groupId>
+		   <artifactId>commons-maquette</artifactId>
+		   <version>0.0.1-SNAPSHOT</version>
+	   </dependency>
+		<!-- Persistance de données -->
+		<dependency>
+			<groupId>fr.urssaf.image.commons</groupId>
+			<artifactId>commons-dao-spring</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- Spring MVC -->
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-controller-spring</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+    
+   </dependencies>
+  
+   <build>
+      
+      <plugins>
+      
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>bind-sources</id>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-eclipse-plugin</artifactId>
+		      <configuration>
+			      <projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
+			      <wtpmanifest>true</wtpmanifest>
+			      <wtpapplicationxml>true</wtpapplicationxml>
+			      <wtpversion>1.5</wtpversion>
+			      <downloadSources>true</downloadSources>
+			      <useProjectReferences>true</useProjectReferences>
+			      <ajdtVersion>1.5</ajdtVersion>
+			      <classpathContainers>
+				      <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER/
+				            org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6
+				      </classpathContainer>
+			      </classpathContainers>
+		      </configuration>
+	     </plugin>
+	   
+         <plugin>
+		      <groupId>org.codehaus.mojo</groupId>
+		      <artifactId>aspectj-maven-plugin</artifactId>
+		      <configuration>
+		      <aspectLibraries>
+		         <aspectLibrary>
+		            <groupId>org.aspectj</groupId>
+		            <artifactId>aspectjrt</artifactId>
+		         </aspectLibrary>
+		      </aspectLibraries>
+		      <weaveDependencies>
+		         <weaveDependency>
+		            <groupId>fr.urssaf.image.commons</groupId>
+		            <artifactId>commons-controller-spring</artifactId>
+		         </weaveDependency>
+		      </weaveDependencies>
+		      </configuration>
+		   </plugin>
+		   
+   </plugins>
+   
+</build>
+  
+</project>
+

@@ -1,0 +1,123 @@
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  
+	<display-name>Archetype Created Web Application</display-name>
+	
+	<welcome-file-list>
+      <welcome-file>exemple.do</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	
+	<!-- =============================== -->
+	<!-- Intégration de la maquette IHM  -->
+	<!-- =============================== -->
+	
+	<!-- Filtre du décorateur maquette IHM -->
+	<filter>
+      <filter-name>MaquetteFilter</filter-name>
+      <filter-class>fr.urssaf.image.commons.maquette.MaquetteFilter</filter-class>
+      <init-param>
+         <param-name>excludeFiles</param-name>
+         <param-value></param-value>
+      </init-param>
+      <init-param>
+         <param-name>appTitle</param-name>
+         <param-value>Maquette : Titre de l'application</param-value>
+      </init-param>
+      <init-param>
+         <param-name>appCopyright</param-name>
+         <param-value>Maquette : Copyright</param-value>
+      </init-param>
+      <init-param>
+         <param-name>theme</param-name>
+         <param-value>aed</param-value>
+      </init-param>
+      <!-- 
+      <init-param>
+         <param-name>implementationIMenu</param-name>
+         <param-value>fr.urssaf.image.nomPackagePrincipal.menus.MenuImpl</param-value>
+      </init-param>
+      <init-param>
+         <param-name>implementationILeftCol</param-name>
+         <param-value>fr.urssaf.image.nomPackagePrincipal.boitesGauche.BoitesGauche</param-value>
+      </init-param>
+      -->
+   </filter>
+   
+      
+   <!-- Mapping du filtre du décorateur maquette IHM -->
+   <filter-mapping>
+      <filter-name>MaquetteFilter</filter-name>
+      <url-pattern>*.do</url-pattern>
+      <url-pattern>*.jsp</url-pattern>
+      <url-pattern>*.htm</url-pattern>
+      <url-pattern>*.html</url-pattern>
+   </filter-mapping>
+      
+   
+   <!-- Servlet nécessaire au filtre du décorateur maquette IHM -->
+   <servlet>
+      <description></description>
+      <display-name>MaquetteServlet</display-name>
+      <servlet-name>MaquetteServlet</servlet-name>
+      <servlet-class>fr.urssaf.image.commons.maquette.MaquetteServlet</servlet-class>
+   </servlet>
+   
+   
+   <!-- Mapping du servlet nécessaire au filtre du décorateur maquette IHM -->
+   <servlet-mapping>
+      <servlet-name>MaquetteServlet</servlet-name>
+      <url-pattern>/getResourceImageMaquette.do</url-pattern>
+   </servlet-mapping>
+   
+   
+   <!-- ======================================================================= -->
+   <!-- Intégration de la fiche F008 : Développer une page web avec Spring MVC  -->
+   <!-- ======================================================================= -->
+   
+   
+   <!-- le chargeur du contexte spring de l'application -->
+   <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>
+   
+   <!-- la servlet -->
+   <servlet>
+      <servlet-name>spring</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+   </servlet>
+   
+   <!-- le mapping des url -->
+   <servlet-mapping>
+      <servlet-name>spring</servlet-name>
+      <url-pattern>*.do</url-pattern>
+   </servlet-mapping>
+
+   <!-- index -->
+   <welcome-file-list>
+      <welcome-file>/view/index.jsp</welcome-file>
+   </welcome-file-list>
+
+   <!-- encodage -->
+   <filter>
+      <filter-name>charsetFilter</filter-name>
+      <filter-class>fr.urssaf.image.commons.controller.spring.servlet.filter.CharsetFilter</filter-class>
+      <init-param>
+         <param-name>requestEncoding</param-name>
+         <param-value>ISO-8859-15</param-value>
+      </init-param>
+   </filter>
+	
+	
+</web-app>
+
+
