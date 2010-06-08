@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -113,6 +114,10 @@ public final class ClassForm<F extends MyFormulaire> {
 
 	public BeanFormulaire getMethode(String field) {
 		return classFieldForm.getMethode(field);
+	}
+	
+	public Set<String> getMethodeNames() {
+		return classFieldForm.getMethodes().keySet();
 	}
 
 	protected Map<String, BeanFormulaire> getMethodes() {

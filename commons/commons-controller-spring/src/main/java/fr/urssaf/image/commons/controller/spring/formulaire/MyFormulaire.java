@@ -61,6 +61,11 @@ public class MyFormulaire {
 		}
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Set<String> getMethodeNames() {
+		return this.classForm.getMethodeNames();
+	}
 
 	public MyExceptionFormulaire getException() {
 		return this.exceptionForm;
