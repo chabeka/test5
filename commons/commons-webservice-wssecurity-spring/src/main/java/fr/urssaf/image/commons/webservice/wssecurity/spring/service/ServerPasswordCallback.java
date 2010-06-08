@@ -16,6 +16,7 @@ public class ServerPasswordCallback implements CallbackHandler {
 	private Map<String, String> passwords = new HashMap<String, String>();
 
 	public ServerPasswordCallback() {
+		passwords.put("myservicekey", "skpass");
 		passwords.put("myuser", "mypassword");
 
 	}
@@ -30,7 +31,7 @@ public class ServerPasswordCallback implements CallbackHandler {
 				if (passwords.containsKey(pc.getIdentifier())) {
 					pc.setPassword(passwords.get(pc.getIdentifier()));
 					return;
-				} 
+				}
 
 			}
 
