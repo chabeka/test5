@@ -16,7 +16,6 @@ public class ServerPasswordCallback implements CallbackHandler {
 	private Map<String, String> passwords = new HashMap<String, String>();
 
 	public ServerPasswordCallback() {
-		passwords.put("myclientkey", "ckpass");
 		passwords.put("myuser", "mypassword");
 
 	}

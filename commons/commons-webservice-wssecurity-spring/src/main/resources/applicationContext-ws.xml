@@ -35,9 +35,9 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 				<constructor-arg>
 					<map>
-						<entry key="action" value="UsernameToken" />
-						<entry key="passwordType" value="PasswordDigest" />
-						<!--entry key="signaturePropFile" value="..." /-->
+						<entry key="action" value="UsernameToken Signature" />
+						<!-- entry key="passwordType" value="PasswordDigest" /-->
+						<entry key="signaturePropFile" value="serviceKeyStore.properties" />
 						<entry key="passwordCallbackRef">
 							<ref bean="myPasswordCallback" />
 						</entry>
