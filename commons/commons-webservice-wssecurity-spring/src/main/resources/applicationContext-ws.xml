@@ -20,25 +20,20 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	<import resource="classpath*:META-INF/cxf/cxf-extension-*.xml" />
 
-	<bean id="myPasswordCallback" class="fr.urssaf.image.commons.webservice.wssecurity.spring.service.ServerPasswordCallback" />
-
+	<bean id="myPasswordCallback"
+		class="fr.urssaf.image.commons.webservice.wssecurity.spring.service.ServerPasswordCallback" />
 
 	<jaxws:endpoint id="docEndPointDocument" implementor="#documentServiceImpl"
 		address="/DocumentService">
 
-
 		<jaxws:inInterceptors>
-			<!--
-				SAAJ Interceptor needs to be explicitly declared only in CXF 2.0.x
-			-->
 			<bean class="org.apache.cxf.binding.soap.saaj.SAAJInInterceptor" />
 			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 				<constructor-arg>
 					<map>
 						<entry key="action" value="UsernameToken Signature Timestamp Encrypt" />
-						<!-- entry key="passwordType" value="PasswordDigest" /-->
 						<entry key="signaturePropFile" value="serviceKeyStore.properties" />
-						<entry key="decryptionPropFile" value="serviceKeyStore.properties"/>
+						<entry key="decryptionPropFile" value="serviceKeyStore.properties" />
 						<entry key="passwordCallbackRef">
 							<ref bean="myPasswordCallback" />
 						</entry>
@@ -47,7 +42,22 @@ http://cxf.apache.org/schemas/jaxws.xsd">
 			</bean>
 		</jaxws:inInterceptors>
 
+		<jaxws:outInterceptors>
+			<bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
+			<bean class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+				<constructor-arg>
+					<map>
+						<entry key="action" value="Encrypt" />
+						<entry key="encryptionPropFile" value="serviceKeyStore.properties" />
+						<entry key="encryptionUser" value="myclientkey" />
 
+						<entry key="signatureParts"
+							value="{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+
+					</map>
+				</constructor-arg>
+			</bean>
+		</jaxws:outInterceptors>
 
 	</jaxws:endpoint>
 

@@ -27,9 +27,9 @@ public class ServerPasswordCallback implements CallbackHandler {
 		for (int i = 0; i < callbacks.length; i++) {
 
 			if (callbacks[i] instanceof WSPasswordCallback) {
-				WSPasswordCallback pc = (WSPasswordCallback) callbacks[i];
-				if (passwords.containsKey(pc.getIdentifier())) {
-					pc.setPassword(passwords.get(pc.getIdentifier()));
+				WSPasswordCallback wsPassword = (WSPasswordCallback) callbacks[i];
+				if (passwords.containsKey(wsPassword.getIdentifier())) {
+					wsPassword.setPassword(passwords.get(wsPassword.getIdentifier()));
 					return;
 				}
 
