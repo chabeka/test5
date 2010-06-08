@@ -10,7 +10,6 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.apache.log4j.Logger;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.handler.WSHandlerConstants;
 
@@ -21,23 +20,15 @@ public class DocumentServiceImpl implements DocumentService {
 
 	private fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.DocumentService port;
 
-	private static final Logger log = Logger
-			.getLogger(DocumentServiceImpl.class);
-
-	public static final String USER = "myuser";
-
 	public DocumentServiceImpl() {
 
 		DocumentService_Service service = new DocumentService_Service();
-		
+
 		this.port = service.getDocumentServicePort();
-		
+
 		Client client = ClientProxy.getClient(this.port);
 		Endpoint cxfEndpoint = client.getEndpoint();
 		initWSS4JOutInterceptor(cxfEndpoint);
-
-
-		
 
 	}
 
@@ -51,7 +42,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		StringBuffer action = new StringBuffer();
 		action.append(" " + WSHandlerConstants.USERNAME_TOKEN);
-		// action.append(" " + WSHandlerConstants.SIGNATURE);
+		action.append(" " + WSHandlerConstants.SIGNATURE);
 		// action.append(" " + WSHandlerConstants.ENCRYPT);
 
 		// action.append(" " + WSHandlerConstants.TIMESTAMP);
@@ -61,13 +52,13 @@ public class DocumentServiceImpl implements DocumentService {
 				ClientPasswordCallback.class.getName());
 
 		// USERNAME_TOKEN
-		outProps.put(WSHandlerConstants.USER, USER);
+		outProps.put(WSHandlerConstants.USER, "myuser");
 		outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_DIGEST);
-		
+
 		// SIGNATURE
-		// outProps.put(WSHandlerConstants.SIGNATURE_USER, "myclientkey");
-		// outProps.put(WSHandlerConstants.SIG_PROP_FILE,
-		// "clientKeyStore.properties");
+		outProps.put(WSHandlerConstants.SIGNATURE_USER, "myclientkey");
+		outProps.put(WSHandlerConstants.SIG_PROP_FILE,
+				"clientKeyStore.properties");
 
 		// ENCRYPT
 		// outProps.put(WSHandlerConstants.ENCRYPTION_USER, "myservicekey");
