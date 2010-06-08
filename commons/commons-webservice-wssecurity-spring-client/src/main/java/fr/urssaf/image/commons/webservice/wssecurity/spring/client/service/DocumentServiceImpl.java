@@ -43,9 +43,9 @@ public class DocumentServiceImpl implements DocumentService {
 		StringBuffer action = new StringBuffer();
 		action.append(" " + WSHandlerConstants.USERNAME_TOKEN);
 		action.append(" " + WSHandlerConstants.SIGNATURE);
-		// action.append(" " + WSHandlerConstants.ENCRYPT);
+		action.append(" " + WSHandlerConstants.ENCRYPT);
 
-		// action.append(" " + WSHandlerConstants.TIMESTAMP);
+		action.append(" " + WSHandlerConstants.TIMESTAMP);
 
 		outProps.put(WSHandlerConstants.ACTION, action.toString());
 		outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
@@ -61,19 +61,16 @@ public class DocumentServiceImpl implements DocumentService {
 				"clientKeyStore.properties");
 
 		// ENCRYPT
-		// outProps.put(WSHandlerConstants.ENCRYPTION_USER, "myservicekey");
-		// outProps.put(WSHandlerConstants.ENC_PROP_FILE,
-		// "clientKeyStore.properties");
+		outProps.put(WSHandlerConstants.ENCRYPTION_USER, "myservicekey");
+		outProps.put(WSHandlerConstants.ENC_PROP_FILE,"clientKeyStore.properties");
 
-		// StringBuffer parts = new StringBuffer();
-		// parts
-		// .append("{Content}{http://www.springserviceweb.com/service/ws/modele}findRequest;");
-		// parts.append("{Content}{http://www.w3.org/2000/09/xmldsig#}Signature;");
-		// parts
-		// .append("{Content}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;");
-		// parts.append("{Content}{}Body;");
+		StringBuffer parts = new StringBuffer();
+		
+		parts.append("{Content}{http://www.w3.org/2000/09/xmldsig#}Signature;");
+		parts.append("{Content}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;");
+		parts.append("{Content}{}Body;");
 
-		// outProps.put(WSHandlerConstants.ENCRYPTION_PARTS, parts.toString());
+		outProps.put(WSHandlerConstants.ENCRYPTION_PARTS, parts.toString());
 	}
 
 	@Override
