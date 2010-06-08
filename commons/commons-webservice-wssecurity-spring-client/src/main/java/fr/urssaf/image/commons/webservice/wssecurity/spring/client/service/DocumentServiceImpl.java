@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cxf.binding.soap.saaj.SAAJInInterceptor;
 import org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.handler.WSHandlerConstants;
@@ -20,6 +22,8 @@ public class DocumentServiceImpl implements DocumentService {
 
 	private fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.DocumentService port;
 
+	private static final String BLANC = " ";
+	
 	public DocumentServiceImpl() {
 
 		DocumentService_Service service = new DocumentService_Service();
@@ -29,6 +33,7 @@ public class DocumentServiceImpl implements DocumentService {
 		Client client = ClientProxy.getClient(this.port);
 		Endpoint cxfEndpoint = client.getEndpoint();
 		initWSS4JOutInterceptor(cxfEndpoint);
+		initWSS4JInInterceptor(cxfEndpoint);
 
 	}
 
@@ -41,12 +46,14 @@ public class DocumentServiceImpl implements DocumentService {
 		cxfEndpoint.getOutInterceptors().add(new SAAJOutInterceptor());
 
 		StringBuffer action = new StringBuffer();
-		action.append(" " + WSHandlerConstants.USERNAME_TOKEN);
-		action.append(" " + WSHandlerConstants.SIGNATURE);
-		action.append(" " + WSHandlerConstants.ENCRYPT);
-
-		action.append(" " + WSHandlerConstants.TIMESTAMP);
-
+		action.append(WSHandlerConstants.USERNAME_TOKEN);
+		action.append(BLANC);
+		action.append(WSHandlerConstants.SIGNATURE);
+		action.append(BLANC);
+		action.append(WSHandlerConstants.ENCRYPT);
+		action.append(BLANC);
+		action.append(WSHandlerConstants.TIMESTAMP);
+		
 		outProps.put(WSHandlerConstants.ACTION, action.toString());
 		outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
 				ClientPasswordCallback.class.getName());
@@ -62,15 +69,39 @@ public class DocumentServiceImpl implements DocumentService {
 
 		// ENCRYPT
 		outProps.put(WSHandlerConstants.ENCRYPTION_USER, "myservicekey");
-		outProps.put(WSHandlerConstants.ENC_PROP_FILE,"clientKeyStore.properties");
+		outProps.put(WSHandlerConstants.ENC_PROP_FILE,
+				"clientKeyStore.properties");
 
 		StringBuffer parts = new StringBuffer();
-		
+
 		parts.append("{Content}{http://www.w3.org/2000/09/xmldsig#}Signature;");
-		parts.append("{Content}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;");
+		parts
+				.append("{Content}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}UsernameToken;");
 		parts.append("{Content}{}Body;");
 
 		outProps.put(WSHandlerConstants.ENCRYPTION_PARTS, parts.toString());
+	}
+
+	private void initWSS4JInInterceptor(Endpoint cxfEndpoint) {
+
+		Map<String, Object> inProps = new HashMap<String, Object>();
+		WSS4JInInterceptor wssIn = new WSS4JInInterceptor(inProps);
+		wssIn.setIgnoreActions(true);
+		cxfEndpoint.getInInterceptors().add(wssIn);
+
+		cxfEndpoint.getInInterceptors().add(new SAAJInInterceptor());
+
+		StringBuffer action = new StringBuffer();
+		action.append(WSHandlerConstants.ENCRYPT);
+
+		inProps.put(WSHandlerConstants.ACTION, action.toString());
+		inProps.put(WSHandlerConstants.PW_CALLBACK_CLASS,
+				ClientPasswordCallback.class.getName());
+
+		// ENCRYPT
+		inProps.put(WSHandlerConstants.DEC_PROP_FILE,
+				"clientKeyStore.properties");
+
 	}
 
 	@Override
