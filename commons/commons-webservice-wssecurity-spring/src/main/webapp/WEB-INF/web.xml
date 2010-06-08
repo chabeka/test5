@@ -5,7 +5,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext-webservice.xml</param-value>
+		<param-value>classpath:applicationContext-ws.xml</param-value>
 	</context-param>
 
 	<context-param>
@@ -13,42 +13,27 @@
 		<param-value>classpath:log4j.properties</param-value>
 	</context-param>
 
+	<!-- le chargeur du contexte spring de l'application -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
-	<!-- la servlet -->
-	<servlet>
-		<servlet-name>spring</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	</servlet>
-	<!-- le mapping des url -->
-	<servlet-mapping>
-		<servlet-name>spring</servlet-name>
-		<url-pattern>*.do</url-pattern>
-	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>spring-ws</servlet-name>
-		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:/spring-ws-context.xml</param-value>
-		</init-param>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>spring-ws</servlet-name>
+		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/service/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>spring-axis</servlet-name>
-		<servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>spring-axis</servlet-name>
-		<url-pattern>/spring-axis/*</url-pattern>
-	</servlet-mapping>
+
+	<!-- index -->
+	<welcome-file-list>
+		<welcome-file>/view/index.jsp</welcome-file>
+	</welcome-file-list>
+	
 
 </web-app>
