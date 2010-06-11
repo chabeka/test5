@@ -11,6 +11,7 @@ package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 /**
  * Element contenant un index et sa valeur
  */
+@SuppressWarnings("unchecked")
 public class IndexValeur  implements java.io.Serializable {
     private java.lang.String nom;
 

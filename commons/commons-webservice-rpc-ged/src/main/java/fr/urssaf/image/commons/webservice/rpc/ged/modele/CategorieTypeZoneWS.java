@@ -12,6 +12,7 @@ package fr.urssaf.image.commons.webservice.rpc.ged.modele;
  * Element contenant la description d'un type zone ainsi que l'indice
  * de sa catégorie
  */
+@SuppressWarnings("unchecked")
 public class CategorieTypeZoneWS  implements java.io.Serializable {
     private int indice;
 
@@ -232,7 +233,7 @@ public class CategorieTypeZoneWS  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-    public static org.apache.axis.encoding.Serializer getSerializer(
+   public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
