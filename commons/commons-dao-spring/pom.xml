@@ -19,9 +19,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
-					<excludes>
+					<skipTests>true</skipTests>
+					<!-- excludes>
 						<exclude>**/*JdbcDaoTest.java</exclude>
-					</excludes>
+					</excludes-->
 				</configuration>
 			</plugin>
 			<plugin>
