@@ -12,6 +12,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +22,10 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
-public class DocumentModifyDaoTest{
+public class DocumentModifyDaoTest {
 
 	@Autowired
 	private DocumentDao documentDao;
-	
 
 	@Test
 	@Transactional
@@ -73,10 +73,14 @@ public class DocumentModifyDaoTest{
 		try {
 			documentDao.save(document);
 			fail("le test doit être un échec");
-		} catch (PropertyValueException e) {
+		} catch (DataAccessException e) {
+
+			PropertyValueException exception = (PropertyValueException) e
+					.getCause();
+
 			assertEquals("l'entité doit être document", Document.class
-					.getCanonicalName(), e.getEntityName());
-			assertEquals("la propriété doit être date", "date", e
+					.getCanonicalName(), exception.getEntityName());
+			assertEquals("la propriété doit être date", "date", exception
 					.getPropertyName());
 
 		}
@@ -92,9 +96,13 @@ public class DocumentModifyDaoTest{
 		try {
 			documentDao.saveSQL(document);
 			fail("le test doit être un échec");
-		} catch (ConstraintViolationException e) {
+		} catch (DataAccessException e) {
+
+			ConstraintViolationException exception = (ConstraintViolationException) e
+					.getCause();
+
 			assertEquals(5, documentDao.count());
-			assertEquals("Column 'date' cannot be null", e.getCause()
+			assertEquals("Column 'date' cannot be null", exception.getCause()
 					.getMessage());
 
 		}
@@ -112,16 +120,19 @@ public class DocumentModifyDaoTest{
 			documentDao.delete(document);
 			documentDao.find(ID_TEST);
 			fail("le test doit être un échec");
-		} catch (ConstraintViolationException e) {
-			//assertEquals(5, documentDao.count());
+		} catch (DataAccessException e) {
+
+			ConstraintViolationException exception = (ConstraintViolationException) e
+					.getCause();
+
 			assertEquals(
 					"Cannot delete or update a parent row: a foreign key constraint fails (`document_test`.`etat`, CONSTRAINT `FK_etat_document` FOREIGN KEY (`id_document`) REFERENCES `document` (`id`))",
-					e.getCause().getMessage());
+					exception.getCause().getMessage());
 
 		}
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void deleteSQLFailure() {
@@ -133,11 +144,15 @@ public class DocumentModifyDaoTest{
 		try {
 			documentDao.deleteSQL(document);
 			fail("le test doit être un échec");
-		} catch (ConstraintViolationException e) {
+		} catch (DataAccessException e) {
+
+			ConstraintViolationException exception = (ConstraintViolationException) e
+					.getCause();
+
 			assertEquals(5, documentDao.count());
 			assertEquals(
 					"Cannot delete or update a parent row: a foreign key constraint fails (`document_test`.`etat`, CONSTRAINT `FK_etat_document` FOREIGN KEY (`id_document`) REFERENCES `document` (`id`))",
-					e.getCause().getMessage());
+					exception.getCause().getMessage());
 
 		}
 
@@ -158,7 +173,7 @@ public class DocumentModifyDaoTest{
 		assertNull("la transaction doit être un succés", document);
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void deleteSQLSuccess() {
@@ -193,7 +208,7 @@ public class DocumentModifyDaoTest{
 		assertEquals("update titre", document.getTitre());
 
 	}
-	
+
 	@Test
 	@Transactional
 	public void updateSuccessSQL() {

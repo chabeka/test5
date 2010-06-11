@@ -5,7 +5,8 @@
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+	
 	<bean class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
 		id="sessionFactory">
 
