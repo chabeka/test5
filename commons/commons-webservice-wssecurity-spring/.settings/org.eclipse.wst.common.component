@@ -5,9 +5,11 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
     <property name="context-root" value="commons-webservice-wssecurity-spring"/>
-    <wb-resource deploy-path="/" source-path="src/main/webapp"/>
-    <property name="java-output-path" value="/target/classes"/>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
-    <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+    <property name="java-output-path" value="/target/classes"/>
   </wb-module>
 </project-modules>
