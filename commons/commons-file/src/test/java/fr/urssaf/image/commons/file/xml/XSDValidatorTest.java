@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import fr.urssaf.image.commons.file.xml.XSDValidator;
 import fr.urssaf.image.commons.file.xml.XSDValidator.SAXParseExceptionType;
 
 public class XSDValidatorTest {
