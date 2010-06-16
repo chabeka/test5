@@ -9,14 +9,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 
-public class XMLFactory<O> {
+public class JDOMFactory<O> {
 
-	private static final Logger log = Logger.getLogger(XMLFactory.class);
+	private static final Logger log = Logger.getLogger(JDOMFactory.class);
 
 	private static final String PREFIX = "get";
 	private O _instance;
 
-	public XMLFactory(Element element, Class<O> classe) {
+	public JDOMFactory(Element element, Class<O> classe) {
 
 		init(element, classe);
 
@@ -86,7 +86,7 @@ public class XMLFactory<O> {
 		int index = 0;
 		for (Element elem : elements) {
 
-			XMLFactory xmlFactory = new XMLFactory(elem, type
+			JDOMFactory xmlFactory = new JDOMFactory(elem, type
 					.getComponentType());
 
 			Array.set(array, index, xmlFactory.getInstance());
@@ -101,7 +101,7 @@ public class XMLFactory<O> {
 
 		Element elem = element.getChild(balise);
 
-		XMLFactory xmlFactory = new XMLFactory(elem, type);
+		JDOMFactory xmlFactory = new JDOMFactory(elem, type);
 		return xmlFactory.getInstance();
 	}
 

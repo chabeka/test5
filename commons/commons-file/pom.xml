@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.urssaf.image.commons</groupId>
-	<artifactId>commons-file-exemple</artifactId>
+	<artifactId>commons-file</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	
