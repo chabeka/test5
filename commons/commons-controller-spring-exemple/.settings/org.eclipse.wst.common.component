@@ -4,9 +4,6 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-controller-spring/commons-controller-spring">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-util/commons-util">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-taglib/commons-taglib">
             <dependency-type>uses</dependency-type>
         </dependent-module>
