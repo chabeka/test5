@@ -9,5 +9,5 @@
     <auteur nat="FR">Emile Zola</auteur>
   </livre>
   <!--on place ici un commentaire-->
+  <![CDATA[caractères spéciaux:< > ' & + é @ £ $]]>
 </bibliotheque>
-

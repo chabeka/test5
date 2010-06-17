@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.Attribute;
+import org.jdom.CDATA;
 import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -50,22 +51,24 @@ public class JDOMUtilTest {
 		Element bibliotheque = new Element("bibliotheque");
 
 		// livre n°0
-
 		Element livre0 = createLivre("romantisme du XXe", "Madame Bovary",
 				"Gustave Flaubert");
 		bibliotheque.addContent(livre0);
 
 		// livre n°1
-
 		Element livre1 = createLivre("naturalisme", "l'argent", "Emile Zola");
 		bibliotheque.addContent(livre1);
-		
+
 		// Commentaire
 		Comment comment = new Comment("on place ici un commentaire");
 		bibliotheque.addContent(comment);
 
+		// CDATA
+		CDATA cData = new CDATA("caractères spéciaux:< > ' & + é @ £ $");
+		bibliotheque.addContent(cData);
+
 		Document document = new Document(bibliotheque);
-		
+
 		return document;
 	}
 
