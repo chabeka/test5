@@ -18,14 +18,14 @@ import fr.urssaf.image.commons.webservice.rpc.ged.modele.TypeZoneWS;
 public interface GedImageService {
 
 	/**
-	 * Mise à jour des index d'un document.
+	 * Mise Ã  jour des index d'un document.
 	 */
 	public boolean updateIndexDocumentGED(AuthInfo login, String base,
 			String idDocument, IndexValeur[] listeIndexValeur)
 			throws RemoteException;
 
 	/**
-	 * Mise à jour des index d'un document.
+	 * Mise Ã  jour des index d'un document.
 	 */
 	public String moveDocumentGED(AuthInfo login, String baseOrig,
 			String idDocument, String baseDest, IndexValeur[] listeIndexValeur)
@@ -51,7 +51,7 @@ public interface GedImageService {
 			throws RemoteException;
 
 	/**
-	 * Liste des types zones et des catégories pour une base
+	 * Liste des types zones et des catÃ©gories pour une base
 	 */
 	public CategorieTypeZoneWS[] getCategorieTypesZonesBase(AuthInfo login,
 			String base) throws RemoteException;
