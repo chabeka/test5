@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * @author CER6990172
- * @desc classe récupérée sur http://java.sun.com/products/servlet/Filters.html
- *       permet de stocker les output et d'y accéder alors que c'est impossible
- *       depuis la class mère HttpServletResponseWrapper
+ * @desc classe rÃ©cupÃ©rÃ©e sur http://java.sun.com/products/servlet/Filters.html
+ *       permet de stocker les output et d'y accÃ©der alors que c'est impossible
+ *       depuis la class mÃ¨re HttpServletResponseWrapper
  */
 public class CharResponseWrapper extends HttpServletResponseWrapper 
 {
@@ -37,7 +37,7 @@ public class CharResponseWrapper extends HttpServletResponseWrapper
 	 * @see javax.servlet.ServletResponseWrapper#getWriter()
 	 */
 	public PrintWriter getWriter() {
-//		logger.debug("getWriter appelé : ----------" + output.toString() + "----------<br />");
+//		logger.debug("getWriter appelÃ© : ----------" + output.toString() + "----------<br />");
 		return new PrintWriter(output);
 	}
 

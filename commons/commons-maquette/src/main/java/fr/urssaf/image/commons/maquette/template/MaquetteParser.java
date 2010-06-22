@@ -32,7 +32,7 @@ import fr.urssaf.image.commons.maquette.tool.MaquetteConstant;
 
 /**
  * @author CER6990172
- * @desc	gère l'instanciation de la class Source (jericho) pour le template html et le contenu html de l'application métier
+ * @desc	gÃ¨re l'instanciation de la class Source (jericho) pour le template html et le contenu html de l'application mÃ©tier
  */
 public class MaquetteParser {
 	
@@ -45,7 +45,7 @@ public class MaquetteParser {
 	protected MaquetteConfig maquetteCfg ;
 	
 	/**
-	 * @param html contenu html généré par l'application métier
+	 * @param html contenu html gÃ©nÃ©rÃ© par l'application mÃ©tier
 	 * @param tpl chemin vers le template html du jar
 	 * @param maquetteCfg 
 	 * @throws IOException
@@ -60,7 +60,7 @@ public class MaquetteParser {
 	}
 	
 	/**
-	 * @desc défini l'attribut Source à partir d'une chaîne Html
+	 * @desc dÃ©fini l'attribut Source Ã  partir d'une chaÃ®ne Html
 	 * @param html
 	 * @throws IOException
 	 * @return Source
@@ -70,13 +70,13 @@ public class MaquetteParser {
 	}
 	
 	/**
-	 * @desc défini l'attribut Source depuis un fichier
+	 * @desc dÃ©fini l'attribut Source depuis un fichier
 	 * @param tpl
 	 * @throws IOException
 	 * @return Source
 	 */
 	protected Source setSourceFromFile( String tpl ) throws IOException{
-		// L'un ou l'autre, aucun impact à priori
+		// L'un ou l'autre, aucun impact Ã  priori
 		// InputStream is = getClass().getResourceAsStream( tpl ) ;
 		InputStreamReader is = new InputStreamReader( this.getClass().getResourceAsStream( tpl ),"ISO-8859-15") ;
 
@@ -87,7 +87,7 @@ public class MaquetteParser {
 	}
 	
 	/**
-	 * @return outputDocument from template, le document modifié à afficher
+	 * @return outputDocument from template, le document modifiÃ© Ã  afficher
 	 */
 	public OutputDocument getOutputDocument()
 	{
@@ -95,12 +95,12 @@ public class MaquetteParser {
 	}
 	
 	/**
-	 * @desc lance les méthodes de modification du code source
+	 * @desc lance les mÃ©thodes de modification du code source
 	 */
 	public void build() {	
 
-		// 1) Par défaut on prend ce qu'il y a dans les instances des classes de configuration
-		// 2) Ensuite on écrase avec ce que l'on trouve dans le html de l'application métier 
+		// 1) Par dÃ©faut on prend ce qu'il y a dans les instances des classes de configuration
+		// 2) Ensuite on Ã©crase avec ce que l'on trouve dans le html de l'application mÃ©tier 
 		try{
 			buildHeadPart();
 		}catch( Exception e ){
@@ -140,7 +140,7 @@ logger.warn( "Exception buildFooter : " + e.getClass() );
 	/**
 	 * @desc modifie le source html
 	 * 		 s'occupe uniquement du contenu de la balise <head>
-	 * 		 le contenu de la balise head de l'application métier est inséré à la fin de la balise head du template
+	 * 		 le contenu de la balise head de l'application mÃ©tier est insÃ©rÃ© Ã  la fin de la balise head du template
 	 * @throws MissingSourceHeadPartParserException
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 * @throws TemplateConfigNotInitialized 
@@ -154,16 +154,16 @@ logger.warn( "Exception buildFooter : " + e.getClass() );
 		String cssColorList = "";
 		Boolean titleInserted = false ;
 				
-		// récupération du head du template et de l'application métier
+		// rÃ©cupÃ©ration du head du template et de l'application mÃ©tier
 		HeadPartParser hppTpl = new HeadPartParser(scFromTemplate) ;
 		HeadPartParser hppApp;
 		
 		try {
 			hppApp = new HeadPartParser(scFromApplication);
 			
-			// vérification RGAA sur le titre : trace lancé dans la console si ça arrive sinon modification de la
+			// vÃ©rification RGAA sur le titre : trace lancÃ©e dans la console si Ã§a arrive sinon modification de la
 			// balise title du template
-			// suppression du titre par défaut
+			// suppression du titre par dÃ©faut
 			if( hppApp.getTitleTag() != null )
 			{
 				start = hppTpl.getHeadTag().getEndTag().getBegin() ;
@@ -174,13 +174,13 @@ logger.warn( "Exception buildFooter : " + e.getClass() );
 			}
 			else if( maquetteCfg.getBrowserTitle() == null )
 			{
-logger.warn("Attention : aucune balise title trouvée dans l'application métier ou dans " + 
+logger.warn("Attention : aucune balise title trouvÃ©e dans l'application mÃ©tier ou dans " + 
 				"l'instance HeadPartConfig");
 			}
 
-		// Pas de head trouvé dans l'application métier 
+		// Pas de head trouvÃ© dans l'application mÃ©tier 
 		} catch (MissingHtmlElementInTemplateParserException e) {		
-logger.debug("Pas de head trouvé dans l'application métier");
+logger.debug("Pas de head trouvÃ© dans l'application mÃ©tier");
 	
 		}finally
 		{
@@ -198,7 +198,7 @@ logger.debug("Pas de head trouvé dans l'application métier");
 			if( maquetteCfg.getOverloadColor() )
 			{
 				start = hppTpl.getHeadTag().getEndTag().getBegin() ;
-				cssColorList = "<!-- Surcharge des couleurs et images par défaut -->" + 
+				cssColorList = "<!-- Surcharge des couleurs et images par dÃ©faut -->" + 
 				  "<link href='" + MaquetteConstant.GETRESOURCEURI + "?name=" + MaquetteConstant.CSSMAINCOLORFILE + "&overload=1' rel='stylesheet' type='text/css' />" +
 				  "<link href='" + MaquetteConstant.GETRESOURCEURI + "?name=" + MaquetteConstant.CSSMAINFONTCOLORFILE + "&overload=1' rel='stylesheet' type='text/css' />" +
 				  "<link href='" + MaquetteConstant.GETRESOURCEURI + "?name=" + MaquetteConstant.CSSMENUCOLORFILE + "&overload=1' rel='stylesheet' type='text/css' />" +
@@ -215,18 +215,18 @@ logger.debug("Pas de head trouvé dans l'application métier");
 	 * @throws TemplateConfigNotInitialized 
 	 * @desc modifie le source html
 	 * 		 s'occupe uniquement du contenu de la balise <body> mais au niveau de la div header (bandeau 
-	 * 		 supérieur de la maquette)
-	 * 		 procède en récupérant l'instance de HeaderConfig et injecte ses paramètres dans le template
+	 * 		 supÃ©rieur de la maquette)
+	 * 		 procÃ¨de en rÃ©cupÃ©rant l'instance de HeaderConfig et injecte ses paramÃ¨tres dans le template
 	 */
 	protected void buildHeader() throws MissingSourceParserException, MissingHtmlElementInTemplateParserException, TemplateConfigNotInitialized
 	{
 		int start ;
 		int end ;
 		
-		// récupération du header du template
+		// rÃ©cupÃ©ration du header du template
 		HeaderParser hpTpl = new HeaderParser(scFromTemplate) ;
 		
-		// injection dans le template généré du header
+		// injection dans le template gÃ©nÃ©rÃ© du header
 		// titre : modification du contenu du tag
 		start = hpTpl.getTitleTag().getContent().getBegin() ;
 		end = hpTpl.getTitleTag().getContent().getEnd() ;
@@ -256,7 +256,7 @@ logger.debug("Pas de head trouvé dans l'application métier");
 		// Ajouter la taille de l'image si le navigateur client est sous MSIE6 
 		if( maquetteCfg.isIE() )
 		{
-			// texte à rajouter sur les images suivantes du header
+			// texte Ã  rajouter sur les images suivantes du header
 			String heightLogo = " style='height:50px' " ;
 			
 			// log de l'application
@@ -291,10 +291,10 @@ logger.debug("Pas de head trouvé dans l'application métier");
 		int start ;
 		String html = "" ;
 		
-		// Modification du source html si l'implémentation de ILeftCol est disponible
+		// Modification du source html si l'implÃ©mentation de ILeftCol est disponible
 		if( maquetteCfg.getImplLeftcol() != null )
 		{
-			// Ajout des boîtes standards si possible
+			// Ajout des boÃ®tes standards si possible
 			if( maquetteCfg.getImplLeftcol().getNomApplication(hsr) != null
 				&& maquetteCfg.getImplLeftcol().getVersionApplication(hsr) != null 
 				&& (
@@ -302,7 +302,7 @@ logger.debug("Pas de head trouvé dans l'application métier");
 					|| maquetteCfg.getImplLeftcol().getVersionApplication(hsr).length() > 0 )
 				)
 			{
-				InfoBoxItem appInfo = new InfoBoxItem( "app", "Application", "Informations relatives à l'application courante" ) ;
+				InfoBoxItem appInfo = new InfoBoxItem( "app", "Application", "Informations relatives Ã  l'application courante" ) ;
 				appInfo.addSpan( "name", "Nom de l'application", maquetteCfg.getImplLeftcol().getNomApplication(hsr) ) ;
 				appInfo.addSpan( "version", "Version de l'application", maquetteCfg.getImplLeftcol().getVersionApplication(hsr) ) ;
 				html += InfoBoxGenerator.build( appInfo ) ;
@@ -316,17 +316,17 @@ logger.debug("Pas de head trouvé dans l'application métier");
 					|| maquetteCfg.getImplLeftcol().getVersionApplication(hsr).length() > 0 )
 				)
 			{
-				InfoBoxItem usrInfo = new InfoBoxItem( "user", "Utilisateur", "Informations relatives à l'utilisateur identifié" ) ;
-				usrInfo.addSpan( "name", "Prénom Nom de l'utilisateur", maquetteCfg.getImplLeftcol().getNomUtilisateur(hsr) ) ;
-				usrInfo.addSpan( "rights", "Droits affectés à l'utilisateur", maquetteCfg.getImplLeftcol().getRoleUtilisateur(hsr) ) ;
+				InfoBoxItem usrInfo = new InfoBoxItem( "user", "Utilisateur", "Informations relatives Ã  l'utilisateur identifiÃ©" ) ;
+				usrInfo.addSpan( "name", "PrÃ©nom Nom de l'utilisateur", maquetteCfg.getImplLeftcol().getNomUtilisateur(hsr) ) ;
+				usrInfo.addSpan( "rights", "Droits affectÃ©s Ã  l'utilisateur", maquetteCfg.getImplLeftcol().getRoleUtilisateur(hsr) ) ;
 				html += InfoBoxGenerator.build( usrInfo ) ;
 				
-				InfoBoxItem logoutInfo = new InfoBoxItem( "logout", "Déconnexion", "Boite de déconnexion" ) ;
-				logoutInfo.addBtn( "user", "Déconnexion", maquetteCfg.getImplLeftcol().getLienDeconnexion(hsr) ) ;
+				InfoBoxItem logoutInfo = new InfoBoxItem( "logout", "DÃ©connexion", "Boite de dÃ©connexion" ) ;
+				logoutInfo.addBtn( "user", "DÃ©connexion", maquetteCfg.getImplLeftcol().getLienDeconnexion(hsr) ) ;
 				html += InfoBoxGenerator.build( logoutInfo ) ;
 			}
 			
-			// Ajout des boîtes spécifiques
+			// Ajout des boÃ®tes spÃ©cifiques
 			List<InfoBoxItem> specificInfoBoxList = maquetteCfg.getImplLeftcol().getInfoBox( hsr ) ;
 			if( specificInfoBoxList != null )
 				for( InfoBoxItem sibc : specificInfoBoxList )
@@ -348,21 +348,21 @@ logger.debug("Pas de head trouvé dans l'application métier");
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 * @desc modifie le source html
 	 * 		 s'occupe uniquement du contenu de la balise <body> mais au niveau de la div content 
-	 * 		 (partie central qui doit être enrichi par le contenu de l'application métier)
-	 * 		 procède en récupérant le body de l'application métier et injecte le contenu dans le template
-	 * 		 il vérifie également que 'il y a bien une balise noscript, sinon il utilisera celle du template
+	 * 		 (partie central qui doit Ãªtre enrichi par le contenu de l'application mÃ©tier)
+	 * 		 procÃ¨de en rÃ©cupÃ©rant le body de l'application mÃ©tier et injecte le contenu dans le template
+	 * 		 il vÃ©rifie Ã©galement que 'il y a bien une balise noscript, sinon il utilisera celle du template
 	 */
 	protected void buildBody() throws MissingSourceParserException, MissingHtmlElementInTemplateParserException
 	{
 		int start ;
 		int end ;
 		
-		// récupération du body du template
+		// rÃ©cupÃ©ration du body du template
 		ContentAppParser capTpl = new ContentAppParser(scFromTemplate) ;
 		PageReminderParser prTpl = new PageReminderParser(scFromTemplate) ;
 				
-		// mise en place du pageReminder (soit il est retourné par l'applic cliente, 
-		// soit on prend le comportement par défaut)
+		// mise en place du pageReminder (soit il est retournÃ© par l'applic cliente, 
+		// soit on prend le comportement par dÃ©faut)
 		start = prTpl.getPageReminderTag().getContent().getBegin() ;
 		end = prTpl.getPageReminderTag().getContent().getEnd() ;
 		String breadcrumb = 
@@ -371,13 +371,13 @@ logger.debug("Pas de head trouvé dans l'application métier");
 			maquetteCfg.getImplMenu().getBreadcrumb(hsr) : MenuGenerator.buildBreadcrumb() ;
 		odFromTemplate.replace( start, end, breadcrumb + "&nbsp;" ) ;
 		
-		// remplacement du contenu de content-application par le body de l'application métier
+		// remplacement du contenu de content-application par le body de l'application mÃ©tier
 		start = capTpl.getContentAppTag().getContent().getBegin() ;
 		end = capTpl.getContentAppTag().getContent().getEnd() ;
 		List<Element> elBody = scFromApplication.getAllElements("body");
 		
 		String body ;
-		// prise en compte du cas où l'on a pas de body dans le html de l'application
+		// prise en compte du cas oÃ¹ l'on a pas de body dans le html de l'application
 		if( elBody.size() == 0 )
 		{
 			body = scFromApplication.toString() ;
@@ -385,7 +385,7 @@ logger.debug("Pas de head trouvé dans l'application métier");
 		else
 			body = elBody.get(0).toString() ;
 		
-		// rajout de noscript s'il n'est pas présent dans l'application métier
+		// rajout de noscript s'il n'est pas prÃ©sent dans l'application mÃ©tier
 		String noScript = "" ;
 		List<Element> elNoScriptList = scFromApplication.getAllElements("noscript") ;
 		if( elNoScriptList.size() == 0 )
@@ -403,24 +403,24 @@ logger.debug("Pas de head trouvé dans l'application métier");
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 * @desc modifie le source html
 	 * 		 s'occupe uniquement du contenu de la balise <body> mais au niveau de la div header (bandeau 
-	 * 		 supérieur de la maquette)
-	 * 		 procède en récupérant l'instance de HeaderConfig et injectes ses paramètres dans le template
+	 * 		 supÃ©rieur de la maquette)
+	 * 		 procÃ¨de en rÃ©cupÃ©rant l'instance de HeaderConfig et injectes ses paramÃ¨tres dans le template
 	 */
 	protected void buildFooter() throws MissingSourceParserException, TemplateConfigNotInitialized, MissingHtmlElementInTemplateParserException
 	{
 		int start ;
 		int end ;
 		
-		// récupération du footer du template
+		// rÃ©cupÃ©ration du footer du template
 		FooterParser fpTpl = new FooterParser(scFromTemplate) ;
 		
-		// suppression du lien providedBy dans template généré du footer
+		// suppression du lien providedBy dans template gÃ©nÃ©rÃ© du footer
 		start = fpTpl.getProvidedByTag().getContent().getBegin() ;
 		end = fpTpl.getProvidedByTag().getContent().getEnd() ;
 		if( !maquetteCfg.getAppDisplayStandardsAndNorms() )
 			odFromTemplate.replace( start, end, "" ) ;
 		
-		// suppression du lien providedBy dans template généré du footer
+		// suppression du lien providedBy dans template gÃ©nÃ©rÃ© du footer
 		start = fpTpl.getCopyrightTag().getContent().getBegin() ;
 		end = fpTpl.getCopyrightTag().getContent().getEnd() ;
 		String appCopyright = maquetteCfg.getAppCopyright();

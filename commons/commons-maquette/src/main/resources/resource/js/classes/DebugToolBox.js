@@ -1,7 +1,7 @@
 /*
  * @type : class
  * @name : MenuClass
- * @desc : gère le fonctionnement du menu de type :
+ * @desc : gere le fonctionnement du menu de type :
  *      <ul><li><a class="firstrow">niveau1</a><ul><li><a></a></li>[...]</ul></li></ul>[...]
  */
 var DebugToolboxClass = new Class(
@@ -37,7 +37,7 @@ var DebugToolboxClass = new Class(
     /*
      * @type : method
      * @name : spyOnFocus
-     * @desc : surveille l'ensemble de la fenêtre et détecte les changements de focus
+     * @desc : surveille l'ensemble de la fenetre et detecte les changements de focus
      */
     spyOnFocus: function()
     {
@@ -54,7 +54,7 @@ var DebugToolboxClass = new Class(
     /*
      * @type : method
      * @name : buildDebugZone
-     * @desc : construit l'élément qui va contenir les messages de debug
+     * @desc : construit l'element qui va contenir les messages de debug
      */
     buildDebugZone: function()
     {

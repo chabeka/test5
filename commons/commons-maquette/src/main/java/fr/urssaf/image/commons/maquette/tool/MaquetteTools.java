@@ -93,13 +93,13 @@ public class MaquetteTools {
 						buffer.append((char)charPos);
 					}
 					
-					// Si hpc n'a jamais été instancié avec FilterConfig on va avoir des soucis car pas de cssListParam
-					// TODO améliorer cette implémentation... elle est bancale
+					// Si hpc n'a jamais Ã©tÃ© instanciÃ© avec FilterConfig on va avoir des soucis car pas de cssListParam
+					// TODO amÃ©liorer cette implÃ©mentation... elle est bancale
 					if( maquetteCfg.getCssListParam().size() > 0 )
 					{
 						// faire les modifications sur le contenu de la CSS
 						cssContent = buffer.toString();
-// TODO ne devrais je pas remonter le else directement dans le MaquetteConfig : après le test sur theme ou non, je check la taille de la liste et je colle les valeurs par défauts si besoin						
+// TODO ne devrais je pas remonter le else directement dans le MaquetteConfig : aprÃ¨s le test sur theme ou non, je check la taille de la liste et je colle les valeurs par dÃ©fauts si besoin						
 						if( maquetteCfg.getCssListParam().get( MaquetteConstant.CSSMAINBACKGROUNDCOLOR_INDEX ) != null
 							&& maquetteCfg.getCssListParam().get( MaquetteConstant.CSSMAINBACKGROUNDCOLOR_INDEX ).length() > 0 )
 							cssContent = cssContent.replace(MaquetteConstant.P_CSSMAINBACKGROUNDCOLOR, maquetteCfg.getCssListParam().get( MaquetteConstant.CSSMAINBACKGROUNDCOLOR_INDEX )) ;
@@ -176,7 +176,7 @@ public class MaquetteTools {
 					else
 						cssContent = "" ;
 					
-					// TODO se baser sur l'extension, pour l'instant je force à CSS
+					// TODO se baser sur l'extension, pour l'instant je force Ã  CSS
 					rs.setContentType("text/css"); 
 					
 					rs.setContentLength( cssContent.length() );

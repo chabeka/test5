@@ -12,7 +12,7 @@ public class UnkownThemeForMaquetteConfig extends Exception {
 	}
 
 	public UnkownThemeForMaquetteConfig(String theme) {
-		super("Le theme spécifié est inconnu : " + theme);
+		super("Le theme spÃ©cifiÃ© est inconnu : " + theme);
 	}
 
 	public UnkownThemeForMaquetteConfig(Throwable cause) {

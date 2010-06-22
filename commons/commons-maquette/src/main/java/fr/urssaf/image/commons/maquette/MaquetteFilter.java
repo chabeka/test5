@@ -41,7 +41,7 @@ logger.debug( "---------------------------------------" );
 		HttpServletRequest request = (HttpServletRequest) rq;
 		HttpServletResponse response = (HttpServletResponse) rs;
 		
-		// Gestion des paramètres statiques (via le web.xml)
+		// Gestion des paramÃ¨tres statiques (via le web.xml)
 		try {
 			MaquetteConfig maquetteCfg = new MaquetteConfig( getFilterConfig(), request ) ;
 
@@ -49,30 +49,30 @@ logger.debug( "Request URL : " + request.getRequestURL() + "?" + request.getQuer
 
 			// 0) test d'application ou non du filtre
 			if (!applyFilter(request)) {
-logger.debug( "Arrêt du filtre") ;
+logger.debug( "ArrÃªt du filtre") ;
 				chain.doFilter(request, response) ;
 				return;
 			}
 	
-			// 1) récupérer le flux : créer le writer et appeler le doChain pour intercepter le html et le stocker 
-			// 		dans une variable accessible grâce au CharResponseWrapper
+			// 1) rÃ©cupÃ©rer le flux : crÃ©er le writer et appeler le doChain pour intercepter le html et le stocker 
+			// 		dans une variable accessible grÃ ce au CharResponseWrapper
 			CharResponseWrapper wrapper = new CharResponseWrapper(
 					(HttpServletResponse) response);
 	
 			// permet de remplir le wrapper(=response) qui est vide actuellement : on est le premier filtre, la 
-			// servlet sera ensuite interprétée et on récupère la main
+			// servlet sera ensuite interprÃ©tÃ©e et on rÃ©cupÃ¨re la main
 			PrintWriter pw = response.getWriter();
 			chain.doFilter(request, wrapper);
 			
-			// Cas 1 : on a du text/html ou du text/plain ou on demande à forcer le passage
+			// Cas 1 : on a du text/html ou du text/plain ou on demande Ã  forcer le passage
 			if (wrapper.getContentType() != null
 					&& ( wrapper.getContentType().equals("text/html") 
 							|| wrapper.getContentType().equals("text/plain") )) {
 				
-				// forcer le type mime (surtout pour le text/plain en entrée)
+				// forcer le type mime (surtout pour le text/plain en entrÃ©e)
 				wrapper.setContentType("text/html");
 				
-				// Création du parser avec la chaîne à décorer et le tremplate décorateur
+				// CrÃ©ation du parser avec la chaÃ®ne Ã  dÃ©corer et le tremplate dÃ©corateur
 				MaquetteParser mp = new MaquetteParser( wrapper.toString(), MaquetteTools.getResourcePath("/html/main.html"), request, maquetteCfg ) ;
 				try {
 					mp.build();
@@ -83,20 +83,20 @@ logger.debug( "Arrêt du filtre") ;
 				String outputDocument = mp.getOutputDocument().toString() ;
 				pw.println( outputDocument );
 			} 
-			// Cas 2 : ce n'est pas une resource à décorer => on l'affiche juste
+			// Cas 2 : ce n'est pas une resource Ã  dÃ©corer => on l'affiche juste
 			else if(wrapper.getContentType() != null )
 			{
 				String outputDocument = wrapper.toString() ; 
 				pw.println( outputDocument );
 			}
-			// Cas 3 : la resource demandée n'est pas trouvée => 404 not found
+			// Cas 3 : la resource demandÃ©e n'est pas trouvÃ©e => 404 not found
 			else
 				response.setStatus(404);
 			
 		} catch (Exception e) {
-logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
+logger.fatal( "ProblÃ¨me avec MaquetteConfig, regardez la stackTrace" );
 			e.printStackTrace();
-			throw new ServletException( "La servlet a rencontré une erreur : (" + e.getClass() + ") " + e.getMessage() ,
+			throw new ServletException( "La servlet a rencontrÃ© une erreur : (" + e.getClass() + ") " + e.getMessage() ,
 					e.getCause() );
 		}
 	}
@@ -112,13 +112,13 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 	
 
 	/**
-	 * @desc retourne false si on a trouvé un paramètre excludeFile ET que le
-	 * contenu du paramètre correspond à l'URI demandé SINON retourne true, et
-	 * le filtre pourra être appliqué
+	 * @desc retourne false si on a trouvÃ© un paramÃ¨tre excludeFile ET que le
+	 * contenu du paramÃ¨tre correspond Ã  l'URI demandÃ© SINON retourne true, et
+	 * le filtre pourra Ãªtre appliquÃ©
 	 * @return 
 	 */
 	public boolean applyFilter(HttpServletRequest rq) {
-		// Exclusion par défaut lié à la MaquetteServlet
+		// Exclusion par dÃ©faut liÃ© Ã  la MaquetteServlet
 		if( checkGetResource(rq) )
 			return false ;
 		
@@ -127,10 +127,10 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 	}
 	
 	/**
-	 * @desc vérifie si l'URI de la requete correspond au pattern de notre Servlet getResource.
+	 * @desc vÃ©rifie si l'URI de la requete correspond au pattern de notre Servlet getResource.
 	 * @param rq
 	 * @return
-	 * @todo Ne pas utiliser une expression régulière mais une URI et son pattern RFC 2396
+	 * @todo Ne pas utiliser une expression rÃ©guliÃ¨re mais une URI et son pattern RFC 2396
 	 */
 	private boolean checkGetResource( HttpServletRequest rq )
 	{			
@@ -142,7 +142,7 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 	}
 	
 	/**
-	 * @desc lit le paramètre de configuration includeFiles/excludeFiles et retourne true si la requête correspond à un des pattern
+	 * @desc lit le paramÃ¨tre de configuration includeFiles/excludeFiles et retourne true si la requÃªte correspond Ã  un des pattern
 	 * 		 inscrit dans la configuration du filtre
 	 * @param rq
 	 * @return

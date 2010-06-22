@@ -24,13 +24,13 @@ public class MenuItem{
 		// J'affecte l'identifiant unique
 		id = MenuItem.counter ;
 		
-		// J'incrémente le compteur pour la prochaine instance
+		// J'incrÃ©mente le compteur pour la prochaine instance
 		MenuItem.counter++ ;
 		
 		//
 		parent = null ;
 		
-		// Création du contenu des enfants
+		// CrÃ©ation du contenu des enfants
 		children = new ArrayList<MenuItem>() ;
 	}
 	
@@ -65,11 +65,11 @@ public class MenuItem{
 	}
 	
 	public void addParent( MenuItem menuItem ) throws ReferentialIntegrityException {
-		// Vérification intégrité référentielle
+		// VÃ©rification intÃ©gritÃ© rÃ©fÃ©rentielle
 		if( menuItem.getId() == id )
-			throw new ReferentialIntegrityException( "(" + menuItem.getId() + ") " + menuItem.getTitle() + " ne peut être parent de lui même" ) ;
+			throw new ReferentialIntegrityException( "(" + menuItem.getId() + ") " + menuItem.getTitle() + " ne peut Ãªtre parent de lui mÃªme" ) ;
 		if( isAChild( this, menuItem ) )
-			throw new ReferentialIntegrityException( "(" + menuItem.getId() + ") " + menuItem.getTitle() + " ne peut être parent car il est déjà enfant" ) ;
+			throw new ReferentialIntegrityException( "(" + menuItem.getId() + ") " + menuItem.getTitle() + " ne peut Ãªtre parent car il est dÃ©jÃ  enfant" ) ;
 		
 		// Ajout du parent
 		parent = menuItem ;
@@ -93,15 +93,15 @@ public class MenuItem{
 	}
 	
 	public void addChild( MenuItem implMenuItem )throws ReferentialIntegrityException {
-		// vérification de l'intégrité
+		// vÃ©rification de l'intÃ©gritÃ©
 		if( implMenuItem == parent )
-			throw new ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être enfant car il est déjà parent" ) ;
+			throw new ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut Ãªtre enfant car il est dÃ©jÃ  parent" ) ;
 		if( isAChild(this, implMenuItem) )
-			throw new ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être enfant car il est déjà enfant" ) ;
+			throw new ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut Ãªtre enfant car il est dÃ©jÃ  enfant" ) ;
 		
 		MenuItem c = (MenuItem) implMenuItem;
 		
-		// ajout de l'item à la liste
+		// ajout de l'item Ã  la liste
 		children.add( implMenuItem ) ;
 		
 		// synchronisation avec l'item en lui affectant le parent
@@ -117,11 +117,11 @@ public class MenuItem{
 	}
 	
 	public void setParent( MenuItem implMenuItem ) throws fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException {
-		// Vérification intégrité référentielle
+		// VÃ©rification intÃ©gritÃ© rÃ©fÃ©rentielle
 		if( implMenuItem.getId() == id )
-			throw new fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être parent de lui même" ) ;
+			throw new fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut Ãªtre parent de lui mÃªme" ) ;
 		if( isAChild( this, implMenuItem ) )
-			throw new fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être parent car il est déjà enfant" ) ;
+			throw new fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut Ãªtre parent car il est dÃ©jÃ  enfant" ) ;
 
 		parent = implMenuItem ;
 	}
@@ -136,7 +136,7 @@ public class MenuItem{
 	{
 		Boolean result = false ;
 		
-		// on parcours les enfants de menuItem pour chercher si expectedChild y est déjà référencé
+		// on parcours les enfants de menuItem pour chercher si expectedChild y est dÃ©jÃ  rÃ©fÃ©rencÃ©
 		for( int i = 0 ; i < implMenuItem.getChildren().size() ; i++ )
 		{
 			if( implMenuItem.getChildren().get(i).getId() == menuItem.getId() )

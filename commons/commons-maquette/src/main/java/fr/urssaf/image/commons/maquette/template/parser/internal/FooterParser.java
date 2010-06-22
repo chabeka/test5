@@ -7,7 +7,7 @@ import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceP
 
 /**
  * @author CER6990172
- * @desc parse la balise body de toute chaîne ou fichier de template pour en récupérer les éléments de la balise <div id="header">
+ * @desc parse la balise body de toute chaÃ®ne ou fichier de template pour en rÃ©cupÃ©rer les Ã©lÃ©ments de la balise <div id="header">
  */
 public class FooterParser extends AbstractParser
 {
@@ -22,7 +22,7 @@ public class FooterParser extends AbstractParser
 	}
 	
 	/**
-	 * @desc exécute le doParse dans la foulée
+	 * @desc exÃ©cute le doParse dans la foulÃ©e
 	 * @param sc
 	 * @throws MissingSourceParserException 
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -46,7 +46,7 @@ public class FooterParser extends AbstractParser
 	}
 
 	/**
-	 * @desc lance le parsing des éléments de la balise body contenu dans l'attribut Source
+	 * @desc lance le parsing des Ã©lÃ©ments de la balise body contenu dans l'attribut Source
 	 * @param sc
 	 * @throws MissingSourceFooterParserException
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -72,7 +72,7 @@ public class FooterParser extends AbstractParser
 	}
 	
 	/**
-	 * @desc	retourne le chemin vers le logo affiché dans le navigateur
+	 * @desc	retourne le chemin vers le logo affichÃ© dans le navigateur
 	 * @param sc
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 */

@@ -9,38 +9,38 @@ import fr.urssaf.image.commons.maquette.tool.InfoBoxItem;
 public interface ILeftCol 
 {
 	/**
-	 * @desc permet de récupérer le nom de l'application
+	 * @desc permet de rÃ©cupÃ©rer le nom de l'application
 	 * @return
 	 */
 	public String getNomApplication( HttpServletRequest hsr ) ;
 	
 	/**
-	 * @desc permet de récupérer la version de l'application
+	 * @desc permet de rÃ©cupÃ©rer la version de l'application
 	 * @return
 	 */
 	public String getVersionApplication( HttpServletRequest hsr ) ;
 	
 	/**
-	 * @desc permet de récupérer le nom de l'utilisateur
+	 * @desc permet de rÃ©cupÃ©rer le nom de l'utilisateur
 	 * @return
 	 */
 	public String getNomUtilisateur( HttpServletRequest hsr ) ;
 	
 	/**
-	 * @desc permet de récupérer le role de l'application
+	 * @desc permet de rÃ©cupÃ©rer le role de l'application
 	 * @return
 	 */
 	public String getRoleUtilisateur( HttpServletRequest hsr ) ;
 	
 	/**
-	 * @desc permet de récupérer la fonction ou la méthode javascript permettant de se déconnecter
-	 * 		 le script javascript doit évidemment être inclus dans chaque page métier
+	 * @desc permet de rÃ©cupÃ©rer la fonction ou la mÃ©thode javascript permettant de se dÃ©connecter
+	 * 		 le script javascript doit Ã©videmment Ãªtre inclus dans chaque page mÃ©tier
 	 * @return
 	 */
 	public String getLienDeconnexion( HttpServletRequest hsr ) ;
 	
 	/**
-	 * @desc permet de récupérer la liste des infobox à ajouter aux 3 standards
+	 * @desc permet de rÃ©cupÃ©rer la liste des infobox Ã  ajouter aux 3 standards
 	 * @return
 	 */
 	public List<InfoBoxItem> getInfoBox( HttpServletRequest hsr ) ;

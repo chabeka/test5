@@ -1,4 +1,5 @@
-#menu {
+#container.frUrssafImage > #header.frUrssafImage > #menu 
+{
 	clear: both;
 	height: 21px;
 	padding-left: 145px;
@@ -6,7 +7,8 @@
 	background: #051A7D;
 }
 
-#menu ul {
+#container.frUrssafImage > #header.frUrssafImage > #menu ul 
+{
     float: left;
 	background: #051A7D;
 	list-style: none;
@@ -15,40 +17,43 @@
 	width: 8em;
 }
 
-#menu a, #menu a.firstrow {
+#container.frUrssafImage > #header.frUrssafImage > #menu a, #container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow 
+{
     display: block;
 	margin: 0;
 	padding:  2px 2px 2px 3px;
 }
 
-#menu a.firstrow {
+#container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow 
+{
 	border-right: 1px solid #EAEAEF ;
 }
 
-#menu li a.selected {
+#container.frUrssafImage > #header.frUrssafImage > #menu li a.selected 
+{
     background: #05577D;
 }
 
-#menu li a:hover, #menu li a.active {
+#container.frUrssafImage > #header.frUrssafImage > #menu li a:hover, #container.frUrssafImage > #header.frUrssafImage > #menu li a.active {
 	background: #EAEAEF;
 }
 
-#menu li {
+#container.frUrssafImage > #header.frUrssafImage > #menu li {
 	position: relative;
 	width: 100%;
 }
 
-#menu ul ul li {
+#container.frUrssafImage > #header.frUrssafImage > #menu ul ul li {
 	border-bottom: 1px solid #fff ;
 }
 
-#menu ul ul {
+#container.frUrssafImage > #header.frUrssafImage > #menu ul ul {
     display: none ;
     position: absolute;
     border: 1px solid black ;
 }
 
-#menu ul ul ul {
+#container.frUrssafImage > #header.frUrssafImage > #menu ul ul ul {
     display: none ;
 	top: 0;
 	left: 100%;

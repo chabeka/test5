@@ -1,18 +1,18 @@
-#menu a, #menu a.firstrow {
+#container.frUrssafImage > #header.frUrssafImage > #menu a, #container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow {
    	font: bold .75em arial, helvetica, sans-serif;
 }
 
-#menu a.firstrow {
+#container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow {
 	color: #fff;
 	text-transform: uppercase;
 	text-align: center;
 }
 
-#menu li a {
+#container.frUrssafImage > #header.frUrssafImage > #menu li a {
 	color: #EAEAEF;
 	text-decoration: none;
 }
 
-#menu li a:hover, #menu li a.active {
+#container.frUrssafImage > #header.frUrssafImage > #menu li a:hover, #container.frUrssafImage > #header.frUrssafImage > #menu li a.active {
 	color: #051A7D;
 }

@@ -6,7 +6,7 @@ import fr.urssaf.image.commons.maquette.tool.InfoBoxItem;
 
 /**
  * @author 	CER6990172
- * @desc	cette classe gère les boites utilisés par la section <leftcol> de la maquette
+ * @desc	cette classe gÃ¨re les boites utilisÃ©s par la section <leftcol> de la maquette
  * 			
  */
 public final class InfoBoxGenerator

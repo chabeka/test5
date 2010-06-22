@@ -26,7 +26,7 @@ public class MaquetteFilterTest{
 		// URL u = getClass().getResource("/fr/urssaf/cirtil/technocom/img/logo_aed.png");
 		URL u = getClass().getResource("/resource/img/logo_aed.png");
 		if( u == null )
-			fail("Resource non trouvée");
+			fail("Resource non trouvÃ©e");
 			
 	    String filename = u.toString();
 	    logger.debug(filename);
@@ -38,7 +38,7 @@ public class MaquetteFilterTest{
 	{
 		URL u = getClass().getResource("/resource/img/leftcol_aed.png");
 		if( u == null )
-			fail("Resource non trouvée");
+			fail("Resource non trouvÃ©e");
 			
 	    String filename = u.toString();
 	    logger.debug(filename);
@@ -49,7 +49,7 @@ public class MaquetteFilterTest{
 	{
 		URL u = getClass().getResource("/resource/css/form.css");
 		if( u == null )
-			fail("Resource non trouvée");
+			fail("Resource non trouvÃ©e");
 			
 	    String filename = u.toString();
 	    logger.debug(filename);
@@ -60,7 +60,7 @@ public class MaquetteFilterTest{
 	{
 		URL u = getClass().getResource("/resource/html/main.html");
 		if( u == null )
-			fail("Resource non trouvée");
+			fail("Resource non trouvÃ©e");
 			
 	    String filename = u.toString();
 	    logger.debug(filename);
@@ -72,7 +72,7 @@ public class MaquetteFilterTest{
 	{
 		URL u = getClass().getResource("/resource/html/main.jsp");
 		if( u == null )
-			fail("Resource non trouvée");
+			fail("Resource non trouvÃ©e");
 			
 	    String filename = u.toString();
 	    logger.debug(filename);
@@ -128,7 +128,7 @@ public class MaquetteFilterTest{
 		assertFalse( re.matches( reference ) ) ;
 	}
 	
-	// doit échouer
+	// doit Ã©chouer
 	@Test
 	public void applyFilter_RegularExpression_4()
 	{
@@ -202,7 +202,7 @@ public class MaquetteFilterTest{
 					}
 			}
             
-   		    // 5) injecter les données en utilisant jericho
+   		    // 5) injecter les donnÃ©es en utilisant jericho
 
         }
 		

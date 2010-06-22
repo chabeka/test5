@@ -15,14 +15,14 @@ public final class MenuGenerator {
 	
 	/**
 	 * @desc processus de construction du menu
-	 * @return la chaîne html du menu
+	 * @return la chaÃ®ne html du menu
 	 */
 	public static StringBuilder buildMenu( List<MenuItem> listMenu, String requestURL )
 	{
 		StringBuilder html = new StringBuilder() ;
 		for( int i = 0 ; i < listMenu.size() ; i++ )
 		{
-			// début de ul
+			// dÃ©but de ul
 			if( i==0 || !listMenu.get(i).hasParent() )
 				html.append( "<ul>" ) ;
 			
@@ -53,13 +53,13 @@ logger.debug( "Ajout ligne au menu : " + requestURL + " -- " + requestURL );
 		
 		html.append( "<li><a href='" + menuItem.getLink() + "' class='" ) ;
 		
-		// mise en évidence de la première ligne
+		// mise en Ã©vidence de la premiÃ¨re ligne
 		if( !menuItem.hasParent() )
 			html.append( "firstrow" );
 		
 		html.append( "' title='" + menuItem.getDescription() + "' tabindex='" ) ;
 		
-		// différenciation comportementale de la première ligne (0) des autres (9999)
+		// diffÃ©renciation comportementale de la premiÃ¨re ligne (0) des autres (9999)
 		if( !menuItem.hasParent() )
 			html.append( "0" ) ;
 		else
@@ -78,7 +78,7 @@ logger.debug( "Ajout ligne au menu : " + requestURL + " -- " + requestURL );
 		return html ;
 	}
 	
-	// TODO selectedMenu est static => la variable est partagée sur tout le serveur d'appli => à repenser
+	// TODO selectedMenu est static => la variable est partagÃ©e sur tout le serveur d'appli => Ã  repenser
 	public static String buildBreadcrumb()
 	{
 		String breadCrumb = "" ;
@@ -104,7 +104,7 @@ logger.debug( "selected menu : " + MenuGenerator.selectedMenu );
 					breadCrumb += " &gt; " ;
 			}
 			
-			// nettoyage de la variable static (je sais c'est foireux comme implémentation, et c'est à repenser...)
+			// nettoyage de la variable static (je sais c'est foireux comme implÃ©mentation, et c'est Ã  repenser...)
 			MenuGenerator.selectedMenu = null ;
 		}
 		

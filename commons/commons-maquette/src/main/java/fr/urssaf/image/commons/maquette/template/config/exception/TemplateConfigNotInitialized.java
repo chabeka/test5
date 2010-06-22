@@ -14,7 +14,7 @@ public class TemplateConfigNotInitialized extends Exception {
 	 * @param message
 	 */
 	public TemplateConfigNotInitialized(String zone) {
-		super("La configuration du template de la zone suivante n'a pas été initialisée : " + zone);
+		super("La configuration du template de la zone suivante n'a pas Ã©tÃ© initialisÃ©e : " + zone);
 	}
 
 	/**

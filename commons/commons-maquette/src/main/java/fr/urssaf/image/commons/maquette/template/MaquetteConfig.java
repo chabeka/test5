@@ -18,8 +18,8 @@ import fr.urssaf.image.commons.maquette.template.generator.MenuGenerator;
 import fr.urssaf.image.commons.maquette.tool.MaquetteConstant;
 import fr.urssaf.image.commons.maquette.tool.MenuItem;
 
-// TODO	doit remplacer les différents xxxConfig : bien différencier ceux qui doivent être 
-//	obligatoirement instancié via le singleton et qui vont lancer une exception (Footer, 
+// TODO	doit remplacer les diffÃ©rents xxxConfig : bien diffÃ©rencier ceux qui doivent Ãªtre 
+//	obligatoirement instanciÃ© via le singleton et qui vont lancer une exception (Footer, 
 public class MaquetteConfig 
 {
 	
@@ -33,14 +33,14 @@ public class MaquetteConfig
 	/**
 	 * @desc 	head_part
 	 */
-	// liste de paramètre propre au html métier
+	// liste de paramÃ¨tre propre au html mÃ©tier
 	private String browserTitle ;
 	private List<String> cssList ;
 	private List<String> metaList ;
-	// liste de paramètre pour la surcharge des couleurs
+	// liste de paramÃ¨tre pour la surcharge des couleurs
 	private Boolean overloadColor ;
 	private List<String> cssListParam ; 
-	// gestion du thème
+	// gestion du thÃªme
 	private String theme ;
 	
 	/**
@@ -70,7 +70,7 @@ public class MaquetteConfig
 	private Boolean appDisplayStandardsAndNorms ;
 	
 	/**
-	 * @desc	initialise les valeurs par défaut des attributs
+	 * @desc	initialise les valeurs par dÃ©faut des attributs
 	 */
 	private void initAttribute() {
 		//Head_part
@@ -99,15 +99,15 @@ public class MaquetteConfig
 	}
 	
 	/**
-	 * @desc	constructeur vide, utile pour les développeurs souhaitant configurer eux même cet objet
-	 * 			par défaut l'attribut appDisplayStandardsAndNorms est positionné à false
+	 * @desc	constructeur vide, utile pour les dÃ©veloppeurs souhaitant configurer eux mÃªme cet objet
+	 * 			par dÃ©faut l'attribut appDisplayStandardsAndNorms est positionnÃ© Ã  false
 	 */
 	public MaquetteConfig( FilterConfig fc, HttpServletRequest hsr )throws SecurityException, NoSuchMethodException, ClassNotFoundException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, UnkownThemeForMaquetteConfig
 	{
 		initAttribute() ;
 		initConfig( fc, hsr ) ;
 		isIE( hsr ) ; 
-		// stock en session pour réutilisation par la servlet
+		// stock en session pour rÃ©utilisation par la servlet
 		hsr.getSession().setAttribute( MaquetteConstant.SESSION_MAQUETTECONFIG , this) ;
 	}
 
@@ -124,7 +124,7 @@ public class MaquetteConfig
 		theme = fc.getInitParameter( MaquetteConstant.P_THEME ) ;
 logger.debug( "valeur du theme : (" + theme + ")" ) ;		
 		
-		// valeur par défaut
+		// valeur par dÃ©faut
 		cssListParam = new LinkedList<String>() ;
 		cssListParam.add(MaquetteConstant.CSSMAINBACKGROUNDCOLOR_INDEX, MaquetteConstant.CSSMAINBACKGROUNDCOLOR_DEFAULT );
 		cssListParam.add(MaquetteConstant.CSSCONTENTBACKGROUNDCOLOR_INDEX, MaquetteConstant.CSSCONTENTBACKGROUNDCOLOR_DEFAULT );
@@ -142,7 +142,7 @@ logger.debug( "valeur du theme : (" + theme + ")" ) ;
 		mainLogo = MaquetteConstant.MAINLOGO_DEFAULT ; // Header
 		appLogo = MaquetteConstant.APPLOGO_DEFAULT ; // Header
 		
-		// Liste des paramètres de couleur
+		// Liste des paramÃ¨tres de couleur
 		if( theme != null )
 		{
 			if( theme.compareTo( MaquetteConstant.THEME_AED ) == 0 )
@@ -208,7 +208,7 @@ logger.debug( "valeur du theme : (" + theme + ")" ) ;
 		
 		for( String cssEl : cssListParam)
 		{
-			// test sur null utile dans le cas où un ou plusieurs paramètres sont inexistants
+			// test sur null utile dans le cas oÃ¹ un ou plusieurs paramÃ¨tres sont inexistants
 			if( cssEl != null && cssEl.length() > 0 )
 				overloadColor = true ;
 		}
@@ -222,7 +222,7 @@ logger.debug( "nb de cssListParam : " + cssListParam.size() ) ;
 		requestUrl = hsr.getRequestURI() ;
 		String menuImplementationPath = fc.getInitParameter( MaquetteConstant.P_IMPL_MENU );
 				
-		// Utilisation de la reflexion pour charger l'implémentation de IMenu	
+		// Utilisation de la reflexion pour charger l'implÃ©mentation de IMenu	
 		if( menuImplementationPath != null 
 			&& menuImplementationPath.length() > 0 )
 		{
@@ -233,13 +233,13 @@ logger.debug( "nb de cssListParam : " + cssListParam.size() ) ;
 				Constructor constructor = classImplMenu.getConstructor() ;
 				implMenu = (IMenu) constructor.newInstance();
 			} catch (Exception e) {
-logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage() );
+logger.debug("Aucun menu rÃ©cupÃ©rable : ("  + e.getClass() + ")" + e.getMessage() );
 				e.printStackTrace();
 			}
 		}
 
 		// LeftCol
-		// Utilisation de la reflexion pour charger l'implémentation de ILeftCol
+		// Utilisation de la reflexion pour charger l'implÃ©mentation de ILeftCol
 		String implementationPath = fc.getInitParameter( MaquetteConstant.P_IMPL_LEFTCOL ) ;
 		
 		if( implementationPath != null 
@@ -248,7 +248,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 			Class<ILeftCol> classImplLeftCol = (Class<ILeftCol>) Class.forName( implementationPath ) ;
 			
 			Constructor constructor = classImplLeftCol.getConstructor() ;
-			implLeftCol = (ILeftCol) constructor.newInstance(); // écrase la précédente version de leftColInfo
+			implLeftCol = (ILeftCol) constructor.newInstance(); // Ã©crase la prÃ©cÃ©dente version de leftColInfo
 		}
 		
 		// Footer
@@ -267,7 +267,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 	
 	/**
-	 * @desc ajoute un élément à l'attribut cssList
+	 * @desc ajoute un Ã©lÃ©ment Ã  l'attribut cssList
 	 * @param cssFileName
 	 */
 	public void addCss( String cssFileName ){
@@ -282,7 +282,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 	
 	/**
-	 * @desc créé la liste des css
+	 * @desc crÃ© la liste des css
 	 * @param cssList
 	 */
 	@SuppressWarnings("unused")
@@ -299,15 +299,15 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 	
 	/**
-	 * @param défini le titre du navigateur
-	 * @desc  permet de définir le titre du navigateur pour chaque page : doit être public
+	 * @param dÃ©fini le titre du navigateur
+	 * @desc  permet de dÃ©finir le titre du navigateur pour chaque page : doit Ãªtre public
 	 */
 	public void setBrowserTitle(String browserTitle) {
 		this.browserTitle = browserTitle;
 	}
 	
 	/**
-	 * @return l'attribut overloadColor permettant de savoir si on veut charger les css spécifiques à la couleur
+	 * @return l'attribut overloadColor permettant de savoir si on veut charger les css spÃ©cifiques Ã  la couleur
 	 */
 	public Boolean getOverloadColor() {
 		return overloadColor ;
@@ -322,7 +322,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 	
 	/**
-	 * @return la liste des couleurs personnalisées
+	 * @return la liste des couleurs personnalisÃ©es
 	 */
 	public List<String> getCssListParam()
 	{
@@ -346,7 +346,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 	
 	/**
-	 * @return logo "Image" positionné en haut à gauche
+	 * @return logo "Image" positionnÃ© en haut Ã  gauche
 	 */
 	public String getMainLogo() {
 		return mainLogo;
@@ -361,7 +361,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 	
 	/**
-	 * @return Titre de l'application, affichable notamment dans la fenêtre du navigateur
+	 * @return Titre de l'application, affichable notamment dans la fenÃªtre du navigateur
 	 */
 	public String getAppTitle() {
 		return appTitle;
@@ -413,7 +413,7 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 
 	/**
-	 * @param appCopyright, période du copyright, affichable dans la section <footer> de la maquette
+	 * @param appCopyright, pÃ©riode du copyright, affichable dans la section <footer> de la maquette
 	 */
 	private void setAppCopyright(String appCopyright) {
 		this.appCopyright = appCopyright;
@@ -434,27 +434,27 @@ logger.debug("Aucun menu récupérable : ("  + e.getClass() + ")" + e.getMessage()
 	}
 
 	/**
-	 * @desc	récupère l'implémentation de ILeftCol
+	 * @desc	rÃ©cupÃ¨re l'implÃ©mentation de ILeftCol
 	 */
 	public ILeftCol getImplLeftcol() {
 		if( implLeftCol == null )
-logger.debug( "L'implémentation de l'interface ILeftCol n'est pas disponible" ) ;
+logger.debug( "L'implÃ©mentation de l'interface ILeftCol n'est pas disponible" ) ;
 		
 		return implLeftCol;
 	}
 	
 	/**
-	 * @desc	récupère l'implémentation de IMenu
+	 * @desc	rÃ©cupÃ¨re l'implÃ©mentation de IMenu
 	 */
 	public IMenu getImplMenu() {
 		if( implMenu == null )
-logger.debug( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
+logger.debug( "L'implÃ©mentation de l'interface IMenu n'est pas disponible" ) ;
 		
 		return implMenu;
 	}
 	
 	/**
-	 * @return la chaîne html du menu
+	 * @return la chaÃ®ne html du menu
 	 */
 	public String getMenu( HttpServletRequest hsr )
 	{
@@ -465,10 +465,10 @@ logger.debug( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
 			if( listMenuItem != null )
 				html = MenuGenerator.buildMenu(listMenuItem, requestUrl).toString() ;
 			else
-logger.debug( "La méthode getMenuItem de l'implémentation de l'interface IMenu retourne null, aucun menu n'est affichable" ) ;
+logger.debug( "La mÃ©thode getMenuItem de l'implÃ©mentation de l'interface IMenu retourne null, aucun menu n'est affichable" ) ;
 		}
 		else
-logger.debug( "L'implémentation de l'interface IMenu n'est pas disponible" ) ;
+logger.debug( "L'implÃ©mentation de l'interface IMenu n'est pas disponible" ) ;
 	
 		return html ;
 	}

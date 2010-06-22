@@ -2,7 +2,7 @@ package fr.urssaf.image.commons.maquette.tool;
 
 public class UrlPatternMatcher {
 
-	// Pour récupérer l'URL de la request :
+	// Pour rÃ©cupÃ©rer l'URL de la request :
 	// HttpServletRequest.getRequestURI()
 	
 	/**
@@ -10,7 +10,7 @@ public class UrlPatternMatcher {
      * matches the requirements of the specified filter mapping;
      * otherwise, return <code>false</code>.
      * 
-     * Méthode extraite des sources de Apache Tomcat 6.0.26
+     * MÃ©thode extraite des sources de Apache Tomcat 6.0.26
      *
      * @param testPath URL mapping being checked
      * @param requestPath Context-relative request path of this request
@@ -61,7 +61,7 @@ public class UrlPatternMatcher {
     public static boolean match(String urlPattern, String requestPath)
     {
     	
-    	// Vérifications extraites des sources de Apache Tomcat 6.0.26
+    	// VÃ©rifications extraites des sources de Apache Tomcat 6.0.26
     	
     	if (urlPattern=="*")
             return (true);
@@ -69,9 +69,9 @@ public class UrlPatternMatcher {
     	if (requestPath == null)
             return (false);
 
-    	// Fin de vérifications extraites des sources de Apache Tomcat 6.0.26
+    	// Fin de vÃ©rifications extraites des sources de Apache Tomcat 6.0.26
     	
-    	// Appel de la sous-méthode
+    	// Appel de la sous-mÃ©thode
     	return matchFiltersURL(urlPattern, requestPath);
     	
     }

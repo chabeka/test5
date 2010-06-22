@@ -3,7 +3,7 @@ package fr.urssaf.image.commons.maquette.tool;
 
 /**
  * @author 	CER6990172
- * @desc	cette classe gère les boites utilisés par la section <leftcol> de la maquette
+ * @desc	cette classe gÃ¨re les boites utilisÃ©es par la section <leftcol> de la maquette
  * 			
  */
 public final class InfoBoxItem 
@@ -67,7 +67,8 @@ public final class InfoBoxItem
 	
 	public void addBtn( String attId, String name, String javascript )
 	{
-		content += "<input id=\"" + shortIdentifier + "-" + attId + "\" type=\"button\" value=\"" 
+		content += "<input id=\"" + shortIdentifier + "-" + attId + "\" " +
+				"class=\"" + shortIdentifier + "-" + attId + "\" type=\"button\" value=\"" 
 				+ name + "\" onclick=\"" + javascript + "\" tabindex=\"0\" />" ;
 	}
 }

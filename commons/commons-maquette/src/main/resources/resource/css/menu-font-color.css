@@ -1,11 +1,11 @@
-#menu a.firstrow {
+#container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow {
 	color: cssMenuFirstRowFontColor;
 }
 
-#menu li a {
+#container.frUrssafImage > #header.frUrssafImage > #menu li a {
 	color: cssMenuLinkFontColor;
 }
 
-#menu li a:hover, #menu li a.active {
+#container.frUrssafImage > #header.frUrssafImage > #menu li a:hover, #container.frUrssafImage > #header.frUrssafImage > #menu li a.active {
 	color: cssMenuLinkHoverFontColor;
 }

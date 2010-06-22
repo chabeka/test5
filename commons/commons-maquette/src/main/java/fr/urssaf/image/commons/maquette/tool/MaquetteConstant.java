@@ -9,7 +9,7 @@ package fr.urssaf.image.commons.maquette.tool;
  */
 public class MaquetteConstant {
 
-	// chemin vers les resources, et nom de la servlet utilisé dans le web.xml
+	// chemin vers les resources, et nom de la servlet utilisÃ© dans le web.xml
 	public static final String RESOURCEFOLDER = "/resource" ;
 	public static final String GETRESOURCEURI = "getResourceImageMaquette.do" ;
 	
@@ -34,7 +34,7 @@ public class MaquetteConstant {
 	public static final int CSSMENULINKFONTCOLOR_INDEX = 10 ;
 	public static final int CSSMENULINKHOVERFONTCOLOR_INDEX = 11 ;
 	
-	// Couleur par défaut (pour l'instant, même que AED)
+	// Couleur par dÃ©faut (pour l'instant, mÃªme que AED)
 	public static final String CSSMAINBACKGROUNDCOLOR_DEFAULT = "#A6A9CA" ;
 	public static final String CSSCONTENTBACKGROUNDCOLOR_DEFAULT = "#fff" ;
 	public static final String CSSLEFTCOLORBACKGROUNDIMG_DEFAULT = GETRESOURCEURI + "?name=/img/leftcol_aed.png" ;
@@ -82,7 +82,7 @@ public class MaquetteConstant {
 	public static final String MAINLOGO_GED = GETRESOURCEURI + "?name=/img/logo_image_ged.png" ;
 	public static final String APPLOGO_GED = GETRESOURCEURI + "?name=/img/logo_ged.png" ;
 	
-	// Nom des paramètres css dans le web.xml
+	// Nom des paramÃ¨tres css dans le web.xml
 	public static final String P_CSSMAINBACKGROUNDCOLOR = "cssMainBackgroundColor" ;
 	public static final String P_CSSCONTENTBACKGROUNDCOLOR = "cssContentBackgroundColor" ;
 	public static final String P_CSSLEFTCOLORBACKGROUNDIMG = "cssLeftcolBackgroundImg" ;
@@ -96,7 +96,7 @@ public class MaquetteConstant {
 	public static final String P_CSSMENULINKFONTCOLOR = "cssMenuLinkFontColor" ;
 	public static final String P_CSSMENULINKHOVERFONTCOLOR = "cssMenuLinkHoverFontColor" ;
 	
-	// Nom des paramètres standards dans le web.xml
+	// Nom des paramÃ¨tres standards dans le web.xml
 	public static final String P_IMPL_LEFTCOL = "implementationILeftCol" ;
 	public static final String P_IMPL_MENU = "implementationIMenu" ;
 	public static final String P_COPYRIGHT = "appCopyright";

@@ -4,11 +4,11 @@
  * @desc : gere le fonctionnement du menu de type :
  * 		<ul><li><a class="firstrow">niveau1</a><ul><li><a></a></li>[...]</ul></li></ul>[...]
  * @info : pour cacher un bloc ul on utilise display:none, mais pour IE il semble qu'il faille coupler avec 
- * 		visibility:hidden sous peine d'avoir des sous-blocs qui restent affichés
+ * 		visibility:hidden sous peine d'avoir des sous-blocs qui restent affiches
  */
 var MenuClass = new Class(
 {
-	// pointe sur la div menu à manipuler 
+	// pointe sur la div menu a manipuler 
 	tree: null,
 	
 	focus: false,
@@ -31,7 +31,7 @@ var MenuClass = new Class(
 	initialize: function( menuContainer )
 	{
 		if( !menuContainer )
-			menuContainer = $$("div#header > div#menu")[0] ;
+			menuContainer = $$("div#header.frUrssafImage > div#menu")[0] ;
 		
 		this.tree = menuContainer ;
 		
@@ -107,7 +107,7 @@ var MenuClass = new Class(
 				else if( this.focusItem )
 					var el = this.focusItem ;
 				
-				// dans le cas où on arrive sur le premier element pour la premiere fois
+				// dans le cas ou on arrive sur le premier element pour la premiere fois
 				if( !this.currentLiContainer )
 		   		  	this.currentLiContainer = $( el ).getParent() ;
 
@@ -125,13 +125,13 @@ var MenuClass = new Class(
 				
 				this.focusItem = null ;
 			    
-		  	}.bind( this ), // bind de l'element sur this : permettra d'avoir un acces à this depuis l'evenement
+		  	}.bind( this ), // bind de l'element sur this : permettra d'avoir un acces a this depuis l'evenement
 		  	
 		  	'blur': function(event){
 // _d.dump( 'Blur fired ' ); 
 		
 		  		this.focus = false ;
-				if( event ) // event n'est pas toujours reçu
+				if( event ) // event n'est pas toujours recu
 					var el = event.target ;	// recupere l'element qui a declenche l'evenement
 				else if( this.blurItem )
 					var el = this.blurItem ;
@@ -144,7 +144,7 @@ var MenuClass = new Class(
 			  			if( this.currentLiContainer )
 			  			{
 // _d.dump( this.ulIndex );
-			  				// cas normal où l'on nettoie les précédents
+			  				// cas normal ou l'on nettoie les precedents
 							if( this.ulIndex == 0 )
 								var prevUlContainer = this.tree.getChildren()[0].getFirst() ;
 							else
@@ -153,7 +153,7 @@ var MenuClass = new Class(
 				  			if( prevUlContainer )
 				  			{
 					  			var prevUlElements = prevUlContainer.getElements('ul') ;
-					  			if( prevUlElements.count() > 0 ) // nettoyage des précédents
+					  			if( prevUlElements.count() > 0 ) // nettoyage des precedents
 					  				prevUlElements.each( function(item,index){
 					  					item.setStyle('display','none');
 					  					item.setStyle('visibility','hidden');
@@ -175,7 +175,7 @@ var MenuClass = new Class(
 			  			
 			  			if( this.currentLiContainer )
 			  			{
-				  			// dans le cas où l'on a utilisé shift+tab il fut nettoyer les suivants
+				  			// dans le cas oi l'on a utilise shift+tab il fut nettoyer les suivants
 			  				if( this.ulIndex == ( this.tree.getChildren().count() - 1 ) )
 								var nextUlContainer = this.tree.getChildren()[this.ulIndex].getFirst() ;
 							else
@@ -300,15 +300,15 @@ var MenuClass = new Class(
 						this.liIndex = -1 ;
 						if( this.ulIndex - 1 < 0 )
 						{
-							// on est déjà sur le premier élément
+							// on est deja sur le premier element
 							this.ulIndex = 0 ;
-							// bloc le shift-tab sur le premier élément du menu : si on commente on va boucler sur le menu en repartant du dernier
+							// bloc le shift-tab sur le premier element du menu : si on commente on va boucler sur le menu en repartant du dernier
 							// this.tree.getChildren()[this.ulIndex].getFirst().getElement('a.firstrow').blur(); // fireEvent('blur');
 						}
 						else
 						{
-							// on passe au précédent
-							event.preventDefault(); // bloc la tabulation sur le précédent menu
+							// on passe au prÃ©cÃ©dent
+							event.preventDefault(); // bloc la tabulation sur le prÃ©cÃ©dent menu
 							
 							this.ulIndex -= 1 ;
 							this.tree.getChildren()[this.ulIndex].getFirst().getElement('a.firstrow').blur() ;
@@ -318,7 +318,7 @@ var MenuClass = new Class(
 					}
 					else if( this.focus == false )
 					{
-						event.preventDefault(); // bloc la tabulation sur le précédent
+						event.preventDefault(); // bloc la tabulation sur le prÃ©cÃ©dent
 						
 						this.ulIndex = this.tree.getChildren().count() - 1 ;
 						this.tree.getChildren()[this.ulIndex].getFirst().getElement('a.firstrow').focus() ;
@@ -348,7 +348,7 @@ var MenuClass = new Class(
 					{
 			  			this.keyDown = 'up' ;
 			  			
-		    			event.preventDefault(); // bloc le scroll de la fenêtre	
+		    			event.preventDefault(); // bloc le scroll de la fenÃªtre	
 		    			
 		    			var liChildren = this._getCurrentLiSubBoxItem() ;
 		    			if( liChildren )
@@ -377,7 +377,7 @@ var MenuClass = new Class(
 		    				this.currentLiContainer = liChildren[this.liIndex] ; 
 	    					this.liIndex = 0 ; // index du nouveau bloc affiche
 	    					
-	    					// avant de faire le focus il faut toujours que l'élément soit visible, sinon IE6 lance une erreur, et FF n'execute pas le focus à moins de changer de fenetre et de revenir
+	    					// avant de faire le focus il faut toujours que l'Ã©lÃ©ment soit visible, sinon IE6 lance une erreur, et FF n'execute pas le focus a moins de changer de fenetre et de revenir
 							this.currentLiContainer.getChildren('ul')[0].setStyle('display','block');
 							this.currentLiContainer.getChildren('ul')[0].setStyle('visibility','visible');
 							this.focusItem = this.currentLiContainer.getChildren('ul')[0].getElement('a');
@@ -477,7 +477,7 @@ var MenuClass = new Class(
 	/*
 	 * @type : method
 	 * @name : _removeClassActiv
-	 * @desc : supprime la class active de l'element, devrait être utilise que sur des tableaux de tag a
+	 * @desc : supprime la class active de l'element, devrait Ãªtre utilise que sur des tableaux de tag a
 	 * @TODO : actuellement cette methode est inutilisee car je n'arrive pas a recuperer 'item'
 	 */
 	_removeClassActiv: function(item){
@@ -488,7 +488,7 @@ var MenuClass = new Class(
 	/*
 	 * @type : method
 	 * @name : _lookForIndex
-	 * @desc : supprime la class active de l'element, devrait être utilise que sur des tableaux de tag a
+	 * @desc : supprime la class active de l'element, devrait Ãªtre utilise que sur des tableaux de tag a
 	 * @TODO : actuellement cette methode est inutilisee car je n'arrive pas a recuperer 'item'
 	 */
 	_lookForIndex: function(item,index){
@@ -503,8 +503,8 @@ var MenuClass = new Class(
 	/*
 	 * @type : method
 	 * @name : _cleanFirstAndLastMenuItem
-	 * @desc : cache les blocs du premier et dernier menu. Ne le fait que si currentLiContainer a bien été supprimé
-	 * 	c'est à dire positionné à null
+	 * @desc : cache les blocs du premier et dernier menu. Ne le fait que si currentLiContainer a bien ete supprime
+	 * 	c'est a dire positionne a null
 	 */
 	_cleanFirstAndLastMenuItem: function()
 	{

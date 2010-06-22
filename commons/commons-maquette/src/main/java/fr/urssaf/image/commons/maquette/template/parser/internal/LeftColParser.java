@@ -7,7 +7,7 @@ import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceP
 
 /**
  * @author CER6990172
- * @desc parse la balise body de toute chaîne ou fichier de template pour en récupérer les éléments de la balise <div id="content-application">
+ * @desc parse la balise body de toute chaÃ®ne ou fichier de template pour en rÃ©cupÃ©rer les Ã©lÃ©ments de la balise <div id="content-application">
  */
 public class LeftColParser extends AbstractParser
 {
@@ -21,7 +21,7 @@ public class LeftColParser extends AbstractParser
 	}
 	
 	/**
-	 * @desc exécute le doParse dans la foulée
+	 * @desc exÃ©cute le doParse dans la foulÃ©e
 	 * @param sc
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 * @throws MissingSourceParserException
@@ -38,7 +38,7 @@ public class LeftColParser extends AbstractParser
 	}
 
 	/**
-	 * @desc lance le parsing des éléments de la balise body contenu dans l'attribut Source et récupère
+	 * @desc lance le parsing des Ã©lÃ©ments de la balise body contenu dans l'attribut Source et rÃ©cupÃ¨re
 	 * 		 la div avec l'id leftcol
 	 * @param sc
 	 * @throws MissingHtmlElementInTemplateParserException 

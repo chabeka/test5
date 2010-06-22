@@ -1,24 +1,24 @@
-body
+body.frUrssafImage
 {
     color: cssMainFontColor;
 }
 
-#leftcol p.boxContent
+#container.frUrssafImage > #leftcol p.boxContent
 {
     color: cssHeaderBackgroundColor ;
 }
 
-#content
+#container.frUrssafImage > #content.frUrssafImage
 {
 	color: cssContentFontColor;
 }
 
-#content div#pagereminder
+#container.frUrssafImage > #content.frUrssafImage > div#pagereminder.frUrssafImage
 {
 	color: cssMainFontColor;
 }
 
-#footer #providedby a
+#container.frUrssafImage > #footer.frUrssafImage > #providedby > a
 {
     color: cssMainFontColor;
 }

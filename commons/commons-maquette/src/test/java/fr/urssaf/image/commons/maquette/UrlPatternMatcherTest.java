@@ -24,7 +24,7 @@ public class UrlPatternMatcherTest {
     	assertFalse(UrlPatternMatcher.match("*.map","/US/Oregon/Portland.MAP"));
     	assertFalse(UrlPatternMatcher.match("*.map","/interface/description/mail.mapi"));
     	
-    	// Des tests inspirés de http://www.caucho.com/resin-3.0/servlet/servlet.xtp#url-pattern
+    	// Des tests inspirÃ©s de http://www.caucho.com/resin-3.0/servlet/servlet.xtp#url-pattern
     	assertTrue(UrlPatternMatcher.match("/foo/bar.html","/foo/bar.html"));
     	assertFalse(UrlPatternMatcher.match("/foo/bar.html","/application-name/foo/bar.html"));
     	assertTrue(UrlPatternMatcher.match("/foo/*","/foo"));

@@ -1,34 +1,34 @@
-body
+body.frUrssafImage
 {
 	background: cssMainBackgroundColor;
 }
 
-#container
+body.frUrssafImage > #container.frUrssafImage
 {
 	background: cssContentBackgroundColor url(cssLeftcolBackgroundImg) repeat-y; /* simule la colonne de gauche */
 }
 
-#header
+#container.frUrssafImage > #header.frUrssafImage
 {
     background: cssHeaderBackgroundColor url(cssHeaderBackgroundImg) repeat-y ;
 }
 
-#leftcol p.boxContent
+#container.frUrssafImage > #leftcol.frUrssafImage > p.boxContent
 {
     background: cssInfoboxBackgroundColor ;
 }
 
-#leftcol h3.boxTitle
+#container.frUrssafImage > #leftcol.frUrssafImage >  h3.boxTitle
 {
     background: cssSelectedMenuBackgroundColor;
 }
 
-#content div#pagereminder /* utile pour le titre de la page affiché dans content */
+#container.frUrssafImage > #content.frUrssafImage > div#pagereminder /* utile pour le titre de la page affiche dans content */
 {
 	background: cssSelectedMenuBackgroundColor;
 }
 
-#footer
+#container.frUrssafImage > #footer.frUrssafImage
 {
 	background: cssHeaderBackgroundColor;
 }

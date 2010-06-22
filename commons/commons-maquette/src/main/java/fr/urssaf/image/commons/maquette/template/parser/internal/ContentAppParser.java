@@ -9,7 +9,7 @@ import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceP
 
 /**
  * @author CER6990172
- * @desc parse la balise body de toute chaîne ou fichier de template pour en récupérer les éléments de la balise <div id="content-application">
+ * @desc parse la balise body de toute chaÃ®ne ou fichier de template pour en rÃ©cupÃ©rer les Ã©lÃ©ments de la balise <div id="content-application">
  */
 public class ContentAppParser extends AbstractParser
 {
@@ -24,7 +24,7 @@ public class ContentAppParser extends AbstractParser
 	}
 	
 	/**
-	 * @desc exécute le doParse dans la foulée
+	 * @desc exÃ©cute le doParse dans la foulÃ©e
 	 * @param sc
 	 * @throws MissingSourceParserException 
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -48,7 +48,7 @@ public class ContentAppParser extends AbstractParser
 	}
 
 	/**
-	 * @desc lance le parsing des éléments de la balise body contenu dans l'attribut Source
+	 * @desc lance le parsing des Ã©lÃ©ments de la balise body contenu dans l'attribut Source
 	 * @param sc
 	 * @throws MissingSourceParserException
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -74,7 +74,7 @@ public class ContentAppParser extends AbstractParser
 	}
 	
 	/**
-	 * @desc	récupère les balises noscript
+	 * @desc	rÃ©cupÃ¨re les balises noscript
 	 * @param sc
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 */

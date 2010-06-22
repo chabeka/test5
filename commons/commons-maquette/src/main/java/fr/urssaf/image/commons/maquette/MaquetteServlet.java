@@ -45,7 +45,7 @@ public class MaquetteServlet extends HttpServlet {
 	    		MaquetteConfig maquetteCfg = (MaquetteConfig) rq.getSession().getAttribute( MaquetteConstant.SESSION_MAQUETTECONFIG ) ;
 				MaquetteTools.printFileContentWithResponseAndModifyColor( rs, sc, in, requestedFile, maquetteCfg ) ;
 			} catch (TemplateConfigNotInitialized e) {
-logger.debug( "Exception lors de la génération dynamique des css, plus d'info dnas la stacktrace" ) ;
+logger.debug( "Exception lors de la gÃ©nÃ©ration dynamique des css, plus d'info dnas la stacktrace" ) ;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

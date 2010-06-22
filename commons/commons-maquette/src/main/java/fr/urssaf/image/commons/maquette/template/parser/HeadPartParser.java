@@ -10,7 +10,7 @@ import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceP
 
 /**
  * @author CER6990172
- * @desc parse la balise head de toute chaîne ou fichier de template
+ * @desc parse la balise head de toute chaÃ®ne ou fichier de template
  * @TODO tester les cas suivants :
  * 			pas de head dans la source
  * 			pas de title
@@ -18,9 +18,9 @@ import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceP
  * 			pas de link
  * 			pas de style
  * 			pas de script
- * 			balise link non fermée
- * 			balise links mal formatée
- * 			comment est interprété la section particulière à IE6 ?
+ * 			balise link non fermÃ©e
+ * 			balise links mal formatÃ©e
+ * 			comment est interprÃ©tÃ© la section particuliÃ¨re Ã  IE6 ?
  */
 public class HeadPartParser
 {
@@ -39,7 +39,7 @@ public class HeadPartParser
 	}
 	
 	/**
-	 * @desc exécute le doParse dans la foulée
+	 * @desc exÃ©cute le doParse dans la foulÃ©e
 	 * @param sc
 	 * @throws MissingSourceParserException
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -91,7 +91,7 @@ public class HeadPartParser
 	}
 
 	/**
-	 * @desc lance le parsing des éléments de la balise head contenu dans l'attribut Source
+	 * @desc lance le parsing des Ã©lÃ©ments de la balise head contenu dans l'attribut Source
 	 * @param sc
 	 * @throws MissingSourceHeadPartParserException
 	 * @throws MissingHeadTagHeadPartParserException 
@@ -112,7 +112,7 @@ public class HeadPartParser
 	}
 	
 	/**
-	 * @desc	retourne le titre affiché dans le navigateur
+	 * @desc	retourne le titre affichÃ© dans le navigateur
 	 * @param sc
 	 * @throws MissingHeadTagHeadPartParserException 
 	 */
@@ -125,7 +125,7 @@ public class HeadPartParser
 	}
 	
 	/**
-	 * @desc	retourne le titre affiché dans le navigateur
+	 * @desc	retourne le titre affichÃ© dans le navigateur
 	 * @param sc
 	 */
 	private Element doGetTitleTag( Source sc ) {
@@ -150,7 +150,7 @@ public class HeadPartParser
 	}
 	
 	/**
-	 * @desc	retourne les styles incorporés au document html
+	 * @desc	retourne les styles incorporÃ©s au document html
 	 * @throws MissingHeadTagHeadPartParserException 
 	 */
 	private List<Element> doGetStyleTag() throws MissingHtmlElementInTemplateParserException {
@@ -158,7 +158,7 @@ public class HeadPartParser
 	}
 	
 	/**
-	 * @desc	retourne les styles incorporés au document html
+	 * @desc	retourne les styles incorporÃ©s au document html
 	 * @param sc
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 */
@@ -167,7 +167,7 @@ public class HeadPartParser
 	}
 	
 	/**
-	 * @desc retourne la liste complète des tags d'un type donné présent dans la balise head
+	 * @desc retourne la liste complÃ¨te des tags d'un type donnÃ© prÃ©sent dans la balise head
 	 * @param sc
 	 * @param tagName
 	 * @return elList

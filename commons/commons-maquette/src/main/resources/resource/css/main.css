@@ -1,9 +1,9 @@
-body
+body.frUrssafImage
 {
 	background: #A6A9CA;
 }
 
-#container
+body.frUrssafImage > #container.frUrssafImage
 {
 	margin: 0 auto;
 	width: 90%;
@@ -13,99 +13,96 @@ body
 	background: #FFF url(getResourceImageMaquette.do?name=/img/leftcol_aed.png) repeat-y; /* simule la colonne de gauche */
 }
 
-#header
+#container.frUrssafImage > #header.frUrssafImage
 {
     padding: 0px 0px 0px 0px ;
     background: #051A7D url(getResourceImageMaquette.do?name=/img/degrade_h_aed.png) repeat-y ;
-    height: 1%; /* hack pour IE6 qui fait disparaitre les background image lors d'un scroll down / scroll up */
+    height: 1%; /* hack pour IE6 qui fait disparaitre les background image lors d'un scroll down / scroll up 
+	 et pour IE7 qui n'affiche pas le contenu texte se trouvant dans cette zone */
 }
 
-html>body #header {
-    height: auto; /* contre hack pour les autres navigateurs */
-}
-
-#header h1
+#container.frUrssafImage > #header.frUrssafImage > h1#title-app.frUrssafImage
 {
 	float: left;
 	padding-top: 10px;
 	margin: 0 0 0 20px;
 }
 
-#header #minheight
+#container.frUrssafImage > #header.frUrssafImage > #minheight.frUrssafImage
 {
 	float: left;
 	height: 49px;
 	width: 1px;	
 }
 
-#header #logoimage
+#container.frUrssafImage > #header.frUrssafImage > #logoimage.frUrssafImage
 {
 	float: left;
 }
 
-#header #logoappli
+#container.frUrssafImage > #header.frUrssafImage > #logoappli.frUrssafImage
 {
 	float: right;
 	min-height: 49px;
 	max-height: 59px;
 }
 	
-#leftcol
+#container.frUrssafImage > #leftcol.frUrssafImage
 {
-    clear:both; /* en cas de zoom de l'utilisateur, évite que leftcol se décale après le menu quand il sera sur 2 lignes */
-	float: left; /* positionner leftcol à gauche dans le conteneur */
+   clear:both; /* en cas de zoom de l'utilisateur, Ã©vite que leftcol se dÃ©cale aprÃ¨s le menu quand il sera sur 2 lignes */
+	float: left; /* positionner leftcol Ã  gauche dans le conteneur */
 	padding: 0 3px 0 3px;
-	width: 9.35em; /* même taille que leftcol_aed.png qui est utilisé dans le container */
+	width: 9.35em; /* mÃªme taille que leftcol_aed.png qui est utilisÃ© dans le container */
 	min-height: 500px;
 }
 
-
-#leftcol p
+#container.frUrssafImage > #leftcol.frUrssafImage > p
 {
 	margin: 0px 0px 2px; /* supprime la marge haute dans les leftcol > p */
 	padding:3px 0px 3px 1px;
 }
 
-#leftcol p.boxContent
+#container.frUrssafImage > #leftcol.frUrssafImage > p.boxContent
 {
     background: #EAEAEF ;
 }
 
-#leftcol h3.boxTitle
+#container.frUrssafImage > #leftcol.frUrssafImage > h3.boxTitle
 {
     margin: 0;
     padding: 4px 0px 2px 0px;
     background: #05577D;
 }
 
-#leftcol p#logout
+#container.frUrssafImage > #leftcol.frUrssafImage > p#logout.boxContent
 {
    text-align:center ;
 }
 
-#leftcol #user-logout
+#container.frUrssafImage > #leftcol.frUrssafImage > p#logout.boxContent > input.logout-user
 {
-    margin-top: 5px;
+   	margin-top: 5px;
+	padding: 0px 5px 0px 5px ;	
 }
 
-#content
+#container.frUrssafImage > #content.frUrssafImage
 {
-	margin-left: 140px; /* même taille +5px que leftcol_aed.png qui est utilisé dans le container */
+	margin-left: 140px; /* mÃªme taille +5px que leftcol_aed.png qui est utilisÃ© dans le container */
 }
 
-#content div#pagereminder /* utile pour le titre de la page affiché dans content */
+#container.frUrssafImage > #content.frUrssafImage > div#pagereminder.frUrssafImage /* utile pour le titre de la page affichÃ© dans content */
 {
-   	margin: 0 ;
+   margin: 0 ;
 	padding: 4px 0px 2px 10px ; /* permet l'alignement avec les boites contenu dans leftcol */
 	background: #05577D;
 }
 
-#content-application
+#container.frUrssafImage > #content.frUrssafImage > #content-application.frUrssafImage
 {
     padding: 0px 10px 10px 10px ;
 }
 
-#footer
+#container.frUrssafImage > #footer.frUrssafImage
 {
 	clear: both;
 	height:18px;
@@ -113,12 +110,12 @@ html>body #header {
 	background: #051A7D;
 }
 
-#footer #providedby
+#container.frUrssafImage > #footer.frUrssafImage > #providedby.frUrssafImage
 {
     float:left;
 }
 
-#footer #copyright
+#container.frUrssafImage > #footer.frUrssafImage > #copyright.frUrssafImage
 {
     float:right;
 }

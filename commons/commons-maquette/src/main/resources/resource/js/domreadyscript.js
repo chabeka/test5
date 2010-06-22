@@ -4,7 +4,7 @@ window.addEvent('domready', ( function(){
 	_d = new DebugToolboxClass() ;
 	   
 	// init du menu, variable globale
-	menuObject = new MenuClass( $$("div#header > div#menu")[0], 'menuObject' ) ;
+	menuObject = new MenuClass( $$("div#header.frUrssafImage > div#menu")[0], 'menuObject' ) ;
    
 
 }) );

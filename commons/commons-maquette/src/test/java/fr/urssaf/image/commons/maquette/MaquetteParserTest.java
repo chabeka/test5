@@ -48,7 +48,7 @@ public class MaquetteParserTest {
 	}
 	
 	/**
-	 * @todo l'exception est attendu donc ça devrait être juste, or le test échoue : à corriger
+	 * @todo l'exception est attendu donc Ã§a devrait Ãªtre juste, or le test Ã©choue : Ã  corriger
 	 */
 	@Test
 	public void setSourceFromFileInResourceFolderWithoutStartingSlash()
@@ -136,7 +136,7 @@ public class MaquetteParserTest {
 		
 		List<Element> headList = scHtml.getAllElements("head") ;
 		if( headList.size() == 0 )
-			fail( "Aucun head trouvé" );
+			fail( "Aucun head trouvÃ©" );
 		Element head = headList.get(0);
 		
 		assertEquals(6, head.getStartTag().getBegin());
@@ -163,7 +163,7 @@ public class MaquetteParserTest {
 	{
 		String html = "<h1>Titre du paragraphe 1 de ma page JSP</h1>\n"+
 "<div>\n"+
-"Contenu applicatif de ma JSP toto éééééééééé<br />\n"+ 
+"Contenu applicatif de ma JSP toto <br />\n"+ 
 "</div>" ;
 		
 		Source scHtml = new Source( html ) ;
@@ -179,6 +179,6 @@ public class MaquetteParserTest {
 	@Test
 	public void encodageAccent()
 	{
-		fail( "Test à écrire" );
+		fail( "Test Ã  Ã©crire" );
 	}
 }

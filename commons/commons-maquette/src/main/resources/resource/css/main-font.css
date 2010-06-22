@@ -1,6 +1,6 @@
-body
+body.frUrssafImage
 {
-    color: #fff;
+   color: #fff;
 	font-family: Arial,Helvetica,Sans Serif;
 	font-size: .9em;
 	text-align: center;
@@ -11,56 +11,61 @@ img.linkedImage
     border: none;   
 }
 
-#container
+body.frUrssafImage > #container.frUrssafImage
 {
 	text-align: left;
 }
 
-#leftcol p.boxContent
+#container.frUrssafImage > #leftcol.frUrssafImage > p.boxContent
 {
     font-size: .75em ;
     color: #051A7D ;
 }
 
-#leftcol h3.boxTitle
+#container.frUrssafImage > #leftcol.frUrssafImage > h3.boxTitle
 {
     font-size: 1em;
     font-weight: normal ;
     text-align: center;
 }
 
-#content
+#container.frUrssafImage > #leftcol.frUrssafImage > p#logout.boxContent > input.logout-user
+{
+    font-family: Arial,Helvetica,Sans Serif;
+    font-size: .8em;
+}
+
+#container.frUrssafImage > #content.frUrssafImage
 {
 	color: black;
 }
 
-#content div#pagereminder
+#container.frUrssafImage > #content.frUrssafImage > div#pagereminder.frUrssafImage
 {
 	color: #fff;
 }
 
-#content-application p
+#container.frUrssafImage > #content.frUrssafImage > #content-application.frUrssafImage > p
 {
     text-align: left;
 }
 
-#footer #copyright
+#container.frUrssafImage > #footer.frUrssafImage > #copyright.frUrssafImage
 {
     text-align: right;
 }
 
-#footer #providedby
+#container.frUrssafImage > #footer.frUrssafImage > #providedby.frUrssafImage
 {
     text-align: left;
 }
 
-#footer #providedby a
+#container.frUrssafImage > #footer.frUrssafImage > #providedby.frUrssafImage a
 {
     color:#fff;
 }
 
-#footer #providedby a:hover
+#container.frUrssafImage > #footer.frUrssafImage > #providedby.frUrssafImage a:hover
 {
     font-weight:bold;
 }
-

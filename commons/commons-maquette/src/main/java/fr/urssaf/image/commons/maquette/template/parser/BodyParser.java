@@ -9,8 +9,8 @@ import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceP
 
 /**
  * @author CER6990172
- * @desc parse la balise body de toute chaîne ou fichier de template pour en récupérer les éléments de la balise <body>
- * 		 attention, s'il le faut il peut recréer le body 
+ * @desc parse la balise body de toute chaÃ®ne ou fichier de template pour en rÃ©cupÃ©rer les Ã©lÃ©ments de la balise <body>
+ * 		 attention, s'il le faut il peut recrÃ©er le body 
  */
 public class BodyParser
 {
@@ -25,7 +25,7 @@ public class BodyParser
 	}
 	
 	/**
-	 * @desc exécute le doParse dans la foulée
+	 * @desc exÃ©cute le doParse dans la foulÃ©e
 	 * @param sc
 	 * @throws MissingSourceParserException 
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -35,9 +35,9 @@ public class BodyParser
 	}
 	
 	/**
-	 * @desc exécute le doParse dans la foulée
+	 * @desc exÃ©cute le doParse dans la foulÃ©e
 	 * @param sc
-	 * @param forceBodyTag si aucun tag body n'est trouvé, on rajoute ce tag à la source et on ne lève pas d'exception
+	 * @param forceBodyTag si aucun tag body n'est trouvÃ©, on rajoute ce tag Ã  la source et on ne lÃ¨ve pas d'exception
 	 * @throws MissingSourceParserException 
 	 * @throws MissingHtmlElementInTemplateParserException 
 	 */
@@ -54,7 +54,7 @@ public class BodyParser
 	}
 	
 	/**
-	 * @desc lance le parsing des éléments de la balise body contenu dans l'attribut Source
+	 * @desc lance le parsing des Ã©lÃ©ments de la balise body contenu dans l'attribut Source
 	 * @param sc
 	 * @throws MissingSourceParserException
 	 * @throws MissingHtmlElementInTemplateParserException 
@@ -78,7 +78,7 @@ public class BodyParser
 		List<Element> elBody = sc.getAllElements("body");
 		
 		Element body ;
-		// prise en compte du cas où l'on a pas de body dans le html de l'application
+		// prise en compte du cas oÃ¹ l'on a pas de body dans le html de l'application
 		// On reconstruit donc le tag manquant
 		if( elBody.size() == 0 )
 		{

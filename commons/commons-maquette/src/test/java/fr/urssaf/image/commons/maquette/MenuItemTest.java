@@ -53,7 +53,7 @@ public class MenuItemTest {
 			
 		} catch (ReferentialIntegrityException e) {
 			e.printStackTrace();
-			fail("L'ajout d'un enfant a échoué") ;
+			fail("L'ajout d'un enfant a Ã©chouÃ©") ;
 		}
 	}
 	
@@ -67,7 +67,7 @@ public class MenuItemTest {
 			
 		} catch (ReferentialIntegrityException e) {
 			e.printStackTrace();
-			fail("L'ajout d'un parent a échoué") ;
+			fail("L'ajout d'un parent a Ã©chouÃ©") ;
 		}
 	}
 	
@@ -80,7 +80,7 @@ public class MenuItemTest {
 			
 		} catch (ReferentialIntegrityException e) {
 			e.printStackTrace();
-			fail("Le positionnement d'un parent a échoué") ;
+			fail("Le positionnement d'un parent a Ã©chouÃ©") ;
 		}
 	}
 	
@@ -102,7 +102,7 @@ public class MenuItemTest {
 			assertEquals( aParent, aNewChild.getParent() ) ;
 			
 		} catch (ReferentialIntegrityException e) {
-			fail("L'ajout d'un enfant a échoué") ;
+			fail("L'ajout d'un enfant a Ã©chouÃ©") ;
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class MenuItemTest {
 			aParent.addChild( firstChild ) ;
 			aParent.addChild( firstChild ) ;
 			
-			fail("L'ajout d'un enfant aurait du échouer") ;
+			fail("L'ajout d'un enfant aurait du Ã©chouer") ;
 		} catch (ReferentialIntegrityException e) {
 			
 		}
@@ -134,7 +134,7 @@ public class MenuItemTest {
 			
 		} catch (ReferentialIntegrityException e) {
 			e.printStackTrace();
-			fail("L'ajout d'un parent a échoué") ;
+			fail("L'ajout d'un parent a Ã©chouÃ©") ;
 		}
 	}
 	
@@ -145,7 +145,7 @@ public class MenuItemTest {
 			aParent.addChild( firstChild ) ;
 			
 			firstChild.addChild( aParent ) ;
-			fail("L'ajout d'un enfant aurait du échouer car l'enfant est déjà parent") ;
+			fail("L'ajout d'un enfant aurait du Ã©chouer car l'enfant est dÃ©jÃ  parent") ;
 		} catch (ReferentialIntegrityException e) {
 		}
 	}
@@ -157,7 +157,7 @@ public class MenuItemTest {
 			firstChild.addParent( aParent ) ;
 			
 			aParent.addParent( firstChild ) ;		
-			fail("L'ajout d'un parent aurait du échouer car le parent est déjà enfant") ;
+			fail("L'ajout d'un parent aurait du Ã©chouer car le parent est dÃ©jÃ  enfant") ;
 		} catch (ReferentialIntegrityException e) {
 		}
 	}
@@ -175,7 +175,7 @@ public class MenuItemTest {
 			assertEquals( firstChild, aParent.getChildren().get(0) ) ;
 			assertEquals( secondChild, firstChild.getChildren().get(0) ) ;
 		} catch (ReferentialIntegrityException e) {
-			fail("L'ajout d'un enfant C du parent B qui est lui même enfant de A a échoué") ;
+			fail("L'ajout d'un enfant C du parent B qui est lui mÃªme enfant de A a Ã©chouÃ©") ;
 		}
 	}
 	
@@ -236,7 +236,7 @@ public class MenuItemTest {
 		
 		MenuItem miKrosoftOS = new MenuItem();
 		miKrosoftOS.setLink("windows.com");
-		miKrosoftOS.setTitle("Système d'exploitation");
+		miKrosoftOS.setTitle("SystÃ¨me d'exploitation");
 		try {
 			miKrosoft.addChild( miKrosoftOS ) ;
 		} catch (ReferentialIntegrityException e) {
@@ -338,7 +338,7 @@ public class MenuItemTest {
 		
 		MenuItem miDivers = new MenuItem();
 		miDivers.setLink("euh.com");
-		miDivers.setTitle("rien à voir");
+		miDivers.setTitle("rien Ã  voir");
 		
 		listMenuItem.add(miDivers);
 	}
