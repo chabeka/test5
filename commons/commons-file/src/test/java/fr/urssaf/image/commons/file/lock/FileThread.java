@@ -26,7 +26,7 @@ public class FileThread extends Thread {
 
 	private ReadWriteFile file;
 
-	private static final int thread = 100;
+	private static final int thread = 10;
 
 	private static final int cycle = 5;
 
@@ -63,7 +63,7 @@ public class FileThread extends Thread {
 	}
 
 	public void executer() throws IOException {
-		log.info("DEBUT DE N°" + numero);
+		log.info("DEBUT DE NÂ°" + numero);
 		for (int i = 0; i < cycle; i++) {
 
 			Random randomGenerator = new Random();
@@ -75,10 +75,10 @@ public class FileThread extends Thread {
 			} catch (InterruptedException ie) {
 			}
 
-			log.debug("n°" + numero + " attend pour écrire");
-			file.write(now() + " thread n°" + numero + " écrit la ligne n°" + i
+			log.debug("nÂ°" + numero + " attend pour Ã©crire");
+			file.write(now() + " thread nÂ°" + numero + " Ã©crit la ligne nÂ°" + i
 					+ "\n");
-			log.debug("n°" + numero + " a fini d'écrire");
+			log.debug("nÂ°" + numero + " a fini d'Ã©crire");
 
 			randomGenerator = new Random();
 			randomInt = randomGenerator.nextInt(10);
@@ -89,13 +89,13 @@ public class FileThread extends Thread {
 			} catch (InterruptedException ie) {
 			}
 
-			log.debug("n°" + numero + " attend pour lire");
+			log.debug("nÂ°" + numero + " attend pour lire");
 			file.read();
-			log.debug("n°" + numero + " a fini de lire");
+			log.debug("nÂ°" + numero + " a fini de lire");
 
 		}
 
-		log.info("FIN DE N°" + numero);
+		log.info("FIN DE NÂ°" + numero);
 
 	}
 

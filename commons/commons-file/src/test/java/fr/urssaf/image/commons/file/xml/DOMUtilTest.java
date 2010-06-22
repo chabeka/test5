@@ -51,13 +51,13 @@ public class DOMUtilTest {
 
 		Element bibliotheque = document.createElement("bibliotheque");
 
-		// livre n°0
+		// livre nÂ°0
 
 		Element livre0 = createLivre(document, "romantisme du XXe",
 				"Madame Bovary", "Gustave Flaubert");
 		bibliotheque.appendChild(livre0);
 
-		// livre n°1
+		// livre nÂ°1
 
 		Element livre1 = createLivre(document, "naturalisme", "l'argent",
 				"Emile Zola");
@@ -113,7 +113,7 @@ public class DOMUtilTest {
 		assertEquals("livre", livre2.getNodeName());
 		assertLivre(livre2, "naturalisme", "l'argent", "Emile Zola");
 
-		assertEquals("il y a plus de livres que prévus", 2, livres.getLength());
+		assertEquals("il y a plus de livres que prÃ©vus", 2, livres.getLength());
 
 		assertNotNull(element);
 
@@ -133,7 +133,7 @@ public class DOMUtilTest {
 		assertEquals("type", typeAttribut.getNodeName());
 		assertEquals(TYPE, typeAttribut.getNodeValue());
 
-		assertEquals("il y a plus d'attributs que prévus", 2, attributes
+		assertEquals("il y a plus d'attributs que prÃ©vus", 2, attributes
 				.getLength());
 
 		

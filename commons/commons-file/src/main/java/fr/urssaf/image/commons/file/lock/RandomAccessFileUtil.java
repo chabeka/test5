@@ -1,17 +1,13 @@
-package fr.urssaf.image.commons.file;
+package fr.urssaf.image.commons.file.lock;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
-public final class FileUtil {
+public final class RandomAccessFileUtil {
 
-	private FileUtil() {
+	private RandomAccessFileUtil() {
 
 	}
 
@@ -35,10 +31,11 @@ public final class FileUtil {
 	public static void write(String text, File file, String encoding)
 			throws IOException {
 
-		OutputStreamWriter writer = new OutputStreamWriter(
-				new FileOutputStream(file, true), encoding);
+		RandomAccessFile writer = new RandomAccessFile(
+				file, "rw");
 		try {
-			writer.write(text);
+			writer.seek(file.length());
+			writer.write(text.getBytes(encoding));
 		} finally {
 			writer.close();
 		}
@@ -59,17 +56,18 @@ public final class FileUtil {
 
 	public static String read(File file, String encoding) throws IOException {
 
-		BufferedReader buff = new BufferedReader(new InputStreamReader(
-				new FileInputStream(file), encoding));
+		RandomAccessFile reader = new RandomAccessFile(
+				file, "r");
+		
 		StringBuffer text = new StringBuffer();
 		try {
 			String line;
-			while ((line = buff.readLine()) != null) {
+			while ((line = reader.readLine()) != null) {
 				text.append(line + "\n");
 			}
 			return text.toString();
 		} finally {
-			buff.close();
+			reader.close();
 
 		}
 

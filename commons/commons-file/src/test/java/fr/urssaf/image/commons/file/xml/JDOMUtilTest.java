@@ -50,12 +50,12 @@ public class JDOMUtilTest {
 
 		Element bibliotheque = new Element("bibliotheque");
 
-		// livre n°0
+		// livre nÂ°0
 		Element livre0 = createLivre("romantisme du XXe", "Madame Bovary",
 				"Gustave Flaubert");
 		bibliotheque.addContent(livre0);
 
-		// livre n°1
+		// livre nÂ°1
 		Element livre1 = createLivre("naturalisme", "l'argent", "Emile Zola");
 		bibliotheque.addContent(livre1);
 
@@ -64,7 +64,7 @@ public class JDOMUtilTest {
 		bibliotheque.addContent(comment);
 
 		// CDATA
-		CDATA cData = new CDATA("caractères spéciaux:< > ' & + é @ £ $");
+		CDATA cData = new CDATA("caractÃ¨res spÃ©ciaux:< > ' & + Ã© @ Â£ $");
 		bibliotheque.addContent(cData);
 
 		Document document = new Document(bibliotheque);
@@ -111,7 +111,7 @@ public class JDOMUtilTest {
 		assertEquals("livre", livre2.getName());
 		assertLivre(livre2, "naturalisme", "l'argent", "Emile Zola");
 
-		assertEquals("il y a plus de livres que prévus", 2, livres.size());
+		assertEquals("il y a plus de livres que prÃ©vus", 2, livres.size());
 
 		assertNotNull(element);
 
@@ -132,7 +132,7 @@ public class JDOMUtilTest {
 		assertEquals("type", typeAttribut.getName());
 		assertEquals(TYPE, typeAttribut.getValue());
 
-		assertEquals("il y a plus d'attributs que prévus", 2, attributes.size());
+		assertEquals("il y a plus d'attributs que prÃ©vus", 2, attributes.size());
 
 		@SuppressWarnings("unchecked")
 		List<Element> elements = livre.getChildren();
@@ -144,7 +144,7 @@ public class JDOMUtilTest {
 		Element auteurElement = elements.get(1);
 		assertEquals(auteur, auteurElement.getValue());
 
-		assertEquals("il y a plus de caractéristiques que prévues", 2, elements
+		assertEquals("il y a plus de caractÃ©ristiques que prÃ©vues", 2, elements
 				.size());
 
 	}
@@ -169,7 +169,7 @@ public class JDOMUtilTest {
 
 		assertLivre(livres[1], "naturalisme", "l'argent", "Emile Zola");
 
-		assertEquals("il y a plus de livres que prévus", 2, livres.length);
+		assertEquals("il y a plus de livres que prÃ©vus", 2, livres.length);
 
 	}
 

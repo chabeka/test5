@@ -71,7 +71,7 @@ public class JDOMFactory<O> {
 			return element.getValue();
 		}
 
-		log.warn("la méthode getValue() doit renvoyer une chaine de caractère");
+		log.warn("la mÃ©thode getValue() doit renvoyer une chaine de caractÃ¨re");
 		return null;
 	}
 
@@ -113,7 +113,7 @@ public class JDOMFactory<O> {
 			return element.getAttributeValue(balise);
 		}
 
-		log.warn("l'attribut " + balise + " renvoie une chaine de caractère");
+		log.warn("l'attribut " + balise + " renvoie une chaine de caractÃ¨re");
 
 		return null;
 

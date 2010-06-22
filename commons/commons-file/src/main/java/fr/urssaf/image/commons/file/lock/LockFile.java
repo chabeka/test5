@@ -61,15 +61,16 @@ public class LockFile implements ReadWriteFile {
 
 		lock(false);
 
-		log.trace("écriture sur " + file.getName());
+		log.trace("Ã©criture sur " + file.getName());
 
 		try {
 			randomAccessFile.seek(randomAccessFile.length());
 			randomAccessFile.write(text.getBytes());
+			
 		} finally {
 
 			release();
-			log.trace("fin d'écriture de " + file.getName());
+			log.trace("fin d'Ã©criture de " + file.getName());
 
 		}
 

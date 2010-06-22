@@ -52,13 +52,13 @@ public final class XSDValidator {
 	}
 
 	/**
-	 * Méthode permettant de tester la validité d'un fichier En cas d'erreur de
+	 * MÃ©thode permettant de tester la validitÃ© d'un fichier En cas d'erreur de
 	 * validation
 	 * 
 	 * @param xmlFile
-	 *            : nom et emplacement du fichier XML à tester
+	 *            : nom et emplacement du fichier XML Ã  tester
 	 * @param xsdFile
-	 *            : nom du ficier XSD de référance
+	 *            : nom du ficier XSD de rÃ©fÃ©rance
 	 * @return List<SAXParseExceptionType> : renvoie une liste des
 	 *         SAXParseException avec le type d'execption
 	 *         error,fatalError,warning
