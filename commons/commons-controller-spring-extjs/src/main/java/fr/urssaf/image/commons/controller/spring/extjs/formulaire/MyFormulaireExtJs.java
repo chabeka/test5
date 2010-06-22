@@ -32,7 +32,7 @@ public class MyFormulaireExtJs extends MyFormulaire {
 	 */
 	public Set<String> getAllFieldName( List<String> excludedFiles )
 	{
-		// récupérayion des la liste des champs basés sur les getters/setters
+		// rÃ©cupÃ©ration des la liste des champs basÃ©s sur les getters/setters
 		Set<String> fieldNameList = this.getMethodeNames();
 		
 		// exclusion de formErrorField : 
@@ -40,7 +40,7 @@ public class MyFormulaireExtJs extends MyFormulaire {
 		if( fieldNameList.contains( _FORMERRORFIELD_ ) )
 			fieldNameList.remove( _FORMERRORFIELD_ ) ;
 		
-		// exclusion de la liste supplémentaire
+		// exclusion de la liste supplÃ©mentaire
 		if( excludedFiles != null )
 		{
 			for( String s : excludedFiles )

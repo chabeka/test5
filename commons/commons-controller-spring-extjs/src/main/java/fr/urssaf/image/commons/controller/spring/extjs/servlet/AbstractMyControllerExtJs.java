@@ -30,7 +30,7 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 	}
 
 	/**
-	 * dans le cas où le controller a été appelé via XmlHttpRequest, on lance le post traitement des erreurs 
+	 * dans le cas oÃ¹ le controller a Ã©tÃ© appelÃ© via XmlHttpRequest, on lance le post traitement des erreurs 
 	 * au format ExtJS 
 	 */
 	@SuppressWarnings("unchecked")
@@ -52,7 +52,7 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 	}
 	
 	/**
-	 * ajoute la chaine json encodée en base 64 dans le champ d'erreur du formulaire
+	 * ajoute la chaine json encodÃ©e en base 64 dans le champ d'erreur du formulaire
 	 * @param formulaire
 	 * @param jsonString
 	 */
