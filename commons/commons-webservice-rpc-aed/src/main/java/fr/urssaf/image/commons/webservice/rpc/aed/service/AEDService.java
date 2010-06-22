@@ -42,7 +42,7 @@ public interface AEDService {
 			String nombreDocuments, Mode modeTest) throws RemoteException;
 
 	/**
-	 * Déclaration d'une nouvelle copie de document opérée dans une application
+	 * DÃ©claration d'une nouvelle copie de document opÃ©rÃ©e dans une application
 	 * cliente SAEL.
 	 */
 	public boolean declareNouvellesCopies(Document[] listeDocuments,
