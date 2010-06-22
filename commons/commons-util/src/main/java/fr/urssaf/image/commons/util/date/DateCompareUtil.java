@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.date;
+ï»¿package fr.urssaf.image.commons.util.date;
 
 import java.util.Date;
 
@@ -19,8 +19,8 @@ public final class DateCompareUtil {
 	/**
 	 * Compare deux dates
 	 * 
-	 * @param date1 date à comparer
-	 * @param date2 date à comparer
+	 * @param date1 date Ã  comparer
+	 * @param date2 date Ã  comparer
 	 * @return true si date1 < date2, false sinon
 	 */
 	public static boolean inf(Date date1, Date date2) {
