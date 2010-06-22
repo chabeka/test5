@@ -66,7 +66,7 @@ public class ImplMenuTest {
 		
 		MenuItem miKrosoftOS = new MenuItem();
 		miKrosoftOS.setLink("windows.com");
-		miKrosoftOS.setTitle("Système d'exploitation");
+		miKrosoftOS.setTitle("SystÃªme d'exploitation");
 		miKrosoft.addChild( miKrosoftOS ) ;
 		
 		MenuItem miWin95 = new MenuItem();
@@ -116,7 +116,7 @@ public class ImplMenuTest {
 		
 		MenuItem miDivers = new MenuItem();
 		miDivers.setLink("euh.com");
-		miDivers.setTitle("rien à voir");
+		miDivers.setTitle("rien Ã  voir");
 		
 		listMenuItem.add(miDivers);
 	}

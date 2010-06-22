@@ -69,7 +69,7 @@
 		<!-- Personnalisation du thème graphique -->
 		<init-param>
 			<param-name>theme</param-name>
-			<param-value>ged</param-value>
+			<param-value>aed</param-value>
 			<!-- (facultatif) theme prioritaire sur les css : aed/ged -->
 		</init-param>
 		<init-param>

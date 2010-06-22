@@ -75,7 +75,7 @@ public class ImplMenu implements IMenu {
 		
 		MenuItem miKrosoftOS = new MenuItem();
 		miKrosoftOS.setLink("windows.com");
-		miKrosoftOS.setTitle("Système d'exploitation");
+		miKrosoftOS.setTitle("SystÃ¨me d'exploitation");
 		try {
 			miKrosoft.addChild( miKrosoftOS ) ;
 		} catch (ReferentialIntegrityException e) {
@@ -177,7 +177,7 @@ public class ImplMenu implements IMenu {
 		
 		MenuItem miDivers = new MenuItem();
 		miDivers.setLink("euh.com");
-		miDivers.setTitle("rien à voir");
+		miDivers.setTitle("rien Ã  voir");
 		
 		listMenuItem.add(miDivers);
 		
