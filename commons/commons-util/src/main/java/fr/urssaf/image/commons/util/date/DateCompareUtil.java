@@ -1,4 +1,4 @@
-﻿package fr.urssaf.image.commons.util.date;
+package fr.urssaf.image.commons.util.date;
 
 import java.util.Date;
 
