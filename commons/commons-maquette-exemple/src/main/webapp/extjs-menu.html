@@ -27,6 +27,12 @@ Dans les balises &lt;head&gt; vous devriez trouver au moins ce contenu (la balis
 Ext.onReady(function(){
     Ext.QuickTips.init();
 
+    var btnAccueil = new Ext.Button({
+		id:'btnA',
+		text:'bouton',
+		ref: './toto#toto'
+    });
+    
     var menuAccueil = new Ext.menu.Menu({
         id: 'accueilMenu',
         style: {
@@ -67,6 +73,8 @@ Ext.onReady(function(){
     var tb = new Ext.Toolbar();
     tb.render('toolbar');
 
+    tb.add( btnAccueil ) ;
+    
     tb.add(
         	{
                 text:'Accueil',
