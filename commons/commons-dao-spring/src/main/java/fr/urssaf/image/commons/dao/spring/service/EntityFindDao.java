@@ -15,17 +15,17 @@ public interface EntityFindDao<M> {
     public List<M> find();
     
     /**
-     * Renvoie tous les objets persistants triés
+     * Renvoie tous les objets persistants triÃ©s
      * 
-     * @param order nom de la colonne à trier
+     * @param order nom de la colonne Ã  trier
      * @return liste des objets persistants
      */
     public List<M> find(String order);
     
     /**
-     * Renvoie tous les objets persistants triés
+     * Renvoie tous les objets persistants triÃ©s
      * 
-     * @param order nom de la colonne à trier
+     * @param order nom de la colonne Ã  trier
      * @param inverse sens du tri
      * @return liste des objets persistants
      */
@@ -33,11 +33,11 @@ public interface EntityFindDao<M> {
     
     /**
      * 
-     * Renvoie tous les objets persistants triés et filtrés sur un interval
+     * Renvoie tous les objets persistants triÃ©s et filtrÃ©s sur un interval
      * 
      * @param firstResult index du premier objet
-     * @param maxResult nombre de résultat
-     * @param order nom de la colonne à trier
+     * @param maxResult nombre de rÃ©sultat
+     * @param order nom de la colonne Ã  trier
      * @param inverse sens du tri
      * @return liste des objets persistants
      */

@@ -43,16 +43,16 @@ public class EntityFindDaoImpl<P> extends AbstractEntityDao<P> implements
 	}
 
 	/**
-	 * Renvoie tous les objets persistants triés et filtrés sur un interval
+	 * Renvoie tous les objets persistants triÃ©s et filtrÃ©s sur un interval
 	 * 
 	 * @param criteria
 	 *            object criteria
 	 * @param firstResult
 	 *            index du premier objet
 	 * @param maxResult
-	 *            nombre de résutats
+	 *            nombre de rÃ©sutats
 	 * @param order
-	 *            nom de la colonne à trier
+	 *            nom de la colonne Ã  trier
 	 * @param inverse
 	 *            sens du tri
 	 * @return liste des objets persistants
@@ -65,12 +65,12 @@ public class EntityFindDaoImpl<P> extends AbstractEntityDao<P> implements
 	}
 
 	/**
-	 * Renvoie tous les objets persistants triés
+	 * Renvoie tous les objets persistants triÃ©s
 	 * 
 	 * @param criteria
 	 *            object criteria
 	 * @param order
-	 *            nom de la colonne à trier
+	 *            nom de la colonne Ã  trier
 	 * @param inverse
 	 *            sens du tri
 	 * @return liste des objets persistants
@@ -82,14 +82,14 @@ public class EntityFindDaoImpl<P> extends AbstractEntityDao<P> implements
 	}
 
 	/**
-	 * Renvoie tous les objets persistants filtrés sur un interval
+	 * Renvoie tous les objets persistants filtrÃ©s sur un interval
 	 * 
 	 * @param criteria
 	 *            object criteria
 	 * @param firstResult
 	 *            index du premier objet
 	 * @param maxResult
-	 *            nombre de résutats
+	 *            nombre de rÃ©sutats
 	 * @return liste des objets persistants
 	 */
 	public List<P> find(Criteria criteria, int firstResult, int maxResult) {

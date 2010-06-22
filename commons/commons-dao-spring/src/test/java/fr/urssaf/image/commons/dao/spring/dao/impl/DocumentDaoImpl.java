@@ -254,7 +254,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		}
 
 		StringBuffer hql = new StringBuffer();
-		// l'ordre des éléments est important
+		// l'ordre des Ã©lÃ©ments est important
 		hql.append("select aut,doc ");
 		hql.append("from Document doc left join doc.auteur aut ");
 		hql.append("order by doc." + order + " " + inv);

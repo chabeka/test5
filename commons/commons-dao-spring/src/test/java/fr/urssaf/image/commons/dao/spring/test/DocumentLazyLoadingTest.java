@@ -35,7 +35,7 @@ public class DocumentLazyLoadingTest {
 		Document document = documentDao.get(3);
 		try {
 			document.getAuteur().getNom();
-			fail("une erreur Lazy doit être levé");
+			fail("une erreur Lazy doit Ãªtre levÃ©");
 		} catch (LazyInitializationException e) {
 			assertEquals("could not initialize proxy - no Session", e
 					.getMessage());
@@ -59,7 +59,7 @@ public class DocumentLazyLoadingTest {
 		try {
 			
 			assertCollection(document);
-			fail("une erreur Lazy doit être levé");
+			fail("une erreur Lazy doit Ãªtre levÃ©");
 
 		} catch (LazyInitializationException e) {
 

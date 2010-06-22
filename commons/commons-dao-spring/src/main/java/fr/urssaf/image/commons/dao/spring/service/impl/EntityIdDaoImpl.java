@@ -35,7 +35,7 @@ public class EntityIdDaoImpl<P, I extends Serializable> extends AbstractEntityDa
 	 * 
 	 * @param session session factory d'hibernate
 	 * @param table classe persistante
-	 * @param identifiant nom de l'attribut de la clé primaire
+	 * @param identifiant nom de l'attribut de la clÃ© primaire
 	 */
 	public EntityIdDaoImpl(SessionFactory sessionFactory, Class<P> table, String identifiant) {
 		super(sessionFactory,table);

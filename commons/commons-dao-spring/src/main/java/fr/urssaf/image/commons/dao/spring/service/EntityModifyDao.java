@@ -12,23 +12,23 @@ package fr.urssaf.image.commons.dao.spring.service;
 public interface EntityModifyDao<P> {
 
     /**
-     * Insère un objet persistant
+     * InsÃ¨re un objet persistant
      * 
-     * @param obj objet persistant à insérer
+     * @param obj objet persistant Ã  insÃ©rer
      */
     public void save(P obj);
 
     /**
      * Supprime un objet persistant
      * 
-     * @param obj objet persistant à supprimer
+     * @param obj objet persistant Ã  supprimer
      */
     public void delete(P obj);
 
     /**
-     * Met à jour un objet persistant
+     * Met Ã  jour un objet persistant
      * 
-     * @param obj objet persistant à mettre à jour
+     * @param obj objet persistant Ã  mettre Ã  jour
      */
     public void update(P obj);
 

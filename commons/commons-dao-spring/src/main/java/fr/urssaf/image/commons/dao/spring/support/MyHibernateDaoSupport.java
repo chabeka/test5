@@ -71,7 +71,7 @@ public class MyHibernateDaoSupport<T, I extends Serializable> extends
 	 * @param table
 	 *            classe persistante
 	 * @param identifiant
-	 *            nom de l'attribut de la clé primaire
+	 *            nom de l'attribut de la clÃ© primaire
 	 */
 	public MyHibernateDaoSupport(SessionFactory sessionFactory, Class<T> table,
 			String identifiant) {
@@ -167,7 +167,7 @@ public class MyHibernateDaoSupport<T, I extends Serializable> extends
 	}
 
 	/**
-	 * Renvoie tous les objets persistants filtrés par un objet exemple
+	 * Renvoie tous les objets persistants filtrÃ©s par un objet exemple
 	 * 
 	 * @param obj
 	 *            objet exemple

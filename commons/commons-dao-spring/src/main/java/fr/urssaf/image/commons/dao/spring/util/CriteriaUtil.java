@@ -9,14 +9,14 @@ public final class CriteriaUtil {
 	}
 
 	/**
-	 * initialise les critères de pagination
+	 * initialise les critÃ¨res de pagination
 	 * 
 	 * @param criteria
-	 *            criteria à initialiser
+	 *            criteria Ã  initialiser
 	 * @param firstResult
 	 *            index du premier objet
 	 * @param maxResult
-	 *            nombre de résultats
+	 *            nombre de rÃ©sultats
 	 */
 	public static void resultats(Criteria criteria,
 			int firstResult, int maxResult) {
@@ -25,12 +25,12 @@ public final class CriteriaUtil {
 	}
 
 	/**
-	 * initialise les critères de tri
+	 * initialise les critÃ¨res de tri
 	 * 
 	 * @param criteria
-	 *            criteria à initialiser
+	 *            criteria Ã  initialiser
 	 * @param order
-	 *            colonne à trier
+	 *            colonne Ã  trier
 	 * @param inverse
 	 *            sens du tri
 	 */

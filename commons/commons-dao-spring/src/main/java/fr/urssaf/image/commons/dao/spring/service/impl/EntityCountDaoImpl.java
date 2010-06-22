@@ -22,11 +22,11 @@ public class EntityCountDaoImpl<P> extends AbstractEntityDao<P> implements
 	}
 
 	/**
-	 * Compte les résultats d'un objet criteria
+	 * Compte les rÃ©sultats d'un objet criteria
 	 * 
 	 * @param criteria
 	 *            objet criteria
-	 * @return nombre de résultats
+	 * @return nombre de rÃ©sultats
 	 */
 	public int count(Criteria criteria) {
 

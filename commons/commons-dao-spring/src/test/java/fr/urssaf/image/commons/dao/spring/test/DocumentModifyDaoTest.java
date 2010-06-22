@@ -40,7 +40,7 @@ public class DocumentModifyDaoTest {
 		assertEquals(6, documentDao.count());
 
 		document = documentDao.find(document.getId());
-		assertNotNull("la transaction doit être un succés", document);
+		assertNotNull("la transaction doit Ãªtre un succÃ¨s", document);
 		assertEquals("titre test", document.getTitre());
 
 	}
@@ -58,7 +58,7 @@ public class DocumentModifyDaoTest {
 		assertEquals(6, documentDao.count());
 
 		document = documentDao.findSQL(document.getId());
-		assertNotNull("la transaction doit être un succés", document);
+		assertNotNull("la transaction doit Ãªtre un succÃ¨s", document);
 		assertEquals("titre test", document.getTitre());
 
 	}
@@ -72,15 +72,15 @@ public class DocumentModifyDaoTest {
 
 		try {
 			documentDao.save(document);
-			fail("le test doit être un échec");
+			fail("le test doit Ãªtre un Ã©chec");
 		} catch (DataAccessException e) {
 
 			PropertyValueException exception = (PropertyValueException) e
 					.getCause();
 
-			assertEquals("l'entité doit être document", Document.class
+			assertEquals("l'entitÃ© doit Ãªtre document", Document.class
 					.getCanonicalName(), exception.getEntityName());
-			assertEquals("la propriété doit être date", "date", exception
+			assertEquals("la propriÃ©tÃ© doit Ãªtre date", "date", exception
 					.getPropertyName());
 
 		}
@@ -95,7 +95,7 @@ public class DocumentModifyDaoTest {
 
 		try {
 			documentDao.saveSQL(document);
-			fail("le test doit être un échec");
+			fail("le test doit Ãªtre un Ã©chec");
 		} catch (DataAccessException e) {
 
 			ConstraintViolationException exception = (ConstraintViolationException) e
@@ -119,7 +119,7 @@ public class DocumentModifyDaoTest {
 		try {
 			documentDao.delete(document);
 			documentDao.find(ID_TEST);
-			fail("le test doit être un échec");
+			fail("le test doit Ãªtre un Ã©chec");
 		} catch (DataAccessException e) {
 
 			ConstraintViolationException exception = (ConstraintViolationException) e
@@ -143,7 +143,7 @@ public class DocumentModifyDaoTest {
 
 		try {
 			documentDao.deleteSQL(document);
-			fail("le test doit être un échec");
+			fail("le test doit Ãªtre un Ã©chec");
 		} catch (DataAccessException e) {
 
 			ConstraintViolationException exception = (ConstraintViolationException) e
@@ -170,7 +170,7 @@ public class DocumentModifyDaoTest {
 
 		assertEquals(4, documentDao.count());
 		document = documentDao.find(ID_TEST);
-		assertNull("la transaction doit être un succés", document);
+		assertNull("la transaction doit Ãªtre un succÃ¨s", document);
 
 	}
 
@@ -186,7 +186,7 @@ public class DocumentModifyDaoTest {
 
 		assertEquals(4, documentDao.count());
 		document = documentDao.find(ID_TEST);
-		assertNull("la transaction doit être un succés", document);
+		assertNull("la transaction doit Ãªtre un succÃ¨s", document);
 
 	}
 
@@ -204,7 +204,7 @@ public class DocumentModifyDaoTest {
 		assertEquals(5, documentDao.count());
 
 		document = documentDao.find(ID_TEST);
-		assertNotNull("la transaction doit être un succés", document);
+		assertNotNull("la transaction doit Ãªtre un succÃ¨s", document);
 		assertEquals("update titre", document.getTitre());
 
 	}
@@ -223,7 +223,7 @@ public class DocumentModifyDaoTest {
 		assertEquals(5, documentDao.count());
 
 		document = documentDao.findSQL(ID_TEST);
-		assertNotNull("la transaction doit être un succés", document);
+		assertNotNull("la transaction doit Ãªtre un succÃ¨s", document);
 		assertEquals("update titre", document.getTitre());
 
 	}

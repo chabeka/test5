@@ -45,7 +45,7 @@ public class DocumentJdbcDaoTest {
 		documentDao.save(document);
 
 		document = documentDao.find(document.getId());
-		assertNotNull("la transaction doit être un succés", document);
+		assertNotNull("la transaction doit Ãªtre un succÃ¨s", document);
 		assertEquals("titre test", document.getTitre());
 	}
 
@@ -56,7 +56,7 @@ public class DocumentJdbcDaoTest {
 		document.setTitre("titre test");
 		try {
 			documentDao.save(document);
-			fail("le test doit être un échec");
+			fail("le test doit Ãªtre un Ã©chec");
 		} catch (DataAccessException e) {
 			
 			assertEquals(5, documentDao.count());

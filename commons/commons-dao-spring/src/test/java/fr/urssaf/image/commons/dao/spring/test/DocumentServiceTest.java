@@ -61,15 +61,15 @@ public class DocumentServiceTest extends
 
 		try {
 			documentService.save(docs);
-			fail("le test doit être un échec");
+			fail("le test doit Ãªtre un Ã©chec");
 		} catch (DataAccessException e) {
 			
 			PropertyValueException exception = (PropertyValueException) e
 					.getCause();
 
-			assertEquals("l'entité doit être document", Document.class
+			assertEquals("l'entitÃ© doit Ãªtre document", Document.class
 					.getCanonicalName(), exception.getEntityName());
-			assertEquals("la propriété doit être date", "date", exception
+			assertEquals("la propriÃ©tÃ© doit Ãªtre date", "date", exception
 					.getPropertyName());
 		}
 
