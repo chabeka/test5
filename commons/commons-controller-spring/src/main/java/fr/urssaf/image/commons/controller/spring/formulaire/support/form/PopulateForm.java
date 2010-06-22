@@ -140,7 +140,7 @@ public final class PopulateForm<F extends MyFormulaire> {
 				log
 						.warn("le champ "
 								+ key
-								+ " devrait être une collection ou un tableau car il comporte plusieurs valeurs:"
+								+ " devrait Ãªtre une collection ou un tableau car il comporte plusieurs valeurs:"
 								+ Log.getLogger(parametres, "|".charAt(0)));
 			}
 			return factory.getObject(key, type, parametres[0]);
@@ -230,7 +230,7 @@ public final class PopulateForm<F extends MyFormulaire> {
 			return mapElement;
 
 		} else {
-			log.error("le paramètre '" + field + "' doit comporter une clé");
+			log.error("le paramÃªtre '" + field + "' doit comporter une clÃ©");
 			return null;
 		}
 	}
@@ -280,8 +280,8 @@ public final class PopulateForm<F extends MyFormulaire> {
 			} else if (Set.class.isAssignableFrom(type)) {
 				liste = new HashSet<Object>();
 			} else {
-				log.warn("catégorie:collection type:" + type
-						+ " n'est pas implémentée ");
+				log.warn("catÃ©gorie:collection type:" + type
+						+ " n'est pas implÃ©mentÃ©e ");
 			}
 		} else {
 			try {

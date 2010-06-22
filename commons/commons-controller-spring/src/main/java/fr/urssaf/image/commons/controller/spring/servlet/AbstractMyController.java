@@ -76,18 +76,18 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 			this.controller = request.getServletPath().substring(1);
 		}
 
-		// traitement avant la récupération du formulaire
+		// traitement avant la rÃ©cupÃ©ration du formulaire
 		this.preFormulaire(request, reponse);
 
-		// récupération du formulaire
+		// rÃ©cupÃ©ration du formulaire
 		F formulaire = this.getFormulaire(request, reponse);
 
-		// traitement après la récupération du formulaire
+		// traitement aprÃ¨s la rÃ©cupÃ©ration du formulaire
 		this.postFormulaire(request, reponse);
 
-		// traitement des paramètres
+		// traitement des paramÃ¨tres
 		if (request.getParameterMap().size() > 0) {
-			// remise à zero de certains champs du formulaire
+			// remise Ã  zÃ©ro de certains champs du formulaire
 			String[] reset = request.getParameterValues(CONTROLLER.reset.name);
 			if (reset != null) {
 				formulaire.reset(reset);
@@ -105,7 +105,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 			return this.actionController.view(request, reponse);
 		} finally {
 
-			// paramètrage de la requête de retour
+			// paramÃ©trage de la requÃªte de retour
 			ExceptionController exptController = new ExceptionController();
 			request.setAttribute(AbstractMyController.ruleException,
 					exptController.allRuleExceptions(formulaire));
@@ -115,7 +115,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 			request.setAttribute(AbstractMyController.formulaire, formulaire);
 			request.setAttribute(AbstractMyController.url, this.controller);
 
-			// traitement après le retour de la vue
+			// traitement aprÃ¨s le retour de la vue
 			this.postView(request, reponse);
 
 		}
@@ -124,7 +124,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 	public final F getFormulaire(HttpServletRequest request,
 			HttpServletResponse reponse) {
 
-		// récupération du formulaire
+		// rÃ©cupÃ©ration du formulaire
 		F formulaire = getFormulaire(request.getSession());
 		if (formulaire == null) {
 			formulaire = this.createFormulaire(request, reponse);
@@ -132,7 +132,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 
 			request.getSession().setAttribute(getNameFormulaire(), formulaire);
 
-			// on ajoute les types à controler dans le formulaire
+			// on ajoute les types Ã  controler dans le formulaire
 			completeTypeFactory(this.classForm, request);
 
 		}
@@ -151,7 +151,7 @@ public abstract class AbstractMyController<F extends MyFormulaire> implements
 		return (F) session.getAttribute(getNameFormulaire());
 	}
 
-	// methode pour récupérer un formulaire associé à un controleur
+	// methode pour rÃ©cupÃ©rer un formulaire associÃ© Ã  un controleur
 	protected F createFormulaire(HttpServletRequest request,
 			HttpServletResponse reponse) {
 

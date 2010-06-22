@@ -110,7 +110,7 @@ public final class ClassFieldForm<F extends MyFormulaire> {
 		if (!typeValidator.isAssignableFrom(classe)) {
 			log.warn("l'annotation "
 					+ annotation.annotationType().getSimpleName()
-					+ " ne peut pas être appliqué sur le bean "+name+" de type "
+					+ " ne peut pas Ãªtre appliquÃ© sur le bean "+name+" de type "
 					+ classe.getSimpleName() + " mais "
 					+ typeValidator.getSimpleName());
 			return;

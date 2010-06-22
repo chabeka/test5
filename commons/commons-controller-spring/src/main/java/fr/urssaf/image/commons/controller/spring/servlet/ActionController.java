@@ -54,7 +54,7 @@ public class ActionController<F extends MyFormulaire> {
 			}
 		}
 
-		// vue du formulaire: page par défaut du controleur
+		// vue du formulaire: page par dÃ©faut du controleur
 		return this.controller.getDefaultView(request, reponse);
 
 	}

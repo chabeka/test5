@@ -51,12 +51,12 @@ public final class ClassRuleForm<F extends MyFormulaire> {
 	private boolean checkRule(Method methode) {
 
 		StringBuffer warn = new StringBuffer();
-		warn.append("la règle " + methode.getName() + " ");
+		warn.append("la rÃ¨gle " + methode.getName() + " ");
 
 		if (methode.getParameterTypes().length > 0) {
 
-			warn.append("ne doit pas comporter de paramètre ");
-			warn.append("pour être prise en compte");
+			warn.append("ne doit pas comporter de paramÃ¨tre ");
+			warn.append("pour Ãªtre prise en compte");
 			log.warn(warn.toString());
 
 			return false;

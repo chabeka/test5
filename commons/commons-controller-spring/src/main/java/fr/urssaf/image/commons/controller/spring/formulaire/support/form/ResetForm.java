@@ -134,7 +134,7 @@ public final class ResetForm<F extends MyFormulaire> {
 			}
 
 		} else {
-			log.error("le paramètre '" + key + "' doit comporter une clé");
+			log.error("le paramÃ¨tre '" + key + "' doit comporter une clÃ©");
 		}
 	}
 
