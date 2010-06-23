@@ -56,11 +56,11 @@
             <version>2.5</version>
             <configuration>
                <linkXref>false</linkXref>
-               <sourceEncoding>utf-8</sourceEncoding>
+               <sourceEncoding>UTF-8</sourceEncoding>
                <minimumTokens>100</minimumTokens>
                <targetJdk>1.6</targetJdk>
-            </configuration>            
-         </plugin>         
+            </configuration>
+         </plugin>
       </plugins>
    </build>
    
@@ -75,7 +75,12 @@
                <sourceEncoding>utf-8</sourceEncoding>
                <minimumTokens>100</minimumTokens>
                <targetJdk>1.6</targetJdk>
-            </configuration>            
+                  <rulesets>
+                     <!-- Two rule sets that come bundled with PMD -->
+                     <ruleset>/rulesets/braces.xml</ruleset>
+                     <ruleset>/rulesets/naming.xml</ruleset>
+                  </rulesets>
+            </configuration>
          </plugin>
       </plugins>
    </reporting>
