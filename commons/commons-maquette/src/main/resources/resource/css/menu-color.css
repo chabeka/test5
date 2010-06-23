@@ -1,27 +1,27 @@
-#container.frUrssafImage > #header.frUrssafImage > #menu {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu {
 	background: cssHeaderBackgroundColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul {
 	background: cssHeaderBackgroundColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu a.firstrow {
 	border-right: solid 1px cssMenuFirstRowFontColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li a.selected {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a.selected {
     background: cssSelectedMenuBackgroundColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li a:hover, #menu li a.active {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a:hover, #menu li a.active {
 	background: cssInfoboxBackgroundColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul ul li {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul ul li {
 	border-bottom: solid 1px #fff;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul ul {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul ul {
     border: solid 1px #000;
 }

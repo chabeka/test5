@@ -1,24 +1,24 @@
-body.frUrssafImage
+body.frUrssafImageCommonsMaquette
 {
     color: cssMainFontColor;
 }
 
-#container.frUrssafImage > #leftcol p.boxContent
+#container.frUrssafImageCommonsMaquette > #leftcol p.boxContent
 {
     color: cssHeaderBackgroundColor ;
 }
 
-#container.frUrssafImage > #content.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette
 {
 	color: cssContentFontColor;
 }
 
-#container.frUrssafImage > #content.frUrssafImage > div#pagereminder.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > div#pagereminder.frUrssafImageCommonsMaquette
 {
 	color: cssMainFontColor;
 }
 
-#container.frUrssafImage > #footer.frUrssafImage > #providedby > a
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #providedby > a
 {
     color: cssMainFontColor;
 }

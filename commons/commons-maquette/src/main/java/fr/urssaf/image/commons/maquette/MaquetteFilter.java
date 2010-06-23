@@ -138,6 +138,7 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 		String URI = rq.getRequestURI();
 		RegularExpression re = new RegularExpression( MaquetteConstant.GETRESOURCEURI );
 		match = re.matches(URI) ;
+logger.debug( "checkGetResource : " + match.toString() );
 		return match ;
 	}
 	
@@ -152,10 +153,11 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 		Boolean match = false ;
 		String patternList = getFilterConfig().getInitParameter(
 				paramName );
-
+logger.debug( "Pattern d'exclusion : " + patternList );
 		if (patternList != null) {
 			String[] filesToTest = patternList.split(";");
 			String URI = rq.getRequestURI();
+logger.debug( "URI pour test d'exclusion : " + URI );
 			match = UrlPatternMatcher.matchOne( filesToTest, URI ) ;
 		}
 

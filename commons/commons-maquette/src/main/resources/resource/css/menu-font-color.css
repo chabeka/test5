@@ -1,11 +1,11 @@
-#container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu a.firstrow {
 	color: cssMenuFirstRowFontColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li a {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a {
 	color: cssMenuLinkFontColor;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li a:hover, #container.frUrssafImage > #header.frUrssafImage > #menu li a.active {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a:hover, #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a.active {
 	color: cssMenuLinkHoverFontColor;
 }

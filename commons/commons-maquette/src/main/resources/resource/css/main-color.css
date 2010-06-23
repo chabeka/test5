@@ -1,34 +1,34 @@
-body.frUrssafImage
+body.frUrssafImageCommonsMaquette
 {
 	background: cssMainBackgroundColor;
 }
 
-body.frUrssafImage > #container.frUrssafImage
+body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 {
 	background: cssContentBackgroundColor url(cssLeftcolBackgroundImg) repeat-y; /* simule la colonne de gauche */
 }
 
-#container.frUrssafImage > #header.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette
 {
     background: cssHeaderBackgroundColor url(cssHeaderBackgroundImg) repeat-y ;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage > p.boxContent
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p.boxContent
 {
     background: cssInfoboxBackgroundColor ;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage >  h3.boxTitle
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette >  h3.boxTitle
 {
     background: cssSelectedMenuBackgroundColor;
 }
 
-#container.frUrssafImage > #content.frUrssafImage > div#pagereminder /* utile pour le titre de la page affiche dans content */
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > div#pagereminder /* utile pour le titre de la page affiche dans content */
 {
 	background: cssSelectedMenuBackgroundColor;
 }
 
-#container.frUrssafImage > #footer.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette
 {
 	background: cssHeaderBackgroundColor;
 }

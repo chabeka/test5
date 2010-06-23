@@ -1,4 +1,4 @@
-#container.frUrssafImage > #header.frUrssafImage > #menu 
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu 
 {
 	clear: both;
 	height: 21px;
@@ -7,7 +7,7 @@
 	background: #051A7D;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul 
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul 
 {
     float: left;
 	background: #051A7D;
@@ -17,43 +17,43 @@
 	width: 8em;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu a, #container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow 
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu a, #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu a.firstrow 
 {
     display: block;
 	margin: 0;
 	padding:  2px 2px 2px 3px;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu a.firstrow 
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu a.firstrow 
 {
 	border-right: 1px solid #EAEAEF ;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li a.selected 
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a.selected 
 {
     background: #05577D;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li a:hover, #container.frUrssafImage > #header.frUrssafImage > #menu li a.active {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a:hover, #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a.active {
 	background: #EAEAEF;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu li {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li {
 	position: relative;
 	width: 100%;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul ul li {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul ul li {
 	border-bottom: 1px solid #fff ;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul ul {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul ul {
     display: none ;
     position: absolute;
     border: 1px solid black ;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #menu ul ul ul {
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu ul ul ul {
     display: none ;
 	top: 0;
 	left: 100%;

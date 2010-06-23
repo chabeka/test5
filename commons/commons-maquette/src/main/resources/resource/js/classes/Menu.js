@@ -31,7 +31,7 @@ var MenuClass = new Class(
 	initialize: function( menuContainer )
 	{
 		if( !menuContainer )
-			menuContainer = $$("div#header.frUrssafImage > div#menu")[0] ;
+			menuContainer = $$("div#header.frUrssafImageCommonsMaquette > div#menu")[0] ;
 		
 		this.tree = menuContainer ;
 		

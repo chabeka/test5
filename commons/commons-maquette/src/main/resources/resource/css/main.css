@@ -1,9 +1,9 @@
-body.frUrssafImage
+body.frUrssafImageCommonsMaquette
 {
 	background: #A6A9CA;
 }
 
-body.frUrssafImage > #container.frUrssafImage
+body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 {
 	margin: 0 auto;
 	width: 90%;
@@ -13,7 +13,7 @@ body.frUrssafImage > #container.frUrssafImage
 	background: #FFF url(getResourceImageMaquette.do?name=/img/leftcol_aed.png) repeat-y; /* simule la colonne de gauche */
 }
 
-#container.frUrssafImage > #header.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette
 {
     padding: 0px 0px 0px 0px ;
     background: #051A7D url(getResourceImageMaquette.do?name=/img/degrade_h_aed.png) repeat-y ;
@@ -21,33 +21,33 @@ body.frUrssafImage > #container.frUrssafImage
 	 et pour IE7 qui n'affiche pas le contenu texte se trouvant dans cette zone */
 }
 
-#container.frUrssafImage > #header.frUrssafImage > h1#title-app.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > h1#title-app.frUrssafImageCommonsMaquette
 {
 	float: left;
 	padding-top: 10px;
 	margin: 0 0 0 20px;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #minheight.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #minheight.frUrssafImageCommonsMaquette
 {
 	float: left;
 	height: 49px;
 	width: 1px;	
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #logoimage.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #logoimage.frUrssafImageCommonsMaquette
 {
 	float: left;
 }
 
-#container.frUrssafImage > #header.frUrssafImage > #logoappli.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #logoappli.frUrssafImageCommonsMaquette
 {
 	float: right;
 	min-height: 49px;
 	max-height: 59px;
 }
 	
-#container.frUrssafImage > #leftcol.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette
 {
    clear:both; /* en cas de zoom de l'utilisateur, évite que leftcol se décale après le menu quand il sera sur 2 lignes */
 	float: left; /* positionner leftcol à gauche dans le conteneur */
@@ -56,53 +56,53 @@ body.frUrssafImage > #container.frUrssafImage
 	min-height: 500px;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage > p
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p
 {
 	margin: 0px 0px 2px; /* supprime la marge haute dans les leftcol > p */
 	padding:3px 0px 3px 1px;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage > p.boxContent
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p.boxContent
 {
     background: #EAEAEF ;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage > h3.boxTitle
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > h3.boxTitle
 {
     margin: 0;
     padding: 4px 0px 2px 0px;
     background: #05577D;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage > p#logout.boxContent
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p#logout.boxContent
 {
    text-align:center ;
 }
 
-#container.frUrssafImage > #leftcol.frUrssafImage > p#logout.boxContent > input.logout-user
+#container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p#logout.boxContent > input.logout-user
 {
    	margin-top: 5px;
 	padding: 0px 5px 0px 5px ;	
 }
 
-#container.frUrssafImage > #content.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette
 {
 	margin-left: 140px; /* même taille +5px que leftcol_aed.png qui est utilisé dans le container */
 }
 
-#container.frUrssafImage > #content.frUrssafImage > div#pagereminder.frUrssafImage /* utile pour le titre de la page affiché dans content */
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > div#pagereminder.frUrssafImageCommonsMaquette /* utile pour le titre de la page affiché dans content */
 {
    margin: 0 ;
 	padding: 4px 0px 2px 10px ; /* permet l'alignement avec les boites contenu dans leftcol */
 	background: #05577D;
 }
 
-#container.frUrssafImage > #content.frUrssafImage > #content-application.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > #content-application.frUrssafImageCommonsMaquette
 {
     padding: 0px 10px 10px 10px ;
 }
 
-#container.frUrssafImage > #footer.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette
 {
 	clear: both;
 	height:18px;
@@ -110,12 +110,12 @@ body.frUrssafImage > #container.frUrssafImage
 	background: #051A7D;
 }
 
-#container.frUrssafImage > #footer.frUrssafImage > #providedby.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #providedby.frUrssafImageCommonsMaquette
 {
     float:left;
 }
 
-#container.frUrssafImage > #footer.frUrssafImage > #copyright.frUrssafImage
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #copyright.frUrssafImageCommonsMaquette
 {
     float:right;
 }
