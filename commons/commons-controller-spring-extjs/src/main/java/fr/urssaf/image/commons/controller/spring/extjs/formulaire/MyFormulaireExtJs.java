@@ -13,6 +13,13 @@ public class MyFormulaireExtJs extends MyFormulaire {
 	private String formErrorField ;
 	
 	/**
+	 * @return the formErrorField
+	 */
+	public String getFormErrorField() {
+		return formErrorField;
+	}
+
+	/**
 	 * @param formErrorField the formErrorField to set
 	 */
 	public void initFormErrorField(String formErrorField) {

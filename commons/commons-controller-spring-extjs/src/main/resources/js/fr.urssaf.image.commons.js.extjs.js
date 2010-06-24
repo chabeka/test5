@@ -33,8 +33,8 @@ fr.urssaf.image.commons.extjs = {
   _actionOnFailure: {url:null, zoneName:null},
 
   /**
-   * desc 		Création d'un nouveau formulaire params return this
-   * 			Ajoute le champ action:xxx par défaut
+   * desc 		Creation d'un nouveau formulaire params return this
+   * 			Ajoute le champ action:xxx par defaut
    * params	pUrl (string)
    * params	pCible (string)
    * params	pTitle (string)
@@ -58,10 +58,10 @@ fr.urssaf.image.commons.extjs = {
     	config.width = pWidth ;
     config.frame = true ;
     
-    // création
+    // creation
     this.formulaire = new Ext.FormPanel( config );
     
-    // Normalement il était prévu d'utiliser les attributs name/value des boutons, mais ce n'est pas possible en ExtJS
+    // Normalement il etait prevu d'utiliser les attributs name/value des boutons, mais ce n'est pas possible en ExtJS
     // car Ext.Button ne dispose pas de ces 2 attributs
     var monChampController = new Ext.form.Hidden({
     	name: 'action:' + pActionController,
@@ -78,7 +78,7 @@ fr.urssaf.image.commons.extjs = {
   },
 
   /**
-   * desc 	Affichage des erreurs étendus return void
+   * desc 	Affichage des erreurs etendus return void
    */
    activerAffichageEtenduDesErreurs: function ()
    {
@@ -90,7 +90,7 @@ fr.urssaf.image.commons.extjs = {
    },
    
  /**
-  * desc 	Affichage des erreurs étendus return void
+  * desc 	Affichage des erreurs etendus return void
   */
   desactiverAffichageEtenduDesErreurs: function ()
   {
@@ -101,7 +101,7 @@ fr.urssaf.image.commons.extjs = {
   },
   
   /**
-   * desc 	Ajout d'un champ texte stockant la chaîne json de résultat, ou mise à jour du contenu du champ
+   * desc 	Ajout d'un champ texte stockant la chaine json de resultat, ou mise a jour du contenu du champ
    * params	pValue (string) base64 encoded
    * return this
    */
@@ -163,7 +163,7 @@ fr.urssaf.image.commons.extjs = {
   },
 
    /**
-    * desc 	Ajout d'un champ caché au formulaire
+    * desc 	Ajout d'un champ cache au formulaire
     * params	pName (string)
     * params	pValue (string)
     * return 	this
@@ -179,7 +179,7 @@ fr.urssaf.image.commons.extjs = {
   },
   
   /**
-   * desc 	Ajout d'un champ caché qui ne sera pas envoyé par le submit
+   * desc 	Ajout d'un champ cache qui ne sera pas envoye par le submit
    * params	pLabel (string)
    * params	pName (string)
    * params	pValue (string)
@@ -271,13 +271,13 @@ fr.urssaf.image.commons.extjs = {
    */
   ajouterBoutonRadio: function( pGroupLabel, pBoxLabel, pName, pValue, pChecked )
   {
-	// cas 1 : il existe déjà un bouton radio, on va donc rajouter
+	// cas 1 : il existe deja un bouton radio, on va donc rajouter
 	if( this.formulaire.getForm().findField( pName ) )
 	{
 		var config = this._getStandardConfigOptions( pName, null, null );
 		config.hideLabel = false ;
 	}
-	// cas 2 : on créé un nouveau bouton
+	// cas 2 : on cree un nouveau bouton
 	else
 	{
 		var config = this._getStandardConfigOptions( pName, null, pGroupLabel );
@@ -294,7 +294,7 @@ fr.urssaf.image.commons.extjs = {
   },
   
   /**
-   * desc 	Ajoute une liste déroulante au formulaire
+   * desc 	Ajoute une liste deroulante au formulaire
    * params	pLabel (string)
    * params	pName (string)
    * params	pValue (array)
@@ -302,14 +302,17 @@ fr.urssaf.image.commons.extjs = {
    * return this
    */
   ajouterListeDeroulante: function( pLabel, pName, pValue, pWidth )
-  {
+  {  
 	var config = this._getStandardConfigOptions( pName, null, pLabel );
+	config.hiddenName = pName; // propriÃ©tÃ© utilisÃ© pour envoyer la valeur de la liste et non pas son label
 	config.width = ( pWidth && Ext.isNumber( pWidth ) ) ? pWidth : 130 ;
 	config.mode = 'local' ;
-	config.store = this._getSimpleStoreFromArray( pValue ) ;
+	config.store =  this._getSimpleStoreFromArray( pValue ) ;
 	config.displayField = this._displayFieldColName ;
 	config.valueField = this._valueFieldColName ;
-	
+	config.selectOnFocus = true;
+	config.editable = false ;
+
 	var maListeDeroulante = new Ext.form.ComboBox( config );
 	
 	this.formulaire.add( maListeDeroulante ) ;
@@ -317,7 +320,7 @@ fr.urssaf.image.commons.extjs = {
   },  
 
   /**
-   * desc 	Création d'un bouton d'annulation return this
+   * desc 	Creation d'un bouton d'annulation return this
    * return this
    */
   ajouterBoutonAnnulation: function()
@@ -334,7 +337,7 @@ fr.urssaf.image.commons.extjs = {
   },
   
   /**
-   * desc 	Création d'un bouton de validation 
+   * desc 	Creation d'un bouton de validation 
    * params successFunction (function(param1,param2))
    * params failureFunction (function(param1,param2))
    * return this
@@ -358,7 +361,7 @@ fr.urssaf.image.commons.extjs = {
 	    		  			{
 	    		  				window.location = myExtJs._actionOnSuccess.url ;
 	    		  			}
-	    		  			// mise à jour d'une zone
+	    		  			// mise a jour d'une zone
 	    		  			else if( myExtJs._actionOnSuccess.zoneName != null )	
 	    		  			{
 								var el = Ext.get( myExtJs._actionOnSuccess.zoneName ) ;
@@ -372,13 +375,7 @@ fr.urssaf.image.commons.extjs = {
     					// erreur de connexion
     					if (a.failureType === Ext.form.Action.CONNECT_FAILURE) 
     					{
-                            Ext.Msg.alert('Erreur',
-                                'Status: '+a.response.status+': '+a.response.statusText);
-                        }
-    					// success: false
-                        if (a.failureType === Ext.form.Action.SERVER_INVALID)
-                        {
-                        	// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
+    						// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
                         	if( failureFunction )
     	    				{
         						failureFunction(f,a);
@@ -391,7 +388,7 @@ fr.urssaf.image.commons.extjs = {
     	    		  			{
     	    		  				window.location = myExtJs._actionOnFailure.url ;
     	    		  			}
-    	    		  			// mise à jour d'une zone
+    	    		  			// mise a jour d'une zone
     	    		  			else if( myExtJs._actionOnFailure.zoneName )	
     	    		  			{
     	    		  				var el = Ext.get( myExtJs._actionOnFailure.zoneName ) ;
@@ -399,6 +396,13 @@ fr.urssaf.image.commons.extjs = {
     	    		  					el.update( a.response.responseText );
     	    		  			}
     	    				}
+                        	
+                        }
+    					// success: false
+                        if (a.failureType === Ext.form.Action.SERVER_INVALID)
+                        {
+                            Ext.Msg.alert('Erreur',
+                                'Status: '+a.response.status+': '+a.response.statusText);
                         }
     				}
 	   			});
@@ -422,7 +426,7 @@ fr.urssaf.image.commons.extjs = {
   },
    
    /**
-    * desc		défini les url de redirection en cas de succes et d'echec de submit
+    * desc		defini les url de redirection en cas de succes et d'echec de submit
     * params	pUrlOnSuccess (string) 
     * params	pUrlOnFailure (string) 	
     * return 	void
@@ -434,7 +438,7 @@ fr.urssaf.image.commons.extjs = {
    },
    
    /**
-    * desc		défini les nom des zones de rafraichissement en cas de succes ou d'echec de submit
+    * desc		defini les nom des zones de rafraichissement en cas de succes ou d'echec de submit
     * params	pZoneNameOnSuccess (string)
     * params	pZoneNameOnFailure (string)	
     * return 	void
@@ -446,7 +450,7 @@ fr.urssaf.image.commons.extjs = {
    },
    
    /**
-    * desc		défini l'url de redirection en cas de succes de submit
+    * desc		defini l'url de redirection en cas de succes de submit
     * params	pUrl (string)
     * return 	void
     */
@@ -456,7 +460,7 @@ fr.urssaf.image.commons.extjs = {
    },
    
    /**
-    * desc		défini le nom de la zone de rafraichissement en cas de succes de submit
+    * desc		defini le nom de la zone de rafraichissement en cas de succes de submit
     * params	pZoneName (string) 	
     * return 	void
     */
@@ -466,7 +470,7 @@ fr.urssaf.image.commons.extjs = {
    },
    
    /**
-    * desc		défini le nom de la zone de rafraichissement en cas d'echec de submit
+    * desc		defini le nom de la zone de rafraichissement en cas d'echec de submit
     * params	pUrl (string)	
     * return 	void
     */
@@ -476,7 +480,7 @@ fr.urssaf.image.commons.extjs = {
    },
    
    /**
-    * desc		défini le nom de la zone de rafraichissement en cas d'echec de submit
+    * desc		defini le nom de la zone de rafraichissement en cas d'echec de submit
     * params	pZoneName (string) 	
     * return 	void
     */
@@ -506,11 +510,11 @@ fr.urssaf.image.commons.extjs = {
   				&& Ext.isBoolean( formResult.success )
   				&& formResult.success == true )
 	  		{
-	  			Ext.Msg.alert( 'Résultat', 'Le formulaire a été envoyé avec succès' );
+	  			Ext.Msg.alert( 'Resultat', 'Le formulaire a ete envoye avec succes' );
 	  		}
 	  		else
 	  		{
-	  			Ext.Msg.alert( 'Résultat', 'Des erreurs sont apparus lors de la validation du formulaire' );
+	  			Ext.Msg.alert( 'Resultat', 'Des erreurs sont apparus lors de la validation du formulaire' );
 	  			if( formResult.errors )
 	  			{
 	  				var errorList = formResult.errors ;
@@ -557,23 +561,19 @@ fr.urssaf.image.commons.extjs = {
   },
   
    /**
-    * desc 		Créé une source de donnée ayant 2 champs : key et field
-    * params	pArray (array)
+    * desc 		Cree une source de donnee ayant 2 champs : key et field
+    * params	pArray (array) ex: pArray = [["homme", 12], ["femme", 5]];
     * return	Ext.data.SimpleStore
     */
   _getSimpleStoreFromArray: function( pArray )
   {
 	  if( pArray && Ext.isArray( pArray ) )
 	  {
-		  var config = this._getStandardConfigOptions();
-		  config.fields = new Array( this._displayFieldColName, this._displayFieldColName ) ;
-		  config.data = new Array ;
-		  
-		  for( var key in pArray ) {
-			  config.data[key] = pArray[key] ;
-		  }
-		  
-		  return new Ext.data.SimpleStore( config );
+		  var config = this._getStandardConfigOptions() ;
+		  config.fields = new Array( this._displayFieldColName, this._valueFieldColName ) ;
+		  config.data = pArray ;
+	  
+		  return new Ext.data.SimpleStore( config ) ;
 	  }
   }
   

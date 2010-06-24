@@ -39,7 +39,7 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 			HttpServletResponse reponse )
 	{
 		if( request.getHeader("X-Requested-With") != null
-			&& request.getHeader("X-Requested-With") == "XMLHttpRequest" )
+			&& request.getHeader("X-Requested-With").equals( "XMLHttpRequest" ) )
 		{
 			
 			MyFormulaireExtJs monFormulaire = this.getFormulaire(request, reponse);
@@ -85,7 +85,7 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 		if( errorList != null 
 			&& errorList.size() > 0 )
 		{
-			jsonObject.accumulate("success", "false") ;
+			jsonObject.accumulate("success", false) ;
 			
 			for( String fieldName : monFormulaire.getAllFieldName() )
 			{
@@ -112,7 +112,7 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 		// succes
 		else
 		{
-			jsonObject.accumulate("success", "true") ;
+			jsonObject.accumulate("success", true) ;
 		}
 
 		String jsonString = jsonObject.toString() ;
