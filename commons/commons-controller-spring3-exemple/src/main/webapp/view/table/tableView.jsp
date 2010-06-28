@@ -33,52 +33,51 @@
 	<c:forEach var="document" items="${formulaire.documents}"
 		varStatus="status">
 
-		<c:set var="titre" value="${formulaire.titres[document.id]}" />
-		<c:set var="etat" value="${formulaire.etats[document.id]}" />
-		<c:set var="etats" value="${formulaire.etatss[document.id]}" />
-		<fmt:formatDate var="openDate" value="${formulaire.openDates[document.id]}" pattern="dd/MM/yyyy" />
-		<fmt:formatDate var="closeDate" value="${formulaire.closeDates[document.id]}" pattern="yyyy-MM-dd" />
-		<c:set var="level" value="${formulaire.levels[document.id]}" />
-		<c:set var="flag" value="${formulaire.flags[document.id]}" />
-		<c:set var="comment" value="${formulaire.comments[document.id]}" />
-		
 		<tr>
 			<td>
-				<form:input path='titres[${document.id}]'/> <form:errors path='titres[${document.id}]' />
+				<form:input path='interneFormulaire[${document.id}].titre'/> 
+				<h6 class="erreur"><form:errors path='interneFormulaire[${document.id}].titre' /></h6>
 			</td>
 
 			<td>
-				<form:select path='etats[${document.id}]'>
+				<form:select path='interneFormulaire[${document.id}].etat'>
 					<form:options items='${etatOptions}'/>
 				</form:select>
+				<h6 class="erreur"><form:errors path='interneFormulaire[${document.id}].etat'/></h6>
 			</td>
 
 			<td>
-				<form:input path='openDates[${document.id}]' /> <form:errors path='openDates[${document.id}]'/>
+				<form:input path='interneFormulaire[${document.id}].openDate' />
+				<h6 class="erreur"> <form:errors path='interneFormulaire[${document.id}].openDate'/></h6>
 			</td>
 
 			<td>
-				<form:input path='closeDates[${document.id}]' /> <form:errors path='closeDates[${document.id}]'/>
+				<form:input path='interneFormulaire[${document.id}].closeDate' /> 
+				<h6 class="erreur"><form:errors path='interneFormulaire[${document.id}].closeDate'/></h6>
 			</td>
 
 			<td>
-				<form:radiobutton path='levels[${document.id}]' value='${level}'/>
-				<form:radiobutton path='levels[${document.id}]' value='${level}'/>
-				<form:radiobutton path='levels[${document.id}]' value='${level}'/>
+				<c:forEach begin="1" end="3" varStatus="status">
+					<form:radiobutton path='interneFormulaire[${document.id}].level' value='${status.index}'/>
+				</c:forEach>
+				<h6 class="erreur"><form:errors path='interneFormulaire[${document.id}].level'/></h6>
 			</td>
 
 			<td align="center">
-				<form:checkbox path='flags[${document.id}]' value='${flag}'/>
+				<form:checkbox path='interneFormulaire[${document.id}].flag' value='${flag}'/>
+				<h6 class="erreur"><form:errors path='interneFormulaire[${document.id}].flag'/></h6>
 			</td>
 			
 			<td>
-				<form:select path='etatss[${document.id}]' multiple='true' size='4' >
+				<form:select path='interneFormulaire[${document.id}].etats' multiple='true' size='4' >
 					<form:options items='${etatOptions}'/>
 				</form:select>
+				<h6 class="erreur"><form:errors path='interneFormulaire[${document.id}].etats'/></h6>
 			</td>
 			
 			<td>
-				<form:textarea path='comments[${document.id}]'/>
+				<form:textarea path='interneFormulaire[${document.id}].interneFormulaire.comment'/>
+				<h6 class="erreur"> <form:errors path='interneFormulaire[${document.id}].interneFormulaire.comment'/></h6>
 			</td>
 		</tr>
 	</c:forEach>

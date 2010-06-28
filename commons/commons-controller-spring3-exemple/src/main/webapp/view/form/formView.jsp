@@ -49,12 +49,9 @@
 	<tr>
 		<td><fmt:message key="document.level" /></td>
 		<td>
-				
-			<form:radiobutton path="level" value="0"/>
-			<form:radiobutton path="level" value="1"/>
-			<form:radiobutton path="level" value="2"/>
-			
-			
+			<c:forEach begin="1" end="3" varStatus="status">
+					<form:radiobutton path="level" value='${status.index}'/>
+			</c:forEach>
 		</td>
 		<td class="erreur"><form:errors path="level" /></td>
 	</tr>

@@ -14,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.urssaf.image.commons.controller.spring3.exemple.controller.base.AbstractExempleController;
 import fr.urssaf.image.commons.controller.spring3.exemple.formulaire.TableFormulaire;
@@ -23,11 +25,12 @@ import fr.urssaf.image.commons.controller.spring3.exemple.service.DocumentServic
 
 @Controller
 @RequestMapping(value = "/table")
+@SessionAttributes("formulaire")
 public class TableController extends AbstractExempleController {
 
 	@Autowired
 	private DocumentService documentService;
-
+	
 	@RequestMapping(method = RequestMethod.GET)
 	protected String getDefaultView(Model model) {
 
@@ -38,11 +41,11 @@ public class TableController extends AbstractExempleController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String update(@Valid TableFormulaire tableFormuaire,BindingResult result) {
+	public String update(@ModelAttribute("formulaire") @Valid TableFormulaire tableFormuaire,BindingResult result) {
 
 		
 		if (result.hasErrors()) {
-			return defaultView();
+			return this.defaultView();
 		}
 		
 		documentService.update(tableFormuaire);

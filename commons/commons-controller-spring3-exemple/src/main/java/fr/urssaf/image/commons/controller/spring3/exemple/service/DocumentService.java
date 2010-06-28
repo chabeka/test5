@@ -93,19 +93,26 @@ public class DocumentService {
 
 	public void update(TableFormulaire formulaire) {
 
-		for (Integer id : formulaire.getTitres().keySet()) {
+		for (Document document : formulaire.getDocuments()) {
 
-			Document document = documents.get(id);
+			Integer id = document.getId();
 
-			document.setTitre(formulaire.getTitres().get(id));
-			document.setOpenDate(formulaire.getOpenDates().get(id));
-			document.setCloseDate(formulaire.getCloseDates().get(id));
-			document.setEtat(formulaire.getEtats().get(id));
-			document.setLevel(formulaire.getLevels().get(id));
-			document
-					.setFlag(BooleanUtil.getBool(formulaire.getFlags().get(id)));
-			document.setEtats(formulaire.getEtatss().get(id));
-			document.setComment(formulaire.getComments().get(id));
+			document.setTitre(formulaire.getInterneFormulaire().get(id)
+					.getTitre());
+			document.setOpenDate(formulaire.getInterneFormulaire().get(id)
+					.getOpenDate());
+			document.setCloseDate(formulaire.getInterneFormulaire().get(id)
+					.getCloseDate());
+			document.setEtat(formulaire.getInterneFormulaire().get(id)
+					.getEtat());
+			document.setLevel(formulaire.getInterneFormulaire().get(id)
+					.getLevel());
+			document.setFlag(BooleanUtil.getBool(formulaire
+					.getInterneFormulaire().get(id).getFlag()));
+			document.setEtats(formulaire.getInterneFormulaire().get(id)
+					.getEtats());
+			document.setComment(formulaire.getInterneFormulaire().get(id)
+					.getInterneFormulaire().getComment());
 		}
 	}
 }

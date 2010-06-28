@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import fr.urssaf.image.commons.controller.spring3.exemple.modele.Document;
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Etat;
 import fr.urssaf.image.commons.util.string.StringUtil;
 
@@ -31,6 +32,18 @@ public class FormFormulaire {
 	private boolean flag;
 
 	private Set<Etat> etats;
+	
+	public void init(Document document){
+		this.setCloseDate(document.getCloseDate());
+		this.setEtat(document.getEtat());
+		this.setEtats(document.getEtats());
+		this.setFlag(document.getFlag());
+		this.setLevel(document.getLevel());
+		this.setOpenDate(document.getOpenDate());
+		this.setTitre(document.getTitre());
+		this.getInterneFormulaire().setComment(document.getComment());
+	}
+	
 
 	@NotEmpty
 	public String getTitre() {
