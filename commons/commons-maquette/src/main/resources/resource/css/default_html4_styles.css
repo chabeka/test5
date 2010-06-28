@@ -34,10 +34,14 @@ html,
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tfoot, tfoot.frUrssafImageCommonsMaquette	{ display: table-footer-group }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * col, col.frUrssafImageCommonsMaquette		{ display: table-column }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * colgroup, colgroup.frUrssafImageCommonsMaquette	{ display: table-column-group }
+/* 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * td, td.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette			{ display: table-cell }
+*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * caption, caption.frUrssafImageCommonsMaquette	{ display: table-caption }
+/*
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette			{ font-weight: bolder; text-align: center }
+*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * caption, caption.frUrssafImageCommonsMaquette	{ text-align: center }
 body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * h1, h1.frUrssafImageCommonsMaquette	{ font-size: 2em; margin: .67em 0 }
@@ -89,6 +93,7 @@ body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * sup, sup.frUrssafImageCommonsMaquette 	{ font-size: .83em }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * sub, sub.frUrssafImageCommonsMaquette  { vertical-align: sub }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * sup, sup.frUrssafImageCommonsMaquette  { vertical-align: super }
+/*
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * table, table.frUrssafImageCommonsMaquette	{ border-spacing: 2px; }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * thead, thead.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tbody, tbody.frUrssafImageCommonsMaquette,
@@ -96,6 +101,7 @@ body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * td, td.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tr, tr.frUrssafImageCommonsMaquette    { vertical-align: inherit }
+*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * s, s.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * strike, strike.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * del, del.frUrssafImageCommonsMaquette  { text-decoration: line-through }
