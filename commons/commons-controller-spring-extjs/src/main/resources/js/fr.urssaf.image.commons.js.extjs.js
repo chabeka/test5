@@ -8,6 +8,11 @@ fr.urssaf.image.commons.extjs = {
   formulaire: null, 
   
   /**
+   * desc 	permet a l'objet de savoir si le formulaire a deja ete dessine. On ne peut dessiner le formulaire qu'une seule fois.
+   */
+  _hasBeenRendered: false,
+  
+  /**
    * desc 	name given in array SimpleStore.fields and used to define display column data
    */
   _displayFieldColName: 'displayCol',
@@ -36,13 +41,13 @@ fr.urssaf.image.commons.extjs = {
    * desc 		Creation d'un nouveau formulaire params return this
    * 			Ajoute le champ action:xxx par defaut
    * params	pUrl (string)
-   * params	pCible (string)
    * params	pTitle (string)
    * params	pStandardSubmit (boolean)
    * params	pWidth (int)
-   * return 	this
+   * params	pLabelWidth (int)
+   * return this
    */
-  creerFormulaire: function( pActionController, pUrl, pCible, pTitle, pStandardSubmit, pWidth )
+  creerFormulaire: function( pActionController, pUrl, pTitle, pStandardSubmit, pWidth, pLabelWidth )
   {
     // initialisation
     this.formulaire = null ;
@@ -50,13 +55,15 @@ fr.urssaf.image.commons.extjs = {
     // configuration
     var config = this._getStandardConfigOptions();
     this._addConfigValue( config, 'url', pUrl );
-    this._addConfigValue( config, 'renderTo', pCible );
     this._addConfigValue( config, 'title', pTitle );
     if( pStandardSubmit && Ext.isBoolean( pStandardSubmit ) )
      	config.standardSubmit = pStandardSubmit ;
     if( pWidth && Ext.isNumber( pWidth ) )
     	config.width = pWidth ;
+    if( pLabelWidth && Ext.isNumber( pLabelWidth ) )
+    	config.labelWidth = pLabelWidth ;
     config.frame = true ;
+    config.buttonAlign = 'left' ;
     
     // creation
     this.formulaire = new Ext.FormPanel( config );
@@ -132,11 +139,14 @@ fr.urssaf.image.commons.extjs = {
    * params	pLabel (string)
    * params	pName (string)
    * params	pValue (string)
+   * params pWidth (int)
    * return 	this
    */
-   ajouterChampTexteSimple: function( pLabel, pName, pValue )
+   ajouterChampTexteSimple: function( pLabel, pName, pValue, pWidth )
    {
 	 var config = this._getStandardConfigOptions( pName, pValue, pLabel );
+	 if( pWidth && Ext.isNumber( pWidth ) )
+		 config.width = pWidth ;
 	 
 	 var monChampTexteSimple = new Ext.form.TextField( config );
  		
@@ -149,12 +159,15 @@ fr.urssaf.image.commons.extjs = {
     * params	pLabel (string)
     * params	pName (string)
     * params	pValue (string)
+    * params 	pWidth (int)
     * return 	this
     */
-  ajouterChampPassword: function( pLabel, pName, pValue )
+  ajouterChampPassword: function( pLabel, pName, pValue, pWidth )
   {
 	var config = this._getStandardConfigOptions( pName, pValue, pLabel );
 	config.inputType = 'password' ;
+	if( pWidth && Ext.isNumber( pWidth ) )
+		 config.width = pWidth ;
 	
 	var monChampPassword = new Ext.form.TextField( config );
 		
@@ -206,7 +219,8 @@ fr.urssaf.image.commons.extjs = {
   ajouterChampDate: function( pLabel, pName, pValue )
   {
 	 var config = this._getStandardConfigOptions( pName, pValue, pLabel );
-	 
+	 config.format = 'd/m/Y' ;
+
      var monChampDate = new Ext.form.DateField( config );
 
      this.formulaire.add( monChampDate ) ; 		
@@ -245,9 +259,10 @@ fr.urssaf.image.commons.extjs = {
    * params	pName (string)
    * params	pValue (string)
    * params	pChecked (bool)
+   * params pAddResetHiddenField (bool)
    * return 	this
    */
-  ajouterCaseACocher: function( pLabel, pName, pValue, pChecked )
+  ajouterCaseACocher: function( pLabel, pName, pValue, pChecked, pAddResetHiddenField )
   {
 	var config = this._getStandardConfigOptions( pName, null, pLabel );
 	this._addConfigValue( config, 'inputValue', pValue ) ;
@@ -256,7 +271,16 @@ fr.urssaf.image.commons.extjs = {
 	
 	maCaseACocher = new Ext.form.Checkbox( config ) ;
 
-    this.formulaire.add( maCaseACocher ) ; 		
+    this.formulaire.add( maCaseACocher ) ;
+    
+    // Ajout d'un champ cache pour le comportement des checkbox sous commons-controller-spring
+    if( pAddResetHiddenField 
+    	&& Ext.isBoolean( pAddResetHiddenField ) 
+    	&& pAddResetHiddenField == true )
+    {
+    	this.ajouterChampCache( 'reset', pName ) ;
+    }
+    
     return this;
   },
 
@@ -297,17 +321,17 @@ fr.urssaf.image.commons.extjs = {
    * desc 	Ajoute une liste deroulante au formulaire
    * params	pLabel (string)
    * params	pName (string)
-   * params	pValue (array)
+   * params	pValue (array) (array) ex: pValue = [["homme", 12], ["femme", 5]];
    * params	pWidth (int)
    * return this
    */
   ajouterListeDeroulante: function( pLabel, pName, pValue, pWidth )
-  {  
+  {
 	var config = this._getStandardConfigOptions( pName, null, pLabel );
-	config.hiddenName = pName; // propriété utilisé pour envoyer la valeur de la liste et non pas son label
+	config.hiddenName = pName; // propriete utilise pour envoyer la valeur de la liste et non pas son label
 	config.width = ( pWidth && Ext.isNumber( pWidth ) ) ? pWidth : 130 ;
 	config.mode = 'local' ;
-	config.store =  this._getSimpleStoreFromArray( pValue ) ;
+	config.store = this._getSimpleStoreFromArray( pValue ) ;
 	config.displayField = this._displayFieldColName ;
 	config.valueField = this._valueFieldColName ;
 	config.selectOnFocus = true;
@@ -321,32 +345,45 @@ fr.urssaf.image.commons.extjs = {
 
   /**
    * desc 	Creation d'un bouton d'annulation return this
+   * 		Les boutons sont alignes sur la meme ligne si le formulaire n'a pas deja ete calcule (methode render)
+   * 		Sinon ils seront empiles les uns au dessus des autres. Il est donc preferable de creer les boutons avant 
+   * 		d'appeler la methode dessinerFormulaire 
    * return this
    */
   ajouterBoutonAnnulation: function()
   {
-    var monBoutonAnnulation = new Ext.Button({
-	  	text: 'Annuler',
-	  	handler: function(){
-    		fr.urssaf.image.commons.extjs.formulaire.getForm().reset();
-	  	}
-	  } );	
+	if( this._hasBeenRendered == false )
+	{
+		config = {text: 'Annuler'} ;
+	    handler = function(){fr.urssaf.image.commons.extjs.formulaire.getForm().reset();} ;
+	    this.formulaire.addButton( config, handler );
+	}
+	else
+	{
+	    var monBoutonAnnulation = new Ext.Button({
+		  	text: 'Annuler',
+		  	handler: function(){
+	    		fr.urssaf.image.commons.extjs.formulaire.getForm().reset();
+		  	}
+		  } );	
+	    this.formulaire.add( monBoutonAnnulation ) ;
+	}
     
-    this.formulaire.add( monBoutonAnnulation ) ;
     return this;
   },
   
   /**
-   * desc 	Creation d'un bouton de validation 
+   * desc 	Creation d'un bouton de validation (principe identique a la creation du bouton d'annulation)
    * params successFunction (function(param1,param2))
    * params failureFunction (function(param1,param2))
    * return this
    */
   ajouterBoutonValidation: function( successFunction, failureFunction )
   {
-    var monBoutonValidation = new Ext.Button({
-	  	text: 'Valider',
-	  	handler: function(){
+	if( this._hasBeenRendered == false )
+	{
+		config = {text: 'Valider'};
+		handler = function(){
     		var myExtJs = fr.urssaf.image.commons.extjs ;
     		myExtJs.formulaire.getForm().submit({
 	  			success: function(f,a){
@@ -406,24 +443,106 @@ fr.urssaf.image.commons.extjs = {
                         }
     				}
 	   			});
-	  		}
-	  });
-    
-    this.formulaire.add( monBoutonValidation ) ;
+	  		} ;
+	  	
+	  	this.formulaire.addButton( config, handler ) ;
+	}
+	else
+	{
+	    var monBoutonValidation = new Ext.Button({
+		  	text: 'Valider',
+		  	handler: function(){
+	    		var myExtJs = fr.urssaf.image.commons.extjs ;
+	    		myExtJs.formulaire.getForm().submit({
+		  			success: function(f,a){
+							// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
+	    					if( successFunction )
+		    				{
+		    					successFunction(f,a);
+		    				}else
+		    				{
+		    					// redirection
+		    		  			if( myExtJs._actionOnSuccess.url != null )
+		    		  			{
+		    		  				window.location = myExtJs._actionOnSuccess.url ;
+		    		  			}
+		    		  			// mise a jour d'une zone
+		    		  			else if( myExtJs._actionOnSuccess.zoneName != null )	
+		    		  			{
+									var el = Ext.get( myExtJs._actionOnSuccess.zoneName ) ;
+									if( el )
+										el.update( a.response.responseText );
+		    		  			}
+		    				}
+	
+	    				},
+	 	  			failure: function(f,a){
+	    					// erreur de connexion
+	    					if (a.failureType === Ext.form.Action.CONNECT_FAILURE) 
+	    					{
+	    						// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
+	                        	if( failureFunction )
+	    	    				{
+	        						failureFunction(f,a);
+	    	    				}
+	                        	// comportements par defaut
+	                        	else
+	    	    				{
+	                        		// redirection
+	    	    		  			if( myExtJs._actionOnFailure.url != null )
+	    	    		  			{
+	    	    		  				window.location = myExtJs._actionOnFailure.url ;
+	    	    		  			}
+	    	    		  			// mise a jour d'une zone
+	    	    		  			else if( myExtJs._actionOnFailure.zoneName )	
+	    	    		  			{
+	    	    		  				var el = Ext.get( myExtJs._actionOnFailure.zoneName ) ;
+	    	    		  				if( el )
+	    	    		  					el.update( a.response.responseText );
+	    	    		  			}
+	    	    				}
+	                        	
+	                        }
+	    					// success: false
+	                        if (a.failureType === Ext.form.Action.SERVER_INVALID)
+	                        {
+	                            Ext.Msg.alert('Erreur',
+	                                'Status: '+a.response.status+': '+a.response.statusText);
+	                        }
+	    				}
+		   			});
+		  		}
+		  });
+	    
+	    this.formulaire.add( monBoutonValidation ) ;
+	}
+	
     return this;
   },
   
- /**
-  * desc 	(re)dessine le formulaire return this
-  * return	this
-  */
-  dessinerFormulaire: function(){
-    this.formulaire.doLayout();
-    
-    Ext.onReady( function(){ fr.urssaf.image.commons.extjs._addErrorManagementInStandardMode() ; } ) ;
-    
-    return this ;
-  },
+  /**
+   * desc 	dessine le formulaire return this
+   * 		Ne peut etre appele qu'une seule fois
+   * params	pCible (string)
+   * return	Boolean
+   */
+   dessinerFormulaire: function( pCible )
+   {
+ 	 displayDone = false ;
+ 	
+ 	 if( this._hasBeenRendered == false )
+ 	 {
+ 		this.formulaire.render( pCible ) ;
+ 		this._hasBeenRendered = true ;
+ 		this.formulaire.doLayout();
+ 	    
+ 	    Ext.onReady( function(){ fr.urssaf.image.commons.extjs._addErrorManagementInStandardMode() ; } ) ;
+ 	    
+ 	    displayZone = true ;
+ 	 }
+ 	    
+     return displayZone ;
+   },
    
    /**
     * desc		defini les url de redirection en cas de succes et d'echec de submit
@@ -562,7 +681,7 @@ fr.urssaf.image.commons.extjs = {
   
    /**
     * desc 		Cree une source de donnee ayant 2 champs : key et field
-    * params	pArray (array) ex: pArray = [["homme", 12], ["femme", 5]];
+    * params	pArray
     * return	Ext.data.SimpleStore
     */
   _getSimpleStoreFromArray: function( pArray )

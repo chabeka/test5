@@ -1,6 +1,5 @@
 package fr.urssaf.image.commons.controller.spring.extjs.formulaire;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
