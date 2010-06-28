@@ -12,7 +12,7 @@ import java.lang.annotation.ElementType;
 
 @Target( { ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = {InfValidator.class})
 @Documented
 public @interface Inf {
 

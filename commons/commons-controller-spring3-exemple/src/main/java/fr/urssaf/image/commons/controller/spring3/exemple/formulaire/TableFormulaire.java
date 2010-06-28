@@ -6,21 +6,13 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.springframework.validation.Errors;
+
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Document;
 
 public class TableFormulaire {
 
-	private String test;
-
 	private List<Document> documents;
-
-	public void setTest(String test) {
-		this.test = test;
-	}
-
-	public String getTest() {
-		return test;
-	}
 
 	public List<Document> getDocuments() {
 		return documents;
@@ -45,26 +37,21 @@ public class TableFormulaire {
 	public Map<Integer, FormFormulaire> getInterneFormulaire() {
 		return this.interneFormulaire;
 	}
-
-	// @Rule(exception = "rule.validDate")
-	// public Map<String, RuleException> validDate() {
-	//
-	// Map<String, RuleException> ruleExceptions = new HashMap<String,
-	// RuleException>();
-	// for (Integer id : this.closeDates.keySet()) {
-	//
-	// Date closeDate = this.closeDates.get(id);
-	// Date openDate = this.openDates.get(id);
-	// AbstractRuleForm dateRule = new RuleFormUtil.DateRule(closeDate,
-	// openDate);
-	//
-	// ruleExceptions.put(Integer.toString(id), dateRule
-	// .getRuleException());
-	//
-	// }
-	//
-	// return ruleExceptions;
-	//
-	// }
+	
+	public void validate(Errors errors) {
+		
+		for(Integer id:interneFormulaire.keySet()){
+			
+			FormFormulaire formulaire = interneFormulaire.get(id);
+			
+			RuleFormUtil.DateRule dateRule = new RuleFormUtil.DateRule(formulaire.getCloseDate(),
+					formulaire.getOpenDate());
+			
+			if (!dateRule.isValid()) {
+				errors.rejectValue("interneFormulaire["+id+"].closeDate","validDate");
+			}
+		}
+		
+	}
 
 }

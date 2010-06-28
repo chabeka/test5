@@ -10,6 +10,7 @@ import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.Errors;
 
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Document;
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Etat;
@@ -109,14 +110,17 @@ public class FormFormulaire {
 		this.flag = flag;
 	}
 
-	// @Rule(exception = "rule.validDate")
-	// public RuleException validDate() {
-	// AbstractRuleForm dateRule = new RuleFormUtil.DateRule(this.closeDate,
-	// this.openDate);
-	//
-	// return dateRule.getRuleException();
-	//
-	// }
+	public void validate(Errors errors) {
+		
+		RuleFormUtil.DateRule dateRule = new RuleFormUtil.DateRule(this.closeDate,
+				this.openDate);
+		
+		if (!dateRule.isValid()) {
+			errors.rejectValue("closeDate","validDate");
+		}
+		
+		
+	}
 
 	public InterneFormulaire interneFormulaire = new InterneFormulaire();
 

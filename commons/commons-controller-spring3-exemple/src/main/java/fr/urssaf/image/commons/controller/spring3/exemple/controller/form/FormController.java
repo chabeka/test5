@@ -2,6 +2,7 @@ package fr.urssaf.image.commons.controller.spring3.exemple.controller.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -35,7 +36,7 @@ public class FormController extends AbstractExempleController{
 
 	@RequestMapping(method = RequestMethod.POST)
 	protected String save(@Valid FormFormulaire formFormulaire, BindingResult result) {
-
+		formFormulaire.validate(result);
 		if (result.hasErrors()) {
 			return defaultView();
 		}
@@ -53,7 +54,7 @@ public class FormController extends AbstractExempleController{
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, "closeDate",
 				new CustomDateEditor(dateFormat, true));
