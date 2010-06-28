@@ -104,7 +104,7 @@ public class ImplMenu implements IMenu {
 		}
 		
 		MenuItem miWinMe = new MenuItem();
-		miWinMe.setLink( "/commons-maquette-exemple/filAriane.jsp" ); // "wME.com");
+		miWinMe.setLink( "/commons-maquette-exemple/09_filAriane.jsp" ); // "wME.com");
 		miWinMe.setTitle("windows Millenium");
 		try {
 			miKrosoftOS.addChild( miWinMe ) ;

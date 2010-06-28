@@ -8,5 +8,6 @@
 </head>
 <body>
 <h3>Bienvenue</h3>
+Ce script contient une erreur dans la balise meta : elle n'est ni autofermée, ni fermée.
 </body>
 </html>

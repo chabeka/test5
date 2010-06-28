@@ -16,7 +16,7 @@
 		<filter-class>fr.urssaf.image.commons.maquette.MaquetteFilter</filter-class>
 		<init-param>
 			<param-name>excludeFiles</param-name>
-			<param-value>*/index.jsp</param-value>
+			<param-value>/commons-maquette-exemple/index.jsp</param-value>
 			<!-- 
 			Liste des requêtes à exclure, même fonctionnement que le tag
 			url-pattern de servlet-mapping On peut préciser plusieurs requête en

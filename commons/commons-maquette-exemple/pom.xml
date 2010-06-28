@@ -55,7 +55,7 @@
       <groupId>fr.urssaf.image.commons</groupId>
       <artifactId>commons-maquette</artifactId>
       <version>0.0.1-SNAPSHOT</version>
-    </dependency>
+    </dependency>    
   </dependencies>
 
 	<distributionManagement>
