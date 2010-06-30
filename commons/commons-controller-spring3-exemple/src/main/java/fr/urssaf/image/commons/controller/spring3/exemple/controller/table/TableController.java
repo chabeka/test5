@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import fr.urssaf.image.commons.controller.spring3.exemple.controller.base.AbstractExempleController;
+import fr.urssaf.image.commons.controller.spring3.exemple.controller.base.BaseExempleController;
 import fr.urssaf.image.commons.controller.spring3.exemple.formulaire.TableFormulaire;
 import fr.urssaf.image.commons.controller.spring3.exemple.service.DocumentService;
 
 @Controller
 @RequestMapping(value = "/table")
 @SessionAttributes("formulaire")
-public class TableController extends AbstractExempleController {
+public class TableController extends BaseExempleController<TableFormulaire> {
 
 	@Autowired
 	private DocumentService documentService;

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import fr.urssaf.image.commons.controller.spring3.exemple.controller.base.AbstractExempleController;
+import fr.urssaf.image.commons.controller.spring3.exemple.controller.base.BaseExempleController;
 import fr.urssaf.image.commons.controller.spring3.exemple.formulaire.FormFormulaire;
 import fr.urssaf.image.commons.controller.spring3.exemple.service.DocumentService;
 
 @Controller
 @RequestMapping(value = "/form")
-public class FormController extends AbstractExempleController{
+public class FormController extends BaseExempleController<FormFormulaire>{
 
 	@Autowired
 	private DocumentService documentService;

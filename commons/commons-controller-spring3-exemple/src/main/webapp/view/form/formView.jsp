@@ -37,8 +37,8 @@
 	</tr>
 	<tr>
 		<td><fmt:message key="document.openDate" /></td>
-		<td><form:input path="openDate"/></td>
-		<td class="erreur"><form:errors path="openDate" /></td>
+		<td><form:input path="openDate" onchange="javascript:populateInput('form', this);"/></td>
+		<td class="erreur"><div id="error_openDate"><form:errors path="openDate" /></div></td>
 	</tr>
 	<tr>
 		<td><fmt:message key="document.closeDate" /></td>
@@ -78,6 +78,8 @@
 	</tr>
 </table>
 <input type="submit" />
+
+
 </form:form>
 </div>
 </body>
