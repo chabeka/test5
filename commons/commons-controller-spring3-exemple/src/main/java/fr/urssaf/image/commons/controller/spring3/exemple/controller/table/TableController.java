@@ -2,7 +2,6 @@ package fr.urssaf.image.commons.controller.spring3.exemple.controller.table;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,10 +59,13 @@ public class TableController extends BaseExempleController<TableFormulaire> {
 	}
 
 	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+	public void initBinder(WebDataBinder binder,HttpServletRequest request) {
+		
+		// on surcharge le formatage des dates
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd",request.getLocale());
 		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, "closeDates",
+		binder.registerCustomEditor(Date.class, "interneFormulaire.closeDate",
 				new CustomDateEditor(dateFormat, true));
 	}
 

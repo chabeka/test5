@@ -1,18 +1,11 @@
 package fr.urssaf.image.commons.controller.spring3.exemple.controller.form;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -51,16 +44,6 @@ public class FormController extends BaseExempleController<FormFormulaire>{
 
 		return "redirect:/table.do";
 	}
-
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, "closeDate",
-				new CustomDateEditor(dateFormat, true));
-	}
-
-	
 
 	public String defaultView() {
 		return "form/formView";

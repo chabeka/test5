@@ -6,8 +6,10 @@
             http://www.springframework.org/schema/mvc
            http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<mvc:annotation-driven />
-	
+	<mvc:annotation-driven conversion-service="conversionService" />
+    
+    <bean id="conversionService" class="fr.urssaf.image.commons.controller.spring3.exemple.resource.MyFormattingConversionServiceFactoryBean" />
+
 	<mvc:view-controller path="/" view-name="index" />
 	
 	<mvc:interceptors>

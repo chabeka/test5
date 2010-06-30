@@ -20,7 +20,6 @@ public class FormFormulaire {
 
 	private String titre;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date openDate;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
