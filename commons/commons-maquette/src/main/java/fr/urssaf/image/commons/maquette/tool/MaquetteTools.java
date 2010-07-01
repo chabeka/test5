@@ -85,7 +85,8 @@ public class MaquetteTools {
 			try {
 				String cssContent = "" ;
 				StringBuffer buffer = new StringBuffer();
-				isr = new InputStreamReader(in, "ISO-8859-15");
+				// isr = new InputStreamReader(in, "ISO-8859-15");
+				isr = new InputStreamReader(in, "UTF-8");
 				Reader r = new BufferedReader(isr);
 				int charPos;
 				try {

@@ -1,6 +1,6 @@
 body.frUrssafImageCommonsMaquette
 {
-   color: #fff;
+/*    color: #fff; */
 	font-family: Arial,Helvetica,Sans Serif;
 	font-size: .9em;
 	text-align: center;
@@ -19,7 +19,7 @@ body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 #container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p.boxContent
 {
     font-size: .75em ;
-    color: #051A7D ;
+/*    color: #051A7D ; */
 }
 
 #container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > h3.boxTitle
@@ -37,12 +37,12 @@ body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette
 {
-	color: black;
+/*	color: black; */
 }
 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > div#pagereminder.frUrssafImageCommonsMaquette
 {
-	color: #fff;
+/*	color: #fff; */
 }
 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > #content-application.frUrssafImageCommonsMaquette > p
@@ -62,7 +62,7 @@ body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 
 #container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #providedby.frUrssafImageCommonsMaquette a
 {
-    color:#fff;
+/*    color:#fff; */
 }
 
 #container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #providedby.frUrssafImageCommonsMaquette a:hover

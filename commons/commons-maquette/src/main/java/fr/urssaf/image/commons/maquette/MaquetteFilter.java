@@ -58,19 +58,27 @@ logger.debug( "Arrêt du filtre") ;
 			// 		dans une variable accessible gràce au CharResponseWrapper
 			CharResponseWrapper wrapper = new CharResponseWrapper(
 					(HttpServletResponse) response);
-	
+			
+			// force l'encodage en UTF-8 : sinon le contentType était toujours à ISO-xxx
+			// toutefois cela pourrait avoir des conséquences si on ne passe pas par la maquette
+			// on stocke donc l'ancien encodage pour le restorer ensuite
+			String originalCharSet = wrapper.getCharacterEncoding();
+			wrapper.setCharacterEncoding("UTF-8");
+			
 			// permet de remplir le wrapper(=response) qui est vide actuellement : on est le premier filtre, la 
 			// servlet sera ensuite interprétée et on récupère la main
 			PrintWriter pw = response.getWriter();
 			chain.doFilter(request, wrapper);
-			
+logger.debug( "wrapper content type : " + wrapper.getContentType() ) ;
 			// Cas 1 : on a du text/html ou du text/plain ou on demande à forcer le passage
 			if (wrapper.getContentType() != null
-					&& ( wrapper.getContentType().equals("text/html") 
-							|| wrapper.getContentType().equals("text/plain") )) {
+					&& ( wrapper.getContentType().contains("text/html") 
+						|| wrapper.getContentType().contains("text/plain") )) {
+				
 				
 				// forcer le type mime (surtout pour le text/plain en entrée)
 				wrapper.setContentType("text/html");
+logger.debug( "Encodage des caractères : " + wrapper.getCharacterEncoding() ) ;
 				
 				// Création du parser avec la chaîne à décorer et le tremplate décorateur
 				MaquetteParser mp = new MaquetteParser( wrapper.toString(), MaquetteTools.getResourcePath("/html/main.html"), request, maquetteCfg ) ;
@@ -86,6 +94,10 @@ logger.debug( "Arrêt du filtre") ;
 			// Cas 2 : ce n'est pas une resource à décorer => on l'affiche juste
 			else if(wrapper.getContentType() != null )
 			{
+				// replace l'ancien charset modifié après la création du wrapper
+				if( originalCharSet != null )
+					wrapper.setCharacterEncoding( originalCharSet );
+				
 				String outputDocument = wrapper.toString() ; 
 				pw.println( outputDocument );
 			}

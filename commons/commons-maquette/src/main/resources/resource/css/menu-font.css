@@ -3,16 +3,16 @@
 }
 
 #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu a.firstrow {
-	color: #fff;
+/*	color: #fff; */
 	text-transform: uppercase;
 	text-align: center;
 }
 
 #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a {
-	color: #EAEAEF;
+/*	color: #EAEAEF; */
 	text-decoration: none;
 }
 
 #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a:hover, #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette > #menu li a.active {
-	color: #051A7D;
+/*	color: #051A7D; */
 }

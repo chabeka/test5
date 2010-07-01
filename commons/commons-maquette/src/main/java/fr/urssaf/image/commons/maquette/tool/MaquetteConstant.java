@@ -20,7 +20,7 @@ public class MaquetteConstant {
 	
 	public static final String SESSION_MAQUETTECONFIG = "maquetteConfig" ;
 	
-	// pas terrible, 
+	// TODO pas terrible, passer par une collection
 	public static final int CSSMAINBACKGROUNDCOLOR_INDEX = 0 ;
 	public static final int CSSCONTENTBACKGROUNDCOLOR_INDEX = 1 ;
 	public static final int CSSLEFTCOLORBACKGROUNDIMG_INDEX = 2 ;
