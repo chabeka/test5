@@ -14,6 +14,11 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+/**
+ * 
+ * Fonctions utilitaires pour la manipulation de XML avec JDOM 
+ *
+ */
 public final class JDOMUtil {
 
    private JDOMUtil()
@@ -23,8 +28,8 @@ public final class JDOMUtil {
    
 	/**
 	 * Persiste un objet JDOM Document dans un fichier
-	 * @param document
-	 * @param fichier
+	 * @param document l'objet représentant le document XML à persister
+	 * @param file l'objet fichier dans lequel effectuer la persistance
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
