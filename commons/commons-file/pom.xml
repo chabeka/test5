@@ -10,6 +10,7 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-file</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-file</name>
 	<packaging>jar</packaging>
 	
 	<build>
