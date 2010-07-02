@@ -20,8 +20,8 @@ public class BirtRenderTest {
 	
 	private BirtRender _br = null ;
 	private String _reportEnginePath = "./src/test/resources/ReportEngine/" ;
-	private String _logsPath = "./logs" ;
-	private String _outputPath = "./output" ;
+	private String _logsPath = System.getProperty("java.io.tmpdir") ;
+	private String _outputPath = System.getProperty("java.io.tmpdir") ;
 	private String _outputFilename = "/monRapportGenereEn" ;
 	
 	private String _reportPath = "./src/test/resources/reports" ;
@@ -29,7 +29,7 @@ public class BirtRenderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_br = new BirtRender( _reportEnginePath, _logsPath, _outputPath, _outputFilename ) ;
+	   _br = new BirtRender( _reportEnginePath, _logsPath, _outputPath, _outputFilename ) ;
 	}
 
 	@After
