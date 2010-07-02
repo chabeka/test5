@@ -12,7 +12,7 @@ public class MissingConstructorParamBirtRenderException extends Exception {
 	}
 
 	public MissingConstructorParamBirtRenderException(String message) {
-		super("Il manque le paramètre suivant : " + message);
+		super("Il manque le paramÃ¨tre suivant : " + message);
 		// TODO Auto-generated constructor stub
 	}
 

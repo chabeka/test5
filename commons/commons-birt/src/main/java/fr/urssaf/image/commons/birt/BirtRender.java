@@ -1,26 +1,20 @@
 package fr.urssaf.image.commons.birt ;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
+
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.EngineConfig;
 import org.eclipse.birt.report.engine.api.EngineConstants;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.HTMLRenderOption;
-import org.eclipse.birt.report.engine.api.IGetParameterDefinitionTask;
-import org.eclipse.birt.report.engine.api.IParameterDefnBase;
 import org.eclipse.birt.report.engine.api.IRenderOption;
 import org.eclipse.birt.report.engine.api.IReportEngine;
 import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import org.eclipse.birt.report.engine.api.IReportRunnable;
 import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
 import org.eclipse.birt.report.engine.api.PDFRenderOption;
-import org.eclipse.birt.report.engine.api.ReportEngine;
-import org.eclipse.birt.report.model.api.ParameterHandle;
-import org.eclipse.birt.report.model.api.activity.SemanticException;
 
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
@@ -29,7 +23,7 @@ import fr.urssaf.image.commons.birt.exception.NoEngineBirtRenderException;
 
 /**
  * @author CER6990172
- * Classe permettant de générer des rapports html ou pdf à partir de rapports BIRT
+ * Classe permettant de gÃ©nÃ©rer des rapports html ou pdf Ã  partir de rapports BIRT
  */
 public class BirtRender
 {
@@ -51,7 +45,7 @@ public class BirtRender
 	 * @param log_path
 	 * @param output_path
 	 * @param output_filename
-	 * Démarre le moteur de rendu
+	 * DÃ©marre le moteur de rendu
 	 * @throws MissingConstructorParamBirtRenderException 
 	 * @throws BirtException 
 	 */
@@ -70,7 +64,7 @@ public class BirtRender
 	 * @param paramValues
 	 * @throws EngineException
 	 * @throws MissingParamBirtRenderException 
-	 * Lance la génération du rapport avec un nom de destination particulier
+	 * Lance la gÃ©nÃ©ration du rapport avec un nom de destination particulier
 	 */
 	@SuppressWarnings("unchecked")
 	public void doRender( String reportFilePath, String outputFilename, int renderMode, Map paramValues ) throws EngineException, MissingParamBirtRenderException
@@ -80,7 +74,7 @@ public class BirtRender
 		if( outputFilename != null )
 			_output_filename = outputFilename ;
 		else
-			throw new MissingParamBirtRenderException("2ème paramètre : outputFilename") ;
+			throw new MissingParamBirtRenderException("2Ã¨me paramÃ¨tre : outputFilename") ;
 		
 		doRender( reportFilePath, renderMode, paramValues ) ;
 		
@@ -93,7 +87,7 @@ public class BirtRender
 	 * @param paramValues
 	 * @throws EngineException
 	 * @throws MissingParamBirtRenderException 
-	 * Lance la génération du rapport
+	 * Lance la gÃ©nÃ©ration du rapport
 	 */
 	@SuppressWarnings("unchecked")
 	public void doRender( String reportFilePath, int renderMode, Map paramValues ) throws EngineException, MissingParamBirtRenderException
@@ -147,7 +141,7 @@ public class BirtRender
 	}
 	
 	/**
-	 * Arrête le moteur de rendu
+	 * ArrÃªte le moteur de rendu
 	 */
 	public void stopEngine()
 	{
@@ -242,7 +236,7 @@ public class BirtRender
 	{
 		if( _engine == null )
 		{
-			throw new NoEngineBirtRenderException("Le moteur de rendu n'a pas été instancié.") ;
+			throw new NoEngineBirtRenderException("Le moteur de rendu n'a pas Ã©tÃ© instanciÃ©.") ;
 		}
 		return _engine ;
 	}
@@ -253,7 +247,7 @@ public class BirtRender
 	 * @param output_path
 	 * @param output_filename
 	 * @throws MissingConstructorParamBirtRenderException
-	 * Positionne les variables par défaut envoyées aux constructeurs
+	 * Positionne les variables par dÃ©faut envoyÃ©es aux constructeurs
 	 */
 	private void setConstructorParams( String report_engine_path, String log_path, String output_path, String output_filename ) throws MissingConstructorParamBirtRenderException
 	{
@@ -279,7 +273,7 @@ public class BirtRender
 	}
 	
 	/**
-	 * Méthodes pour les tests
+	 * MÃ©thodes pour les tests
 	 */
 	public Boolean isStopped()
 	{

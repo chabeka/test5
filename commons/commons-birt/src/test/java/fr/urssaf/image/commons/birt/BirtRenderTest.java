@@ -57,40 +57,40 @@ public class BirtRenderTest {
 		Boolean success = null ;
 		success = _br.doChangeLogLevel( Level.INFO );
 		
-		assertTrue("Le changement de niveau de log s'est mal passé", success );
+		assertTrue("Le changement de niveau de log s'est mal passÃ©", success );
 		assertEquals("La valeur du niveau de log n'est pas celle attendu (" + Level.INFO.intValue() + " != " + _br.getLogLevel().intValue() + ")", 
 				Level.INFO.intValue(), _br.getLogLevel().intValue() );
 	}
 
 	/**
-	 * On démarre le moteur, on l'arrête et on vérifie l'état du moteur à chaque étape
+	 * On dÃ©marre le moteur, on l'arrÃªte et on vÃ©rifie l'Ã©tat du moteur Ã  chaque Ã©tape
 	 */
 	@Test
 	public void testStopEngine() {
-		assertFalse("Le moteur ne semble pas démarré", _br.isStopped()) ;
+		assertFalse("Le moteur ne semble pas dÃ©marrÃ©", _br.isStopped()) ;
 		_br.stopEngine();
-		assertTrue("Le moteur ne semble pas stoppé", _br.isStopped()) ;
+		assertTrue("Le moteur ne semble pas stoppÃ©", _br.isStopped()) ;
 	}
 	
 	/**
-	 * Le statut du moteur doit être à stoppé : isStopped == false
+	 * Le statut du moteur doit Ãªtre Ã  stoppÃ© : isStopped == false
 	 */
 	@Test
 	public void testIsStopped_1() {
-		assertFalse("Le moteur ne semble pas démarré", _br.isStopped()) ;
+		assertFalse("Le moteur ne semble pas dÃ©marrÃ©", _br.isStopped()) ;
 	}
 	
 	/**
-	 * Le statut du moteur doit être à démarré : isStopped == true
+	 * Le statut du moteur doit Ãªtre Ã  dÃ©marrÃ© : isStopped == true
 	 */
 	@Test
 	public void testIsStopped_2() {
 		_br.stopEngine();
-		assertTrue("Le moteur ne semble pas stoppé", _br.isStopped()) ;
+		assertTrue("Le moteur ne semble pas stoppÃ©", _br.isStopped()) ;
 	}
 	
 	/**
-	 * Vérification des valeurs passés au constructeur constructeur
+	 * VÃ©rification des valeurs passÃ©es au constructeur constructeur
 	 */
 	@Test
 	public void testBirtRender_1() {
@@ -102,11 +102,11 @@ public class BirtRenderTest {
 				_br.getOutputPath().equals( _outputPath ) ) ;
 		assertTrue( _br.getOutputFilename() + " attendu, " + _outputFilename + "obtenu", 
 				_br.getOutputFilename().equals( _outputFilename ) ) ;
-		assertFalse( "Le moteur devrait être démarré", _br.isStopped() ) ;
+		assertFalse( "Le moteur devrait Ãªtre demarre", _br.isStopped() ) ;
 	}
 	
 	/**
-	 * Test de l'exception récupérée par un mauvais passage de paramètre
+	 * Test de l'exception rÃ©cupÃ©rÃ©e par un mauvais passage de paramÃ¨tre
 	 */
 	@Test
 	public void testBirtRender_2() {
@@ -126,7 +126,7 @@ public class BirtRenderTest {
 	}
 	
 	/**
-	 * Test de l'exception récupérée par un mauvais passage de paramètre
+	 * Test de l'exception rÃ©cupÃ©rÃ©e par un mauvais passage de paramÃ¨tre
 	 */
 	@Test
 	public void testBirtRender_3() {
@@ -146,7 +146,7 @@ public class BirtRenderTest {
 	}
 	
 	/**
-	 * Test de l'exception récupérée par un mauvais passage de paramètre
+	 * Test de l'exception rÃ©cupÃ©rÃ©e par un mauvais passage de paramÃ¨tre
 	 */
 	@Test
 	public void testBirtRender_4() {
@@ -166,7 +166,7 @@ public class BirtRenderTest {
 	}
 	
 	/**
-	 * Test de l'exception récupérée par un mauvais passage de paramètre
+	 * Test de l'exception rÃ©cupÃ©rÃ©e par un mauvais passage de paramÃ¨tre
 	 */
 	@Test
 	public void testBirtRender_5() {
@@ -186,7 +186,7 @@ public class BirtRenderTest {
 	}
 	
 	/**
-	 * Test de la génération d'un rapport : pas d'exception et fichier pdf présent
+	 * Test de la gÃ©nÃ©ration d'un rapport : pas d'exception et fichier pdf prÃ©sent
 	 */
 	@Test
 	public void testDoRenderStringIntMap_1() {
@@ -197,14 +197,14 @@ public class BirtRenderTest {
 		try {
 			_br.doRender( _reportPath + _reportFileName, 1, paramValues );
 			File f = new File( _outputPath + _outputFilename + ".pdf" );
-			assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
+			assertTrue( "Le fichier pdf n'a pas Ã©tÃ© crÃ©Ã©", f.exists() ) ;
 		} catch (Exception e) {
 			fail("Exception : " + e.getClass().toString() ) ;
 		}
 	}
 	
 	/**
-	 * Test de la génération d'un rapport : pas d'exception et fichier html présent
+	 * Test de la gÃ©nÃ©ration d'un rapport : pas d'exception et fichier html prÃ©sent
 	 */
 	@Test
 	public void testDoRenderStringIntMap_2() {
@@ -215,14 +215,14 @@ public class BirtRenderTest {
 		try {
 			_br.doRender( _reportPath + _reportFileName, 2, paramValues );
 			File f = new File( _outputPath + _outputFilename + ".html" );
-			assertTrue( "Le fichier html n'a pas été créé", f.exists() ) ;
+			assertTrue( "Le fichier html n'a pas Ã©tÃ© crÃ©Ã©", f.exists() ) ;
 		} catch (Exception e) {
 			fail("Exception : " + e.getClass().toString() ) ;
 		}
 	}
 	
 	/**
-	 * Test de la génération d'un rapport : pas d'exception et fichier pdf (défaut) présent
+	 * Test de la gÃ©nÃ©ration d'un rapport : pas d'exception et fichier pdf (dÃ©faut) prÃ©sent
 	 */
 	@Test
 	public void testDoRenderStringIntMap_3() {
@@ -233,14 +233,14 @@ public class BirtRenderTest {
 		try {
 			_br.doRender( _reportPath + _reportFileName, 9999, paramValues );
 			File f = new File( _outputPath + _outputFilename + ".pdf" );
-			assertTrue( "Le fichier par défaut pdf n'a pas été créé", f.exists() ) ;
+			assertTrue( "Le fichier par dÃ©faut pdf n'a pas Ã©tÃ© crÃ©Ã©", f.exists() ) ;
 		} catch (Exception e) {
 			fail("Exception : " + e.getClass().toString() ) ;
 		}
 	}
 
 	/**
-	 * Test de la génération d'un rapport : pas d'exception et fichier pdf présent
+	 * Test de la gÃ©nÃ©ration d'un rapport : pas d'exception et fichier pdf prÃ©sent
 	 */
 	@Test
 	public void testDoRenderStringStringIntMap_1() {
@@ -252,7 +252,7 @@ public class BirtRenderTest {
 		try {
 			_br.doRender( _reportPath + _reportFileName, filename, 1, paramValues );
 			File f = new File( _outputPath + "/" + filename + ".pdf" );
-			assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
+			assertTrue( "Le fichier pdf n'a pas Ã©tÃ© crÃ©Ã©", f.exists() ) ;
 			f.delete() ; // nettoyage
 		} catch (Exception e) {
 			fail("Exception : " + e.getClass().toString() ) ;
@@ -260,7 +260,7 @@ public class BirtRenderTest {
 	}
 	
 	/**
-	 * Test de la génération d'un rapport : mauvais passage de paramètre, exception récupérée
+	 * Test de la gÃ©nÃ©ration d'un rapport : mauvais passage de paramÃ¨tre, exception rÃ©cupÃ©rÃ©e
 	 */
 	@Test
 	public void testDoRenderStringStringIntMap_2() {
