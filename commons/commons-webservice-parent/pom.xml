@@ -10,6 +10,7 @@
 	<artifactId>commons-webservice-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-parent</name>
 
 	<modules>
 		<module>../commons-webservice</module>
