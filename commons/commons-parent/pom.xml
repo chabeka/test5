@@ -10,10 +10,15 @@
   </properties>
   
 	<modules>
-		<module>../commons-controller-spring</module>
-		<module>../commons-dao-spring</module>
+		<module>../commons-birt</module>
+      <module>../commons-controller-spring</module>
+      <module>../commons-controller-spring-extjs</module>
+      <module>../commons-dao-spring</module>
+      <module>../commons-file</module>
+      <module>../commons-maquette</module>
 		<module>../commons-taglib</module>
 		<module>../commons-util</module>
+      <module>../commons-xml</module>
 	</modules>
 
 	<build>
