@@ -5,6 +5,7 @@
 	<artifactId>commons-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-parent</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -19,6 +20,7 @@
 		<module>../commons-taglib</module>
 		<module>../commons-util</module>
       <module>../commons-xml</module>
+      <module>../commons-webservice-parent</module>
 	</modules>
 
 	<build>
