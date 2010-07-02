@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import org.eclipse.birt.report.engine.api.EngineException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,9 +108,10 @@ public class BirtRenderTest {
 	
 	/**
 	 * Test de l'exception récupérée par un mauvais passage de paramètre
+	 * @throws Exception 
 	 */
 	@Test
-	public void testBirtRender_2() {
+	public void testBirtRender_2() throws Exception {
 		_br = null ;
 		try
 		{
@@ -121,7 +123,7 @@ public class BirtRenderTest {
 		}
 		catch( Exception e )
 		{
-			fail("On devrait obtenir une MissingConstructorParamBirtRenderException");
+		   throw new Exception("On devrait obtenir une MissingParamBirtRenderException",e);
 		}
 	}
 	
@@ -187,83 +189,84 @@ public class BirtRenderTest {
 	
 	/**
 	 * Test de la génération d'un rapport : pas d'exception et fichier pdf présent
+	 * @throws MissingParamBirtRenderException 
+	 * @throws EngineException 
 	 */
 	@Test
-	public void testDoRenderStringIntMap_1() {
-		HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
+	public void testDoRenderStringIntMap_1() throws EngineException, MissingParamBirtRenderException {
+		
+	   HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
 		
-		try {
-			_br.doRender( _reportPath + _reportFileName, 1, paramValues );
-			File f = new File( _outputPath + _outputFilename + ".pdf" );
-			assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
-		} catch (Exception e) {
-			fail("Exception : " + e.getClass().toString() ) ;
-		}
+		_br.doRender( _reportPath + _reportFileName, 1, paramValues );
+		File f = new File( _outputPath + _outputFilename + ".pdf" );
+		assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
+		
 	}
 	
 	/**
 	 * Test de la génération d'un rapport : pas d'exception et fichier html présent
+	 * @throws MissingParamBirtRenderException 
+	 * @throws EngineException 
 	 */
 	@Test
-	public void testDoRenderStringIntMap_2() {
-		HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
+	public void testDoRenderStringIntMap_2() throws EngineException, MissingParamBirtRenderException {
+		
+	   HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
+
+		_br.doRender( _reportPath + _reportFileName, 2, paramValues );
+		File f = new File( _outputPath + _outputFilename + ".html" );
+		assertTrue( "Le fichier html n'a pas été créé", f.exists() ) ;
 		
-		try {
-			_br.doRender( _reportPath + _reportFileName, 2, paramValues );
-			File f = new File( _outputPath + _outputFilename + ".html" );
-			assertTrue( "Le fichier html n'a pas été créé", f.exists() ) ;
-		} catch (Exception e) {
-			fail("Exception : " + e.getClass().toString() ) ;
-		}
 	}
 	
 	/**
 	 * Test de la génération d'un rapport : pas d'exception et fichier pdf (défaut) présent
+	 * @throws MissingParamBirtRenderException 
+	 * @throws EngineException 
 	 */
 	@Test
-	public void testDoRenderStringIntMap_3() {
-		HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
+	public void testDoRenderStringIntMap_3() throws EngineException, MissingParamBirtRenderException {
+		
+	   HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
 		
-		try {
-			_br.doRender( _reportPath + _reportFileName, 9999, paramValues );
-			File f = new File( _outputPath + _outputFilename + ".pdf" );
-			assertTrue( "Le fichier par défaut pdf n'a pas été créé", f.exists() ) ;
-		} catch (Exception e) {
-			fail("Exception : " + e.getClass().toString() ) ;
-		}
+		_br.doRender( _reportPath + _reportFileName, 9999, paramValues );
+		File f = new File( _outputPath + _outputFilename + ".pdf" );
+		assertTrue( "Le fichier par défaut pdf n'a pas été créé", f.exists() ) ;
+		
 	}
 
 	/**
 	 * Test de la génération d'un rapport : pas d'exception et fichier pdf présent
+	 * @throws MissingParamBirtRenderException 
+	 * @throws EngineException 
 	 */
 	@Test
-	public void testDoRenderStringStringIntMap_1() {
-		HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
-		paramValues.put("monParametreTitreDePage", "Titre de ma page");
-		paramValues.put("CustomerNumberParam", 200);
-		String filename = "monFichierGenere" ;
+	public void testDoRenderStringStringIntMap_1() throws EngineException, MissingParamBirtRenderException {
 		
-		try {
-			_br.doRender( _reportPath + _reportFileName, filename, 1, paramValues );
-			File f = new File( _outputPath + "/" + filename + ".pdf" );
-			assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
-			f.delete() ; // nettoyage
-		} catch (Exception e) {
-			fail("Exception : " + e.getClass().toString() ) ;
-		}
+	   HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
+	   paramValues.put("monParametreTitreDePage", "Titre de ma page");
+	   paramValues.put("CustomerNumberParam", 200);
+	   String filename = "monFichierGenere" ;
+
+	   _br.doRender( _reportPath + _reportFileName, filename, 1, paramValues );
+	   File f = new File( _outputPath + "/" + filename + ".pdf" );
+	   assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
+	   f.delete() ; // nettoyage
+		
 	}
 	
 	/**
 	 * Test de la génération d'un rapport : mauvais passage de paramètre, exception récupérée
+	 * @throws Exception 
 	 */
 	@Test
-	public void testDoRenderStringStringIntMap_2() {
+	public void testDoRenderStringStringIntMap_2() throws Exception {
 		HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
 		
 		try {
@@ -273,7 +276,7 @@ public class BirtRenderTest {
 		{
 			// ok
 		} catch (Exception e) {
-			fail("On devrait obtenir une MissingParamBirtRenderException" ) ;
+			throw new Exception("On devrait obtenir une MissingParamBirtRenderException",e);
 		}
 	}
 
