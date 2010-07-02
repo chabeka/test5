@@ -47,7 +47,7 @@ public class MaquetteFilterTest{
 	@Test
 	public void getResourceCss_1()
 	{
-		URL u = getClass().getResource("/resource/css/form.css");
+		URL u = getClass().getResource("/resource/css/main.css");
 		if( u == null )
 			fail("Resource non trouvée");
 			
