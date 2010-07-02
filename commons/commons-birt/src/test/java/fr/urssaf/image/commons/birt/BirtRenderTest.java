@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
+import fr.urssaf.image.commons.path.PathUtil;
 
 public class BirtRenderTest {
 	
@@ -27,7 +28,7 @@ public class BirtRenderTest {
 	
 	private String _reportPath = "./src/test/resources/reports" ;
 	private String _reportFileName = "/monPremierRapport.rptdesign" ;
-
+	
 	@Before
 	public void setUp() throws Exception {
 	   _br = new BirtRender( _reportEnginePath, _logsPath, _outputPath, _outputFilename ) ;
@@ -35,13 +36,13 @@ public class BirtRenderTest {
 
 	@After
 	public void tearDown() throws Exception {
-		File fPdf = new File( _outputPath + _outputFilename + ".pdf" );
+		File fPdf = new File( PathUtil.combine(_outputPath,_outputFilename) + ".pdf" );
 		if ( fPdf.exists() ) 
 		{// nettoyage
 			fPdf.delete();
 		}
 		
-		File fHtml = new File( _outputPath + _outputFilename + ".html" );
+		File fHtml = new File( PathUtil.combine(_outputPath,_outputFilename) + ".html" );
 		if ( fHtml.exists() ) 
 		{// nettoyage
 			fHtml.delete();
@@ -199,8 +200,10 @@ public class BirtRenderTest {
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
 		
-		_br.doRender( _reportPath + _reportFileName, 1, paramValues );
-		File f = new File( _outputPath + _outputFilename + ".pdf" );
+		String reportFilePath = PathUtil.combine(_reportPath,_reportFileName) ;
+		
+		_br.doRender( reportFilePath, 1, paramValues );
+		File f = new File( PathUtil.combine(_outputPath,_outputFilename) + ".pdf" );
 		assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
 		
 	}
@@ -217,8 +220,10 @@ public class BirtRenderTest {
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
 
-		_br.doRender( _reportPath + _reportFileName, 2, paramValues );
-		File f = new File( _outputPath + _outputFilename + ".html" );
+		String reportFilePath = PathUtil.combine(_reportPath,_reportFileName) ;
+		
+		_br.doRender( reportFilePath, 2, paramValues );
+		File f = new File( PathUtil.combine(_outputPath,_outputFilename) + ".html" );
 		assertTrue( "Le fichier html n'a pas été créé", f.exists() ) ;
 		
 	}
@@ -235,8 +240,10 @@ public class BirtRenderTest {
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
 		
-		_br.doRender( _reportPath + _reportFileName, 9999, paramValues );
-		File f = new File( _outputPath + _outputFilename + ".pdf" );
+		String reportFilePath = PathUtil.combine(_reportPath,_reportFileName) ;
+		
+		_br.doRender( reportFilePath, 9999, paramValues );
+		File f = new File( PathUtil.combine(_outputPath,_outputFilename) + ".pdf" );
 		assertTrue( "Le fichier par défaut pdf n'a pas été créé", f.exists() ) ;
 		
 	}
@@ -254,8 +261,10 @@ public class BirtRenderTest {
 	   paramValues.put("CustomerNumberParam", 200);
 	   String filename = "monFichierGenere" ;
 
-	   _br.doRender( _reportPath + _reportFileName, filename, 1, paramValues );
-	   File f = new File( _outputPath + "/" + filename + ".pdf" );
+	   String reportFilePath = PathUtil.combine(_reportPath,_reportFileName) ;
+	   
+	   _br.doRender( reportFilePath, filename, 1, paramValues );
+	   File f = new File( PathUtil.combine(_outputPath,filename) + ".pdf" );
 	   assertTrue( "Le fichier pdf n'a pas été créé", f.exists() ) ;
 	   f.delete() ; // nettoyage
 		
@@ -270,7 +279,8 @@ public class BirtRenderTest {
 		HashMap<Object, Object> paramValues = new HashMap<Object, Object>() ;
 		
 		try {
-			_br.doRender( _reportPath + _reportFileName, null, 1, paramValues );
+		   String reportFilePath = PathUtil.combine(_reportPath,_reportFileName) ;
+		   _br.doRender( reportFilePath, null, 1, paramValues );
 			fail("On devrait obtenir une MissingParamBirtRenderException" ) ;
 		} catch (MissingParamBirtRenderException mpbre)
 		{

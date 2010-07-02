@@ -19,6 +19,7 @@ import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtRenderException;
+import fr.urssaf.image.commons.path.PathUtil;
 
 
 /**
@@ -181,7 +182,7 @@ public class BirtRender
 				fileExtension = "pdf" ;
 		}
 			
-		options.setOutputFileName( _output_path + "\\" + _output_filename + "." + fileExtension );
+		options.setOutputFileName( PathUtil.combine(_output_path,_output_filename) + "." + fileExtension );
 
 		return options;		
 	}
