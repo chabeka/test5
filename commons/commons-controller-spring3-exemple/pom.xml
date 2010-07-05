@@ -9,7 +9,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.urssaf.image.commons</groupId>
-	<artifactId>commons-controller-spring-exemple</artifactId>
+	<artifactId>commons-controller-spring3-exemple </artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	
@@ -67,25 +67,14 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-		
+		<!--  Spring web -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-		
-		<!--  JSR 303 with Hibernate Validator -->
+		<!--  JSR 303 avec Hibernate Validator -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -130,6 +119,8 @@
 			<scope>runtime</scope>
 		</dependency>		
 		
+		<!--  servlet & JSTL -->
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -143,19 +134,23 @@
 			<version>1.2</version>
 		</dependency>
 
+		<!--  programmation aspect -->
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.6.7</version>
 		</dependency>
 
+		<!--  layout avec sitemesh -->
+	
 		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
 			<version>2.4.2</version>
 		</dependency>
 
-		<!-- Jackson JSON Mapper -->
+		<!-- JSON avec Jackson -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>

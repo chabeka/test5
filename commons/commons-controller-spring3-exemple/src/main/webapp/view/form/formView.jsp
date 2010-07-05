@@ -26,6 +26,7 @@
 			<%
 				List<Etat> etats = new ArrayList<Etat>();
 				etats.addAll(Arrays.asList(Etat.values()));
+			
 			%> 
 			<c:set var="etatOptions" value= "<%= etats %>" />
 			<form:select path="etat">
@@ -78,7 +79,7 @@
 	</tr>
 </table>
 <input type="submit" />
-
+<button type="button" onclick="javascript:location.href='form/table.do';"><fmt:message key="button.return"/></button>
 
 </form:form>
 </div>

@@ -10,7 +10,7 @@ public class ExempleInterceptor implements HandlerInterceptor {
 
 	@Override
 	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception ex)
+			HttpServletResponse response, Object handler, Exception exception)
 			throws Exception {
 
 	}

@@ -84,6 +84,7 @@
 </table>
 </div>
 <input type="submit" />
+<button type="button" onclick="javascript:location.href='table/add.do';"><fmt:message key="button.document.add"/></button>
 </form:form>
 
 </body>
