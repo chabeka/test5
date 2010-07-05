@@ -3,9 +3,29 @@ Ext.namespace('fr.urssaf.image.commons.extjs');
 // todo	Echec d'utilisation du constructeur, j'ai tente divers syntaxe mais pas moyen
 fr.urssaf.image.commons.extjs = {
  /**
+  * desc 	type comportement popup
+  */
+ __BEHAVIOR_POPUP__: 0,
+ 
+ /**
+  * desc 	type comportement zone
+  */
+ __BEHAVIOR_ZONE__: 1,
+ 
+ /**
+  * desc 	type comportement url
+  */
+ __BEHAVIOR_URL__: 2,
+ 
+ /**
+  * desc 	type comportement fonction
+  */
+ __BEHAVIOR_FUNCTION__: 3,
+ 		
+ /**
   * desc 	Ext.form.FormPanel
   */
-  formulaire: null, 
+  formulaire: null,
   
   /**
    * desc 	permet a l'objet de savoir si le formulaire a deja ete dessine. On ne peut dessiner le formulaire qu'une seule fois.
@@ -28,15 +48,20 @@ fr.urssaf.image.commons.extjs = {
   _errorFieldName: 'formErrorField',
   
   /**
-   * desc	action to realize on success submit
+   * desc 	behavior when ajax call is a success
    */
-  _actionOnSuccess: {url:null, zoneName:null},
+  _successBehavior: {type:null, value:null},
   
   /**
-   * desc	action to realize on failure submit
+   * desc 	behavior when ajax call is a failure
    */
-  _actionOnFailure: {url:null, zoneName:null},
-
+  _failureBehavior: {type:null, value:null},
+  
+  /**
+   * desc 	mode d'envoi du formulaire
+   */
+  _ajaxMode: null,
+    
   /**
    * desc 		Creation d'un nouveau formulaire params return this
    * 			Ajoute le champ action:xxx par defaut
@@ -57,7 +82,12 @@ fr.urssaf.image.commons.extjs = {
     this._addConfigValue( config, 'url', pUrl );
     this._addConfigValue( config, 'title', pTitle );
     if( pStandardSubmit && Ext.isBoolean( pStandardSubmit ) )
+    {
      	config.standardSubmit = pStandardSubmit ;
+     	this._ajaxMode = false ;
+    }
+    else
+    	this._ajaxMode = true ;
     if( pWidth && Ext.isNumber( pWidth ) )
     	config.width = pWidth ;
     if( pLabelWidth && Ext.isNumber( pLabelWidth ) )
@@ -67,6 +97,10 @@ fr.urssaf.image.commons.extjs = {
     
     // creation
     this.formulaire = new Ext.FormPanel( config );
+    
+    // configuration du comportement 
+    this.setSuccessComportement( this.__BEHAVIOR_POPUP__ ) ;
+    this.setFailureComportement( this.__BEHAVIOR_POPUP__ ) ;
     
     // Normalement il etait prevu d'utiliser les attributs name/value des boutons, mais ce n'est pas possible en ExtJS
     // car Ext.Button ne dispose pas de ces 2 attributs
@@ -334,39 +368,30 @@ fr.urssaf.image.commons.extjs = {
 	config.store = this._getSimpleStoreFromArray( pValue ) ;
 	config.displayField = this._displayFieldColName ;
 	config.valueField = this._valueFieldColName ;
-	config.selectOnFocus = true;
-	config.editable = false ;
+	config.selectOnFocus = true; // uniquement si editable == true
+//	config.editable = false ; // si false, tout le champ est cliquable, mais la saisie predictive est supprimee
+	config.forceSelection = true ;
+	config.triggerAction = 'all'; // permet de pouvoir changer d'element apres en avoir deja selectionne un 
 
 	var maListeDeroulante = new Ext.form.ComboBox( config );
 	
 	this.formulaire.add( maListeDeroulante ) ;
+	
 	return this;
   },  
-
+  
   /**
    * desc 	Creation d'un bouton d'annulation return this
-   * 		Les boutons sont alignes sur la meme ligne si le formulaire n'a pas deja ete calcule (methode render)
-   * 		Sinon ils seront empiles les uns au dessus des autres. Il est donc preferable de creer les boutons avant 
-   * 		d'appeler la methode dessinerFormulaire 
+   * 		Les boutons sont alignes sur la meme ligne Mais doivent etre crees avant de dessiner le formulaire
    * return this
    */
   ajouterBoutonAnnulation: function()
   {
+	var config = {text: 'Annuler'} ;
 	if( this._hasBeenRendered == false )
 	{
-		config = {text: 'Annuler'} ;
-	    handler = function(){fr.urssaf.image.commons.extjs.formulaire.getForm().reset();} ;
+	    var handler = function(){fr.urssaf.image.commons.extjs.formulaire.getForm().reset();} ;
 	    this.formulaire.addButton( config, handler );
-	}
-	else
-	{
-	    var monBoutonAnnulation = new Ext.Button({
-		  	text: 'Annuler',
-		  	handler: function(){
-	    		fr.urssaf.image.commons.extjs.formulaire.getForm().reset();
-		  	}
-		  } );	
-	    this.formulaire.add( monBoutonAnnulation ) ;
 	}
     
     return this;
@@ -374,149 +399,132 @@ fr.urssaf.image.commons.extjs = {
   
   /**
    * desc 	Creation d'un bouton de validation (principe identique a la creation du bouton d'annulation)
-   * params successFunction (function(param1,param2))
-   * params failureFunction (function(param1,param2))
    * return this
    */
-  ajouterBoutonValidation: function( successFunction, failureFunction )
+  ajouterBoutonValidation: function()
   {
+	var config = {text: 'Valider'};
+		
 	if( this._hasBeenRendered == false )
 	{
-		config = {text: 'Valider'};
-		handler = function(){
+		var handler = function(){
     		var myExtJs = fr.urssaf.image.commons.extjs ;
     		myExtJs.formulaire.getForm().submit({
+    			
 	  			success: function(f,a){
-						// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
-    					if( successFunction )
-	    				{
-	    					successFunction(f,a);
-	    				}else
-	    				{
-	    					// redirection
-	    		  			if( myExtJs._actionOnSuccess.url != null )
-	    		  			{
-	    		  				window.location = myExtJs._actionOnSuccess.url ;
-	    		  			}
-	    		  			// mise a jour d'une zone
-	    		  			else if( myExtJs._actionOnSuccess.zoneName != null )	
-	    		  			{
-								var el = Ext.get( myExtJs._actionOnSuccess.zoneName ) ;
-								if( el )
-									el.update( a.response.responseText );
-	    		  			}
-	    				}
-
-    				},
- 	  			failure: function(f,a){
-    					// erreur de connexion
-    					if (a.failureType === Ext.form.Action.CONNECT_FAILURE) 
-    					{
-    						// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
-                        	if( failureFunction )
-    	    				{
-        						failureFunction(f,a);
-    	    				}
-                        	// comportements par defaut
-                        	else
-    	    				{
-                        		// redirection
-    	    		  			if( myExtJs._actionOnFailure.url != null )
-    	    		  			{
-    	    		  				window.location = myExtJs._actionOnFailure.url ;
-    	    		  			}
-    	    		  			// mise a jour d'une zone
-    	    		  			else if( myExtJs._actionOnFailure.zoneName )	
-    	    		  			{
-    	    		  				var el = Ext.get( myExtJs._actionOnFailure.zoneName ) ;
-    	    		  				if( el )
-    	    		  					el.update( a.response.responseText );
-    	    		  			}
-    	    				}
-                        	
-                        }
-    					// success: false
-                        if (a.failureType === Ext.form.Action.SERVER_INVALID)
-                        {
-                            Ext.Msg.alert('Erreur',
-                                'Status: '+a.response.status+': '+a.response.statusText);
-                        }
+    			
+if( !Ext.isIE && console ) console.info( 'success' );
+    				switch( myExtJs._successBehavior.type )
+    				{
+	    				case myExtJs.__BEHAVIOR_FUNCTION__ :
+if( !Ext.isIE && console ) console.info( 'Succès : fonction' );
+	    					myExtJs._successBehavior.value(f,a);
+	    					break ;
+	    					
+	    				case myExtJs.__BEHAVIOR_URL__ :
+if( !Ext.isIE && console ) console.info( 'Succès : url' );
+	    					window.location = myExtJs._successBehavior.value;
+	    					break ;
+	    					
+	    				case myExtJs.__BEHAVIOR_ZONE__ :
+if( !Ext.isIE && console ) console.info( 'Succès : zone' );
+	    					var el = Ext.get( myExtJs._successBehavior.value ) ;
+	    					if( el )
+	    						myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
+	    					break ;
+	    					
+	    				case myExtJs.__BEHAVIOR_POPUP__ :
+	    				default :
+if( !Ext.isIE && console ) console.info( 'Succès : Popup/default' );
+	    					Ext.Msg.alert( "Envoi r&eacute;ussit", 
+	    							myExtJs._getMessageAttributeFromJson( a.response.responseText ) );
     				}
+    				
+    			},
+ 	  			failure: function(f,a){
+if( !Ext.isIE && console ) console.info( 'failure' );
+		    			// 1) erreur de connexion 
+    					// 2) erreur fonctionnelle
+		    			if (a.failureType === Ext.form.Action.CONNECT_FAILURE
+		    			 || a.failureType === Ext.form.Action.SERVER_INVALID ) 
+		    			{
+if( !Ext.isIE && console ) console.info( 'failureBehavior : ' + myExtJs._failureBehavior.type );
+							var userFormErrors = false ;
+						
+							// verification si erreur de saisie ou fonctionnelle 
+							if( a.failureType === Ext.form.Action.SERVER_INVALID )
+							{
+								var responseObject =  Ext.util.JSON.decode( a.response.responseText );
+								userFormErrors = ( responseObject.errors ) ? true : false ;
+							}
+							
+if( !Ext.isIE && console ) console.info( 'userFormErrors : ' + userFormErrors ) ;
+
+							// si on a des erreurs de saisies on bloque cette gestion des erreurs et on laisse la main a ExtJS
+							if( !userFormErrors )
+							{
+if( !Ext.isIE && console ) console.info( 'Aucune erreurs de saisies' );
+			    				switch( myExtJs._failureBehavior.type )
+			    				{
+				    				case myExtJs.__BEHAVIOR_FUNCTION__ :
+if( !Ext.isIE && console ) console.info( 'Echec : fonction' );
+				    					myExtJs._failureBehavior.value(f,a);
+				    					break ;
+				    					
+				    				case myExtJs.__BEHAVIOR_URL__ :
+if( !Ext.isIE && console ) console.info( 'Echec : url' );
+				    					window.location = myExtJs._failureBehavior.value;
+				    					break ;
+				    					
+				    				case myExtJs.__BEHAVIOR_ZONE__ :
+if( !Ext.isIE && console ) console.info( 'Echec : zone' );
+				    					var el = Ext.get( myExtJs._failureBehavior.value ) ;
+				    					if( el )
+				    						myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
+				    					break ;
+				    					
+				    				case myExtJs.__BEHAVIOR_POPUP__ :
+				    				default :
+if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
+				    					var display = false ;
+				    					var message = null ;
+				    					var title = null ;
+				    					switch( a.failureType )
+				    					{
+					    					case Ext.form.Action.CONNECT_FAILURE:
+					    						display = true ;
+					    						title = "Ech&egrave;c de connection (" + a.response.status + ")" ;
+					    						message = a.response.statusText ;
+					    						break;
+					    					case Ext.form.Action.SERVER_INVALID:
+					    					default :
+					    						title = "Envoi &eacute;chou&eacute;" ;
+					    						message = "Le serveur a renvoy&eacute; les erreurs suivantes :\n"; 
+					    						if( jsonAttMessage = myExtJs._getMessageAttributeFromJson( a.response.responseText ) )
+					    						{
+					    							display = true ;
+						    						message += jsonAttMessage ;
+					    						}
+				    					}
+				    					
+				    					if( display == true )
+				    						Ext.Msg.alert( title, message ) ;
+			    				}
+			    				
+			    			}
+							else
+								console.info( 'Erreurs de saisies utilisateur' );
+		    			}
+		    			// 3) de toute maniere si on trouve dans la chaine json un attribut errors, Ext.BasicForm prend la main
+		    			// pour faire la gestion automatique
+    				}
+    			
 	   			});
 	  		} ;
 	  	
 	  	this.formulaire.addButton( config, handler ) ;
 	}
-	else
-	{
-	    var monBoutonValidation = new Ext.Button({
-		  	text: 'Valider',
-		  	handler: function(){
-	    		var myExtJs = fr.urssaf.image.commons.extjs ;
-	    		myExtJs.formulaire.getForm().submit({
-		  			success: function(f,a){
-							// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
-	    					if( successFunction )
-		    				{
-		    					successFunction(f,a);
-		    				}else
-		    				{
-		    					// redirection
-		    		  			if( myExtJs._actionOnSuccess.url != null )
-		    		  			{
-		    		  				window.location = myExtJs._actionOnSuccess.url ;
-		    		  			}
-		    		  			// mise a jour d'une zone
-		    		  			else if( myExtJs._actionOnSuccess.zoneName != null )	
-		    		  			{
-									var el = Ext.get( myExtJs._actionOnSuccess.zoneName ) ;
-									if( el )
-										el.update( a.response.responseText );
-		    		  			}
-		    				}
-	
-	    				},
-	 	  			failure: function(f,a){
-	    					// erreur de connexion
-	    					if (a.failureType === Ext.form.Action.CONNECT_FAILURE) 
-	    					{
-	    						// Si une fonction perso est precise, elle est prioritaire sur les comportements par defaut
-	                        	if( failureFunction )
-	    	    				{
-	        						failureFunction(f,a);
-	    	    				}
-	                        	// comportements par defaut
-	                        	else
-	    	    				{
-	                        		// redirection
-	    	    		  			if( myExtJs._actionOnFailure.url != null )
-	    	    		  			{
-	    	    		  				window.location = myExtJs._actionOnFailure.url ;
-	    	    		  			}
-	    	    		  			// mise a jour d'une zone
-	    	    		  			else if( myExtJs._actionOnFailure.zoneName )	
-	    	    		  			{
-	    	    		  				var el = Ext.get( myExtJs._actionOnFailure.zoneName ) ;
-	    	    		  				if( el )
-	    	    		  					el.update( a.response.responseText );
-	    	    		  			}
-	    	    				}
-	                        	
-	                        }
-	    					// success: false
-	                        if (a.failureType === Ext.form.Action.SERVER_INVALID)
-	                        {
-	                            Ext.Msg.alert('Erreur',
-	                                'Status: '+a.response.status+': '+a.response.statusText);
-	                        }
-	    				}
-		   			});
-		  		}
-		  });
-	    
-	    this.formulaire.add( monBoutonValidation ) ;
-	}
-	
+
     return this;
   },
   
@@ -545,67 +553,132 @@ fr.urssaf.image.commons.extjs = {
    },
    
    /**
-    * desc		defini les url de redirection en cas de succes et d'echec de submit
-    * params	pUrlOnSuccess (string) 
-    * params	pUrlOnFailure (string) 	
+    * desc		defini le comportement lors d'un appel ajax en succes
+    * params	pType (int) 
+    * params	pValue (string) 	
     * return 	void
     */
-   setUrlUsedOnResponse: function( pUrlOnSuccess, pUrlOnFailure )
+   setSuccessComportement: function( pType, pValue )
+   {   
+	   if( this._checkTypeBehavior( pType, pValue ) )
+	   {
+		   this._successBehavior.type = pType ;
+		   this._successBehavior.value = pValue ;
+	   }
+	   else
+		   if( !Ext.isIE && console ) console.warn( 'Erreur lors de l appel a setSuccessComportement' ) ;
+   },
+   
+   /**
+    * desc		defini le comportement lors d'un appel ajax en erreur
+    * params	pType (int) 
+    * params	pValue (string) 	
+    * return 	void
+    */
+   setFailureComportement: function( pType, pValue )
    {
-	   this._setUrlOnSuccess( pUrlOnSuccess );
-	   this._setUrlOnFailure( pUrlOnFailure );
+	   if( this._checkTypeBehavior( pType, pValue ) )
+	   {
+		   this._failureBehavior.type = pType ;
+		   this._failureBehavior.value = pValue ;
+	   }
+	   else
+		   if( !Ext.isIE && console ) console.warn( 'Erreur lors de l appel a setFailureComportement' ) ;
    },
    
    /**
-    * desc		defini les nom des zones de rafraichissement en cas de succes ou d'echec de submit
-    * params	pZoneNameOnSuccess (string)
-    * params	pZoneNameOnFailure (string)	
-    * return 	void
+    * desc		verifie les valeurs d'un comportement
+    * params	pType (int) 
+    * params	pValue (string) 	
+    * return 	boolean
     */
-   setZoneNameUsedOnResponse: function( pZoneNameOnSuccess, pZoneNameOnFailure )
+   _checkTypeBehavior: function( pType, pValue )
    {
-	   this._setZoneOnSuccess( pZoneNameOnSuccess );
-	   this._setZoneOnFailure( pZoneNameOnFailure );
+	   // on doit etre en mode Ajax
+	   if( !this._ajaxMode )
+	   {
+		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : le formulaire est en mode d\'envoi standard et pas Ajax' ) ;
+		   return false ;
+	   }
+	   
+	   // pType doit etre un chiffre
+	   if( !Ext.isNumber( pType ) )
+	   {
+		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType doit etre un chiffre (' + pType + ')' ) ;
+		   return false ;
+	   }
+
+	   // pType doit correspondre a l'une des constantes definies
+	   if( pType != this.__BEHAVIOR_POPUP__
+		&& pType != this.__BEHAVIOR_ZONE__
+		&& pType != this.__BEHAVIOR_URL__
+		&& pType != this.__BEHAVIOR_FUNCTION__ )
+	   {
+		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType ne correspond pas a une constante de la classe (' + pType + ')' ) ;
+		   return false ;
+	   }
+
+	   // pValue doit etre null si on utilise une popup
+	   if( pType == this.__BEHAVIOR_POPUP__ 
+		&& pValue != null )
+		{
+		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type popup (' + pType + ', ' + pValue + ')' ) ;
+		   return false ;
+		}
+
+	   // pValue doit etre un element existant du dom si on utilise une zone
+	   if( pType == this.__BEHAVIOR_ZONE__ )
+	   {
+		   var el = Ext.get( pValue ) ;
+		   if( !el )
+		   {
+			   console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type zone (' + pType + ', ' + pValue + ')' ) ;
+			   return false ;
+		   }
+	   }
+
+	   // pValue doit commencer par http(s):// si on utilise une url
+	   if( pType == this.__BEHAVIOR_URL__ 
+		&& ( pValue == null 
+			|| ( pValue.substr( 0, 7 ) != 'http://' 
+				&& pValue.substr( 0, 8 ) != 'https://' ) ) )
+	   {
+		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type url (' + pType + ', ' + pValue + ')' ) ;
+		   return false ;
+	   }
+ 
+	   // pValue doit etre une fonction si on utilise une fonction
+	   if( pType == this.__BEHAVIOR_FUNCTION__
+		&& !Ext.isFunction( pValue ) )
+	   {
+		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type fonction (' + pType + ', ' + pValue + ')' ) ;
+		   return false ;
+	   }
+
+	   return true ;
    },
    
    /**
-    * desc		defini l'url de redirection en cas de succes de submit
-    * params	pUrl (string)
-    * return 	void
+    * desc		recupere le message associé à la réponse ajax (attribut message de la réponse)
+    * 			si el est spécifié, le contenu d'el sera mis à jour avec le message de réponse
+    * params	responseText (string)
+    * params	el (Element) 	
+    * return 	message (string)
     */
-   _setUrlOnSuccess: function( pUrl ){
-	   this._actionOnSuccess.zoneName = null ;
-	   this._actionOnSuccess.url = pUrl ;
-   },
-   
-   /**
-    * desc		defini le nom de la zone de rafraichissement en cas de succes de submit
-    * params	pZoneName (string) 	
-    * return 	void
-    */
-   _setZoneOnSuccess: function( pZoneName ){
-	   this._actionOnSuccess.zoneName = pZoneName ;
-	   this._actionOnSuccess.url = null ;
-   },
-   
-   /**
-    * desc		defini le nom de la zone de rafraichissement en cas d'echec de submit
-    * params	pUrl (string)	
-    * return 	void
-    */
-   _setUrlOnFailure: function( pUrl ){
-	   this._actionOnFailure.zoneName = null ;
-	   this._actionOnFailure.url = pUrl ;
-   },
-   
-   /**
-    * desc		defini le nom de la zone de rafraichissement en cas d'echec de submit
-    * params	pZoneName (string) 	
-    * return 	void
-    */
-   _setZoneOnFailure: function( pZoneName ){
-	   this._actionOnFailure.zoneName = pZoneName ;
-	   this._actionOnFailure.url = null ;
+   _getMessageAttributeFromJson: function( responseText, el )
+   {
+	    var message = null ;
+	 	var responseObject =  Ext.util.JSON.decode( responseText );
+	 	
+	 	if( responseObject.message 
+	 		&& responseObject.message != null 
+	 		&& responseObject.message != "" )
+	 		message = responseObject.message ;
+	 	 	
+	 	if( el )
+	 		el.update( message );
+	 	
+	 	return message ;
    },
    
    /**
@@ -619,8 +692,12 @@ fr.urssaf.image.commons.extjs = {
   		&& myExtJs.formulaire.getForm().findField( myExtJs._errorFieldName )
   		&& myExtJs.formulaire.getForm().findField( myExtJs._errorFieldName ).getValue().length > 0 )
   	{
-  		var base64String = Ext.util.base64.decode( myExtJs.formulaire.getForm().findField( myExtJs._errorFieldName ).getValue() ) ;
+  		var errorFieldContent = myExtJs.formulaire.getForm().findField( myExtJs._errorFieldName ).getValue() ;
+  		var formResult =  Ext.util.JSON.decode( errorFieldContent );
+  		/*
+  		var base64String = Ext.util.base64.decode( errorFieldContent ) ;
   		var formResult =  Ext.util.JSON.decode( base64String );
+  		*/
   		
   		if( formResult && Ext.isObject( formResult) )
   		{
@@ -645,7 +722,7 @@ fr.urssaf.image.commons.extjs = {
 	  		}
   			
   		}
-  	}  
+  	}
   },
   
    /**

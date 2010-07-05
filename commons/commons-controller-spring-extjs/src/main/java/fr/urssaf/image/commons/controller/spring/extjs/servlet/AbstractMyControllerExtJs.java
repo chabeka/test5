@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import net.iharder.Base64;
-
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.urssaf.image.commons.controller.spring.extjs.formulaire.MyFormulaireExtJs;
@@ -33,7 +32,6 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 	 * dans le cas où le controller a été appelé via XmlHttpRequest, on lance le post traitement des erreurs 
 	 * au format ExtJS 
 	 */
-	@SuppressWarnings("unchecked")
 	protected void postView( 
 			HttpServletRequest request,
 			HttpServletResponse reponse )
@@ -60,10 +58,11 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 			MyFormulaireExtJs formulaire, 
 			String jsonString )
 	{
-		byte[] jsonObjectBytes = jsonString.getBytes() ;
-		String jsonBase64String = Base64.encodeBytes( jsonObjectBytes ) ;
+		//byte[] jsonObjectBytes = jsonString.getBytes() ;
+		//String jsonProtectedString = Base64.encodeBytes( jsonObjectBytes ) ;
+		String jsonProtectedString = jsonString ;
 
-		formulaire.initFormErrorField( jsonBase64String );
+		formulaire.initFormErrorField( jsonProtectedString );
 	}
 	
 	
@@ -73,6 +72,7 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 	 * @param reponse
 	 * @return json ExtJs response
 	 */
+	@SuppressWarnings({ "unchecked" })
 	protected String buildJsonForExtJS( 
 			HttpServletRequest request,
 			HttpServletResponse reponse )
@@ -91,14 +91,18 @@ public abstract class AbstractMyControllerExtJs<F extends MyFormulaireExtJs> ext
 			{
 				if( errorList.containsKey(fieldName) )
 				{
-					List fieldListError = new ArrayList();
+					List<String> fieldListError = new ArrayList<String>();
 					for( FormulaireException exceptionList : errorList.get(fieldName).getFormulaireExceptions() )
 					{
 						String errMsgList = messageSource.getMessage(exceptionList.getCode(), null, null);
-						fieldListError.add( errMsgList );
+						if( errMsgList != null )
+						{
+							String protectedErrMsg = StringEscapeUtils.escapeHtml( errMsgList ) ;
+							fieldListError.add( protectedErrMsg );
+						}
 					}
 
-					Map<String, List> errMsgConverted = new HashMap<String, List>() ;
+					Map<String, List<String>> errMsgConverted = new HashMap<String, List<String>>() ;
 					errMsgConverted.put(fieldName, fieldListError);
 					jsonObject.accumulate("errors", errMsgConverted ) ;
 					
