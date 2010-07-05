@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Service;
 
 
@@ -13,7 +14,6 @@ import fr.urssaf.image.commons.controller.spring.exemple.formulaire.FormFormulai
 import fr.urssaf.image.commons.controller.spring.exemple.formulaire.TableFormulaire;
 import fr.urssaf.image.commons.controller.spring.exemple.modele.Document;
 import fr.urssaf.image.commons.controller.spring.exemple.modele.Etat;
-import fr.urssaf.image.commons.util.bool.BooleanUtil;
 import fr.urssaf.image.commons.util.date.DateUtil;
 
 @Service
@@ -103,7 +103,7 @@ public class DocumentService {
 					document.getId()));
 			document.setEtat(formulaire.getEtats().get(document.getId()));
 			document.setLevel(formulaire.getLevels().get(document.getId()));
-			document.setFlag(BooleanUtil.getBool(formulaire.getFlags().get(document.getId())));
+			document.setFlag(BooleanUtils.toBoolean(formulaire.getFlags().get(document.getId())));
 			document.setEtats(formulaire.getEtatss().get(document.getId()));
 			document.setComment(formulaire.getComments().get(document.getId()));
 		}
