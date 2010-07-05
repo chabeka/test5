@@ -2,12 +2,18 @@ package fr.urssaf.image.commons.util.logger;
 
 import org.apache.log4j.Logger;
 
+
+/**
+ * Fonctions de traces diverses 
+ *
+ */
 public final class Log {
 	
 	private Log(){
 		
 	}
 
+	
 	public static String getLogger(String[] log, char separator) {
 		StringBuffer info = new StringBuffer();
 

@@ -18,7 +18,6 @@ public class CompareUtilTest {
 	public void compareListFalse() {
 
 		List<String> liste1 = new ArrayList<String>();
-
 		liste1.add("toto");
 		liste1.add("tata");
 		liste1.add("titi");
@@ -28,8 +27,8 @@ public class CompareUtilTest {
 		liste2.add("tutu");
 		liste2.add("titi");
 
-		assertFalse(comparator.equals(liste1, liste2));
-		assertFalse(comparator.equals(liste2, liste1));
+		assertFalse("Vérification d'échec de comparaison entre 2 listes",comparator.equals(liste1, liste2));
+		assertFalse("Vérification d'échec de comparaison entre 2 listes",comparator.equals(liste2, liste1));
 
 	}
 
@@ -37,7 +36,6 @@ public class CompareUtilTest {
 	public void compareListFalse2() {
 
 		List<String> liste1 = new ArrayList<String>();
-
 		liste1.add("toto");
 		liste1.add("toto");
 		liste1.add("toto");
@@ -47,8 +45,8 @@ public class CompareUtilTest {
 		liste2.add("tata");
 		liste2.add("titi");
 
-		assertFalse(comparator.equals(liste1, liste2));
-		assertFalse(comparator.equals(liste2, liste1));
+		assertFalse("Vérification d'échec de comparaison entre 2 listes",comparator.equals(liste1, liste2));
+		assertFalse("Vérification d'échec de comparaison entre 2 listes",comparator.equals(liste2, liste1));
 
 	}
 
@@ -56,7 +54,6 @@ public class CompareUtilTest {
 	public void compareListSuccess() {
 
 		List<String> liste1 = new ArrayList<String>();
-
 		liste1.add("toto");
 		liste1.add("tata");
 		liste1.add("titi");
@@ -66,8 +63,8 @@ public class CompareUtilTest {
 		liste2.add("toto");
 		liste2.add("tata");
 
-		assertTrue(comparator.equals(liste1, liste2));
-		assertTrue(comparator.equals(liste2, liste1));
+		assertTrue("Vérification de réussite de comparaison entre 2 listes",comparator.equals(liste1, liste2));
+		assertTrue("Vérification de réussite de comparaison entre 2 listes",comparator.equals(liste2, liste1));
 
 	}
 

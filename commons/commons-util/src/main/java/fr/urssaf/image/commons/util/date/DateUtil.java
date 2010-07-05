@@ -11,7 +11,7 @@ import java.util.Locale;
 public final class DateUtil {
 
 	
-	private final static SimpleDateFormat formatFr = new SimpleDateFormat(
+	private final static SimpleDateFormat FORMAT_FR = new SimpleDateFormat(
 			"dd/MM/yyyy", Locale.getDefault());
 
 	private DateUtil() {
@@ -63,11 +63,11 @@ public final class DateUtil {
 	}
 
 	public static String dateFr(Date date) {
-		return date(date, formatFr);
+		return date(date, FORMAT_FR);
 	}
 
 	public static String todayFr() {
-		return formatFr.format(today());
+		return FORMAT_FR.format(today());
 	}
 
 	public static List<String> date(Collection<Date> dates, String pattern) {

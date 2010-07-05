@@ -28,30 +28,21 @@ public abstract class AbstractComparator<T> implements Comparator<T> {
 
 			compare = compareImpl(arg1, arg2);
 		}
-
+		
 		if (inverse) {
-			return -compare;
+			compare = -1 * compare;
 		}
 
 		return compare;
+		
 	}
 
 	public boolean sup(T arg1, T arg2) {
-
-		if (compare(arg1, arg2) > 0) {
-			return true;
-		}
-
-		return false;
+	   return compare(arg1, arg2) > 0; 
 	}
 
 	public boolean inf(T arg1, T arg2) {
-
-		if (compare(arg1, arg2) < 0) {
-			return true;
-		}
-
-		return false;
+		return compare(arg1, arg2) < 0 ;
 	}
 
 	public boolean range(T arg, T min, T max, boolean minClose, boolean maxClose) {
