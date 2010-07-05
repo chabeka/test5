@@ -3,7 +3,7 @@ package fr.urssaf.image.commons.controller.spring.formulaire.validator.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.urssaf.image.commons.util.string.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
 public class PatternValidatorAbstract {
 
@@ -11,7 +11,7 @@ public class PatternValidatorAbstract {
 
 	public boolean isValid(String value) {
 
-		if (StringUtil.notEmpty(value)) {
+		if (StringUtils.isNotBlank(value)) {
 			java.util.regex.Pattern modele = java.util.regex.Pattern.compile(
 					regex, java.util.regex.Pattern.MULTILINE
 							+ java.util.regex.Pattern.DOTALL);

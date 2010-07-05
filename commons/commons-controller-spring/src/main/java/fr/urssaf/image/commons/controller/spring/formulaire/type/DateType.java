@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
+
 
 import fr.urssaf.image.commons.controller.spring.formulaire.support.exception.FormulaireException;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.exception.TypeFormulaireException;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.type.AbstractType;
-import fr.urssaf.image.commons.util.string.StringUtil;
 
 public class DateType implements AbstractType<Date> {
 
@@ -28,7 +29,7 @@ public class DateType implements AbstractType<Date> {
 
 	public Date getObject(String value) throws TypeFormulaireException {
 
-		if (!obligatoire && !StringUtil.notEmpty(value)){
+		if (!obligatoire && StringUtils.isBlank(value)){
 			return null;
 		}
 		SimpleDateFormat format = new SimpleDateFormat(dateFormat,Locale.getDefault());

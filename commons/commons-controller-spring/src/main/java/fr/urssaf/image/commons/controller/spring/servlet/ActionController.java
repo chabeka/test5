@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,7 +16,6 @@ import fr.urssaf.image.commons.controller.spring.formulaire.MyFormulaire;
 import fr.urssaf.image.commons.controller.spring.servlet.AbstractMyController.CONTROLLER;
 import fr.urssaf.image.commons.controller.spring.servlet.support.annotation.Validation;
 import fr.urssaf.image.commons.util.logger.Log;
-import fr.urssaf.image.commons.util.string.StringUtil;
 
 public class ActionController<F extends MyFormulaire> {
 
@@ -76,7 +76,7 @@ public class ActionController<F extends MyFormulaire> {
 							this.controller.getFormulaire(request, reponse),
 							validation)) {
 
-				if (StringUtil.notEmpty(validation.action())) {
+				if (StringUtils.isNotBlank(validation.action())) {
 					return this.action(request, reponse, validation.action());
 				}
 

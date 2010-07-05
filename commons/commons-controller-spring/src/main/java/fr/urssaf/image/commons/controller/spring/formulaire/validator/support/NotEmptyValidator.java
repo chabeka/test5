@@ -3,15 +3,16 @@ package fr.urssaf.image.commons.controller.spring.formulaire.validator.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 
 import fr.urssaf.image.commons.controller.spring.formulaire.support.validator.ValidatorAbstract;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.NotEmpty;
-import fr.urssaf.image.commons.util.string.StringUtil;
 
 public class NotEmptyValidator implements ValidatorAbstract<String, NotEmpty> {
 
 	public boolean isValid(String value) {
-		return StringUtil.notEmpty(value);
+		return StringUtils.isNotBlank(value);
 
 	}
 
