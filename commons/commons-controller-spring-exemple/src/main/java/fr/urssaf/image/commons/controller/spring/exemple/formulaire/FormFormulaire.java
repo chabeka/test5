@@ -3,6 +3,8 @@ package fr.urssaf.image.commons.controller.spring.exemple.formulaire;
 import java.util.Date;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 
 import fr.urssaf.image.commons.controller.spring.exemple.annotation.ValidRule;
 import fr.urssaf.image.commons.controller.spring.exemple.modele.Etat;
@@ -15,7 +17,6 @@ import fr.urssaf.image.commons.controller.spring.formulaire.validator.NotEmpty;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.NotNull;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Past;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Range;
-import fr.urssaf.image.commons.util.string.StringUtil;
 
 public class FormFormulaire extends MyFormulaire {
 
@@ -120,7 +121,7 @@ public class FormFormulaire extends MyFormulaire {
 		private String comment;
 
 		public void setComment(String comment) {
-			this.comment = StringUtil.trim(comment);
+			this.comment = StringUtils.trim(comment);
 		}
 
 		@NotEmpty
