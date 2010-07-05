@@ -22,7 +22,7 @@ public class LockFile implements ReadWriteFile {
 
 	private File file;
 
-	private static final Logger log = Logger.getLogger(LockFile.class);
+	private static final Logger LOGGER = Logger.getLogger(LockFile.class);
 
 	public LockFile(String file) throws IOException {
 		this(new File(file));
@@ -38,7 +38,7 @@ public class LockFile implements ReadWriteFile {
 
 		lock(true);
 
-		log.trace("lecture de " + file.getName());
+		LOGGER.trace("lecture de " + file.getName());
 
 		StringBuffer text = new StringBuffer();
 		try {
@@ -50,7 +50,7 @@ public class LockFile implements ReadWriteFile {
 		} finally {
 
 			release();
-			log.trace("fin de lecture de " + file.getName());
+			LOGGER.trace("fin de lecture de " + file.getName());
 
 		}
 
@@ -61,7 +61,7 @@ public class LockFile implements ReadWriteFile {
 
 		lock(false);
 
-		log.trace("écriture sur " + file.getName());
+		LOGGER.trace("écriture sur " + file.getName());
 
 		try {
 			randomAccessFile.seek(randomAccessFile.length());
@@ -70,7 +70,7 @@ public class LockFile implements ReadWriteFile {
 		} finally {
 
 			release();
-			log.trace("fin d'écriture de " + file.getName());
+			LOGGER.trace("fin d'écriture de " + file.getName());
 
 		}
 

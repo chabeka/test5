@@ -7,12 +7,11 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import fr.urssaf.image.commons.file.FileTest;
-import fr.urssaf.image.commons.file.lock.RandomAccessFileUtil;
+import fr.urssaf.image.commons.file.FileUtilTest;
 
 public class RandomAccessFileTest {
 
-	private static final Logger log = Logger.getLogger(FileTest.class);
+	private static final Logger LOGGER = Logger.getLogger(FileUtilTest.class);
 
 	private final static String FILE = "src/test/resources/randomAccessFileUtil.txt";
 
@@ -30,7 +29,7 @@ public class RandomAccessFileTest {
 	public void read() {
 		try {
 			String text = RandomAccessFileUtil.read(FILE);
-			log.debug(text);
+			LOGGER.debug(text);
 		} catch (IOException e) {
 			fail("le test de lecture est un échec");
 		}

@@ -6,8 +6,13 @@ import java.io.File;
  * Bibliothèque de fonctions utilitaires pour manipuler les chemins de fichiers
  *
  */
-public class PathUtil {
+public final class PathUtil {
 
+   
+   private PathUtil()
+   {
+      
+   }
    
    /**
     * Concatène parent et child en utilisant les bons séparateurs de répertoire selon l'OS

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public interface ReadWriteFile {
 
-	public String read() throws IOException;
+	String read() throws IOException;
 	
-	public void write(String text) throws IOException;
+	void write(String text) throws IOException;
 }

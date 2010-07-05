@@ -17,32 +17,32 @@ public class FileThread extends Thread {
 
 	private int numero;
 
-	private static final Logger log = Logger.getLogger(FileThread.class);
+	private static final Logger LOGGER = Logger.getLogger(FileThread.class);
 
-	private final static SimpleDateFormat format = new SimpleDateFormat(
+	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
 			"dd/MM/yyyy HH:mm:ss", Locale.getDefault());
 
 	private final static String FILE = "src/test/resources/lock.txt";
 
 	private ReadWriteFile file;
 
-	private static final int thread = 10;
+	private static final int THREAD = 10;
 
-	private static final int cycle = 5;
+	private static final int CYCLE = 5;
 
 	private final int pause = 100;
 
-	private static final boolean lock = true;
+	private static final boolean LOCK = true;
 
 	public static void main(String args[]) throws IOException {
 		ReadWriteFile file = null;
-		if (lock) {
+		if (LOCK) {
 			file = new LockFile(FILE);
 		} else {
 			file = new SimpleFile(FILE);
 		}
 
-		for (int i = 0; i < thread; i++) {
+		for (int i = 0; i < THREAD; i++) {
 			FileThread thread = new FileThread(file, i);
 			thread.start();
 		}
@@ -63,8 +63,8 @@ public class FileThread extends Thread {
 	}
 
 	public void executer() throws IOException {
-		log.info("DEBUT DE N°" + numero);
-		for (int i = 0; i < cycle; i++) {
+		LOGGER.info("DEBUT DE N°" + numero);
+		for (int i = 0; i < CYCLE; i++) {
 
 			Random randomGenerator = new Random();
 			int randomInt = randomGenerator.nextInt(10);
@@ -75,10 +75,10 @@ public class FileThread extends Thread {
 			} catch (InterruptedException ie) {
 			}
 
-			log.debug("n°" + numero + " attend pour écrire");
+			LOGGER.debug("n°" + numero + " attend pour écrire");
 			file.write(now() + " thread n°" + numero + " écrit la ligne n°" + i
 					+ "\n");
-			log.debug("n°" + numero + " a fini d'écrire");
+			LOGGER.debug("n°" + numero + " a fini d'écrire");
 
 			randomGenerator = new Random();
 			randomInt = randomGenerator.nextInt(10);
@@ -89,18 +89,18 @@ public class FileThread extends Thread {
 			} catch (InterruptedException ie) {
 			}
 
-			log.debug("n°" + numero + " attend pour lire");
+			LOGGER.debug("n°" + numero + " attend pour lire");
 			file.read();
-			log.debug("n°" + numero + " a fini de lire");
+			LOGGER.debug("n°" + numero + " a fini de lire");
 
 		}
 
-		log.info("FIN DE N°" + numero);
+		LOGGER.info("FIN DE N°" + numero);
 
 	}
 
 	private static String now() {
 
-		return DateUtil.date(new Date(), format);
+		return DateUtil.date(new Date(), DATE_FORMAT);
 	}
 }
