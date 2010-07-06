@@ -38,10 +38,10 @@ public final class CriteriaUtil {
 			boolean inverse) {
 
 		if (order != null) {
-			if (!inverse) {
-				criteria.addOrder(Order.asc(order));
+			if (inverse) {
+			   criteria.addOrder(Order.desc(order));
 			} else {
-				criteria.addOrder(Order.desc(order));
+			   criteria.addOrder(Order.asc(order));
 			}
 		}
 	}

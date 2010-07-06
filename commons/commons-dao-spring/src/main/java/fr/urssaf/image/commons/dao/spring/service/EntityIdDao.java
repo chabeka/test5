@@ -15,20 +15,20 @@ public interface EntityIdDao<M, I> {
 	 * 
 	 * <p>cherche en session puis en base<p>
 	 * 
-	 * @param id identifiant de l'objet persistant
+	 * @param identifiant identifiant de l'objet persistant
 	 * @return objet persistant
 	 */
-	public M get(I id);
+	M get(I identifiant);
 
 	/**
 	 * Renvoie un objet persistant en base
 	 * 
 	 * <p>cherche en base<p>
 	 * 
-	 * @param id identifiant de l'objet persistant
+	 * @param identifiant identifiant de l'objet persistant
 	 * @return objet persistant
 	 */
-	public M find(I id);
+	M find(I identifiant);
 	
 	
 }

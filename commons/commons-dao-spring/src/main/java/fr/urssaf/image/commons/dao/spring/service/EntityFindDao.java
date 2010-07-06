@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface EntityFindDao<M> {
 
-    public List<M> find();
+    List<M> find();
     
     /**
      * Renvoie tous les objets persistants triés
@@ -20,7 +20,7 @@ public interface EntityFindDao<M> {
      * @param order nom de la colonne à trier
      * @return liste des objets persistants
      */
-    public List<M> find(String order);
+    List<M> find(String order);
     
     /**
      * Renvoie tous les objets persistants triés
@@ -29,7 +29,7 @@ public interface EntityFindDao<M> {
      * @param inverse sens du tri
      * @return liste des objets persistants
      */
-    public List<M> find(String order,boolean inverse);
+    List<M> find(String order,boolean inverse);
     
     /**
      * 
@@ -41,7 +41,7 @@ public interface EntityFindDao<M> {
      * @param inverse sens du tri
      * @return liste des objets persistants
      */
-    public List<M> find(int firstResult, int maxResult, String order, boolean inverse);
+    List<M> find(int firstResult, int maxResult, String order, boolean inverse);
 
     
 }

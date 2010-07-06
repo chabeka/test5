@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation=Propagation.SUPPORTS)
 public abstract class AbstractEntityDao<P> extends HibernateDaoSupport{
 
-	private Class<P> table;
+	private final Class<P> table;
 	
 	public AbstractEntityDao(SessionFactory sessionFactory,Class<P> table){
 		super.setSessionFactory(sessionFactory);

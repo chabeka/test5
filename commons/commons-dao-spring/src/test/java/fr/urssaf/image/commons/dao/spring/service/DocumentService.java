@@ -8,7 +8,7 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 
 public interface DocumentService {
 
-	public List<Document> save(List<String> titres);
+	List<Document> save(List<String> titres);
 	
-	public List<Document> save(Map<String,Date> documents);
+	List<Document> save(Map<String,Date> documents);
 }

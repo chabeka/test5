@@ -31,6 +31,7 @@ import fr.urssaf.image.commons.dao.spring.service.impl.EntityModifyDaoImpl;
  *            identifiant de la classe persistante
  */
 @Transactional(propagation = Propagation.SUPPORTS)
+@SuppressWarnings("PMD.TooManyMethods")
 public class MyHibernateDaoSupport<T, I extends Serializable> extends
 		HibernateDaoSupport implements EntityCountDao, EntityModifyDao<T>,
 		EntityFindDao<T>, EntityIdDao<T, I> {
@@ -114,13 +115,13 @@ public class MyHibernateDaoSupport<T, I extends Serializable> extends
 	}
 
 	@Override
-	public T get(I id) {
-		return idDaoImpl.get(id);
+	public T get(I identifiant) {
+		return idDaoImpl.get(identifiant);
 	}
 
 	@Override
-	public T find(I id) {
-		return idDaoImpl.find(id);
+	public T find(I identifiant) {
+		return idDaoImpl.find(identifiant);
 	}
 
 	@Override

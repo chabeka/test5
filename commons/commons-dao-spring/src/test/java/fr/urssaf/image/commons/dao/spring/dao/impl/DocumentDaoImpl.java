@@ -34,10 +34,18 @@ import fr.urssaf.image.commons.dao.spring.util.CriteriaUtil;
  */
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
+@SuppressWarnings({"PMD.TooManyMethods","PMD.ConsecutiveLiteralAppends"})
 public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		implements DocumentDao {
 	
-	private static final Logger log = Logger.getLogger(DocumentDaoImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(DocumentDaoImpl.class);
+	
+	private static final String AUTEUR = "auteur";
+	private static final String TITRE = "titre";
+	private static final String DATE = "date";
+	
+	private static final String UNCHECKED = "unchecked";
+	
 
 	/**
 	 * @param sessionFactory
@@ -53,7 +61,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 			boolean inverse) {
 
 		Criteria criteria = this.getCriteria();
-		criteria.setFetchMode("auteur", FetchMode.JOIN);
+		criteria.setFetchMode(AUTEUR, FetchMode.JOIN);
 
 		return this.find(criteria, firstResult, maxResult, order, inverse);
 	}
@@ -70,7 +78,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 			Document doc = (Document) scroll.get(0);
 
 			if (scroll.getRowNumber() % 10000 == 0) {
-				log.debug(scroll.getRowNumber());
+				LOGGER.debug(scroll.getRowNumber());
 			}
 			this.getSession().evict(doc);
 
@@ -108,33 +116,33 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void saveSQL(Document document) {
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer(100);
 		sql.append("insert into document ");
 		sql.append("(id_auteur, titre, date) ");
 		sql.append("values (:auteur, :titre, :date) ");
 
 		Query query = this.getSession().createSQLQuery(sql.toString());
-		query.setParameter("titre", document.getTitre());
-		query.setParameter("date", document.getDate());
-		if (document.getAuteur() != null) {
-			query.setParameter("auteur", document.getAuteur().getId());
+		query.setParameter(TITRE, document.getTitre());
+		query.setParameter(DATE, document.getDate());
+		if (document.getAuteur() == null) {
+		   query.setParameter(AUTEUR, null);
 		} else {
-			query.setParameter("auteur", null);
+		   query.setParameter(AUTEUR, document.getAuteur().getId());
 		}
 
 		query.executeUpdate();
 
-		BigInteger id = (BigInteger) this.getSession().createSQLQuery(
+		BigInteger idUnique = (BigInteger) this.getSession().createSQLQuery(
 				"select LAST_INSERT_ID()").list().iterator().next();
 
-		document.setId(id.intValue());
+		document.setId(idUnique.intValue());
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void updateSQL(Document document) {
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer(100);
 		sql.append("update document ");
 		sql.append("set ");
 		sql.append("id_auteur =:auteur, ");
@@ -143,12 +151,15 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		sql.append("where id =:id ");
 
 		Query query = this.getSession().createSQLQuery(sql.toString());
-		query.setParameter("titre", document.getTitre());
-		query.setParameter("date", document.getDate());
-		if (document.getAuteur() != null) {
-			query.setParameter("auteur", document.getAuteur().getId());
-		} else {
-			query.setParameter("auteur", null);
+		query.setParameter(TITRE, document.getTitre());
+		query.setParameter(DATE, document.getDate());
+		if (document.getAuteur() == null)
+		{
+		   query.setParameter(AUTEUR, null);
+		}
+		else
+		{
+		   query.setParameter(AUTEUR, document.getAuteur().getId());
 		}
 		query.setParameter("id", document.getId());
 
@@ -160,11 +171,9 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void deleteSQL(Document document) {
 
-		StringBuffer sql = new StringBuffer();
-		sql.append("delete from document ");
-		sql.append("where id =:id ");
-
-		Query query = this.getSession().createSQLQuery(sql.toString());
+		String sql = "delete from document where id =:id";
+	      
+		Query query = this.getSession().createSQLQuery(sql);
 		query.setParameter("id", document.getId());
 
 		query.executeUpdate();
@@ -172,24 +181,29 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	}
 
 	@Override
-	public Document findSQL(Integer id) {
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	public Document findSQL(Integer idUnique) {
 
-		StringBuffer sql = new StringBuffer();
+	   Document result = null;
+	   
+		StringBuffer sql = new StringBuffer(150);
 		sql.append("select doc.id,doc.titre,doc.date,doc.id_auteur,aut.nom ");
 		sql.append("from document doc ");
 		sql.append("left outer join auteur aut on doc.id_auteur=aut.id ");
 		sql.append("where doc.id=:id ");
 
 		Query query = this.getSession().createSQLQuery(sql.toString());
-		query.setParameter("id", id);
+		query.setParameter("id", idUnique);
 
 		Object[] obj = (Object[]) query.uniqueResult();
 
-		if (obj != null) {
-			return this.getDocument(obj);
+		if (obj != null)
+		{
+		   result = this.getDocument(obj);
 		}
-
-		return null;
+		
+		return result;
+		
 	}
 
 	private Document getDocument(Object[] obj) {
@@ -213,23 +227,20 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<Document> findSQL(int firstResult, int maxResults,
 			String order, boolean inverse) {
 
-		String inv = "asc";
-		if (inverse) {
-			inv = "desc";
-		}
+	   String inv = booleanToInverse(inverse);
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer(150);
 		sql.append("select doc.id,doc.titre,doc.date,doc.id_auteur,aut.nom ");
 		sql.append("from document doc ");
 		sql.append("left outer join auteur aut on doc.id_auteur=aut.id ");
 
 		sql.append("order by doc." + order + " " + inv + " ");
 		sql.append("limit " + firstResult + "," + maxResults);
-
+		
 		Query query = this.getSession().createSQLQuery(sql.toString());
 
 		List<Object[]> objects = (List<Object[]>) query.list();
@@ -244,16 +255,13 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<Document> findHQL(int firstResult, int maxResults,
 			String order, boolean inverse) {
 
-		String inv = "asc";
-		if (inverse) {
-			inv = "desc";
-		}
+	   String inv = booleanToInverse(inverse);
 
-		StringBuffer hql = new StringBuffer();
+		StringBuffer hql = new StringBuffer(100);
 		// l'ordre des éléments est important
 		hql.append("select aut,doc ");
 		hql.append("from Document doc left join doc.auteur aut ");
@@ -270,40 +278,37 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	}
 
 	@Override
-	public Document findHQL(Integer id) {
+	public Document findHQL(Integer idUnique) {
 
-		StringBuffer sql = new StringBuffer();
-
-		sql.append("from Document ");
-		sql.append("where id=:id ");
-
-		Query query = this.getSession().createQuery(sql.toString());
-		query.setParameter("id", id);
+		String sql = "from Document where id=:id";
+	   
+		Query query = this.getSession().createQuery(sql);
+		query.setParameter("id", idUnique);
 
 		return (Document) query.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	@Override
 	public List<Document> findByCriteria() {
 
 		Criteria criteria = this.getSession().createCriteria(Document.class);
-		criteria.add(Restrictions.gt("date", new Date()));
+		criteria.add(Restrictions.gt(DATE, new Date()));
 
-		Criteria criteriaAuteur = criteria.createCriteria("auteur");
+		Criteria criteriaAuteur = criteria.createCriteria(AUTEUR);
 		criteriaAuteur.add(Restrictions.in("nom", new Object[] { "auteur 1",
 				"auteur 0" }));
 
-		criteria.addOrder(Order.asc("titre"));
+		criteria.addOrder(Order.asc(TITRE));
 
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	@Override
 	public List<Document> findBySQL() {
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer(200);
 		sql.append("select doc.id,doc.titre,doc.date,doc.id_auteur,aut.nom ");
 		sql.append("from document doc ");
 		sql.append("left outer join auteur aut on doc.id_auteur=aut.id ");
@@ -313,7 +318,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		sql.append("order by doc.titre asc ");
 
 		Query query = this.getSession().createSQLQuery(sql.toString());
-		query.setParameter("date", new Date());
+		query.setParameter(DATE, new Date());
 		query.setParameterList("nom", new Object[] { "auteur 1", "auteur 0" });
 
 		List<Object[]> objects = (List<Object[]>) query.list();
@@ -327,11 +332,11 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		return documents;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	@Override
 	public List<Document> findByHQL() {
 
-		StringBuffer hql = new StringBuffer();
+		StringBuffer hql = new StringBuffer(150);
 		hql.append("select aut,doc ");
 		hql.append("from Document doc left join doc.auteur aut ");
 		hql.append("where date > :date ");
@@ -339,7 +344,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		hql.append("order by doc.titre asc");
 
 		Query query = this.getSession().createQuery(hql.toString());
-		query.setParameter("date", new Date());
+		query.setParameter(DATE, new Date());
 		query.setParameterList("nom", new Object[] { "auteur 1", "auteur 0" });
 
 		query.setResultTransformer(Criteria.ROOT_ENTITY);
@@ -347,7 +352,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	@Override
 	public List<Document> findByCriteriaWithEtats() {
 
@@ -355,7 +360,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		Criteria criteriaEtat = criteria.createCriteria("etats",
 				Criteria.LEFT_JOIN);
 		criteriaEtat.add(Restrictions.ne("etat", "close"));
-		criteria.addOrder(Order.asc("titre"));
+		criteria.addOrder(Order.asc(TITRE));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
@@ -363,11 +368,11 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	@Override
 	public List<Document> findByHQLWithEtats() {
 
-		StringBuffer hql = new StringBuffer();
+		StringBuffer hql = new StringBuffer(120);
 		hql.append("select doc ");
 		hql.append("from Document doc join fetch doc.etats etat ");
 		hql.append("where etat.etat != 'close'");
@@ -378,6 +383,21 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 		query.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return query.list();
+	}
+	
+	
+	private String booleanToInverse(boolean inverse)
+	{
+	   String inv;
+      if (inverse)
+      {
+         inv = "desc";
+      }
+      else
+      {
+         inv = "asc";
+      }
+      return inv;
 	}
 
 }

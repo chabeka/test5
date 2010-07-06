@@ -18,16 +18,16 @@ public abstract class AbstractHibernateBouchonDao<T, I extends Serializable>
 		implements EntityModifyDao<T>, EntityIdDao<T, I>, EntityFindDao<T>,
 		EntityCountDao {
 
-	private Map<I, T> data = new HashMap<I, T>();
+	private final Map<I, T> data = new HashMap<I, T>();
 
 	@Override
-	public T find(I id) {
-		return data.get(id);
+	public T find(I identifiant) {
+		return data.get(identifiant);
 	}
 
 	@Override
-	public T get(I id) {
-		return data.get(id);
+	public T get(I identifiant) {
+		return data.get(identifiant);
 	}
 
 	@Override

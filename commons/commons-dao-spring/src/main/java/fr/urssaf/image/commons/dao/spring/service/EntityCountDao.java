@@ -7,5 +7,5 @@ public interface EntityCountDao {
      * 
      * @return nombre d'objets persistants
      */
-    public int count();
+    int count();
 }

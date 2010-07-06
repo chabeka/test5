@@ -12,7 +12,7 @@ import fr.urssaf.image.commons.dao.spring.aspect.AspectUtil;
 @Aspect
 public class LogDao {
 
-	protected static final Logger log = Logger.getLogger(LogDao.class);
+	protected static final Logger LOGGER = Logger.getLogger(LogDao.class);
 
 	private static final String DAO = "com.spring.dao.support.MyHibernateDaoSupport";
 
@@ -27,7 +27,7 @@ public class LogDao {
 		Object retVal = pjp.proceed();
 		Calendar calendar2 = Calendar.getInstance();
 
-		log.debug(pjp.getThis().getClass().getSimpleName() + " time:"
+		LOGGER.debug(pjp.getThis().getClass().getSimpleName() + " time:"
 				+ (calendar2.getTimeInMillis() - calendar1.getTimeInMillis())
 				/ 1000.0);
 		

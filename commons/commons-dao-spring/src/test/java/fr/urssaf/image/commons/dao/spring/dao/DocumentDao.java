@@ -14,37 +14,38 @@ import fr.urssaf.image.commons.dao.spring.service.EntityModifyDao;
  * @author Bertrand BARAULT
  * 
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public interface DocumentDao extends EntityModifyDao<Document>,
 		EntityIdDao<Document, Integer>, EntityFindDao<Document>, EntityCountDao {
 
-	public List<Document> findSQL(int firstResult, int maxResults, String order, boolean inverse);
+	List<Document> findSQL(int firstResult, int maxResults, String order, boolean inverse);
 
-	public List<Document> findHQL(int firstResult, int maxResults, String order, boolean inverse);
+	List<Document> findHQL(int firstResult, int maxResults, String order, boolean inverse);
 	
-	public List<Document> findEtats(int firstResult, int maxResults, String order, boolean inverse);
+	List<Document> findEtats(int firstResult, int maxResults, String order, boolean inverse);
 	
-	public List<Document> findOrderBy(int firstResult, int maxResults, String table,String order, boolean inverse);
+	List<Document> findOrderBy(int firstResult, int maxResults, String table,String order, boolean inverse);
 	
-	public void saveSQL(Document document);
+	void saveSQL(Document document);
 
-	public Document findSQL(Integer id);
+	Document findSQL(Integer idUnique);
 
-	public void deleteSQL(Document document);
+	void deleteSQL(Document document);
 
-	public void updateSQL(Document document);
+	void updateSQL(Document document);
 
-	public Document findHQL(Integer id);
+	Document findHQL(Integer idUnique);
 
-	public List<Document> findByHQL();
+	List<Document> findByHQL();
 
-	public List<Document> findBySQL();
+	List<Document> findBySQL();
 
-	public List<Document> findByCriteria();
+	List<Document> findByCriteria();
 	
-	public List<Document> findByHQLWithEtats();
+	List<Document> findByHQLWithEtats();
 
-	public List<Document> findByCriteriaWithEtats();
+	List<Document> findByCriteriaWithEtats();
 	
-	public void scroll();
+	void scroll();
 
 }

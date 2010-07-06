@@ -45,17 +45,17 @@ public class EntityIdDaoImpl<P, I extends Serializable> extends AbstractEntityDa
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public P find(I id) {
+	public P find(I identifiant) {
 		Criteria criteria = getCriteria();
-		criteria.add(Restrictions.eq(identifiant, id));
+		criteria.add(Restrictions.eq(this.identifiant, identifiant));
 
 		return (P) criteria.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public P get(I id) {
-		return (P) this.getSession().get(this.table, id);
+	public P get(I identifiant) {
+		return (P) this.getSession().get(this.table, identifiant);
 	}
 
 }

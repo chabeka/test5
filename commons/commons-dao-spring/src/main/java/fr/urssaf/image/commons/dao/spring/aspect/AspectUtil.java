@@ -1,8 +1,13 @@
 package fr.urssaf.image.commons.dao.spring.aspect;
 
-public class AspectUtil {
+public final class AspectUtil {
 
-	public static final String TARGET = "target";
+	private AspectUtil()
+	{
+	   
+	}
+   
+   public static final String TARGET = "target";
 	public static final String EXCECUTION = "execution";
 	public static final String ARGS = "args";
 
