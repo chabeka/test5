@@ -5,11 +5,11 @@ import org.apache.cxf.tools.wsdlto.WSDLToJava;
 
 public class GenerateSourceCxf {
 
-	private String packagePath;
+	private final String packagePath;
 
-	private String wsdl;
+	private final String wsdl;
 
-	private MyWSDL2Java myWSDL2Java;
+	private final MyWSDL2Java myWSDL2Java;
 
 	public GenerateSourceCxf(String packagePath, String wsdl) {
 
@@ -20,6 +20,7 @@ public class GenerateSourceCxf {
 
 	}
 
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	public void generate() throws Exception {
 
 		ToolContext context = new ToolContext();
@@ -32,7 +33,8 @@ public class GenerateSourceCxf {
 
 	}
 
+	@SuppressWarnings("PMD.AtLeastOneConstructor")
 	private class MyWSDL2Java extends WSDLToJava {
-
+	   
 	}
 }

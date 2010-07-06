@@ -21,7 +21,7 @@ import fr.urssaf.image.commons.webservice.util.SecurityUtil;
 
 public class MySSLContextFactory {
 
-	private static final Logger log = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(MySSLContextFactory.class);
 
 	private SSLContext ctx;
@@ -36,13 +36,13 @@ public class MySSLContextFactory {
 
 		try {
 			keyStore = SecurityUtil.getKeyStore(contextSource.getCertificat(),
-					contextSource.getCertificatPassword(), keyStoreType);
+					contextSource.getCertifPassword(), keyStoreType);
 
 		} catch (Exception e) {
-			log.error("Erreur: fichier " + contextSource.getCertificat()
+			LOGGER.error("Erreur: fichier " + contextSource.getCertificat()
 					+ " n'est pas un fichier " + this.keyStoreType
 					+ " valide ou passphrase incorrect");
-			log.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 			return;
 		}
 
@@ -64,19 +64,19 @@ public class MySSLContextFactory {
 
 			while (enumAlias.hasMoreElements()) {
 				String alias = enumAlias.nextElement();
-				log.debug(alias);
+				LOGGER.debug(alias);
 				listAlias.add(alias);
 			}
 
 			String[] aliases = listAlias.toArray(new String[listAlias.size()]);
 			for (int i = 0; i < aliases.length; i++) {
 				if (keyStore.isKeyEntry(aliases[i])) {
-					log.debug(aliases[i]);
+					LOGGER.debug(aliases[i]);
 					ALIAS = aliases[i];
 					break;
 				}
 			}
-			char[] password = contextSource.getCertificatPassword()
+			char[] password = contextSource.getCertifPassword()
 					.toCharArray();
 
 			privatekey = (PrivateKey) keyStore.getKey(ALIAS, password);
@@ -113,14 +113,14 @@ public class MySSLContextFactory {
 					} }, null);
 
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 			return;
 		}
 
-		log.debug("alias:" + ALIAS);
-		log.debug(cert.getType());
-		log.debug("private key:" + privatekey);
-		log.debug("public key:" + publickey);
+		LOGGER.debug("alias:" + ALIAS);
+		LOGGER.debug(cert.getType());
+		LOGGER.debug("private key:" + privatekey);
+		LOGGER.debug("public key:" + publickey);
 	}
 
 	private void initSSLContext() {
@@ -146,7 +146,7 @@ public class MySSLContextFactory {
 			} }, null);
 
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e);
 			return;
 		}
 

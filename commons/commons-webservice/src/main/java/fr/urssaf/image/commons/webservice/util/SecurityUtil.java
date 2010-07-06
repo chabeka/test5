@@ -8,7 +8,7 @@ import java.security.cert.CertificateException;
 
 import org.springframework.core.io.Resource;
 
-public abstract class SecurityUtil {
+public final class SecurityUtil {
 
 	private SecurityUtil() {
 

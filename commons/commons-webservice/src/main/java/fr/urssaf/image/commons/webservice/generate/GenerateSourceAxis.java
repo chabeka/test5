@@ -10,14 +10,14 @@ import org.apache.log4j.Logger;
 
 public class GenerateSourceAxis {
 
-	protected static final Logger log = Logger
+	protected static final Logger LOGGER = Logger
 			.getLogger(GenerateSourceAxis.class);
 
-	private String packagePath;
+	private final String packagePath;
 
-	private String wsdl;
+	private final String wsdl;
 
-	private MyWSDL2Java myWSDL2Java;
+	private final MyWSDL2Java myWSDL2Java;
 
 	public GenerateSourceAxis(String packagePath, String wsdl) {
 
@@ -49,7 +49,7 @@ public class GenerateSourceAxis {
 			// Print parser errors, if any
 			if (null != argsParser.getErrorString()) {
 
-				log.error(Messages.getMessage("error01", argsParser
+				LOGGER.error(Messages.getMessage("error01", argsParser
 						.getErrorString()));
 				printUsage();
 			}
@@ -71,7 +71,7 @@ public class GenerateSourceAxis {
 				parser.run(wsdlURI);
 
 			} catch (Exception e) {
-				log.error(e.getMessage(), e);
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}

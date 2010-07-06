@@ -6,7 +6,7 @@ public class MySSLContextSource {
 
 	private Resource certificat;
 
-	private String certificatPassword;
+	private String certifPassword;
 	
 	public Resource getCertificat() {
 		return certificat;
@@ -16,12 +16,12 @@ public class MySSLContextSource {
 		this.certificat = certificat;
 	}
 
-	public String getCertificatPassword() {
-		return certificatPassword;
+	public String getCertifPassword() {
+		return certifPassword;
 	}
 
-	public void setCertificatPassword(String certificatPassword) {
-		this.certificatPassword = certificatPassword;
+	public void setCertifPassword(String certifPassword) {
+		this.certifPassword = certifPassword;
 	}
 
 
