@@ -49,13 +49,16 @@ public class BaseExempleController<F> {
 		} else {
 			Set<ConstraintViolation<F>> failures = validator.validateProperty(
 					formulaire, field);
-			if (!failures.isEmpty()) {
+
+			if (failures.isEmpty()) {
+
+				response.setStatus(HttpServletResponse.SC_OK);
+				reponseBody = Collections.singletonMap(field, "");
+			} else {
 				response
 						.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				reponseBody = validationMessages(failures);
-			} else {
-				response.setStatus(HttpServletResponse.SC_OK);
-				reponseBody = Collections.singletonMap(field, "");
+
 			}
 		}
 

@@ -23,7 +23,7 @@ public class TableFormulaire {
 		interneFormulaire.clear();
 
 		for (Document document : documents) {
-			
+			@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 			FormFormulaire formulaire = new FormFormulaire();
 			interneFormulaire.put(document.getId(), formulaire);
 			formulaire.init(document);
@@ -38,6 +38,7 @@ public class TableFormulaire {
 		return this.interneFormulaire;
 	}
 	
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public void validate(Errors errors) {
 		
 		for(Integer id:interneFormulaire.keySet()){

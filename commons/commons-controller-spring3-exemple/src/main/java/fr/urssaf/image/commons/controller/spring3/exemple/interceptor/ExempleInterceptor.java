@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExempleInterceptor implements HandlerInterceptor {
 
 	@Override
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception exception)
 			throws Exception {
@@ -16,6 +17,7 @@ public class ExempleInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
@@ -23,6 +25,7 @@ public class ExempleInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 

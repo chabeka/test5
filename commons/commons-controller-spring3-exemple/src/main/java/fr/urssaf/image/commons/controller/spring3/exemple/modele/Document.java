@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class Document {
 
+	@SuppressWarnings("PMD.ShortVariable") 
 	private int id;
 	
 	private String titre;
@@ -27,6 +28,7 @@ public class Document {
 		return id;
 	}
 
+	@SuppressWarnings("PMD.ShortVariable") 
 	public void setId(int id) {
 		this.id = id;
 	}

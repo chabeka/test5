@@ -94,7 +94,8 @@ public class DocumentService {
 	public void update(TableFormulaire formulaire) {
 
 		for (Document document : formulaire.getDocuments()) {
-
+			
+			@SuppressWarnings("PMD.ShortVariable") 
 			Integer id = document.getId();
 
 			document.setTitre(formulaire.getInterneFormulaire().get(id)
