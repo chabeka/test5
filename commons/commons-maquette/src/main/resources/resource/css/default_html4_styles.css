@@ -106,11 +106,13 @@ body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * strike, strike.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * del, del.frUrssafImageCommonsMaquette  { text-decoration: line-through }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * hr, hr.frUrssafImageCommonsMaquette    { border: 1px inset }
+/* supprime le décalage de gauche pour le TreeView et le TabPanel (mais ça le supprime aussi pour les tags suivants inclus dans la page à décorer
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol, ol.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ul, ul.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * dir, dir.frUrssafImageCommonsMaquette,
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * menu, menu.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * dd, dd.frUrssafImageCommonsMaquette    { margin-left: 40px }
+*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol, ol.frUrssafImageCommonsMaquette    { list-style-type: decimal }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ul, 
 ol.frUrssafImageCommonsMaquette ul.frUrssafImageCommonsMaquette, 
@@ -124,7 +126,7 @@ ol.frUrssafImageCommonsMaquette ol.frUrssafImageCommonsMaquette    { margin-top:
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ins, ins.frUrssafImageCommonsMaquette  { text-decoration: underline }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * br, br.frUrssafImageCommonsMaquette:before		{ content: "\A"; white-space: pre-line }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * center, center.frUrssafImageCommonsMaquette	{ text-align: center }
-/*
+/* retiré car les liens sous ExtJs étaient soulignés
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :link, .frUrssafImageCommonsMaquette:link, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :visited, .frUrssafImageCommonsMaquette:visited{ text-decoration: underline }
 */
