@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class ExempleByAnnotationConstructeurMethodeServiceImpl implements
 		MethodeService {
 
-	private InjectionService service;
+	private final InjectionService service;
 
 	@Autowired
 	public ExempleByAnnotationConstructeurMethodeServiceImpl(

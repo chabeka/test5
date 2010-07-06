@@ -1,6 +1,6 @@
 package fr.urssaf.image.commons.ioc.spring.exemple.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-annotation.xml")
+@SuppressWarnings("PMD.LongVariable")
 public class MethodeAnnotationServiceTest {
 
 	private MethodeService attributMethodeService;
@@ -24,7 +25,9 @@ public class MethodeAnnotationServiceTest {
 	@Test
 	public void byAnnotationAttribut() {
 
-		assertEquals("ExempleByAnnotationAttributMethodeServiceImpl",
+		assertEquals(
+		      "Test par annotation attribut",
+		      "ExempleByAnnotationAttributMethodeServiceImpl",
 				attributMethodeService.methode());
 
 	}
@@ -40,7 +43,9 @@ public class MethodeAnnotationServiceTest {
 	@Test
 	public void byAnnotationSetter() {
 
-		assertEquals("ExempleByAnnotationSetterMethodeServiceImpl",
+		assertEquals(
+		      "Test par annotation setter",
+		      "ExempleByAnnotationSetterMethodeServiceImpl",
 				setterMethodeService.methode());
 
 	}
@@ -56,7 +61,9 @@ public class MethodeAnnotationServiceTest {
 	@Test
 	public void byAnnotationConstructeur() {
 
-		assertEquals("ExempleByAnnotationConstructeurMethodeServiceImpl",
+		assertEquals(
+		      "Test par annotation constructeur",
+		      "ExempleByAnnotationConstructeurMethodeServiceImpl",
 				constructeurMethodeService.methode());
 
 	}

@@ -9,6 +9,7 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-ioc-spring-exemple</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-ioc-spring-exemple</name>
 
 	<dependencies>
 

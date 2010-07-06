@@ -2,7 +2,7 @@ package fr.urssaf.image.commons.ioc.spring.exemple.service;
 
 public class ExempleByConstructeurMethodeServiceImpl implements MethodeService {
 
-	private InjectionService service;
+	private final InjectionService service;
 	
 	public ExempleByConstructeurMethodeServiceImpl(InjectionService service){
 		this.service = service;

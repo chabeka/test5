@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 @Component("injection")
 public class InjectionAnnotationServiceImpl implements InjectionService {
 
-	protected static final Logger log = Logger
+	protected static final Logger LOGGER = Logger
 			.getLogger(InjectionAnnotationServiceImpl.class);
 
 	@Override
 	public String methode(String libelle) {
-		log.debug(libelle);
+		LOGGER.debug(libelle);
 		return libelle;
 
 	}
