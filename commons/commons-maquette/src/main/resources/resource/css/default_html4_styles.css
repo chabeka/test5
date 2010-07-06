@@ -34,14 +34,10 @@ html,
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tfoot, tfoot.frUrssafImageCommonsMaquette	{ display: table-footer-group }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * col, col.frUrssafImageCommonsMaquette		{ display: table-column }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * colgroup, colgroup.frUrssafImageCommonsMaquette	{ display: table-column-group }
-/* 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * td, td.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette			{ display: table-cell }
-*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * caption, caption.frUrssafImageCommonsMaquette	{ display: table-caption }
-/*
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette			{ font-weight: bolder; text-align: center }
-*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * caption, caption.frUrssafImageCommonsMaquette	{ text-align: center }
 body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * h1, h1.frUrssafImageCommonsMaquette	{ font-size: 2em; margin: .67em 0 }
@@ -95,24 +91,22 @@ body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * sup, sup.frUrssafImageCommonsMaquette  { vertical-align: super }
 /*
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * table, table.frUrssafImageCommonsMaquette	{ border-spacing: 2px; }
+*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * thead, thead.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tbody, tbody.frUrssafImageCommonsMaquette,
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tfoot, tfoot.frUrssafImageCommonsMaquette  { vertical-align: middle }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * td, td.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * tr, tr.frUrssafImageCommonsMaquette    { vertical-align: inherit }
-*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * s, s.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * strike, strike.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * del, del.frUrssafImageCommonsMaquette  { text-decoration: line-through }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * hr, hr.frUrssafImageCommonsMaquette    { border: 1px inset }
-/* supprime le décalage de gauche pour le TreeView et le TabPanel (mais ça le supprime aussi pour les tags suivants inclus dans la page à décorer
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol, ol.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ul, ul.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * dir, dir.frUrssafImageCommonsMaquette,
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * menu, menu.frUrssafImageCommonsMaquette, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * dd, dd.frUrssafImageCommonsMaquette    { margin-left: 40px }
-*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol, ol.frUrssafImageCommonsMaquette    { list-style-type: decimal }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ul, 
 ol.frUrssafImageCommonsMaquette ul.frUrssafImageCommonsMaquette, 
@@ -126,7 +120,7 @@ ol.frUrssafImageCommonsMaquette ol.frUrssafImageCommonsMaquette    { margin-top:
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ins, ins.frUrssafImageCommonsMaquette  { text-decoration: underline }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * br, br.frUrssafImageCommonsMaquette:before		{ content: "\A"; white-space: pre-line }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * center, center.frUrssafImageCommonsMaquette	{ text-align: center }
-/* retiré car les liens sous ExtJs étaient soulignés
+/*
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :link, .frUrssafImageCommonsMaquette:link, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :visited, .frUrssafImageCommonsMaquette:visited{ text-decoration: underline }
 */
@@ -151,5 +145,3 @@ BDO[DIR="rtl"]  { direction: rtl; unicode-bidi: bidi-override }
   #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ol, ol.frUrssafImageCommonsMaquette, 
   #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * dl, dl.frUrssafImageCommonsMaquette  { page-break-before: avoid }
 }
-
-
