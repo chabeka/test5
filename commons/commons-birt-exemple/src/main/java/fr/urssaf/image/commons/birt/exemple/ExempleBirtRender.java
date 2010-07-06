@@ -1,27 +1,30 @@
 package fr.urssaf.image.commons.birt.exemple;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.birt.core.exception.BirtException;
-import org.eclipse.birt.report.engine.api.EngineException;
 
 import fr.urssaf.image.commons.birt.BirtRender;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtRenderException;
-import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 
-public class ExempleBirtRender {
-	/**
+public final class ExempleBirtRender {
+	
+   private ExempleBirtRender()
+   {
+      
+   }
+   
+   /**
 	 * chemin relatif au projet
 	 */
-	private static String _REPORT_ENGINE_PATH_ = "./src/main/resources/ReportEngine/" ;
-	private static String _LOG_PATH_ = "./logs" ;
-	private static String _OUTPUT_PATH_ = "./outputPath" ;
-	private static String _OUTPUT_FILENAME_ = "/output-birt" ;
-	private static String _REPORT_PATH_ = "./src/main/resources/reports" ;
+	private final static String REPORTENGINE_PATH = "./src/main/resources/ReportEngine/" ;
+	private final static String LOG_PATH = "./logs" ;
+	private final static String OUTPUT_PATH = "./outputPath" ;
+	private final static String OUTPUT_FILENAME = "/output-birt" ;
+	private final static String REPORT_PATH = "./src/main/resources/reports" ;
 	
-	private static String _reportFileName = "monPremierRapport.rptdesign" ;
+	private final static String REPORT_FILENAME = "monPremierRapport.rptdesign" ;
 	
 	/**
 	 * @param args
@@ -33,11 +36,13 @@ public class ExempleBirtRender {
 		paramValues.put("monParametreTitreDePage", "Titre de ma page");
 		paramValues.put("CustomerNumberParam", 200);
 		
-		BirtRender br = new BirtRender( 
-				_REPORT_ENGINE_PATH_, _LOG_PATH_, _OUTPUT_PATH_, 
-				_OUTPUT_FILENAME_ );
-		br.doChangeLogLevel( Level.INFO );
-		br.doRender( _REPORT_PATH_ + "/" + _reportFileName, 1, paramValues );
+		BirtRender birtRender = new BirtRender( 
+				REPORTENGINE_PATH, 
+				LOG_PATH, 
+				OUTPUT_PATH, 
+				OUTPUT_FILENAME );
+		birtRender.doChangeLogLevel( Level.INFO );
+		birtRender.doRender( REPORT_PATH + "/" + REPORT_FILENAME, 1, paramValues );
 	}
 
 }
