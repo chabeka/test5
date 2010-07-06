@@ -23,36 +23,43 @@ import fr.urssaf.image.commons.path.PathUtil;
 
 
 /**
- * @author CER6990172
  * Classe permettant de générer des rapports html ou pdf à partir de rapports BIRT
  */
 public class BirtRender
 {
-	private String _report_engine_path ;
-	private String _log_path ;
-	private String _output_path ;
-	private String _output_filename ;
+	private String reportEnginePath ;
+	private String logPath ;
+	private String outputPath ;
+	private String outputFilename ;
 	
 	final public static int _MODE_PDF_ = 1 ;
 	final public static int _MODE_HTML_ = 2 ; 
 	final public static int _MODE_DEFAULT_ = _MODE_PDF_ ;
 	
-	protected Level _logLevel = Level.OFF ;
-	protected IReportEngine _engine = null ;
-	protected boolean _isStopped = true ;
+	protected Level logLevel = Level.OFF ;
+	protected IReportEngine engine = null ;
+	protected boolean stopped = true ;
+	
 	
 	/**
-	 * @param report_engine_path
-	 * @param log_path
-	 * @param output_path
+	 * @param reportEnginePath
+	 * @param logPath
+	 * @param outputPath
 	 * @param output_filename
 	 * Démarre le moteur de rendu
 	 * @throws MissingConstructorParamBirtRenderException 
 	 * @throws BirtException 
 	 */
-	public BirtRender( String report_engine_path, String log_path, String output_path, String output_filename ) throws MissingConstructorParamBirtRenderException, BirtException{
+	public BirtRender(
+	      String reportEnginePath,
+	      String logPath,
+	      String outputPath,
+	      String outputFilename )
+	throws
+	      MissingConstructorParamBirtRenderException,
+	      BirtException{
 			
-		setConstructorParams( report_engine_path, log_path, output_path, output_filename );
+		setConstructorParams( reportEnginePath, logPath, outputPath, outputFilename );
 		EngineConfig config = getConfig() ;
 		setEngine( config ) ;
 
@@ -68,18 +75,29 @@ public class BirtRender
 	 * Lance la génération du rapport avec un nom de destination particulier
 	 */
 	@SuppressWarnings("unchecked")
-	public void doRender( String reportFilePath, String outputFilename, int renderMode, Map paramValues ) throws EngineException, MissingParamBirtRenderException
+	public void doRender(
+	      String reportFilePath,
+	      String outputFilename,
+	      int renderMode,
+	      Map paramValues )
+	throws
+	      EngineException,
+	      MissingParamBirtRenderException
 	{
-		String oldOutputFilename = _output_filename ;
-		
-		if( outputFilename != null )
-			_output_filename = outputFilename ;
+		if( outputFilename == null )
+		{
+		   throw new MissingParamBirtRenderException("2ème paramètre : outputFilename") ;
+		}
 		else
-			throw new MissingParamBirtRenderException("2ème paramètre : outputFilename") ;
-		
-		doRender( reportFilePath, renderMode, paramValues ) ;
-		
-		_output_filename = oldOutputFilename ;
+		{
+		   String oldOutputFilename = this.outputFilename ;
+		   
+		   this.outputFilename = outputFilename ;
+		   
+		   doRender( reportFilePath, renderMode, paramValues ) ;
+	      
+	      this.outputFilename = oldOutputFilename ;
+		}
 	}
 	
 	/**
@@ -99,10 +117,10 @@ public class BirtRender
 		}
 		
 		//Open the report design
-		IReportRunnable design = _engine.openReportDesign( reportFilePath ); 
+		IReportRunnable design = engine.openReportDesign( reportFilePath ); 
 			
 		//Create task to run and render the report,
-		IRunAndRenderTask task = _engine.createRunAndRenderTask(design); 
+		IRunAndRenderTask task = engine.createRunAndRenderTask(design); 
 		//Set parent classloader for engine
 		task.getAppContext().put(EngineConstants.APPCONTEXT_CLASSLOADER_KEY, BirtRender.class.getClassLoader()); 
 			
@@ -129,16 +147,20 @@ public class BirtRender
 	 */
 	public Boolean doChangeLogLevel( Level lvl )
 	{
-		Boolean changeDone = false ;
+		Boolean result ;
 		
-		if( _engine != null )
+		if( engine == null )
 		{
-			_logLevel = lvl ;
-			_engine.changeLogLevel( _logLevel );
-			changeDone = true ;
+		   result = false;
+		}
+		else
+		{
+		   logLevel = lvl ;
+         engine.changeLogLevel( logLevel );
+         result = true ;
 		}
 		
-		return changeDone ;
+		return result ;
 	}
 	
 	/**
@@ -146,11 +168,11 @@ public class BirtRender
 	 */
 	public void stopEngine()
 	{
-		if( _engine != null )
+		if( engine != null )
 		{
-			_engine.destroy();
+			engine.destroy();
 			Platform.shutdown();
-			_isStopped = true ;
+			stopped = true ;
 		}
 	}
 	
@@ -160,8 +182,8 @@ public class BirtRender
 	 */
 	protected IRenderOption getRenderOptions( int renderMode )
 	{		
-		IRenderOption options = null ;
-		String fileExtension = null ;
+		IRenderOption options ;
+		String fileExtension ;
 		
 		switch( renderMode )
 		{
@@ -182,7 +204,7 @@ public class BirtRender
 				fileExtension = "pdf" ;
 		}
 			
-		options.setOutputFileName( PathUtil.combine(_output_path,_output_filename) + "." + fileExtension );
+		options.setOutputFileName( PathUtil.combine(outputPath,outputFilename) + "." + fileExtension );
 
 		return options;		
 	}
@@ -190,11 +212,11 @@ public class BirtRender
 	/**
 	 * @return la configuration du moteur
 	 */
-	protected EngineConfig getConfig()
+	private EngineConfig getConfig()
 	{
 		final EngineConfig config = new EngineConfig( );
-		config.setEngineHome( _report_engine_path );
-		config.setLogConfig( _log_path, _logLevel );
+		config.setEngineHome( reportEnginePath );
+		config.setLogConfig( logPath, logLevel );
 		
 		return config ;
 	}
@@ -204,15 +226,15 @@ public class BirtRender
 	 * @throws BirtException
 	 * 
 	 */
-	protected void setEngine( EngineConfig config ) throws BirtException
+	private void setEngine( EngineConfig config ) throws BirtException
 	{
 		Platform.startup( config );  //If using RE API in Eclipse/RCP application this is not needed.
 		IReportEngineFactory factory = (IReportEngineFactory) Platform
 				.createFactoryObject( IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY );
 		
-		_engine = factory.createReportEngine( config );
+		engine = factory.createReportEngine( config );
 		
-		_isStopped = false ;
+		stopped = false ;
 	}
 	
 	/**
@@ -222,11 +244,11 @@ public class BirtRender
 	 */
 	protected IReportEngine getEngine( EngineConfig config ) throws BirtException
 	{
-		if( _engine == null )
+		if( engine == null )
 		{
 			setEngine( config );			
 		}
-		return _engine ;
+		return engine ;
 	}
 	
 	/**
@@ -235,42 +257,65 @@ public class BirtRender
 	 */
 	protected IReportEngine getEngine() throws NoEngineBirtRenderException
 	{
-		if( _engine == null )
+		if( engine == null )
 		{
 			throw new NoEngineBirtRenderException("Le moteur de rendu n'a pas été instancié.") ;
 		}
-		return _engine ;
+		return engine ;
 	}
 	
 	/**
-	 * @param report_engine_path
-	 * @param log_path
-	 * @param output_path
-	 * @param output_filename
+	 * @param reportEnginePath
+	 * @param logPath
+	 * @param outputPath
+	 * @param outputFilename
 	 * @throws MissingConstructorParamBirtRenderException
 	 * Positionne les variables par défaut envoyées aux constructeurs
 	 */
-	private void setConstructorParams( String report_engine_path, String log_path, String output_path, String output_filename ) throws MissingConstructorParamBirtRenderException
+	private void setConstructorParams(
+	      String reportEnginePath,
+	      String logPath,
+	      String outputPath,
+	      String outputFilename )
+	throws
+	      MissingConstructorParamBirtRenderException
 	{
-		if( report_engine_path != null )
-			_report_engine_path = report_engine_path ;
+		if( reportEnginePath == null )
+		{
+		   throw new MissingConstructorParamBirtRenderException("reportEnginePath") ;
+		}
 		else
-			throw new MissingConstructorParamBirtRenderException("report_engine_path") ;
+		{
+		   this.reportEnginePath = reportEnginePath ;
+		}
 			
-		if( log_path != null )
-			_log_path = log_path ;
+		if( logPath == null )
+		{
+		   throw new MissingConstructorParamBirtRenderException("logPath") ;
+		}
 		else
-			throw new MissingConstructorParamBirtRenderException("log_path") ;
+		{
+		   this.logPath = logPath ;
+		}
 		
-		if( output_path != null )
-			_output_path = output_path ;
+		if( outputPath == null )
+		{
+		   throw new MissingConstructorParamBirtRenderException("outputPath") ;
+		}
 		else
-			throw new MissingConstructorParamBirtRenderException("output_path") ;
+		{
+		   this.outputPath = outputPath ;
+		}
 		
-		if( output_filename != null )
-			_output_filename = output_filename ;
+		if( outputFilename == null )
+		{
+		   throw new MissingConstructorParamBirtRenderException("output_filename") ;
+		}
 		else
-			throw new MissingConstructorParamBirtRenderException("output_filename") ;
+		{
+		   this.outputFilename = outputFilename ;
+		}
+		
 	}
 	
 	/**
@@ -278,32 +323,29 @@ public class BirtRender
 	 */
 	public Boolean isStopped()
 	{
-		return _isStopped ;
+		return stopped ;
 	}
 	
 	public Level getLogLevel()
 	{
-		return _logLevel ;
+		return logLevel ;
 	}
 	
 	public String getReportEnginePath() {
-		return _report_engine_path;
+		return reportEnginePath;
 	}
 
 	public String getLogPath() {
-		return _log_path;
+		return logPath;
 	}
 
 	public String getOutputPath() {
-		return _output_path;
+		return outputPath;
 	}
 
 	public String getOutputFilename() {
-		return _output_filename;
+		return outputFilename;
 	}
 
-	public Level get_logLevel() {
-		return _logLevel;
-	}
 
 }
