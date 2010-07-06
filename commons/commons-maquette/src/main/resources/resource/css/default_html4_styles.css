@@ -124,8 +124,10 @@ ol.frUrssafImageCommonsMaquette ol.frUrssafImageCommonsMaquette    { margin-top:
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * ins, ins.frUrssafImageCommonsMaquette  { text-decoration: underline }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * br, br.frUrssafImageCommonsMaquette:before		{ content: "\A"; white-space: pre-line }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * center, center.frUrssafImageCommonsMaquette	{ text-align: center }
+/*
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :link, .frUrssafImageCommonsMaquette:link, 
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :visited, .frUrssafImageCommonsMaquette:visited{ text-decoration: underline }
+*/
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * :focus, .frUrssafImageCommonsMaquette:focus    { outline: thin dotted invert }
 
 /* Begin bidirectionality settings (do not change) */
