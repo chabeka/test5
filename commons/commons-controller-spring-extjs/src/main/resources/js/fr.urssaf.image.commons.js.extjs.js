@@ -56,11 +56,16 @@ fr.urssaf.image.commons.extjs = {
    * desc 	behavior when ajax call is a failure
    */
   _failureBehavior: {type:null, value:null},
-  
+
   /**
    * desc 	mode d'envoi du formulaire
    */
   _ajaxMode: null,
+
+  /**
+   * desc 	affichage des messages dans la console
+   */
+  _debugInConsole: false,
     
   /**
    * desc 		Creation d'un nouveau formulaire params return this
@@ -413,21 +418,21 @@ fr.urssaf.image.commons.extjs = {
     			
 	  			success: function(f,a){
     			
-if( !Ext.isIE && console ) console.info( 'success' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'success' );
     				switch( myExtJs._successBehavior.type )
     				{
 	    				case myExtJs.__BEHAVIOR_FUNCTION__ :
-if( !Ext.isIE && console ) console.info( 'Succès : fonction' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : fonction' );
 	    					myExtJs._successBehavior.value(f,a);
 	    					break ;
 	    					
 	    				case myExtJs.__BEHAVIOR_URL__ :
-if( !Ext.isIE && console ) console.info( 'Succès : url' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : url' );
 	    					window.location = myExtJs._successBehavior.value;
 	    					break ;
 	    					
 	    				case myExtJs.__BEHAVIOR_ZONE__ :
-if( !Ext.isIE && console ) console.info( 'Succès : zone' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : zone' );
 	    					var el = Ext.get( myExtJs._successBehavior.value ) ;
 	    					if( el )
 	    						myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
@@ -435,20 +440,20 @@ if( !Ext.isIE && console ) console.info( 'Succès : zone' );
 	    					
 	    				case myExtJs.__BEHAVIOR_POPUP__ :
 	    				default :
-if( !Ext.isIE && console ) console.info( 'Succès : Popup/default' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : Popup/default' );
 	    					Ext.Msg.alert( "Envoi r&eacute;ussit", 
 	    							myExtJs._getMessageAttributeFromJson( a.response.responseText ) );
     				}
     				
     			},
  	  			failure: function(f,a){
-if( !Ext.isIE && console ) console.info( 'failure' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'failure' );
 		    			// 1) erreur de connexion 
     					// 2) erreur fonctionnelle
 		    			if (a.failureType === Ext.form.Action.CONNECT_FAILURE
 		    			 || a.failureType === Ext.form.Action.SERVER_INVALID ) 
 		    			{
-if( !Ext.isIE && console ) console.info( 'failureBehavior : ' + myExtJs._failureBehavior.type );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'failureBehavior : ' + myExtJs._failureBehavior.type );
 							var userFormErrors = false ;
 						
 							// verification si erreur de saisie ou fonctionnelle 
@@ -458,26 +463,26 @@ if( !Ext.isIE && console ) console.info( 'failureBehavior : ' + myExtJs._failure
 								userFormErrors = ( responseObject.errors ) ? true : false ;
 							}
 							
-if( !Ext.isIE && console ) console.info( 'userFormErrors : ' + userFormErrors ) ;
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'userFormErrors : ' + userFormErrors ) ;
 
 							// si on a des erreurs de saisies on bloque cette gestion des erreurs et on laisse la main a ExtJS
 							if( !userFormErrors )
 							{
-if( !Ext.isIE && console ) console.info( 'Aucune erreurs de saisies' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Aucune erreurs de saisies' );
 			    				switch( myExtJs._failureBehavior.type )
 			    				{
 				    				case myExtJs.__BEHAVIOR_FUNCTION__ :
-if( !Ext.isIE && console ) console.info( 'Echec : fonction' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : fonction' );
 				    					myExtJs._failureBehavior.value(f,a);
 				    					break ;
 				    					
 				    				case myExtJs.__BEHAVIOR_URL__ :
-if( !Ext.isIE && console ) console.info( 'Echec : url' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : url' );
 				    					window.location = myExtJs._failureBehavior.value;
 				    					break ;
 				    					
 				    				case myExtJs.__BEHAVIOR_ZONE__ :
-if( !Ext.isIE && console ) console.info( 'Echec : zone' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : zone' );
 				    					var el = Ext.get( myExtJs._failureBehavior.value ) ;
 				    					if( el )
 				    						myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
@@ -485,7 +490,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : zone' );
 				    					
 				    				case myExtJs.__BEHAVIOR_POPUP__ :
 				    				default :
-if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
+if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : Popup/default' );
 				    					var display = false ;
 				    					var message = null ;
 				    					var title = null ;
@@ -513,7 +518,10 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 			    				
 			    			}
 							else
-								console.info( 'Erreurs de saisies utilisateur' );
+							{
+								if( !Ext.isIE && myExtJs._debugInConsole )
+									console.info( 'Erreurs de saisies utilisateur' );
+							}
 		    			}
 		    			// 3) de toute maniere si on trouve dans la chaine json un attribut errors, Ext.BasicForm prend la main
 		    			// pour faire la gestion automatique
@@ -566,7 +574,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 		   this._successBehavior.value = pValue ;
 	   }
 	   else
-		   if( !Ext.isIE && console ) console.warn( 'Erreur lors de l appel a setSuccessComportement' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( 'Erreur lors de l appel a setSuccessComportement' ) ;
    },
    
    /**
@@ -583,7 +591,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 		   this._failureBehavior.value = pValue ;
 	   }
 	   else
-		   if( !Ext.isIE && console ) console.warn( 'Erreur lors de l appel a setFailureComportement' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( 'Erreur lors de l appel a setFailureComportement' ) ;
    },
    
    /**
@@ -597,14 +605,14 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 	   // on doit etre en mode Ajax
 	   if( !this._ajaxMode )
 	   {
-		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : le formulaire est en mode d\'envoi standard et pas Ajax' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : le formulaire est en mode d\'envoi standard et pas Ajax' ) ;
 		   return false ;
 	   }
 	   
 	   // pType doit etre un chiffre
 	   if( !Ext.isNumber( pType ) )
 	   {
-		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType doit etre un chiffre (' + pType + ')' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : pType doit etre un chiffre (' + pType + ')' ) ;
 		   return false ;
 	   }
 
@@ -614,7 +622,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 		&& pType != this.__BEHAVIOR_URL__
 		&& pType != this.__BEHAVIOR_FUNCTION__ )
 	   {
-		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType ne correspond pas a une constante de la classe (' + pType + ')' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : pType ne correspond pas a une constante de la classe (' + pType + ')' ) ;
 		   return false ;
 	   }
 
@@ -622,7 +630,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 	   if( pType == this.__BEHAVIOR_POPUP__ 
 		&& pValue != null )
 		{
-		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type popup (' + pType + ', ' + pValue + ')' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type popup (' + pType + ', ' + pValue + ')' ) ;
 		   return false ;
 		}
 
@@ -643,7 +651,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 			|| ( pValue.substr( 0, 7 ) != 'http://' 
 				&& pValue.substr( 0, 8 ) != 'https://' ) ) )
 	   {
-		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type url (' + pType + ', ' + pValue + ')' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type url (' + pType + ', ' + pValue + ')' ) ;
 		   return false ;
 	   }
  
@@ -651,7 +659,7 @@ if( !Ext.isIE && console ) console.info( 'Echec : Popup/default' );
 	   if( pType == this.__BEHAVIOR_FUNCTION__
 		&& !Ext.isFunction( pValue ) )
 	   {
-		   if( !Ext.isIE && console ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type fonction (' + pType + ', ' + pValue + ')' ) ;
+		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type fonction (' + pType + ', ' + pValue + ')' ) ;
 		   return false ;
 	   }
 
