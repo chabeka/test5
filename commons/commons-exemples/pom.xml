@@ -25,6 +25,7 @@
   
    <modules>
       <module>../commons-ioc-spring-exemple</module>
+      <module>../commons-birt-exemple</module>
    </modules>
 
 </project>
