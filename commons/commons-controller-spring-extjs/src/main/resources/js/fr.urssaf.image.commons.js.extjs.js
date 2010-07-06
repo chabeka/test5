@@ -66,6 +66,16 @@ fr.urssaf.image.commons.extjs = {
    * desc 	affichage des messages dans la console
    */
   _debugInConsole: false,
+  
+  /**
+   * desc 	message de succes par defaut
+   */
+  _defaultSuccessMessage : 'Le formulaire a bien &eacute;t&eacute; valid&eacute;',
+  
+  /**
+   * desc 	message d'echec par defaut
+   */
+  _defaultFailureMessage : 'Des erreurs sont survenus',
     
   /**
    * desc 		Creation d'un nouveau formulaire params return this
@@ -419,6 +429,11 @@ fr.urssaf.image.commons.extjs = {
 	  			success: function(f,a){
     			
 if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'success' );
+
+					var message = myExtJs._getMessageAttributeFromJson( a.response.responseText ) ;
+					if( !message )
+						message = myExtJs._defaultSuccessMessage ;
+							
     				switch( myExtJs._successBehavior.type )
     				{
 	    				case myExtJs.__BEHAVIOR_FUNCTION__ :
@@ -435,14 +450,13 @@ if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : url' );
 if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : zone' );
 	    					var el = Ext.get( myExtJs._successBehavior.value ) ;
 	    					if( el )
-	    						myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
+	    						el.update( message ) ;
 	    					break ;
 	    					
 	    				case myExtJs.__BEHAVIOR_POPUP__ :
 	    				default :
 if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : Popup/default' );
-	    					Ext.Msg.alert( "Envoi r&eacute;ussit", 
-	    							myExtJs._getMessageAttributeFromJson( a.response.responseText ) );
+	    					Ext.Msg.alert( "Succ&eacute;s", message );
     				}
     				
     			},
@@ -485,35 +499,47 @@ if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : url' );
 if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : zone' );
 				    					var el = Ext.get( myExtJs._failureBehavior.value ) ;
 				    					if( el )
-				    						myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
+				    					{
+				    						// si erreur fonctionnelle on va parser la chaîne Json
+				    						if( a.failureType === Ext.form.Action.SERVER_INVALID )
+				    						{
+				    							var message = myExtJs._getMessageAttributeFromJson( a.response.responseText, el ) ;
+				    							// si le developpeur a oublie de renvoyer un attribut message, on met un message specifique
+				    							if( !message )
+				    								el.update( myExtJs._defaultFailureMessage ) ;
+				    						}
+				    						
+				    						// si erreur de connexion on affiche la chaine html 
+				    						else if( a.failureType === Ext.form.Action.CONNECT_FAILURE )
+				    						{
+				    							el.update( "Echec de connexion (" + a.response.status + ")" + "<br />" + a.response.responseText );
+				    						}
+				    					}
+				    						
 				    					break ;
 				    					
 				    				case myExtJs.__BEHAVIOR_POPUP__ :
 				    				default :
 if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : Popup/default' );
-				    					var display = false ;
+
 				    					var message = null ;
 				    					var title = null ;
 				    					switch( a.failureType )
 				    					{
 					    					case Ext.form.Action.CONNECT_FAILURE:
-					    						display = true ;
-					    						title = "Ech&egrave;c de connection (" + a.response.status + ")" ;
+					    						title = "Echec de connexion (" + a.response.status + ")" ;
 					    						message = a.response.statusText ;
 					    						break;
 					    					case Ext.form.Action.SERVER_INVALID:
 					    					default :
-					    						title = "Envoi &eacute;chou&eacute;" ;
-					    						message = "Le serveur a renvoy&eacute; les erreurs suivantes :\n"; 
+					    						title = "Echec" ;
 					    						if( jsonAttMessage = myExtJs._getMessageAttributeFromJson( a.response.responseText ) )
-					    						{
-					    							display = true ;
-						    						message += jsonAttMessage ;
-					    						}
+						    						message = jsonAttMessage ;
+					    						else
+					    							message = myExtJs._defaultFailureMessage ;
 				    					}
 				    					
-				    					if( display == true )
-				    						Ext.Msg.alert( title, message ) ;
+				    					Ext.Msg.alert( title, message ) ;
 			    				}
 			    				
 			    			}
