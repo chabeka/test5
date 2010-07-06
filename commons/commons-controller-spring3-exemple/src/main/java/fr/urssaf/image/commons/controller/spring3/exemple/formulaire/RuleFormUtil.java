@@ -8,8 +8,8 @@ public final class RuleFormUtil {
 
 	public static class DateRule {
 
-		private Date date1;
-		private Date date2;
+		private final Date date1;
+		private final Date date2;
 
 		public DateRule(Date date1, Date date2) {
 			this.date1 = date1;
@@ -17,10 +17,12 @@ public final class RuleFormUtil {
 		}
 
 		protected boolean isValid() {
+			
+			boolean valid = true;
 			if (this.date1 != null && this.date2 != null) {
-				return DateCompareUtil.sup(this.date1, this.date2);
+				valid =  DateCompareUtil.sup(this.date1, this.date2);
 			}
-			return true;
+			return valid;
 		}
 
 	}

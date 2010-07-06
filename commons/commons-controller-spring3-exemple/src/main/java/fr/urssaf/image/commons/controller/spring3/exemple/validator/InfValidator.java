@@ -11,7 +11,12 @@ public class InfValidator implements ConstraintValidator<Inf, Number> {
 
 	@Override
 	public boolean isValid(Number value, ConstraintValidatorContext context) {
-		return value != null ? DoubleUtil.inf(value.doubleValue(), inf) : true;
+		
+		boolean valid = true;
+		if(value != null){
+			valid = DoubleUtil.inf(value.doubleValue(), inf);
+		}
+		return valid;
 	}
 
 	@Override

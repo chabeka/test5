@@ -7,14 +7,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Document;
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Etat;
-import fr.urssaf.image.commons.util.string.StringUtil;
+import fr.urssaf.image.commons.controller.spring3.exemple.validator.NotEmpty;
 
 public class FormFormulaire {
 
@@ -37,7 +37,7 @@ public class FormFormulaire {
 		this.setCloseDate(document.getCloseDate());
 		this.setEtat(document.getEtat());
 		this.setEtats(document.getEtats());
-		this.setFlag(document.getFlag());
+		this.setFlag(document.isFlag());
 		this.setLevel(document.getLevel());
 		this.setOpenDate(document.getOpenDate());
 		this.setTitre(document.getTitre());
@@ -101,7 +101,7 @@ public class FormFormulaire {
 		this.level = level;
 	}
 
-	public boolean getFlag() {
+	public boolean isFlag() {
 		return flag;
 	}
 
@@ -133,7 +133,7 @@ public class FormFormulaire {
 		private String comment;
 
 		public void setComment(String comment) {
-			this.comment = StringUtil.trim(comment);
+			this.comment = StringUtils.trim(comment);
 		}
 
 		@NotEmpty

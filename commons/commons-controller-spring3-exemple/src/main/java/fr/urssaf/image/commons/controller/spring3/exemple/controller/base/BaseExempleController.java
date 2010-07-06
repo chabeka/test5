@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 public class BaseExempleController<F> {
 
-	protected static final Logger log = Logger
+	protected static final Logger LOG = Logger
 			.getLogger(BaseExempleController.class);
 
 	@Autowired
@@ -38,11 +38,13 @@ public class BaseExempleController<F> {
 			@RequestParam String field, HttpServletRequest request,
 			HttpServletResponse response) {
 
+		Map<String, ? extends Object> reponseBody;
+
 		if (errors.hasFieldErrors()) {
 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
-			return validationMessages(errors.getFieldErrors(), request);
+			reponseBody = validationMessages(errors.getFieldErrors(), request);
 
 		} else {
 			Set<ConstraintViolation<F>> failures = validator.validateProperty(
@@ -50,11 +52,14 @@ public class BaseExempleController<F> {
 			if (!failures.isEmpty()) {
 				response
 						.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				return validationMessages(failures);
+				reponseBody = validationMessages(failures);
+			} else {
+				response.setStatus(HttpServletResponse.SC_OK);
+				reponseBody = Collections.singletonMap(field, "");
 			}
 		}
 
-		return Collections.singletonMap(field, "");
+		return reponseBody;
 
 	}
 

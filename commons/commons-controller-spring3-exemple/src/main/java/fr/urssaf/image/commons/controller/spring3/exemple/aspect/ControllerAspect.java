@@ -10,7 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 @Aspect
 public class ControllerAspect {
 
-	private static final Logger log = Logger
+	private static final Logger LOG = Logger
 			.getLogger(ControllerAspect.class);
 
 	private static final String TIME = "@annotation(org.springframework.web.bind.annotation.RequestMapping) && execution(* *(..))";
@@ -23,7 +23,7 @@ public class ControllerAspect {
 		Object retVal = pjp.proceed();
 		Calendar calendar2 = Calendar.getInstance();
 
-		log.debug(pjp.getThis().getClass().getSimpleName() + " time:"
+		LOG.debug(pjp.getThis().getClass().getSimpleName() + " time:"
 				+ (calendar2.getTimeInMillis() - calendar1.getTimeInMillis())
 				/ 100.0);
 		return retVal;

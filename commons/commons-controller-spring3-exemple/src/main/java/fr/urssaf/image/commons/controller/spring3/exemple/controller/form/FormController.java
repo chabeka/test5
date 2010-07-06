@@ -34,12 +34,17 @@ public class FormController extends BaseExempleController<FormFormulaire> {
 	protected String save(@Valid FormFormulaire formFormulaire,
 			BindingResult result) {
 		formFormulaire.validate(result);
+		
+		String view;
 		if (result.hasErrors()) {
-			return defaultView();
+			view =  defaultView();
 		}
-
-		documentService.save(formFormulaire);
-		return "redirect:/table.do";
+		else{
+			documentService.save(formFormulaire);
+			view = "redirect:/table.do";
+		}
+		
+		return view;
 
 	}
 

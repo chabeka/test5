@@ -9,24 +9,29 @@ import org.springframework.format.Formatter;
 
 public class DateFormatter implements Formatter<Date> {
 
-	private static final String DATE_FORMAT = "dd/MM/yyyy";
-	
+	private final String pattern;
+
+	public DateFormatter(String pattern) {
+		this.pattern = pattern;
+	}
+
 	@Override
 	public String print(Date date, Locale locale) {
+
 		return getFormat(locale).format(date);
 	}
 
 	@Override
-	public Date parse(String source, Locale locale)
-			throws ParseException {
+	public Date parse(String source, Locale locale) throws ParseException {
+
 		return getFormat(locale).parse(source);
+
 	}
-	
-	private SimpleDateFormat getFormat(Locale locale){
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				DATE_FORMAT, locale);
+
+	private SimpleDateFormat getFormat(Locale locale) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
 		dateFormat.setLenient(false);
-		
+
 		return dateFormat;
 	}
 }

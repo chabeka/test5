@@ -30,26 +30,32 @@ public class TableController extends BaseExempleController<TableFormulaire> {
 
 	@Autowired
 	private DocumentService documentService;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	protected String getDefaultView(Model model) {
 
 		TableFormulaire tableFormulaire = new TableFormulaire();
 		tableFormulaire.initDocuments(documentService.allDocuments());
-		model.addAttribute("formulaire",tableFormulaire);
+		model.addAttribute("formulaire", tableFormulaire);
 		return this.defaultView();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String update(@ModelAttribute("formulaire") @Valid TableFormulaire tableFormuaire,BindingResult result) {
+	public String update(
+			@ModelAttribute("formulaire") @Valid TableFormulaire tableFormuaire,
+			BindingResult result) {
 
 		tableFormuaire.validate(result);
+		String view;
 		if (result.hasErrors()) {
-			return this.defaultView();
+			view = this.defaultView();
+		} else {
+
+			documentService.update(tableFormuaire);
+			view =  "redirect:/table.do";
 		}
 		
-		documentService.update(tableFormuaire);
-		return "redirect:/table.do";
+		return view;
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -59,11 +65,12 @@ public class TableController extends BaseExempleController<TableFormulaire> {
 	}
 
 	@InitBinder
-	public void initBinder(WebDataBinder binder,HttpServletRequest request) {
-		
+	public void initBinder(WebDataBinder binder, HttpServletRequest request) {
+
 		// on surcharge le formatage des dates
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd",request.getLocale());
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd",
+				request.getLocale());
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, "interneFormulaire.closeDate",
 				new CustomDateEditor(dateFormat, true));

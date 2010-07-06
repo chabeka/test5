@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.commons.controller.spring3.exemple.formulaire.FormFormulaire;
 import fr.urssaf.image.commons.controller.spring3.exemple.formulaire.TableFormulaire;
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Document;
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Etat;
-import fr.urssaf.image.commons.util.bool.BooleanUtil;
 import fr.urssaf.image.commons.util.date.DateUtil;
 
 @Service
@@ -81,7 +81,7 @@ public class DocumentService {
 		document.setCloseDate(formulaire.getCloseDate());
 		document.setOpenDate(formulaire.getOpenDate());
 		document.setEtat(formulaire.getEtat());
-		document.setFlag(formulaire.getFlag());
+		document.setFlag(formulaire.isFlag());
 		document.setLevel(formulaire.getLevel());
 		document.setEtats(formulaire.getEtats());
 		document.setComment(formulaire.getInterneFormulaire().getComment());
@@ -107,8 +107,8 @@ public class DocumentService {
 					.getEtat());
 			document.setLevel(formulaire.getInterneFormulaire().get(id)
 					.getLevel());
-			document.setFlag(BooleanUtil.getBool(formulaire
-					.getInterneFormulaire().get(id).getFlag()));
+			document.setFlag(BooleanUtils.toBoolean(formulaire
+					.getInterneFormulaire().get(id).isFlag()));
 			document.setEtats(formulaire.getInterneFormulaire().get(id)
 					.getEtats());
 			document.setComment(formulaire.getInterneFormulaire().get(id)

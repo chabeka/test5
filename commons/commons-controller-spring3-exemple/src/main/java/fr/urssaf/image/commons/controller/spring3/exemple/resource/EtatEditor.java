@@ -2,15 +2,17 @@ package fr.urssaf.image.commons.controller.spring3.exemple.resource;
 
 import java.beans.PropertyEditorSupport;
 
+import org.springframework.util.StringUtils;
+
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Etat;
-import fr.urssaf.image.commons.util.string.StringUtil;
+
 
 public class EtatEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 
-		if (StringUtil.notEmpty(text)) {
+		if (StringUtils.hasText(text)) {
 
 			try {
 
@@ -29,7 +31,12 @@ public class EtatEditor extends PropertyEditorSupport {
 	@Override
 	public String getAsText() {
 		Etat etat = (Etat) getValue();
-		return (etat != null ? etat.name() : "");
+		
+		String asText = "";
+		if(etat != null){
+			asText = etat.name();
+		}
+		return asText;
 	}
 
 }

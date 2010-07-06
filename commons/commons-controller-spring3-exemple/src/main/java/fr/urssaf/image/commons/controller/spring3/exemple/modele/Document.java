@@ -71,7 +71,7 @@ public class Document {
 		this.level = level;
 	}
 
-	public boolean getFlag() {
+	public boolean isFlag() {
 		return flag;
 	}
 

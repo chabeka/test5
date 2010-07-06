@@ -4,45 +4,52 @@ import java.text.ParseException;
 import java.util.Locale;
 
 import org.springframework.format.Formatter;
+import org.springframework.util.StringUtils;
 
 import fr.urssaf.image.commons.controller.spring3.exemple.modele.Etat;
-import fr.urssaf.image.commons.util.string.StringUtil;
 
 public class EtatFormatter implements Formatter<Etat> {
 
 	@Override
 	public String print(Etat etat, Locale locale) {
 
+		String code = "";
 		if (etat != null) {
 			switch (etat) {
 			case init:
-				return "I";
+				code = "I";
+				break;
 			case close:
-				return "C";
+				code = "C";
+				break;
 			case open:
-				return "O";
+				code = "O";
+				break;
 			default:
-				return "";
+				code = "";
+				break;
 			}
 		}
 
-		return "";
+		return code;
 	}
 
 	@Override
 	public Etat parse(String text, Locale locale) throws ParseException {
-		if (StringUtil.notEmpty(text)) {
+		
+		Etat etat = null;
+		if (StringUtils.hasText(text)) {
 
 			if ("I".equals(text)) {
-				return Etat.init;
+				etat =  Etat.init;
 			}
 
 			else if ("C".equals(text)) {
-				return Etat.close;
+				etat =  Etat.close;
 			}
 
 			else if ("O".equals(text)) {
-				return Etat.open;
+				etat =  Etat.open;
 			}
 
 			else {
@@ -54,6 +61,6 @@ public class EtatFormatter implements Formatter<Etat> {
 
 		}
 
-		return null;
+		return etat;
 	}
 }
