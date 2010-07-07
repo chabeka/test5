@@ -154,11 +154,12 @@ public final class FileUtil {
       StringBuffer text = new StringBuffer();
       try
       {
-         String line;
-         while ((line = buff.readLine()) != null)
+         String line = buff.readLine();
+         while (line != null)
          {
             text.append(line);
             text.append(lineSeparator);
+            line = buff.readLine();
          }
          return text.toString();
       }

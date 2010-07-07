@@ -10,30 +10,29 @@ import org.apache.log4j.Logger;
 
 import fr.urssaf.image.commons.file.ReadWriteFile;
 import fr.urssaf.image.commons.file.SimpleFile;
-import fr.urssaf.image.commons.file.lock.LockFile;
-import fr.urssaf.image.commons.util.date.DateUtil;
 
 public class FileThread extends Thread {
 
-	private int numero;
+	private final int numero;
 
 	private static final Logger LOGGER = Logger.getLogger(FileThread.class);
 
-	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
 			"dd/MM/yyyy HH:mm:ss", Locale.getDefault());
 
 	private final static String FILE = "src/test/resources/lock.txt";
 
-	private ReadWriteFile file;
+	private final ReadWriteFile file;
 
-	private static final int THREAD = 10;
+	private static final int THREAD = 20;
 
-	private static final int CYCLE = 5;
+	private static final int CYCLE = 50;
 
-	private final int pause = 100;
+	private static int pause = 100;
 
 	private static final boolean LOCK = true;
 
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public static void main(String args[]) throws IOException {
 		ReadWriteFile file = null;
 		if (LOCK) {
@@ -49,6 +48,7 @@ public class FileThread extends Thread {
 	}
 
 	public FileThread(ReadWriteFile file, int numero) {
+		super();
 		this.file = file;
 		this.numero = numero;
 	}
@@ -58,10 +58,11 @@ public class FileThread extends Thread {
 		try {
 			this.executer();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			LOGGER.error(e.getMessage(), e);
 		}
 	}
 
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public void executer() throws IOException {
 		LOGGER.info("DEBUT DE N°" + numero);
 		for (int i = 0; i < CYCLE; i++) {
@@ -76,8 +77,8 @@ public class FileThread extends Thread {
 			}
 
 			LOGGER.debug("n°" + numero + " attend pour écrire");
-			file.write(now() + " thread n°" + numero + " écrit la ligne n°" + i
-					+ "\n");
+			file.write(DATE_FORMAT.format(new Date()) + " thread n°" + numero
+					+ " écrit la ligne n°" + i + "\n");
 			LOGGER.debug("n°" + numero + " a fini d'écrire");
 
 			randomGenerator = new Random();
@@ -99,8 +100,4 @@ public class FileThread extends Thread {
 
 	}
 
-	private static String now() {
-
-		return DateUtil.date(new Date(), DATE_FORMAT);
-	}
 }

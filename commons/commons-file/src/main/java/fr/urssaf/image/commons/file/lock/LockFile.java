@@ -9,6 +9,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import fr.urssaf.image.commons.file.ReadWriteFile;
@@ -19,7 +20,6 @@ public class LockFile implements ReadWriteFile {
 
 	private FileChannel fileChannel;
 	private FileLock fileLock;
-
 	private File file;
 
 	private static final Logger LOGGER = Logger.getLogger(LockFile.class);
@@ -42,9 +42,11 @@ public class LockFile implements ReadWriteFile {
 
 		StringBuffer text = new StringBuffer();
 		try {
-			String line;
-			while ((line = randomAccessFile.readLine()) != null) {
-				text.append(line + "\n");
+			String line = randomAccessFile.readLine();
+			while (line != null) {
+				text.append(line);
+				text.append(StringEscapeUtils.escapeJava("n"));
+				line = randomAccessFile.readLine();
 			}
 			return text.toString();
 		} finally {
@@ -66,7 +68,7 @@ public class LockFile implements ReadWriteFile {
 		try {
 			randomAccessFile.seek(randomAccessFile.length());
 			randomAccessFile.write(text.getBytes());
-			
+
 		} finally {
 
 			release();
@@ -76,6 +78,11 @@ public class LockFile implements ReadWriteFile {
 
 	}
 
+	/**
+	 * méthode pour initialiser le randomAccessFile en rw et le fileChannel
+	 * 
+	 * @throws FileNotFoundException
+	 */
 	private void init() throws FileNotFoundException {
 
 		this.randomAccessFile = new RandomAccessFile(file, "rw");
@@ -83,36 +90,61 @@ public class LockFile implements ReadWriteFile {
 
 	}
 
-	private synchronized void release() throws IOException {
+	/**
+	 * libération du verrou et fermeture du fichier
+	 * 
+	 * @throws IOException
+	 */
+	private void release() throws IOException {
 
-		fileLock.release();
-		randomAccessFile.close();
+		synchronized (this) {
+			fileLock.release();
+			randomAccessFile.close();
 
-		this.notifyAll();
-		
+			this.notifyAll();
+		}
+
 	}
 
-	private synchronized void lock(boolean shared) throws IOException {
+	/**
+	 * instruction d'attente pour l'obtention du fichier
+	 * 
+	 * @param shared
+	 * @throws IOException
+	 */
+	private void lock(boolean shared) throws IOException {
+		synchronized (this) {
+			while (isLock(shared)) {
+				try {
+					this.wait();
+				} catch (InterruptedException e) {
 
-		while (isLock(shared)) {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-
+				}
 			}
 		}
 	}
 
+	/**
+	 * Condition pour obtenir le verrou sur le fichier
+	 * 
+	 * @param shared
+	 *            partagé en mode lecture et exclusif en mode écriture
+	 * @return
+	 * @throws IOException
+	 */
 	private boolean isLock(boolean shared) throws IOException {
+
+		boolean lock = false;
+
 		try {
 			fileLock = fileChannel.lock(0L, Long.MAX_VALUE, shared);
 		} catch (OverlappingFileLockException e) {
-			return true;
+			lock = true;
 		} catch (ClosedChannelException e) {
 			init();
 			fileLock = fileChannel.lock(0L, Long.MAX_VALUE, shared);
 		}
 
-		return false;
+		return lock;
 	}
 }

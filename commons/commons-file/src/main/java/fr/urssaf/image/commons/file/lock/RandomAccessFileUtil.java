@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 public final class RandomAccessFileUtil {
 
 	private RandomAccessFileUtil() {
@@ -31,8 +33,7 @@ public final class RandomAccessFileUtil {
 	public static void write(String text, File file, String encoding)
 			throws IOException {
 
-		RandomAccessFile writer = new RandomAccessFile(
-				file, "rw");
+		RandomAccessFile writer = new RandomAccessFile(file, "rw");
 		try {
 			writer.seek(file.length());
 			writer.write(text.getBytes(encoding));
@@ -56,14 +57,16 @@ public final class RandomAccessFileUtil {
 
 	public static String read(File file, String encoding) throws IOException {
 
-		RandomAccessFile reader = new RandomAccessFile(
-				file, "r");
-		
+		RandomAccessFile reader = new RandomAccessFile(file, "r");
+
 		StringBuffer text = new StringBuffer();
 		try {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				text.append(line + "\n");
+			String line = reader.readLine();
+			while (line != null) {
+
+				text.append(line);
+				text.append(StringEscapeUtils.escapeJava("n"));
+				line = reader.readLine();
 			}
 			return text.toString();
 		} finally {
