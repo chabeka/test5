@@ -11,7 +11,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 			<value>classpath:certificat\cert1.p12</value>
 		</property>
 
-		<property name="certificatPassword">
+		<property name="certifPassword">
 			<value>toto</value>
 		</property>
 		

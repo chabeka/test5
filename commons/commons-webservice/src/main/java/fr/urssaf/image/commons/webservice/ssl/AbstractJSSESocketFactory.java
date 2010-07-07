@@ -11,6 +11,7 @@ import org.apache.axis.components.net.SecureSocketFactory;
 public abstract class AbstractJSSESocketFactory extends JSSESocketFactory implements
 		SecureSocketFactory {
 
+	@SuppressWarnings("PMD.ReplaceHashtableWithMap")
 	public AbstractJSSESocketFactory(Hashtable<String, String> attributes) {
 		super(attributes);
 	}

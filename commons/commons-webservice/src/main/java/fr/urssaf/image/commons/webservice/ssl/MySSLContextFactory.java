@@ -38,6 +38,88 @@ public class MySSLContextFactory {
 			keyStore = SecurityUtil.getKeyStore(contextSource.getCertificat(),
 					contextSource.getCertifPassword(), keyStoreType);
 
+			// RECUPERATION DU COUPLE CLE PRIVEE/PUBLIQUE ET DU CERTIFICAT
+			// PUBLIQUE
+
+			try {
+				
+				X509Certificate cert = null;
+				PrivateKey privatekey = null;
+				PublicKey publickey = null;
+				String ALIAS = "";
+				KeyStore jks = null;
+
+				jks = KeyStore.getInstance("JKS");
+				jks.load(null, null);
+				Enumeration<String> enumAlias = keyStore.aliases();
+
+				List<String> listAlias = new ArrayList<String>();
+
+				while (enumAlias.hasMoreElements()) {
+					String alias = enumAlias.nextElement();
+					LOGGER.debug(alias);
+					listAlias.add(alias);
+				}
+
+				String[] aliases = listAlias.toArray(new String[listAlias
+						.size()]);
+				for (int i = 0; i < aliases.length; i++) {
+					if (keyStore.isKeyEntry(aliases[i])) {
+						LOGGER.debug(aliases[i]);
+						ALIAS = aliases[i];
+						break;
+					}
+				}
+				char[] password = contextSource.getCertifPassword()
+						.toCharArray();
+
+				privatekey = (PrivateKey) keyStore.getKey(ALIAS, password);
+				cert = (X509Certificate) keyStore.getCertificate(ALIAS);
+				publickey = keyStore.getCertificate(ALIAS).getPublicKey();
+
+				jks.setCertificateEntry(ALIAS, cert);
+
+				KeyManagerFactory kmf = KeyManagerFactory
+						.getInstance("SunX509");
+				kmf.init(keyStore, password);
+
+				TrustManagerFactory tmf = TrustManagerFactory
+						.getInstance("SunX509");
+				tmf.init(jks);
+
+				ctx = SSLContext.getInstance("SSL");
+
+				ctx.init(kmf.getKeyManagers(),
+						new TrustManager[] { new X509TrustManager() {
+
+							public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+								return new X509Certificate[0];
+							}
+
+							public void checkClientTrusted(
+									java.security.cert.X509Certificate[] chain,
+									String authType) {
+								// aucune implémentation
+							}
+
+							public void checkServerTrusted(
+									java.security.cert.X509Certificate[] chain,
+									String authType) {
+								// aucune implémentation
+							}
+						} }, null);
+				
+				LOGGER.debug("alias:" + ALIAS);
+				LOGGER.debug(cert.getType());
+				LOGGER.debug("private key:" + privatekey);
+				LOGGER.debug("public key:" + publickey);
+
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+
+			
+
 		} catch (Exception e) {
 			LOGGER.error("Erreur: fichier " + contextSource.getCertificat()
 					+ " n'est pas un fichier " + this.keyStoreType
@@ -45,82 +127,6 @@ public class MySSLContextFactory {
 			LOGGER.error(e.getMessage(), e);
 			return;
 		}
-
-		// RECUPERATION DU COUPLE CLE PRIVEE/PUBLIQUE ET DU CERTIFICAT PUBLIQUE
-
-		X509Certificate cert = null;
-		PrivateKey privatekey = null;
-		PublicKey publickey = null;
-		String ALIAS = "";
-		KeyStore jks = null;
-
-		try {
-
-			jks = KeyStore.getInstance("JKS");
-			jks.load(null, null);
-			Enumeration<String> enumAlias = keyStore.aliases();
-
-			List<String> listAlias = new ArrayList<String>();
-
-			while (enumAlias.hasMoreElements()) {
-				String alias = enumAlias.nextElement();
-				LOGGER.debug(alias);
-				listAlias.add(alias);
-			}
-
-			String[] aliases = listAlias.toArray(new String[listAlias.size()]);
-			for (int i = 0; i < aliases.length; i++) {
-				if (keyStore.isKeyEntry(aliases[i])) {
-					LOGGER.debug(aliases[i]);
-					ALIAS = aliases[i];
-					break;
-				}
-			}
-			char[] password = contextSource.getCertifPassword()
-					.toCharArray();
-
-			privatekey = (PrivateKey) keyStore.getKey(ALIAS, password);
-			cert = (X509Certificate) keyStore.getCertificate(ALIAS);
-			publickey = keyStore.getCertificate(ALIAS).getPublicKey();
-
-			jks.setCertificateEntry(ALIAS, cert);
-
-			KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-			kmf.init(keyStore, password);
-
-			TrustManagerFactory tmf = TrustManagerFactory
-					.getInstance("SunX509");
-			tmf.init(jks);
-	
-			ctx = SSLContext.getInstance("SSL");
-
-			ctx.init(kmf.getKeyManagers(),
-					new TrustManager[] { new X509TrustManager() {
-
-						public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-							return new X509Certificate[0];
-						}
-
-						public void checkClientTrusted(
-								java.security.cert.X509Certificate[] chain,
-								String authType) {
-						}
-
-						public void checkServerTrusted(
-								java.security.cert.X509Certificate[] chain,
-								String authType) {
-						}
-					} }, null);
-
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return;
-		}
-
-		LOGGER.debug("alias:" + ALIAS);
-		LOGGER.debug(cert.getType());
-		LOGGER.debug("private key:" + privatekey);
-		LOGGER.debug("public key:" + publickey);
 	}
 
 	private void initSSLContext() {
@@ -132,16 +138,18 @@ public class MySSLContextFactory {
 				@Override
 				public void checkClientTrusted(X509Certificate[] arg0,
 						String arg1) throws CertificateException {
+					// aucune implémentation
 				}
 
 				@Override
 				public void checkServerTrusted(X509Certificate[] arg0,
 						String arg1) throws CertificateException {
+					// aucune implémentation
 				}
 
 				@Override
 				public X509Certificate[] getAcceptedIssuers() {
-					return null;
+					return new X509Certificate[0];
 				}
 			} }, null);
 
