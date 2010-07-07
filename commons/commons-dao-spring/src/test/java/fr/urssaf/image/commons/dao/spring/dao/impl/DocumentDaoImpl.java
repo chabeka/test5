@@ -181,12 +181,9 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 	}
 
 	@Override
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	public Document findSQL(Integer idUnique) {
 
-	   Document result = null;
-	   
-		StringBuffer sql = new StringBuffer(150);
+	   StringBuffer sql = new StringBuffer(150);
 		sql.append("select doc.id,doc.titre,doc.date,doc.id_auteur,aut.nom ");
 		sql.append("from document doc ");
 		sql.append("left outer join auteur aut on doc.id_auteur=aut.id ");
@@ -197,12 +194,7 @@ public class DocumentDaoImpl extends MyHibernateDaoSupport<Document, Integer>
 
 		Object[] obj = (Object[]) query.uniqueResult();
 
-		if (obj != null)
-		{
-		   result = this.getDocument(obj);
-		}
-		
-		return result;
+		return obj == null ? null : this.getDocument(obj);
 		
 	}
 
