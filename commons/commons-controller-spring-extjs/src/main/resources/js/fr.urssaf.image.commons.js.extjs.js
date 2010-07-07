@@ -75,7 +75,7 @@ fr.urssaf.image.commons.extjs = {
   /**
    * desc 	message d'echec par defaut
    */
-  _defaultFailureMessage : 'Des erreurs sont survenus',
+  _defaultFailureMessage : 'Des erreurs sont survenues',
     
   /**
    * desc 		Creation d'un nouveau formulaire params return this
@@ -456,7 +456,7 @@ if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : zone' );
 	    				case myExtJs.__BEHAVIOR_POPUP__ :
 	    				default :
 if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Succès : Popup/default' );
-	    					Ext.Msg.alert( "Succ&eacute;s", message );
+	    					Ext.Msg.alert( "Succ&egrave;s", message );
     				}
     				
     			},
