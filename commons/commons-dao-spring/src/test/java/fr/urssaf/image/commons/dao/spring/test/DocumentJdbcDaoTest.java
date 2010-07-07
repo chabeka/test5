@@ -21,6 +21,7 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
 @TransactionConfiguration(transactionManager = "txManager")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
 public class DocumentJdbcDaoTest {
 
 	@Autowired

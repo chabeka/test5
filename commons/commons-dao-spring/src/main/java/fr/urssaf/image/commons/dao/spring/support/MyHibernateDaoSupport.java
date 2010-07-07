@@ -43,6 +43,7 @@ public class MyHibernateDaoSupport<T, I extends Serializable> extends
 
 	private EntityModifyDaoImpl<T> modifyDaoImpl;
 
+	@SuppressWarnings("PMD.ImmutableField")
 	private EntityIdDaoImpl<T, I> idDaoImpl;
 
 	private EntityFindDaoImpl<T> findDaoImpl;
@@ -56,7 +57,8 @@ public class MyHibernateDaoSupport<T, I extends Serializable> extends
 	 *            classe persistante
 	 */
 	public MyHibernateDaoSupport(SessionFactory sessionFactory, Class<T> table) {
-		super.setSessionFactory(sessionFactory);
+		super();
+		setSessionFactory(sessionFactory);
 		this.table = table;
 		this.modifyDaoImpl = new EntityModifyDaoImpl<T>(sessionFactory);
 		this.idDaoImpl = new EntityIdDaoImpl<T, I>(sessionFactory, this.table);

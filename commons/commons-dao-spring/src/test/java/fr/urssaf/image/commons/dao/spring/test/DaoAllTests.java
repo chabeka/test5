@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses( { DocumentFindDaoTest.class, DocumentModifyDaoTest.class,
 		DocumentServiceTest.class, DocumentLazyLoadingTest.class})
+@SuppressWarnings("PMD.AtLeastOneConstructor")
 public class DaoAllTests {
 
 }

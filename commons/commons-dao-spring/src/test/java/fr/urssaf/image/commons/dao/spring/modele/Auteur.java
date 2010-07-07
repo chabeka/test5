@@ -20,11 +20,17 @@ import javax.persistence.Table;
 @Table(name = "auteur")
 public class Auteur implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("PMD.ShortVariable") 
 	private Integer id;
 	private String nom;
 	private Set<Document> documents = new HashSet<Document>(0);
 
 	public Auteur() {
+		//constructeur vide
 	}
 
 	public Auteur(String nom) {
@@ -43,6 +49,7 @@ public class Auteur implements java.io.Serializable {
 		return this.id;
 	}
 
+	@SuppressWarnings("PMD.ShortVariable") 
 	public void setId(Integer id) {
 		this.id = id;
 	}

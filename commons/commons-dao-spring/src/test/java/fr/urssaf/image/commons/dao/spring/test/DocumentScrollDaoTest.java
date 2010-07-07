@@ -16,7 +16,7 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 @ContextConfiguration(locations = "/applicationContext-service.xml")
 public class DocumentScrollDaoTest {
 
-	private static final Logger log = Logger
+	private static final Logger LOG = Logger
 			.getLogger(DocumentScrollDaoTest.class);
 
 	@Autowired
@@ -31,6 +31,6 @@ public class DocumentScrollDaoTest {
 	public void list() {
 		List<Document> documents = documentDao.find(150000, 1,
 				"titre", true);
-		log.debug(documents.size());
+		LOG.debug(documents.size());
 	}
 }

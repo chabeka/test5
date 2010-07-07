@@ -12,7 +12,8 @@ public abstract class AbstractEntityDao<P> extends HibernateDaoSupport{
 	private final Class<P> table;
 	
 	public AbstractEntityDao(SessionFactory sessionFactory,Class<P> table){
-		super.setSessionFactory(sessionFactory);
+		super();
+		setSessionFactory(sessionFactory);
 		this.table  = table;
 	}
 	

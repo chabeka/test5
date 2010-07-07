@@ -25,6 +25,11 @@ import javax.persistence.TemporalType;
 @Table(name = "document")
 public class Document implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("PMD.ShortVariable") 
 	private Integer id;
 	private Auteur auteur;
 	private String titre;
@@ -32,6 +37,7 @@ public class Document implements java.io.Serializable {
 	private Set<Etat> etats = new HashSet<Etat>(0);
 
 	public Document() {
+		//constructeur vide
 	}
 
 	public Document(String titre, Date date) {
@@ -53,6 +59,7 @@ public class Document implements java.io.Serializable {
 		return this.id;
 	}
 
+	@SuppressWarnings("PMD.ShortVariable") 
 	public void setId(Integer id) {
 		this.id = id;
 	}

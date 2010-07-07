@@ -21,6 +21,7 @@ public class DocumentServiceImpl implements DocumentService {
 	
 	@Override
 	@Transactional
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public List<Document> save(List<String> titres) {
 
 		List<Document> documents = new ArrayList<Document>();
@@ -44,6 +45,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	@Transactional
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public List<Document> save(Map<String, Date> documents) {
 
 		List<Document> docs = new ArrayList<Document>();

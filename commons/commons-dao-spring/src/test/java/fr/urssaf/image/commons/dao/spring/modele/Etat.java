@@ -22,17 +22,23 @@ import javax.persistence.TemporalType;
 @Table(name = "etat")
 public class Etat implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("PMD.ShortVariable") 
 	private Integer id;
 	private Document document;
-	private String etat;
+	private String libelle;
 	private Date date;
 
 	public Etat() {
+		//constructeur vide
 	}
 
 	public Etat(Document document, String etat, Date date) {
 		this.document = document;
-		this.etat = etat;
+		this.libelle = etat;
 		this.date = date;
 	}
 
@@ -43,6 +49,7 @@ public class Etat implements java.io.Serializable {
 		return this.id;
 	}
 
+	@SuppressWarnings("PMD.ShortVariable") 
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -59,11 +66,11 @@ public class Etat implements java.io.Serializable {
 
 	@Column(name = "etat", nullable = false, length = 45)
 	public String getEtat() {
-		return this.etat;
+		return this.libelle;
 	}
 
 	public void setEtat(String etat) {
-		this.etat = etat;
+		this.libelle = etat;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

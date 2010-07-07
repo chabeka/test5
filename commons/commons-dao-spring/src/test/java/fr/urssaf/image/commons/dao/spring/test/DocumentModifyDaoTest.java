@@ -22,7 +22,16 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
 public class DocumentModifyDaoTest {
+	
+	private final static String TITRE  = "titre test";
+	
+	private final static String UPDATE_TITRE  = "update titre";
+	
+	private final static String SUCCESS = "la transaction doit être un succès";
+	
+	private final static String FAILURE = "le test doit être un échec";
 
 	@Autowired
 	private DocumentDao documentDao;
@@ -32,7 +41,7 @@ public class DocumentModifyDaoTest {
 	public void saveSuccess() {
 
 		Document document = new Document();
-		document.setTitre("titre test");
+		document.setTitre(TITRE);
 		document.setDate(new Date());
 
 		documentDao.save(document);
@@ -40,8 +49,8 @@ public class DocumentModifyDaoTest {
 		assertEquals(6, documentDao.count());
 
 		document = documentDao.find(document.getId());
-		assertNotNull("la transaction doit être un succès", document);
-		assertEquals("titre test", document.getTitre());
+		assertNotNull(SUCCESS, document);
+		assertEquals(TITRE, document.getTitre());
 
 	}
 
@@ -50,7 +59,7 @@ public class DocumentModifyDaoTest {
 	public void saveSQLSuccess() {
 
 		Document document = new Document();
-		document.setTitre("titre test");
+		document.setTitre(TITRE);
 		document.setDate(new Date());
 
 		documentDao.saveSQL(document);
@@ -58,8 +67,8 @@ public class DocumentModifyDaoTest {
 		assertEquals(6, documentDao.count());
 
 		document = documentDao.findSQL(document.getId());
-		assertNotNull("la transaction doit être un succès", document);
-		assertEquals("titre test", document.getTitre());
+		assertNotNull(SUCCESS, document);
+		assertEquals(TITRE, document.getTitre());
 
 	}
 
@@ -68,11 +77,11 @@ public class DocumentModifyDaoTest {
 	public void saveFailure() {
 
 		Document document = new Document();
-		document.setTitre("titre test");
+		document.setTitre(TITRE);
 
 		try {
 			documentDao.save(document);
-			fail("le test doit être un échec");
+			fail(FAILURE);
 		} catch (DataAccessException e) {
 
 			PropertyValueException exception = (PropertyValueException) e
@@ -91,11 +100,11 @@ public class DocumentModifyDaoTest {
 	public void saveSQLFailure() {
 
 		Document document = new Document();
-		document.setTitre("titre test");
+		document.setTitre(TITRE);
 
 		try {
 			documentDao.saveSQL(document);
-			fail("le test doit être un échec");
+			fail(FAILURE);
 		} catch (DataAccessException e) {
 
 			ConstraintViolationException exception = (ConstraintViolationException) e
@@ -119,7 +128,7 @@ public class DocumentModifyDaoTest {
 		try {
 			documentDao.delete(document);
 			documentDao.find(ID_TEST);
-			fail("le test doit être un échec");
+			fail(FAILURE);
 		} catch (DataAccessException e) {
 
 			ConstraintViolationException exception = (ConstraintViolationException) e
@@ -143,7 +152,7 @@ public class DocumentModifyDaoTest {
 
 		try {
 			documentDao.deleteSQL(document);
-			fail("le test doit être un échec");
+			fail(FAILURE);
 		} catch (DataAccessException e) {
 
 			ConstraintViolationException exception = (ConstraintViolationException) e
@@ -170,7 +179,7 @@ public class DocumentModifyDaoTest {
 
 		assertEquals(4, documentDao.count());
 		document = documentDao.find(ID_TEST);
-		assertNull("la transaction doit être un succès", document);
+		assertNull(SUCCESS, document);
 
 	}
 
@@ -186,7 +195,7 @@ public class DocumentModifyDaoTest {
 
 		assertEquals(4, documentDao.count());
 		document = documentDao.find(ID_TEST);
-		assertNull("la transaction doit être un succès", document);
+		assertNull(SUCCESS, document);
 
 	}
 
@@ -198,14 +207,14 @@ public class DocumentModifyDaoTest {
 
 		Document document = documentDao.find(ID_TEST);
 
-		document.setTitre("update titre");
+		document.setTitre(UPDATE_TITRE);
 		documentDao.update(document);
 
 		assertEquals(5, documentDao.count());
 
 		document = documentDao.find(ID_TEST);
-		assertNotNull("la transaction doit être un succès", document);
-		assertEquals("update titre", document.getTitre());
+		assertNotNull(SUCCESS, document);
+		assertEquals(UPDATE_TITRE, document.getTitre());
 
 	}
 
@@ -217,14 +226,14 @@ public class DocumentModifyDaoTest {
 
 		Document document = documentDao.findSQL(ID_TEST);
 
-		document.setTitre("update titre");
+		document.setTitre(UPDATE_TITRE);
 		documentDao.updateSQL(document);
 
 		assertEquals(5, documentDao.count());
 
 		document = documentDao.findSQL(ID_TEST);
-		assertNotNull("la transaction doit être un succès", document);
-		assertEquals("update titre", document.getTitre());
+		assertNotNull(SUCCESS, document);
+		assertEquals(UPDATE_TITRE, document.getTitre());
 
 	}
 }

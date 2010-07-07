@@ -18,7 +18,7 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 @Repository("documentDao")
 public class DocumentJdbcDaoImpl implements DocumentDao {
 
-	private JdbcTemplate jdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	public DocumentJdbcDaoImpl(@Qualifier("dataSource") DataSource dataSource) {
@@ -26,9 +26,10 @@ public class DocumentJdbcDaoImpl implements DocumentDao {
 	}
 
 	@Override
+	@SuppressWarnings({"PMD.ShortVariable","PMD.ConsecutiveLiteralAppends"})
 	public Document find(Integer id) {
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer(140);
 		sql.append("select doc.id,doc.titre,doc.date,doc.id_auteur,aut.nom ");
 		sql.append("from document doc ");
 		sql.append("left outer join auteur aut on doc.id_auteur=aut.id ");
@@ -63,6 +64,7 @@ public class DocumentJdbcDaoImpl implements DocumentDao {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.ShortVariable") 
 	public Document get(Integer id) {
 		return this.find(id);
 	}
@@ -75,16 +77,17 @@ public class DocumentJdbcDaoImpl implements DocumentDao {
 
 	@Override
 	@Transactional
+	@SuppressWarnings({"PMD.ShortVariable","PMD.ConsecutiveLiteralAppends"})
 	public void save(Document document) {
 
-		StringBuffer sql = new StringBuffer();
+		StringBuffer sql = new StringBuffer(63);
 		sql.append("insert into document ");
 		sql.append("(id_auteur, titre, date) ");
 		sql.append("values (?, ?, ?) ");
 
 		this.jdbcTemplate.update(sql.toString(), new Object[] {
-				document.getAuteur() != null ? document.getAuteur().getId()
-						: null, document.getTitre(), document.getDate() });
+				document.getAuteur() == null ? null:document.getAuteur().getId()
+						, document.getTitre(), document.getDate() });
 
 		int id = this.jdbcTemplate.queryForInt("select LAST_INSERT_ID()");
 

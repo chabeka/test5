@@ -15,14 +15,21 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "document_view")
+@SuppressWarnings("PMD.ShortVariable") 
 public class DocumentView implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private String titre;
 	private Date date;
 	private String auteur;
 
 	public DocumentView() {
+		//constructeur vide
 	}
 
 	public DocumentView(int id, String titre, Date date) {

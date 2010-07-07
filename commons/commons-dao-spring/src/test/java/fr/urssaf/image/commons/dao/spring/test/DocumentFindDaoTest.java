@@ -17,6 +17,7 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
 public class DocumentFindDaoTest {
 
 	@Autowired

@@ -20,7 +20,8 @@ public class EntityModifyDaoImpl<P> extends HibernateDaoSupport implements Entit
 	 * @param session session factory d'hibernate
 	 */
 	public EntityModifyDaoImpl(SessionFactory sessionFactory){
-		super.setSessionFactory(sessionFactory);
+		super();
+		setSessionFactory(sessionFactory);
 	}
 	
 	@Override

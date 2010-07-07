@@ -21,9 +21,10 @@ import fr.urssaf.image.commons.dao.spring.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage","PMD.ConsecutiveLiteralAppends"})
 public class DocumentLazyLoadingTest {
 
-	private static final Logger log = Logger
+	private static final Logger LOG= Logger
 			.getLogger(DocumentLazyLoadingTest.class);
 
 	@Autowired
@@ -63,7 +64,7 @@ public class DocumentLazyLoadingTest {
 
 		} catch (LazyInitializationException e) {
 
-			StringBuffer message = new StringBuffer();
+			StringBuffer message = new StringBuffer(140);
 			message.append("failed to lazily initialize ");
 			message.append("a collection of role: ");
 			message.append("fr.urssaf.image.commons.dao.spring.modele.Document.etats, ");
@@ -79,7 +80,7 @@ public class DocumentLazyLoadingTest {
 	public void getCollectionInSession() {
 
 		Document document = documentDao.get(3);
-		log.debug(document.getEtats().size());
+		LOG.debug(document.getEtats().size());
 		
 		assertCollection(document);
 
