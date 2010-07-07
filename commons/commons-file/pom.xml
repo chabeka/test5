@@ -21,7 +21,7 @@
 				<version>2.5</version>
 				<configuration>
 					<excludes>
-						<exclude>**/*XSDValidatorTest.java</exclude>
+						<exclude>**/*RandomAccessFileTest.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
