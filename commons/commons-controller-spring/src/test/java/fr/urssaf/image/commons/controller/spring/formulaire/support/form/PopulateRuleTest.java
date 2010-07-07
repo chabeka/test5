@@ -12,13 +12,12 @@ import java.util.Map;
 
 import org.junit.Test;
 
-
 import fr.urssaf.image.commons.controller.spring.formulaire.MyFormulaire;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.annotation.Rule;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.rule.AbstractRuleForm;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.rule.RuleException;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Past;
-import fr.urssaf.image.commons.util.date.DateUtil;
+import fr.urssaf.image.commons.util.date.DateFormatUtil;
 
 public class PopulateRuleTest extends
 		PopulateContext<PopulateRuleTest.TestFormulaire> {
@@ -289,8 +288,8 @@ public class PopulateRuleTest extends
 		@Override
 		protected List<Object> getValues() {
 			List<Object> parameters = new ArrayList<Object>();
-			parameters.add(DateUtil.dateFr(dateDebut));
-			parameters.add(DateUtil.dateFr(dateFin));
+			parameters.add(DateFormatUtil.dateFr(dateDebut));
+			parameters.add(DateFormatUtil.dateFr(dateFin));
 			return parameters;
 		}
 

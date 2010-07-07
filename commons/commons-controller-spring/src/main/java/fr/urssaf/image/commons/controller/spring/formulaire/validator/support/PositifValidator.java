@@ -3,18 +3,19 @@ package fr.urssaf.image.commons.controller.spring.formulaire.validator.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 
 import fr.urssaf.image.commons.controller.spring.formulaire.support.validator.ValidatorAbstract;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Positif;
-import fr.urssaf.image.commons.util.number.NumberUtil;
+import fr.urssaf.image.commons.util.number.DoubleUtil;
 
-public class PositifValidator implements ValidatorAbstract<Number, Positif> {
+public class PositifValidator implements ValidatorAbstract<Double, Positif> {
 
-	private Number number;
+	private Double number;
 	
-	public boolean isValid(Number number) {
+	public boolean isValid(Double number) {
 		this.number = number;
-		return NumberUtil.positif(number);
+		return DoubleUtil.sup(number, 0.0);
 	}
 
 	public String getValidatorException() {
@@ -33,8 +34,8 @@ public class PositifValidator implements ValidatorAbstract<Number, Positif> {
 		return liste;
 	}
 
-	public String getLibelleValue(Number number) {
-		return NumberUtil.toString(number);
+	public String getLibelleValue(Double number) {
+		return ObjectUtils.toString(number);
 	}
 
 	@Override

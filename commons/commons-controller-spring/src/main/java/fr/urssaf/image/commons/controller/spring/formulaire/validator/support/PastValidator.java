@@ -8,6 +8,7 @@ import java.util.List;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.validator.ValidatorAbstract;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Past;
 import fr.urssaf.image.commons.util.date.DateCompareUtil;
+import fr.urssaf.image.commons.util.date.DateFormatUtil;
 import fr.urssaf.image.commons.util.date.DateUtil;
 
 public class PastValidator implements ValidatorAbstract<Date, Past> {
@@ -39,7 +40,7 @@ public class PastValidator implements ValidatorAbstract<Date, Past> {
 	}
 
 	public String getLibelleValue(Date date) {
-		return DateUtil.dateFr(date);
+		return DateFormatUtil.dateFr(date);
 
 	}
 

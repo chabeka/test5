@@ -1,6 +1,6 @@
 package fr.urssaf.image.commons.util.number;
 
-import fr.urssaf.image.commons.util.comparable.CompareUtil.ObjectComparator;
+import fr.urssaf.image.commons.util.comparable.ObjectComparator;
 
 public final class LongUtil{
 

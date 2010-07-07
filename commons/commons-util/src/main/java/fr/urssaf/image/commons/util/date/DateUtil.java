@@ -1,18 +1,9 @@
 package fr.urssaf.image.commons.util.date;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public final class DateUtil {
-
-	
-	private final static SimpleDateFormat FORMAT_FR = new SimpleDateFormat(
-			"dd/MM/yyyy", Locale.getDefault());
 
 	private DateUtil() {
 
@@ -46,43 +37,6 @@ public final class DateUtil {
 		calendar.add(Calendar.DATE, day);
 
 		return calendar.getTime();
-	}
-
-	public static String date(Date date, String pattern) {
-		SimpleDateFormat format = new SimpleDateFormat(pattern, Locale
-				.getDefault());
-		return date(date, format);
-	}
-
-	public static String date(Date date, SimpleDateFormat format) {
-		if (date != null) {
-			return format.format(date);
-		} else {
-			return null;
-		}
-	}
-
-	public static String dateFr(Date date) {
-		return date(date, FORMAT_FR);
-	}
-
-	public static String todayFr() {
-		return FORMAT_FR.format(today());
-	}
-
-	public static List<String> date(Collection<Date> dates, String pattern) {
-
-		SimpleDateFormat format = new SimpleDateFormat(pattern, Locale
-				.getDefault());
-		List<String> results = new ArrayList<String>();
-
-		if (dates != null) {
-			for (Date date : dates) {
-				results.add(date(date, format));
-			}
-
-		}
-		return results;
 	}
 
 }

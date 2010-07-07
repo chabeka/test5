@@ -5,11 +5,11 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 
 import fr.urssaf.image.commons.controller.spring.formulaire.support.validator.ValidatorAbstract;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Range;
 import fr.urssaf.image.commons.util.number.DoubleUtil;
-import fr.urssaf.image.commons.util.number.NumberUtil;
 
 public class RangeValidator implements ValidatorAbstract<Number, Range> {
 
@@ -53,7 +53,7 @@ public class RangeValidator implements ValidatorAbstract<Number, Range> {
 	public List<String> getExceptionParameters() {
 		List<String> liste = new ArrayList<String>();
 
-		liste.add(NumberUtil.toString(number));
+		liste.add(ObjectUtils.toString(number));
 
 		Format format = new DecimalFormat(this.format);
 		liste.add(format.format(min));
@@ -63,7 +63,7 @@ public class RangeValidator implements ValidatorAbstract<Number, Range> {
 	}
 
 	public String getLibelleValue(Number value) {
-		return NumberUtil.toString(value);
+		return ObjectUtils.toString(value);
 	}
 
 	@Override

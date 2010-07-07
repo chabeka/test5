@@ -13,23 +13,6 @@ public final class Log {
 		
 	}
 
-	
-	public static String getLogger(String[] log, char separator) {
-		StringBuffer info = new StringBuffer();
-
-		if (log != null) {
-			info.append(log[0]);
-			for (int i = 1; i < log.length; i++) {
-				info.append(separator);
-				info.append(log[i]);
-			}
-
-		}
-
-		return info.toString();
-
-	}
-	
 	public static void exception(Logger log,Exception exception){
 		log.error(exception.getMessage(), exception);
 	}
@@ -40,11 +23,11 @@ public final class Log {
 	
 	public static void throwException(Logger log,Exception exception){
 		exception(log, exception);
-		throw new RuntimeException(exception);
+		throw new IllegalArgumentException(exception);
 	}
 	
 	public static void throwException(Logger log,Throwable exception){
 		exception(log, exception);
-		throw new RuntimeException(exception);
+		throw new IllegalArgumentException(exception);
 	}
 }

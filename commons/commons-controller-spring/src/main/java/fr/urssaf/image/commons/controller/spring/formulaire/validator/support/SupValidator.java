@@ -3,11 +3,11 @@ package fr.urssaf.image.commons.controller.spring.formulaire.validator.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ObjectUtils;
 
 import fr.urssaf.image.commons.controller.spring.formulaire.support.validator.ValidatorAbstract;
 import fr.urssaf.image.commons.controller.spring.formulaire.validator.Sup;
 import fr.urssaf.image.commons.util.number.DoubleUtil;
-import fr.urssaf.image.commons.util.number.NumberUtil;
 
 public class SupValidator implements ValidatorAbstract<Number, Sup> {
 
@@ -37,7 +37,7 @@ public class SupValidator implements ValidatorAbstract<Number, Sup> {
 	}
 
 	public String getLibelleValue(Number value) {
-		return NumberUtil.toString(value);
+		return ObjectUtils.toString(value);
 	}
 
 	@Override

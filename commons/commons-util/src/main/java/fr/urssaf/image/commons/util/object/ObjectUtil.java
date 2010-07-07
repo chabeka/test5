@@ -13,40 +13,31 @@ public final class ObjectUtil {
 	private static char charDefault;
 	private static boolean booleanDefault;
 	private static byte byteDefault;
-	private static short shortDefault;
 
 	@SuppressWarnings("unchecked")
 	public static Object getDefaultValue(Class classe) {
 
-		if (classe.isPrimitive()) {
-			if ("int".equals(classe.getCanonicalName())) {
+		Object value = null;
 
-				return intDefault;
-			}
-			if ("boolean".equals(classe.getCanonicalName())) {
-				return booleanDefault;
-			}
-			if ("float".equals(classe.getCanonicalName())) {
-				return floatDefault;
-			}
-			if ("double".equals(classe.getCanonicalName())) {
-				return doubleDefault;
-			}
-			if ("byte".equals(classe.getCanonicalName())) {
-				return byteDefault;
-			}
-			if ("long".equals(classe.getCanonicalName())) {
-				return longDefault;
-			}
-			if ("short".equals(classe.getCanonicalName())) {
-				return shortDefault;
-			}
-			if ("char".equals(classe.getCanonicalName())) {
-				return charDefault;
-			}
-
+		if (int.class.isAssignableFrom(classe)) {
+			value = intDefault;
+		} else if (boolean.class.isAssignableFrom(classe)) {
+			value = booleanDefault;
+		} else if (float.class.isAssignableFrom(classe)) {
+			value = floatDefault;
+		} else if (double.class.isAssignableFrom(classe)) {
+			value = doubleDefault;
+		} else if (byte.class.isAssignableFrom(classe)) {
+			value = byteDefault;
+		} else if (long.class.isAssignableFrom(classe)) {
+			value = longDefault;
+		} else if (char.class.isAssignableFrom(classe)) {
+			value = charDefault;
+		} else if (classe.isPrimitive()) {
+			// cas pour char
+			value = 0;
 		}
 
-		return null;
+		return value;
 	}
 }

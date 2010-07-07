@@ -2,7 +2,7 @@ package fr.urssaf.image.commons.util.date;
 
 import java.util.Date;
 
-import static fr.urssaf.image.commons.util.comparable.CompareUtil.ObjectComparator;
+import fr.urssaf.image.commons.util.comparable.ObjectComparator;
 
 public final class DateCompareUtil {
 

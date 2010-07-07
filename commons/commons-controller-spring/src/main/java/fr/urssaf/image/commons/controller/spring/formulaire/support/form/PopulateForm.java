@@ -20,6 +20,7 @@ import fr.urssaf.image.commons.controller.spring.formulaire.support.UtilForm.Fie
 import fr.urssaf.image.commons.controller.spring.formulaire.support.bean.BeanFormulaire;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.exception.TypeFormulaireException;
 import fr.urssaf.image.commons.controller.spring.formulaire.support.type.TypeForm;
+import fr.urssaf.image.commons.controller.spring.util.LogUtil;
 import fr.urssaf.image.commons.util.logger.Log;
 
 public final class PopulateForm<F extends MyFormulaire> {
@@ -141,7 +142,7 @@ public final class PopulateForm<F extends MyFormulaire> {
 						.warn("le champ "
 								+ key
 								+ " devrait être une collection ou un tableau car il comporte plusieurs valeurs:"
-								+ Log.getLogger(parametres, "|".charAt(0)));
+								+ LogUtil.getLogger(parametres, "|".charAt(0)));
 			}
 			return factory.getObject(key, type, parametres[0]);
 		} catch (TypeFormulaireException e) {
