@@ -198,7 +198,7 @@ logger.debug("Pas de head trouvé dans l'application métier");
 			if( maquetteCfg.getOverloadColor() )
 			{
 				start = hppTpl.getHeadTag().getEndTag().getBegin() ;
-				cssColorList = "<!-- Surcharge des couleurs et images par défaut -->" + 
+				cssColorList = "<!-- Surcharge des couleurs et images par defaut -->" + 
 				  "<link href='" + MaquetteConstant.GETRESOURCEURI + "?name=" + MaquetteConstant.CSSMAINCOLORFILE + "&overload=1' rel='stylesheet' type='text/css' />" +
 				  "<link href='" + MaquetteConstant.GETRESOURCEURI + "?name=" + MaquetteConstant.CSSMAINFONTCOLORFILE + "&overload=1' rel='stylesheet' type='text/css' />" +
 				  "<link href='" + MaquetteConstant.GETRESOURCEURI + "?name=" + MaquetteConstant.CSSMENUCOLORFILE + "&overload=1' rel='stylesheet' type='text/css' />" +
@@ -302,7 +302,7 @@ logger.debug("Pas de head trouvé dans l'application métier");
 					|| maquetteCfg.getImplLeftcol().getVersionApplication(hsr).length() > 0 )
 				)
 			{
-				InfoBoxItem appInfo = new InfoBoxItem( "app", "Application", "Informations relatives à l'application courante" ) ;
+				InfoBoxItem appInfo = new InfoBoxItem( "app", "Application", "Informations relatives &agrave; l'application courante" ) ;
 				appInfo.addSpan( "name", "Nom de l'application", maquetteCfg.getImplLeftcol().getNomApplication(hsr) ) ;
 				appInfo.addSpan( "version", "Version de l'application", maquetteCfg.getImplLeftcol().getVersionApplication(hsr) ) ;
 				html += InfoBoxGenerator.build( appInfo ) ;
@@ -316,13 +316,13 @@ logger.debug("Pas de head trouvé dans l'application métier");
 					|| maquetteCfg.getImplLeftcol().getVersionApplication(hsr).length() > 0 )
 				)
 			{
-				InfoBoxItem usrInfo = new InfoBoxItem( "user", "Utilisateur", "Informations relatives à l'utilisateur identifié" ) ;
-				usrInfo.addSpan( "name", "Prénom Nom de l'utilisateur", maquetteCfg.getImplLeftcol().getNomUtilisateur(hsr) ) ;
-				usrInfo.addSpan( "rights", "Droits affectés à l'utilisateur", maquetteCfg.getImplLeftcol().getRoleUtilisateur(hsr) ) ;
+				InfoBoxItem usrInfo = new InfoBoxItem( "user", "Utilisateur", "Informations relatives &agrave; l'utilisateur identifi&eacute;" ) ;
+				usrInfo.addSpan( "name", "Pr&eacute;nom Nom de l'utilisateur", maquetteCfg.getImplLeftcol().getNomUtilisateur(hsr) ) ;
+				usrInfo.addSpan( "rights", "Droits affect&eacute;s &agrave; l'utilisateur", maquetteCfg.getImplLeftcol().getRoleUtilisateur(hsr) ) ;
 				html += InfoBoxGenerator.build( usrInfo ) ;
 				
-				InfoBoxItem logoutInfo = new InfoBoxItem( "logout", "Déconnexion", "Boite de déconnexion" ) ;
-				logoutInfo.addBtn( "user", "Déconnexion", maquetteCfg.getImplLeftcol().getLienDeconnexion(hsr) ) ;
+				InfoBoxItem logoutInfo = new InfoBoxItem( "logout", "D&eacute;connexion", "Boite de d&eacute;connexion" ) ;
+				logoutInfo.addBtn( "user", "D&eacute;connexion", maquetteCfg.getImplLeftcol().getLienDeconnexion(hsr) ) ;
 				html += InfoBoxGenerator.build( logoutInfo ) ;
 			}
 			
