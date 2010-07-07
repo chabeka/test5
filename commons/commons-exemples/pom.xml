@@ -16,4 +16,40 @@
       <module>../commons-birt-exemple</module>
    </modules>
    
+   <reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>2.5</version>
+            <configuration>
+               <linkXref>false</linkXref>
+               <sourceEncoding>utf-8</sourceEncoding>
+               <minimumTokens>100</minimumTokens>
+               <targetJdk>1.6</targetJdk>
+                  <rulesets>
+                     <ruleset>/rulesets/braces.xml</ruleset>
+                     <ruleset>/rulesets/naming.xml</ruleset>
+                     <ruleset>/rulesets/basic.xml</ruleset>
+                     <ruleset>/rulesets/design.xml</ruleset>
+                     <ruleset>/rulesets/strictexception.xml</ruleset>
+                     <ruleset>/rulesets/unusedcode.xml</ruleset>
+                     <ruleset>/rulesets/strings.xml</ruleset>
+                     <ruleset>/rulesets/typeresolution.xml</ruleset>
+                     <ruleset>/rulesets/logging-java.xml</ruleset>
+                     <ruleset>/rulesets/migrating.xml</ruleset>
+                     <ruleset>/rulesets/coupling.xml</ruleset>
+                     <ruleset>/rulesets/imports.xml</ruleset>
+                     <ruleset>/rulesets/junit.xml</ruleset>
+                     <ruleset>/rulesets/controversial.xml</ruleset>
+                     <ruleset>/rulesets/codesize.xml</ruleset>
+                     <ruleset>/rulesets/finalizers.xml</ruleset>
+                     <ruleset>/rulesets/clone.xml</ruleset>
+                     <ruleset>/rulesets/sunsecure.xml</ruleset>
+                  </rulesets>
+            </configuration>
+         </plugin>
+      </plugins>
+   </reporting>
+   
 </project>
