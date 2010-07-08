@@ -1,6 +1,11 @@
 /*!
  * Réécriture du reset d'extjs mais plus spécifiquement lié aux attributes selectors + dédié à la maquette
  */
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * div[id|='ext'], div[id|='ext'],
+#container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * div[id|='x'], div[id|='x']
+{
+	text-align:left;
+}
 html[id|='ext'],
 body[id|='ext'],
 /*

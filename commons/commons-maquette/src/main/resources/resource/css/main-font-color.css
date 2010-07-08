@@ -25,7 +25,8 @@ body.frUrssafImageCommonsMaquette
 	color: cssMainFontColor;
 }
 
-#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #providedby > a
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #providedby > a,
+#container.frUrssafImageCommonsMaquette > #footer.frUrssafImageCommonsMaquette > #copyright
 {
     color: cssMainFontColor;
 }
