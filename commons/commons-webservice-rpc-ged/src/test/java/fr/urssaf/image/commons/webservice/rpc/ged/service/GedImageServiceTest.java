@@ -5,12 +5,14 @@ import static org.junit.Assert.assertEquals;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.rpc.ged.modele.AuthInfo;
 import fr.urssaf.image.commons.webservice.rpc.ged.service.GedImageService;
 import fr.urssaf.image.commons.webservice.rpc.ged.service.GedImageServiceImpl;
 
+@Ignore
 public class GedImageServiceTest {
 	
 	protected static final Logger log = Logger.getLogger(GedImageServiceTest.class);
