@@ -570,7 +570,7 @@ if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : Popup/default'
    */
    dessinerFormulaire: function( pCible )
    {
- 	 displayDone = false ;
+ 	 displayZone = false ;
  	
  	 if( this._hasBeenRendered == false )
  	 {
@@ -593,7 +593,7 @@ if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : Popup/default'
     * return 	void
     */
    setSuccessComportement: function( pType, pValue )
-   {   
+   {
 	   if( this._checkTypeBehavior( pType, pValue ) )
 	   {
 		   this._successBehavior.type = pType ;
@@ -671,11 +671,11 @@ if( !Ext.isIE && myExtJs._debugInConsole ) console.info( 'Echec : Popup/default'
 		   }
 	   }
 
-	   // pValue doit commencer par http(s):// si on utilise une url
+	   // pValue ne doit pas forcément commencer par http(s), uniquement si on veut quitter le site courant
 	   if( pType == this.__BEHAVIOR_URL__ 
 		&& ( pValue == null 
-			|| ( pValue.substr( 0, 7 ) != 'http://' 
-				&& pValue.substr( 0, 8 ) != 'https://' ) ) )
+			/* || ( pValue.substr( 0, 7 ) != 'http://' 
+				&& pValue.substr( 0, 8 ) != 'https://' ) */ ) )
 	   {
 		   if( !Ext.isIE && this._debugInConsole ) console.warn( '_checkTypeBehavior : pType/pValue est incoherent avec le type url (' + pType + ', ' + pValue + ')' ) ;
 		   return false ;
