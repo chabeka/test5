@@ -7,8 +7,9 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.urssaf.image.commons</groupId>
-	<artifactId>commons-webservice-rpc-exemple</artifactId>
+	<artifactId>commons-webservice-exemple</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-exemple</name>
 
 	<build>
 		<plugins>
