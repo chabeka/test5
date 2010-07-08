@@ -9,16 +9,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
+import org.apache.commons.lang.SystemUtils;
+
 
 /**
  * Fonctions de manipulations de fichier
  */
 public final class FileUtil {
 
-   @SuppressWarnings("PMD.LongVariable")
-   private static final String DEFAULT_LINE_SEPARATOR = "\n";
-   
-   
 	private FileUtil() {
 
 	}
@@ -117,7 +115,7 @@ public final class FileUtil {
 	 * @throws IOException
 	 */
 	public static String read(File file, String encoding) throws IOException {
-	   return read(file,encoding,DEFAULT_LINE_SEPARATOR);
+	   return read(file,encoding,SystemUtils.LINE_SEPARATOR);
 	}
 	
 	
