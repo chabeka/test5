@@ -10,6 +10,7 @@
 	<artifactId>commons-webservice-wssecurity-spring</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-wssecurity-spring</name>
 
 	<build>
 		<plugins>
