@@ -5,10 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.Document;
 
+@Ignore
 public class DocumentServiceTest {
 
 	private DocumentService service = new DocumentServiceImpl();
