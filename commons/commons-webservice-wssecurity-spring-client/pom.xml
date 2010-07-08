@@ -9,6 +9,7 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-webservice-wssecurity-spring-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-wssecurity-spring-client</name>
 
 	<dependencies>
 
