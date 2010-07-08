@@ -8,12 +8,14 @@ import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.rpc.aed.context.AEDJSSESocketFactory;
 import fr.urssaf.image.commons.webservice.rpc.aed.service.modele.ParametrageTransfertModele;
 import fr.urssaf.image.commons.webservice.ssl.InitAxisProperties;
 
+@Ignore
 public class AEServiceTest {
 
 	protected static final Logger log = Logger.getLogger(AEServiceTest.class);
