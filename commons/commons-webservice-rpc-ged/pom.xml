@@ -9,6 +9,7 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-webservice-rpc-ged</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-rpc-ged</name>
 
 	<build>
 		<plugins>
