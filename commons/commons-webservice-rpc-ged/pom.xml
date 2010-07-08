@@ -13,6 +13,18 @@
 
 	<build>
 		<plugins>
+         <!--
+         ATTENTION : Il faut mettre en commentaire
+         le plugin de génération des sources avec Axis
+         avant de commiter, car en intégration continue, 
+         le goal generate-sources est appelé par le goal
+         compile, et donc regénère à chaque fois les sources
+         à partir du WSDL. Ceci est fortement déconseillé.
+         De plus, on peut avoir un plantage si le WSDL n'est
+         pas ou plus accessible à partir de la plateforme 
+         d'intégration continue.
+         -->
+         <!--
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>axistools-maven-plugin</artifactId>
@@ -32,6 +44,7 @@
 					</execution>
 				</executions>
 			</plugin>
+         -->
 		</plugins>
 	</build>
 
