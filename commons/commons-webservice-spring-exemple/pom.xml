@@ -10,6 +10,7 @@
 	<artifactId>commons-webservice-spring-exemple</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-spring-exemple</name>
 
 	<build>
 		<plugins>
