@@ -9,6 +9,7 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-webservice-rpc-aed</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <name>commons-webservice-rpc-aed</name>
 
 	<dependencies>
 
