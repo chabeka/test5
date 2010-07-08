@@ -4,14 +4,16 @@ import static org.junit.Assert.assertEquals;
 
 import javax.xml.rpc.ServiceException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ConsommationTest {
 
    @Test
+   @Ignore
    /**
-    * Test du Ping() directement à partir des classes modèles
-    * Uniquement pour des besoins d'explication dans la fiche de développement F011
+    * Test du Ping() directement Ã  partir des classes modÃ¨les
+    * Uniquement pour des besoins d'explication dans la fiche de dÃ©veloppement F011
     */
    public void testPing() throws java.rmi.RemoteException, ServiceException
    {
