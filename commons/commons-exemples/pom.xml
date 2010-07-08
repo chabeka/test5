@@ -18,6 +18,16 @@
    <modules>
       <module>../commons-ioc-spring-exemple</module>
       <module>../commons-birt-exemple</module>
+      <module>../commons-controller-spring3-exemple</module>
+      <module>../commons-controller-springsecurity-exemple</module>
+      <module>../commons-maquette-exemple</module>
+      <module>../commons-webservice-exemple</module>
+      <module>../commons-webservice-exemple-ssl</module>
+      <module>../commons-webservice-rpc-aed</module>
+      <module>../commons-webservice-rpc-ged</module>
+      <module>../commons-webservice-spring-exemple</module>
+      <module>../commons-webservice-wssecurity-spring</module>
+      <module>../commons-webservice-wssecurity-spring-client</module>
    </modules>
    
    <build>
@@ -87,24 +97,7 @@
                <minimumTokens>100</minimumTokens>
                <targetJdk>1.6</targetJdk>
                   <rulesets>
-                     <ruleset>/rulesets/braces.xml</ruleset>
-                     <ruleset>/rulesets/naming.xml</ruleset>
-                     <ruleset>/rulesets/basic.xml</ruleset>
-                     <ruleset>/rulesets/design.xml</ruleset>
-                     <ruleset>/rulesets/strictexception.xml</ruleset>
-                     <ruleset>/rulesets/unusedcode.xml</ruleset>
-                     <ruleset>/rulesets/strings.xml</ruleset>
-                     <ruleset>/rulesets/typeresolution.xml</ruleset>
-                     <ruleset>/rulesets/logging-java.xml</ruleset>
-                     <ruleset>/rulesets/migrating.xml</ruleset>
-                     <ruleset>/rulesets/coupling.xml</ruleset>
-                     <ruleset>/rulesets/imports.xml</ruleset>
-                     <ruleset>/rulesets/junit.xml</ruleset>
-                     <ruleset>/rulesets/controversial.xml</ruleset>
-                     <ruleset>/rulesets/codesize.xml</ruleset>
-                     <ruleset>/rulesets/finalizers.xml</ruleset>
-                     <ruleset>/rulesets/clone.xml</ruleset>
-                     <ruleset>/rulesets/sunsecure.xml</ruleset>
+                     <ruleset>http://cer69-hudson2.cer69.recouv:80/pmd_rules/pmd_commons-exemples.xml</ruleset>
                   </rulesets>
             </configuration>
          </plugin>
