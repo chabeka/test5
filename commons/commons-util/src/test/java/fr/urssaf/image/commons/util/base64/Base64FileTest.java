@@ -17,8 +17,8 @@ public class Base64FileTest {
    private final static String ENCODE = "src/test/resources/encode.txt";
    private final static String DECODE = "src/test/resources/decode.txt";
 
-   private final static String SEPARATOR = System.getProperty("line.separator",
-         "\n");
+   private final static String SEPARATOR = "\n\r";//System.getProperty("line.separator",
+         //"\n");
 
    @Test
    public void encodeFile() throws IOException {
