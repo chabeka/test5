@@ -5,11 +5,13 @@ import static org.junit.Assert.assertEquals;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.exemple.ssl.base.RPCJSSESocketFactory;
 import fr.urssaf.image.commons.webservice.ssl.InitAxisProperties;
 
+@Ignore
 public class SSLServiceTest {
 
 	private static final Logger log = Logger.getLogger(SSLServiceTest.class);
