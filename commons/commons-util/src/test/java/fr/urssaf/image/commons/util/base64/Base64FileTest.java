@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -12,32 +13,30 @@ import fr.urssaf.image.commons.file.FileUtil;
 
 public class Base64FileTest {
 
-	private static final Logger LOG = Logger.getLogger(Base64FileTest.class);
+   private static final Logger LOG = Logger.getLogger(Base64FileTest.class);
 
-	private final static String ENCODE = "src/test/resources/encode.txt";
-	private final static String DECODE = "src/test/resources/decode.txt";
+   private final static String ENCODE = "src/test/resources/encode.txt";
+   private final static String DECODE = "src/test/resources/decode.txt";
 
-	@Test
-	public void encodeFile() throws IOException {
+   @Test
+   public void encodeFile() throws IOException {
 
-		
-		LOG.debug(":"+FileUtil.read(DECODE)+":");
-		String encode = EncodeUtil.encode(FileUtil.read(DECODE));
+      String text = FileUtil.read(DECODE, CharEncoding.UTF_8);
+      String encode = EncodeUtil.encode(text);
 
-		//assertEquals(BASE64_ISO.length(), encode.length());
-		assertEquals("mauvaise encodage","6Q0KYQ0K", encode);
-	}
+      LOG.debug("encodage de :" + text + ":");
+      assertEquals("echec encodage en iso:" + text + ":", "6Q0KYQ0K", encode);
+   }
 
-	@Test
-	public void decodeFile() throws IOException {
+   @Test
+   public void decodeFile() throws IOException {
 
-		String decode = DecodeUtil.decode(EncodeUtil
-				.encode(FileUtil.read(ENCODE)));
-		LOG.debug("decode ISO8859_1:" + decode);
-		LOG.debug("size ISO8859_1:" + decode.length());
+      String text = FileUtil.read(ENCODE, CharEncoding.UTF_8);
+      String decode = DecodeUtil.decode(text);
 
-		//assertEquals(BASE64_ISO.length(), decode.length());
-		assertEquals("mauvaise décodage","6Q0KYQ=="+SystemUtils.LINE_SEPARATOR, decode);
+      LOG.debug("decodage de :" + decode + ":");
+      assertEquals("echec decodage en iso:" + text + ":", "é"
+            + SystemUtils.LINE_SEPARATOR + "a", decode);
 
-	}
+   }
 }

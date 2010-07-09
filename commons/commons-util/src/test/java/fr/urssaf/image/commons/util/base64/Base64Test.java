@@ -7,66 +7,58 @@ import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class Base64Test {
 
-	private static final Logger LOG = Logger.getLogger(Base64Test.class);
+   private static final Logger LOG = Logger.getLogger(Base64Test.class);
 
-	private final static String TEST = "é" + SystemUtils.LINE_SEPARATOR + "a";
-	private final static String BASE64_UTF8 = "w6kNCmE=";
-	private final static String BASE64_ISO = "6Q0KYQ==";
+   private final static String TEST = "é" + SystemUtils.LINE_SEPARATOR + "a";
+   private final static String BASE64_UTF8 = "w6kNCmE=";
+   private final static String BASE64_ISO = "6Q0KYQ==";
 
-	@SuppressWarnings("PMD.MethodNamingConventions")
-	@Test
-	public void encodeISO8859_1() {
+   @SuppressWarnings("PMD.MethodNamingConventions")
+   @Test
+   public void encodeISO8859_1() {
 
-		String encode = EncodeUtil.encode(TEST);
+      String encode = EncodeUtil.encode(TEST);
+      LOG.debug("encodage en iso de :" + TEST + ":");
+      assertEquals("échec de l'encodage iso de " + TEST, BASE64_ISO, encode);
+   }
 
-		assertEquals(BASE64_ISO.length(), encode.length());
-		assertEquals(BASE64_ISO, encode);
-	}
+   @SuppressWarnings("PMD.MethodNamingConventions")
+   @Test
+   public void decodeISO8859_1() {
 
-	@SuppressWarnings("PMD.MethodNamingConventions")
-	@Test
-	public void decodeISO8859_1() {
+      String decode = DecodeUtil.decode(BASE64_ISO);
+      LOG.debug("decodage en iso de :" + BASE64_ISO + ":");
+      assertEquals("échec du décodage en iso de " + BASE64_ISO,TEST, decode);
 
-		String decode = DecodeUtil.decode(BASE64_ISO);
-		LOG.debug("decode ISO8859_1:" + decode);
-		LOG.debug("size ISO8859_1:" + decode.length());
+   }
 
-		assertEquals(TEST.length(), decode.length());
-		assertEquals(TEST, decode);
+   @Test
+   public void encodeUTF8() {
 
-	}
+      String encode = EncodeUtil.encodeUTF8(TEST);
+      LOG.debug("encodage en utf8 de :" + TEST + ":");
+      assertEquals("échec de l'encodage utf8 de " + TEST, BASE64_UTF8, encode);
+   }
 
-	@Test
-	public void encodeUTF8() {
+   @Test
+   public void decodeUTF8() {
 
-		String encode = EncodeUtil.encodeUTF8(TEST);
+      String decode = DecodeUtil.decodeUTF8(BASE64_UTF8);
+      LOG.debug("decodage en utf8 de :" + BASE64_UTF8 + ":");
+      assertEquals("échec du décodage en utf8 de " + BASE64_UTF8, TEST, decode);
+   }
 
-		assertEquals(BASE64_UTF8.length(), encode.length());
-		assertEquals(BASE64_UTF8, encode);
-	}
+   @Test
+   public void encode() {
 
-	@Test
-	public void decodeUTF8() {
+      String TEST = "à@" + SystemUtils.LINE_SEPARATOR + "ç"
+            + SystemUtils.LINE_SEPARATOR + "ù";
 
-		String decode = DecodeUtil.decodeUTF8(BASE64_UTF8);
-		LOG.debug("decode UTF8:" + decode);
-		LOG.debug("size UTF8:" + decode.length());
-
-		assertEquals(TEST.length(), decode.length());
-		assertEquals(TEST, decode);
-	}
-	
-	@Test
-	public void encode() {
-		
-		String TEST = "à@"+SystemUtils.LINE_SEPARATOR+"ç"+SystemUtils.LINE_SEPARATOR+"ù";
-
-		String encode = EncodeUtil.encode(TEST, CharEncoding.ISO_8859_1);
-
-		assertEquals("4EANCucNCvk=", encode);
-	}
+      String encode = EncodeUtil.encode(TEST, CharEncoding.ISO_8859_1);
+      LOG.debug("encodage en iso de :" + TEST + ":");
+      assertEquals("échec de l'encodage iso de " + TEST, "4EANCucNCvk=", encode);
+   }
 
 }
