@@ -2,14 +2,13 @@ package fr.urssaf.image.commons.util.base64;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-
-import fr.urssaf.image.commons.file.FileUtil;
 
 public class Base64FileTest {
 
@@ -21,22 +20,36 @@ public class Base64FileTest {
    @Test
    public void encodeFile() throws IOException {
 
-      String text = FileUtil.read(DECODE, CharEncoding.UTF_8);
-      String encode = EncodeUtil.encode(text);
+      File file = new File(DECODE);
+      String encode = EncodeUtil.encode(file);
 
-      LOG.debug("encodage de :" + text + ":");
-      assertEquals("echec encodage en iso:" + text + ":", "6Q0KYQ0K", encode);
+      LOG.debug("encodage de :" + DECODE + ":");
+      assertEquals("echec encodage en iso du fichier:" + DECODE + ":",
+            "w4PCqQ0KYQ=="+System.getProperty("line.separator"), encode);
    }
 
    @Test
    public void decodeFile() throws IOException {
 
-      String text = FileUtil.read(ENCODE, CharEncoding.UTF_8);
-      String decode = DecodeUtil.decode(text);
+      File file = new File(ENCODE);
+      String decode = DecodeUtil.decode(file);
 
-      LOG.debug("decodage de :" + decode + ":");
-      assertEquals("echec decodage en iso:" + text + ":", "é"
-            + SystemUtils.LINE_SEPARATOR + "a", decode);
+      LOG.debug("decodage de :" + ENCODE + ":");
+      assertEquals("echec decodage en iso:" + ENCODE + ":", "Ã©"
+            + System.getProperty("line.separator") + "a", decode);
+
+   }
+
+   @Test
+   public void decodeFileUTF8() throws IOException {
+
+      File file = new File(ENCODE);
+      String decode = DecodeUtil.decode(file, CharEncoding.ISO_8859_1);
+
+      decode = StringUtils.newStringUtf8(StringUtils.getBytesIso8859_1(decode));
+      LOG.debug("decodage de :" + ENCODE + ": en utf8");
+      assertEquals("echec decodage en utf8:" + ENCODE + ":", "é"
+            + System.getProperty("line.separator") + "a", decode);
 
    }
 }

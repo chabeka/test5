@@ -3,7 +3,6 @@ package fr.urssaf.image.commons.util.base64;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
@@ -11,9 +10,9 @@ public class Base64Test {
 
    private static final Logger LOG = Logger.getLogger(Base64Test.class);
 
-   private final static String TEST = "é" + SystemUtils.LINE_SEPARATOR + "a";
-   private final static String BASE64_UTF8 = "w6kNCmE=";
-   private final static String BASE64_ISO = "6Q0KYQ==";
+   private final static String TEST = "éa";
+   private final static String BASE64_UTF8 = "w6lh";
+   private final static String BASE64_ISO = "6WE=";
 
    @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
@@ -53,12 +52,11 @@ public class Base64Test {
    @Test
    public void encode() {
 
-      String TEST = "à@" + SystemUtils.LINE_SEPARATOR + "ç"
-            + SystemUtils.LINE_SEPARATOR + "ù";
+      String TEST = "à@çù";
 
       String encode = EncodeUtil.encode(TEST, CharEncoding.ISO_8859_1);
       LOG.debug("encodage en iso de :" + TEST + ":");
-      assertEquals("échec de l'encodage iso de " + TEST, "4EANCucNCvk=", encode);
+      assertEquals("échec de l'encodage iso de " + TEST, "4EDn+Q==", encode);
    }
 
 }
