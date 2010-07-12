@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -7,17 +8,13 @@
 </head>
 <body>
 
-<h1>Bienvenue dans l'application exemple Spring MVC</h1>
+<h1>Aperçu rapide d'une page web avec formulaire</h1>
 
-<div>
-   <br /><br />
-   <br /><br />
-   <a href="test01.do">Test 1 : Mise en place de Spring</a>
-   <br /><br />
-   <a href="table.do">Formulaire avec une liste</a>
-   <br /><br />
-   <a href="form.do">Formulaire avec un élément</a>
-</div>
+<form:form method="post" modelAttribute="test01Formulaire">
+	<form:input path='question' />
+	<form:input path='reponse' />
+	<input type="submit" />
+</form:form>
 
 </body>
 </html>

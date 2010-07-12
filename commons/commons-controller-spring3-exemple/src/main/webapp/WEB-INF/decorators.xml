@@ -5,7 +5,10 @@
 		<pattern>/*</pattern>
 	</decorator>
 
-	<decorator name="empty" page="empty.jsp" />
+	<decorator name="empty" page="empty.jsp">
+     <pattern>/test01.do</pattern> 
+   </decorator>
+   
 </decorators>
 			
 
