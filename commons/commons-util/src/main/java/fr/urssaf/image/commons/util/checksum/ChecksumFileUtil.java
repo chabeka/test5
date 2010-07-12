@@ -9,7 +9,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 /**
  * Classe de calcul du checksum sur des fichiers
- * les différents algoritmes sont 
+ * les différents algorithmes sont 
  *       CRC32
  *       MD5
  *       SHA_1

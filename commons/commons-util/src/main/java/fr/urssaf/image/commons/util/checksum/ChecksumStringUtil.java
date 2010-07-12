@@ -6,7 +6,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Classe de calcul du checksum sur des chaines de caractères
- * les différents algoritmes sont
+ * les différents algorithmes sont
  *       MD5
  *       SHA_1
  *       SHA_256
