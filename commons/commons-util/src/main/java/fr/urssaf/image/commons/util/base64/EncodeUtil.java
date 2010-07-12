@@ -61,9 +61,12 @@ public final class EncodeUtil {
 
    /**
     * Renvoie la chaine de caractère en base64 d'un fichier
-    * @param file fichier
+    * 
+    * @param file
+    *           fichier
     * @return chaine de caractère
-    * @throws IOException exception sur le fichier
+    * @throws IOException
+    *            exception sur le fichier
     */
    public static String encode(File file) throws IOException {
 
@@ -73,7 +76,7 @@ public final class EncodeUtil {
       int encodage = base64InputStream.read();
       StringBuffer value = new StringBuffer();
 
-      while (encodage != -1) {
+      while (encodage != 13 && encodage != -1) {
 
          byte encodageByte = (byte) encodage;
          @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
