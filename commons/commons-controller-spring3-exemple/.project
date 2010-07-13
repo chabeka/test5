@@ -3,7 +3,6 @@
 	<name>commons-controller-spring3-exemple</name>
 	<comment>NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
 	<projects>
-		<project>commons-controller-spring</project>
 		<project>commons-taglib</project>
 		<project>commons-util</project>
 	</projects>
