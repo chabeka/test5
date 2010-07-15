@@ -6,9 +6,11 @@
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
    <name>commons-parent</name>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+   
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <org.springframework.version>3.0.3.RELEASE</org.springframework.version>
+   </properties>
   
    <modules>
 		<module>../commons-birt</module>
