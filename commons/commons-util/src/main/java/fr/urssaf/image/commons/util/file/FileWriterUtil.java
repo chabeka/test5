@@ -1,14 +1,17 @@
 package fr.urssaf.image.commons.util.file;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
 /**
- * Fonctions de manipulations de fichier
- * Cette classe est une surcouche de  org.apache.commons.io
+ * Fonctions de manipulations de fichier Cette classe est une surcouche de
+ * org.apache.commons.io
  */
 public final class FileWriterUtil {
 
@@ -79,6 +82,22 @@ public final class FileWriterUtil {
       } finally {
          writer.close();
       }
+
+   }
+
+   /**
+    * Copie le contenu d'un fichier dans un flux d'écriture
+    * 
+    * @param file fichier de lecture
+    * @param out flux d'écriture
+    * @throws IOException exception sur les fichiers
+    */
+   public static void copy(File file, OutputStream out) throws IOException {
+
+      // création d'un flux de lecture
+      FileInputStream input = new FileInputStream(file);
+      IOUtils.copy(input, out);
+      input.close();
 
    }
 
