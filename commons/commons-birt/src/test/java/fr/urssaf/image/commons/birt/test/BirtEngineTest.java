@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Level;
 
+import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.junit.After;
 import org.junit.Before;
@@ -15,17 +16,25 @@ import fr.urssaf.image.commons.birt.BirtEngine;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
+import fr.urssaf.image.commons.birt.test.exception.EnvVarNotSettedBirtEngineException;
+
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
 public class BirtEngineTest {
-	
+	public static Logger logger = Logger.getLogger(BirtEngineTest.class);
+   
 	private BirtEngine birtEngine = null ;
 	
-	private static final String REPORTENGINE_PATH = "C:\\birt-runtime-2_5_2\\ReportEngine" ;
+	private final String REPORTENGINE_PATH = System.getenv("BIRT_HOME") ;
 	private final String logsPath = System.getProperty("java.io.tmpdir") ;
 		
 	@Before
 	public void setUp() throws Exception {
+   
+	   if ( System.getenv("BIRT_HOME") == null 
+	         || System.getenv("BIRT_HOME").isEmpty() )
+	      throw new EnvVarNotSettedBirtEngineException() ;
+	      
 	   birtEngine = BirtEngine.getInstance( REPORTENGINE_PATH, logsPath, null ) ;
 	}
 

@@ -2,10 +2,11 @@ package fr.urssaf.image.commons.birt.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.HashMap;
+
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.junit.After;
@@ -18,8 +19,7 @@ import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtExcepti
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
-
-import org.apache.commons.io.FilenameUtils;
+import fr.urssaf.image.commons.birt.test.exception.EnvVarNotSettedBirtEngineException;
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
 public class BirtRenderTest {
@@ -30,7 +30,7 @@ public class BirtRenderTest {
    private final String logsPath = System.getProperty("java.io.tmpdir") ;
    private final String outputPath = System.getProperty("java.io.tmpdir") ;
    
-	private static final String REPORTENGINE_PATH = "C:/birt-runtime-2_5_2/ReportEngine" ;
+	private static final String REPORTENGINE_PATH = System.getProperty("BIRT_HOME") ;
 	private static final String OUTPUT_FILENAME = "/monRapportGenereEn" ;
 	private static final String REPORT_FILE_PATH = "./src/test/resources/reports/monPremierRapport.rptdesign" ;
 	private static final String EXTENSION_PDF = ".pdf";
@@ -40,6 +40,11 @@ public class BirtRenderTest {
 	
 	@Before
 	public void setUp() throws Exception {	   
+	   
+	   if ( System.getProperty("BIRT_HOME") == null 
+            || System.getProperty("BIRT_HOME").isEmpty() )
+         throw new EnvVarNotSettedBirtEngineException() ;
+	   
 	   birtEngine = BirtEngine.getInstance( REPORTENGINE_PATH, logsPath, null ) ;
 	   birtRender = new BirtRender(outputPath, OUTPUT_FILENAME);
 	   
