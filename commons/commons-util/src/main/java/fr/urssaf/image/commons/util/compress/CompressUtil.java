@@ -19,13 +19,10 @@ import org.apache.commons.io.FilenameUtils;
 import fr.urssaf.image.commons.util.file.FileWriterUtil;
 
 /**
- * Cette classe utilitaire propose l'archivage
- *    zip
- *    tar
- *    gz
- *    tgz
+ * Cette classe utilitaire propose l'archivage zip tar gz tgz
+ * 
  * @author Bertrand BARAULT
- *
+ * 
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public final class CompressUtil {
@@ -37,13 +34,34 @@ public final class CompressUtil {
    /**
     * compression avec zip
     * 
-    * @param archiveName nom de l'archive (avec une extension .zip)
-    * @param fileName nom du fichier à compresser
+    * @param archiveName
+    *           nom de l'archive (avec une extension .zip)
+    * @param fileName
+    *           nom du fichier à compresser
     * @return checksum du zip
-    * @throws IOException exception sur le fichier
+    * @throws IOException
+    *            exception sur le fichier
     */
    public static long zip(String archiveName, String fileName)
          throws IOException {
+      return zip(archiveName, fileName, new String[0]);
+   }
+
+   /**
+    * compression avec zip
+    * 
+    * @param archiveName
+    *           nom de l'archive (avec une extension .zip)
+    * @param fileName
+    *           nom du fichier à compresser
+    * @param extensions
+    *           filtre sur les extensions (text,java,xml)
+    * @return checksum du zip
+    * @throws IOException
+    *            exception sur le fichier
+    */
+   public static long zip(String archiveName, final String fileName,
+         String... extensions) throws IOException {
 
       AbstractCompressOutputStream<ZipArchiveOutputStream> outputStream = new AbstractCompressOutputStream<ZipArchiveOutputStream>(
             archiveName, fileName) {
@@ -68,12 +86,13 @@ public final class CompressUtil {
          public void compressFile(File file, ZipArchiveOutputStream out)
                throws IOException {
 
-            ZipArchiveEntry entry = new ZipArchiveEntry(file, file.getName());
+            ZipArchiveEntry entry = new ZipArchiveEntry(file, entry(fileName,
+                  file));
             copy(file, out, entry);
          }
 
       };
-
+      outputStream.setExtensions(extensions);
       long checksum = outputStream.compress();
 
       return checksum;
@@ -83,13 +102,35 @@ public final class CompressUtil {
    /**
     * compression avec tar
     * 
-    * @param archiveName nom de l'archive (avec une extension .tar)
-    * @param fileName nom du fichier à compresser
+    * @param archiveName
+    *           nom de l'archive (avec une extension .tar)
+    * @param fileName
+    *           nom du fichier à compresser
     * @return checksum du tar
-    * @throws IOException exception sur le fichier
+    * @throws IOException
+    *            exception sur le fichier
     */
-   public static long tar(String archiveName, String fileName)
+   public static long tar(String archiveName, final String fileName)
          throws IOException {
+
+      return tar(archiveName, fileName, new String[0]);
+   }
+
+   /**
+    * compression avec tar
+    * 
+    * @param archiveName
+    *           nom de l'archive (avec une extension .tar)
+    * @param fileName
+    *           nom du fichier à compresser
+    * @param extensions
+    *           filtre sur les extensions (text,java,xml)
+    * @return checksum du tar
+    * @throws IOException
+    *            exception sur le fichier
+    */
+   public static long tar(String archiveName, final String fileName,
+         String... extensions) throws IOException {
 
       AbstractCompressOutputStream<TarArchiveOutputStream> outputStream = new AbstractCompressOutputStream<TarArchiveOutputStream>(
             archiveName, fileName) {
@@ -98,7 +139,8 @@ public final class CompressUtil {
          protected void compressFile(File file, TarArchiveOutputStream out)
                throws IOException {
 
-            TarArchiveEntry entry = new TarArchiveEntry(file, file.getName());
+            TarArchiveEntry entry = new TarArchiveEntry(file, entry(fileName,
+                  file));
             copy(file, out, entry);
 
          }
@@ -110,31 +152,53 @@ public final class CompressUtil {
          }
 
       };
-
+      outputStream.setExtensions(extensions);
       long checksum = outputStream.compress();
 
       return checksum;
 
    }
-   
+
    /**
     * compression avec tgz
     * 
-    * @param path chemin de l'archive
-    * @param fileName nom du fichier à compresser
+    * @param path
+    *           chemin de l'archive
+    * @param fileName
+    *           nom du fichier à compresser
     * @return checksum du tgz
-    * @throws IOException exception sur le fichier
+    * @throws IOException
+    *            exception sur le fichier
     */
    public static long tgz(String path, String filename) throws IOException {
+
+      return tgz(path, filename, new String[0]);
+   }
+
+   /**
+    * compression avec tgz
+    * 
+    * @param path
+    *           chemin de l'archive
+    * @param filename
+    *           nom du fichier à compresser
+    * @param extensions
+    *           iltre sur les extensions (text,java,xml)
+    * @return checksum du tgz
+    * @throws IOException
+    *            exception sur le fichier
+    */
+   public static long tgz(String path, String filename, String... extensions)
+         throws IOException {
 
       String tar = FilenameUtils.concat(path, FilenameUtils
             .getBaseName(filename)
             + ".tar");
-      tar(tar, filename);
-      
+      tar(tar, filename, extensions);
+
       long checksum = gzip(path, tar);
-  
-      //suppression du fichier tar
+
+      // suppression du fichier tar
       new File(tar).delete();
 
       return checksum;
@@ -143,10 +207,13 @@ public final class CompressUtil {
    /**
     * compression avec gz
     * 
-    * @param path chemin de l'archive
-    * @param fileName nom du fichier à compresser
+    * @param path
+    *           chemin de l'archive
+    * @param fileName
+    *           nom du fichier à compresser
     * @return checksum du gz
-    * @throws IOException exception sur le fichier
+    * @throws IOException
+    *            exception sur le fichier
     */
    public static long gzip(String path, String fileName) throws IOException {
 
@@ -178,7 +245,7 @@ public final class CompressUtil {
       return checksum;
 
    }
-   
+
    private static void copy(File file, ArchiveOutputStream out,
          ArchiveEntry entry) throws IOException {
 
@@ -189,7 +256,24 @@ public final class CompressUtil {
 
       // Close the current entry
       out.closeArchiveEntry();
-     
+
    }
 
+   private static String entry(String path, File file) throws IOException {
+
+      File pathFile = new File(path);
+
+      String name;
+
+      if (pathFile.isFile()) {
+         name = file.getName();
+      } else {
+
+         name = file.getAbsolutePath().substring(
+               FilenameUtils.getFullPath(pathFile.getAbsolutePath()).length());
+      }
+
+      return name;
+
+   }
 }

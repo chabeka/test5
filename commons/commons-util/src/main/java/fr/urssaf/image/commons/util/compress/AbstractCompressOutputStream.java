@@ -20,11 +20,17 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
    private final String compressFileName;
 
    private final String fileName;
+   
+   private String[] extensions;
 
    protected AbstractCompressOutputStream(String compressFileName, String fileName) {
 
       this.compressFileName = compressFileName;
       this.fileName = fileName;
+   }
+   
+   public void setExtensions(String... extensions){
+      this.extensions = extensions;
    }
 
    @SuppressWarnings("unchecked")
@@ -47,7 +53,7 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
       File file = new File(this.fileName);
       
       if (file.isDirectory()) {
-         Collection<File> files = FileUtils.listFiles(file, null, true);
+         Collection<File> files = FileUtils.listFiles(file, this.extensions, true);
          for (File tmpFile : files) {
             compressFile(tmpFile, out);
          }
@@ -67,7 +73,7 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
       return checksum.getChecksum().getValue();
 
    }
-
+   
    protected abstract F createOutputStream(BufferedOutputStream buff)
          throws IOException;
 
