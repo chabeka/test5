@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.zip.Adler32;
+import java.util.zip.CRC32;
 import java.util.zip.CheckedOutputStream;
 
 import org.apache.commons.io.FileUtils;
@@ -41,7 +41,7 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
 
       // calcul du checksum : Adler32 (plus rapide) ou CRC32
       CheckedOutputStream checksum = new CheckedOutputStream(dest,
-            new Adler32());
+            new CRC32());
 
       // création d'un buffer d'écriture
       BufferedOutputStream buff = new BufferedOutputStream(checksum);

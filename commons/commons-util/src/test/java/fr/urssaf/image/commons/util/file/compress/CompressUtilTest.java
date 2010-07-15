@@ -82,12 +82,9 @@ public class CompressUtilTest {
 
       long checksum = CompressUtil.tar(archiveFile("dir_tar.tar"),
             DIRECTORY_TEST, "txt");
-      LOG.debug("tar " + DIRECTORY_TEST + ":" + checksum);
-
-     
+      LOG.debug("tar " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
       assertEquals("échec du tar " + DIRECTORY_TEST,
-            "db69deaf8b23a4d8646f8f7b529ccc90", ChecksumFileUtil
-                  .md5(archiveFile("dir_tar.tar")));
+            ChecksumFileUtil.crc32(archiveFile("dir_tar.tar")), Long.toHexString(checksum));
 
    }
 
