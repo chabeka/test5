@@ -87,7 +87,7 @@ public class CompressUtilTest {
      
       assertEquals("échec du tar " + DIRECTORY_TEST,
             "db69deaf8b23a4d8646f8f7b529ccc90", ChecksumFileUtil
-                  .crc32(archiveFile("dir_tar.tar")));
+                  .md5(archiveFile("dir_tar.tar")));
 
    }
 
