@@ -25,7 +25,7 @@ import fr.urssaf.image.commons.maquette.tool.UrlPatternMatcher;
 
 public class MaquetteFilter implements Filter {
 	
-	public static final Logger logger = Logger.getLogger( MaquetteFilter.class.getName() );
+	private static final Logger LOGGER = Logger.getLogger(MaquetteFilter.class);
 	
 	private FilterConfig filterConfig;
 
@@ -37,7 +37,7 @@ public class MaquetteFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest rq, ServletResponse rs,
 			FilterChain chain) throws IOException, ServletException {
-logger.debug( "---------------------------------------" );
+LOGGER.debug( "---------------------------------------" );
 		HttpServletRequest request = (HttpServletRequest) rq;
 		HttpServletResponse response = (HttpServletResponse) rs;
 		
@@ -45,11 +45,11 @@ logger.debug( "---------------------------------------" );
 		try {
 			MaquetteConfig maquetteCfg = new MaquetteConfig( getFilterConfig(), request ) ;
 
-logger.debug( "Request URL : " + request.getRequestURL() + "?" + request.getQueryString() );
+LOGGER.debug( "Request URL : " + request.getRequestURL() + "?" + request.getQueryString() );
 
 			// 0) test d'application ou non du filtre
 			if (!applyFilter(request)) {
-logger.debug( "Arrêt du filtre") ;
+LOGGER.debug( "Arrêt du filtre") ;
 				chain.doFilter(request, response) ;
 				return;
 			}
@@ -69,7 +69,7 @@ logger.debug( "Arrêt du filtre") ;
 			// servlet sera ensuite interprétée et on récupère la main
 			PrintWriter pw = response.getWriter();
 			chain.doFilter(request, wrapper);
-logger.debug( "wrapper content type : " + wrapper.getContentType() ) ;
+LOGGER.debug( "wrapper content type : " + wrapper.getContentType() ) ;
 			// Cas 1 : on a du text/html ou du text/plain ou on demande à forcer le passage
 			if (wrapper.getContentType() != null
 					&& ( wrapper.getContentType().contains("text/html") 
@@ -78,7 +78,7 @@ logger.debug( "wrapper content type : " + wrapper.getContentType() ) ;
 				
 				// forcer le type mime (surtout pour le text/plain en entrée)
 				wrapper.setContentType("text/html");
-logger.debug( "Encodage des caractères : " + wrapper.getCharacterEncoding() ) ;
+LOGGER.debug( "Encodage des caractères : " + wrapper.getCharacterEncoding() ) ;
 				
 				// Création du parser avec la chaîne à décorer et le tremplate décorateur
 				MaquetteParser mp = new MaquetteParser( wrapper.toString(), MaquetteTools.getResourcePath("/html/main.html"), request, maquetteCfg ) ;
@@ -106,7 +106,7 @@ logger.debug( "Encodage des caractères : " + wrapper.getCharacterEncoding() ) ;
 				response.setStatus(404);
 			
 		} catch (Exception e) {
-logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
+LOGGER.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 			e.printStackTrace();
 			throw new ServletException( "La servlet a rencontré une erreur : (" + e.getClass() + ") " + e.getMessage() ,
 					e.getCause() );
@@ -130,12 +130,31 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 	 * @return 
 	 */
 	public boolean applyFilter(HttpServletRequest rq) {
-		// Exclusion par défaut lié à la MaquetteServlet
-		if( checkGetResource(rq) )
-			return false ;
 		
-		// Exclusion explicite
-		return !checkFilesParameters( rq, "excludeFiles" ) ;
+	   boolean result;
+	   
+	   // Exclusion par défaut lié à la MaquetteServlet
+		if( checkGetResource(rq) )
+		{
+			result = false ;
+		}
+		else
+		{
+		   // Exclusion explicite
+		   result = !checkFilesParameters( rq, "excludeFiles" ) ;
+		}
+		
+		// Log
+		if (result)
+		{
+		   LOGGER.debug("Le filtre Maquette sera appliqué pour l'URI " + rq.getRequestURI());
+		}
+		else
+		{
+		   LOGGER.debug("Le filtre Maquette ne sera pas appliqué pour l'URI " + rq.getRequestURI());
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -150,7 +169,7 @@ logger.fatal( "Problème avec MaquetteConfig, regardez la stackTrace" );
 		String URI = rq.getRequestURI();
 		RegularExpression re = new RegularExpression( MaquetteConstant.GETRESOURCEURI );
 		match = re.matches(URI) ;
-logger.debug( "checkGetResource : " + match.toString() );
+LOGGER.debug( "checkGetResource : " + match.toString() );
 		return match ;
 	}
 	
@@ -165,11 +184,11 @@ logger.debug( "checkGetResource : " + match.toString() );
 		Boolean match = false ;
 		String patternList = getFilterConfig().getInitParameter(
 				paramName );
-logger.debug( "Pattern d'exclusion : " + patternList );
+LOGGER.debug( "Pattern d'exclusion : " + patternList );
 		if (patternList != null) {
 			String[] filesToTest = patternList.split(";");
 			String URI = rq.getRequestURI();
-logger.debug( "URI pour test d'exclusion : " + URI );
+LOGGER.debug( "URI pour test d'exclusion : " + URI );
 			match = UrlPatternMatcher.matchOne( filesToTest, URI ) ;
 		}
 

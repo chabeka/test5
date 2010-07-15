@@ -1,9 +1,13 @@
 package fr.urssaf.image.commons.maquette.tool;
 
+import org.apache.log4j.Logger;
+
 public class UrlPatternMatcher {
 
 	// Pour récupérer l'URL de la request :
 	// HttpServletRequest.getRequestURI()
+   
+   private static final Logger LOGGER = Logger.getLogger(UrlPatternMatcher.class);
 	
 	/**
      * Return <code>true</code> if the context-relative request path
@@ -17,7 +21,9 @@ public class UrlPatternMatcher {
      */
     private static boolean matchFiltersURL(String testPath, String requestPath) {
         
-        if (testPath == null)
+       LOGGER.debug(String.format("On compare [%s] à [%s]",testPath,requestPath));
+       
+       if (testPath == null)
             return (false);
 
         // Case 1 - Exact Match
