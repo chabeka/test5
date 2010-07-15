@@ -1,5 +1,6 @@
 package fr.urssaf.image.commons.util.file.compress;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import fr.urssaf.image.commons.util.checksum.ChecksumFileUtil;
 import fr.urssaf.image.commons.util.compress.CompressUtil;
 
 public class CompressUtilTest {
@@ -30,6 +32,8 @@ public class CompressUtilTest {
       
       LOG.debug("zip de "+DIRECTORY_TEST+":" + checksum);
       assertNotNull("échec du zip "+DIRECTORY_TEST,checksum);
+      
+      LOG.debug(ChecksumFileUtil.md5(archiveFile("dir_zip.zip")));
 
    }
 
@@ -40,6 +44,8 @@ public class CompressUtilTest {
       
       LOG.debug("zip de "+FILE_TEST+":" + checksum);
       assertNotNull("échec du zip "+FILE_TEST,checksum);
+      
+      
 
    }
 
@@ -80,7 +86,9 @@ public class CompressUtilTest {
             DIRECTORY_TEST,"txt");
       LOG.debug("tar "+DIRECTORY_TEST+":" + checksum);
       
-      assertNotNull("échec du tar "+DIRECTORY_TEST,checksum);
+      assertEquals("échec du tar "+DIRECTORY_TEST,"db69deaf8b23a4d8646f8f7b529ccc90",archiveFile("dir_tar.tar"));
+      
+     
 
    }
 
