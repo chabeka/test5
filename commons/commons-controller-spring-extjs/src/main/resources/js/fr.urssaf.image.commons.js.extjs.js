@@ -308,10 +308,10 @@ fr.urssaf.image.commons.extjs = {
    * params	pName (string)
    * params	pValue (string)
    * params	pChecked (bool)
-   * params pAddResetHiddenField (bool)
    * return 	this
    */
-  ajouterCaseACocher: function( pLabel, pName, pValue, pChecked, pAddResetHiddenField )
+  // ajouterCaseACocher: function( pLabel, pName, pValue, pChecked, pAddResetHiddenField )
+  ajouterCaseACocher: function( pLabel, pName, pValue, pChecked )
   {
 	var config = this._getStandardConfigOptions( pName, null, pLabel );
 	this._addConfigValue( config, 'inputValue', pValue ) ;
@@ -323,12 +323,15 @@ fr.urssaf.image.commons.extjs = {
     this.formulaire.add( maCaseACocher ) ;
     
     // Ajout d'un champ cache pour le comportement des checkbox sous commons-controller-spring
+    // OBSOLETE
+    /*
     if( pAddResetHiddenField 
     	&& Ext.isBoolean( pAddResetHiddenField ) 
     	&& pAddResetHiddenField == true )
     {
     	this.ajouterChampCache( 'reset', pName ) ;
     }
+    /* */
     
     return this;
   },
