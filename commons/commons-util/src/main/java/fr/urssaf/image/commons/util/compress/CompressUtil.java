@@ -38,7 +38,7 @@ public final class CompressUtil {
     *           nom de l'archive (avec une extension .zip)
     * @param fileName
     *           nom du fichier à compresser
-    * @return checksum du zip
+    * @return checksum en crc32 du zip
     * @throws IOException
     *            exception sur le fichier
     */
@@ -56,7 +56,7 @@ public final class CompressUtil {
     *           nom du fichier à compresser
     * @param extensions
     *           filtre sur les extensions (text,java,xml)
-    * @return checksum du zip
+    * @return checksum en crc32 du zip
     * @throws IOException
     *            exception sur le fichier
     */
@@ -106,7 +106,7 @@ public final class CompressUtil {
     *           nom de l'archive (avec une extension .tar)
     * @param fileName
     *           nom du fichier à compresser
-    * @return checksum du tar
+    * @return checksum en crc32 du tar
     * @throws IOException
     *            exception sur le fichier
     */
@@ -125,7 +125,7 @@ public final class CompressUtil {
     *           nom du fichier à compresser
     * @param extensions
     *           filtre sur les extensions (text,java,xml)
-    * @return checksum du tar
+    * @return checksum en crc32 du tar
     * @throws IOException
     *            exception sur le fichier
     */
@@ -166,7 +166,7 @@ public final class CompressUtil {
     *           chemin de l'archive
     * @param fileName
     *           nom du fichier à compresser
-    * @return checksum du tgz
+    * @return checksum en crc32 du tgz
     * @throws IOException
     *            exception sur le fichier
     */
@@ -184,7 +184,7 @@ public final class CompressUtil {
     *           nom du fichier à compresser
     * @param extensions
     *           iltre sur les extensions (text,java,xml)
-    * @return checksum du tgz
+    * @return checksum en crc32 du tgz
     * @throws IOException
     *            exception sur le fichier
     */
@@ -211,7 +211,7 @@ public final class CompressUtil {
     *           chemin de l'archive
     * @param fileName
     *           nom du fichier à compresser
-    * @return checksum du gz
+    * @return checksum en crc32 du gz
     * @throws IOException
     *            exception sur le fichier
     */
