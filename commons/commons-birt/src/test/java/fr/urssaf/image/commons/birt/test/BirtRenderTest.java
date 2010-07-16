@@ -15,11 +15,12 @@ import org.junit.Test;
 
 import fr.urssaf.image.commons.birt.BirtEngine;
 import fr.urssaf.image.commons.birt.BirtRender;
+import fr.urssaf.image.commons.birt.BirtTools;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtException;
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
-import fr.urssaf.image.commons.birt.test.exception.EnvVarNotSettedBirtEngineException;
+import fr.urssaf.image.commons.birt.exception.EnvVarNotSettedBirtEngineException;
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
 public class BirtRenderTest {
@@ -30,7 +31,8 @@ public class BirtRenderTest {
    private final String logsPath = System.getProperty("java.io.tmpdir") ;
    private final String outputPath = System.getProperty("java.io.tmpdir") ;
    
-	private static final String REPORTENGINE_PATH = System.getProperty("BIRT_HOME") ;
+	private static String reportEngineHome = null ;
+	
 	private static final String OUTPUT_FILENAME = "/monRapportGenereEn" ;
 	private static final String REPORT_FILE_PATH = "./src/test/resources/reports/monPremierRapport.rptdesign" ;
 	private static final String EXTENSION_PDF = ".pdf";
@@ -41,11 +43,10 @@ public class BirtRenderTest {
 	@Before
 	public void setUp() throws Exception {	   
 	   
-	   if ( System.getProperty("BIRT_HOME") == null 
-            || System.getProperty("BIRT_HOME").isEmpty() )
-         throw new EnvVarNotSettedBirtEngineException() ;
+	   // setup reportEngineHome
+      reportEngineHome = BirtTools.getBirtHomeFromEnvVar() ;
 	   
-	   birtEngine = BirtEngine.getInstance( REPORTENGINE_PATH, logsPath, null ) ;
+	   birtEngine = BirtEngine.getInstance( reportEngineHome, logsPath, null ) ;
 	   birtRender = new BirtRender(outputPath, OUTPUT_FILENAME);
 	   
 	   paramValues = new HashMap<Object, Object>() ;

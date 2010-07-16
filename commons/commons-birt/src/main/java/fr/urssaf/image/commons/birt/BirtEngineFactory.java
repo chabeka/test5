@@ -19,7 +19,7 @@ public class BirtEngineFactory {
    public static final int JAVA_APP = 2 ;
    
    public class key {
-      public static final String REPORT_ENGINE_FACTORY = "reportEngineFactory" ;
+      public static final String REPORT_ENGINE_HOME = "reportEngineHome" ;
       public static final String SERVLET_CONTEXT = "servletContext" ;
       public static final String LOG_PATH = "logPath" ;
    }
@@ -51,10 +51,10 @@ public class BirtEngineFactory {
             break ;
          case JAVA_APP :
          default :
-            if ( param.containsKey( key.REPORT_ENGINE_FACTORY ) )
-               reportEngineHome = (String) param.get( key.REPORT_ENGINE_FACTORY ) ;
+            if ( param.containsKey( key.REPORT_ENGINE_HOME ) )
+               reportEngineHome = (String) param.get( key.REPORT_ENGINE_HOME ) ;
             else
-               throw new MissingKeyInHashMapBirtEngineFactoryException( key.REPORT_ENGINE_FACTORY ) ;
+               throw new MissingKeyInHashMapBirtEngineFactoryException( key.REPORT_ENGINE_HOME ) ;
                
             if ( param.containsKey( key.LOG_PATH ) )
                logPath = (String) param.get( key.LOG_PATH ) ;
@@ -91,10 +91,20 @@ public class BirtEngineFactory {
       BirtException, 
       NullFactoryBirtEngineException {
             
-      BirtEngine engine = BirtEngine.getInstance(
-            reportEngineHome, 
-            logPath, 
-            null ) ;
+      BirtEngine engine = null ;
+      
+      try {
+         engine = BirtEngine.getInstance(
+               reportEngineHome, 
+               logPath, 
+               null );
+      } catch (MissingConstructorParamBirtException e) {
+         // hcangement du message s'il n'est pas cohérent avec l'utilisation de la factory
+         if ( e.getMessage().contains(": context") )
+            throw new MissingConstructorParamBirtException("reportEnginePath");
+         logger.error(e.getMessage());
+         logger.fatal(e);
+      }
       
       return engine ;
    }

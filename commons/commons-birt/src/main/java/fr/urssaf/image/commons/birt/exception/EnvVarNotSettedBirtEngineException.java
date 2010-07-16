@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.birt.test.exception;
+package fr.urssaf.image.commons.birt.exception;
 
 public class EnvVarNotSettedBirtEngineException extends Exception {
 

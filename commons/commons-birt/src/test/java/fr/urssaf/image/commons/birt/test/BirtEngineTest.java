@@ -13,10 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.birt.BirtEngine;
+import fr.urssaf.image.commons.birt.BirtTools;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
-import fr.urssaf.image.commons.birt.test.exception.EnvVarNotSettedBirtEngineException;
 
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
@@ -25,17 +25,16 @@ public class BirtEngineTest {
    
 	private BirtEngine birtEngine = null ;
 	
-	private final String REPORTENGINE_PATH = System.getenv("BIRT_HOME") ;
+	private String reportEngineHome = null ;
 	private final String logsPath = System.getProperty("java.io.tmpdir") ;
-		
+	
 	@Before
 	public void setUp() throws Exception {
-   
-	   if ( System.getenv("BIRT_HOME") == null 
-	         || System.getenv("BIRT_HOME").isEmpty() )
-	      throw new EnvVarNotSettedBirtEngineException() ;
-	      
-	   birtEngine = BirtEngine.getInstance( REPORTENGINE_PATH, logsPath, null ) ;
+
+	   // setup REPORTENGINE_HOME
+	   reportEngineHome = BirtTools.getBirtHomeFromEnvVar() ;
+	   	      
+	   birtEngine = BirtEngine.getInstance( reportEngineHome, logsPath, null ) ;
 	}
 
 	@After
@@ -109,8 +108,8 @@ public class BirtEngineTest {
 	 */
 	@Test
 	public void testBirtEngine() {
-		assertTrue( REPORTENGINE_PATH + " attendu, " + birtEngine.getReportEnginePath() + "obtenu", 
-		      birtEngine.getReportEnginePath().equals( REPORTENGINE_PATH ) ) ;
+		assertTrue( reportEngineHome + " attendu, " + birtEngine.getReportEnginePath() + "obtenu", 
+		      birtEngine.getReportEnginePath().equals( reportEngineHome ) ) ;
 		assertTrue( logsPath + " attendu, " + birtEngine.getLogPath() + "obtenu", 
 		      birtEngine.getLogPath().equals( logsPath ) );
 		assertTrue( "NULL attendu", 
@@ -186,7 +185,7 @@ public class BirtEngineTest {
       NullFactoryBirtEngineException {
       
       _killBirtEngineInstance();
-      BirtEngine.getInstance(REPORTENGINE_PATH, null, null) ;
+      BirtEngine.getInstance(reportEngineHome, null, null) ;
    }
 
 }
