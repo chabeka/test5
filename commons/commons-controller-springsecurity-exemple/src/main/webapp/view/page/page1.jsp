@@ -10,6 +10,9 @@
 <h6>&nbsp;page 1&nbsp;</h6>
 
 <button type="button" onclick="javascript:location.href='page2.do';">page 2</button>
+<button type="button" onclick="javascript:location.href='page3.do';">page 3</button>
+
+<button type="button" onclick="javascript:location.href='j_spring_security_logout';">deconnexion</button>
 
 </body>
 </html>

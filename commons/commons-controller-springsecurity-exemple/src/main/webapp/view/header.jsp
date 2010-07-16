@@ -1,1 +1,1 @@
-<link href="/commons-controller-spring3-exemple/css/style.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
