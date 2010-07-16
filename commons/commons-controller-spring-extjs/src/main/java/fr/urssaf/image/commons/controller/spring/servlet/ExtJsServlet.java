@@ -36,54 +36,60 @@ import javax.servlet.http.HttpServletResponse;
 public class ExtJsServlet extends HttpServlet {
 	
 	
-   public void doGet(HttpServletRequest rq, HttpServletResponse rs) throws IOException {
+   public void doGet(
+         HttpServletRequest request,
+         HttpServletResponse response)
+   throws IOException {
 		
-		String requestedFile = rq.getParameter("name");
+		String requestedFile = request.getParameter("name");
 		
 		if( requestedFile == null )
+		{
 			return ;
+		}
 	
-		ServletContext sc = getServletContext();
+		ServletContext servletContext = getServletContext();
     	String filename = requestedFile;
-		InputStream in = getClass().getResourceAsStream( filename );
+		InputStream inputStream = getClass().getResourceAsStream( filename );
 		
-		printFileContentWithResponse( rs, sc, in, requestedFile ) ;
+		printFileContentWithResponse( response, servletContext, inputStream, requestedFile ) ;
 		
 	}
 	
+   @SuppressWarnings("PMD.AssignmentInOperand")
 	private static void printFileContentWithResponse(
-	      HttpServletResponse rs,
-	      ServletContext sc,
-	      InputStream in,
+	      HttpServletResponse response,
+	      ServletContext servletContext,
+	      InputStream inputStream,
 	      String requestedFile ) throws IOException
    {
-       if( in != null )
+       if( inputStream != null )
        {
          // Get the MIME type of the requested file
-          String mimeType = sc.getMimeType(requestedFile);
+          String mimeType = servletContext.getMimeType(requestedFile);
           if (mimeType == null) {
-              sc.log("Could not get MIME type of " + requestedFile);
-              rs.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+              servletContext.log("Could not get MIME type of " + requestedFile);
+              response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
               return;
           }
                    
           // Copy the contents of the file to the output stream
-          OutputStream out = rs.getOutputStream();
+          OutputStream out = response.getOutputStream();
           byte[] buf = new byte[1024];
           int count = 0;
           int length = 0 ;
-          while ((count = in.read(buf)) >= 0) {
+          while ((count = inputStream.read(buf)) >= 0) {
             length += count ; 
               out.write(buf, 0, count);
           }
-          in.close();
+          inputStream.close();
           out.close();
           
           // Set content type
-          rs.setContentType(mimeType);
+          response.setContentType(mimeType);
           
          // Set content size
-          rs.setContentLength(length);
+          response.setContentLength(length);
        }
    }
 
