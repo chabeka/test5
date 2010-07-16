@@ -20,7 +20,6 @@ import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtExcepti
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
-import fr.urssaf.image.commons.birt.exception.EnvVarNotSettedBirtEngineException;
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
 public class BirtRenderTest {
@@ -33,7 +32,7 @@ public class BirtRenderTest {
    
 	private static String reportEngineHome = null ;
 	
-	private static final String OUTPUT_FILENAME = "/monRapportGenereEn" ;
+	private static final String OUTPUT_FILENAME = "monRapportGenereEn" ;
 	private static final String REPORT_FILE_PATH = "./src/test/resources/reports/monPremierRapport.rptdesign" ;
 	private static final String EXTENSION_PDF = ".pdf";
 	private static final String EXTENSION_HTML = ".html";

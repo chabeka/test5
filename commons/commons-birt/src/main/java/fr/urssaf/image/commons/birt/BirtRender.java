@@ -3,6 +3,7 @@ package fr.urssaf.image.commons.birt ;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineConstants;
 import org.eclipse.birt.report.engine.api.EngineException;
@@ -32,6 +33,7 @@ public class BirtRender
 	final public static int _MODE_HTML_ = 2 ; 
 	final public static int _MODE_DEFAULT_ = _MODE_PDF_ ;
 	
+	private static final Logger LOGGER = Logger.getLogger(BirtRender.class);
 	
 	/**
 	 * Démarre le moteur de rendu
@@ -112,7 +114,10 @@ public class BirtRender
 	   NoInstanceBirtEngineException, 
 	   NoEngineBirtEngineException {
 	   
-		if( reportFilePath == null )
+	   // Trace
+	   LOGGER.debug("Demande de génération d'un rapport BIRT");
+	   
+	   if( reportFilePath == null )
 			throw new MissingParamBirtRenderException("reportFilePath");
 
 		// Récupération du moteur depuis l'instance BirtEngine
@@ -153,7 +158,9 @@ public class BirtRender
 		
 		switch ( renderMode ) {
 			case _MODE_HTML_:
-				//Setup rendering to HTML
+			   // Trace
+		      LOGGER.debug("Format de sortie du rapport : HTML");
+			   //Setup rendering to HTML
 				options = new HTMLRenderOption();	
 				//Setting this to true removes html and body tags
 				((HTMLRenderOption) options).setEmbeddable(false);
@@ -163,13 +170,19 @@ public class BirtRender
 				
 			case _MODE_PDF_ :
 			default :
+			   // Trace
+            LOGGER.debug("Format de sortie du rapport : PDF");
 				//Setup rendering to PDF
 				options = new PDFRenderOption();	
 				options.setOutputFormat("pdf");
 				fileExtension = "pdf" ;
 		}
 			
-		options.setOutputFileName( FilenameUtils.concat(outputPath,outputFilename) + "." + fileExtension );
+		String outputFileName = FilenameUtils.concat(outputPath,outputFilename) + "." + fileExtension;
+		
+		LOGGER.debug(String.format("Fichier à générer : %s",outputFileName));
+		
+		options.setOutputFileName(outputFileName);
 
 		return options;		
 	}	
