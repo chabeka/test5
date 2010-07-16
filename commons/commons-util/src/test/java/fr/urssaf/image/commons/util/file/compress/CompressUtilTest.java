@@ -15,25 +15,31 @@ import org.junit.Test;
 
 import fr.urssaf.image.commons.util.checksum.ChecksumFileUtil;
 import fr.urssaf.image.commons.util.compress.CompressUtil;
+
 /**
- * les fichiers de compression sont placé dans le repertoire archive du répertoire temporaire
- *  si il n'existe pas il est créé
+ * les fichiers de compression sont placé dans le repertoire archive du
+ * répertoire temporaire si il n'existe pas il est créé
+ * 
  * @author Bertrand BARAULT
- *
+ * 
  */
 public class CompressUtilTest {
 
-   private final static String DIRECTORY = SystemUtils.getJavaIoTmpDir()
-         .getAbsolutePath()+"\\archives";
+   private final static String DIRECTORY;
 
    private final static String DIRECTORY_TEST = "src/test/resources/archive";
 
    private final static String FILE_TEST = "src/test/resources/archive/archive_1.txt";
 
    private static final Logger LOG = Logger.getLogger(CompressUtilTest.class);
-   
+
+   static {
+      DIRECTORY = FilenameUtils.concat(SystemUtils.getJavaIoTmpDir()
+            .getAbsolutePath(), "archives");
+   }
+
    @BeforeClass
-   public static void init() throws IOException{
+   public static void init() throws IOException {
       FileUtils.forceMkdir(new File(DIRECTORY));
    }
 
@@ -92,11 +98,12 @@ public class CompressUtilTest {
 
    @Test
    public void tarDirectory() throws IOException {
-      
+
       long checksum = CompressUtil.tar(archiveFile("dir_tar.tar"),
             DIRECTORY_TEST, "txt");
       LOG.debug("tar " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
-      assertEquals("échec du tar " + DIRECTORY_TEST,"3ff10db0", Long.toHexString(checksum));
+      assertEquals("échec du tar " + DIRECTORY_TEST, "3ff10db0", Long
+            .toHexString(checksum));
 
    }
 
