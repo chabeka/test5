@@ -1,18 +1,10 @@
 package fr.urssaf.image.commons.util.compress;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.zip.Deflater;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -24,7 +16,6 @@ import fr.urssaf.image.commons.util.file.FileWriterUtil;
  * @author Bertrand BARAULT
  * 
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class CompressUtil {
 
    private CompressUtil() {
@@ -60,38 +51,11 @@ public final class CompressUtil {
     * @throws IOException
     *            exception sur le fichier
     */
-   public static long zip(String archiveName, final String fileName,
+   public static long zip(String archiveName, String fileName,
          String... extensions) throws IOException {
 
-      AbstractCompressOutputStream<ZipArchiveOutputStream> outputStream = new AbstractCompressOutputStream<ZipArchiveOutputStream>(
-            archiveName, fileName) {
-
-         @Override
-         public ZipArchiveOutputStream createOutputStream(
-               BufferedOutputStream buff) {
-
-            // création d'un flux d'écriture Zip
-            ZipArchiveOutputStream out = new ZipArchiveOutputStream(buff);
-
-            // spécification de la méthode de compression
-            out.setMethod(ZipOutputStream.DEFLATED);
-
-            // spécifier la qualité de la compression 0..9
-            out.setLevel(Deflater.BEST_COMPRESSION);
-
-            return out;
-         }
-
-         @Override
-         public void compressFile(File file, ZipArchiveOutputStream out)
-               throws IOException {
-
-            ZipArchiveEntry entry = new ZipArchiveEntry(file, entry(fileName,
-                  file));
-            copy(file, out, entry);
-         }
-
-      };
+      ZipCompressOutputStream outputStream = new ZipCompressOutputStream(
+            archiveName, fileName);
       outputStream.setExtensions(extensions);
       long checksum = outputStream.compress();
 
@@ -110,7 +74,7 @@ public final class CompressUtil {
     * @throws IOException
     *            exception sur le fichier
     */
-   public static long tar(String archiveName, final String fileName)
+   public static long tar(String archiveName, String fileName)
          throws IOException {
 
       return tar(archiveName, fileName, new String[0]);
@@ -129,30 +93,13 @@ public final class CompressUtil {
     * @throws IOException
     *            exception sur le fichier
     */
-   public static long tar(String archiveName, final String fileName,
+   public static long tar(String archiveName, String fileName,
          String... extensions) throws IOException {
 
-      AbstractCompressOutputStream<TarArchiveOutputStream> outputStream = new AbstractCompressOutputStream<TarArchiveOutputStream>(
-            archiveName, fileName) {
-
-         @Override
-         protected void compressFile(File file, TarArchiveOutputStream out)
-               throws IOException {
-
-            TarArchiveEntry entry = new TarArchiveEntry(file, entry(fileName,
-                  file));
-            copy(file, out, entry);
-
-         }
-
-         @Override
-         protected TarArchiveOutputStream createOutputStream(
-               BufferedOutputStream buff) {
-            return new TarArchiveOutputStream(buff);
-         }
-
-      };
+      TarCompressOutputStream outputStream = new TarCompressOutputStream(
+            archiveName, fileName);
       outputStream.setExtensions(extensions);
+
       long checksum = outputStream.compress();
 
       return checksum;
@@ -220,25 +167,8 @@ public final class CompressUtil {
       String compressFileName = FilenameUtils.concat(path, FilenameUtils
             .getName(GzipUtils.getCompressedFilename(fileName)));
 
-      AbstractCompressOutputStream<GzipCompressorOutputStream> outputStream = new AbstractCompressOutputStream<GzipCompressorOutputStream>(
-            compressFileName, fileName) {
-
-         @Override
-         protected void compressFile(File file, GzipCompressorOutputStream out)
-               throws IOException {
-            FileWriterUtil.copy(file, out);
-
-         }
-
-         @Override
-         protected GzipCompressorOutputStream createOutputStream(
-               BufferedOutputStream buff) throws IOException {
-            GzipCompressorOutputStream out = new GzipCompressorOutputStream(
-                  buff);
-            return out;
-         }
-
-      };
+      GzCompressOutputStream outputStream = new GzCompressOutputStream(
+            compressFileName, fileName);
 
       long checksum = outputStream.compress();
 
@@ -246,7 +176,7 @@ public final class CompressUtil {
 
    }
 
-   private static void copy(File file, ArchiveOutputStream out,
+   protected static void copy(File file, ArchiveOutputStream out,
          ArchiveEntry entry) throws IOException {
 
       // ajout de cette entrée dans le flux d'écriture de l'archive Zip
@@ -259,7 +189,7 @@ public final class CompressUtil {
 
    }
 
-   private static String entry(String path, File file) throws IOException {
+   protected static String entry(String path, File file) throws IOException {
 
       File pathFile = new File(path);
 
