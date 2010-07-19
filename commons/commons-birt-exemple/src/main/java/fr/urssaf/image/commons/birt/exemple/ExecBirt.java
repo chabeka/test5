@@ -48,7 +48,7 @@ public class ExecBirt extends HttpServlet {
 		   // Démarrage du serveur Birt
 		   HashMap<String, Object> engineFactoryParams = new HashMap<String,Object>();
 		   engineFactoryParams.put(BirtEngineFactory.key.SERVLET_CONTEXT , this.getServletContext()) ;
-		   engineFactoryParams.put(BirtEngineFactory.key.LOG_PATH, "./logs");
+		   engineFactoryParams.put(BirtEngineFactory.key.LOG_PATH, this.getServletContext().getRealPath("./logs"));
 		   BirtEngineFactory.getBirtEngineInstance( BirtEngineFactory.WEB_APP, engineFactoryParams ) ;
 		   
 			logger.info("Démarrage du moteur de rendu");
