@@ -88,16 +88,22 @@ public final class FileWriterUtil {
    /**
     * Copie le contenu d'un fichier dans un flux d'écriture
     * 
-    * @param file fichier de lecture
-    * @param out flux d'écriture
-    * @throws IOException exception sur les fichiers
+    * @param file
+    *           fichier de lecture
+    * @param out
+    *           flux d'écriture
+    * @throws IOException
+    *            exception sur les fichiers
     */
    public static void copy(File file, OutputStream out) throws IOException {
 
       // création d'un flux de lecture
       FileInputStream input = new FileInputStream(file);
-      IOUtils.copy(input, out);
-      input.close();
+      try {
+         IOUtils.copyLarge(input, out);
+      } finally {
+         input.close();
+      }
 
    }
 

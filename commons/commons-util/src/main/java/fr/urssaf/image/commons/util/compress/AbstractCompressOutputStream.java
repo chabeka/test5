@@ -14,22 +14,23 @@ import org.apache.log4j.Logger;
 
 public abstract class AbstractCompressOutputStream<F extends OutputStream> {
 
-   private static final Logger LOG = Logger
+   protected static final Logger LOG = Logger
          .getLogger(AbstractCompressOutputStream.class);
 
    private final String compressFileName;
 
    private final String fileName;
-   
+
    private String[] extensions;
 
-   protected AbstractCompressOutputStream(String compressFileName, String fileName) {
+   protected AbstractCompressOutputStream(String compressFileName,
+         String fileName) {
 
       this.compressFileName = compressFileName;
       this.fileName = fileName;
    }
-   
-   public void setExtensions(String... extensions){
+
+   public void setExtensions(String... extensions) {
       this.extensions = extensions;
    }
 
@@ -40,32 +41,33 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
       FileOutputStream dest = new FileOutputStream(this.compressFileName);
 
       // calcul du checksum : Adler32 (plus rapide) ou CRC32
-      CheckedOutputStream checksum = new CheckedOutputStream(dest,
-            new CRC32());
+      CheckedOutputStream checksum = new CheckedOutputStream(dest, new CRC32());
 
       // création d'un buffer d'écriture
       BufferedOutputStream buff = new BufferedOutputStream(checksum);
 
       // création d'un flux d'écriture pour la compression
       F out = createOutputStream(buff);
+      try {
+         // creation du fichier à compresser
+         File file = new File(this.fileName);
 
-      // creation du fichier à compresser
-      File file = new File(this.fileName);
-      
-      if (file.isDirectory()) {
-         Collection<File> files = FileUtils.listFiles(file, this.extensions, true);
-         for (File tmpFile : files) {
-            compressFile(tmpFile, out);
+         if (file.isDirectory()) {
+            Collection<File> files = FileUtils.listFiles(file, this.extensions,
+                  true);
+            for (File tmpFile : files) {
+               compressFile(tmpFile, out);
+            }
+         } else {
+            compressFile(file, out);
          }
-      } else {
-         compressFile(file, out);
+      } finally {
+         // fermeture du flux d'écriture
+         out.close();
+         buff.close();
+         checksum.close();
+         dest.close();
       }
-
-      // fermeture du flux d'écriture
-      out.close();
-      buff.close();
-      checksum.close();
-      dest.close();
 
       LOG.debug("compression de " + this.fileName + " en "
             + this.compressFileName);
@@ -73,7 +75,7 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
       return checksum.getChecksum().getValue();
 
    }
-   
+
    protected abstract F createOutputStream(BufferedOutputStream buff)
          throws IOException;
 
