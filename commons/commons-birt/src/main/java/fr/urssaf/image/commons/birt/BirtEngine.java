@@ -25,7 +25,7 @@ import fr.urssaf.image.commons.birt.BirtEngine;
  */
 public class BirtEngine
 {
-   public static final Logger logger = Logger.getLogger(BirtEngine.class) ;
+   public static final Logger LOGGER = Logger.getLogger(BirtEngine.class) ;
    
    protected static BirtEngine instance = null ;
    
@@ -33,7 +33,8 @@ public class BirtEngine
    private String reportEnginePath ;
    private String logPath ;
    
-   protected Level logLevel = Level.OFF ;
+   // protected Level logLevel = Level.OFF ;
+   protected Level logLevel = Level.ALL ;
    protected IReportEngine engine = null ;
    protected boolean stopped = true ;
    
@@ -55,6 +56,10 @@ public class BirtEngine
          MissingConstructorParamBirtException,
          BirtException, NullFactoryBirtEngineException {
          
+      LOGGER.debug(String.format("reportEnginePath = %s",reportEnginePath));
+      LOGGER.debug(String.format("logPath = %s",logPath));
+      LOGGER.debug(String.format("ServletContext = %s",context));
+      
       setConstructorParams( reportEnginePath, logPath, context );
       EngineConfig config = getConfig() ;
       startEngine( config ) ;
@@ -142,11 +147,24 @@ public class BirtEngine
    private EngineConfig getConfig() {
       
       final EngineConfig config = new EngineConfig( );
+      
       config.setEngineHome( reportEnginePath );
+      LOGGER.debug(String.format("EngineConfig : reportEnginePath=%s",reportEnginePath));
+      
       config.setLogConfig( logPath, logLevel );
+      LOGGER.debug(String.format("EngineConfig : logPath=%s",logPath));
+      LOGGER.debug(String.format("EngineConfig : logLevel=%s",logLevel));
+      
       // compatibilité JavaApplication et WebApp
       if( getServletContext() != null )
+      {
+         LOGGER.debug("EngineConfig : Ajout du servletContext");
          config.setPlatformContext( getContext() ) ;
+      }
+      else
+      {
+         LOGGER.debug("EngineConfig : Pas de servletContext");
+      }
       
       return config ;
    }
@@ -171,6 +189,13 @@ public class BirtEngine
    throws 
       BirtException, 
       NullFactoryBirtEngineException {
+      
+      
+      // Traces
+      LOGGER.debug(String.format("EngineConfig.getBIRTHome() = %s",config.getBIRTHome()));
+      LOGGER.debug(String.format("EngineConfig.getLogDirectory() = %s",config.getLogDirectory()));
+      LOGGER.debug(String.format("EngineConfig.getLogFile() = %s",config.getLogFile()));
+      LOGGER.debug(String.format("EngineConfig.getTempDir() = %s",config.getTempDir()));
       
       Platform.startup( config );  //If using RE API in Eclipse/RCP application this is not needed.
       IReportEngineFactory factory = (IReportEngineFactory) Platform

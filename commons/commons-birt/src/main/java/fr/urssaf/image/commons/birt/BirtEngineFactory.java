@@ -13,7 +13,7 @@ import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
 
 public class BirtEngineFactory {
    
-   public static final Logger logger = Logger.getLogger( BirtEngineFactory.class.getName() );
+   public static final Logger LOGGER = Logger.getLogger( BirtEngineFactory.class.getName() );
    
    public static final int WEB_APP = 1 ;
    public static final int JAVA_APP = 2 ;
@@ -35,10 +35,11 @@ public class BirtEngineFactory {
       String reportEngineHome = null ;
       String logPath = null ;
       
-      logger.info("Démarrage du serveur Birt");
+      LOGGER.debug("Démarrage du serveur Birt");
       
       switch ( appType ) {
          case WEB_APP :
+            LOGGER.debug("Mode Web");
             if ( param.containsKey( key.SERVLET_CONTEXT ) )
                servletContext = (ServletContext) param.get( key.SERVLET_CONTEXT ) ;
             else
@@ -47,10 +48,12 @@ public class BirtEngineFactory {
             if ( param.containsKey( key.LOG_PATH ) )
                logPath = (String) param.get( key.LOG_PATH ) ;
 
+            LOGGER.debug(String.format("logPath = %s",logPath));
             engine = getBirtEngineInstanceForWebApp( servletContext, logPath );
             break ;
          case JAVA_APP :
          default :
+            LOGGER.debug("Mode Java App");
             if ( param.containsKey( key.REPORT_ENGINE_HOME ) )
                reportEngineHome = (String) param.get( key.REPORT_ENGINE_HOME ) ;
             else
@@ -64,7 +67,7 @@ public class BirtEngineFactory {
       }
       
       
-      logger.info("Serveur Birt démarré");
+      LOGGER.debug("Serveur Birt démarré");
       
       return engine ;
       
@@ -74,10 +77,9 @@ public class BirtEngineFactory {
    throws MissingConstructorParamBirtException, 
       BirtException, 
       NullFactoryBirtEngineException {
-           
-      if ( logPath != null )
-         logPath = servletContext.getRealPath(logPath) ;
-            
+        
+      LOGGER.debug(String.format("logPath = %s",logPath));
+      
       BirtEngine engine = BirtEngine.getInstance(
             "", 
             logPath, 
@@ -102,8 +104,8 @@ public class BirtEngineFactory {
          // hcangement du message s'il n'est pas cohérent avec l'utilisation de la factory
          if ( e.getMessage().contains(": context") )
             throw new MissingConstructorParamBirtException("reportEnginePath");
-         logger.error(e.getMessage());
-         logger.fatal(e);
+         LOGGER.error(e.getMessage());
+         LOGGER.fatal(e);
       }
       
       return engine ;
