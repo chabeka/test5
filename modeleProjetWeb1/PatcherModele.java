@@ -207,7 +207,6 @@ public class PatcherModele
 		out("Maquette IHM - Theme (ex: aed) > ");
 		lesParametres.maquetteTheme = in.nextLine().trim();
 		
-		/*
 		
 		outln();
 		outln();
