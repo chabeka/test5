@@ -63,13 +63,7 @@ public class UnCompressUtilTest {
 
       UnCompressUtil.untgz(archiveFile("archive.tgz"), REPERTORY);
       assertExistsArchive();
-
-      String checksum = ChecksumFileUtil.crc32(FilenameUtils.concat(REPERTORY,
-            "archive//victor_hugo//mis￩rables.txt"));
-
-      assertEquals("échec sur misérables.txt",
-            ChecksumFileUtil.crc32(FilenameUtils.concat(ARCHIVE,
-                  "victor_hugo//misérables.txt")), checksum);
+      assertUnicode();
    }
 
    @Test
@@ -77,6 +71,13 @@ public class UnCompressUtilTest {
 
       UnCompressUtil.untar(archiveFile("dir_tar.tar"), REPERTORY);
       assertExistsArchive();
+      assertUnicode();
+   }
+
+   // TODO mettre à jour le test pour la version 1.1 de commons-compress
+   // pour l'instant les noms des fichiers ne prennent pas en compte les caractères accentués
+   // cela sera revu dans la version 1.1 de commons-compress (Cf. https://issues.apache.org/jira/browse/COMPRESS-114)
+   private void assertUnicode() throws IOException {
 
       String checksum = ChecksumFileUtil.crc32(FilenameUtils.concat(REPERTORY,
             "archive//victor_hugo//mis￩rables.txt"));
