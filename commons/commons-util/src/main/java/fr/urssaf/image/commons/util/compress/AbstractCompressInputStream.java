@@ -33,6 +33,8 @@ public abstract class AbstractCompressInputStream<F extends ArchiveInputStream> 
          ArchiveEntry archiveEntry = archiveInput.getNextEntry();
          while (archiveEntry != null) {
 
+            //traitement des fichiers compressés
+            
             String name = this.getFileName(archiveEntry);
 
             FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
