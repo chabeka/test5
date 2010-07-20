@@ -14,8 +14,8 @@ public class Base64FileTest {
 
    private static final Logger LOG = Logger.getLogger(Base64FileTest.class);
 
-   private final static String ENCODE = "src/test/resources/encode.txt";
-   private final static String DECODE = "src/test/resources/decode.txt";
+   private final static String ENCODE = "src/test/resources/encoding/encode.txt";
+   private final static String DECODE = "src/test/resources/encoding/decode.txt";
 
    @Test
    public void encodeFile() throws IOException {

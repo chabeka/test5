@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class ChecksumFileUtilTest {
    
-   private final static String DECODE = "src/test/resources/decode.txt";
+   private final static String DECODE = "src/test/resources/encoding/decode.txt";
 
    private static final Logger LOG = Logger.getLogger(ChecksumFileUtilTest.class);
 

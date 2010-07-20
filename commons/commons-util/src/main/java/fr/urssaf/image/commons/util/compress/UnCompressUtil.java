@@ -3,9 +3,9 @@ package fr.urssaf.image.commons.util.compress;
 import java.io.File;
 import java.io.IOException;
 
-public final class CompressInputUtil {
+public final class UnCompressUtil {
 
-   private CompressInputUtil() {
+   private UnCompressUtil() {
 
    }
 

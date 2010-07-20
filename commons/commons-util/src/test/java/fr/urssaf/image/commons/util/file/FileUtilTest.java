@@ -19,7 +19,7 @@ import org.junit.Test;
 public class FileUtilTest {
 
 
-   private final static String FILE_LECTURE = "src/test/resources/file_test.txt";
+   private final static String FILE_LECTURE = "src/test/resources/file/file_test.txt";
 
    private final static String CRLF_FILE_LECTURE = "\r\n";
    

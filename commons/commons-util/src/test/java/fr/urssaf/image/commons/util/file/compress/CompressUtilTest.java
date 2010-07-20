@@ -26,9 +26,9 @@ public class CompressUtilTest {
 
    private final static String DIRECTORY;
 
-   private final static String DIRECTORY_TEST = "src/test/resources/archive";
+   private final static String DIRECTORY_TEST = "src/test/resources/compress/archive";
 
-   private final static String FILE_TEST = "src/test/resources/archive/archive_1.txt";
+   private final static String FILE_TEST = "src/test/resources/compress/archive/archive_1.txt";
 
    private static final Logger LOG = Logger.getLogger(CompressUtilTest.class);
 
@@ -39,7 +39,10 @@ public class CompressUtilTest {
 
    @BeforeClass
    public static void init() throws IOException {
-      FileUtils.forceMkdir(new File(DIRECTORY));
+      File directory = new File(DIRECTORY);
+      FileUtils.forceMkdir(directory);
+
+      FileUtils.cleanDirectory(directory);
    }
 
    @Test
@@ -70,7 +73,8 @@ public class CompressUtilTest {
 
       LOG.debug("gzip de " + FILE_TEST + ":" + Long.toHexString(checksum));
       assertChecksum("échec du gzip " + FILE_TEST, FilenameUtils
-            .getName(FILE_TEST)+".gz", checksum);
+            .getName(FILE_TEST)
+            + ".gz", checksum);
 
    }
 
@@ -117,5 +121,5 @@ public class CompressUtilTest {
    private String archiveFile(String filename) {
       return FilenameUtils.concat(DIRECTORY, filename);
    }
-   
+
 }

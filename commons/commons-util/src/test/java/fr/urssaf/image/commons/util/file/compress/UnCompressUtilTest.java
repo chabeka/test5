@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.util.checksum.ChecksumFileUtil;
-import fr.urssaf.image.commons.util.compress.CompressInputUtil;
+import fr.urssaf.image.commons.util.compress.UnCompressUtil;
 
 /**
  * les fichiers de compression sont placé dans le repertoire archive du
@@ -22,13 +22,13 @@ import fr.urssaf.image.commons.util.compress.CompressInputUtil;
  * @author Bertrand BARAULT
  * 
  */
-public class CompressInputUtilTest {
+public class UnCompressUtilTest {
 
    private final static String REPERTORY;
 
-   private final static String COMPRESSION = "src\\test\\resources\\compression";
+   private final static String COMPRESSION = "src\\test\\resources\\compress\\compression";
 
-   private final static String ARCHIVE = "src\\test\\resources\\archive";
+   private final static String ARCHIVE = "src\\test\\resources\\compress\\archive";
 
    static {
       REPERTORY = FilenameUtils.concat(SystemUtils.getJavaIoTmpDir()
@@ -52,7 +52,7 @@ public class CompressInputUtilTest {
    @Test
    public void unzipDirectory() throws IOException {
 
-      CompressInputUtil.unzip(archiveFile("dir_zip.zip"), REPERTORY);
+      UnCompressUtil.unzip(archiveFile("dir_zip.zip"), REPERTORY);
       assertExistsArchive();
 
       assertChecksum("échec sur misérables.txt", "victor_hugo//misérables.txt");
@@ -61,7 +61,7 @@ public class CompressInputUtilTest {
    @Test
    public void untzgDirectory() throws IOException {
 
-      CompressInputUtil.untgz(archiveFile("archive.tgz"), REPERTORY);
+      UnCompressUtil.untgz(archiveFile("archive.tgz"), REPERTORY);
       assertExistsArchive();
 
       String checksum = ChecksumFileUtil.crc32(FilenameUtils.concat(REPERTORY,
@@ -75,7 +75,7 @@ public class CompressInputUtilTest {
    @Test
    public void untarDirectory() throws IOException {
 
-      CompressInputUtil.untar(archiveFile("dir_tar.tar"), REPERTORY);
+      UnCompressUtil.untar(archiveFile("dir_tar.tar"), REPERTORY);
       assertExistsArchive();
 
       String checksum = ChecksumFileUtil.crc32(FilenameUtils.concat(REPERTORY,

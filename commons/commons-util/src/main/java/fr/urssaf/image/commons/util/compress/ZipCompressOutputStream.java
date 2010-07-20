@@ -4,7 +4,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.Deflater;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -25,12 +24,9 @@ public class ZipCompressOutputStream extends
       // création d'un flux d'écriture Zip
       ZipArchiveOutputStream out = new ZipArchiveOutputStream(buff);
 
-      // spécification de la méthode de compression
-      out.setMethod(ZipOutputStream.DEFLATED);
-
       // spécifier la qualité de la compression 0..9
       out.setLevel(Deflater.BEST_COMPRESSION);
-
+      
       return out;
    }
 
