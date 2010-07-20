@@ -11,10 +11,8 @@ import java.util.Scanner;
 
 /**
  * 
- * Une classe permettant de patcher des sources copiées à partir du projet modèle modeleProjetWeb1
- * Du quick & dirty (d'où la désactivation de PMD)
- * 
- * @author CER6990173
+ * Une classe permettant de patcher des sources copiÃ©es Ã  partir du projet modÃ¨le modeleProjetWeb1
+ * Du quick & dirty (d'oÃ¹ la dÃ©sactivation de PMD)
  * 
  */
 @SuppressWarnings("PMD")
@@ -46,13 +44,14 @@ public class PatcherModele
 	
 	static final String CRLF = System.getProperty("line.separator");
 	
-	// Les valeurs à remplacer
+	// Les valeurs Ã  remplacer
 	static String findEclipseNomProjet = "modeleProjetWeb1";
 	static String findPomXmlGroupId = "<groupId>fr.urssaf.image</groupId>";
 	static String findPomXmlArtifactId = "<artifactId>modeleProjetWeb1</artifactId>";
 	static String findPomXmlVersion = "<version>0.0.1-SNAPSHOT</version>";
 	static String findPomXmlName = "<name>Projet modele pour une application web</name>";
-	static String findApplicationContextXmlBasepackage = "<context:component-scan base-package=\"fr.urssaf.image.modeleProjetWeb1\" />";
+	static String findPomXmlNomProjet = "<projectNameTemplate>modeleProjetWeb1</projectNameTemplate>";
+	static String findSpringServletXmlPackage = "fr.urssaf.image.modeleProjetWeb1";
 	static String findApplicationContextDatasourcesJdbcDriver = "<value>org.postgresql.Driver</value>";
 	static String findHibernateCfgXmlDialect = "<property name=\"hibernate.dialect\">org.hibernate.dialect.PostgreSQLDialect</property>";
 	static String findWebXmlMaquetteAppTitle = "Maquette : Titre de l'application";
@@ -61,14 +60,14 @@ public class PatcherModele
 		
 	
 	/**
-	 * Méthode principale
+	 * MÃ©thode principale
 	 * @param args
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException
 	{
 		
-		// Récupération des paramètres
+		// RÃ©cupÃ©ration des paramÃ¨tres
 		if (!getParametres())
 		{
 			return;
@@ -132,25 +131,28 @@ public class PatcherModele
 		
 		/*
 		// Pour les tests
-		lesParametres.RepertoireSources = "G:\\pmareche\\eclipse_workspace\\testModele";
-		lesParametres.PackageBase = "fr.urssaf.image.testModele";
-		lesParametres.EclipseNomProjet = "testModele";
-		lesParametres.MavenProjectName = "Test du modèle d'application web";
-		lesParametres.MavenGroupId = "fr.urssaf.image";
-		lesParametres.MavenArtefactId = "testModele";
-		lesParametres.MavenVersion = "0.0.1-SNAPSHOT";
-		lesParametres.JdbcLogin = "[JDBC - login]";
-		lesParametres.JdbcPassword = "[JDBC - password]";
-		lesParametres.JdbcUrlMain = "[JDBC - Main URL]";
-		lesParametres.JdbcUrlTu = "[JDBC - Tests unitaires URL]";
-		lesParametres.JdbcDriver = "[JDBC - Driver]";
-		lesParametres.HibernateDialect = "[Hibernate - Dialect]";
-		lesParametres.HibernateDefaultCatalog = "[Hibernate - Default Catalog]";
-		lesParametres.MaquetteAppTitle = "[Maquette - AppTitle]";
-		lesParametres.MaquetteAppCopyright = "[Maquette - AppCopyright]";
-		lesParametres.MaquetteTheme = "[Maquette - Theme]";
+		lesParametres.repertoireSources = "G:\\pmareche\\eclipse_workspace\\_autres_projets\\testModele";
+		lesParametres.packageBase = "fr.urssaf.image.testModele";
+		lesParametres.eclipseNomProjet = "testModele";
+		lesParametres.mavenProjectName = "Test du modÃ¨le d'application web";
+		lesParametres.mavenGroupId = "fr.urssaf.image";
+		lesParametres.mavenArtefactId = "testModele";
+		lesParametres.mavenVersion = "0.0.1-SNAPSHOT";
+		lesParametres.jdbcLogin = "[JDBC - login]";
+		lesParametres.jdbcPassword = "[JDBC - password]";
+		lesParametres.jdbcUrlMain = "[JDBC - Main URL]";
+		lesParametres.jdbcUrlTu = "[JDBC - Tests unitaires URL]";
+		lesParametres.jdbcDriver = "org.postgresql.Driver";
+		lesParametres.hibernateDialect = "org.hibernate.dialect.PostgreSQLDialect";
+		lesParametres.hibernateDefaultCatalog = "[Hibernate - Default Catalog]";
+		lesParametres.maquetteAppTitle = "[Maquette - AppTitle]";
+		lesParametres.maquetteAppCopyright = "[Maquette - AppCopyright]";
+		lesParametres.maquetteTheme = "aed";
+		return true;
 		/* */
 		
+		
+		/* */
 		Scanner in = new Scanner(System.in);
 		outln("Saisir les valeurs suivantes :");
 		
@@ -205,6 +207,8 @@ public class PatcherModele
 		out("Maquette IHM - Theme (ex: aed) > ");
 		lesParametres.maquetteTheme = in.nextLine().trim();
 		
+		/*
+		
 		outln();
 		outln();
 		outln("Recapitulatif : ");
@@ -242,22 +246,22 @@ public class PatcherModele
 			return true;
 		}
 		
+		/* */
+		
 	}
 	
 	
 	private static Boolean verifParametres()
 	{
 		
-		// Vérifications sommaires
+		// VÃ©rifications sommaires
 		if (lesParametres.repertoireSources.length()==0)
 		{
 			outln("Erreur : Le repertoire des sources a patcher doit etre saisi !");
 			return false;
 		}
 		
-		// TODO : vérifications complètes
-		
-		// Renvoie true si on arrive jusque là
+		// Renvoie true si on arrive jusque lÃ 
 		return true;
 	}
 	
@@ -288,8 +292,8 @@ public class PatcherModele
 	private static void pomXml() throws IOException
 	{
 		
-		String[] findArray = new String[4];
-		String[] replaceArray = new String[4];
+		String[] findArray = new String[5];
+		String[] replaceArray = new String[5];
 		
 		findArray[0] = findPomXmlGroupId; 
 		replaceArray[0] = "<groupId>" + lesParametres.mavenGroupId + "</groupId>";
@@ -299,6 +303,8 @@ public class PatcherModele
 		replaceArray[2] = "<version>" + lesParametres.mavenVersion + "</version>";
 		findArray[3] = findPomXmlName; 
 		replaceArray[3] = "<name>" + lesParametres.mavenProjectName + "</name>";
+		findArray[4] = findPomXmlNomProjet; 
+      replaceArray[4] = "<projectNameTemplate>" + lesParametres.eclipseNomProjet + "</projectNameTemplate>";
 		
 		String cheminFichier = lesParametres.repertoireSources + "\\pom.xml";
 		findReplaceInFile(cheminFichier,findArray,replaceArray);
@@ -309,32 +315,35 @@ public class PatcherModele
 	private static void basePackage() throws IOException
 	{
 		
-		// Modification du fichier src\main\resources\applicationContext.xml 
-		String find = findApplicationContextXmlBasepackage;
-		String replace = "<context:component-scan base-package=\"" + lesParametres.packageBase + "\" />";
-		String cheminFichier = lesParametres.repertoireSources + "\\src\\main\\resources\\applicationContext.xml";
+		// Modification du fichier src\main\webapp\WEB-INF\spring-servlet.xml 
+		String find = findSpringServletXmlPackage;
+		String replace = lesParametres.packageBase;
+		String cheminFichier = lesParametres.repertoireSources + "\\src\\main\\webapp\\WEB-INF\\spring-servlet.xml";
 		findReplaceInFile(cheminFichier,find,replace);
 		
-		// Déplacement des répertoires
+		// DÃ©placement des rÃ©pertoires
 		// src\main\java\fr\\urssaf\image\modeleProjetWeb1
 		// =>
-		// src\main\java\fr\\urssaf\image\NomDuProjet
-		// Répertoire source
+		// src\main\java\fr\\urssaf\image\packageBase
+		// RÃ©pertoire source
 		String repertoireSource = lesParametres.repertoireSources + "\\src\\main\\java\\fr\\urssaf\\image\\modeleProjetWeb1";
-		// Répertoire de destination
+		// RÃ©pertoire de destination
 		String[] repertoiresPackageBase = lesParametres.packageBase.split("\\.");
 		String repertoireDest = lesParametres.repertoireSources + "\\src\\main\\java";
 		for (String repertoire: repertoiresPackageBase)
 		{
 			repertoireDest += "\\" + repertoire;
 		}
-		// Déplacement
+		// DÃ©placement
 		File from = new File(repertoireSource);
 		File to = new File(repertoireDest);
 		from.renameTo(to);
 		
-		// TODO : changer le nom des packages dans les .java
-		
+		// Changer le package dans la classe MyFormattingConversionServiceFactoryBean
+		cheminFichier = repertoireDest + "\\resource\\MyFormattingConversionServiceFactoryBean.java";
+		find = "package fr.urssaf.image.modeleProjetWeb1.resource;";
+      replace = "package " + lesParametres.packageBase + ".resource;";
+		findReplaceInFile(cheminFichier,find,replace);
 		
 	}
 	
@@ -554,9 +563,6 @@ public class PatcherModele
 		}
 		writeFile(cheminFichier,contenuFichier);
 	}
-	
-	
-	
 	
 	
 }
