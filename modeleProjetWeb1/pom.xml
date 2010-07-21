@@ -188,6 +188,12 @@
          <artifactId>commons-controller-spring-extjs</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      <!-- BIRT -->
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-birt</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
     
    </dependencies>
