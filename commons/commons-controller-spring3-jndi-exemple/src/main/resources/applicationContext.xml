@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<import resource="applicationContext-dataSources.xml"/>
+	<import resource="applicationContext-sessionFactory.xml"/>
+   
+   <bean id="messageSource"
+      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+      <property name="basenames">
+         <list>
+            <value>/message/labels</value>
+         </list>
+      </property>
+      <property name="cacheSeconds" value="0" />
+   </bean>
+
+</beans>
