@@ -54,8 +54,7 @@ public class Base64FileTest {
       String decodeString = DecodeUtil.decodeFileToString(ENCODE, decode);
 
       LOG.debug("decodage de :" + ENCODE + ":" + decodeString);
-      assertEquals("echec decodage en iso:" + ENCODE + ":", "éa"
-            + SystemUtils.LINE_SEPARATOR +"az"+ SystemUtils.LINE_SEPARATOR+SystemUtils.LINE_SEPARATOR,
+      assertEquals("echec decodage en iso:" + ENCODE + ":", "éa\r\naz\r\n\r\n",
             decodeString);
 
    }
