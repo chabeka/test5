@@ -12,9 +12,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.CharEncoding;
 
-public final class DecodeUtil {
+public final class Base64Decode {
 
-   private DecodeUtil() {
+   private Base64Decode() {
 
    }
 

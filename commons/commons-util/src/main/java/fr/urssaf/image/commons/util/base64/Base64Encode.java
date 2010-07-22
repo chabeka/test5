@@ -1,19 +1,19 @@
 package fr.urssaf.image.commons.util.base64;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.io.FileUtils;
 
-public final class EncodeUtil {
 
-   private EncodeUtil() {
+public final class Base64Encode {
+
+   private Base64Encode() {
 
    }
 
@@ -89,21 +89,33 @@ public final class EncodeUtil {
 
    }
 
-   /**
-    * Renvoie la chaine encodée en base64 d'un fichier
+ 
+  /**
+    * Renvoie le contenu d'un fichier, en l'encodant en base 64
     * 
-    * @param decodeFileName
-    *           chemin du fichier décodé
-    * @param encodeFileName
-    *           chemin de sortie du fichier encodé
-    * @return chaine en base64
+    * @param cheminFichier Le chemin du fichier
+    * @return contenu du fichier en base64
     * @throws IOException
-    *            exception sur les fichiers
+    *  
     */
-   public static String encodeFileToString(String decodeFileName,
-         String encodeFileName) throws IOException {
-      encodeFile(decodeFileName, encodeFileName);
-      return FileUtils.readFileToString(new File(encodeFileName));
-
+   public static String encodeFileToString(String cheminFichier) throws IOException {
+      FileInputStream fis = new FileInputStream(cheminFichier); 
+      Base64InputStream base64inputStream = new Base64InputStream(fis,true,-1,null);
+      StringBuffer base64 = new StringBuffer();
+      byte[] buffer = new byte[1024];
+      int lus;
+      do
+      {
+         lus = base64inputStream.read(buffer);
+         if (lus>0)
+         {
+            for(int i=0;i<lus;i++)
+            {
+               base64.append((char)buffer[i]);
+            }
+         }
+      }
+      while (lus>0);
+      return base64.toString();
    }
 }

@@ -18,7 +18,7 @@ public class Base64Test {
    @Test
    public void encodeISO8859_1() {
 
-      String encode = EncodeUtil.encode(TEST);
+      String encode = Base64Encode.encode(TEST);
       LOG.debug("encodage en iso de :" + TEST + ":");
       assertEquals("échec de l'encodage iso de " + TEST, BASE64_ISO, encode);
    }
@@ -27,7 +27,7 @@ public class Base64Test {
    @Test
    public void decodeISO8859_1() {
 
-      String decode = DecodeUtil.decode(BASE64_ISO);
+      String decode = Base64Decode.decode(BASE64_ISO);
       LOG.debug("decodage en iso de :" + BASE64_ISO + ":");
       assertEquals("échec du décodage en iso de " + BASE64_ISO,TEST, decode);
 
@@ -36,7 +36,7 @@ public class Base64Test {
    @Test
    public void encodeUTF8() {
 
-      String encode = EncodeUtil.encodeUTF8(TEST);
+      String encode = Base64Encode.encodeUTF8(TEST);
       LOG.debug("encodage en utf8 de :" + TEST + ":");
       assertEquals("échec de l'encodage utf8 de " + TEST, BASE64_UTF8, encode);
    }
@@ -44,7 +44,7 @@ public class Base64Test {
    @Test
    public void decodeUTF8() {
 
-      String decode = DecodeUtil.decodeUTF8(BASE64_UTF8);
+      String decode = Base64Decode.decodeUTF8(BASE64_UTF8);
       LOG.debug("decodage en utf8 de :" + BASE64_UTF8 + ":");
       assertEquals("échec du décodage en utf8 de " + BASE64_UTF8, TEST, decode);
    }
@@ -54,7 +54,7 @@ public class Base64Test {
 
       String TEST = "à@çù";
 
-      String encode = EncodeUtil.encode(TEST, CharEncoding.ISO_8859_1);
+      String encode = Base64Encode.encode(TEST, CharEncoding.ISO_8859_1);
       LOG.debug("encodage en iso de :" + TEST + ":");
       assertEquals("échec de l'encodage iso de " + TEST, "4EDn+Q==", encode);
    }
