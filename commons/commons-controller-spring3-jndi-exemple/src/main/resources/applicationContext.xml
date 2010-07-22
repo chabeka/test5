@@ -23,7 +23,8 @@
    <bean id="parametersComponent"
       class="fr.urssaf.image.commons.controller.spring3.jndi.exemple.service.ParametersComponent">
       <property name="title">
-         <jee:jndi-lookup id="title" jndi-name="java:comp/env/title/default" />
+         <jee:jndi-lookup id="title"
+            jndi-name="java:comp/env/title/default" default-value="No Title" />
       </property>
    </bean>
 
