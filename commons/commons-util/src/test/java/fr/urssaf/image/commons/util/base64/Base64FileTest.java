@@ -5,9 +5,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class Base64FileTest {
@@ -17,37 +19,45 @@ public class Base64FileTest {
    private final static String ENCODE = "src/test/resources/encoding/encode.txt";
    private final static String DECODE = "src/test/resources/encoding/decode.txt";
 
+   private final static String DIRECTORY;
+
+   static {
+      DIRECTORY = FilenameUtils.concat(SystemUtils.getJavaIoTmpDir()
+            .getAbsolutePath(), "base64");
+   }
+
+   @BeforeClass
+   public static void init() throws IOException {
+      File directory = new File(DIRECTORY);
+      FileUtils.forceMkdir(directory);
+
+      FileUtils.cleanDirectory(directory);
+   }
+
    @Test
    public void encodeFile() throws IOException {
 
-      File file = new File(DECODE);
-      String encode = EncodeUtil.encode(file);
-   
-      LOG.debug("encodage de :" + DECODE + ":");
+      String encode = FilenameUtils.concat(DIRECTORY, "decode.txt");
+
+      EncodeUtil.encodeFile(DECODE, encode);
+      String encodeString = EncodeUtil.encodeFileToString(DECODE, encode);
+
+      LOG.debug("encodage de :" + DECODE + ":" + encodeString + ":");
       assertEquals("echec encodage en iso du fichier:" + DECODE + ":",
-            "w4PCqWENCmF6DQoNCg==", encode);
+            "w6lhDQpheg0KDQo=" + SystemUtils.LINE_SEPARATOR, encodeString);
    }
 
    @Test
    public void decodeFile() throws IOException {
 
-      File file = new File(ENCODE);
-      String decode = DecodeUtil.decode(file);
+      String decode = FilenameUtils.concat(DIRECTORY, "encode.txt");
+      String decodeString = DecodeUtil.decodeFileToString(ENCODE, decode);
 
-      LOG.debug("decodage de :" + ENCODE + ":");
-      assertEquals("echec decodage en iso:" + ENCODE + ":", "Ã©a", decode);
-
-   }
-
-   @Test
-   public void decodeFileUTF8() throws IOException {
-
-      File file = new File(ENCODE);
-      String decode = DecodeUtil.decode(file, CharEncoding.ISO_8859_1);
-
-      decode = StringUtils.newStringUtf8(StringUtils.getBytesIso8859_1(decode));
-      LOG.debug("decodage de :" + ENCODE + ": en utf8");
-      assertEquals("echec decodage en utf8:" + ENCODE + ":", "éa", decode);
+      LOG.debug("decodage de :" + ENCODE + ":" + decodeString);
+      assertEquals("echec decodage en iso:" + ENCODE + ":", "éa"
+            + SystemUtils.LINE_SEPARATOR +"az"+ SystemUtils.LINE_SEPARATOR+SystemUtils.LINE_SEPARATOR,
+            decodeString);
 
    }
+
 }

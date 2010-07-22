@@ -2,11 +2,14 @@ package fr.urssaf.image.commons.util.base64;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Base64InputStream;
+import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FileUtils;
 
 public final class EncodeUtil {
 
@@ -60,34 +63,47 @@ public final class EncodeUtil {
    }
 
    /**
-    * Renvoie la chaine de caractère en base64 d'un fichier
+    * Encodage d'un fichier en base64
     * 
-    * @param file
-    *           fichier
-    * @return chaine de caractère
+    * @param decodeFileName
+    *           chemin du fichier décodé
+    * @param encodeFileName
+    *           chemin de sortie du fichier encodé
     * @throws IOException
-    *            exception sur le fichier
+    *            exception sur les fichiers
     */
-   public static String encode(File file) throws IOException {
+   public static void encodeFile(String decodeFileName, String encodeFileName)
+         throws IOException {
 
-      Base64InputStream base64InputStream = new Base64InputStream(
-            new FileInputStream(file), true);
+      FileInputStream input = new FileInputStream(decodeFileName);
 
-      int encodage = base64InputStream.read();
-      StringBuffer value = new StringBuffer();
+      Base64OutputStream output = new Base64OutputStream(new FileOutputStream(
+            encodeFileName), true);
 
-      while (encodage != 13 && encodage != -1) {
-
-         byte encodageByte = (byte) encodage;
-         @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-         String valueAscii = StringUtils
-               .newStringUsAscii(new byte[] { encodageByte });
-         value.append(valueAscii);
-
-         encodage = base64InputStream.read();
-
+      try {
+         IOUtils.copy(input, output);
+      } finally {
+         input.close();
+         output.close();
       }
 
-      return value.toString();
+   }
+
+   /**
+    * Renvoie la chaine encodée en base64 d'un fichier
+    * 
+    * @param decodeFileName
+    *           chemin du fichier décodé
+    * @param encodeFileName
+    *           chemin de sortie du fichier encodé
+    * @return chaine en base64
+    * @throws IOException
+    *            exception sur les fichiers
+    */
+   public static String encodeFileToString(String decodeFileName,
+         String encodeFileName) throws IOException {
+      encodeFile(decodeFileName, encodeFileName);
+      return FileUtils.readFileToString(new File(encodeFileName));
+
    }
 }

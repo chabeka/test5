@@ -2,12 +2,15 @@ package fr.urssaf.image.commons.util.base64;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.CharEncoding;
 
 public final class DecodeUtil {
 
@@ -54,46 +57,45 @@ public final class DecodeUtil {
    /**
     * decodage d'un fichier en base64
     * 
-    * @param file
-    *           fichier codé en base64
-    * @return une chaine de caractère au format ISO8859_1
+    * @param encodeFileName
+    *           chemin du fichier encodé
+    * @param decodeFileName
+    *           chemin de sortie du fichier décodé
     * @throws IOException
+    *            exception sur les fichiers
     */
-   public static String decode(File file) throws IOException {
+   public static void decodeFile(String encodeFileName, String decodeFileName)
+         throws IOException {
 
-      return decode(file, CharEncoding.ISO_8859_1);
+      Base64InputStream input = new Base64InputStream(new FileInputStream(
+            encodeFileName), false);
+
+      FileOutputStream output = new FileOutputStream(decodeFileName);
+      try {
+         IOUtils.copy(input, output);
+      } finally {
+         input.close();
+         output.close();
+      }
+
    }
 
    /**
-    * decodage d'un fichier en base64
+    * Renvoie la chaine décodée d'un fichier en base64
     * 
-    * @param file
-    *           ile fichier codé en base64
-    * @param charsetName
-    *           encoding
-    * @return une chaine de caractère au format du charsetName
-    * @throws IOException exception sur le fichier
+    * @param encodeFileName
+    *           chemin du fichier encodé
+    * @param decodeFileName
+    *           chemin de sortie du fichier décodé
+    * @return chaine décodée en UTF8
+    * @throws IOException
+    *            exception sur les fichiers
     */
-   public static String decode(File file, String charsetName)
-         throws IOException {
+   public static String decodeFileToString(String encodeFileName,
+         String decodeFileName) throws IOException {
 
-      Base64InputStream base64InputStream = new Base64InputStream(
-            new FileInputStream(file), false);
+      decodeFile(encodeFileName, decodeFileName);
+      return FileUtils.readFileToString(new File(decodeFileName),CharEncoding.UTF_8);
 
-      int encodage = base64InputStream.read();
-      StringBuffer value = new StringBuffer();
-      while (encodage != -1) {
-
-         byte encodageByte = (byte) encodage;
-         @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-         String val = StringUtils.newString(new byte[] { encodageByte },
-               charsetName);
-         value.append(val);
-
-         encodage = base64InputStream.read();
-
-      }
-
-      return value.toString();
    }
 }
