@@ -44,7 +44,7 @@ public class Base64FileTest {
 
       LOG.debug("encodage de :" + DECODE + ":" + encodeString + ":");
       assertEquals("echec encodage en iso du fichier:" + DECODE + ":",
-            "w6lhDQpheg0KDQo=" + SystemUtils.LINE_SEPARATOR, encodeString);
+            "w6lhDQpheg0KDQo=\r\n", encodeString);
    }
 
    @Test
