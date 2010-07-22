@@ -12,5 +12,6 @@
 
    <import resource="applicationContext-dataSources.xml" />
    <import resource="applicationContext-sessionFactory.xml" />
+   <import resource="applicationContext-transactionManager.xml" />
 
 </beans>
