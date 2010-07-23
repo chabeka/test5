@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,18 +8,18 @@ import java.util.zip.Deflater;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
-public class ZipCompressOutputStream extends
-      AbstractCompressOutputStream<ZipArchiveOutputStream> {
+public class ZipFileOutputStream extends
+      AbstractFileOutputStream<ZipArchiveOutputStream> {
 
    private final String fileName;
 
-   protected ZipCompressOutputStream(String compressFileName, String fileName) {
+   public ZipFileOutputStream(String compressFileName, String fileName) {
       super(compressFileName, fileName);
       this.fileName = fileName;
    }
 
    @Override
-   public ZipArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
+   protected ZipArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
 
       // création d'un flux d'écriture Zip
       ZipArchiveOutputStream out = new ZipArchiveOutputStream(buff);
@@ -31,12 +31,12 @@ public class ZipCompressOutputStream extends
    }
 
    @Override
-   public void compressFile(File file, ZipArchiveOutputStream out)
+   protected void compressFile(File file, ZipArchiveOutputStream out)
          throws IOException {
 
-      ZipArchiveEntry entry = new ZipArchiveEntry(file, CompressUtil.entry(
+      ZipArchiveEntry entry = new ZipArchiveEntry(file, ArchiveUtil.entry(
             this.fileName, file));
-      CompressUtil.copy(file, out, entry);
+      ArchiveUtil.copy(file, out, entry);
    }
 
 }

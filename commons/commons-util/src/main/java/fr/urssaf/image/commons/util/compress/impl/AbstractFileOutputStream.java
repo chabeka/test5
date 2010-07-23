@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -12,10 +12,10 @@ import java.util.zip.CheckedOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-public abstract class AbstractCompressOutputStream<F extends OutputStream> {
+abstract class AbstractFileOutputStream<F extends OutputStream> {
 
    protected static final Logger LOG = Logger
-         .getLogger(AbstractCompressOutputStream.class);
+         .getLogger(AbstractFileOutputStream.class);
 
    private final String compressFileName;
 
@@ -23,7 +23,7 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
 
    private String[] extensions;
 
-   protected AbstractCompressOutputStream(String compressFileName,
+   protected AbstractFileOutputStream(String compressFileName,
          String fileName) {
 
       this.compressFileName = compressFileName;
@@ -35,7 +35,7 @@ public abstract class AbstractCompressOutputStream<F extends OutputStream> {
    }
 
    @SuppressWarnings("unchecked")
-   protected long compress() throws IOException {
+   public long compress() throws IOException {
 
       // création d'un flux d'écriture sur fichier
       FileOutputStream dest = new FileOutputStream(this.compressFileName);

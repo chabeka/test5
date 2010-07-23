@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -15,18 +15,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-public class TarGzCompressInputStream {
+public class TarGzFileInputStream {
 
    private final String compressFileName;
    private final String repertory;
 
-   protected TarGzCompressInputStream(String compressFileName, String repertory) {
+   public TarGzFileInputStream(String compressFileName, String repertory) {
       this.compressFileName = compressFileName;
       this.repertory = repertory;
    }
 
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-   protected void uncompress() throws IOException {
+   public void uncompress() throws IOException {
 
       FileInputStream fileInput = new FileInputStream(this.compressFileName);
       GzipCompressorInputStream gzInput = new GzipCompressorInputStream(

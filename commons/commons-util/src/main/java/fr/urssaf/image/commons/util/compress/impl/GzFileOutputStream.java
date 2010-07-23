@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,9 +8,9 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 
 import fr.urssaf.image.commons.util.file.FileWriterUtil;
 
-public class GzCompressOutputStream extends AbstractCompressOutputStream<GzipCompressorOutputStream>{
+public class GzFileOutputStream extends AbstractFileOutputStream<GzipCompressorOutputStream>{
 
-   protected GzCompressOutputStream(String compressFileName, String fileName) {
+   public GzFileOutputStream(String compressFileName, String fileName) {
       super(compressFileName, fileName);
    }
 

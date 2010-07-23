@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,13 +12,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
-public abstract class AbstractCompressInputStream<F extends ArchiveInputStream> {
+abstract class AbstractFileInputStream<F extends ArchiveInputStream> {
 
    private final String compressFileName;
 
    private final String repertory;
 
-   protected AbstractCompressInputStream(String compressFileName,
+   protected AbstractFileInputStream(String compressFileName,
          String repertory) {
       this.compressFileName = compressFileName;
       this.repertory = repertory;

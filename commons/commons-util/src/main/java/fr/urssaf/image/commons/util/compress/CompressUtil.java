@@ -1,14 +1,14 @@
 package fr.urssaf.image.commons.util.compress;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.compress.archivers.ArchiveEntry;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import fr.urssaf.image.commons.util.file.FileWriterUtil;
+import fr.urssaf.image.commons.util.compress.impl.GzFileOutputStream;
+import fr.urssaf.image.commons.util.compress.impl.TarFileOutputStream;
+import fr.urssaf.image.commons.util.compress.impl.TarGzFileOutputStream;
+import fr.urssaf.image.commons.util.compress.impl.ZipFileOutputStream;
 
 /**
  * Cette classe utilitaire propose l'archivage zip tar gz tgz
@@ -54,7 +54,7 @@ public final class CompressUtil {
    public static long zip(String archiveName, String fileName,
          String[] extensions) throws IOException {
 
-      ZipCompressOutputStream outputStream = new ZipCompressOutputStream(
+      ZipFileOutputStream outputStream = new ZipFileOutputStream(
             archiveName, fileName);
       outputStream.setExtensions(extensions);
       long checksum = outputStream.compress();
@@ -96,7 +96,7 @@ public final class CompressUtil {
    public static long tar(String archiveName, String fileName,
          String[] extensions) throws IOException {
 
-      TarCompressOutputStream outputStream = new TarCompressOutputStream(
+      TarFileOutputStream outputStream = new TarFileOutputStream(
             archiveName, fileName);
       outputStream.setExtensions(extensions);
 
@@ -138,7 +138,7 @@ public final class CompressUtil {
    public static long tgz(String path, String filename, String[] extensions)
          throws IOException {
 
-      TarGzCompressOutputStream outputStream = new TarGzCompressOutputStream(
+      TarGzFileOutputStream outputStream = new TarGzFileOutputStream(
             path, filename);
       outputStream.setExtensions(extensions);
 
@@ -164,7 +164,7 @@ public final class CompressUtil {
       String compressFileName = FilenameUtils.concat(path, FilenameUtils
             .getName(GzipUtils.getCompressedFilename(fileName)));
 
-      GzCompressOutputStream outputStream = new GzCompressOutputStream(
+      GzFileOutputStream outputStream = new GzFileOutputStream(
             compressFileName, fileName);
 
       long checksum = outputStream.compress();
@@ -173,34 +173,4 @@ public final class CompressUtil {
 
    }
 
-   protected static void copy(File file, ArchiveOutputStream out,
-         ArchiveEntry entry) throws IOException {
-
-      // ajout de cette entrée dans le flux d'écriture de l'archive Zip
-      out.putArchiveEntry(entry);
-
-      FileWriterUtil.copy(file, out);
-
-      // Close the current entry
-      out.closeArchiveEntry();
-
-   }
-
-   protected static String entry(String path, File file) throws IOException {
-
-      File pathFile = new File(path);
-
-      String name;
-
-      if (pathFile.isFile()) {
-         name = file.getName();
-      } else {
-
-         name = file.getAbsolutePath().substring(
-               FilenameUtils.getFullPath(pathFile.getAbsolutePath()).length());
-      }
-
-      return name;
-
-   }
 }

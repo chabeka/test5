@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,14 +15,15 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-public class TarGzCompressOutputStream {
+
+public class TarGzFileOutputStream {
 
    private final String fileName;
    private final String path;
 
    private String[] extensions;
 
-   protected TarGzCompressOutputStream(String path, String fileName) {
+   public TarGzFileOutputStream(String path, String fileName) {
       this.fileName = fileName;
       this.path = path;
    }
@@ -32,14 +33,14 @@ public class TarGzCompressOutputStream {
    }
 
    @SuppressWarnings("unchecked")
-   protected long compress() throws IOException {
+   public long compress() throws IOException {
 
       String tar = FilenameUtils.concat(this.path, FilenameUtils
             .getBaseName(this.fileName)
             + ".tar");
 
       // création d'un flux d'écriture sur fichier
-      TarCompressOutputStream tarCompress = new TarCompressOutputStream(tar,
+      TarFileOutputStream tarCompress = new TarFileOutputStream(tar,
             this.fileName);
 
       // création d'un buffer d'écriture

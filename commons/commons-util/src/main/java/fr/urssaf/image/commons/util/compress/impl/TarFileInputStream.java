@@ -1,12 +1,13 @@
-package fr.urssaf.image.commons.util.compress;
+package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.InputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 
-public class TarCompressInputStream extends AbstractCompressInputStream<TarArchiveInputStream>{
 
-   protected TarCompressInputStream(String compressFileName, String repertory) {
+public class TarFileInputStream extends AbstractFileInputStream<TarArchiveInputStream>{
+
+   public TarFileInputStream(String compressFileName, String repertory) {
      super(compressFileName, repertory);
     
    }
