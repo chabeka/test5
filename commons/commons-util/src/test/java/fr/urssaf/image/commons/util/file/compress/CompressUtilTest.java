@@ -30,6 +30,8 @@ public class CompressUtilTest {
 
    private final static String FILE_TEST = "src/test/resources/compress/archive/archive_1.txt";
 
+   private final static String[] FILTRE = new String[] { "txt" };
+
    private static final Logger LOG = Logger.getLogger(CompressUtilTest.class);
 
    static {
@@ -49,7 +51,7 @@ public class CompressUtilTest {
    public void zipDirectory() throws IOException {
 
       long checksum = CompressUtil.zip(archiveFile("dir_zip.zip"),
-            DIRECTORY_TEST, "txt");
+            DIRECTORY_TEST, FILTRE);
 
       LOG.debug("zip de " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
       assertChecksum("échec du zip " + DIRECTORY_TEST, "dir_zip.zip", checksum);
@@ -81,7 +83,7 @@ public class CompressUtilTest {
    @Test
    public void tgz() throws IOException {
 
-      long checksum = CompressUtil.tgz(DIRECTORY, DIRECTORY_TEST, "txt");
+      long checksum = CompressUtil.tgz(DIRECTORY, DIRECTORY_TEST, FILTRE);
 
       LOG.debug("gzip de " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
       assertChecksum("échec du gzip " + DIRECTORY_TEST, FilenameUtils
@@ -104,7 +106,7 @@ public class CompressUtilTest {
    public void tarDirectory() throws IOException {
 
       long checksum = CompressUtil.tar(archiveFile("dir_tar.tar"),
-            DIRECTORY_TEST, "txt");
+            DIRECTORY_TEST, FILTRE);
 
       LOG.debug("tar " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
       assertChecksum("échec du tar " + DIRECTORY_TEST, "dir_tar.tar", checksum);

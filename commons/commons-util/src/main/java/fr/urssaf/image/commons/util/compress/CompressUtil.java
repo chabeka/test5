@@ -35,7 +35,7 @@ public final class CompressUtil {
     */
    public static long zip(String archiveName, String fileName)
          throws IOException {
-      return zip(archiveName, fileName, new String[0]);
+      return zip(archiveName, fileName, null);
    }
 
    /**
@@ -52,7 +52,7 @@ public final class CompressUtil {
     *            exception sur le fichier
     */
    public static long zip(String archiveName, String fileName,
-         String... extensions) throws IOException {
+         String[] extensions) throws IOException {
 
       ZipCompressOutputStream outputStream = new ZipCompressOutputStream(
             archiveName, fileName);
@@ -77,7 +77,7 @@ public final class CompressUtil {
    public static long tar(String archiveName, String fileName)
          throws IOException {
 
-      return tar(archiveName, fileName, new String[0]);
+      return tar(archiveName, fileName, null);
    }
 
    /**
@@ -94,7 +94,7 @@ public final class CompressUtil {
     *            exception sur le fichier
     */
    public static long tar(String archiveName, String fileName,
-         String... extensions) throws IOException {
+         String[] extensions) throws IOException {
 
       TarCompressOutputStream outputStream = new TarCompressOutputStream(
             archiveName, fileName);
@@ -119,7 +119,7 @@ public final class CompressUtil {
     */
    public static long tgz(String path, String filename) throws IOException {
 
-      return tgz(path, filename, new String[0]);
+      return tgz(path, filename, null);
    }
 
    /**
@@ -135,7 +135,7 @@ public final class CompressUtil {
     * @throws IOException
     *            exception sur le fichier
     */
-   public static long tgz(String path, String filename, String... extensions)
+   public static long tgz(String path, String filename, String[] extensions)
          throws IOException {
 
       TarGzCompressOutputStream outputStream = new TarGzCompressOutputStream(
