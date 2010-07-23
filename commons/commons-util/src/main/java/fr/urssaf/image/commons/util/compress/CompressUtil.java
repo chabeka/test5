@@ -138,17 +138,14 @@ public final class CompressUtil {
    public static long tgz(String path, String filename, String... extensions)
          throws IOException {
 
-      String tar = FilenameUtils.concat(path, FilenameUtils
-            .getBaseName(filename)
-            + ".tar");
-      tar(tar, filename, extensions);
+      TarGzCompressOutputStream outputStream = new TarGzCompressOutputStream(
+            path, filename);
+      outputStream.setExtensions(extensions);
 
-      long checksum = gzip(path, tar);
-
-      // suppression du fichier tar
-      new File(tar).delete();
+      long checksum = outputStream.compress();
 
       return checksum;
+
    }
 
    /**
