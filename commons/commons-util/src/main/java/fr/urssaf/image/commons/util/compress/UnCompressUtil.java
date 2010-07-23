@@ -8,7 +8,13 @@ import fr.urssaf.image.commons.util.compress.impl.TarGzFileInputStream;
 import fr.urssaf.image.commons.util.compress.impl.ZipFileInputStream;
 
 /**
- * Cette classe permet le désarchivage d'un zip, tar, gz, tgz
+ * Cette classe permet le désarchivage de
+ * <ul>
+ * <li>zip</li>
+ * <li>tar</li>
+ * <li>tgz</li>
+ * <li>gz</li>
+ * </ul>
  * 
  * @author Bertrand BARAULT
  * 

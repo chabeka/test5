@@ -11,7 +11,13 @@ import fr.urssaf.image.commons.util.compress.impl.TarGzFileOutputStream;
 import fr.urssaf.image.commons.util.compress.impl.ZipFileOutputStream;
 
 /**
- * Cette classe utilitaire propose l'archivage zip tar gz tgz
+ * Cette classe utilitaire propose l'archivage
+ * <ul>
+ * <li>zip</li>
+ * <li>tar</li>
+ * <li>tgz</li>
+ * <li>gz</li>
+ * </ul>
  * 
  * @author Bertrand BARAULT
  * 
@@ -54,8 +60,8 @@ public final class CompressUtil {
    public static long zip(String archiveName, String fileName,
          String[] extensions) throws IOException {
 
-      ZipFileOutputStream outputStream = new ZipFileOutputStream(
-            archiveName, fileName);
+      ZipFileOutputStream outputStream = new ZipFileOutputStream(archiveName,
+            fileName);
       outputStream.setExtensions(extensions);
       long checksum = outputStream.compress();
 
@@ -96,8 +102,8 @@ public final class CompressUtil {
    public static long tar(String archiveName, String fileName,
          String[] extensions) throws IOException {
 
-      TarFileOutputStream outputStream = new TarFileOutputStream(
-            archiveName, fileName);
+      TarFileOutputStream outputStream = new TarFileOutputStream(archiveName,
+            fileName);
       outputStream.setExtensions(extensions);
 
       long checksum = outputStream.compress();
@@ -138,8 +144,8 @@ public final class CompressUtil {
    public static long tgz(String path, String filename, String[] extensions)
          throws IOException {
 
-      TarGzFileOutputStream outputStream = new TarGzFileOutputStream(
-            path, filename);
+      TarGzFileOutputStream outputStream = new TarGzFileOutputStream(path,
+            filename);
       outputStream.setExtensions(extensions);
 
       long checksum = outputStream.compress();
