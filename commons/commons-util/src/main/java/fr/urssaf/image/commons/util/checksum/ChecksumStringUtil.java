@@ -5,15 +5,17 @@ import java.io.IOException;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
- * Classe de calcul du checksum sur des chaines de caractères
- * les différents algorithmes sont
- *       MD5
- *       SHA_1
- *       SHA_256
- *       SHA_384
- *       SHA_512
- * Cette surcouche s'appuie sur 
- *       org.apache.commons.codec
+ * Classe de calcul du checksum sur des chaines de caractères.<br>
+ * Les différents algorithmes supportés sont :
+ * <ul>
+ *    <li>MD5</li>
+ *    <li>SHA_1</li>
+ *    <li>SHA_256</li>
+ *    <li>SHA_384</li>
+ *    <li>SHA_512</li>
+ * </ul>
+ * Cette surcouche s'appuie sur <code>org.apache.commons.codec</code> 
+ *       
  * @author Bertrand BARAULT
  *
  */
@@ -24,7 +26,8 @@ public final class ChecksumStringUtil {
    }
 
    /**
-    * Renvoie le checksum en hexa avec MD5
+    * Renvoie le MD5 en hexadécimal<br>
+    * Utilise l'encodage UTF-8 pour lire la chaîne de caractères.
     * 
     * @param data
     *           chaine de caractère
@@ -35,18 +38,21 @@ public final class ChecksumStringUtil {
    }
 
    /**
-    * Renvoie le checksum en hexa avec SHA_1
+    * Renvoie le SHA-1 en hexadécimal<br>
+    * Utilise l'encodage UTF-8 pour lire la chaîne de caractères.
     * 
     * @param data
-    *           chaine de caractère
-    * @return chaine de caractère en hexa
+    *           chaine de caractères
+    * @return chaine de caractères en hexa
     */
    public static String sha(String data) {
       return DigestUtils.shaHex(data);
    }
+   
 
    /**
-    * Renvoie le checksum en hexa avec SHA_256
+    * Renvoie le SHA-256 en hexadécimal<br>
+    * Utilise l'encodage UTF-8 pour lire la chaîne de caractères.
     * 
     * @param data
     *           chaine de caractère
@@ -57,7 +63,8 @@ public final class ChecksumStringUtil {
    }
 
    /**
-    * Renvoie le checksum en hexa avec SHA_384
+    * Renvoie le SHA-384 en hexadécimal<br>
+    * Utilise l'encodage UTF-8 pour lire la chaîne de caractères.
     * 
     * @param data
     *           chaine de caractère
@@ -68,7 +75,8 @@ public final class ChecksumStringUtil {
    }
 
    /**
-    * Renvoie le checksum en hexa avec SHA_512
+    * Renvoie le SHA-512 en hexadécimal<br>
+    * Utilise l'encodage UTF-8 pour lire la chaîne de caractères.
     * 
     * @param data
     *           chaine de caractère
