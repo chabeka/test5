@@ -1,6 +1,5 @@
 package fr.urssaf.image.commons.util.compress;
 
-import java.io.File;
 import java.io.IOException;
 
 public final class UnCompressUtil {
@@ -41,16 +40,11 @@ public final class UnCompressUtil {
 
    public static void untgz(String archiveName, String repertory)
          throws IOException {
-
-      GzCompressInputStream inputStream = new GzCompressInputStream(
+      
+      TarGzCompressInputStream inputStream = new TarGzCompressInputStream(
             archiveName, repertory);
 
-      String tar = inputStream.uncompress();
-      
-      untar(tar,repertory);
-      
-      //suppression du fichier tar
-      new File(tar).delete();
+      inputStream.uncompress();
 
    }
 }

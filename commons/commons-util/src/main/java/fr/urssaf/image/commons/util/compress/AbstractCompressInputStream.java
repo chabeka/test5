@@ -10,6 +10,7 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 
 public abstract class AbstractCompressInputStream<F extends ArchiveInputStream> {
 
@@ -23,7 +24,7 @@ public abstract class AbstractCompressInputStream<F extends ArchiveInputStream> 
       this.repertory = repertory;
    }
 
-   @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops","PMD.AssignmentInOperand"})
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    public void uncompress() throws IOException {
 
       // création d'un flux d'écriture sur fichier
@@ -42,11 +43,7 @@ public abstract class AbstractCompressInputStream<F extends ArchiveInputStream> 
             FileOutputStream output = new FileOutputStream(name);
 
             try {
-               int byteInput = 0;
-               final byte[] buffer = new byte[2048];
-               while (-1 != (byteInput = archiveInput.read(buffer))) {
-                  output.write(buffer, 0, byteInput);
-               }
+               IOUtils.copy(archiveInput, output);
             } finally {
                output.close();
             }
