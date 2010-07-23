@@ -8,17 +8,22 @@ import java.io.InputStream;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 /**
- * Classe de calcul du checksum sur des fichiers
- * les différents algorithmes sont 
- *       CRC32
- *       MD5
- *       SHA_1
- *       SHA_256
- *       SHA_384
- *       SHA_512
- * Cette surcouche s'appuie sur 
- *       org.apache.commons.codec
- *       org.apache.commons.io
+ * Classe de calcul du checksum sur des fichiers.<br>
+ * Les différents algorithmes supportés sont :
+ * <ul>
+ *    <li>MD5</li>
+ *    <li>CRC32</li>
+ *    <li>SHA_1</li>
+ *    <li>SHA_256</li>
+ *    <li>SHA_384</li>
+ *    <li>SHA_512</li>
+ * </ul>
+ * Cette surcouche s'appuie sur :
+ * <ul>
+ *    <li>org.apache.commons.codec</li>
+ *    <li>org.apache.commons.io</li>
+ * </ul>
+ * 
  * @author Bertrand BARAULT
  *
  */
