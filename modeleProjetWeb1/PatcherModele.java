@@ -285,12 +285,18 @@ public class PatcherModele
       replace = lesParametres.eclipseNomProjet;
       findReplaceInFile(cheminFichier,find,replace);
       
-      // Renommage du fichier src/main/resources/modeleProjetWeb1.xml
-      String fichierSource = lesParametres.repertoireSources + "\\src\\main\\resources\\modeleProjetWeb1.xml";
-      String fichierDest   = lesParametres.repertoireSources + "\\src\\main\\resources\\" + lesParametres.eclipseNomProjet + ".xml"; 
+      // PMD : Renommage du fichier src/main/resources/modeleProjetWeb1.xml
+      String fichierSource = lesParametres.repertoireSources + "\\src\\main\\resources\\pmd\\modeleProjetWeb1.xml";
+      String fichierDest   = lesParametres.repertoireSources + "\\src\\main\\resources\\pmd\\" + lesParametres.eclipseNomProjet + ".xml"; 
       File from = new File(fichierSource);
       File to = new File(fichierDest);
       from.renameTo(to);
+      
+      // PMD : Traitement du fichier .pmd
+      cheminFichier = lesParametres.repertoireSources + "\\.pmd";
+      find = findEclipseNomProjet;
+      replace = lesParametres.eclipseNomProjet;
+      findReplaceInFile(cheminFichier,find,replace);
       
    }
    
