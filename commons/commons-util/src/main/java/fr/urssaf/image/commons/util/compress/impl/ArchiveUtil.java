@@ -1,7 +1,10 @@
 package fr.urssaf.image.commons.util.compress.impl;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedOutputStream;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
@@ -44,5 +47,11 @@ public final class ArchiveUtil {
 
       return name;
 
+   }
+
+   protected static CheckedOutputStream crc32(FileOutputStream dest) {
+
+      // calcul du checksum : Adler32 (plus rapide) ou CRC32
+      return new CheckedOutputStream(dest, new CRC32());
    }
 }

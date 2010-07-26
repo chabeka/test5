@@ -4,32 +4,28 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
 public class TarFileOutputStream extends
       AbstractFileOutputStream<TarArchiveOutputStream> {
 
-   private final String fileName;
+   private final TarOutputStream tarOutputStream;
 
    public TarFileOutputStream(String compressFileName, String fileName) {
       super(compressFileName, fileName);
-      this.fileName = fileName;
-
+      tarOutputStream = new TarOutputStream(fileName);
    }
 
    @Override
    protected void compressFile(File file, TarArchiveOutputStream out)
          throws IOException {
 
-      TarArchiveEntry entry = new TarArchiveEntry(file, ArchiveUtil.entry(
-            this.fileName, file));
-      ArchiveUtil.copy(file, out, entry);
+      tarOutputStream.compressFile(file, out);
 
    }
 
    @Override
    protected TarArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
-      return new TarArchiveOutputStream(buff);
+      return tarOutputStream.createOutputStream(buff);
    }
 }
