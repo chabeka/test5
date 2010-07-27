@@ -42,17 +42,20 @@ public class TarGzFileInputStream {
          ArchiveInputStream archiveInput = new TarArchiveInputStream(input);
          try {
             ArchiveEntry archiveEntry = archiveInput.getNextEntry();
-           
+
             while (archiveEntry != null) {
 
                // traitement des fichiers compressés
-               String name = FilenameUtils.concat(repertory, archiveEntry.getName());
+               String name = FilenameUtils.concat(repertory, archiveEntry
+                     .getName());
                FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
-               FileOutputStream output = new FileOutputStream(name);
-               try {
-                  IOUtils.copy(archiveInput, output);
-               } finally {
-                  output.close();
+               if (!archiveEntry.isDirectory()) {
+                  FileOutputStream output = new FileOutputStream(name);
+                  try {
+                     IOUtils.copy(archiveInput, output);
+                  } finally {
+                     output.close();
+                  }
                }
 
                archiveEntry = archiveInput.getNextEntry();

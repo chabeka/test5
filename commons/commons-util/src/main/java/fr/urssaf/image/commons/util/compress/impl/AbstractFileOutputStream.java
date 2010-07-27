@@ -23,7 +23,7 @@ abstract class AbstractFileOutputStream<F extends OutputStream> extends
       this.fileName = fileName;
    }
 
-   public long compress() throws IOException {
+   public String compress() throws IOException {
 
       // création d'un flux d'écriture sur fichier
       FileOutputStream dest = new FileOutputStream(this.compressFileName);
@@ -40,14 +40,14 @@ abstract class AbstractFileOutputStream<F extends OutputStream> extends
       }
    }
 
-   protected long write(CheckedOutputStream checksum) throws IOException {
+   protected String write(CheckedOutputStream checksum) throws IOException {
 
       this.compress(checksum);
 
       LOG.debug("compression de " + this.fileName + " en "
             + this.compressFileName);
 
-      return checksum.getChecksum().getValue();
+      return Long.toHexString(checksum.getChecksum().getValue());
    }
 
 }

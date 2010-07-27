@@ -18,8 +18,7 @@ abstract class AbstractFileInputStream<F extends ArchiveInputStream> {
 
    private final String repertory;
 
-   protected AbstractFileInputStream(String compressFileName,
-         String repertory) {
+   protected AbstractFileInputStream(String compressFileName, String repertory) {
       this.compressFileName = compressFileName;
       this.repertory = repertory;
    }
@@ -34,18 +33,20 @@ abstract class AbstractFileInputStream<F extends ArchiveInputStream> {
          ArchiveEntry archiveEntry = archiveInput.getNextEntry();
          while (archiveEntry != null) {
 
-            //traitement des fichiers compressés
-            
+            // traitement des fichiers compressés
+
             String name = this.getFileName(archiveEntry);
 
             FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
 
-            FileOutputStream output = new FileOutputStream(name);
+            if (!archiveEntry.isDirectory()) {
+               FileOutputStream output = new FileOutputStream(name);
 
-            try {
-               IOUtils.copy(archiveInput, output);
-            } finally {
-               output.close();
+               try {
+                  IOUtils.copy(archiveInput, output);
+               } finally {
+                  output.close();
+               }
             }
 
             archiveEntry = archiveInput.getNextEntry();

@@ -6,20 +6,16 @@ import java.io.IOException;
 import java.util.zip.CheckedOutputStream;
 
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class TarGzFileOutputStream {
 
-   private final String fileName;
-   private final String path;
+   private final String tgz;
 
    private final TarOutputStream tarOutputStream;
 
-   public TarGzFileOutputStream(String path, String fileName) {
-      this.fileName = fileName;
-      this.path = path;
+   public TarGzFileOutputStream(String tgz, String fileName) {
+      this.tgz = tgz;
       tarOutputStream = new TarOutputStream(fileName);
    }
 
@@ -27,22 +23,15 @@ public class TarGzFileOutputStream {
       tarOutputStream.setExtensions(extensions);
    }
 
-   public long compress() throws IOException {
-
-      String tar = FilenameUtils.concat(this.path, FilenameUtils
-            .getBaseName(this.fileName)
-            + ".tar");
+   public String compress() throws IOException {
 
       // création d'un buffer d'écriture
       ByteArrayOutputStream tarDest = new ByteArrayOutputStream();
       try {
          tarOutputStream.compress(tarDest);
 
-         String compressFileName = FilenameUtils.concat(path, FilenameUtils
-               .getName(GzipUtils.getCompressedFilename(tar)));
-
          // gzip du fichier
-         FileOutputStream dest = new FileOutputStream(compressFileName);
+         FileOutputStream dest = new FileOutputStream(tgz);
 
          CheckedOutputStream checksum = ArchiveUtil.crc32(dest);
 
@@ -65,7 +54,7 @@ public class TarGzFileOutputStream {
             dest.close();
          }
 
-         return checksum.getChecksum().getValue();
+         return Long.toHexString(checksum.getChecksum().getValue());
 
       } finally {
          // fermeture du flux d'écriture

@@ -1,10 +1,12 @@
 package fr.urssaf.image.commons.util.file.compress;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -50,10 +52,10 @@ public class CompressUtilTest {
    @Test
    public void zipDirectory() throws IOException {
 
-      long checksum = CompressUtil.zip(archiveFile("dir_zip.zip"),
+      String checksum = CompressUtil.zip(archiveFile("dir_zip.zip"),
             DIRECTORY_TEST, FILTRE);
 
-      LOG.debug("zip de " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
+      LOG.debug("zip de " + DIRECTORY_TEST + ":" + checksum);
       assertChecksum("échec du zip " + DIRECTORY_TEST, "dir_zip.zip", checksum);
 
    }
@@ -61,9 +63,10 @@ public class CompressUtilTest {
    @Test
    public void zipFile() throws IOException {
 
-      long checksum = CompressUtil.zip(archiveFile("file_zip.zip"), FILE_TEST);
+      String checksum = CompressUtil
+            .zip(archiveFile("file_zip.zip"), FILE_TEST);
 
-      LOG.debug("zip de " + FILE_TEST + ":" + Long.toHexString(checksum));
+      LOG.debug("zip de " + FILE_TEST + ":" + checksum);
       assertChecksum("échec du zip " + FILE_TEST, "file_zip.zip", checksum);
 
    }
@@ -71,9 +74,13 @@ public class CompressUtilTest {
    @Test
    public void gzipFile() throws IOException {
 
-      long checksum = CompressUtil.gzip(DIRECTORY, FILE_TEST);
+      String compressFileName = FilenameUtils.getName(GzipUtils
+            .getCompressedFilename(FILE_TEST));
 
-      LOG.debug("gzip de " + FILE_TEST + ":" + Long.toHexString(checksum));
+      String checksum = CompressUtil.gzip(archiveFile(compressFileName),
+            FILE_TEST);
+
+      LOG.debug("gzip de " + FILE_TEST + ":" + checksum);
       assertChecksum("échec du gzip " + FILE_TEST, FilenameUtils
             .getName(FILE_TEST)
             + ".gz", checksum);
@@ -81,11 +88,31 @@ public class CompressUtilTest {
    }
 
    @Test
+   public void gzipDirectory(){
+
+      try {
+         String gzFile = FilenameUtils.getName(GzipUtils
+               .getCompressedFilename(DIRECTORY_TEST));
+
+         CompressUtil.gzip(archiveFile(gzFile), DIRECTORY_TEST);
+         fail("le test doit leve une exception de type "+IOException.class);
+      } catch (IOException e) {
+         assertEquals("l'exception attendu n'est pas correcte",
+               "Gzip n'est pas fait pour compresser un répertoire", e
+                     .getMessage());
+      }
+
+   }
+
+   @Test
    public void tgz() throws IOException {
 
-      long checksum = CompressUtil.tgz(DIRECTORY, DIRECTORY_TEST, FILTRE);
+      String compressFileName = FilenameUtils.getName(DIRECTORY_TEST) + ".tgz";
 
-      LOG.debug("gzip de " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
+      String checksum = CompressUtil.tgz(archiveFile(compressFileName),
+            DIRECTORY_TEST, FILTRE);
+
+      LOG.debug("gzip de " + DIRECTORY_TEST + ":" + checksum);
       assertChecksum("échec du gzip " + DIRECTORY_TEST, FilenameUtils
             .getBaseName(DIRECTORY_TEST)
             + ".tgz", checksum);
@@ -95,9 +122,10 @@ public class CompressUtilTest {
    @Test
    public void tarFile() throws IOException {
 
-      long checksum = CompressUtil.tar(archiveFile("file_tar.tar"), FILE_TEST);
+      String checksum = CompressUtil
+            .tar(archiveFile("file_tar.tar"), FILE_TEST);
 
-      LOG.debug("tar de " + FILE_TEST + ":" + Long.toHexString(checksum));
+      LOG.debug("tar de " + FILE_TEST + ":" + checksum);
       assertChecksum("échec du tar " + FILE_TEST, "file_tar.tar", checksum);
 
    }
@@ -105,19 +133,18 @@ public class CompressUtilTest {
    @Test
    public void tarDirectory() throws IOException {
 
-      long checksum = CompressUtil.tar(archiveFile("dir_tar.tar"),
+      String checksum = CompressUtil.tar(archiveFile("dir_tar.tar"),
             DIRECTORY_TEST, FILTRE);
 
-      LOG.debug("tar " + DIRECTORY_TEST + ":" + Long.toHexString(checksum));
+      LOG.debug("tar " + DIRECTORY_TEST + ":" + checksum);
       assertChecksum("échec du tar " + DIRECTORY_TEST, "dir_tar.tar", checksum);
 
    }
 
-   private void assertChecksum(String libelle, String file, long checksum)
+   private void assertChecksum(String libelle, String file, String checksum)
          throws IOException {
 
-      assertEquals(libelle, ChecksumFileUtil.crc32(archiveFile(file)), Long
-            .toHexString(checksum));
+      assertEquals(libelle, ChecksumFileUtil.crc32(archiveFile(file)), checksum);
    }
 
    private String archiveFile(String filename) {
