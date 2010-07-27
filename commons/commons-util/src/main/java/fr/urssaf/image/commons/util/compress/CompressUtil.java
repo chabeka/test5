@@ -16,6 +16,16 @@ import fr.urssaf.image.commons.util.compress.impl.ZipFileOutputStream;
  * <li>tgz</li>
  * <li>gz</li>
  * </ul>
+ * <p>
+ * Les méthodes zip, tar et tgz peuvent utiliser un filtre avec l'argument <code>extensions</code><br>
+ * ex:
+ * <ul>
+ * <li><code>.java</code> pour les fichiers java </li>
+ * <li><code>.txt</code> pour les fichiers textes </li>
+ * <li><code>.bmp</code> pour les images </li>
+ * </ul>
+ * si <code>extensions=null</code> alors aucun filtre n'est appliqué<br>
+ * si <code>extensions=new String[0]</code> alors aucun fichier n'est compressé
  * 
  * @author Bertrand BARAULT
  * 
@@ -30,7 +40,7 @@ public final class CompressUtil {
     * compression avec zip
     * <p>
     * Equivalent
-    * {@linkplain fr.urssaf.image.commons.util.compress#zip(String , String ,String[])}
+    * {@linkplain fr.urssaf.image.commons.util.compress.CompressUtil#zip(String , String ,String[])}
     * avec <code>extensions</code> à <code>null</code>
     * </p>
     * 
@@ -51,9 +61,9 @@ public final class CompressUtil {
     * compression avec zip
     * 
     * <p>
-    * ex: zip d'un répertoire /etc/doc en doc.zip uniquement sur les fichier
+    * ex: zip d'un répertoire /etc/doc en doc.zip uniquement sur les fichiers
     * .txt<br>
-    * <code>CompressUtil.gzip("/tmp/doc.zip", "/etc/doc",new String[]{"txt"}); </code>
+    * <code>CompressUtil.zip("/tmp/doc.zip", "/etc/doc",new String[]{"txt"}); </code>
     * </p>
     * 
     * 
@@ -83,11 +93,11 @@ public final class CompressUtil {
     * compression avec tar
     * <p>
     * Equivalent
-    * {@linkplain fr.urssaf.image.commons.util.compress#tar(String , String ,String[])}
+    * {@linkplain fr.urssaf.image.commons.util.compress.CompressUtil#tar(String , String ,String[])}
     * avec <code>extensions</code> à <code>null</code>
     * </p>
     * 
-    * @param archiveName
+    * @param tarFile
     *           nom de l'archive (avec une extension .tar), not null
     * @param fileName
     *           nom du fichier ou du répertoire à compresser, not null
@@ -104,7 +114,7 @@ public final class CompressUtil {
     * compression avec tar
     * 
     * <p>
-    * ex: tar d'un répertoire /etc/doc en doc.tar uniquement sur les fichier
+    * ex: tar d'un répertoire /etc/doc en doc.tar uniquement sur les fichiers
     * .txt<br>
     * <code>CompressUtil.tar("/tmp/doc.tar", "/etc/doc",new String[]{"txt"}); </code>
     * </p>
@@ -114,7 +124,7 @@ public final class CompressUtil {
     * @param fileName
     *           nom du fichier ou du répertoire à compresser, not null
     * @param extensions
-    *           filtre sur les extensions (text,java,xml)
+    *           filtre sur les extensions
     * @return checksum en crc32 du tar
     * @throws IOException
     *            exception sur le fichier
@@ -134,6 +144,11 @@ public final class CompressUtil {
 
    /**
     * compression avec tgz
+    * <p>
+    * Equivalent
+    * {@linkplain fr.urssaf.image.commons.util.compress.CompressUtil#tgz(String , String ,String[])}
+    * avec <code>extensions</code> à <code>null</code>
+    * </p>
     * 
     * @param tgzFile
     *           nom de l'archive compressée (avec une extension .tgz)
@@ -143,20 +158,25 @@ public final class CompressUtil {
     * @throws IOException
     *            exception sur le fichier
     */
-   public static String tgz(String tgzFile, String filename) throws IOException {
+   public static String tgz(String tgzFile, String fileName) throws IOException {
 
-      return tgz(tgzFile, filename, null);
+      return tgz(tgzFile, fileName, null);
    }
 
    /**
     * compression avec tgz
+    * <p>
+    * ex: tgz d'un répertoire /etc/doc en doc.tgz uniquement sur les fichiers
+    * .txt<br>
+    * <code>CompressUtil.tgz("/tmp/doc.tgz", "/etc/tgz",new String[]{"txt"}); </code>
+    * </p>
     * 
     * @param tgzFile
     *           nom de l'archive compressée (avec une extension .tgz)
     * @param filename
     *           nom du fichier à compresser
     * @param extensions
-    *           iltre sur les extensions (text,java,xml)
+    *           iltre sur les extensions
     * @return checksum en crc32 du tgz
     * @throws IOException
     *            exception sur le fichier
@@ -176,6 +196,10 @@ public final class CompressUtil {
 
    /**
     * compression avec gz
+    * <p>
+    * ex: gzip d'un fichier /etc/doc en doc.gz<br>
+    * <code>CompressUtil.gzip("/tmp/doc.gz", "/etc/doc"); </code>
+    * </p>
     * 
     * @param gzFile
     *           nom de l'archive (avec une extension .gz)

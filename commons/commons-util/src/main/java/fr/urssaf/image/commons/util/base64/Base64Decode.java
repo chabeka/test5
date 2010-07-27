@@ -51,7 +51,7 @@ public final class Base64Decode {
     *           texte en base 64
     * @param charsetName
     *           charset à utiliser pour restituer la chaîne décodée
-    * @return
+    * @return la chaîne décodée
     */
    public static String decode(String text, String charsetName) {
 

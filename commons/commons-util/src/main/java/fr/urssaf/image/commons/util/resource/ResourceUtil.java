@@ -11,7 +11,7 @@ public final class ResourceUtil {
 	/**
 	 * Renvoie le chemin complet d'un fichier de ressource
 	 * 
-	 * @param o
+	 * @param arg
 	 *            l'objet en cours
 	 * @param resourcePath
 	 *            le chemin de la ressource au sein d'un répertoire de ressource
