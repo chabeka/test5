@@ -37,42 +37,54 @@ public class DocumentDaoTest {
    private DocumentDao documentDao;
 
    @BeforeClass
-   public static void init() throws ConfigurationException,
-         BeanInstantiationException, ClassNotFoundException,
-         IllegalStateException, NamingException {
+   public static void init() throws
+      ConfigurationException,
+      BeanInstantiationException,
+      ClassNotFoundException,
+      IllegalStateException,
+      NamingException {
 
-      // creation d'un dataSource
-      PropertiesConfiguration jdbc = new PropertiesConfiguration(
-            "jdbc.properties");
-      String password = jdbc.getString("jdbc.password");
+      // Récupération des paramètres du fichier jndi.properties
+      PropertiesConfiguration jdbc = new PropertiesConfiguration("jdbc.properties");
+      String driverClassName = jdbc.getString("jdbc.driverClassName");
       String url = jdbc.getString("jdbc.url");
       String username = jdbc.getString("jdbc.username");
-      Driver driverClassName = (Driver) BeanUtils.instantiate(Class
-            .forName(jdbc.getString("jdbc.driverClassName")));
+      String password = jdbc.getString("jdbc.password");
+      
+      // Création du DataSource
+      Driver driver = (Driver) BeanUtils.instantiate(Class.forName(driverClassName));
+      DataSource dataSource = new SimpleDriverDataSource(
+            driver, url,username, password);
 
-      DataSource dataSource = new SimpleDriverDataSource(driverClassName, url,
-            username, password);
-
-      // activation du JNDI pour la dateSource
+      // Activation du JNDI pour la dateSource
       SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
       builder.bind("java:comp/env/jdbc/mysql", dataSource);
       builder.activate();
+      
    }
+
 
    @Test
    public void list() {
+      
       List<Document> documents = documentDao.allDocuments();
-      assertFalse("la liste des documents doit être non vide", documents
-            .isEmpty());
+      
+      assertFalse(
+            "la liste des documents doit être non vide", 
+            documents.isEmpty());
 
       for (Document document : documents) {
          LOG.debug(document.getId() + ":" + document.getTitre());
       }
 
-      assertEquals("le nombre d'enregistrement est incorrect", 5, documents
-            .size());
+      assertEquals(
+            "le nombre d'enregistrement est incorrect", 
+            5, 
+            documents.size());
+      
    }
 
+   
    @Test
    @Transactional
    public void save() {
