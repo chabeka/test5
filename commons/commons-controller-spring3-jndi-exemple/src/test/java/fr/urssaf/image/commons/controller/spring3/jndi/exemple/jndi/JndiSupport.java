@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 /**
- * Mise en place des paramètres JNDI.<br>
+ * Mise en place des ressources JNDI.<br>
  * <br>
  * Utilisation :<br>
  * <code>
@@ -21,7 +21,7 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
  * &nbsp;&nbsp;&nbsp;JndiSupport.insertParametreN();<br>
  * </code>
  * <br>
- * Pour insérer tous les paramètres, on fait :<br>
+ * Pour insérer toutes les ressources, on fait :<br>
  * <code>&nbsp;&nbsp;&nbsp;JndiSupport.insereTous();</code>
  */
 public final class JndiSupport {
@@ -48,7 +48,7 @@ public final class JndiSupport {
    
    
    /**
-    * Insère tous les paramètres
+    * Insère toutes les ressources
     */
    public static void insereTous()
    {
@@ -58,7 +58,7 @@ public final class JndiSupport {
    
    
    /**
-    * Vérifie si un paramètre a déjà été inséré.<br>
+    * Vérifie si une ressource a déjà été insérée.<br>
     * Cela évite d'insérer plusieurs fois le même paramètre.
     * 
     * @param name le nom à rechercher
