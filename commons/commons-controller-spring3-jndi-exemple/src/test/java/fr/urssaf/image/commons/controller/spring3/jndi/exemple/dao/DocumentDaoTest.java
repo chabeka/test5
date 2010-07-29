@@ -3,28 +3,19 @@ package fr.urssaf.image.commons.controller.spring3.jndi.exemple.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import java.sql.Driver;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeanInstantiationException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.urssaf.image.commons.controller.spring3.jndi.exemple.jndi.JndiSupport;
 import fr.urssaf.image.commons.controller.spring3.jndi.exemple.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,30 +28,9 @@ public class DocumentDaoTest {
    private DocumentDao documentDao;
 
    @BeforeClass
-   public static void init() throws
-      ConfigurationException,
-      BeanInstantiationException,
-      ClassNotFoundException,
-      IllegalStateException,
-      NamingException {
-
-      // Récupération des paramètres du fichier jndi.properties
-      PropertiesConfiguration jdbc = new PropertiesConfiguration("jdbc.properties");
-      String driverClassName = jdbc.getString("jdbc.driverClassName");
-      String url = jdbc.getString("jdbc.url");
-      String username = jdbc.getString("jdbc.username");
-      String password = jdbc.getString("jdbc.password");
-      
-      // Création du DataSource
-      Driver driver = (Driver) BeanUtils.instantiate(Class.forName(driverClassName));
-      DataSource dataSource = new SimpleDriverDataSource(
-            driver, url,username, password);
-
-      // Activation du JNDI pour la dateSource
-      SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
-      builder.bind("java:comp/env/jdbc/mysql", dataSource);
-      builder.activate();
-      
+   public static void init()
+   {
+      JndiSupport.insereDataSource();
    }
 
 
