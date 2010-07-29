@@ -8,6 +8,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
 
 
    <http auto-config="true" use-expressions="true">
+      <intercept-url pattern=".css||.js" access="permitAll" />
       <intercept-url pattern="/page1.do" access="permitAll" />
       <intercept-url pattern="/view/index.jsp" access="permitAll" />
       <intercept-url pattern="/page3.do" access="hasRole('ROLE_ADMIN')" />

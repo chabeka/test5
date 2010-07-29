@@ -20,6 +20,9 @@
 	</properties>
 
 	<build>
+   
+        <finalName>commons-controller-spring3-exemple</finalName>
+         
 		<plugins>
 
 			<plugin>

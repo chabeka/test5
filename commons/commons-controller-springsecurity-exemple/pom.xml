@@ -9,11 +9,16 @@
 	<groupId>fr.urssaf.image.commons</groupId>
 	<artifactId>commons-controller-springsecurity-exemple</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+   <packaging>war</packaging>
    <name>commons-controller-springsecurity-exemple</name>
 	
 	<properties>
 		<org.springframework.version>3.0.3.RELEASE</org.springframework.version>
 	</properties>
+   
+   <build>
+      <finalName>commons-controller-springsecurity-exemple</finalName>
+   </build>
 
 	<dependencies>
 
