@@ -3,6 +3,7 @@ package fr.urssaf.image.commons.birt.exemple;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,16 +26,11 @@ import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
  * Servlet implementation class ExecBirt
  */
 public class ExecBirt extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	public static final Logger logger = Logger.getLogger( ExecBirt.class.getName() );
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ExecBirt() {
-        super();
-    }
-
+   private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = Logger.getLogger( ExecBirt.class.getName() );
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -47,50 +43,50 @@ public class ExecBirt extends HttpServlet {
 		
 		try {
 		   // Démarrage du serveur Birt
-		   HashMap<String, Object> engineFactoryParams = new HashMap<String,Object>();
-		   engineFactoryParams.put(BirtEngineFactoryKeys.SERVLET_CONTEXT , this.getServletContext()) ;
-		   engineFactoryParams.put(BirtEngineFactoryKeys.LOG_PATH, this.getServletContext().getRealPath("./logs"));
-		   BirtEngineFactory.getBirtEngineInstance( BirtEngineFactory.WEB_APP, engineFactoryParams ) ;
+		   Map<String, Object> factoryParams = new HashMap<String,Object>();
+		   factoryParams.put(BirtEngineFactoryKeys.SERVLET_CONTEXT , this.getServletContext()) ;
+		   factoryParams.put(BirtEngineFactoryKeys.LOG_PATH, this.getServletContext().getRealPath("./logs"));
+		   BirtEngineFactory.getBirtEngineInstance( BirtEngineFactory.WEB_APP, factoryParams ) ;
 		   
-			logger.info("Démarrage du moteur de rendu");
+			LOGGER.info("Démarrage du moteur de rendu");
 			BirtRender renderer = new BirtRender(
 			      this.getServletContext().getRealPath("./outputpath/"), 
 			      "output-birt" );
-			logger.info("Moteur de rendu démarré");
+			LOGGER.info("Moteur de rendu démarré");
 			
-			logger.info("Démarrage traitement de rendu");
+			LOGGER.info("Démarrage traitement de rendu");
 			renderer.doRender(
 			      this.getServletContext().getRealPath("./reports/monPremierRapport.rptdesign"),
 			      BirtRender._MODE_PDF_, 
 			      paramValues) ;
-			logger.info("Le traitement de rendu est terminé, le fichier doit être disponible.\n");
+			LOGGER.info("Le traitement de rendu est terminé, le fichier doit être disponible.\n");
 						
 			// Affiche le PDF généré
 			response.sendRedirect("outputpath/output-birt.pdf");
 			
 			
 		} catch (MissingConstructorParamBirtException e) {
-			logger.fatal( e );
+			LOGGER.fatal( e );
 			throw new ServletException(e) ;
 		} catch (BirtException e) {
-		   logger.info("Le serveur Birt n'a pas pu démarrer");
-			logger.fatal( e );
+		   LOGGER.info("Le serveur Birt n'a pas pu démarrer");
+			LOGGER.fatal( e );
 			throw new ServletException(e) ;
 		} catch (NoInstanceBirtEngineException e) {
-		   logger.info("Le moteur de rendu n'a pas pu démarrer car aucune instance du BirtEngine n'existe");
-         logger.fatal( e );
+		   LOGGER.info("Le moteur de rendu n'a pas pu démarrer car aucune instance du BirtEngine n'existe");
+         LOGGER.fatal( e );
          throw new ServletException(e) ;
       } catch (NoEngineBirtEngineException e) {
-         logger.info("Le serveur Birt n'est pas démarré");
-         logger.fatal( e );
+         LOGGER.info("Le serveur Birt n'est pas démarré");
+         LOGGER.fatal( e );
          throw new ServletException(e) ;
       } catch (NullFactoryBirtEngineException e) {
-         logger.info("Le serveur Birt n'a pas pu démarrer");
-         logger.fatal( e );
+         LOGGER.info("Le serveur Birt n'a pas pu démarrer");
+         LOGGER.fatal( e );
          throw new ServletException(e) ;
       } catch (MissingKeyInHashMapBirtEngineFactoryException e) {
-         logger.info("Erreur d'utilisation de la factory BirtEngine");
-         logger.fatal( e );
+         LOGGER.info("Erreur d'utilisation de la factory BirtEngine");
+         LOGGER.fatal( e );
          throw new ServletException(e) ;
       }
 		
