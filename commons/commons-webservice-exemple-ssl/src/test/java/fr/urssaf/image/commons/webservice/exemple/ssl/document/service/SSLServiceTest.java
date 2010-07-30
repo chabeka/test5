@@ -14,9 +14,9 @@ import fr.urssaf.image.commons.webservice.ssl.InitAxisProperties;
 @Ignore
 public class SSLServiceTest {
 
-	private static final Logger log = Logger.getLogger(SSLServiceTest.class);
+	private static final Logger LOG = Logger.getLogger(SSLServiceTest.class);
 
-	private SSLService service;
+	private final SSLService service;
 
 	public SSLServiceTest() {
 		service = new SSLServiceImpl();
@@ -29,9 +29,9 @@ public class SSLServiceTest {
 
 		String resultat = service.wsTest1("nom", "prenom");
 
-		log.debug(resultat);
+		LOG.debug(resultat);
 
-		assertEquals("Hello prenom nom (en document/literal)", resultat);
+		assertEquals("échec du test","Hello prenom nom (en document/literal)", resultat);
 
 	}
 }

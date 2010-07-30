@@ -12,20 +12,21 @@ import fr.urssaf.image.commons.webservice.ssl.MySSLContextFactory;
 
 public class AEDJSSESocketFactory extends AbstractJSSESocketFactory {
 
-	
-	private SSLContext sslContext;
-	
-	public AEDJSSESocketFactory(Hashtable<String, String> attributes) {
-		super(attributes);
-		sslContext = ((MySSLContextFactory) (new XmlBeanFactory(
-				new ClassPathResource("applicationContext.xml")))
-				.getBean("SSLContextFactory")).getSSLContext();
-		
-	}
+   private final SSLContext sslContext;
 
-	@Override
-	public SSLContext getSSLContext() {
-		return sslContext;
-	}
+   @SuppressWarnings( { "PMD.ReplaceHashtableWithMap",
+         "PMD.ConstructorCallsOverridableMethod" })
+   public AEDJSSESocketFactory(Hashtable<String, String> attributes) {
+      super(attributes);
+      sslContext = ((MySSLContextFactory) (new XmlBeanFactory(
+            new ClassPathResource("applicationContext.xml")))
+            .getBean("SSLContextFactory")).getSSLContext();
+
+   }
+
+   @Override
+   public SSLContext getSSLContext() {
+      return sslContext;
+   }
 
 }

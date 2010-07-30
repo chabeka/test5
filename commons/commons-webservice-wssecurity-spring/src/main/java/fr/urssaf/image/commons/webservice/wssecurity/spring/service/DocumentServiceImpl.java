@@ -76,6 +76,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.ShortVariable") 
 	public Document getDocument(int id) {
 
 		return documents.get(id);

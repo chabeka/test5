@@ -9,9 +9,9 @@ import org.apache.velocity.texen.util.PropertiesUtil;
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceAxis;
 import fr.urssaf.image.commons.webservice.rpc.aed.context.AEDSSLContextFactory;
 
-public class AEDGenerateSource extends GenerateSourceAxis {
+public final class AEDGenerateSource extends GenerateSourceAxis {
 
-	public AEDGenerateSource(String path,String url) {
+	private AEDGenerateSource(String path,String url) {
 		super(path,url);
 
 	}

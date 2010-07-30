@@ -4,5 +4,5 @@ import java.rmi.RemoteException;
 
 public interface SSLService {
 
-	public String ws_test1(String nom, String prenom) throws RemoteException;
+	String wsTest1(String nom, String prenom) throws RemoteException;
 }

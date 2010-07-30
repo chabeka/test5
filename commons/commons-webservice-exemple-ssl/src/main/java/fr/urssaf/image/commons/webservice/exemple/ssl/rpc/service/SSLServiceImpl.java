@@ -11,7 +11,7 @@ import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele.Service1PortTyp
 
 public class SSLServiceImpl implements SSLService {
 
-	private static final Logger log = Logger.getLogger(SSLServiceImpl.class);
+	private static final Logger LOG = Logger.getLogger(SSLServiceImpl.class);
 
 	private Service1PortType port;
 
@@ -20,12 +20,12 @@ public class SSLServiceImpl implements SSLService {
 		try {
 			port = locator.getservice1Port();
 		} catch (ServiceException e) {
-			log.error(e);
+		   LOG.error(e);
 		}
 	}
 
 	@Override
-	public String ws_test1(String nom, String prenom) throws RemoteException {
+	public String wsTest1(String nom, String prenom) throws RemoteException {
 		return port.ws_test1(nom, prenom);
 	}
 

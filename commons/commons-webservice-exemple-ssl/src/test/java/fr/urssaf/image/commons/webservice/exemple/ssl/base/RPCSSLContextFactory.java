@@ -7,9 +7,13 @@ import org.springframework.core.io.ClassPathResource;
 
 import fr.urssaf.image.commons.webservice.ssl.MySSLContextFactory;
 
-public class RPCSSLContextFactory {
+public final class RPCSSLContextFactory {
 
-	public static SSLContext getSSLContext() {
+	private RPCSSLContextFactory(){
+	   
+	}
+   
+   public static SSLContext getSSLContext() {
 
 		MySSLContextFactory ctx = (MySSLContextFactory) (new XmlBeanFactory(
 				new ClassPathResource("applicationContext.xml")))

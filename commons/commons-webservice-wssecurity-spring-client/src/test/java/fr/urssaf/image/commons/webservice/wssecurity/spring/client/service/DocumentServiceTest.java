@@ -11,9 +11,10 @@ import org.junit.Test;
 import fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.Document;
 
 @Ignore
+@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class DocumentServiceTest {
 
-	private DocumentService service = new DocumentServiceImpl();
+	private final DocumentService service = new DocumentServiceImpl();
 
 	@Test
 	public void allDocuments() throws RemoteException {

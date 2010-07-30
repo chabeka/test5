@@ -9,16 +9,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.exemple.ssl.base.RPCJSSESocketFactory;
-import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.service.SSLService;
-import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.service.SSLServiceImpl;
 import fr.urssaf.image.commons.webservice.ssl.InitAxisProperties;
 
 @Ignore
 public class SSLServiceTest {
 
-	private static final Logger log = Logger.getLogger(SSLServiceTest.class);
+	private static final Logger LOG = Logger.getLogger(SSLServiceTest.class);
 
-	private SSLService service;
+	private final SSLService service;
 
 	public SSLServiceTest() {
 
@@ -28,13 +26,13 @@ public class SSLServiceTest {
 	}
 
 	@Test
-	public void ws_test1() throws RemoteException {
+	public void wsTest1() throws RemoteException {
 
-		String resultat = service.ws_test1("nom", "prenom");
+		String resultat = service.wsTest1("nom", "prenom");
 
-		log.debug(resultat);
+		LOG.debug(resultat);
 
-		assertEquals("Hello prenom nom (en rpc/literal)", resultat);
+		assertEquals("échec du test","Hello prenom nom (en rpc/literal)", resultat);
 
 	}
 

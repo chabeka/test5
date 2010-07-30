@@ -7,9 +7,10 @@ import fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.Docume
 
 public interface DocumentService {
 
-	public List<Document> allDocuments() throws RemoteException;
-	
-	public void save(Document document) throws RemoteException;
-	
-	public Document get(int id) throws RemoteException;
+   List<Document> allDocuments() throws RemoteException;
+
+   void save(Document document) throws RemoteException;
+
+   @SuppressWarnings("PMD.ShortVariable")
+   Document get(int id) throws RemoteException;
 }

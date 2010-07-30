@@ -7,7 +7,11 @@ import org.springframework.core.io.ClassPathResource;
 
 import fr.urssaf.image.commons.webservice.ssl.MySSLContextFactory;
 
-public class AEDSSLContextFactory {
+public final class AEDSSLContextFactory {
+   
+   private AEDSSLContextFactory(){
+      
+   }
 
 	public static SSLContext getSSLContext() {
 

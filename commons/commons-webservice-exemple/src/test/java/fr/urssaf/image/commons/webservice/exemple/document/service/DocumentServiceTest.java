@@ -15,6 +15,7 @@ import fr.urssaf.image.commons.webservice.exemple.document.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.xml")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
 public class DocumentServiceTest {
 
 	@Autowired

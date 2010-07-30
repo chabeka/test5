@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServerPasswordCallback implements CallbackHandler {
 
-	private Map<String, String> passwords = new HashMap<String, String>();
+	private final Map<String, String> passwords = new HashMap<String, String>();
 
 	public ServerPasswordCallback() {
 		passwords.put("myservicekey", "skpass");

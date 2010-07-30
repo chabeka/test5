@@ -3,18 +3,13 @@ package fr.urssaf.image.commons.webservice.exemple.document.service;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import fr.urssaf.image.commons.webservice.exemple.document.modele.DocService;
 import fr.urssaf.image.commons.webservice.exemple.document.modele.DocServiceDocument;
 import fr.urssaf.image.commons.webservice.exemple.document.modele.Document;
 
 public class DocumentServiceImpl implements DocumentService {
 
-	private DocService port;
-
-	protected static final Logger log = Logger
-			.getLogger(DocumentServiceImpl.class);
+	private final DocService port;
 
 	public DocumentServiceImpl() {
 
@@ -30,6 +25,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.ShortVariable") 
 	public Document get(
 			int id) throws RemoteException {
 		return port.getDocument(id);

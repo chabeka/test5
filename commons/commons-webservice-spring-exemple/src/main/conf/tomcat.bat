@@ -1,0 +1,2 @@
+keytool -genkey -alias sewatech-fr -keypass sewapass -storepass sewapass -keystore tomcatserver.jks -keyalg RSA -dname "cn=www.sewatech.fr, o=Sewatech, c=FR"
+keytool -export -rfc -keystore tomcatserver.jks -storepass sewapass -alias sewatech-fr -file tomcat.cer

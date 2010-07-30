@@ -16,7 +16,7 @@ import fr.urssaf.image.commons.webservice.rpc.ged.modele.TypeZoneWS;
 
 public class GedImageServiceImpl implements GedImageService {
 
-	protected static final Logger log = Logger
+	protected static final Logger LOG = Logger
 			.getLogger(GedImageServiceImpl.class);
 
 	private GedImagePortType port;
@@ -26,7 +26,7 @@ public class GedImageServiceImpl implements GedImageService {
 		try {
 			port = service.getGedImagePort();
 		} catch (ServiceException e) {
-			log.error(e);
+		   LOG.error(e);
 		}
 	}
 	

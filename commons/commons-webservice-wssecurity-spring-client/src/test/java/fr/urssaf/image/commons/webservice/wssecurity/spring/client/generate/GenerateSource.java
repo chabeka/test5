@@ -6,20 +6,22 @@ import org.apache.velocity.texen.util.PropertiesUtil;
 
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceCxf;
 
+public final class GenerateSource {
 
+   private GenerateSource() {
 
-public class GenerateSource{
+   }
 
-	public static void main(String[] args) throws Exception {
-		
-		PropertiesUtil util = new PropertiesUtil();
-		Properties prop = util.load("document.properties");
+   public static void main(String[] args) {
 
-		String url = prop.getProperty("url");
-		String path = prop.getProperty("path");
+      PropertiesUtil util = new PropertiesUtil();
+      Properties prop = util.load("document.properties");
 
-		GenerateSourceCxf generateSource = new GenerateSourceCxf(path, url);
-		generateSource.generate();
-	}
+      String url = prop.getProperty("url");
+      String path = prop.getProperty("path");
+
+      GenerateSourceCxf generateSource = new GenerateSourceCxf(path, url);
+      generateSource.generate();
+   }
 
 }

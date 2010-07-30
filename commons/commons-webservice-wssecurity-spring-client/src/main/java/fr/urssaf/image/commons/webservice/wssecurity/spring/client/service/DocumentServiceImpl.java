@@ -20,7 +20,7 @@ import fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.Docume
 
 public class DocumentServiceImpl implements DocumentService {
 
-	private fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.DocumentService port;
+	private final fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.DocumentService port;
 
 	private static final String BLANC = " ";
 	
@@ -37,6 +37,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 	}
 
+	@SuppressWarnings("PMD.ConsecutiveLiteralAppends")
 	private void initWSS4JOutInterceptor(Endpoint cxfEndpoint) {
 
 		Map<String, Object> outProps = new HashMap<String, Object>();
@@ -72,7 +73,7 @@ public class DocumentServiceImpl implements DocumentService {
 		outProps.put(WSHandlerConstants.ENC_PROP_FILE,
 				"clientKeyStore.properties");
 
-		StringBuffer parts = new StringBuffer();
+		StringBuffer parts = new StringBuffer(177);
 
 		parts.append("{Content}{http://www.w3.org/2000/09/xmldsig#}Signature;");
 		parts
@@ -110,6 +111,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
+	@SuppressWarnings("PMD.ShortVariable")
 	public Document get(int id) throws RemoteException {
 		return port.getDocument(id);
 	}

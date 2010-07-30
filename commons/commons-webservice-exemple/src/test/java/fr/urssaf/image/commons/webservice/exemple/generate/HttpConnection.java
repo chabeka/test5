@@ -16,12 +16,12 @@ public class HttpConnection {
 		HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSSLContext()
 				.getSocketFactory());
 
-		HostnameVerifier hv = new HostnameVerifier() {
+		HostnameVerifier hostCheck = new HostnameVerifier() {
 			public boolean verify(String urlHostName, SSLSession session) {
 				return true;
 			}
 		};
-		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+		HttpsURLConnection.setDefaultHostnameVerifier(hostCheck);
 		https = true;
 	}
 	

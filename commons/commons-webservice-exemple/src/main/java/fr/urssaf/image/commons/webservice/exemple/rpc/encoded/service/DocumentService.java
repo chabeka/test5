@@ -7,9 +7,10 @@ import fr.urssaf.image.commons.webservice.exemple.rpc.encoded.modele.Document;
 
 public interface DocumentService {
 
-	public List<Document> allDocuments() throws RemoteException;
+	List<Document> allDocuments() throws RemoteException;
 
-	public void save(Document document) throws RemoteException;
+	void save(Document document) throws RemoteException;
 
-	public Document get(int id) throws RemoteException;
+	@SuppressWarnings("PMD.ShortVariable") 
+	Document get(int id) throws RemoteException;
 }

@@ -15,14 +15,17 @@ public class GenerateSourceAxis2 {
 
 	}
 
-	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
-	public void generate() throws Exception
+	public void generate()
 	{
 
 		String[] args = new String[] {this.wsdl,"-p" + this.packagePath,
 				"-osrc/main/java"};
 
-		WSDL2Java.main(args);
+		try {
+         WSDL2Java.main(args);
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
 
 	}
 

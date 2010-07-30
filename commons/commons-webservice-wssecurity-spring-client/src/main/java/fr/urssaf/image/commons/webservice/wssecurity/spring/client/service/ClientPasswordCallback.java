@@ -12,7 +12,7 @@ import org.apache.ws.security.WSPasswordCallback;
 
 public class ClientPasswordCallback implements CallbackHandler {
 	
-	private Map<String, String> passwords = new HashMap<String, String>();
+	private final Map<String, String> passwords = new HashMap<String, String>();
 
 	public ClientPasswordCallback(){
 		 passwords.put("myclientkey", "ckpass");

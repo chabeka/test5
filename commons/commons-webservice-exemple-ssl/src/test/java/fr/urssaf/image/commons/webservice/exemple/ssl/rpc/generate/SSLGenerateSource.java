@@ -9,9 +9,9 @@ import org.apache.velocity.texen.util.PropertiesUtil;
 import fr.urssaf.image.commons.webservice.exemple.ssl.base.RPCSSLContextFactory;
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceAxis;
 
-public class SSLGenerateSource extends GenerateSourceAxis {
+public final class SSLGenerateSource extends GenerateSourceAxis {
 
-	public SSLGenerateSource(String path,String url) {
+	private SSLGenerateSource(String path,String url) {
 		super(path,url);
 
 	}

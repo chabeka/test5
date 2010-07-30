@@ -20,50 +20,50 @@ public interface GedImageService {
 	/**
 	 * Mise à jour des index d'un document.
 	 */
-	public boolean updateIndexDocumentGED(AuthInfo login, String base,
+	boolean updateIndexDocumentGED(AuthInfo login, String base,
 			String idDocument, IndexValeur[] listeIndexValeur)
 			throws RemoteException;
 
 	/**
 	 * Mise à jour des index d'un document.
 	 */
-	public String moveDocumentGED(AuthInfo login, String baseOrig,
+	String moveDocumentGED(AuthInfo login, String baseOrig,
 			String idDocument, String baseDest, IndexValeur[] listeIndexValeur)
 			throws RemoteException;
 
 	/**
 	 * Insertion d'un document.
 	 */
-	public String insertDocumentGED(AuthInfo login, String base,
+	String insertDocumentGED(AuthInfo login, String base,
 			IndexValeur[] listeIndexValeur, FichierWS file)
 			throws RemoteException;
 
 	/**
 	 * Supprime un document
 	 */
-	public boolean deleteDocumentGED(AuthInfo login, String base,
+	boolean deleteDocumentGED(AuthInfo login, String base,
 			String idDocument) throws RemoteException;
 
 	/**
 	 * Liste des type zone d'une base.
 	 */
-	public TypeZoneWS[] getTypesZonesBase(AuthInfo login, String base)
+	TypeZoneWS[] getTypesZonesBase(AuthInfo login, String base)
 			throws RemoteException;
 
 	/**
 	 * Liste des types zones et des catégories pour une base
 	 */
-	public CategorieTypeZoneWS[] getCategorieTypesZonesBase(AuthInfo login,
+	CategorieTypeZoneWS[] getCategorieTypesZonesBase(AuthInfo login,
 			String base) throws RemoteException;
 
 	/**
 	 * Pong
 	 */
-	public String ping() throws RemoteException;
+	String ping() throws RemoteException;
 
 	/**
 	 * Liste des des dictionnaires pour une base et un type zone
 	 */
-	public String[] getDictionnaire(AuthInfo login, String base,
+	String[] getDictionnaire(AuthInfo login, String base,
 			String typezone, String masque) throws RemoteException;
 }

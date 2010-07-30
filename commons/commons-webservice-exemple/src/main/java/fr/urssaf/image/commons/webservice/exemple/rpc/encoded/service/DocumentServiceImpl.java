@@ -9,7 +9,7 @@ import fr.urssaf.image.commons.webservice.exemple.rpc.encoded.modele.Document;
 
 public class DocumentServiceImpl implements DocumentService {
 
-	private DocService port;
+	private final DocService port;
 
 	public DocumentServiceImpl() {
 
@@ -25,6 +25,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 	
 	@Override
+	@SuppressWarnings("PMD.ShortVariable") 
 	public Document get(
 			int id) throws RemoteException {
 		return port.getDocument(id);

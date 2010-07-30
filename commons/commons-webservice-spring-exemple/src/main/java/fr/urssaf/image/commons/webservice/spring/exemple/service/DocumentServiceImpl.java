@@ -12,73 +12,80 @@ import fr.urssaf.image.commons.webservice.spring.exemple.modele.Etat;
 @Service
 public class DocumentServiceImpl {
 
-	private final Map<Integer, Document> documents = new HashMap<Integer, Document>();
+   private final Map<Integer, Document> documents = new HashMap<Integer, Document>();
 
-	public DocumentServiceImpl() {
+   public DocumentServiceImpl() {
 
-		Document document0 = new Document();
+      Document document0 = new Document();
 
-		document0.setId(0);
-		document0.setTitre("titre 0");
-		document0.setEtat(Etat.close);
-		document0.setFlag(true);
-		document0.setLevel(3);
-		document0.setOpenDate(DateUtil.today(-2));
-		document0.setCloseDate(DateUtil.yesterday());
-		document0.setComment("ceci est un commentaire");
+      document0.setId(0);
+      document0.setTitre("titre 0");
+      document0.setEtat(Etat.close);
+      document0.setFlag(true);
+      document0.setLevel(3);
+      document0.setOpenDate(DateUtil.today(-2));
+      document0.setCloseDate(DateUtil.yesterday());
+      document0.setComment("ceci est un commentaire");
 
-		documents.put(document0.getId(), document0);
+      documents.put(document0.getId(), document0);
 
-		Document document1 = new Document();
+      Document document1 = new Document();
 
-		document1.setId(1);
-		document1.setTitre("titre 1");
-		document1.setEtat(Etat.open);
-		document1.setFlag(true);
-		document1.setLevel(1);
-		document1.setOpenDate(DateUtil.today(-2));
-		document1.setCloseDate(DateUtil.yesterday());
-		document1.setComment("un autre commentaire");
+      document1.setId(1);
+      document1.setTitre("titre 1");
+      document1.setEtat(Etat.open);
+      document1.setFlag(true);
+      document1.setLevel(1);
+      document1.setOpenDate(DateUtil.today(-2));
+      document1.setCloseDate(DateUtil.yesterday());
+      document1.setComment("un autre commentaire");
 
-		documents.put(document1.getId(), document1);
+      documents.put(document1.getId(), document1);
 
-		Document document2 = new Document();
+      Document document2 = new Document();
 
-		document2.setId(2);
-		document2.setTitre("titre 2");
-		document2.setEtat(Etat.init);
-		document2.setFlag(false);
-		document2.setLevel(2);
-		document2.setOpenDate(DateUtil.today(-2));
-		document2.setCloseDate(DateUtil.yesterday());
+      document2.setId(2);
+      document2.setTitre("titre 2");
+      document2.setEtat(Etat.init);
+      document2.setFlag(false);
+      document2.setLevel(2);
+      document2.setOpenDate(DateUtil.today(-2));
+      document2.setCloseDate(DateUtil.yesterday());
 
-		documents.put(document2.getId(), document2);
+      documents.put(document2.getId(), document2);
 
-	}
+   }
 
-	public synchronized Document[] allDocuments() {
+   public Document[] allDocuments() {
 
-		Document[] docs = new Document[documents.size()];
+      synchronized (this) {
+         Document[] docs = new Document[documents.size()];
 
-		int index = 0;
-		for (Document document : documents.values()) {
-			docs[index] = document;
-			index++;
-		}
+         int index = 0;
+         for (Document document : documents.values()) {
+            docs[index] = document;
+            index++;
+         }
 
-		return docs;
-	}
+         return docs;
+      }
+   }
 
-	public synchronized Document getDocument(int id) {
+   @SuppressWarnings("PMD.ShortVariable")
+   public Document getDocument(int id) {
 
-		return documents.get(id);
-	}
+      synchronized (this) {
+         return documents.get(id);
+      }
+   }
 
-	public synchronized void save(Document document) {
+   public void save(Document document) {
 
-		document.setId(documents.size());
+      synchronized (this) {
+         document.setId(documents.size());
 
-		documents.put(document.getId(), document);
-	}
+         documents.put(document.getId(), document);
+      }
+   }
 
 }

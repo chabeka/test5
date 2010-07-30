@@ -16,11 +16,12 @@ import fr.urssaf.image.commons.webservice.rpc.aed.service.modele.ParametrageTran
 import fr.urssaf.image.commons.webservice.ssl.InitAxisProperties;
 
 @Ignore
+@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class AEServiceTest {
 
-	protected static final Logger log = Logger.getLogger(AEServiceTest.class);
+	protected static final Logger LOG = Logger.getLogger(AEServiceTest.class);
 
-	private AEDService service;
+	private final AEDService service;
 
 	public AEServiceTest() {
 
@@ -32,29 +33,31 @@ public class AEServiceTest {
 	@Test
 	public void ping() throws RemoteException {
 
-		log.debug(service.ping());
+	   LOG.debug(service.ping());
 		assertEquals("Les fonctions SAEL organisme sont en ligne.", service
 				.ping());
 
 	}
 
 	@Test
+	@SuppressWarnings("PMD.ShortVariable") 
 	public void parametrageTransfert() throws RemoteException,
 			UnknownHostException {
 
 		String applicationSource = "SAEL";
+		
 		String IP = InetAddress.getLocalHost().getHostAddress();
 
 		ParametrageTransfertModele modele = service.getParametrageTransfert(
 				applicationSource, IP);
 
-		log.debug(modele.getUrlFTP().value);
-		log.debug(modele.getTypeTransfert().value);
-		log.debug(modele.getErreur().value);
-		log.debug(modele.getChemin().value);
-		log.debug(modele.getLogin().value);
-		log.debug(modele.getPassword().value);
-		log.debug(modele.getIdTransfert().value);
+		LOG.debug(modele.getUrlFTP().value);
+		LOG.debug(modele.getTypeTransfert().value);
+		LOG.debug(modele.getErreur().value);
+		LOG.debug(modele.getChemin().value);
+		LOG.debug(modele.getLogin().value);
+		LOG.debug(modele.getPassword().value);
+		LOG.debug(modele.getIdTransfert().value);
 
 		//assertEquals("cer69imageint4.cer69.recouv", modele.getUrlFTP().value);
 		assertNotNull(modele.getUrlFTP().value);

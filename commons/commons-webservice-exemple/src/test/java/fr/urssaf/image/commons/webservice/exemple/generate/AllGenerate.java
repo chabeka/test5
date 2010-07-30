@@ -4,14 +4,18 @@ import fr.urssaf.image.commons.webservice.exemple.document.generate.DocumentGene
 import fr.urssaf.image.commons.webservice.exemple.rpc.encoded.generate.RPCEncodedGenerateSource;
 import fr.urssaf.image.commons.webservice.exemple.rpc.literal.generate.RPCLiteralGenerateSource;
 
-public class AllGenerate {
+public final class AllGenerate {
+   
+   private AllGenerate(){
+      
+   }
 	
 	
 	/**
 	 * @param args
 	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 	
 		DocumentGenerateSource.main(args);
 		RPCEncodedGenerateSource.main(args);

@@ -6,23 +6,23 @@ import org.apache.velocity.texen.util.PropertiesUtil;
 
 import fr.urssaf.image.commons.webservice.generate.GenerateSourceAxis;
 
-public class GedGenerateSource extends GenerateSourceAxis {
+public final class GedGenerateSource extends GenerateSourceAxis {
 
-	public GedGenerateSource(String path,String url) {
-		super(path,url);
+   private GedGenerateSource(String path, String url) {
+      super(path, url);
 
-	}
+   }
 
-	public static void main(String[] args) {
+   public static void main(String[] args) {
 
-		PropertiesUtil util = new PropertiesUtil();
-		Properties prop = util.load("ged.properties");
+      PropertiesUtil util = new PropertiesUtil();
+      Properties prop = util.load("ged.properties");
 
-		String url = prop.getProperty("url");
-		String path = prop.getProperty("path");
+      String url = prop.getProperty("url");
+      String path = prop.getProperty("path");
 
-		GedGenerateSource generateSource = new GedGenerateSource(path,url);
-		generateSource.generate();
+      GedGenerateSource generateSource = new GedGenerateSource(path, url);
+      generateSource.generate();
 
-	}
+   }
 }

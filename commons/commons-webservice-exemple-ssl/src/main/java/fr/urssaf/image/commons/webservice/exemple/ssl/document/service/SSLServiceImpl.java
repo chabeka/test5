@@ -13,7 +13,7 @@ import fr.urssaf.image.commons.webservice.exemple.ssl.document.modele.Ws_test1Re
 public class SSLServiceImpl implements SSLService {
 
 	private Service1PortType port;
-	private static final Logger log = Logger.getLogger(SSLServiceImpl.class);
+	private static final Logger LOG = Logger.getLogger(SSLServiceImpl.class);
 
 	public SSLServiceImpl() {
 		
@@ -21,7 +21,7 @@ public class SSLServiceImpl implements SSLService {
 		try {
 			port = locator.getservice1Port();
 		} catch (ServiceException e) {
-			log.error(e);
+		   LOG.error(e);
 		}
 	
 

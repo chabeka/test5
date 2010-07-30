@@ -25,7 +25,7 @@ public class GenerateCxf {
 		this.path = prop.getProperty("path");
 	}
 
-	public void execute() throws Exception {
+	public void execute(){
 
 		String url = this.url;
 		if(HttpConnection.isHttps()){

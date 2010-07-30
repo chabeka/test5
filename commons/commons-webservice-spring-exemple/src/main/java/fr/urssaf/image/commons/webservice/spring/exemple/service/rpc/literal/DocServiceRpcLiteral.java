@@ -22,6 +22,7 @@ public class DocServiceRpcLiteral implements DocService {
 	}
 	
 	@Override
+	@SuppressWarnings("PMD.ShortVariable") 
 	public Document getDocument(int id) {
 		return impl.getDocument(id);
 	}

@@ -11,12 +11,13 @@ import fr.urssaf.image.commons.webservice.wssecurity.spring.modele.Document;
 public interface DocumentService {
 
 	@WebMethod
-	public List<Document> allDocuments();
+	List<Document> allDocuments();
 	
 	@WebMethod
-	public Document getDocument(int id);
+	@SuppressWarnings("PMD.ShortVariable")
+	Document getDocument(int id);
 	
 	@WebMethod
-	public void save(Document document);
+	void save(Document document);
 	
 }

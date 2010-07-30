@@ -22,7 +22,7 @@ public class ConsommationTest {
       serviceLocator.setGedImagePortEndpointAddress(urlWsdl);
       GedImagePortType port = serviceLocator.getGedImagePort();
       String resultatPing = port.ping();
-      assertEquals(resultatPing,"GedImage en ligne !");
+      assertEquals("échec du test",resultatPing,"GedImage en ligne !");
    }
 
    

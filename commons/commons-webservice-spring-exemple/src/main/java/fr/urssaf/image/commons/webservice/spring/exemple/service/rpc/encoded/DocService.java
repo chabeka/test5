@@ -14,11 +14,12 @@ import fr.urssaf.image.commons.webservice.spring.exemple.modele.Document;
 public interface DocService {
 
 	@WebMethod
-	public Document[] allDocuments();
+	Document[] allDocuments();
 	
 	@WebMethod
-	public Document getDocument(@WebParam(name = "id")int id);
+	@SuppressWarnings("PMD.ShortVariable") 
+	Document getDocument(@WebParam(name = "id")int id);
 	
 	@WebMethod
-	public void save(@WebParam(name = "document")Document document);
+	void save(@WebParam(name = "document")Document document);
 }

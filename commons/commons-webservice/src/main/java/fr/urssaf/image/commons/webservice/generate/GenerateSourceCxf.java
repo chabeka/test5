@@ -20,8 +20,7 @@ public class GenerateSourceCxf {
 
 	}
 
-	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
-	public void generate() throws Exception {
+	public void generate() {
 
 		ToolContext context = new ToolContext();
 		context.setPackageName(this.packagePath);
@@ -29,7 +28,11 @@ public class GenerateSourceCxf {
 		myWSDL2Java.setArguments(new String[] { "-d", "src/main/java",
 				this.wsdl });
 
-		myWSDL2Java.run(context);
+		try {
+         myWSDL2Java.run(context);
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
 
 	}
 
