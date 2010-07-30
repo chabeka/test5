@@ -18,25 +18,24 @@ import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NullConfigBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
-import fr.urssaf.image.commons.birt.BirtEngine;
 
 /**
  * Classe permettant de démarrer le serveur Birt
  */
-public class BirtEngine
+public final class BirtEngine
 {
    public static final Logger LOGGER = Logger.getLogger(BirtEngine.class) ;
    
-   protected static BirtEngine instance = null ;
+   private static BirtEngine instance = null ;
    
    private ServletContext servletContext ;
    private String reportEnginePath ;
    private String logPath ;
    
    // protected Level logLevel = Level.OFF ;
-   protected Level logLevel = Level.ALL ;
-   protected IReportEngine engine = null ;
-   protected boolean stopped = true ;
+   private Level logLevel = Level.ALL ;
+   private IReportEngine engine = null ;
+   private boolean stopped = true ;
    
    
    /**
@@ -74,7 +73,9 @@ public class BirtEngine
    throws NoInstanceBirtEngineException {
       
       if( BirtEngine.instance == null )
+      {
          throw new NoInstanceBirtEngineException() ;
+      }
       
       return BirtEngine.instance ;
    }
@@ -84,6 +85,7 @@ public class BirtEngine
     * @param reportEnginePath
     * @param logPath
     * @param context
+    * @return l'instance du BirtEngine
     * @throws NullFactoryBirtEngineException 
     * @throws BirtException 
     * @throws MissingConstructorParamBirtException 
@@ -136,7 +138,7 @@ public class BirtEngine
       if ( engine != null ) {
          engine.destroy();
          Platform.shutdown();
-         engine = null ;
+         engine = null ; //NOPMD
          stopped = true ;
       }
    }
@@ -156,14 +158,14 @@ public class BirtEngine
       LOGGER.debug(String.format("EngineConfig : logLevel=%s",logLevel));
       
       // compatibilité JavaApplication et WebApp
-      if( getServletContext() != null )
+      if( getServletContext() == null )
       {
-         LOGGER.debug("EngineConfig : Ajout du servletContext");
-         config.setPlatformContext( getContext() ) ;
+         LOGGER.debug("EngineConfig : Pas de servletContext");
       }
       else
       {
-         LOGGER.debug("EngineConfig : Pas de servletContext");
+         LOGGER.debug("EngineConfig : Ajout du servletContext");
+         config.setPlatformContext( getContext() ) ;
       }
       
       return config ;
@@ -202,7 +204,9 @@ public class BirtEngine
             .createFactoryObject( IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY );
       
       if( factory == null )
+      {
          throw new NullFactoryBirtEngineException() ;
+      }
          
       engine = factory.createReportEngine( config );
       
@@ -224,7 +228,9 @@ public class BirtEngine
       NullFactoryBirtEngineException {
       
       if( config == null )
+      {
          throw new NullConfigBirtEngineException() ;
+      }
       
       if( engine == null 
           && config != null ) {
@@ -266,9 +272,13 @@ public class BirtEngine
       
       // reportEnginePath peut être vide mais pas null
       if ( reportEnginePath == null )
+      {
          throw new MissingConstructorParamBirtException("reportEnginePath") ;
+      }
       else
+      {
          this.reportEnginePath = reportEnginePath ;
+      }
       
       // en mode javaApplication, context peut être null SI reportEnginePath n'est pas vide
       if ( context == null 
@@ -276,9 +286,13 @@ public class BirtEngine
                   || reportEnginePath.isEmpty() 
                ) 
       )
+      {
          throw new MissingConstructorParamBirtException("context") ;
+      }
       else
+      {
          this.servletContext = context ;
+      }
       
    }
    
@@ -286,7 +300,7 @@ public class BirtEngine
     * Supprime l'instance
     */
    protected static void removeInstance() {
-      BirtEngine.instance = null ;
+      BirtEngine.instance = null ; //NOPMD
    }
    
    /**

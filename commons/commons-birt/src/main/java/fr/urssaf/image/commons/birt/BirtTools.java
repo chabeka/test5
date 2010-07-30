@@ -2,7 +2,10 @@ package fr.urssaf.image.commons.birt;
 
 import fr.urssaf.image.commons.birt.exception.EnvVarNotSettedBirtEngineException;
 
-public class BirtTools {
+public final class BirtTools {
+   
+   private BirtTools()
+   {}
 
    /**
     * @return BIRT_HOME environements var
@@ -15,7 +18,9 @@ public class BirtTools {
       String reportEngineHome = System.getenv( getBirtHomeVarName() ) ;
       if ( reportEngineHome == null 
             || reportEngineHome.isEmpty() )
+      {
          throw new EnvVarNotSettedBirtEngineException() ;
+      }
       
       return reportEngineHome;
    }

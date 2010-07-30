@@ -1,12 +1,10 @@
 package fr.urssaf.image.commons.birt.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*; //NOPMD
 
 import java.util.logging.Level;
 
-import org.apache.log4j.Logger;
 import org.eclipse.birt.core.exception.BirtException;
 import org.junit.After;
 import org.junit.Before;
@@ -21,9 +19,8 @@ import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
 public class BirtEngineTest {
-	public static Logger logger = Logger.getLogger(BirtEngineTest.class);
-   
-	private BirtEngine birtEngine = null ;
+	
+   private BirtEngine birtEngine = null ;
 	
 	private String reportEngineHome = null ;
 	private final String logsPath = System.getProperty("java.io.tmpdir") ;
@@ -40,16 +37,16 @@ public class BirtEngineTest {
 	@After
 	public void tearDown() throws Exception {
 	
-		_killBirtEngineInstance();
+		killBirtEngineInstance();
 		
 	}
 	
-	private void _killBirtEngineInstance()
+	private void killBirtEngineInstance()
 	{
 	   if( birtEngine != null )
       {
          BirtEngine.killInstance();
-         birtEngine = null ;
+         birtEngine = null ; //NOPMD
       }
 	}
 	
@@ -112,8 +109,8 @@ public class BirtEngineTest {
 		      birtEngine.getReportEnginePath().equals( reportEngineHome ) ) ;
 		assertTrue( logsPath + " attendu, " + birtEngine.getLogPath() + "obtenu", 
 		      birtEngine.getLogPath().equals( logsPath ) );
-		assertTrue( "NULL attendu", 
-		      birtEngine.getServletContext() == null ) ;
+		assertNull( "NULL attendu", 
+		      birtEngine.getServletContext() ) ;
 		assertFalse( "Le moteur est arrété alors qu'il devrait être démarré", 
 		      birtEngine.isStopped() ) ;
 	}
@@ -125,7 +122,7 @@ public class BirtEngineTest {
    @Test(expected = NoInstanceBirtEngineException.class)
    public void testGetInstance1() throws NoInstanceBirtEngineException {
 
-      _killBirtEngineInstance();
+      killBirtEngineInstance();
       BirtEngine.getInstance() ;
    }
    
@@ -135,7 +132,7 @@ public class BirtEngineTest {
     */
    @Test
    public void testGetInstance2() throws NoInstanceBirtEngineException {
-      assertTrue(BirtEngine.getInstance() != null );
+      assertNotNull("testGetInstance2",BirtEngine.getInstance());
    }
    
    /**
@@ -150,7 +147,7 @@ public class BirtEngineTest {
       BirtException, 
       NullFactoryBirtEngineException {
       
-      _killBirtEngineInstance();
+      killBirtEngineInstance();
       BirtEngine.getInstance(null, null, null) ;
    }
    
@@ -167,7 +164,7 @@ public class BirtEngineTest {
       BirtException, 
       NullFactoryBirtEngineException {
       
-      _killBirtEngineInstance();
+      killBirtEngineInstance();
       BirtEngine.getInstance("", null, null) ;
    }
    
@@ -184,8 +181,9 @@ public class BirtEngineTest {
       BirtException, 
       NullFactoryBirtEngineException {
       
-      _killBirtEngineInstance();
-      BirtEngine.getInstance(reportEngineHome, null, null) ;
+      killBirtEngineInstance();
+      BirtEngine engine = BirtEngine.getInstance(reportEngineHome, null, null) ;
+      assertNotNull("testGetInstance5",engine);
    }
 
 }

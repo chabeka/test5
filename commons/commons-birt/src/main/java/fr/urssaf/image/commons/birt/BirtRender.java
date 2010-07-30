@@ -26,7 +26,7 @@ import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
 public class BirtRender
 {
 	private String outputPath ;
-	private String defaultOutputFilename ;
+	private String defaultOutputFilename ; //NOPMD
 	private String outputFilename ;
 	
 	final public static int _MODE_PDF_ = 1 ;
@@ -57,7 +57,9 @@ public class BirtRender
 			   
 	   if( BirtEngine.getInstance() != null 
 	      && BirtEngine.getInstance().isStopped() )
+	   {
 	      throw new NoEngineBirtEngineException( "Le serveur Birt a été arrété" ) ;
+	   }
 	   
 		setConstructorParams( outputPath, outputFilename );
 	}
@@ -86,9 +88,13 @@ public class BirtRender
 	      NoEngineBirtEngineException {
 	   
 		if ( outputFilename == null )
+		{
 		   this.outputFilename = defaultOutputFilename ;
+		}
 		else
+		{
 		   this.outputFilename = outputFilename ;
+		}
 	   
 	   doRender( reportFilePath, renderMode, paramValues ) ;
 	}
@@ -118,7 +124,9 @@ public class BirtRender
 	   LOGGER.debug("Demande de génération d'un rapport BIRT");
 	   
 	   if( reportFilePath == null )
+	   {
 			throw new MissingParamBirtRenderException("reportFilePath");
+	   }
 
 		// Récupération du moteur depuis l'instance BirtEngine
 		IReportEngine engine = BirtEngine.getInstance().getEngine() ;
@@ -200,12 +208,18 @@ public class BirtRender
 	      MissingConstructorParamBirtException {		
 	   
 		if( outputPath == null )
+		{
 		   throw new MissingConstructorParamBirtException("outputPath") ;
+		}
 		else
+		{
 		   this.outputPath = outputPath ;
+		}
 		
 		if( outputFilename == null )
+		{
 		   throw new MissingConstructorParamBirtException("outputFilename") ;
+		}
 		else{
 	      this.defaultOutputFilename = outputFilename ;
 		   this.outputFilename = outputFilename ;

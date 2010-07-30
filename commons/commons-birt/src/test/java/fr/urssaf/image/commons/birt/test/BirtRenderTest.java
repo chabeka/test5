@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.birt.core.exception.BirtException;
@@ -37,7 +38,7 @@ public class BirtRenderTest {
 	private static final String EXTENSION_PDF = ".pdf";
 	private static final String EXTENSION_HTML = ".html";
 	
-	private static HashMap<Object, Object> paramValues ;
+	private static Map<Object, Object> paramValues ;
 	
 	@Before
 	public void setUp() throws Exception {	   
@@ -67,18 +68,20 @@ public class BirtRenderTest {
 		}
 		
 		if( birtRender != null )
-		   birtRender = null ;
+		{
+		   birtRender = null ; //NOPMD
+		}
 		
-      _killBirtEngineInstance();
+      killBirtEngineInstance();
       
    }
    
-   private void _killBirtEngineInstance()
+   private void killBirtEngineInstance()
    {
       if( birtEngine != null )
       {
          BirtEngine.killInstance();
-         birtEngine = null ;
+         birtEngine = null ; //NOPMD
       }
    }
 

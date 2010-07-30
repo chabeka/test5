@@ -1,6 +1,6 @@
 package fr.urssaf.image.commons.birt;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -11,20 +11,17 @@ import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtExcepti
 import fr.urssaf.image.commons.birt.exception.MissingKeyInHashMapBirtEngineFactoryException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
 
-public class BirtEngineFactory {
+public final class BirtEngineFactory {
    
    public static final Logger LOGGER = Logger.getLogger( BirtEngineFactory.class.getName() );
    
    public static final int WEB_APP = 1 ;
    public static final int JAVA_APP = 2 ;
    
-   public class key {
-      public static final String REPORT_ENGINE_HOME = "reportEngineHome" ;
-      public static final String SERVLET_CONTEXT = "servletContext" ;
-      public static final String LOG_PATH = "logPath" ;
-   }
+   private BirtEngineFactory()
+   {}
    
-   public static BirtEngine getBirtEngineInstance( int appType, HashMap<String,Object> param ) 
+   public static BirtEngine getBirtEngineInstance( int appType, Map<String,Object> param ) 
    throws MissingKeyInHashMapBirtEngineFactoryException, 
       MissingConstructorParamBirtException, 
       BirtException, 
@@ -40,13 +37,19 @@ public class BirtEngineFactory {
       switch ( appType ) {
          case WEB_APP :
             LOGGER.debug("Mode Web");
-            if ( param.containsKey( key.SERVLET_CONTEXT ) )
-               servletContext = (ServletContext) param.get( key.SERVLET_CONTEXT ) ;
+            if ( param.containsKey( BirtEngineFactoryKeys.SERVLET_CONTEXT ) )
+            {
+               servletContext = (ServletContext) param.get( BirtEngineFactoryKeys.SERVLET_CONTEXT ) ;
+            }
             else
-               throw new MissingKeyInHashMapBirtEngineFactoryException( key.SERVLET_CONTEXT ) ;
+            {
+               throw new MissingKeyInHashMapBirtEngineFactoryException( BirtEngineFactoryKeys.SERVLET_CONTEXT ) ;
+            }
                
-            if ( param.containsKey( key.LOG_PATH ) )
-               logPath = (String) param.get( key.LOG_PATH ) ;
+            if ( param.containsKey( BirtEngineFactoryKeys.LOG_PATH ) )
+            {
+               logPath = (String) param.get( BirtEngineFactoryKeys.LOG_PATH ) ;
+            }
 
             LOGGER.debug(String.format("logPath = %s",logPath));
             engine = getBirtEngineInstanceForWebApp( servletContext, logPath );
@@ -54,13 +57,19 @@ public class BirtEngineFactory {
          case JAVA_APP :
          default :
             LOGGER.debug("Mode Java App");
-            if ( param.containsKey( key.REPORT_ENGINE_HOME ) )
-               reportEngineHome = (String) param.get( key.REPORT_ENGINE_HOME ) ;
+            if ( param.containsKey( BirtEngineFactoryKeys.REPORT_ENGINE_HOME ) )
+            {
+               reportEngineHome = (String) param.get( BirtEngineFactoryKeys.REPORT_ENGINE_HOME ) ;
+            }
             else
-               throw new MissingKeyInHashMapBirtEngineFactoryException( key.REPORT_ENGINE_HOME ) ;
+            {
+               throw new MissingKeyInHashMapBirtEngineFactoryException( BirtEngineFactoryKeys.REPORT_ENGINE_HOME ) ;
+            }
                
-            if ( param.containsKey( key.LOG_PATH ) )
-               logPath = (String) param.get( key.LOG_PATH ) ;
+            if ( param.containsKey( BirtEngineFactoryKeys.LOG_PATH ) )
+            {
+               logPath = (String) param.get( BirtEngineFactoryKeys.LOG_PATH ) ;
+            }
 
             engine = getBirtEngineInstanceForJavaApp( reportEngineHome, logPath );
             break ;
@@ -103,7 +112,9 @@ public class BirtEngineFactory {
       } catch (MissingConstructorParamBirtException e) {
          // hcangement du message s'il n'est pas cohérent avec l'utilisation de la factory
          if ( e.getMessage().contains(": context") )
-            throw new MissingConstructorParamBirtException("reportEnginePath");
+         {
+            throw new MissingConstructorParamBirtException("reportEnginePath",e);
+         }
          LOGGER.error(e.getMessage());
          LOGGER.fatal(e);
       }
