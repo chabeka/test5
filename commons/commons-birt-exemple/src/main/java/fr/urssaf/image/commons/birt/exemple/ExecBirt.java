@@ -64,6 +64,10 @@ public class ExecBirt extends HttpServlet {
 			      BirtRender._MODE_PDF_, 
 			      paramValues) ;
 			logger.info("Le traitement de rendu est terminé, le fichier doit être disponible.\n");
+						
+			// Affiche le PDF généré
+			response.sendRedirect("outputpath/output-birt.pdf");
+			
 			
 		} catch (MissingConstructorParamBirtException e) {
 			logger.fatal( e );
