@@ -11,6 +11,6 @@ public interface DocumentService {
 
 	void save(Document document) throws RemoteException;
 
-	@SuppressWarnings("PMD.ShortVariable") 
+	//@SuppressWarnings("PMD.ShortVariable") 
 	Document get(int id) throws RemoteException;
 }
