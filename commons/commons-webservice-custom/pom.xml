@@ -24,7 +24,7 @@
                <minimumTokens>100</minimumTokens>
                <targetJdk>1.6</targetJdk>
                <excludes>
-                  <exclude>**/modeles/**</exclude>
+                  <exclude>**/modele/**</exclude>
                </excludes>
                <rulesets>
                   <ruleset>http://cer69-hudson2.cer69.recouv:80/pmd_rules/pmd_commons-parent.xml</ruleset>
