@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+ "http://castor.org/mapping.dtd">
+
+<mapping>
+
+   <class name="fr.urssaf.image.commons.xml.castor.modele.Etat">
+
+      <map-to xml="state"/>
+
+      <field name="id" type="integer">
+         <bind-xml name="id" node="attribute" />
+      </field>
+
+      <field name="libelle" type="string">
+         <bind-xml name="label" node="element" />
+      </field>
+
+      <field name="date" type="string"
+         handler="fr.urssaf.image.commons.xml.castor.fieldHandler.DateHandler">
+         <bind-xml name="date" node="element" />
+      </field>
+
+   </class>
+
+</mapping>
