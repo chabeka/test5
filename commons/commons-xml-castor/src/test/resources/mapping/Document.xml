@@ -28,9 +28,15 @@
          <bind-xml name="writer" node="element" />
       </field>
 
+      <field name="etats" type="fr.urssaf.image.commons.xml.castor.modele.Etat"
+         collection="set">
+         <bind-xml name="etat" node="element" />
+      </field>
 
    </class>
 
    <include href="Auteur.xml" />
+
+   <include href="Etat.xml" />
 
 </mapping>
