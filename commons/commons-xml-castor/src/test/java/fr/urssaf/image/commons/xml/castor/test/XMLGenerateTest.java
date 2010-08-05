@@ -43,14 +43,14 @@ public class XMLGenerateTest {
             .getAbsolutePath(), "mappingCastorXML");
 
       MAPPING = FilenameUtils.concat("src/test/resources/mapping",
-            "Documents.xml");
+            "Document.xml");
    }
 
    private static final String XML = "src/test/resources/xml";
 
    private static XMLReader<Document> xmlReader;
 
-   private static XMLWriter<Documents> xmlWriter;
+   private static XMLWriter<Document> xmlWriter;
 
    private static final String FORMAT = "dd/MM/yyyy";
 
@@ -62,13 +62,13 @@ public class XMLGenerateTest {
 
       xmlReader = new XMLReader<Document>(Document.class, MAPPING);
 
-      xmlWriter = new XMLWriter<Documents>(MAPPING);
+      xmlWriter = new XMLWriter<Document>(MAPPING);
    }
 
    @Test
    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void xmlWriterTest() throws IOException, MarshalException,
-         ValidationException, ParseException {
+         ValidationException, ParseException, MappingException {
 
       Document document = new Document("titre 0", this.parseDate("10/12/2010"));
       document.setId(1);
@@ -100,11 +100,14 @@ public class XMLGenerateTest {
       FileWriter writer = new FileWriter(FILE);
 
       Documents documents = new Documents();
+
       documents.getDocuments().add(document);
       documents.getDocuments().add(
             new Document("titre 2", this.parseDate("12/07/1998")));
 
-      xmlWriter.write(documents, writer);
+      xmlWriter.write(documents.getDocuments(), "documents", writer);
+
+      writer.close();
 
    }
 

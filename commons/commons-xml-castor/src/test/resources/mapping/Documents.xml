@@ -7,10 +7,12 @@
    
    <include href="Document.xml" />
 
-   <class name="fr.urssaf.image.commons.xml.castor.modele.Documents">
+   <class name="fr.urssaf.image.commons.xml.castor.modele.Documents" auto-complete="true">
 
+      <map-to xml="documents"/>
+      
       <field name="documents" type="fr.urssaf.image.commons.xml.castor.modele.Document"
-         collection="arraylist">
+         collection="arraylist" >
          <bind-xml name="document" node="element" />
       </field>
 

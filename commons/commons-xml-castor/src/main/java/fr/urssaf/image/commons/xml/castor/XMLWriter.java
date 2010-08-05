@@ -2,7 +2,9 @@ package fr.urssaf.image.commons.xml.castor;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
+import org.castor.xml.XMLProperties;
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
@@ -18,14 +20,11 @@ public class XMLWriter<T> {
    public XMLWriter(String mappingFile) throws MappingException, IOException {
 
       Mapping mapping = new Mapping();
-
       mapping.loadMapping(mappingFile);
 
       context = new XMLContext();
       context.addMapping(mapping);
-      // context.setProperty("org.exolab.castor.xml.serializer.factory",
-      // "org.exolab.castor.xml.XercesXMLSerializerFactory");
-      context.setProperty("org.exolab.castor.indent", "true");
+      context.setProperty(XMLProperties.USE_INDENTATION, "true");
 
    }
 
@@ -51,8 +50,18 @@ public class XMLWriter<T> {
       });
 
       marshaller.setWriter(fileWriter);
-
       marshaller.marshal(arg);
+
+   }
+
+   public void write(List<T> args, String rootElement, Writer fileWriter)
+         throws IOException, MarshalException, ValidationException,
+         MappingException {
+
+      Marshaller marshaller = context.createMarshaller();
+      marshaller.setWriter(fileWriter);
+      marshaller.setRootElement(rootElement);
+      marshaller.marshal(args);
 
    }
 
