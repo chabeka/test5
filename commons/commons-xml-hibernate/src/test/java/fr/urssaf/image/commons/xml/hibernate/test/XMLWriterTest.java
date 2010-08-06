@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,19 +18,19 @@ import fr.urssaf.image.commons.xml.hibernate.dao.DocumentXML;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.xml")
-public class DocumentXMLTest {
-
+public class XMLWriterTest {
+   
+   private static final Logger LOG = Logger.getLogger(XMLWriterTest.class);
+   
    @Autowired
    private DocumentXML documentXML;
-
-   private static final String FILE;
 
    private static final String DIRECTORY;
 
    static {
       DIRECTORY = FilenameUtils.concat(SystemUtils.getJavaIoTmpDir()
-            .getAbsolutePath(), "mappingXML");
-      FILE = FilenameUtils.concat(DIRECTORY, "documents_hibernate.xml");
+            .getAbsolutePath(), "mappingXMLHibernate");
+      
    }
 
    @BeforeClass
@@ -43,8 +44,22 @@ public class DocumentXMLTest {
    @Test
    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void writeAllDocument() throws IOException {
-
+      
+      String FILE = FilenameUtils.concat(DIRECTORY, "documents_hibernate_all.xml");
+      LOG.debug(FILE);
+      
       documentXML.writeAllDocument(FILE);
+
+   }
+   
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   public void writeDocument() throws IOException {
+      
+      String FILE = FilenameUtils.concat(DIRECTORY, "documents_hibernate.xml");
+      LOG.debug(FILE);
+      
+      documentXML.writeDocument(FILE,10000);
 
    }
 

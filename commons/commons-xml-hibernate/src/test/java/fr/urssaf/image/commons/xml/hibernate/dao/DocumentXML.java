@@ -13,4 +13,6 @@ public interface DocumentXML {
 
    void writeAllDocument(String file) throws IOException;
    
+   void writeDocument(String file,int maxResult) throws IOException;
+   
 }
