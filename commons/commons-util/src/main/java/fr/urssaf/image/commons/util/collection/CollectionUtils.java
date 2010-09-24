@@ -6,7 +6,7 @@ public class CollectionUtils {
 
 	public static class CollectionComparator<O> {
 
-		public boolean equals(Collection<O> arg1, Collection<O> arg2) {
+		public final boolean equals(Collection<O> arg1, Collection<O> arg2) {
 
 			boolean isEquals;
 

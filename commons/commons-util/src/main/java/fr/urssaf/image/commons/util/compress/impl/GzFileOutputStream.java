@@ -15,14 +15,14 @@ public class GzFileOutputStream extends AbstractFileOutputStream<GzipCompressorO
    }
 
    @Override
-   protected void compressFile(File file, GzipCompressorOutputStream out)
+   protected final void compressFile(File file, GzipCompressorOutputStream out)
          throws IOException {
       FileWriterUtil.copy(file, out);
 
    }
 
    @Override
-   protected GzipCompressorOutputStream createOutputStream(
+   protected final GzipCompressorOutputStream createOutputStream(
          BufferedOutputStream buff) throws IOException {
       GzipCompressorOutputStream out = new GzipCompressorOutputStream(
             buff);

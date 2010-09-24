@@ -6,15 +6,15 @@ public abstract class AbstractComparator<T> implements Comparator<T> {
 
 	private boolean inverse;
 
-	protected void setInverse(boolean inverse) {
+	protected final void setInverse(boolean inverse) {
 		this.inverse = inverse;
 	}
 
-	protected boolean isInverse() {
+	protected final boolean isInverse() {
 		return this.inverse;
 	}
 
-	public int compare(T arg1, T arg2) {
+	public final int compare(T arg1, T arg2) {
 
 		int compare = 0;
 
@@ -37,15 +37,15 @@ public abstract class AbstractComparator<T> implements Comparator<T> {
 		
 	}
 
-	public boolean sup(T arg1, T arg2) {
+	public final boolean sup(T arg1, T arg2) {
 	   return compare(arg1, arg2) > 0; 
 	}
 
-	public boolean inf(T arg1, T arg2) {
+	public final boolean inf(T arg1, T arg2) {
 		return compare(arg1, arg2) < 0 ;
 	}
 
-	public boolean range(T arg, T min, T max, boolean minClose, boolean maxClose) {
+	public final boolean range(T arg, T min, T max, boolean minClose, boolean maxClose) {
 
 		return (minClose ? !inf(arg, min) : sup(arg, min))
 				&& (maxClose ? !sup(arg, max) : inf(arg, max));

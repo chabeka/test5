@@ -18,7 +18,7 @@ public class FileThread extends Thread {
 	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
 			"dd/MM/yyyy HH:mm:ss", Locale.getDefault());
 
-	private final static String FILE = "src/test/resources/file/file_lock.txt";
+	private static final String FILE = "src/test/resources/file/file_lock.txt";
 
 	private final LockFile file;
 

@@ -12,6 +12,12 @@ public class GzFileInputStream {
 
    private final String compressFileName;
    private final String repertory;
+   
+   /**
+    * Taille d'un buffer pour la lecture d'un fichier (en octets)
+    */
+   private static final int BUFFER_READ_SIZE = 2048;
+   
 
    public GzFileInputStream(String compressFileName, String repertory) {
       this.compressFileName = compressFileName;
@@ -19,7 +25,7 @@ public class GzFileInputStream {
    }
 
    @SuppressWarnings("PMD.AssignmentInOperand")
-   public String uncompress() throws IOException {
+   public final String uncompress() throws IOException {
       FileInputStream inputStream = new FileInputStream(this.compressFileName);
 
       String name = FilenameUtils.concat(repertory, FilenameUtils
@@ -28,7 +34,7 @@ public class GzFileInputStream {
       FileOutputStream out = new FileOutputStream(name);
       GzipCompressorInputStream bzIn = new GzipCompressorInputStream(inputStream);
       try {
-         final byte[] buffer = new byte[2048];
+         final byte[] buffer = new byte[BUFFER_READ_SIZE];
          int byteInput = 0;
          while (-1 != (byteInput = bzIn.read(buffer))) {
             out.write(buffer, 0, byteInput);

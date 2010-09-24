@@ -26,7 +26,7 @@ public class TarGzFileInputStream {
    }
 
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-   public void uncompress() throws IOException {
+   public final void uncompress() throws IOException {
 
       FileInputStream fileInput = new FileInputStream(this.compressFileName);
       GzipCompressorInputStream gzInput = new GzipCompressorInputStream(

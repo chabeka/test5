@@ -6,7 +6,7 @@ import fr.urssaf.image.commons.util.comparable.ObjectComparator;
 
 public final class DateCompareUtil {
 
-	private final static ObjectComparator<Date> COMPARATOR = new ObjectComparator<Date>();
+	private static final ObjectComparator<Date> COMPARATOR = new ObjectComparator<Date>();
 
 	private DateCompareUtil(){
 		

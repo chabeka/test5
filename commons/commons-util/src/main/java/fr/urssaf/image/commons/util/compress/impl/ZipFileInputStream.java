@@ -12,7 +12,7 @@ public class ZipFileInputStream extends AbstractFileInputStream<ZipArchiveInputS
    }
 
    @Override
-   protected ZipArchiveInputStream getArchiveInputStream(InputStream inputStream) {
+   protected final ZipArchiveInputStream getArchiveInputStream(InputStream inputStream) {
       return new ZipArchiveInputStream(inputStream);
    }
 }

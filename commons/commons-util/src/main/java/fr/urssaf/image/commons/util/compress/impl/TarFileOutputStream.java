@@ -17,7 +17,7 @@ public class TarFileOutputStream extends
    }
 
    @Override
-   protected void compressFile(File file, TarArchiveOutputStream out)
+   protected final void compressFile(File file, TarArchiveOutputStream out)
          throws IOException {
 
       tarOutputStream.compressFile(file, out);
@@ -25,7 +25,7 @@ public class TarFileOutputStream extends
    }
 
    @Override
-   protected TarArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
+   protected final TarArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
       return tarOutputStream.createOutputStream(buff);
    }
 }

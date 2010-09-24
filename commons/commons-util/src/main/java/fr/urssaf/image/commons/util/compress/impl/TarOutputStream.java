@@ -19,7 +19,7 @@ public class TarOutputStream extends
    }
 
    @Override
-   protected void compressFile(File file, TarArchiveOutputStream out)
+   protected final void compressFile(File file, TarArchiveOutputStream out)
          throws IOException {
 
       TarArchiveEntry entry = new TarArchiveEntry(file, ArchiveUtil.entry(
@@ -29,7 +29,7 @@ public class TarOutputStream extends
    }
 
    @Override
-   protected TarArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
+   protected final TarArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
       return new TarArchiveOutputStream(buff);
    }
 }

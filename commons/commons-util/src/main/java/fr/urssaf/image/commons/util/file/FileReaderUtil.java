@@ -22,7 +22,7 @@ public final class FileReaderUtil {
     * @param file
     *           le chemin du fichier à lire
     * @return la chaîne de caractères contenant l'ensemble du fichier
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     */
    public static String read(String file) throws IOException {
       return read(new File(file));
@@ -37,7 +37,7 @@ public final class FileReaderUtil {
     *           l'encodage à utiliser pour lire le fichier (par exemple :
     *           "UTF-8")
     * @return la chaîne de caractères contenant l'ensemble du fichier
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     */
    public static String read(String file, String encoding) throws IOException {
       return read(new File(file), encoding);
@@ -49,7 +49,7 @@ public final class FileReaderUtil {
     * @param file
     *           le fichier à lire
     * @return la chaîne de caractères contenant l'ensemble du fichier
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     */
    public static String read(File file) throws IOException {
       return read(file, Charset.defaultCharset().name());
@@ -64,7 +64,7 @@ public final class FileReaderUtil {
     *           l'encodage à utiliser pour lire le fichier (par exemple :
     *           "UTF-8")
     * @return la chaîne de caractères contenant l'ensemble du fichier
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     */
    public static String read(File file, String encoding) throws IOException {
       return  FileUtils.readFileToString(file, encoding);

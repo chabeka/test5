@@ -13,7 +13,7 @@ public class TarFileInputStream extends AbstractFileInputStream<TarArchiveInputS
    }
 
    @Override
-   protected TarArchiveInputStream getArchiveInputStream(InputStream inputStream) {
+   protected final TarArchiveInputStream getArchiveInputStream(InputStream inputStream) {
       return new TarArchiveInputStream(inputStream);
    }
    

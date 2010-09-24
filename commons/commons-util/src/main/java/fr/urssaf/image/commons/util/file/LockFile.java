@@ -31,7 +31,7 @@ public class LockFile{
 		init();
 	}
 
-	public String read() throws IOException {
+	public final String read() throws IOException {
 
 		lock(true);
 
@@ -54,7 +54,7 @@ public class LockFile{
 		}
 
 	}
-	public void write(String text) throws IOException {
+	public final void write(String text) throws IOException {
 
 		lock(false);
 

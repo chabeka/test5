@@ -31,6 +31,25 @@ public final class Base64Encode {
 
    private static final Logger LOGGER = Logger.getLogger(Base64Encode.class);
    
+   
+   /**
+    * Longueur par défaut d'une ligne de Base64 écrite dans un fichier.<br>
+    * <br>
+    * Si la longueur de la chaîne base64 est supérieure à cette valeur, la
+    * chaîne sera découpée en plusieurs lignes.<br>
+    * <br>
+    * La valeur de 76 caractères est issue du standard MIME qui fixe aux lignes
+    * une longueur de maximale de 76 caractères (cf. RFC 2045) 
+    *  
+    */
+   private static final int LGR_LGN_DANS_FIC = 76;
+   
+   
+   /**
+    * Taille d'un buffer pour la lecture d'un fichier (en octets)
+    */
+   private static final int BUFFER_READ_SIZE = 1024;
+   
    private Base64Encode() {
 
    }
@@ -102,9 +121,8 @@ public final class Base64Encode {
    public static void encodeFile(String fichierSource, String fichierDest)
          throws IOException {
       
-      int longueurLigne = 76; // longueur par défaut
       byte[] separateurLigne = SystemUtils.LINE_SEPARATOR.getBytes();
-      encodeFile(fichierSource,fichierDest,longueurLigne,separateurLigne);
+      encodeFile(fichierSource,fichierDest,LGR_LGN_DANS_FIC,separateurLigne);
       
    }
    
@@ -153,14 +171,14 @@ public final class Base64Encode {
     * 
     * @param cheminFichier Le chemin du fichier
     * @return contenu du fichier en base64
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     *  
     */
    public static String encodeFileToString(String cheminFichier) throws IOException {
       FileInputStream fis = new FileInputStream(cheminFichier); 
       Base64InputStream base64inputStream = new Base64InputStream(fis,true,-1,null);
       StringBuffer base64 = new StringBuffer();
-      byte[] buffer = new byte[1024];
+      byte[] buffer = new byte[BUFFER_READ_SIZE];
       int lus;
       do
       {

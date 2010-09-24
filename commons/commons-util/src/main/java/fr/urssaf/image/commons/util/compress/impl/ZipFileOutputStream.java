@@ -19,7 +19,7 @@ public class ZipFileOutputStream extends
    }
 
    @Override
-   protected ZipArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
+   protected final ZipArchiveOutputStream createOutputStream(BufferedOutputStream buff) {
 
       // création d'un flux d'écriture Zip
       ZipArchiveOutputStream out = new ZipArchiveOutputStream(buff);
@@ -31,7 +31,7 @@ public class ZipFileOutputStream extends
    }
 
    @Override
-   protected void compressFile(File file, ZipArchiveOutputStream out)
+   protected final void compressFile(File file, ZipArchiveOutputStream out)
          throws IOException {
 
       ZipArchiveEntry entry = new ZipArchiveEntry(file, ArchiveUtil.entry(

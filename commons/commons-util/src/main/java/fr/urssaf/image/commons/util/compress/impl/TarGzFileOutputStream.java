@@ -19,11 +19,11 @@ public class TarGzFileOutputStream {
       tarOutputStream = new TarOutputStream(fileName);
    }
 
-   public void setExtensions(String... extensions) {
+   public final void setExtensions(String... extensions) {
       tarOutputStream.setExtensions(extensions);
    }
 
-   public String compress() throws IOException {
+   public final String compress() throws IOException {
 
       // création d'un buffer d'écriture
       ByteArrayOutputStream tarDest = new ByteArrayOutputStream();

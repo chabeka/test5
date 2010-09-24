@@ -1,7 +1,5 @@
 package fr.urssaf.image.commons.util.checksum;
 
-import java.io.IOException;
-
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -70,7 +68,7 @@ public final class ChecksumStringUtil {
     *           chaine de caractère
     * @return chaine de caractère en hexa
     */
-   public static String sha384(String data) throws IOException {
+   public static String sha384(String data) {
       return DigestUtils.sha384Hex(data);
    }
 
@@ -82,7 +80,7 @@ public final class ChecksumStringUtil {
     *           chaine de caractère
     * @return chaine de caractère en hexa
     */
-   public static String sha512(String data) throws IOException {
+   public static String sha512(String data) {
       return DigestUtils.sha512Hex(data);
    }
 

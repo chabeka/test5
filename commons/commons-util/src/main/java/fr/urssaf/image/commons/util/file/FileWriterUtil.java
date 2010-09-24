@@ -27,6 +27,7 @@ public final class FileWriterUtil {
     * @param file
     *           le chemin du fichier
     * @throws IOException
+    *           en cas d'erreur d'E/S
     */
    public static void write(String text, String file) throws IOException {
       write(text, new File(file));
@@ -42,6 +43,7 @@ public final class FileWriterUtil {
     * @param encoding
     *           l'encodage à utiliser (par exemple : "UTF-8")
     * @throws IOException
+    *           en cas d'erreur d'E/S
     */
    public static void write(String text, String file, String encoding)
          throws IOException {
@@ -56,6 +58,7 @@ public final class FileWriterUtil {
     * @param file
     *           le fichier dans lequel écrire
     * @throws IOException
+    *           en cas d'erreur d'E/S
     */
    public static void write(String text, File file) throws IOException {
       write(text, file, Charset.defaultCharset().name());
@@ -71,6 +74,7 @@ public final class FileWriterUtil {
     * @param encoding
     *           l'encodage à utiliser (par exemple : "UTF-8")
     * @throws IOException
+    *           en cas d'erreur d'E/S
     */
    public static void write(String text, File file, String encoding)
          throws IOException {
@@ -93,7 +97,7 @@ public final class FileWriterUtil {
     * @param out
     *           flux d'écriture
     * @throws IOException
-    *            exception sur les fichiers
+    *            en cas d'erreur d'E/S
     */
    public static void copy(File file, OutputStream out) throws IOException {
 
