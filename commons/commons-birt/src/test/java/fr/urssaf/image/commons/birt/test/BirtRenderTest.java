@@ -21,6 +21,7 @@ import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtExcepti
 import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
+import fr.urssaf.image.commons.util.tests.TestsUtils;
 
 @SuppressWarnings({"PMD.TooManyMethods","PMD.AvoidDuplicateLiterals"})
 public class BirtRenderTest {
@@ -33,7 +34,8 @@ public class BirtRenderTest {
    
 	private static String reportEngineHome = null ;
 	
-	private static final String OUTPUT_FILENAME = "monRapportGenereEn" ;
+	private String outputFileName;
+	
 	private static final String REPORT_FILE_PATH = "./src/test/resources/reports/monPremierRapport.rptdesign" ;
 	private static final String EXTENSION_PDF = ".pdf";
 	private static final String EXTENSION_HTML = ".html";
@@ -46,8 +48,12 @@ public class BirtRenderTest {
 	   // setup reportEngineHome
       reportEngineHome = BirtTools.getBirtHomeFromEnvVar() ;
 	   
+      // Détermine le nom du fichier utilisé par BIRT pour générer le rapport
+      // Il s'agit uniquement du nom, tel que "toto", sans le répertoire ni l'extension
+      outputFileName = getOutputFileName();
+      
 	   birtEngine = BirtEngine.getInstance( reportEngineHome, logsPath, null ) ;
-	   birtRender = new BirtRender(outputPath, OUTPUT_FILENAME);
+	   birtRender = new BirtRender(outputPath, outputFileName);
 	   
 	   paramValues = new HashMap<Object, Object>() ;
       paramValues.put("monParametreTitreDePage", "Titre de ma page - Test unitaire");
@@ -57,12 +63,12 @@ public class BirtRenderTest {
 	@After
 	public void tearDown() throws Exception {
 	   
-		File fPdf = new File( FilenameUtils.concat(outputPath, OUTPUT_FILENAME) + EXTENSION_PDF );
+		File fPdf = new File( FilenameUtils.concat(outputPath, outputFileName) + EXTENSION_PDF );
 		if ( fPdf.exists() ) { 
 			fPdf.delete();
 		}
 		
-		File fHtml = new File( FilenameUtils.concat(outputPath,OUTPUT_FILENAME) + EXTENSION_HTML );
+		File fHtml = new File( FilenameUtils.concat(outputPath,outputFileName) + EXTENSION_HTML );
 		if ( fHtml.exists() ) {
 			fHtml.delete();
 		}
@@ -76,6 +82,17 @@ public class BirtRenderTest {
       
    }
    
+	/**
+	 * Renvoie un nom de fichier unique pour la sortie de BIRT.<br>
+	 *  
+	 * @return le nom de fichier unique
+	 */
+	private final String getOutputFileName()
+	{
+	   return TestsUtils.getTemporaryFileName("monRapportGenereEn_");
+	}
+	
+	
    private void killBirtEngineInstance()
    {
       if( birtEngine != null )
@@ -92,10 +109,10 @@ public class BirtRenderTest {
    public void testBirtRender() {
       assertTrue( outputPath + " attendu, " + birtRender.getOutputPath() + "obtenu", 
             birtRender.getOutputPath().equals( outputPath ) ) ;
-      assertTrue( OUTPUT_FILENAME + " attendu, " + birtRender.getOutputFilename() + "obtenu", 
-            birtRender.getOutputFilename().equals( OUTPUT_FILENAME ) );
-      assertTrue( OUTPUT_FILENAME + " attendu, " + birtRender.getDefaultOutputFilename() + "obtenu", 
-            birtRender.getDefaultOutputFilename().equals( OUTPUT_FILENAME ) );
+      assertTrue( outputFileName + " attendu, " + birtRender.getOutputFilename() + "obtenu", 
+            birtRender.getOutputFilename().equals( outputFileName ) );
+      assertTrue( outputFileName + " attendu, " + birtRender.getDefaultOutputFilename() + "obtenu", 
+            birtRender.getDefaultOutputFilename().equals( outputFileName ) );
    }
    
 	/**
@@ -117,7 +134,7 @@ public class BirtRenderTest {
 		assertTrue("Le serveur ne semble pas stoppé", birtEngine.isStopped()) ;
       
 		@SuppressWarnings("unused")
-      BirtRender newBirtRender = new BirtRender(outputPath, OUTPUT_FILENAME);
+      BirtRender newBirtRender = new BirtRender(outputPath, outputFileName);
 	}
 	
 	/**
@@ -194,7 +211,7 @@ public class BirtRenderTest {
       NoEngineBirtEngineException, 
       NoInstanceBirtEngineException {
       
-      new BirtRender( null, OUTPUT_FILENAME ) ;
+      new BirtRender( null, outputFileName ) ;
    }
 	
 	/**
@@ -212,7 +229,7 @@ public class BirtRenderTest {
 	   NoEngineBirtEngineException {
 			
 		birtRender.doRender( REPORT_FILE_PATH, BirtRender._MODE_PDF_, paramValues );
-		File file = new File( FilenameUtils.concat(outputPath,OUTPUT_FILENAME) + EXTENSION_PDF );
+		File file = new File( FilenameUtils.concat(outputPath,outputFileName) + EXTENSION_PDF );
 		assertTrue( "Le fichier pdf n'a pas été créé", file.exists() ) ;
 		
 	}
@@ -231,7 +248,7 @@ public class BirtRenderTest {
       NoEngineBirtEngineException {
         
       birtRender.doRender( REPORT_FILE_PATH, BirtRender._MODE_HTML_, paramValues );
-      File file = new File( FilenameUtils.concat(outputPath,OUTPUT_FILENAME) + EXTENSION_HTML );
+      File file = new File( FilenameUtils.concat(outputPath,outputFileName) + EXTENSION_HTML );
       assertTrue( "Le fichier pdf n'a pas été créé", file.exists() ) ;
    
 	}
@@ -251,7 +268,7 @@ public class BirtRenderTest {
 	   NoEngineBirtEngineException {
 		      
       birtRender.doRender( REPORT_FILE_PATH, 9999, paramValues );
-      File file = new File( FilenameUtils.concat(outputPath,OUTPUT_FILENAME) + EXTENSION_PDF );
+      File file = new File( FilenameUtils.concat(outputPath,outputFileName) + EXTENSION_PDF );
       assertTrue( "Le fichier pdf n'a pas été créé", file.exists() ) ;
 		
 	}
@@ -296,7 +313,7 @@ public class BirtRenderTest {
 	   NoEngineBirtEngineException {
 
 		birtRender.doRender( REPORT_FILE_PATH, null, 1, paramValues );
-		File file = new File( FilenameUtils.concat(outputPath,OUTPUT_FILENAME) + EXTENSION_PDF );
+		File file = new File( FilenameUtils.concat(outputPath,outputFileName) + EXTENSION_PDF );
       assertTrue( "Le fichier pdf n'a pas été créé", file.exists() ) ;
       
       file.delete() ; // nettoyage
