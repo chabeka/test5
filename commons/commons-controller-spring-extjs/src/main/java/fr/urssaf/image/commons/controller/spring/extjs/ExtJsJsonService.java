@@ -35,7 +35,7 @@ public final class ExtJsJsonService {
     * La chaîne JSON est au format indiqué dans la fiche de développement "F022 : Javascript : Utilisation du framework extjs"
     * @param value l'objet ExtJsJsonReturnValue à convertir en JSON
     * @return la chaîne JSON
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     */
    public static String returnValueToJson(ExtJsJsonReturnValue value) throws IOException
    {
@@ -86,7 +86,7 @@ public final class ExtJsJsonService {
     * Les erreurs de saisie sont issues de la validation de la classe de formulaire par Spring
     * @param errors les erreurs de saisie utilisateur
     * @return la chaîne JSON pour ExtJs
-    * @throws IOException
+    * @throws IOException en cas d'erreur d'E/S
     */
    public static String fieldErrorsToJson(List<FieldError> errors) throws IOException
    {

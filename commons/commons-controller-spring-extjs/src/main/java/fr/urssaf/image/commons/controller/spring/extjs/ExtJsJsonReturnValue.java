@@ -43,46 +43,46 @@ public class ExtJsJsonReturnValue {
 
 
    /**
-    * Booléen indiquant si le retour est un succès ou un échec
-    * @return
+    * Renvoie le flag indiquant si le retour est un succès ou un échec
+    * @return indique si le retour est un succès ou un échec
     */
-   public Boolean getSuccess() {
+   public final Boolean getSuccess() {
       return success;
    }
 
 
    /**
-    * Booléen indiquant si le retour est un succès ou un échec
-    * @param success
+    * Positionne le flag indiquant si le retour est un succès ou un échec
+    * @param success indique si le retour est un succès ou un échec
     */
-   public void setSuccess(Boolean success) {
+   public final void setSuccess(Boolean success) {
       this.success = success;
    }
 
 
    /**
-    * Message général (de succès ou d'échec)
-    * @return
+    * Renvoie le message général (de succès ou d'échec)
+    * @return Message général (de succès ou d'échec) 
     */
-   public String getMessage() {
+   public final String getMessage() {
       return message;
    }
 
 
    /**
-    * Message général (de succès ou d'échec)
-    * @param message
+    * Définit le message général (de succès ou d'échec)
+    * @param message Message général (de succès ou d'échec)
     */
-   public void setMessage(String message) {
+   public final void setMessage(String message) {
       this.message = message;
    }
 
 
    /**
-    * Liste des erreurs de saisie utilisateur
-    * @return
+    * Renvoie la liste des erreurs de saisie utilisateur
+    * @return liste des erreurs de saisie utilisateur
     */
-   public Map<String, String> getErrors() {
+   public final Map<String, String> getErrors() {
       return errors;
    }
 
@@ -92,7 +92,7 @@ public class ExtJsJsonReturnValue {
     * @param nomChamp Le nom du champ du formulaire
     * @param messageErreur Le message d'erreur
     */
-   public void ajouteErreur(String nomChamp, String messageErreur)
+   public final void ajouteErreur(String nomChamp, String messageErreur)
    {
       this.errors.put(nomChamp, messageErreur);
    }
