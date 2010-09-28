@@ -16,11 +16,12 @@ import org.eclipse.birt.report.engine.api.IReportEngineFactory;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
-import fr.urssaf.image.commons.birt.exception.NullConfigBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
 
 /**
- * Classe permettant de démarrer le serveur Birt
+ * Classe permettant de démarrer le serveur BIRT<br>
+ * <br>
+ * <b><u>Pour l'utilisation des classes de BIRT, se référer à la fiche de développement F025</u></b>
  */
 public final class BirtEngine
 {
@@ -28,25 +29,36 @@ public final class BirtEngine
    
    private static BirtEngine instance = null ;
    
+   /**
+    * le contexte de la servlet qui veut utiliser BIRT
+    */
    private ServletContext servletContext ;
+   
+   
+   /**
+    * Le chemin complet du Report Engine tel qu'il a été passé
+    * à la méthode {@link #getInstance(String, String, ServletContext)}
+    */
    private String reportEnginePath ;
+   
+   
+   /**
+    * Le répertoire dans lequel BIRT doit générer ses logs, tel
+    * qu'il a été passé à la méthode {@link #getInstance(String, String, ServletContext)}
+    */
    private String logPath ;
    
-   // protected Level logLevel = Level.OFF ;
+   
+   /**
+    * Le niveau de log
+    */
    private Level logLevel = Level.ALL ;
+   
+   
    private IReportEngine engine = null ;
    private boolean stopped = true ;
    
    
-   /**
-    * Démarre le serveur Birt
-    * @param reportEnginePath
-    * @param logPath
-    * @param context
-    * @throws MissingConstructorParamBirtException 
-    * @throws BirtException 
-    * @throws NullFactoryBirtEngineException 
-    */
    private BirtEngine(
          String reportEnginePath,
          String logPath,
@@ -67,7 +79,11 @@ public final class BirtEngine
    
    /**
     * Retourne l'instance du BirtEngine, qu'il soit démarré ou non
-    * @throws NoInstanceBirtEngineException 
+    * 
+    * @return l'instance du BirtEngine
+    * @throws NoInstanceBirtEngineException Si l'objet {@link BirtEngine} 
+    *         n'a pas été créé au préalable à l'aide de la factory
+    *         {@link BirtEngineFactory}
     */
    public static BirtEngine getInstance() 
    throws NoInstanceBirtEngineException {
@@ -82,13 +98,17 @@ public final class BirtEngine
    
    /**
     * Retourne l'instance existante du BirtEngine, ou en créé une nouvelle
-    * @param reportEnginePath
-    * @param logPath
-    * @param context
+    * 
+    * @param reportEnginePath le chemin complet du BIRT Report Engine. Une chaîne vide est
+    *        autorisée si le paramètre <code>context</code> est renseigné. La valeur 
+    *        <code>null</code> est par contre interdite.
+    * @param logPath le répertoire dans lequel BIRT doit générer ses fichiers de logs (option)
+    * @param context l'objet {@link ServletContext} de la servlet voulant utiliser BIRT. 
+    *        Mettre <code>null</code> si on est dans un contexte non web.
     * @return l'instance du BirtEngine
-    * @throws NullFactoryBirtEngineException 
-    * @throws BirtException 
-    * @throws MissingConstructorParamBirtException 
+    * @throws NullFactoryBirtEngineException si le BIRT Report Engine n'arrive pas à créer sa Factory 
+    * @throws BirtException si le BIRT Report Engine rencontre un problème
+    * @throws MissingConstructorParamBirtException si un problème survient lors de l'instanciation du {@link BirtEngine} 
     */
    public static BirtEngine getInstance(
          String reportEnginePath,
@@ -104,16 +124,18 @@ public final class BirtEngine
       try {
          returnedInstance = BirtEngine.getInstance() ;
       } catch ( NoInstanceBirtEngineException e ) {
-         returnedInstance = BirtEngine.instance = new BirtEngine(reportEnginePath, logPath, context) ;
+         BirtEngine.instance = new BirtEngine(reportEnginePath, logPath, context) ;
+         returnedInstance = BirtEngine.instance;
       }      
       
       return returnedInstance ;
    }
    
    /**
-    * @param lvl
-    * @return success or failure
     * Permet de modifier le niveau de log
+    * 
+    * @param lvl le niveau de log que l'on veut atteindre
+    * @return un flag indiquant si le changement de niveau de log a eu lieu
     */
    public Boolean doChangeLogLevel( Level lvl ) {
       
@@ -143,9 +165,7 @@ public final class BirtEngine
       }
    }
    
-   /**
-    * @return la configuration du moteur
-    */
+   
    private EngineConfig getConfig() {
       
       final EngineConfig config = new EngineConfig( );
@@ -171,9 +191,7 @@ public final class BirtEngine
       return config ;
    }
    
-   /**
-    * @return la configuration du moteur
-    */
+   
    private IPlatformContext getContext() {
       
       IPlatformContext context = new PlatformServletContext( servletContext );
@@ -181,12 +199,7 @@ public final class BirtEngine
       return context ;
    }
    
-   /**
-    * @param config
-    * @throws BirtException
-    * @throws NullFactoryBirtEngineException 
-    * 
-    */
+   
    private void startEngine( EngineConfig config ) 
    throws 
       BirtException, 
@@ -213,36 +226,13 @@ public final class BirtEngine
       stopped = false ;
    }
    
-   /**
-    * @param config
-    * @return the engine, start it if not defined
-    * @throws BirtException
-    * @throws NullConfigBirtEngineException 
-    * @throws NullFactoryBirtEngineException 
-    */
-   protected IReportEngine getEngine( EngineConfig config ) 
-   throws 
-      BirtException, 
-      NullConfigBirtEngineException, 
-      NullConfigBirtEngineException, 
-      NullFactoryBirtEngineException {
-      
-      if( config == null )
-      {
-         throw new NullConfigBirtEngineException() ;
-      }
-      
-      if( engine == null 
-          && config != null ) {
-         startEngine( config );       
-      }
-      
-      return engine ;
-   }
+   
    
    /**
-    * @return the engine
-    * @throws NoEngineBirtEngineException
+    * Renvoie l'interface du ReportEngine
+    * 
+    * @return l'interface du ReportEngine
+    * @throws NoEngineBirtEngineException si le serveur BIRT n'est pas démarré
     */
    public IReportEngine getEngine() 
    throws NoEngineBirtEngineException {
@@ -254,12 +244,7 @@ public final class BirtEngine
       return engine ;
    }
    
-   /**
-    * Positionne les variables par défaut envoyées aux constructeurs
-    * @param reportEnginePath
-    * @param logPath
-    * @throws MissingConstructorParamBirtException
-    */
+   
    private void setConstructorParams(
          String reportEnginePath,
          String logPath,
@@ -281,11 +266,7 @@ public final class BirtEngine
       }
       
       // en mode javaApplication, context peut être null SI reportEnginePath n'est pas vide
-      if ( context == null 
-            && ( reportEnginePath == null 
-                  || reportEnginePath.isEmpty() 
-               ) 
-      )
+      if ((context==null) && (reportEnginePath.isEmpty()))
       {
          throw new MissingConstructorParamBirtException("context") ;
       }
@@ -304,43 +285,52 @@ public final class BirtEngine
    }
    
    /**
-    * @return the servletContext
+    * Renvoie le contexte de la servlet qui veut utiliser BIRT
+    * 
+    * @return le contexte de la servlet qui veut utiliser BIRT
     */
    public ServletContext getServletContext() {
       return servletContext;
    }
 
    /**
-    * set the servletContext
-    * @param servletContext
+    * Définit le contexte de la servlet qui veut utiliser BIRT
+    * @param servletContext le contexte de la servlet qui veut utiliser BIRT
     */
    public void setServletContext(final ServletContext servletContext) {
       this.servletContext = servletContext;
    }
    
    /**
-    * Méthodes pour les tests
+    * Renvoie un flag indiquant si le Birt Engine est arrêté
+    * @return un flag indiquant si le Birt Engine est arrêté
     */
    public Boolean isStopped() {
       return stopped ;
    }
    
    /**
-    * @return the logLevel
+    * Renvoie le niveau de log
+    * @return le niveau de log
     */
    public Level getLogLevel() {
       return logLevel ;
    }
    
    /**
-    * @return the reportEnginePath
+    * Renvoie le chemin complet du Report Engine tel qu'il a été passé
+    * à la méthode {@link #getInstance(String, String, ServletContext)}
+    * @return le chemin complet du Report Engine
     */
    public String getReportEnginePath() {
       return reportEnginePath;
    }
 
    /**
-    * @return the logPath
+    * Renvoie le répertoire dans lequel BIRT doit générer ses logs, tel
+    * qu'il a été passé à la méthode {@link #getInstance(String, String, ServletContext)}
+    * 
+    * @return le répertoire des logs
     */
    public String getLogPath() {
       return logPath;

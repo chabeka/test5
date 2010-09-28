@@ -21,30 +21,67 @@ import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
 
 
 /**
- * Classe permettant de générer des rapports html ou pdf à partir de rapports BIRT
+ * Classe permettant de générer des rapports html ou pdf à partir de rapports BIRT<br>
+ * <br>
+ * <b><u>Pour l'utilisation des classes de BIRT, se référer à la fiche de développement F025</u></b>
  */
-public class BirtRender
+public final class BirtRender
 {
+   
+   /**
+    * Le répertoire dans lequel générer le rapport
+    */
 	private String outputPath ;
-	private String defaultOutputFilename ; //NOPMD
+	
+	
+	/**
+	 * Le nom du fichier dans lequel générer le rapport (sans l'extension)
+	 */
 	private String outputFilename ;
 	
-	final public static int _MODE_PDF_ = 1 ;
-	final public static int _MODE_HTML_ = 2 ; 
-	final public static int _MODE_DEFAULT_ = _MODE_PDF_ ;
+	
+	/**
+	 * Le nom de fichier par défaut dans lequel générer le rapport (sans l'extension)
+	 */
+	private String defaultOutputFilename ; //NOPMD
+	
 	
 	private static final Logger LOGGER = Logger.getLogger(BirtRender.class);
 	
+	
+	/**
+    * Le format de rendu du rapport 
+    *
+    */
+   public enum EnumFormatRendu {
+      
+      /**
+       * PDF
+       */
+      PDF,
+      
+      /**
+       * HTML
+       */
+      HTML
+      
+   };
+	
+   
 	/**
 	 * Démarre le moteur de rendu
-	 * @param outputPath
-	 * @param output_filename
-	 * @throws MissingConstructorParamBirtException 
-	 * @throws BirtException 
-	 * @throws NoEngineBirtEngineException 
-	 * @throws NoEngineBirtEngineException 
-	 * @throws NoInstanceBirtEngineException 
-	 * @throws NoInstanceBirtEngineException 
+	 * 
+	 * @param outputPath le répertoire dans lequel générer le rapport
+	 * @param outputFilename le nom du fichier dans lequel générer le rapport (sans l'extension)
+	 * @throws MissingConstructorParamBirtException si un problème survient lors de 
+	 *         l'instanciation du {@link BirtEngine}
+	 * @throws BirtException si le BIRT Report Engine rencontre un problème 
+	 * @throws NoEngineBirtEngineException si le serveur BIRT n'est pas démarré
+	 * @throws NoInstanceBirtEngineException si l'objet {@link BirtEngine} n'a pas été créé  
+    *         au préalable à l'aide de la factory {@link BirtEngineFactory}
+    *         
+    * @see BirtEngineFactory#getBirtEngineInstance
+    *          
 	 */
 	public BirtRender(
 	      String outputPath,
@@ -58,36 +95,52 @@ public class BirtRender
 	   if( BirtEngine.getInstance() != null 
 	      && BirtEngine.getInstance().isStopped() )
 	   {
-	      throw new NoEngineBirtEngineException( "Le serveur Birt a été arrété" ) ;
+	      throw new NoEngineBirtEngineException( "Le serveur Birt a été arrêté" ) ;
 	   }
 	   
 		setConstructorParams( outputPath, outputFilename );
 	}
 	
 	/**
-	 * Lance la génération du rapport avec un nom de destination particulier
-	 * @param reportFilePath
-	 * @param outputFilename
-	 * @param renderMode
-	 * @param paramValues
-	 * @throws EngineException
-	 * @throws MissingParamBirtRenderException 
-	 * @throws NoInstanceBirtEngineException 
-	 * @throws NoEngineBirtEngineException 
+	 * Lance la génération du rapport avec la possibilité de spécifier un nom de
+	 * fichier de rapport différent de celui passé au constructeur de l'objet. 
+	 * 
+	 * @param reportFilePath emplacement du modèle de rapport (par exemple 
+	 * "<code>src/main/resources/reports/monModele.rptdesign</code>")
+	 * @param outputFilename le nom du fichier dans lequel générer le rapport
+	 * (sans les répertoires ni l'extension). Par exemple : "Rapport_2010". 
+	 * Le répertoire de sortie a été défini lors de la construction
+	 * de l'objet ({@link BirtRender#BirtRender(String, String)}). L'extension
+	 * sera déterminée automatiquement selon le format de rendu.
+	 * @param renderMode le format de rendu du rapport (PDF, HTML, ...)
+	 * @param paramValues les valeurs des paramètres dynamiques du rapport (dans
+	 * un modèle de rapport, il est possible d'indiquer des "variables" dont les
+	 * valeurs sont spécifiées lors de la génération du rapport, comme un titre, 
+	 * un auteur, ... cf. fiche de développement pour les détails)
+	 * @throws MissingParamBirtRenderException Si un paramètre est manquant lors de la 
+    *         demande du rendu d'un rapport
+    * @throws NoInstanceBirtEngineException si l'objet {@link BirtEngine} n'a pas été  
+    *         créé au préalable à l'aide de la factory {@link BirtEngineFactory} 
+    * @throws NoEngineBirtEngineException si le serveur BIRT n'est pas démarré
+	 * @throws EngineException si BIRT rencontre un problème lors du rendu
+	 * 
+	 * @see #doRender(String, EnumFormatRendu, Map)
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public void doRender(
 	      String reportFilePath,
 	      String outputFilename,
-	      int renderMode,
+	      EnumFormatRendu renderMode,
 	      Map paramValues )
 	throws
-	      EngineException,
-	      MissingParamBirtRenderException, 
-	      NoInstanceBirtEngineException, 
-	      NoEngineBirtEngineException {
-	   
-		if ( outputFilename == null )
+	MissingParamBirtRenderException, 
+	NoInstanceBirtEngineException, 
+	NoEngineBirtEngineException,      
+	EngineException
+	{
+
+	   if ( outputFilename == null )
 		{
 		   this.outputFilename = defaultOutputFilename ;
 		}
@@ -101,24 +154,33 @@ public class BirtRender
 	
 	/**
 	 * Lance la génération du rapport
-	 * @param reportFilePath
-	 * @param renderMode
-	 * @param paramValues
-	 * @throws EngineException
-	 * @throws MissingParamBirtRenderException 
-	 * @throws NoInstanceBirtEngineException 
-	 * @throws NoEngineBirtEngineException 
+	 * @param reportFilePath emplacement du modèle de rapport (par exemple 
+    * "<code>src/main/resources/reports/monModele.rptdesign</code>")
+	 * @param renderMode le format de rendu du rapport (PDF, HTML, ...)
+	 * @param paramValues les valeurs des paramètres dynamiques du rapport (dans
+    * un modèle de rapport, il est possible d'indiquer des "variables" dont les
+    * valeurs sont spécifiées lors de la génération du rapport, comme un titre, 
+    * un auteur, ... cf. fiche de développement pour les détails)
+	 * @throws MissingParamBirtRenderException Si un paramètre est manquant lors de la 
+    *         demande du rendu d'un rapport
+    * @throws NoInstanceBirtEngineException si l'objet {@link BirtEngine} n'a pas été  
+    *         créé au préalable à l'aide de la factory {@link BirtEngineFactory} 
+    * @throws NoEngineBirtEngineException si le serveur BIRT n'est pas démarré
+    * @throws EngineException si BIRT rencontre un problème lors du rendu
+    * 
+    * @see #doRender(String, String, EnumFormatRendu, Map)
+    * 
 	 */
 	@SuppressWarnings("unchecked")
 	public void doRender( 
 	      String reportFilePath, 
-	      int renderMode, 
+	      EnumFormatRendu renderMode, 
 	      Map paramValues ) 
 	throws 
-	   EngineException, 
 	   MissingParamBirtRenderException, 
 	   NoInstanceBirtEngineException, 
-	   NoEngineBirtEngineException {
+	   NoEngineBirtEngineException,
+	   EngineException{
 	   
 	   // Trace
 	   LOGGER.debug("Demande de génération d'un rapport BIRT");
@@ -156,16 +218,19 @@ public class BirtRender
 	}
 	
 	/**
-	 * @param renderMode
+	 * 
+	 * Création de l'objet contenant les paramètres de rendu pour le format de rendu (PDF, HTML, ...)
+	 * 
+	 * @param renderMode le format de rendu du rapport (PDF, HTML, ...)
 	 * @return Les options de rendu pour le moteur
 	 */
-	protected IRenderOption getRenderOptions( int renderMode )
+	protected IRenderOption getRenderOptions( EnumFormatRendu renderMode )
 	{		
 		IRenderOption options ;
 		String fileExtension ;
 		
 		switch ( renderMode ) {
-			case _MODE_HTML_:
+			case HTML:
 			   // Trace
 		      LOGGER.debug("Format de sortie du rapport : HTML");
 			   //Setup rendering to HTML
@@ -176,7 +241,7 @@ public class BirtRender
 				fileExtension = "html" ;
 				break ;
 				
-			case _MODE_PDF_ :
+			case PDF :
 			default :
 			   // Trace
             LOGGER.debug("Format de sortie du rapport : PDF");
@@ -195,12 +260,7 @@ public class BirtRender
 		return options;		
 	}	
 	
-	/**
-	 * Positionne les variables par défaut envoyées aux constructeurs
-	 * @param outputPath
-	 * @param outputFilename
-	 * @throws MissingConstructorParamBirtException
-	 */
+	
 	private void setConstructorParams(
 	      String outputPath,
 	      String outputFilename )
@@ -228,21 +288,24 @@ public class BirtRender
 	}
 
 	/**
-	 * @return the outputPath
+	 * Renvoie le répertoire dans lequel générer le rapport
+	 * @return le répertoire dans lequel générer le rapport
 	 */
 	public String getOutputPath() {
 		return outputPath;
 	}
 
 	/**
-	 * @return the outputFilename
+	 * Renvoie le nom du fichier dans lequel générer le rapport
+	 * @return le nom du fichier dans lequel générer le rapport
 	 */
 	public String getOutputFilename() {
 		return outputFilename;
 	}
 	
 	/**
-    * @return the defaultOutputFilename
+    * Renvoie le nom de fichier par défaut dans lequel générer le rapport
+    * @return le nom de fichier par défaut dans lequel générer le rapport
     */
    public String getDefaultOutputFilename() {
       return defaultOutputFilename;

@@ -11,21 +11,107 @@ import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtExcepti
 import fr.urssaf.image.commons.birt.exception.MissingKeyInHashMapBirtEngineFactoryException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
 
+
+/**
+ * Factory pour créer l'objet {@link BirtEngine} qui va piloter le BIRT Report Engine<br>
+ * <br>
+ * <b><u>Pour l'utilisation des classes de BIRT, se référer à la fiche de développement F025</u></b> 
+ *
+ */
 public final class BirtEngineFactory {
    
-   public static final Logger LOGGER = Logger.getLogger( BirtEngineFactory.class.getName() );
    
-   public static final int WEB_APP = 1 ;
-   public static final int JAVA_APP = 2 ;
+   private static final Logger LOGGER = Logger.getLogger(BirtEngineFactory.class);
    
+   
+   /**
+    * Type d'application qui veut utiliser BIRT
+    *
+    */
+   public enum EnumTypeApplication {
+      
+      /**
+       * Application Web
+       */
+      WEB_APP,
+      
+      /**
+       * Application qui n'est pas Web
+       */
+      JAVA_APP
+      
+   };
+   
+       
    private BirtEngineFactory()
    {}
    
-   public static BirtEngine getBirtEngineInstance( int appType, Map<String,Object> param ) 
+   
+   /**
+    * 
+    * Création d'une instance de la classe {@link BirtEngine} qui va piloter le BIRT Report Engine
+    * 
+    * @param appType type d'application requérant l'utilisation de BIRT (Web / non web)
+    * @param param les paramètres d'initialisation de BIRT (couples de clé/valeur) :<br>
+    * <br>
+    * <ul>
+    *    <li>
+    *       Pour une application Web, les paramètres sont :
+    *       <table border=1>
+    *          <tr>
+    *             <td><i>Clé</i></td>
+    *             <td><i>Valeur</i></td>
+    *             <td><i>Type de la valeur</i></td>
+    *             <td><i>Obligatoire</i></td>
+    *          </tr>
+    *          <tr>
+    *             <td>{@link BirtEngineFactoryKeys#SERVLET_CONTEXT}</td>
+    *             <td>l'objet ServletContext associé à la servlet depuis laquelle BIRT est utilisé</td>
+    *             <td>{@link ServletContext}</td>
+    *             <td>Oui</td>
+    *          </tr>
+    *          <tr>
+    *             <td>{@link BirtEngineFactoryKeys#LOG_PATH}</td>
+    *             <td>le chemin dans lequel écrire les fichiers de log BIRT</td>
+    *             <td>{@link String}</td>
+    *             <td>Non</td>
+    *          </tr>
+    *       </table>
+    *    </li>
+    *    <br>
+    *    <li>Pour une application <u>non</u> Web :</li>
+    *    <table border=1>
+    *          <tr>
+    *             <td><i>Clé</i></td>
+    *             <td><i>Valeur</i></td>
+    *             <td><i>Type de la valeur</i></td>
+    *             <td><i>Obligatoire</i></td>
+    *          </tr>
+    *          <tr>
+    *             <td>{@link BirtEngineFactoryKeys#REPORT_ENGINE_HOME}</td>
+    *             <td>le chemin complet du BIRT Report Engine</td>
+    *             <td>{@link String}</td>
+    *             <td>Oui</td>
+    *          </tr>
+    *          <tr>
+    *             <td>{@link BirtEngineFactoryKeys#LOG_PATH}</td>
+    *             <td>le chemin dans lequel écrire les fichiers de log BIRT</td>
+    *             <td>{@link String}</td>
+    *             <td>Non</td>
+    *          </tr>
+    *       </table>
+    * </ul>
+    * @return l'instance de l'objet {@link BirtEngine} 
+    * @throws MissingKeyInHashMapBirtEngineFactoryException si un paramètre obligatoire est manquant
+    * @throws MissingConstructorParamBirtException si un problème survient lors de l'instanciation du {@link BirtEngine}
+    * @throws BirtException si le BIRT Report Engine rencontre un problème
+    * @throws NullFactoryBirtEngineException si le BIRT Report Engine n'arrive pas à créer sa Factory
+    */
+   public static BirtEngine getBirtEngineInstance( EnumTypeApplication appType, Map<String,Object> param ) 
    throws MissingKeyInHashMapBirtEngineFactoryException, 
-      MissingConstructorParamBirtException, 
-      BirtException, 
-      NullFactoryBirtEngineException {
+   MissingConstructorParamBirtException, 
+   BirtException, 
+   NullFactoryBirtEngineException {
       
       BirtEngine engine = null ;
       ServletContext servletContext = null ;
@@ -81,6 +167,7 @@ public final class BirtEngineFactory {
       return engine ;
       
    }
+   
    
    private static BirtEngine getBirtEngineInstanceForWebApp( ServletContext servletContext, String logPath ) 
    throws MissingConstructorParamBirtException, 
