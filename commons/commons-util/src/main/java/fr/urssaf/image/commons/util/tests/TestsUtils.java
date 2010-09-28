@@ -1,10 +1,16 @@
 package fr.urssaf.image.commons.util.tests;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import org.junit.Assert;
+
+import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
 
 /**
  * Fonctions utilitaires pour les tests unitaires
@@ -111,6 +117,46 @@ public final class TestsUtils {
       // Renvoie du résultat
       return nomFicTemp.toString();
       
+   }
+   
+   
+   /**
+    * Teste le constructeur privé sans arguments de la classe passée en paramètre, 
+    * afin de dépolluer le code coverage des constructeurs privés non testés<br>
+    * <br>
+    * Exemple d'utilisation :<br>
+    * <pre>
+    *    Boolean result = TestsUtils.testConstructeurPriveSansArgument(LaClasseATester.class);
+    *    assertTrue("Le constructeur privé n'a pas été trouvé",result);
+    * </pre>
+    * 
+    * @param classe la classe dont on veut tester le constructeur privé sans argument
+    * @return true si un constructeur privé sans argument a été trouvé et testé, 
+    *         false si aucun constructeur privé sans argument n'a été trouvé 
+    * @throws TestConstructeurPriveException en cas de problème lors du test 
+    */
+   @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")
+   public static Boolean testConstructeurPriveSansArgument(final Class<?> classe) throws TestConstructeurPriveException { 
+      Boolean result = false;
+      final Constructor<?>[] constructeurs = classe.getDeclaredConstructors();
+      try {
+         for(final Constructor<?> constructeur : constructeurs) {
+            if ((
+                  Modifier.isPrivate(constructeur.getModifiers())) && // constructeur privé 
+                  (constructeur.getParameterTypes().length==0))       // constructeur sans argument
+            {
+               constructeur.setAccessible(true); 
+               final Object objet = constructeur.newInstance((Object[])null);
+               Assert.assertNotNull(objet);
+               result = true;
+               break;
+            }
+         }
+      }
+      catch (Exception ex) {
+         throw new TestConstructeurPriveException(ex);
+      }
+      return result;
    }
    
 }
