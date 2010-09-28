@@ -18,6 +18,7 @@ import fr.urssaf.image.commons.birt.BirtEngineFactoryKeys;
 import fr.urssaf.image.commons.birt.BirtRender;
 import fr.urssaf.image.commons.birt.exception.MissingConstructorParamBirtException;
 import fr.urssaf.image.commons.birt.exception.MissingKeyInHashMapBirtEngineFactoryException;
+import fr.urssaf.image.commons.birt.exception.MissingParamBirtRenderException;
 import fr.urssaf.image.commons.birt.exception.NoEngineBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NoInstanceBirtEngineException;
 import fr.urssaf.image.commons.birt.exception.NullFactoryBirtEngineException;
@@ -46,7 +47,9 @@ public class ExecBirt extends HttpServlet {
 		   Map<String, Object> factoryParams = new HashMap<String,Object>();
 		   factoryParams.put(BirtEngineFactoryKeys.SERVLET_CONTEXT , this.getServletContext()) ;
 		   factoryParams.put(BirtEngineFactoryKeys.LOG_PATH, this.getServletContext().getRealPath("./logs"));
-		   BirtEngineFactory.getBirtEngineInstance( BirtEngineFactory.WEB_APP, factoryParams ) ;
+		   BirtEngineFactory.getBirtEngineInstance(
+		         BirtEngineFactory.EnumTypeApplication.WEB_APP,
+		         factoryParams ) ;
 		   
 			LOGGER.info("Démarrage du moteur de rendu");
 			BirtRender renderer = new BirtRender(
@@ -57,7 +60,7 @@ public class ExecBirt extends HttpServlet {
 			LOGGER.info("Démarrage traitement de rendu");
 			renderer.doRender(
 			      this.getServletContext().getRealPath("./reports/monPremierRapport.rptdesign"),
-			      BirtRender._MODE_PDF_, 
+			      BirtRender.EnumFormatRendu.PDF, 
 			      paramValues) ;
 			LOGGER.info("Le traitement de rendu est terminé, le fichier doit être disponible.\n");
 						
@@ -88,6 +91,9 @@ public class ExecBirt extends HttpServlet {
          LOGGER.info("Erreur d'utilisation de la factory BirtEngine");
          LOGGER.fatal( e );
          throw new ServletException(e) ;
+      } catch (MissingParamBirtRenderException e) {
+         LOGGER.info("Paramètre manquant lors de la demande du rendu d'un rapport");
+         LOGGER.fatal( e );
       }
 		
 	}
