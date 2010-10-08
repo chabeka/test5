@@ -2,36 +2,50 @@ package fr.urssaf.image.commons.maquette.template.parser.internal;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import fr.urssaf.image.commons.maquette.template.parser.exception.MissingHtmlElementInTemplateParserException;
-import fr.urssaf.image.commons.maquette.template.parser.exception.MissingSourceParserException;
+import fr.urssaf.image.commons.maquette.exception.MissingHtmlElementInTemplateParserException;
+import fr.urssaf.image.commons.maquette.exception.MissingSourceParserException;
 
 /**
- * @author CER6990172
- * @desc parse la balise body de toute chaîne ou fichier de template pour en récupèrer les éléments de la balise <div id="pagereminder">
+ * Extrait du template de la maquette la balise identifiée par "pagereminder"
  */
-public class PageReminderParser extends AbstractParser
+public final class PageReminderParser extends AbstractParser
 {
+   
+   
+   /**
+    * La balise identifiée par "pagereminder"
+    */
 	private Element pageReminderTag ;
 	
+	
+	
 	/**
-	 * @desc default constructor
+	 * Constructeur par défaut
 	 */
 	public PageReminderParser() {
-		
+	   super();
 	}
 	
-	/**
-	 * @desc exécute le doParse dans la foulée
-	 * @param sc
-	 * @throws MissingSourceParserException 
-	 * @throws MissingHtmlElementInTemplateParserException 
-	 */
-	public PageReminderParser( Source sc ) throws MissingSourceParserException, MissingHtmlElementInTemplateParserException{
-		doParse(sc) ;
-	}
 	
 	/**
-	 * @return the contentAppTag
+    * Constructeur qui fait le parsing
+    * 
+    * @param source la source HTML
+    * @throws MissingSourceParserException si la source HTML à parser est manquante
+    * @throws MissingHtmlElementInTemplateParserException si un élément est manquant dans la source HTML 
+    */
+	public PageReminderParser(Source source)
+	throws 
+	MissingSourceParserException, 
+	MissingHtmlElementInTemplateParserException{
+	   super();
+	   doParse(source) ;
+	}
+	
+	
+	/**
+	 * Renvoie la balise identifiée par "pagereminder"
+	 * @return La balise identifiée par "pagereminder"
 	 */
 	public Element getPageReminderTag() {
 		return pageReminderTag;
@@ -39,28 +53,20 @@ public class PageReminderParser extends AbstractParser
 
 
 	/**
-	 * @desc lance le parsing des éléments de la balise body contenu dans l'attribut Source
-	 * @param sc
-	 * @throws MissingHtmlElementInTemplateParserException 
-	 * @throws MissingSourceParserException 
+	 * {@inheritDoc}
 	 */
-	protected void doParse( Source sc ) throws MissingSourceParserException, MissingHtmlElementInTemplateParserException
+	protected void doParse(Source source)
+	throws 
+	MissingSourceParserException, 
+	MissingHtmlElementInTemplateParserException
 	{	
-		if( sc != null )
-		{
-			pageReminderTag = doGetPageReminderTag( sc );
+		if( source == null ) {
+		   throw new MissingSourceParserException("PageReminder") ;
 		}
-		else
-			throw new MissingSourceParserException("PageReminder") ;
+		else {
+		   pageReminderTag = getElementById(source, "pagereminder");
+		}
 	}
 	
-	/**
-	 * @desc	retourne la balise div pagereminder
-	 * @param sc
-	 * @throws MissingHtmlElementInTemplateParserException 
-	 */
-	protected Element doGetPageReminderTag( Source sc ) throws MissingHtmlElementInTemplateParserException {
-		return getElementById( sc, "pagereminder" ) ;
-	}
 	
 }

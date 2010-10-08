@@ -1,31 +1,86 @@
 package fr.urssaf.image.commons.maquette.template.generator;
 
-import fr.urssaf.image.commons.maquette.template.config.exception.MissingContentInfoBoxConfig;
-import fr.urssaf.image.commons.maquette.template.config.exception.MissingTitleInfoBoxConfig;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+
+import fr.urssaf.image.commons.maquette.exception.MissingInfoBoxPropertyException;
 import fr.urssaf.image.commons.maquette.tool.InfoBoxItem;
+import fr.urssaf.image.commons.maquette.tool.MaquetteConstant;
 
 /**
- * @author 	CER6990172
- * @desc	cette classe gère les boites utilisés par la section <leftcol> de la maquette
+ * Cette classe génère le HTML des boîtes de gauche de la maquette 
  * 			
  */
 public final class InfoBoxGenerator
 {		
-	public static String build( InfoBoxItem ibi ) throws MissingContentInfoBoxConfig, MissingTitleInfoBoxConfig
+	
+   private InfoBoxGenerator() {
+      
+   }
+   
+   /**
+    * Génère le HTML de la boîte de gauche passée en paramètre<br>
+    * <br>
+    * Le titre ainsi que la description sont automatiquement traités pour le
+    * remplacement des caractères spéciaux par leurs équivalents HTML
+    * 
+    * @param infoBoxItem la boîte de gauche dont il faut faire le rendu HTML
+    * 
+    * @return le rendu HTML
+    * 
+    * @throws MissingInfoBoxPropertyException S'il manque une propriété requise à l'InfoBox
+    */
+   public static String build(InfoBoxItem infoBoxItem) 
+	throws MissingInfoBoxPropertyException
 	{
-		if( ibi.getContent().length() == 0 )
-			throw new MissingContentInfoBoxConfig();
 		
-		if( ibi.getTitle().length() == 0 )
-			throw new MissingTitleInfoBoxConfig();
+      // Vérifie que l'id n'est pas vide
+      if (StringUtils.isEmpty(infoBoxItem.getShortIdentifier())) {
+         throw new MissingInfoBoxPropertyException(null,"shortIdentifier");
+      }
+      
+      // Vérifie que le contenu n'est pas vide
+      if (StringUtils.isEmpty(infoBoxItem.getContent())) {
+         throw new MissingInfoBoxPropertyException(null,"content");
+		}
 		
-		if( ibi.getBoxDesc().length() == 0 )
-			throw new MissingTitleInfoBoxConfig();
+      // Vérifie que le titre n'est pas vide
+		if (StringUtils.isEmpty(infoBoxItem.getTitle())) {
+		   throw new MissingInfoBoxPropertyException(null,"title");
+		}
 		
-		String html = "<h3 class=\"boxTitle\" id=\"" + ibi.getShortIdentifier() + "-title\">" + ibi.getTitle() + "</h3>\n"
-					+ "<p class=\"boxContent\" id=\"" + ibi.getShortIdentifier() + "\" title=\"" + ibi.getBoxDesc() + "\">\n"
-					+ ibi.getContent() + "</p>\n" ;
+		// Vérifie que la description n'est pas vide
+		if (StringUtils.isEmpty(infoBoxItem.getBoxDesc())) {
+		   throw new MissingInfoBoxPropertyException(null,"boxDesc");
+		}
 		
-		return html ;
+		// Traite les caractères spéciaux dans le titre et la description
+		String title = StringEscapeUtils.escapeHtml(infoBoxItem.getTitle());
+		String desc = StringEscapeUtils.escapeHtml(infoBoxItem.getBoxDesc());
+		
+		// Génère le HTML
+		StringBuilder sbHtml = new StringBuilder();
+		// Balise <h3> avec le titre
+		sbHtml.append(
+		      String.format(
+		            "<h3 class=\"boxTitle\" id=\"%s-title\">",
+		            infoBoxItem.getShortIdentifier()));
+		sbHtml.append(title);
+		sbHtml.append("</h3>");
+		sbHtml.append(MaquetteConstant.HTML_CRLF);
+		// Balise <p> avec le contenu
+		sbHtml.append(
+            String.format(
+                  "<p class=\"boxContent\" id=\"%s\" title=\"%s\">",
+                  infoBoxItem.getShortIdentifier(),
+                  desc));
+		sbHtml.append(MaquetteConstant.HTML_CRLF);
+		sbHtml.append(infoBoxItem.getContent());
+		sbHtml.append("</p>");
+      sbHtml.append(MaquetteConstant.HTML_CRLF);
+		
+		// Renvoie du résultat
+      return sbHtml.toString();
+		
 	}
 }

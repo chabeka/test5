@@ -1,26 +1,45 @@
 package fr.urssaf.image.commons.maquette.template.parser.internal;
 
+import fr.urssaf.image.commons.maquette.exception.MissingHtmlElementInTemplateParserException;
+import fr.urssaf.image.commons.maquette.exception.MissingSourceParserException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import fr.urssaf.image.commons.maquette.template.parser.exception.MissingHtmlElementInTemplateParserException;
+
 
 /**
- * @author CER6990172
+ * Classe mère pour les parser
  * 
  */
 public abstract class AbstractParser
 {
 	/**
-	 * @param sc
-	 * @param hmlt identifier
-	 * @throws MissingHtmlElementInTemplateParserException 
+	 * Extrait la balise identifiée par id de la source HTML
+	 *  
+	 * @param source la source HTML
+	 * @param idBalise l'identifiant de la balise HTML à extraire
+	 * @throws MissingHtmlElementInTemplateParserException si la balise n'a pas été trouvée 
 	 */
-	protected Element getElementById( Source sc, String id ) throws MissingHtmlElementInTemplateParserException
+	protected final Element getElementById(Source source, String idBalise) 
+	throws MissingHtmlElementInTemplateParserException
 	{
-		Element el = sc.getElementById( id ) ;
-		if( el == null )
-			throw new MissingHtmlElementInTemplateParserException( id ) ;
-		return el ;
+		Element element = source.getElementById(idBalise) ;
+		if(element == null) {
+			throw new MissingHtmlElementInTemplateParserException(idBalise) ;
+		}
+		return element ;
 	}
+	
+	
+	/**
+    * Parse la source HTML
+    * 
+    * @param source la source HTML à parser
+    * @throws MissingSourceParserException si la source HTML à parser est manquante
+    * @throws MissingHtmlElementInTemplateParserException si un élément est manquant dans la source HTML 
+    */
+   protected abstract void doParse(Source source)
+   throws MissingSourceParserException, 
+   MissingHtmlElementInTemplateParserException ;
+   
 	
 }

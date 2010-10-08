@@ -1,210 +1,565 @@
 package fr.urssaf.image.commons.maquette;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
+import java.io.PrintWriter;
+import java.util.List;
 
-import org.apache.log4j.Logger;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
+import org.springframework.mock.web.MockFilterConfig;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
+import fr.urssaf.image.commons.maquette.constantes.ConstantesConfigFiltre;
+import fr.urssaf.image.commons.maquette.fixture.UriPatternTestItem;
+import fr.urssaf.image.commons.maquette.fixture.UriPatternTestListe;
+import fr.urssaf.image.commons.maquette.tool.MaquetteConstant;
 
 
+/**
+ * Tests unitaires de la classe {@link MaquetteFilter}
+ *
+ */
+@SuppressWarnings("PMD")
 public class MaquetteFilterTest{
 
-	private Logger logger = Logger.getLogger(MaquetteFilterTest.class) ;
-	
-	@Test
-	public void getResourceImg_1()
-	{
-		// URL u = getClass().getResource("/fr/urssaf/cirtil/technocom/img/logo_aed.png");
-		URL u = getClass().getResource("/resource/img/logo_aed.png");
-		if( u == null )
-			fail("Resource non trouvée");
-			
-	    String filename = u.toString();
-	    logger.debug(filename);
-	    
-	}
-	
-	@Test
-	public void getResourceImg_2()
-	{
-		URL u = getClass().getResource("/resource/img/leftcol_aed.png");
-		if( u == null )
-			fail("Resource non trouvée");
-			
-	    String filename = u.toString();
-	    logger.debug(filename);
-	}
-	
-	@Test
-	public void getResourceCss_1()
-	{
-		URL u = getClass().getResource("/resource/css/main.css");
-		if( u == null )
-			fail("Resource non trouvée");
-			
-	    String filename = u.toString();
-	    logger.debug(filename);
-	}
-	
-	@Test
-	public void getResourceHtml_1()
-	{
-		URL u = getClass().getResource("/resource/html/main.html");
-		if( u == null )
-			fail("Resource non trouvée");
-			
-	    String filename = u.toString();
-	    logger.debug(filename);
-	}
-	
-	/*
-	@Test
-	public void getResourceJsp()
-	{
-		URL u = getClass().getResource("/resource/html/main.jsp");
-		if( u == null )
-			fail("Resource non trouvée");
-			
-	    String filename = u.toString();
-	    logger.debug(filename);
-	}
-	*/
-	
-	@Test
-	public void applyFilter_endsWith()
-	{
-		String reference = "/paulWeb/getResource" ;
-		String test = "/getResource" ;
-		
-		assertTrue( reference.endsWith(test) ) ;
-	}
-	
-	@Test
-	public void applyFilter_RegularExpression_1()
-	{
-		String reference = "/paulWeb/getResource" ;
-		String test = "/getResource*" ;
+   private final String resultatHtml = "CeciEstUnePageHtml";
+   private final String resultatImage = "CeciEstUneImageGif";
+   private final String resultatGetRessource = "CeciEstLeGetResource";
+   private final String resultatErreur404 = "CeciEstUneErreur404";
+   
+   /**
+    * Classe utilitaire pour les tests de la méthode {@link MaquetteFilter#doFilter}
+    *
+    */
+   private class FilterChainHtml implements FilterChain {
 
-		RegularExpression re = new RegularExpression( test );
-		assertTrue( re.matches( reference ) ) ;
-	}
-	
+      @Override
+      public void doFilter(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
+         PrintWriter printWriter = response.getWriter();
+         try {
+            printWriter.write(resultatHtml);
+         }
+         finally {
+            printWriter.close();
+         }
+         response.setContentType("text/html");
+      }
+      
+   }
+   
+   /**
+    * Classe utilitaire pour les tests de la méthode {@link MaquetteFilter#doFilter}
+    *
+    */
+   private class FilterChainImage implements FilterChain {
+
+      @Override
+      public void doFilter(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
+         PrintWriter printWriter = response.getWriter();
+         try {
+            printWriter.write(resultatImage);
+         }
+         finally {
+            printWriter.close();
+         }
+         response.setContentType("image/gif");
+      }
+      
+   }
+   
+   
+   /**
+    * Classe utilitaire pour les tests de la méthode {@link MaquetteFilter#doFilter}
+    *
+    */
+   private class FilterChainGetRessource implements FilterChain {
+
+      @Override
+      public void doFilter(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
+         PrintWriter printWriter = response.getWriter();
+         try {
+            printWriter.write(resultatGetRessource);
+         }
+         finally {
+            printWriter.close();
+         }
+         response.setContentType("application/something");
+      }
+      
+   }
+   
+   
+   /**
+    * Classe utilitaire pour les tests de la méthode {@link MaquetteFilter#doFilter}
+    *
+    */
+   private class FilterChainErreur404 implements FilterChain {
+
+      @Override
+      public void doFilter(ServletRequest request, ServletResponse response)
+            throws IOException, ServletException {
+         PrintWriter printWriter = response.getWriter();
+         try {
+            printWriter.write(resultatErreur404);
+         }
+         finally {
+            printWriter.close();
+         }
+         response.setContentType("text/html");
+         ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_NOT_FOUND);
+      }
+      
+   }
+   
+   
+   
+	/**
+	 * Test unitaire de la méthode {@link MaquetteFilter#init(javax.servlet.FilterConfig)}
+	 * 
+	 * @throws ServletException
+	 */
 	@Test
-	public void applyFilter_RegularExpression_2()
-	{
-		String reference = "/paulWeb/getResource/toto" ;
-		String test = "/getResource*" ;
-
-		RegularExpression re = new RegularExpression( test );
-		assertTrue( re.matches( reference ) ) ;
+	public void init() throws ServletException {
+	   MaquetteFilter filtre = new MaquetteFilter();
+	   filtre.init(null);
 	}
 	
+	
+	/**
+	 * Tests unitaires de {@link MaquetteFilter#getFilterConfig()}
+	 * 
+	 * @throws ServletException 
+	 */
 	@Test
-	public void applyFilter_RegularExpression_3_1()
-	{
-		String reference = "/paulWeb/getResource/toto.bmp" ;
-		String test = "/*\\.bmp" ;
+	public void getFilterConfig() throws ServletException {
+	   
+	   MaquetteFilter filtre = new MaquetteFilter();
+	   
+	   MockFilterConfig filterConfig = new MockFilterConfig();
+	   
+	   filtre.init(filterConfig);
+	   
+	   FilterConfig filterConfig2 = filtre.getFilterConfig();
+	   
+	   assertEquals("Le getter getFilterConfig() est incorrect",filterConfig,filterConfig2);
 
-		RegularExpression re = new RegularExpression( test );
-		assertTrue( re.matches( reference ) ) ;
 	}
 	
+	
+	/**
+    * Test unitaire de la méthode {@link MaquetteFilter#destroy()}<br>
+    * <br>
+    * On vérifie simplement qu'il n'y ait pas de levée d'exception
+    */
+   @Test
+   public void destroy() {
+      MaquetteFilter filtre = new MaquetteFilter();
+      filtre.destroy();
+   }
+   
+	
+	/**
+	 * Test unitaire de la méthode {@link MaquetteFilter#isUriDeGetResource}<br>
+    * <br>
+	 * Cas de test : l'URI appelé est <code>/getResourceImageMaquette.do</code><br>
+	 * <br>
+	 * Résultat attendu : le filtre doit être appliqué
+	 */
 	@Test
-	public void applyFilter_RegularExpression_3_2()
-	{
-		String reference = "/paulWeb/getResource/toto.bmp" ;
-		String test = "/*.bmp" ;
-
-		RegularExpression re = new RegularExpression( test );
-		assertFalse( re.matches( reference ) ) ;
+	public void isUriDeGetResource_Test1() {
+	   
+	   MaquetteFilter filtre = new MaquetteFilter();
+	   
+	   MockHttpServletRequest request = new MockHttpServletRequest();
+	   request.setRequestURI("/" + MaquetteConstant.GETRESOURCEURI);
+	   
+	   
+	   Boolean actual = filtre.isUriDeGetResource(request);
+	   
+	   Boolean expected = true;
+	   
+	   assertEquals("Le filtre devrait être appliqué",expected,actual);
+	   
 	}
 	
-	// doit échouer
-	@Test
-	public void applyFilter_RegularExpression_4()
-	{
-		String reference = "/paulWeb/getmyresource/toto" ;
-		String test = "/getResource*" ;
-
-		RegularExpression re = new RegularExpression( test );
-		assertFalse( re.matches( reference ) ) ;
-	}
 	
-	@Test
-	public void applyFilter_RegularExpression_5()
-	{
-		String reference = "/paulWeb/img/logo_toto.png" ;
-		String test = "/img/*" ;
+	/**
+    * Test unitaire de la méthode {@link MaquetteFilter#isUriDeGetResource}<br>
+    * <br>
+    * Cas de test : l'URI appelé est <code>/servlet.do</code><br>
+    * <br>
+    * Résultat attendu : le filtre ne doit pas être appliqué
+    */
+   @Test
+   public void isUriDeGetResource_Test2() {
+      
+      MaquetteFilter filtre = new MaquetteFilter();
+      
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      request.setRequestURI("/servlet.do");
+      
+      Boolean actual = filtre.isUriDeGetResource(request);
+      
+      Boolean expected = false;
+      
+      assertEquals("Le filtre ne devrait être être appliqué",expected,actual);
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link MaquetteFilter#isUriDansListeExclusions}<br>
+    * 
+    * @throws ServletException 
+    */
+   @Test
+   public void isUriDansListeExclusions() throws ServletException {
+      
+      MaquetteFilter filtre = new MaquetteFilter();
+      
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      
+      // -----------------------------------------------------------------
+      // Premiers tests : - un seul pattern dans la liste d'exclusions
+      //                  - une liste de pattern de tests
+      // ----------------------------------------------------------------- 
+      
+      // Boucle sur une liste de tests de pattern d'URI
+      Boolean bActual;
+      String message;
+      MockFilterConfig filterConfig ;
+      List<UriPatternTestItem> listeTests = UriPatternTestListe.getListeTests();
+      for(UriPatternTestItem item:listeTests) {
+         
+         // Définit la liste d'exclusions
+         filterConfig = new MockFilterConfig();
+         filterConfig.addInitParameter(ConstantesConfigFiltre.EXCLUDEFILES, item.getPattern());
+         filtre.init(filterConfig);
+         
+         // Définit la request
+         request.setRequestURI(item.getUri());
+         
+         // Appel de la méthode à tester
+         bActual = filtre.isUriDansListeExclusions(request) ;
+         
+         // Vérification du résultat
+         if (item.getResultatAttendu()) {
+            message = "L'URI devrait être exclue";
+         }
+         else {
+            message = "L'URI ne devrait pas être exclue";
+         }
+         message += " (URI=\"%s\", Pattern=\"%s\"";
+         message = String.format(message, item.getUri(),item.getPattern());
+         assertEquals(message,item.getResultatAttendu(),bActual);
+                  
+      }
+      
+      
+      // -----------------------------------------------------------------
+      // 2ème test : plusieurs pattern dans la liste d'exclusions
+      // -----------------------------------------------------------------
+      
+      String pattern = 
+         listeTests.get(3).getPattern() + ";" + 
+         listeTests.get(7).getPattern() + ";" +
+         listeTests.get(8).getPattern() + ";" +
+         listeTests.get(9).getPattern();
+      String uri = listeTests.get(9).getUri();
+      filterConfig = new MockFilterConfig();
+      filterConfig.addInitParameter(ConstantesConfigFiltre.EXCLUDEFILES, pattern);
+      filtre.init(filterConfig);
+      request.setRequestURI(uri);
+      bActual = filtre.isUriDansListeExclusions(request) ;
+      Boolean bExpected = true;
+      message = String.format("L'URI devrait être exclue (URI=\"%s\", Pattern=\"%s\"", uri, pattern);
+      assertEquals(message,bExpected,bActual);
+      
+      // -----------------------------------------------------------------
+      // 3ème test : pas de liste d'exclusion
+      // -----------------------------------------------------------------
+      
+      filterConfig = new MockFilterConfig();
+      filtre.init(filterConfig);
+      request.setRequestURI("/toto.do");
+      bActual = filtre.isUriDansListeExclusions(request) ;
+      bExpected = false;
+      assertEquals(
+            "L'URI ne devrait pas être exclue (URI=\"/toto.do\")",
+            bExpected,
+            bActual);
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link MaquetteFilter#doitAppliquerFiltre}
+    * 
+    * @throws ServletException 
+    */
+   @Test
+   public void doitAppliquerFiltre() throws ServletException
+   {
 
-		RegularExpression re = new RegularExpression( test );
-		assertTrue( re.matches( reference ) ) ;
-	}
-	
-	@Test
-	public void applyFilter_split()
-	{
-		String reference = "/paulWeb/getResource" ;
-		String test = "/getResource*;/getToto" ;
-		
-		String[] testFiles = test.split(";") ;
-
-		assertTrue( testFiles.length == 2 );
-		
-		RegularExpression reTrue = new RegularExpression( testFiles[0] );
-		assertTrue( reTrue.matches( reference ) ) ;
-
-		RegularExpression reFalse = new RegularExpression( testFiles[1] );
-		assertFalse( reFalse.matches( reference ) ) ;
-	}
-	
-	@Test 
-	public void streamToString()
-	{
-		// 4) appeler la maquette html
-	   String HtmlFilename = "/resource/html/main.html" ;
-	   String myTplContent ;
-	   InputStream in = getClass().getResourceAsStream( HtmlFilename ) ;
-	   OutputStream out = new ByteArrayOutputStream();
-
-        if( in==null )
-    		fail("InputStream vide");
-        else
-        {
-   		    int c;
-            try {
-				while ((c = in.read()) != -1) 
-				{
-				    out.write(c);
-				}
-				
-				myTplContent = out.toString();
-				logger.debug("Contenu de mon html : " + myTplContent);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally
-			{
-					try {
-						if( in!=null )
-							in.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
+      MaquetteFilter filtre = new MaquetteFilter();
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      MockFilterConfig filterConfig ;
+      
+      Boolean bActual;
+      Boolean bExpected;
+      
+      
+      // Test 1 : cas standard
+      // => le filtre doit être appliqué
+      filterConfig = new MockFilterConfig();
+      filtre.init(filterConfig);
+      request.setRequestURI("/page1.do");
+      bActual = filtre.doitAppliquerFiltre(request);
+      bExpected = true;
+      assertEquals("Le filtre aurait dû être appliqué",bExpected,bActual);
+      
+      
+      // Test 2 : L'URI de la requête HTTP est celle de getRessource
+      // => le filtre ne doit pas être appliqué
+      filterConfig = new MockFilterConfig();
+      filtre.init(filterConfig);
+      request.setRequestURI("/" + MaquetteConstant.GETRESOURCEURI);
+      bActual = filtre.doitAppliquerFiltre(request);
+      bExpected = false;
+      assertEquals("Le filtre n'aurait pas dû être appliqué",bExpected,bActual);
+      
+      
+      // Test 3 : L'URI de la requête HTTP fait partie de la liste d'exclusions
+      // => le filtre ne doit pas être appliqué
+      List<UriPatternTestItem> listeTests = UriPatternTestListe.getListeTests();
+      filterConfig = new MockFilterConfig();
+      filterConfig.addInitParameter(
+            ConstantesConfigFiltre.EXCLUDEFILES, 
+            listeTests.get(0).getPattern());
+      filtre.init(filterConfig);
+      request.setRequestURI(listeTests.get(0).getUri());
+      bActual = filtre.doitAppliquerFiltre(request);
+      bExpected = false;
+      assertEquals("Le filtre n'aurait pas dû être appliqué",bExpected,bActual);
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link MaquetteFilter#isReponseDecorable}
+    */
+   @Test
+   public void isReponseDecorable() {
+      
+      MaquetteFilter filtre = new MaquetteFilter();
+      
+      MockHttpServletResponse response = new MockHttpServletResponse();
+      
+      Boolean bExpected;
+      Boolean bActual;
+      
+      // Test 1 : type MIME non renseigné
+      // => non décorable
+      response.setContentType(null);
+      bActual = filtre.isReponseDecorable(response);
+      bExpected = false;
+      assertEquals(
+            "La réponse HTTP ne devrait pas être décorable (le type MIME est positionné à null)",
+            bExpected,
+            bActual);
+      
+      // Test 2 : type MIME renseigné, type image
+      // => non décorable
+      response.setContentType("image/gif");
+      bActual = filtre.isReponseDecorable(response);
+      bExpected = false;
+      assertEquals(
+            "La réponse HTTP ne devrait pas être décorable (le type MIME est positionné à image/gif)",
+            bExpected,
+            bActual);
+      
+      // Test 3 : type MIME renseigné, text/html
+      // => décorable
+      response.setContentType("text/html");
+      bActual = filtre.isReponseDecorable(response);
+      bExpected = true;
+      assertEquals(
+            "La réponse HTTP ne devrait pas être décorable (le type MIME est positionné à text/html)",
+            bExpected,
+            bActual);
+      
+      // Test 3 : type MIME renseigné, text/plain
+      // => décorable
+      response.setContentType("text/plain");
+      bActual = filtre.isReponseDecorable(response);
+      bExpected = true;
+      assertEquals(
+            "La réponse HTTP ne devrait pas être décorable (le type MIME est positionné à text/plain)",
+            bExpected,
+            bActual);
+      
+      // Test 4 : type MIME renseigné, text/plain, + charset
+      // => décorable
+      response.setContentType("text/plain;charset=UTF-8");
+      bActual = filtre.isReponseDecorable(response);
+      bExpected = true;
+      assertEquals(
+            "La réponse HTTP ne devrait pas être décorable (le type MIME est positionné à text/plain;charset=UTF-8)",
+            bExpected,
+            bActual);
+      
+   }
+   
+   
+   /**
+    * Test unitaire de la méthode {@link MaquetteFilter#doFilter}<br>
+    * <br>
+    * Cas de test : cas standard, il faut décorer
+    * 
+    * @throws ServletException
+    * @throws IOException
+    */
+   @Test
+   public void doFilter_Test1_Standard() throws ServletException, IOException {
+      
+      // Création des objets
+      MaquetteFilter filtre = new MaquetteFilter();
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      MockHttpServletResponse response = new MockHttpServletResponse();
+      FilterChain chain = new FilterChainHtml();
+      MockFilterConfig filterConfig = new MockFilterConfig();
+      
+      // Paramétrage
+      filtre.init(filterConfig);
+      request.setRequestURI("/page1.do");
+           
+      // Appel de la méthode à tester
+      filtre.doFilter(request, response, chain);
+      
+      // Vérifie le résultat
+      String sNotExpected = resultatHtml;
+      String sActual = response.getContentAsString();
+      assertFalse("La page aurait dû être décorée",sActual.equals(sNotExpected));
             
-   		    // 5) injecter les données en utilisant jericho
-
-        }
-		
-	}
+   }
+   
+   
+   /**
+    * Test unitaire de la méthode {@link MaquetteFilter#doFilter}<br>
+    * <br>
+    * Cas de test : l'URI demandée correspond à une image, il ne faut pas décorer
+    * 
+    * @throws ServletException
+    * @throws IOException
+    */
+   @Test
+   public void doFilter_Test2_TypeMimeNePasDecorer() throws ServletException, IOException {
+      
+      // Création des objets
+      MaquetteFilter filtre = new MaquetteFilter();
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      MockHttpServletResponse response = new MockHttpServletResponse();
+      FilterChain chain = new FilterChainImage();
+      MockFilterConfig filterConfig = new MockFilterConfig();
+      
+      // Paramétrage
+      filtre.init(filterConfig);
+      request.setRequestURI("/monImage.gif");
+           
+      // Appel de la méthode à tester
+      filtre.doFilter(request, response, chain);
+      
+      // Vérifie le résultat
+      String sExpected = resultatImage;
+      String sActual = response.getContentAsString();
+      assertEquals("L'image n'aurait pas dû être décorée",sExpected,sActual);
+            
+   }
+   
+   
+   
+   /**
+    * Test unitaire de la méthode {@link MaquetteFilter#doFilter}<br>
+    * <br>
+    * Cas de test : l'URI demandée est l'URI du getRessource de la maquette
+    * <br>
+    * Résultat attendu : pas de décoration 
+    * 
+    * @throws ServletException
+    * @throws IOException
+    */
+   @Test
+   public void doFilter_Test3_GetRessourceNePasDecorer() throws ServletException, IOException {
+      
+      // Création des objets
+      MaquetteFilter filtre = new MaquetteFilter();
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      MockHttpServletResponse response = new MockHttpServletResponse();
+      FilterChain chain = new FilterChainGetRessource();
+      MockFilterConfig filterConfig = new MockFilterConfig();
+      
+      // Paramétrage
+      filtre.init(filterConfig);
+      request.setRequestURI("/" + MaquetteConstant.GETRESOURCEURI);
+           
+      // Appel de la méthode à tester
+      filtre.doFilter(request, response, chain);
+      
+      // Vérifie le résultat
+      String sExpected = resultatGetRessource;
+      String sActual = response.getContentAsString();
+      assertEquals("La réponse n'aurait pas dû être décorée",sExpected,sActual);
+            
+   }
+   
+   
+   /**
+    * Test unitaire de la méthode {@link MaquetteFilter#doFilter}<br>
+    * <br>
+    * Cas de test : l'URI demandée provoque une erreur 404
+    * <br>
+    * Résultat attendu : pas de décoration 
+    * 
+    * @throws ServletException
+    * @throws IOException
+    */
+   @Test
+   public void doFilter_Test4_Erreur404NePasDecorer() throws ServletException, IOException {
+      
+      // Création des objets
+      MaquetteFilter filtre = new MaquetteFilter();
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      MockHttpServletResponse response = new MockHttpServletResponse();
+      FilterChain chain = new FilterChainErreur404();
+      MockFilterConfig filterConfig = new MockFilterConfig();
+      
+      // Paramétrage
+      filtre.init(filterConfig);
+      request.setRequestURI("/unePage.html");
+           
+      // Appel de la méthode à tester
+      filtre.doFilter(request, response, chain);
+      
+      // Vérifie le résultat
+      String sExpected = resultatErreur404;
+      String sActual = response.getContentAsString();
+      assertEquals("La réponse n'aurait pas dû être décorée",sExpected,sActual);
+            
+   }
+   
+   
+	
 }

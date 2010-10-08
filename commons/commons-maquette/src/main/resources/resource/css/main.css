@@ -10,13 +10,13 @@ body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 	min-width: 750px;
 	max-width: 1200px;
 	min-height: 600px;
-	background: #FFF url(getResourceImageMaquette.do?name=/img/leftcol_aed.png) repeat-y; /* simule la colonne de gauche */
+	background: #FFF url(getResourceImageMaquette.do?name=/resource/img/leftcol_aed.png) repeat-y; /* simule la colonne de gauche */
 }
 
 #container.frUrssafImageCommonsMaquette > #header.frUrssafImageCommonsMaquette
 {
     padding: 0px 0px 0px 0px ;
-    background: #051A7D url(getResourceImageMaquette.do?name=/img/degrade_h_aed.png) repeat-y ;
+    background: #051A7D url(getResourceImageMaquette.do?name=/resource/img/degrade_h_aed.png) repeat-y ;
     height: 1%; /* hack pour IE6 qui fait disparaitre les background image lors d'un scroll down / scroll up 
 	 et pour IE7 qui n'affiche pas le contenu texte se trouvant dans cette zone */
 }

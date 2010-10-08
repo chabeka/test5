@@ -3,112 +3,170 @@ package fr.urssaf.image.commons.maquette.template.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
+import fr.urssaf.image.commons.maquette.session.SessionTools;
 import fr.urssaf.image.commons.maquette.tool.MenuItem;
 
+/**
+ * Classe qui effectue le rendu HTML du menu haut de la maquette<br>
+ * <br>
+ * Elle stocke également le menu en cours<br>
+ * <br>
+ * Il s'agit d'un singleton
+ *
+ */
 public final class MenuGenerator {
 
-	public static Logger logger = Logger.getLogger( MenuGenerator.class.getName() );
+   private static final Logger LOGGER = Logger.getLogger(MenuGenerator.class);
 	
-	private static MenuItem selectedMenu;
-	
+
+   private MenuGenerator() {
+      
+   }
+   
+   
 	/**
-	 * @desc processus de construction du menu
-	 * @return la chaîne html du menu
+	 * Effectue le rendu HTML du menu
+	 * 
+	 * @param listItemsMenu le menu
+	 * @param request la requête HTTP en cours
+	 * @return le rendu HTML
+	 * 
 	 */
-	public static StringBuilder buildMenu( List<MenuItem> listMenu, String requestURL )
+	public static StringBuilder buildMenu(
+	      List<MenuItem> listItemsMenu,
+	      HttpServletRequest request)
 	{
 		StringBuilder html = new StringBuilder() ;
-		for( int i = 0 ; i < listMenu.size() ; i++ )
+		for( int i = 0 ; i < listItemsMenu.size() ; i++ )
 		{
 			// début de ul
-			if( i==0 || !listMenu.get(i).hasParent() )
+			if( i==0 || !listItemsMenu.get(i).hasParent() ) {
 				html.append( "<ul>" ) ;
-			
-			html.append( MenuGenerator.addRowToMenu( listMenu.get(i), requestURL ) ) ;
-			
-			// fin de ul
-			if( i == ( listMenu.size() -1 ) || !listMenu.get(i).hasParent() )
-				html.append( "</ul>" );
-		}
-		
-		return html ;
-	}
-	
-	/**
-	 * @return une partie du code html du menu
-	 */
-	private static StringBuilder addRowToMenu( MenuItem menuItem, String requestURL )
-	{
-logger.debug( "Ajout ligne au menu : " + requestURL + " -- " + requestURL );
-		// Test du breadcrumb
-		if( requestURL.compareTo( menuItem.getLink() ) == 0 )
-		{
-			logger.info( "URI found : " + requestURL );
-			MenuGenerator.selectedMenu = menuItem ;
-		}
-		// Traitement du menu
-		StringBuilder html = new StringBuilder() ;
-		
-		html.append( "<li><a href='" + menuItem.getLink() + "' class='" ) ;
-		
-		// mise en évidence de la première ligne
-		if( !menuItem.hasParent() )
-			html.append( "firstrow" );
-		
-		html.append( "' title='" + menuItem.getDescription() + "' tabindex='" ) ;
-		
-		// différenciation comportementale de la première ligne (0) des autres (9999)
-		if( !menuItem.hasParent() )
-			html.append( "0" ) ;
-		else
-			html.append( "9999" ) ;
-		
-		html.append( "'>" + menuItem.getTitle() + "</a>" ) ;
-		
-		// recherche des enfants 
-		if( menuItem.hasChildren() )
-		{
-			html.append( MenuGenerator.buildMenu( menuItem.getChildren(), requestURL ) ) ;
-		}
-		
-		html.append( "</li>" ) ;
-		
-		return html ;
-	}
-	
-	// TODO selectedMenu est static => la variable est partagée sur tout le serveur d'appli => à repenser
-	public static String buildBreadcrumb()
-	{
-		String breadCrumb = "" ;
-logger.debug( "selected menu : " + MenuGenerator.selectedMenu );
-		if( MenuGenerator.selectedMenu != null )
-		{
-			MenuItem mi = MenuGenerator.selectedMenu ;
-			List<MenuItem> listMenuItem = new ArrayList<MenuItem>();
-			int nbLoop = 0 ;
-			do{
-				listMenuItem.add( mi ) ;
-				mi = mi.getParent() ;
-				nbLoop ++ ;
-			}while( mi.hasParent() ) ;
-			// Ajout du menu root si besoin
-			if( nbLoop > 1 )
-				listMenuItem.add( mi ) ;
-			
-			for( int i = (listMenuItem.size()-1); i>=0 ; i-- )
-			{
-				breadCrumb += listMenuItem.get(i).getTitle() ;
-				if( i!= 0 )
-					breadCrumb += " &gt; " ;
 			}
 			
-			// nettoyage de la variable static (je sais c'est foireux comme implémentation, et c'est à repenser...)
-			MenuGenerator.selectedMenu = null ;
+			html.append(addRowToMenu(listItemsMenu.get(i), request)) ;
+			
+			// fin de ul
+			if( i == ( listItemsMenu.size() -1 ) || !listItemsMenu.get(i).hasParent() ) {
+				html.append( "</ul>" );
+			}
 		}
 		
-		return breadCrumb ;
+		return html ;
+	}
+	
+	
+	private static StringBuilder addRowToMenu(
+	      MenuItem menuItem,
+	      HttpServletRequest request)
+	{
+	   
+	   // Si l'URL demandée correspond au lien du menu, alors il s'agit du menu
+	   // en cours
+	   String requestURL = request.getRequestURI();
+	   if( requestURL.compareTo( menuItem.getLink() ) == 0 )
+	   {
+	      LOGGER.debug(
+	            String.format(
+	                  "Le menu en cours est stocké (Menu=\"%s\", RequestURL=\"%s\")",
+	                  menuItem.getTitle(),
+	                  requestURL));
+	      SessionTools.storeSelectedMenu(request, menuItem);
+	   }
+	   
+	   /*
+	   // Traitement du menu
+	   StringBuilder html = new StringBuilder() ;
+	   html.append( "<li><a href='" + menuItem.getLink() + "' class='" ) ;
+
+	   // mise en évidence de la première ligne
+	   if( !menuItem.hasParent() ) {
+	      html.append( "firstrow" );
+	   }
+
+	   String title = StringEscapeUtils.escapeHtml(menuItem.getTitle());
+	   String description = StringEscapeUtils.escapeHtml(menuItem.getDescription());
+	   
+	   html.append( "' title='" + description + "' tabindex='" ) ;
+	   /* */
+	   
+	   // Traitement du menu
+	   String title = StringEscapeUtils.escapeHtml(menuItem.getTitle());
+      String description = StringEscapeUtils.escapeHtml(menuItem.getDescription());
+      String href = menuItem.getLink();
+      String tabIndex;
+      if( menuItem.hasParent() ) {
+         tabIndex = "9999" ;
+      } else {
+         tabIndex = "0" ;
+      }
+      
+	   // Traitement du menu
+      StringBuilder html = new StringBuilder() ;
+      html.append("<li>");
+      html.append(String.format("<a href='%s'", href));
+      if( !menuItem.hasParent() ) {
+      // mise en évidence de la première ligne
+         html.append(" class='firstrow'");
+      }
+      html.append(String.format(" title='%s'",description));
+      html.append(String.format(" tabindex='%s'",tabIndex));
+      html.append(">"); // fin de la balise <a
+      html.append(title);
+      html.append("</a>");
+      
+      // recherche des enfants 
+	   if( menuItem.hasChildren() )
+	   {
+	      html.append(buildMenu(menuItem.getChildren(), request)) ;
+	   }
+
+	   html.append( "</li>" ) ;
+
+	   return html ;
+	}
+	
+	
+	/**
+	 * Effectue le rendu HTML du fil d'ariane<br>
+	 * <br>
+	 * Se base sur une variable statique qui stocke le menu en cours
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return le rendu HTML du fil d'ariane
+	 */
+	public static String buildBreadcrumb(HttpServletRequest request)
+	{
+	   StringBuffer sbFilAriane = new StringBuffer();
+	   
+	   MenuItem selectedMenu = SessionTools.getSelectedMenu(request);
+	   
+	   if( selectedMenu != null )
+	   {
+	      MenuItem item = selectedMenu ;
+
+	      List<MenuItem> listMenuItem = new ArrayList<MenuItem>();
+	      do {
+	         listMenuItem.add( item ) ;
+	         item = item.getParent() ;
+	      } while(item!=null) ;
+	      
+	      for( int i = (listMenuItem.size()-1); i>=0 ; i-- )
+	      {
+	         sbFilAriane.append(listMenuItem.get(i).getTitle());
+	         if( i!= 0 ) {
+	            sbFilAriane.append(" &gt; ") ;
+	         }
+	      }
+
+	   }
+
+	   return sbFilAriane.toString() ;
 	}
 	
 }

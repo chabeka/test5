@@ -6,42 +6,70 @@ import javax.servlet.http.HttpServletRequest;
 
 import fr.urssaf.image.commons.maquette.tool.InfoBoxItem;
 
-public interface ILeftCol 
+
+/**
+ * L'interface que doit implémenter l'application métier pour fournir à la
+ * maquette les informations de la colonne de gauche.
+ *
+ */
+public interface ILeftCol
 {
-	/**
-	 * @desc permet de récupérer le nom de l'application
-	 * @return
+	
+   
+   /**
+	 * Renvoie le nom de l'application
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return le nom de l'application
 	 */
-	public String getNomApplication( HttpServletRequest hsr ) ;
+	String getNomApplication(HttpServletRequest request) ;
+	
 	
 	/**
-	 * @desc permet de récupérer la version de l'application
-	 * @return
+	 * Renvoie la version de l'application
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return la version de l'application
 	 */
-	public String getVersionApplication( HttpServletRequest hsr ) ;
+	String getVersionApplication(HttpServletRequest request) ;
+	
 	
 	/**
-	 * @desc permet de récupérer le nom de l'utilisateur
-	 * @return
+	 * Renvoie le nom de l'utilisateur
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return le nom de l'utilisateur
 	 */
-	public String getNomUtilisateur( HttpServletRequest hsr ) ;
+	String getNomUtilisateur(HttpServletRequest request) ;
+	
 	
 	/**
-	 * @desc permet de récupérer le role de l'application
-	 * @return
+	 * Renvoie le profil de droit de l'utilisateur
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return le profil de droit de l'utilisateur
 	 */
-	public String getRoleUtilisateur( HttpServletRequest hsr ) ;
+	String getRoleUtilisateur(HttpServletRequest request) ;
+
 	
 	/**
-	 * @desc permet de récupérer la fonction ou la méthode javascript permettant de se déconnecter
-	 * 		 le script javascript doit évidemment être inclus dans chaque page métier
-	 * @return
+	 * Renvoie la fonction ou la méthode javascript permettant de se déconnecter.<br>
+	 * <br>
+	 * Le script javascript doit évidemment être inclus dans chaque page métier.
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return le javascript de déconnexion
 	 */
-	public String getLienDeconnexion( HttpServletRequest hsr ) ;
+	String getLienDeconnexion(HttpServletRequest request) ;
+	
 	
 	/**
-	 * @desc permet de récupérer la liste des infobox à ajouter aux 3 standards
-	 * @return
+	 * Renvoie la liste des infobox à rajouter aux 3 boîtes standards
+	 * (information application, information utilisateur, déconnexion)
+	 * 
+	 * @param request la requête HTTP en cours
+	 * @return la liste des infobox à rajouter aux 3 boîtes standards
 	 */
-	public List<InfoBoxItem> getInfoBox( HttpServletRequest hsr ) ;
+	List<InfoBoxItem> getInfoBox(HttpServletRequest request) ;
+	
 }

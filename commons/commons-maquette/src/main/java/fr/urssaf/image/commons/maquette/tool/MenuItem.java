@@ -1,162 +1,266 @@
 package fr.urssaf.image.commons.maquette.tool;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException;
 
-public class MenuItem{
+/**
+ * Cette classe représente un élément de menu dans le menu déroulant 
+ * de la maquette (menu haut).<br>
+ * <br>
+ * L'interface {@link fr.urssaf.image.commons.maquette.definition.IMenu} 
+ * contient une méthode qui renvoie une liste de MenuItem.<br>
+ * <br>
+ * Le site qui utilise la maquette doit implémenter cette interface pour
+ * générer son menu.<br>
+ * <br>
+ * <b><u>Le paramétrage est décrit dans la documentation Word du composant commons-maquette</u></b><br>
+ *
+ */
+public final class MenuItem implements Serializable
+{
 
-	protected static int counter = 0 ;
+   private static final long serialVersionUID = 119370622941249722L;
+
+
+   /**
+	 * Compteur statique d'item de menus, permettant de gérer
+	 * des identifiants uniques d'items de menu
+	 */
+   private static int counter = 0 ;
 	
-	protected int id ;
-	private String link = "" ;
+   
+	/**
+	 * L'identifiant unique de l'item de menu
+	 */
+   private final int idUnique ;
+   
+   
+   /**
+    * Le lien vers lequel pointe l'item de menu
+    */
+   private String link = "" ;
+   
+   
+   /**
+    * Le texte de l'item de menu
+    */
 	private String title = ""  ;
-	private String description = "" ;
-	private MenuItem parent = null ;
-	public List<MenuItem> children ;
+	
 	
 	/**
-	 * 
+	 * Description affichée au survol avec la souris de l'item de menu
+	 */
+	private String description = "" ;
+	
+	
+	/**
+	 * Le parent
+	 */
+	private MenuItem parent  ;
+	
+	
+	/**
+	 * La liste des enfants
+	 */
+	private final List<MenuItem> children ;
+	
+	
+	/**
+	 * Constructeur
 	 */
 	public MenuItem() {
-		super();
+		
 		// J'affecte l'identifiant unique
-		id = MenuItem.counter ;
+		idUnique = MenuItem.counter ;
 		
 		// J'incrémente le compteur pour la prochaine instance
 		MenuItem.counter++ ;
 		
-		//
-		parent = null ;
-		
-		// Création du contenu des enfants
+		// Création de la liste des enfants
 		children = new ArrayList<MenuItem>() ;
+		
 	}
 	
-	protected int getId() {
-		return id;
+	
+	/**
+	 * Renvoie l'identifiant unique de l'item de menu
+	 * @return L'identifiant unique de l'item de menu
+	 */
+	protected int getIdUnique() {
+		return idUnique;
 	}
 
+	
+	/**
+	 * Renvoie le lien vers lequel pointe l'item de menu
+	 * @return Le lien vers lequel pointe l'item de menu
+	 */
 	public String getLink() {
 		return link;
 	}
+	
+	
+	/**
+	 * Définit le lien vers lequel pointe l'item de menu
+	 * @param link Le lien vers lequel pointe l'item de menu
+	 */
+	public void setLink(String link) {
+      this.link = link;
+   }
 
+   	
+	/**
+	 * Renvoie le texte de l'item de menu
+	 * @return Le texte de l'item de menu
+	 */
 	public String getTitle() {
 		return title;
 	}
 	
+	
+	/**
+	 * Définit le texte de l'item de menu
+	 * @param title Le texte de l'item de menu
+	 */
+	public void setTitle(String title) {
+      this.title = title;
+   }
+	
+	
+	/**
+	 * Renvoie la description affichée au survol avec la souris de l'item de menu
+	 * @return Description affichée au survol avec la souris de l'item de menu
+	 */
 	public String getDescription() {
 		return description;
 	}
 	
+	
+	/**
+	 * Définit la description affichée au survol avec la souris de l'item de menu
+	 * @param description Description affichée au survol avec la souris de l'item de menu
+	 */
+	public void setDescription(String description) {
+	   this.description = description; 
+	}
+	
+	
+	/**
+	 * Renvoie l'item parent
+	 * @return l'item parent
+	 */
 	public MenuItem getParent() {
 		return parent;
 	}
 	
+	
+	/**
+	 * Renvoie un flag indiquant si l'item de menu possède un parent
+	 * @return true si l'item de menu possède un parent, false dans le cas contraire
+	 */
 	public Boolean hasParent()
 	{
-		Boolean result = false ;
-		
-		if( parent != null )
-			result = true ;
-		
-		return result ;
+		return parent!=null;
 	}
 	
-	public void addParent( MenuItem menuItem ) throws ReferentialIntegrityException {
-		// Vérification intégrité référentielle
-		if( menuItem.getId() == id )
-			throw new ReferentialIntegrityException( "(" + menuItem.getId() + ") " + menuItem.getTitle() + " ne peut être parent de lui même" ) ;
-		if( isAChild( this, menuItem ) )
-			throw new ReferentialIntegrityException( "(" + menuItem.getId() + ") " + menuItem.getTitle() + " ne peut être parent car il est déjà enfant" ) ;
-		
-		// Ajout du parent
-		parent = menuItem ;
-		
-		// Synchronisation du parent
-		menuItem.addChild(this);			
-	}
 	
+	/**
+	 * Définit le parent
+	 * @param leParent le parent
+	 * @throws ReferentialIntegrityException s'il y a un problème d'intégrité référentielle
+	 */
+	public void setParent( MenuItem leParent ) throws ReferentialIntegrityException {
+      
+	   // Vérification intégrité référentielle
+      
+	   if( leParent.getIdUnique() == idUnique ) {
+         throw new ReferentialIntegrityException(
+               "(" + leParent.getIdUnique() + ") " + 
+               leParent.getTitle() + " ne peut être parent de lui même" ) ;
+      }
+      
+      if( isAChild( this, leParent ) ) {
+         throw new ReferentialIntegrityException( 
+               "(" + leParent.getIdUnique() + ") " + 
+               leParent.getTitle() + " ne peut être parent car il est déjà enfant" ) ;
+      }
+
+      parent = leParent ;
+      
+   }
+
+	
+	/**
+	 * Renvoie la liste des enfants
+	 * @return la liste des enfants
+	 */
 	public List<MenuItem> getChildren() {
-		return children;
-	}
+      return children;
+   }
+   
 	
-	public Boolean hasChildren()
-	{
-		Boolean result = false ;
-		
-		if( children.size() > 0 )
-			result = true ;
-		
-		return result ;
-	}
+	/**
+	 * Renvoie un flag indiquant si l'item de menu possède des enfants
+	 * @return true si l'item de menu a des enfants, false dans le cas contraire
+	 */
+   public Boolean hasChildren()
+   {
+      return !children.isEmpty() ;
+   }
 	
-	public void addChild( MenuItem implMenuItem )throws ReferentialIntegrityException {
+	
+	/**
+	 * Ajoute un enfant
+	 * @param enfant l'enfant
+	 * @throws ReferentialIntegrityException s'il y a un problème d'intégrité référentielle
+	 */
+	public void addChild( MenuItem enfant )throws ReferentialIntegrityException {
 		// vérification de l'intégrité
-		if( implMenuItem == parent )
-			throw new ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être enfant car il est déjà parent" ) ;
-		if( isAChild(this, implMenuItem) )
-			throw new ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être enfant car il est déjà enfant" ) ;
-		
-		MenuItem c = (MenuItem) implMenuItem;
-		
-		// ajout de l'item à la liste
-		children.add( implMenuItem ) ;
-		
-		// synchronisation avec l'item en lui affectant le parent
-		c.setParent( this ) ;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public void setParent( MenuItem implMenuItem ) throws fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException {
-		// Vérification intégrité référentielle
-		if( implMenuItem.getId() == id )
-			throw new fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être parent de lui même" ) ;
-		if( isAChild( this, implMenuItem ) )
-			throw new fr.urssaf.image.commons.maquette.exception.ReferentialIntegrityException( "(" + implMenuItem.getId() + ") " + implMenuItem.getTitle() + " ne peut être parent car il est déjà enfant" ) ;
-
-		parent = implMenuItem ;
-	}
-	
-	@SuppressWarnings("unused")
-	private static Boolean isNotAChild( MenuItem menuItem, MenuItem expectedChild )
-	{
-		return !MenuItem.isAChild( menuItem, expectedChild );
-	}
-	
-	private static Boolean isAChild( MenuItem implMenuItem, MenuItem menuItem )
-	{
-		Boolean result = false ;
-		
-		// on parcours les enfants de menuItem pour chercher si expectedChild y est déjà référencé
-		for( int i = 0 ; i < implMenuItem.getChildren().size() ; i++ )
+		if( enfant==parent) // NOPMD
 		{
-			if( implMenuItem.getChildren().get(i).getId() == menuItem.getId() )
-			{
-				result = true ;
-				break ;
-			}
-			else if( implMenuItem.getChildren().get(i).hasChildren() )
-			{
-				for( int j = 0 ; j < implMenuItem.getChildren().get(i).getChildren().size(); j++ )
-				{
-					result = isAChild(implMenuItem.getChildren().get(i).getChildren().get(j), menuItem) ;
-					if( result )
-						break ;
-				}
-			}
+			throw new ReferentialIntegrityException( "(" + enfant.getIdUnique() + ") " + enfant.getTitle() + " ne peut être enfant car il est déjà parent" ) ;
+		}
+		if( isAChild(this, enfant) ) {
+			throw new ReferentialIntegrityException( "(" + enfant.getIdUnique() + ") " + enfant.getTitle() + " ne peut être enfant car il est déjà enfant" ) ;
 		}
 		
-		return result ;
+		// ajout de l'item à la liste
+		children.add( enfant ) ;
+		
+		// synchronisation avec l'item en lui affectant le parent
+		enfant.setParent( this ) ;
+		
 	}
 
+	
+	/**
+	 * Détermine si le paramètre unParent possède dans sa descendance l'enfant unEnfant 
+	 * @param unParent le parent dans lequel rechercher
+	 * @param enfantAchercher l'enfant à trouver
+	 * @return true si l'enfant est dans la descendance du parent, false dans le cas contraire
+	 */
+	protected static Boolean isAChild( MenuItem unParent, MenuItem enfantAchercher )
+   {
+      Boolean result = false ;
+      for(MenuItem enfant: unParent.getChildren())
+      {
+         if( enfant.getIdUnique() == enfantAchercher.getIdUnique() )
+         {
+            result = true ;
+            break ;
+         }
+         else if( enfant.hasChildren() )
+         {
+            result = isAChild(enfant, enfantAchercher);
+            if( result ) {
+               break ;
+            }
+         }
+      }
+      return result ;
+   }
 
 }

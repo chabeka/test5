@@ -1,114 +1,249 @@
 package fr.urssaf.image.commons.maquette.tool;
 
-import org.apache.log4j.Logger;
 
-public class UrlPatternMatcher {
+/**
+ * 
+ * Classe de matchage entre une URI et un pattern, pour l'application d'un filtre 
+ * ({@link javax.servlet.Filter}).<br>
+ * <br>
+ * L'algorithme de matchage utilisé dans cette classe a été récupéré des sources
+ * de Apache Tomcat 6.0.26<br>
+ * <br>
+ * En effet, le matchage d'une URI par rapport à un mapping de filtre
+ * est à la charge du serveur d'application. C'est pourquoi les implémentations
+ * de ce mécanisme se trouvent dans le code source des serveurs d'appli.<br>
+ * <br>
+ * <i><u>Voici quelques ressources Internet concernant les filtres :</u></i><br>
+ * <br>
+ * &nbsp;&nbsp;http://www.oracle.com/technetwork/java/filters-137243.html<br>
+ * &nbsp;&nbsp;http://www2.roguewave.com/support/docs/leif/leif/html/bobcatug/7-3.html<br>
+ * &nbsp;&nbsp;http://java.sun.com/blueprints/corej2eepatterns/Patterns/InterceptingFilter.html<br>
+ * &nbsp;&nbsp;http://www.javafaq.nu/java-example-code-1032.html<br>
+ * &nbsp;&nbsp;http://www.orionserver.com/tutorials/filters/3.html<br>
+ * <br>
+ * <b><u><i>Algorithme :</i></u></b><br>
+ * <br>
+ * Soit urlMapping la définition du mapping (exemple : /images/*)<br>
+ * Soit requestPath l'URI contextuel demandée (exemple : /images/img1.gif)<br>
+ * <ul>
+ *   <li>si urlMapping est null => false</li>
+ *   <li>si requestPath est null => false</li>
+ *   <li>si urlMapping est égal à requestPath => true</li>
+ *   <li>si urlMapping est égal à "*" => true</li>
+ *   <li>si urlMapping est égal à "/*" => true</li>
+ *   <li>
+ *      si urlMapping se termine par "/*"<br>
+ *      <ul>
+ *         <li>
+ *            si requestPath est égal à ce qui précède le /* de urlMapping => true<br>
+ *            (exemple : /images/* et /images/img1.gif)
+ *         </li>
+ *         <li>
+ *            si requestPath correspond à un "sous-élément" de urlMapping => true<br>
+ *            (exemple : /images/* et /images/contour/img1.gif)
+ *         </li>
+ *         <li>sinon, => false</li>
+ *      </ul>
+ *    </li>
+ *    <li>
+ *    si urlMapping est une extension de fichiers, et que la ressource demandée
+ *    dans requestPath a la même extension => true<br>
+ *    (exemple : *.html et /infos/info1.html)
+ *    </li>
+ *    <li>sinon, => false</li>
+ * </ul>
+*/
+public final class UrlPatternMatcher {
 
-	// Pour récupérer l'URL de la request :
-	// HttpServletRequest.getRequestURI()
    
-   private static final Logger LOGGER = Logger.getLogger(UrlPatternMatcher.class);
-	
-	/**
-     * Return <code>true</code> if the context-relative request path
-     * matches the requirements of the specified filter mapping;
-     * otherwise, return <code>false</code>.
+   private UrlPatternMatcher() {
+      
+   }
+   
+   
+   /**
+     * Match une URI avec un pattern<br>
+     * <br>
+     * Voir les commentaires sur la classe ({@link UrlPatternMatcher}) pour plus d'information
      * 
-     * Méthode extraite des sources de Apache Tomcat 6.0.26
-     *
-     * @param testPath URL mapping being checked
-     * @param requestPath Context-relative request path of this request
+     * @param urlMapping le pattern
+     * @param requestPath le chemin relatif au contexte de la request
+     * @return true s'il y a match, false sinon
      */
-    private static boolean matchFiltersURL(String testPath, String requestPath) {
-        
-       LOGGER.debug(String.format("On compare [%s] à [%s]",testPath,requestPath));
-       
-       if (testPath == null)
-            return (false);
+   protected static boolean match(
+         String urlMapping, 
+         String requestPath) {
 
-        // Case 1 - Exact Match
-        if (testPath.equals(requestPath))
-            return (true);
+      Boolean result;
 
-        // Case 2 - Path Match ("/.../*")
-        if (testPath.equals("/*"))
-            return (true);
-        if (testPath.endsWith("/*")) {
-            if (testPath.regionMatches(0, requestPath, 0, 
-                                       testPath.length() - 2)) {
-                if (requestPath.length() == (testPath.length() - 2)) {
-                    return (true);
-                } else if ('/' == requestPath.charAt(testPath.length() - 2)) {
-                    return (true);
-                }
+      // Si l'URI est null
+      if (requestPath == null) {
+         result = false;
+      }
+
+      // Si le pattern est null
+      else if (urlMapping == null) {
+         result = false;
+      } 
+
+      // Si le pattern est égal à *
+      // else if (urlMapping.equals("*")) {
+      else if ("*".equals(urlMapping)) {
+         result = true;
+      }
+
+      // Si le pattern est égal à /*
+      else if ("/*".equals(urlMapping)) {
+         result = true;
+      }
+
+      // Si le pattern est égal à l'URI
+      else if (urlMapping.equals(requestPath)) {
+         result = true;
+      }
+
+      // Si le pattern se termine par /*
+      else if (urlMapping.endsWith("/*")) {
+         result = matchCasFinitParSlashEtoile(urlMapping,requestPath);
+      }
+         
+      // Si le pattern est une extension (se termine par *.)
+      else if (urlMapping.startsWith("*.")) {
+         result = matchCasExtension(urlMapping,requestPath);
+      }
+
+      // Tous les autres cas
+      else {
+         result = false;
+      }
+
+      // Renvoie du résultat
+      return result;
+
+   }
+   
+   
+   private static boolean matchCasFinitParSlashEtoile(
+         String urlMapping, 
+         String requestPath) {
+      
+      // Exemples :
+      //  Pattern       URI
+      //  /images/*     /images/img1.gif
+      //  /images/*     /images/contour/img1.gif
+      //  /images/*     /images2/contour/img1.gif
+      //  /images/*     /img1.gif
+      
+      Boolean result;
+
+      Boolean bCommencePareil = urlMapping.regionMatches(
+            0, 
+            requestPath, 
+            0, 
+            urlMapping.length() - 2);
+
+      if (bCommencePareil) {
+         if (requestPath.length() == (urlMapping.length() - 2)) {
+            // Exemple: /images/* et /images/img1.gif
+            result = true;
+         } else if ('/' == requestPath.charAt(urlMapping.length() - 2)) {
+            // Exemple: /images/* et /images/contour/img1.gif
+            result = true;
+         } else {
+            // Exemple: /images/* et /images2/contour/img1.gif
+            result = false;
+         }
+      }
+      else {
+         // Exemple: /images/* et /img1.gif
+         result = false;
+      }
+      
+      return result;
+      
+   }
+   
+   
+   private static boolean matchCasExtension(
+         String urlMapping, 
+         String requestPath) {
+      
+      // Le mapping commence par *.
+      
+      Boolean result;
+      
+      int slash = requestPath.lastIndexOf('/');
+      int period = requestPath.lastIndexOf('.');
+      if ((slash >= 0) // présence d'un slash 
+            && (period > slash)  // présence d'un point, et il se trouve après le slash
+            && (period != requestPath.length() - 1) // le point n'est pas le dernier caractère
+            && ((requestPath.length() - period) == (urlMapping.length() - 1))) {
+         result = urlMapping.regionMatches(
+               2, 
+               requestPath, 
+               period + 1,
+               urlMapping.length() - 2);
+      } else {
+         result = false;
+      }
+      
+      return result;
+      
+   }
+   
+   /**
+     * Match l'URI avec les patterns.
+     * 
+     * @param urlPatterns les patterns
+     * @param requestPath l'URI
+     * @return true si l'URI match avec au moins 1 des patterns, false sinon
+     */
+   public static boolean matchOne(String[] urlPatterns, String requestPath)
+   {
+      
+      Boolean result = false;
+      
+      if ((urlPatterns!=null) && (urlPatterns.length>0))
+      {
+         for(String urlPattern:urlPatterns)
+         {
+            if (match(urlPattern, requestPath)) {
+               result = true;
+               break;
             }
-            return (false);
-        }
-
-        // Case 3 - Extension Match
-        if (testPath.startsWith("*.")) {
-            int slash = requestPath.lastIndexOf('/');
-            int period = requestPath.lastIndexOf('.');
-            if ((slash >= 0) && (period > slash) 
-                && (period != requestPath.length() - 1)
-                && ((requestPath.length() - period) 
-                    == (testPath.length() - 1))) {
-                return (testPath.regionMatches(2, requestPath, period + 1,
-                                               testPath.length() - 2));
+         }
+      }
+      
+      return result;
+      
+   }
+    
+    
+   /**
+     * Match l'URI avec les patterns.
+     * 
+     * @param urlPatterns les patterns
+     * @param requestPath l'URI
+     * @return true si l'URI match avec tous les patterns, false sinon
+     */
+   public static boolean matchAll(String[] urlPatterns, String requestPath)
+   {
+      
+      Boolean result = false;
+      
+      if ((urlPatterns!=null) && (urlPatterns.length>0))
+      {
+         result = true;
+         for(String urlPattern:urlPatterns)
+         {
+            if (!match(urlPattern, requestPath)) {
+               result = false;
+               break;
             }
-        }
-
-        // Case 4 - "Default" Match
-        return (false); // NOTE - Not relevant for selecting filters
-
-    }
-    
-    
-    public static boolean match(String urlPattern, String requestPath)
-    {
-    	
-    	// Vérifications extraites des sources de Apache Tomcat 6.0.26
-    	
-    	if (urlPattern=="*")
-            return (true);
-    	
-    	if (requestPath == null)
-            return (false);
-
-    	// Fin de vérifications extraites des sources de Apache Tomcat 6.0.26
-    	
-    	// Appel de la sous-méthode
-    	return matchFiltersURL(urlPattern, requestPath);
-    	
-    }
-    
-    
-    public static boolean matchOne(String[] urlPatterns, String requestPath)
-    {
-    	if (urlPatterns==null)
-    	{
-    		return false;
-    	}
-    	for(String urlPattern:urlPatterns)
-    	{
-    		if (matchFiltersURL(urlPattern, requestPath))
-    			return true;
-    	}
-    	return false;
-    }
-    
-    
-    public static boolean matchAll(String[] urlPatterns, String requestPath)
-    {
-    	if ((urlPatterns==null) || (urlPatterns.length==0))
-    	{
-    		return false;
-    	}
-    	for(String urlPattern:urlPatterns)
-    	{
-    		if (!matchFiltersURL(urlPattern, requestPath))
-    			return false;
-    	}
-    	return true;
-    }	
+         }
+      }
+      
+      return result;
+      
+   }	
 }
