@@ -207,7 +207,7 @@ public final class MaquetteParser {
           
       } catch (MissingHtmlElementInTemplateParserException ex) {		
          
-         if (ex.getMessage()==HTMLElementName.HEAD) {
+         if (ex.getMessage().equals(HTMLElementName.HEAD)) {
             // Pas de head trouvé dans l'application métier
             // On masque l'exception, et on se met une petite trace
             LOGGER.debug("Pas de head trouvé dans l'application métier");
