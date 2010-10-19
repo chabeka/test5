@@ -8,10 +8,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.urssaf.image.commons.dao.spring.service.EntityCountDao;
 
+/**
+ * Implémentation standard de l'interface DAO EntityCountDao
+ *
+ * @param <P> la classe de l'entité persistante
+ */
 @Transactional(propagation = Propagation.SUPPORTS)
-public class EntityCountDaoImpl<P> extends AbstractEntityDao<P> implements
-		EntityCountDao {
+public final class EntityCountDaoImpl<P>
+   extends
+      AbstractEntityDao<P>
+   implements
+		EntityCountDao
+{
 
+   /**
+    * Constructeur
+    * 
+    * @param sessionFactory la fabrique de session d'Hibernate
+    * @param table la classe de l'entité persistante
+    */
 	public EntityCountDaoImpl(SessionFactory sessionFactory, Class<P> table) {
 		super(sessionFactory, table);
 	}
@@ -22,10 +37,9 @@ public class EntityCountDaoImpl<P> extends AbstractEntityDao<P> implements
 	}
 
 	/**
-	 * Compte les résultats d'un objet criteria
+	 * Compte les résultats d'une requête Criteria
 	 * 
-	 * @param criteria
-	 *            objet criteria
+	 * @param criteria objet criteria
 	 * @return nombre de résultats
 	 */
 	public int count(Criteria criteria) {

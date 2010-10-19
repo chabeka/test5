@@ -8,17 +8,22 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.urssaf.image.commons.dao.spring.service.EntityModifyDao;
 
 /**
- * 
- * @author Bertrand BARAULT
+ * Implémentation standard de l'interface DAO EntityModifyDao
  *
- * @param <P> classe persistante
+ * @param <P> classe de l'entité persistée
  */
-public class EntityModifyDaoImpl<P> extends HibernateDaoSupport implements EntityModifyDao<P>{
+public final class EntityModifyDaoImpl<P>
+   extends
+      HibernateDaoSupport
+   implements
+      EntityModifyDao<P>
+{
 
-	/**
-	 * 
-	 * @param session session factory d'hibernate
-	 */
+   /**
+    * Constructeur
+    * 
+    * @param sessionFactory la fabrique de session d'Hibernate
+    */
 	public EntityModifyDaoImpl(SessionFactory sessionFactory){
 		super();
 		setSessionFactory(sessionFactory);
@@ -28,23 +33,19 @@ public class EntityModifyDaoImpl<P> extends HibernateDaoSupport implements Entit
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void delete(P obj) {
 		this.getSession().delete(obj);
-		
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void save(P obj) {
 		this.getSession().save(obj);
-		
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void update(P obj) {
 		this.getSession().update(obj);
-		
 	}
 
-	
 
 }

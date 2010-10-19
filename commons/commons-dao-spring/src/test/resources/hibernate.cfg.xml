@@ -4,12 +4,14 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		<property name="hibernate.show_sql">true</property>
-		<property name="hibernate.cglib.use_reflection_optimizer">false</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+      <property name="hibernate.show_sql">true</property>
+		<!-- 
+      <property name="hibernate.cglib.use_reflection_optimizer">false</property>
 		<property name="hibernate.cache.use_query_cache">true</property>
 		<property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
 		<property name="hibernate.cache.provider_configuration_file_resource_path">ehcache.xml</property>
 		<property name="hibernate.jdbc.batch_size">50</property>
+      -->
 	</session-factory>
 </hibernate-configuration>

@@ -1,34 +1,32 @@
 package fr.urssaf.image.commons.dao.spring.service;
 
 /**
- * Fonctions typiques d'une classe persistante M
+ * Fonctions classiques de lecture d'entités persistées en utilisant
+ * l'identifiant unique de l'entité.
  * 
- * @author Bertrand BARAULT
- * 
- * @param <M>  classe persistante
- * @param <I>  identifiant de la classe persistante
+ * @param <P> classe de l'entité persistée
+ * @param <I> type Java de l'identifiant de la classe de l'entité persistée
  */
-public interface EntityIdDao<M, I> {
+public interface EntityIdDao<P, I> {
 
+   
 	/**
-	 * Renvoie un objet persistant 
+	 * Renvoie une entitée persistée.<br> 
+	 * Cherche en session puis en base.
 	 * 
-	 * <p>cherche en session puis en base<p>
-	 * 
-	 * @param identifiant identifiant de l'objet persistant
-	 * @return objet persistant
+	 * @param identifiant identifiant de l'entitée persistée
+	 * @return entitée persistée
 	 */
-	M get(I identifiant);
+	P get(I identifiant);
 
-	/**
-	 * Renvoie un objet persistant en base
-	 * 
-	 * <p>cherche en base<p>
-	 * 
-	 * @param identifiant identifiant de l'objet persistant
-	 * @return objet persistant
-	 */
-	M find(I identifiant);
 	
+	/**
+	 * Renvoie une entitée persistée.<br>
+	 * Cherche en base.
+	 * 
+	 * @param identifiant identifiant de l'entitée persistée
+	 * @return entitée persistée
+	 */
+	P find(I identifiant);
 	
 }

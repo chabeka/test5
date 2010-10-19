@@ -3,32 +3,32 @@ package fr.urssaf.image.commons.dao.spring.service;
 
 
 /**
- * @author Bertrand BARAULT
+ * Fonctions classiques de DML pour des entitées persistantes (insert, update, delete)
  * 
- * Fonctions typiques d'une classe persistante M
- *
- * @param <M> classe persistante
+ * @param <P> classe de l'entité persistée
  */
 public interface EntityModifyDao<P> {
 
     /**
-     * Insère un objet persistant
+     * Persiste une entité
      * 
-     * @param obj objet persistant à insérer
+     * @param obj entité à persister
      */
     void save(P obj);
+    
 
     /**
-     * Supprime un objet persistant
+     * Supprime une entité de la persistance
      * 
-     * @param obj objet persistant à supprimer
+     * @param obj entité à supprimer
      */
     void delete(P obj);
 
+    
     /**
-     * Met à jour un objet persistant
+     * Met à jour une entité dans la persistance
      * 
-     * @param obj objet persistant à mettre à jour
+     * @param obj entité à mettre à jour
      */
     void update(P obj);
 

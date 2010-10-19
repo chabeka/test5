@@ -19,76 +19,64 @@ import fr.urssaf.image.commons.dao.spring.service.impl.EntityFindDaoImpl;
 import fr.urssaf.image.commons.dao.spring.service.impl.EntityIdDaoImpl;
 import fr.urssaf.image.commons.dao.spring.service.impl.EntityModifyDaoImpl;
 
+
 /**
- * Support pour les fonctions typiques d'une classe persistante M avec un
- * identifiant I
+ * Support pour les fonctions typiques d'une classe persistante.
  * 
- * @author Bertrand BARAULT
  * 
- * @param <T>
- *            classe persistante
- * @param <I>
- *            identifiant de la classe persistante
+ * @param <P> classe de l'entité persistée
+ * @param <I> type Java de l'identifiant de la classe de l'entité persistée
  */
-@Transactional(propagation = Propagation.SUPPORTS)
 @SuppressWarnings("PMD.TooManyMethods")
-public class MyHibernateDaoSupport<T, I extends Serializable> extends
-		HibernateDaoSupport implements EntityCountDao, EntityModifyDao<T>,
-		EntityFindDao<T>, EntityIdDao<T, I> {
+@Transactional(propagation = Propagation.SUPPORTS)
+public class MyHibernateDaoSupport<P, I extends Serializable>
+   extends
+      HibernateDaoSupport
+   implements
+      EntityCountDao,
+      EntityModifyDao<P>,
+		EntityFindDao<P>,
+		EntityIdDao<P, I>
+{
 
+	private final Class<P> table;
+
+	private final EntityModifyDaoImpl<P> modifyDaoImpl;
+
+	private final EntityIdDaoImpl<P, I> idDaoImpl;
+
+	private final EntityFindDaoImpl<P> findDaoImpl;
+
+	private final EntityCountDaoImpl<P> countDaoImpl;
+
+	
 	/**
-	 * classe persistante
-	 */
-	private Class<T> table;
-
-	private EntityModifyDaoImpl<T> modifyDaoImpl;
-
-	@SuppressWarnings("PMD.ImmutableField")
-	private EntityIdDaoImpl<T, I> idDaoImpl;
-
-	private EntityFindDaoImpl<T> findDaoImpl;
-
-	private EntityCountDaoImpl<T> countDaoImpl;
-
-	/**
-	 * @param sessionFactory
-	 *            session factory d'hibernate
-	 * @param table
-	 *            classe persistante
-	 */
-	public MyHibernateDaoSupport(SessionFactory sessionFactory, Class<T> table) {
-		super();
-		setSessionFactory(sessionFactory);
-		this.table = table;
-		this.modifyDaoImpl = new EntityModifyDaoImpl<T>(sessionFactory);
-		this.idDaoImpl = new EntityIdDaoImpl<T, I>(sessionFactory, this.table);
-		this.countDaoImpl = new EntityCountDaoImpl<T>(sessionFactory,
-				this.table);
-		this.findDaoImpl = new EntityFindDaoImpl<T>(sessionFactory, this.table);
-	}
-
-	/**
+	 * Constructeur
 	 * 
-	 * @param sessionFactory
-	 *            session factory d'hibernate
-	 * @param table
-	 *            classe persistante
-	 * @param identifiant
-	 *            nom de l'attribut de la clé primaire
+	 * @param sessionFactory session factory d'Hibernate
+	 * @param table classe de l'entité persistée
+	 * @param identifiant nom de l'attribut de la clé primaire
 	 */
-	public MyHibernateDaoSupport(SessionFactory sessionFactory, Class<T> table,
+	public MyHibernateDaoSupport(
+	      SessionFactory sessionFactory, 
+	      Class<P> table,
 			String identifiant) {
-		this(sessionFactory, table);
-		this.idDaoImpl = new EntityIdDaoImpl<T, I>(sessionFactory, this.table,
-				identifiant);
+		super();
+      setSessionFactory(sessionFactory);
+      this.table = table;
+      this.modifyDaoImpl = new EntityModifyDaoImpl<P>(sessionFactory);
+      this.idDaoImpl = new EntityIdDaoImpl<P, I>(sessionFactory, this.table,identifiant);
+      this.countDaoImpl = new EntityCountDaoImpl<P>(sessionFactory,this.table);
+      this.findDaoImpl = new EntityFindDaoImpl<P>(sessionFactory, this.table);
 	}
+	
 
 	/**
 	 * Renvoie le nom de la classe persistante
 	 * 
 	 * @return nom de la classe persistante
 	 */
-	protected String getTable() {
+	protected final String getTable() {
 		return this.table.getCanonicalName();
 	}
 
@@ -97,87 +85,96 @@ public class MyHibernateDaoSupport<T, I extends Serializable> extends
 	 * 
 	 * @return objet criteria de la classe persistante
 	 */
-	protected Criteria getCriteria() {
+	protected final Criteria getCriteria() {
 		return this.getSession().createCriteria(table);
 	}
 
 	@Override
-	public void save(T obj) {
+	public void save(P obj) {
 		this.modifyDaoImpl.save(obj);
 	}
 
 	@Override
-	public void delete(T obj) {
+	public void delete(P obj) {
 		this.modifyDaoImpl.delete(obj);
 	}
 
 	@Override
-	public void update(T obj) {
+	public void update(P obj) {
 		this.modifyDaoImpl.update(obj);
 	}
 
 	@Override
-	public T get(I identifiant) {
+	public P get(I identifiant) {
 		return idDaoImpl.get(identifiant);
 	}
 
 	@Override
-	public T find(I identifiant) {
+	public P find(I identifiant) {
 		return idDaoImpl.find(identifiant);
 	}
 
 	@Override
-	public List<T> find(int firstResult, int maxResult, String order,
+	public List<P> find(
+	      int firstResult, 
+	      int maxResult, 
+	      String order,
 			boolean inverse) {
 		return this.findDaoImpl.find(firstResult, maxResult, order, inverse);
-
 	}
 
 	@Override
-	public List<T> find(String order, boolean inverse) {
+	public List<P> find(String order, boolean inverse) {
 		return this.findDaoImpl.find(order, inverse);
 	}
 
 	@Override
-	public List<T> find(String order) {
+	public List<P> find(String order) {
 		return this.findDaoImpl.find(order);
 
 	}
 
 	@Override
-	public List<T> find() {
+	public List<P> find() {
 		return this.findDaoImpl.find();
 	}
 
-	protected List<T> find(Criteria criteria, int firstResult, int maxResult,
-			String order, boolean inverse) {
-		return this.findDaoImpl.find(criteria, firstResult, maxResult, order,
+	
+	protected List<P> find(
+	      Criteria criteria, 
+	      int firstResult, 
+	      int maxResult,
+			String order, 
+			boolean inverse) {
+		return this.findDaoImpl.find(
+		      criteria, 
+		      firstResult, 
+		      maxResult, 
+		      order,
 				inverse);
-
 	}
 
-	protected List<T> find(Criteria criteria, String order, boolean inverse) {
+	protected List<P> find(Criteria criteria, String order, boolean inverse) {
 		return this.findDaoImpl.find(criteria, order, inverse);
 
 	}
 
-	protected List<T> find(Criteria criteria, int firstResult, int maxResult) {
+	protected List<P> find(Criteria criteria, int firstResult, int maxResult) {
 		return this.findDaoImpl.find(criteria, firstResult, maxResult);
 	}
 
-	protected List<T> find(Criteria criteria) {
+	protected List<P> find(Criteria criteria) {
 		return this.findDaoImpl.find(criteria);
 	}
 
 	/**
 	 * Renvoie tous les objets persistants filtrés par un objet exemple
 	 * 
-	 * @param obj
-	 *            objet exemple
+	 * @param obj objet exemple
 	 * @return liste des objets persistants
 	 */
 	@SuppressWarnings("unchecked")
-	protected List<T> findByExample(T obj) {
+	protected List<P> findByExample(P obj) {
 		return this.getCriteria().add(Example.create(obj)).list();
 	}
 

@@ -10,37 +10,35 @@ import fr.urssaf.image.commons.dao.spring.service.EntityIdDao;
 
 /**
  * 
- * @author Bertrand BARAULT
+ * Implémentation standard de l'interface DAO EntityIdDao
  *
- * @param <P> classe persistante
- * @param <I> identifiant de la classe persistante
+ * @param <P> classe de l'entité persistée
+ * @param <I> type Java de l'identifiant de la classe de l'entité persistée
  */
-public class EntityIdDaoImpl<P, I extends Serializable> extends AbstractEntityDao<P> implements
-		EntityIdDao<P, I> {
+public final class EntityIdDaoImpl<P, I extends Serializable>
+   extends
+      AbstractEntityDao<P>
+   implements
+		EntityIdDao<P, I>
+{
 
-	private String identifiant;
+	private final String identifiant;
 	
-	private Class<P> table;
 
 	/**
-	 * 
-	 * @param session session factory d'hibernate
-	 * @param table classe persistante
-	 */
-	public EntityIdDaoImpl(SessionFactory sessionFactory, Class<P> table) {
-		this(sessionFactory, table, "id");
-	}
-
-	/**
-	 * 
-	 * @param session session factory d'hibernate
-	 * @param table classe persistante
-	 * @param identifiant nom de l'attribut de la clé primaire
-	 */
-	public EntityIdDaoImpl(SessionFactory sessionFactory, Class<P> table, String identifiant) {
+    * Constructeur
+    * 
+    * @param sessionFactory la fabrique de session d'Hibernate
+    * @param table la classe de l'entité persistante
+    * @param identifiant nom de la propriété représentant l'identifiant unique 
+    * de l'entité persistante
+    */
+	public EntityIdDaoImpl(
+	      SessionFactory sessionFactory, 
+	      Class<P> table, 
+	      String identifiant) {
 		super(sessionFactory,table);
 		this.identifiant = identifiant;
-		this.table = table;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -55,7 +53,7 @@ public class EntityIdDaoImpl<P, I extends Serializable> extends AbstractEntityDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public P get(I identifiant) {
-		return (P) this.getSession().get(this.table, identifiant);
+		return (P) this.getSession().get(this.getTable(), identifiant);
 	}
 
 }

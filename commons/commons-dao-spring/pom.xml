@@ -1,152 +1,133 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project
+   xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
-	<parent>
+	<modelVersion>4.0.0</modelVersion>
+   
+   <groupId>fr.urssaf.image.commons</groupId>
+   <artifactId>commons-dao-spring</artifactId>
+   <version>0.0.1-SNAPSHOT</version>
+   <name>commons-dao-spring</name>
+   
+   <parent>
 		<groupId>fr.urssaf.image.commons</groupId>
 		<artifactId>commons-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.urssaf.image.commons</groupId>
-	<artifactId>commons-dao-spring</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-   <name>commons-dao-spring</name>
    
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<skipTests>true</skipTests>
-					<!-- excludes>
-						<exclude>**/*JdbcDaoTest.java</exclude>
-					</excludes-->
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>bind-sources</id>
-						<goals>
-							<goal>jar</goal>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <configuration>
+               <source>1.6</source>
+            </configuration>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>compile</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>      
+      </plugins>
+   </build>
+   
+	
 	<dependencies>
 
-		<dependency>
-			<groupId>org.apache.maven.archetypes</groupId>
-			<artifactId>maven-archetype-archetype</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-
-		<dependency>
+      <dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.6.6</version>
 		</dependency>
 
+      <dependency>
+         <groupId>javax.transaction</groupId>
+         <artifactId>jta</artifactId>
+         <version>1.1</version>
+         <scope>runtime</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>javax.persistence</groupId>
+         <artifactId>persistence-api</artifactId>
+         <version>1.0</version>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-dbcp</groupId>
+         <artifactId>commons-dbcp</artifactId>
+         <version>1.2.2</version>
+         <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+         <groupId>commons-pool</groupId>
+         <artifactId>commons-pool</artifactId>
+         <version>1.5.4</version>
+         <scope>test</scope>
+      </dependency>
+
+
+      <!-- Framework Spring -->
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>2.5.6</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>2.5.6</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>2.0.8</version>
-			<scope>runtime</scope>
-		</dependency>
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${org.springframework.version}</version>
+         <scope>test</scope>
+      </dependency>
 
-		<dependency>
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-aop</artifactId>
+         <version>${org.springframework.version}</version>
+         <scope>test</scope>
+      </dependency>
+
+		
+      <!-- Framework Hibernate -->
+      
+      <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 			<version>3.2.6.ga</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>1.1</version>
-			<scope>runtime</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>1.0</version>
-			<scope>test</scope>
-		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>2.5.6</version>
-			<scope>test</scope>
-		</dependency>
+		<!-- Driver pour les tests unitaires -->
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>2.5.6</version>
-			<scope>test</scope>
-		</dependency>
+      <dependency>
+         <groupId>hsqldb</groupId>
+         <artifactId>hsqldb</artifactId>
+         <version>1.8.0.7</version>
+         <scope>test</scope>
+      </dependency>
 
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.10</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.2.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-pool</groupId>
-			<artifactId>commons-pool</artifactId>
-			<version>1.5.4</version>
-			<scope>test</scope>
-		</dependency>
-
+      
+      <!-- JAR développé en interne -->
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-util</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      
 	</dependencies>
-
+   
 </project>
