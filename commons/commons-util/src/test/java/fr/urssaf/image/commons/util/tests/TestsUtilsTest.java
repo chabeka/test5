@@ -7,8 +7,8 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
-import fr.urssaf.image.commons.util.fixture.FixtureClasse1Test;
-import fr.urssaf.image.commons.util.fixture.FixtureClasse2Test;
+import fr.urssaf.image.commons.util.fixture.FixtureClasse1;
+import fr.urssaf.image.commons.util.fixture.FixtureClasse2;
 
 
 /**
@@ -142,13 +142,13 @@ public class TestsUtilsTest {
       Boolean result;
       
       // Cas de plusieurs constructeurs privés, dont 1 sans paramètre
-      result = TestsUtils.testConstructeurPriveSansArgument(FixtureClasse1Test.class);
+      result = TestsUtils.testConstructeurPriveSansArgument(FixtureClasse1.class);
       assertTrue("Le constructeur privé n'a pas été trouvé",result);
       
       // Cas d'un constructeur privé sans paramètre qui lève une exception
       Boolean bOk = false;
       try {
-         result = TestsUtils.testConstructeurPriveSansArgument(FixtureClasse2Test.class);
+         result = TestsUtils.testConstructeurPriveSansArgument(FixtureClasse2.class);
          // assertTrue("Le constructeur privé n'a pas été trouvé",result);
       }
       catch (TestConstructeurPriveException ex) {

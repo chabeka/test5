@@ -8,9 +8,9 @@ import org.apache.commons.lang.NotImplementedException;
  * Un constructeur privé sans paramètre qui lève une exception
  */
 @SuppressWarnings("PMD")
-public class FixtureClasse2Test {
+public final class FixtureClasse2 {
 
-   private FixtureClasse2Test() {
+   private FixtureClasse2() {
       throw new NotImplementedException("FixtureClasse2Test");
    }
    
