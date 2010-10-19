@@ -1,6 +1,7 @@
 package fr.urssaf.image.commons.util.base64;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,21 +11,27 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
+import fr.urssaf.image.commons.util.tests.TestsUtils;
+
 /**
  * Tests unitaires de la classe Base64Decode
- *
  */
+@SuppressWarnings("PMD")
 public class Base64DecodeTest {
 
-
    private final static String DIRECTORY;
+   
+   private static Boolean deleteDirectoryAfterTests;
 
    static {
-      DIRECTORY = FilenameUtils.concat(SystemUtils.getJavaIoTmpDir()
-            .getAbsolutePath(), "base64");
+      DIRECTORY = FilenameUtils.concat(
+            SystemUtils.getJavaIoTmpDir().getAbsolutePath(),
+            "base64");
    }
 
    @BeforeClass
@@ -32,11 +39,35 @@ public class Base64DecodeTest {
       
       // Création d'un répertoire temporaire
       File directory = new File(DIRECTORY);
+      deleteDirectoryAfterTests = ! directory.exists();
       FileUtils.forceMkdir(directory);
       FileUtils.cleanDirectory(directory);
       
    }
 
+ 
+   @AfterClass
+   public static void nettoyage() throws IOException {
+      
+      // Nettoyage des fichiers créés
+      File directory = new File(DIRECTORY);
+      FileUtils.cleanDirectory(directory);
+      if (deleteDirectoryAfterTests) {
+         FileUtils.deleteDirectory(directory);
+      }
+      
+   }
+   
+   
+   /**
+    * Test unitaire du constructeur privé, pour le code coverage
+    */
+   @Test
+   public void constructeurPrive() throws TestConstructeurPriveException {
+      Boolean result = TestsUtils.testConstructeurPriveSansArgument(Base64Decode.class);
+      assertTrue("Le constructeur privé n'a pas été trouvé",result);
+   }
+   
    
    /**
     * Test du décodage sans préciser de charset.<br>

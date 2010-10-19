@@ -29,49 +29,71 @@ public class TarGzFileInputStream {
    public final void uncompress() throws IOException {
 
       FileInputStream fileInput = new FileInputStream(this.compressFileName);
-      GzipCompressorInputStream gzInput = new GzipCompressorInputStream(
-            fileInput);
-      ByteArrayOutputStream gzOut = new ByteArrayOutputStream();
-
       try {
-
-         IOUtils.copy(gzInput, gzOut);
-
-         ByteArrayInputStream input = new ByteArrayInputStream(gzOut
-               .toByteArray());
-         ArchiveInputStream archiveInput = new TarArchiveInputStream(input);
+         GzipCompressorInputStream gzInput = new GzipCompressorInputStream(fileInput);
          try {
-            ArchiveEntry archiveEntry = archiveInput.getNextEntry();
-
-            while (archiveEntry != null) {
-
-               // traitement des fichiers compressés
-               String name = FilenameUtils.concat(repertory, archiveEntry
-                     .getName());
-               FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
-               if (!archiveEntry.isDirectory()) {
-                  FileOutputStream output = new FileOutputStream(name);
+         
+            ByteArrayOutputStream gzOut = new ByteArrayOutputStream();
+      
+            try {
+      
+               IOUtils.copy(gzInput, gzOut);
+      
+               ByteArrayInputStream input = new ByteArrayInputStream(gzOut.toByteArray());
+               try {
+                  ArchiveInputStream archiveInput = new TarArchiveInputStream(input);
                   try {
-                     IOUtils.copy(archiveInput, output);
+                     ArchiveEntry archiveEntry = archiveInput.getNextEntry();
+         
+                     while (archiveEntry != null) {
+         
+                        // traitement des fichiers compressés
+                        String name = FilenameUtils.concat(repertory, archiveEntry
+                              .getName());
+                        FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
+                        if (!archiveEntry.isDirectory()) {
+                           FileOutputStream output = new FileOutputStream(name);
+                           try {
+                              IOUtils.copy(archiveInput, output);
+                           } finally {
+                              output.close();
+                           }
+                        }
+         
+                        archiveEntry = archiveInput.getNextEntry();
+         
+                     }
+         
                   } finally {
-                     output.close();
+                     if (archiveInput!=null) {
+                        archiveInput.close();
+                     }
                   }
                }
-
-               archiveEntry = archiveInput.getNextEntry();
-
+               finally {
+                  if (input!=null) {
+                     input.close();
+                  }
+               }
+      
+            } finally {
+               if (gzOut!=null) {
+                  gzOut.close();
+               }
             }
-
-         } finally {
-            archiveInput.close();
-            input.close();
-
+            
          }
-
-      } finally {
-         gzOut.close();
-         gzInput.close();
-         fileInput.close();
+         finally {
+            if (gzInput!=null) {
+               gzInput.close();
+            }
+         }
+         
+      }
+      finally {
+         if (fileInput!=null) {
+            fileInput.close();
+         }
       }
 
    }

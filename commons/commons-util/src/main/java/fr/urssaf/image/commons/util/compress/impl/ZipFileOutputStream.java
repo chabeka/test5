@@ -34,8 +34,10 @@ public class ZipFileOutputStream extends
    protected final void compressFile(File file, ZipArchiveOutputStream out)
          throws IOException {
 
-      ZipArchiveEntry entry = new ZipArchiveEntry(file, ArchiveUtil.entry(
-            this.fileName, file));
+      ZipArchiveEntry entry = new ZipArchiveEntry(
+            file, 
+            ArchiveUtil.entry(this.fileName, file));
+      
       ArchiveUtil.copy(file, out, entry);
    }
 

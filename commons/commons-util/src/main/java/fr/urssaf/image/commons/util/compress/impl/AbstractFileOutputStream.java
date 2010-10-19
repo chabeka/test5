@@ -7,11 +7,11 @@ import java.util.zip.CheckedOutputStream;
 
 import org.apache.log4j.Logger;
 
-abstract class AbstractFileOutputStream<F extends OutputStream> extends
+abstract class AbstractFileOutputStream<F extends OutputStream>
+   extends
       AbstractOutputStream<F> {
 
-   protected static final Logger LOG = Logger
-         .getLogger(AbstractFileOutputStream.class);
+   protected static final Logger LOG = Logger.getLogger(AbstractFileOutputStream.class);
 
    private final String compressFileName;
 
@@ -27,16 +27,25 @@ abstract class AbstractFileOutputStream<F extends OutputStream> extends
 
       // création d'un flux d'écriture sur fichier
       FileOutputStream dest = new FileOutputStream(this.compressFileName);
-
-      CheckedOutputStream checksum = ArchiveUtil.crc32(dest);
-
       try {
 
-         return write(checksum);
-
-      } finally {
-         checksum.close();
-         dest.close();
+         CheckedOutputStream checksum = ArchiveUtil.crc32(dest);
+   
+         try {
+   
+            return write(checksum);
+   
+         } finally {
+            if (checksum!=null) {
+               checksum.close();
+            }
+         }
+         
+      }
+      finally {
+         if (dest!=null) {
+            dest.close();
+         }
       }
    }
 

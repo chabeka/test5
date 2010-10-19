@@ -75,17 +75,33 @@ public final class Base64Decode {
          String fichierDeSortie)
          throws IOException {
 
-      Base64InputStream input = new Base64InputStream(new FileInputStream(
-            fichierBase64), false);
-
-      FileOutputStream output = new FileOutputStream(fichierDeSortie);
+      FileInputStream fis = new FileInputStream(fichierBase64);
       try {
-         IOUtils.copy(input, output);
-      } finally {
-         input.close();
-         output.close();
-      }
 
+         Base64InputStream input = new Base64InputStream(fis, false);
+         try {
+
+            FileOutputStream output = new FileOutputStream(fichierDeSortie);
+            try {
+               IOUtils.copy(input, output);
+            } finally {
+               if (output!=null) {
+                  output.close();
+               }
+            }
+         }
+         finally {
+            if (input!=null) {
+               input.close();
+            }
+         }
+      }
+      finally {
+         if (fis!=null) {
+            fis.close();
+         }
+      }
+      
    }
 
    /**
@@ -113,14 +129,30 @@ public final class Base64Decode {
          String encoding) throws IOException {
       
       FileInputStream input = new FileInputStream(fichierBase64);
+      try {
       
-      Base64InputStream inputBase64 = new Base64InputStream(input,false,longueurLigne,separateurLigne);
+         Base64InputStream inputBase64 = new Base64InputStream(input,false,longueurLigne,separateurLigne);
+         try {
+         
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream() ;
+            
+            IOUtils.copy(inputBase64,byteBuffer);
+            
+            return new String(byteBuffer.toByteArray(), encoding);
+         
+         }
+         finally {
+            if (inputBase64!=null) {
+               inputBase64.close();
+            }
+         }
       
-      ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream() ;
-      
-      IOUtils.copy(inputBase64,byteBuffer);
-      
-      return new String(byteBuffer.toByteArray(), encoding);
+      }
+      finally {
+         if (input!=null) {
+            input.close();
+         }
+      }
       
    }
    

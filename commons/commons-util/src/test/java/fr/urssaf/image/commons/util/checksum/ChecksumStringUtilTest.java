@@ -1,12 +1,16 @@
 package fr.urssaf.image.commons.util.checksum;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+
+import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
+import fr.urssaf.image.commons.util.tests.TestsUtils;
 
 public class ChecksumStringUtilTest {
 
@@ -15,6 +19,17 @@ public class ChecksumStringUtilTest {
    private static final Logger LOG = Logger
          .getLogger(ChecksumStringUtilTest.class);
 
+   
+   /**
+    * Test unitaire du constructeur privé, pour le code coverage
+    */
+   @Test
+   public void constructeurPrive() throws TestConstructeurPriveException {
+      Boolean result = TestsUtils.testConstructeurPriveSansArgument(ChecksumStringUtil.class);
+      assertTrue("Le constructeur privé n'a pas été trouvé",result);
+   }
+   
+   
    @Test
    public void md5() throws NoSuchAlgorithmException, IOException {
 

@@ -9,13 +9,14 @@ import java.util.Random;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 
-public class FileThread extends Thread {
+@SuppressWarnings("PMD")
+public final class FileThread extends Thread {
 
 	private final int numero;
 
 	private static final Logger LOGGER = Logger.getLogger(FileThread.class);
 
-	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd/MM/yyyy HH:mm:ss", Locale.getDefault());
 
 	private static final String FILE = "src/test/resources/file/file_lock.txt";
@@ -26,10 +27,9 @@ public class FileThread extends Thread {
 
 	private static final int CYCLE = 5;
 
-	private static int pause = 100;
+	private static final int PAUSE = 100;
 
 
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public static void main(String args[]) throws IOException {
 	   LockFile file = null;
 	   
@@ -57,30 +57,32 @@ public class FileThread extends Thread {
 		}
 	}
 
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public void executer() throws IOException {
 		LOGGER.info("DEBUT DE N°" + numero);
+		
+		final int randomBound = 10;
+		
 		for (int i = 0; i < CYCLE; i++) {
 
 			Random randomGenerator = new Random();
-			int randomInt = randomGenerator.nextInt(10);
+			int randomInt = randomGenerator.nextInt(randomBound);
 			try {
 
-				Thread.sleep(pause * randomInt);
+				Thread.sleep(PAUSE * randomInt);
 
 			} catch (InterruptedException ie) {
 			}
 
 			LOGGER.debug("n°" + numero + " attend pour écrire");
-			file.write(DATE_FORMAT.format(new Date()) + " thread n°" + numero
+			file.write(dateFormat.format(new Date()) + " thread n°" + numero
 					+ " écrit la ligne n°" + i + "\n");
 			LOGGER.debug("n°" + numero + " a fini d'écrire");
 
 			randomGenerator = new Random();
-			randomInt = randomGenerator.nextInt(10);
+			randomInt = randomGenerator.nextInt(randomBound);
 			try {
 
-				Thread.sleep(pause * randomInt);
+				Thread.sleep(PAUSE * randomInt);
 
 			} catch (InterruptedException ie) {
 			}

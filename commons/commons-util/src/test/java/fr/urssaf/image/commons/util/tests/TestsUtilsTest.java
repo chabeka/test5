@@ -2,16 +2,32 @@ package fr.urssaf.image.commons.util.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
+import fr.urssaf.image.commons.util.fixture.FixtureClasse1Test;
+import fr.urssaf.image.commons.util.fixture.FixtureClasse2Test;
+
+
 /**
- * Tests unitaires de la classe TestsUtils
+ * Tests unitaires de la classe {@link TestsUtils} 
  *
  */
 @SuppressWarnings("PMD")
 public class TestsUtilsTest {
 
+   
+   /**
+    * Test unitaire du constructeur privé, pour le code coverage
+    */
+   @Test
+   public void constructeurPrive() throws TestConstructeurPriveException {
+      Boolean result = TestsUtils.testConstructeurPriveSansArgument(TestsUtils.class);
+      assertTrue("Le constructeur privé n'a pas été trouvé",result);
+   }
+   
    
    /**
     * Test de la méthode {@link TestsUtils#getTemporaryFileName}<br>
@@ -112,6 +128,37 @@ public class TestsUtilsTest {
       assertTrue("Vérifie que le résultat n'est pas vide",resultat.length()>prefixe.length());
       assertTrue("Vérifie que le résultat commence par le préfixe demandé",resultat.startsWith(prefixe));
       assertTrue("Vérifie que le résultat se termine par le suffixe demandé",resultat.endsWith(suffixe));
+   }
+   
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link TestsUtils#testConstructeurPriveSansArgument(Class)}
+    */
+   @Test
+   public void testConstructeurPriveSansArgument()
+   throws TestConstructeurPriveException {
+    
+      Boolean result;
+      
+      // Cas de plusieurs constructeurs privés, dont 1 sans paramètre
+      result = TestsUtils.testConstructeurPriveSansArgument(FixtureClasse1Test.class);
+      assertTrue("Le constructeur privé n'a pas été trouvé",result);
+      
+      // Cas d'un constructeur privé sans paramètre qui lève une exception
+      Boolean bOk = false;
+      try {
+         result = TestsUtils.testConstructeurPriveSansArgument(FixtureClasse2Test.class);
+         // assertTrue("Le constructeur privé n'a pas été trouvé",result);
+      }
+      catch (TestConstructeurPriveException ex) {
+         // OK, l'exception est levée
+         bOk = true;
+      }
+      if (!bOk) {
+         fail("L'exception attendue n'a pas été levée");
+      }
+      
    }
    
 }

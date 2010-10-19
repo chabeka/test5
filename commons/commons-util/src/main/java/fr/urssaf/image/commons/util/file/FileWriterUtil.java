@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
@@ -19,20 +18,7 @@ public final class FileWriterUtil {
 
    }
 
-   /**
-    * Ecrit une ligne à la fin d'un fichier
-    * 
-    * @param text
-    *           la ligne à écrire
-    * @param file
-    *           le chemin du fichier
-    * @throws IOException
-    *           en cas d'erreur d'E/S
-    */
-   public static void write(String text, String file) throws IOException {
-      write(text, new File(file));
-   }
-
+   
    /**
     * Ecrit une ligne à la fin d'un fichier
     * 
@@ -50,19 +36,6 @@ public final class FileWriterUtil {
       write(text, new File(file), encoding);
    }
 
-   /**
-    * Ecrit une ligne à la fin d'un fichier
-    * 
-    * @param text
-    *           la ligne à écrire
-    * @param file
-    *           le fichier dans lequel écrire
-    * @throws IOException
-    *           en cas d'erreur d'E/S
-    */
-   public static void write(String text, File file) throws IOException {
-      write(text, file, Charset.defaultCharset().name());
-   }
 
    /**
     * Ecrit une ligne à la fin d'un fichier

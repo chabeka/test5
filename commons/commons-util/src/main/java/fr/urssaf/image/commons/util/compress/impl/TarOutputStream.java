@@ -22,8 +22,10 @@ public class TarOutputStream extends
    protected final void compressFile(File file, TarArchiveOutputStream out)
          throws IOException {
 
-      TarArchiveEntry entry = new TarArchiveEntry(file, ArchiveUtil.entry(
-            this.fileName, file));
+      TarArchiveEntry entry = new TarArchiveEntry(
+            file, 
+            ArchiveUtil.entry(this.fileName, file));
+      
       ArchiveUtil.copy(file, out, entry);
 
    }

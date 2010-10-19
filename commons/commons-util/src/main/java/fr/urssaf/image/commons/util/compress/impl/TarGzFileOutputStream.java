@@ -32,33 +32,57 @@ public class TarGzFileOutputStream {
 
          // gzip du fichier
          FileOutputStream dest = new FileOutputStream(tgz);
-
-         CheckedOutputStream checksum = ArchiveUtil.crc32(dest);
-
-         // création d'un buffer d'écriture
-         BufferedOutputStream buff = new BufferedOutputStream(checksum);
-
-         // création d'un flux d'écriture pour la compression
-         GzipCompressorOutputStream out = new GzipCompressorOutputStream(buff);
-
          try {
 
-            // création d'un buffer d'écriture
-            tarDest.writeTo(out);
-
-         } finally {
-            // fermeture du flux d'écriture
-            out.close();
-            buff.close();
-            checksum.close();
-            dest.close();
+            CheckedOutputStream checksum = ArchiveUtil.crc32(dest);
+            try {
+   
+               // création d'un buffer d'écriture
+               BufferedOutputStream buff = new BufferedOutputStream(checksum);
+               try {
+      
+                  // création d'un flux d'écriture pour la compression
+                  GzipCompressorOutputStream out = new GzipCompressorOutputStream(buff);
+                  try {
+         
+                     // création d'un buffer d'écriture
+                     tarDest.writeTo(out);
+         
+                  } finally {
+                     // fermeture du flux d'écriture
+                     if (out!=null) {
+                        out.close();
+                     }
+                  }
+         
+                  return Long.toHexString(checksum.getChecksum().getValue());
+                  
+               }
+               finally {
+                  if (buff!=null) {
+                     buff.close();
+                  }
+               }
+               
+            }
+            finally  {
+               if (checksum!=null) {
+                  checksum.close();
+               }
+            }
+            
          }
-
-         return Long.toHexString(checksum.getChecksum().getValue());
+         finally {
+            if (dest!=null) {
+               dest.close();
+            }
+         }
 
       } finally {
          // fermeture du flux d'écriture
-         tarDest.close();
+         if (tarDest!=null) {
+            tarDest.close();
+         }
       }
 
    }

@@ -176,7 +176,7 @@ public final class CompressUtil {
     * @param filename
     *           nom du fichier à compresser
     * @param extensions
-    *           iltre sur les extensions
+    *           filtre sur les extensions
     * @return checksum en crc32 du tgz
     * @throws IOException
     *            exception sur le fichier

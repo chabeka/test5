@@ -27,23 +27,43 @@ public class GzFileInputStream {
    @SuppressWarnings("PMD.AssignmentInOperand")
    public final String uncompress() throws IOException {
       FileInputStream inputStream = new FileInputStream(this.compressFileName);
-
-      String name = FilenameUtils.concat(repertory, FilenameUtils
-            .getName(GzipUtils.getUncompressedFilename(this.compressFileName)));
-
-      FileOutputStream out = new FileOutputStream(name);
-      GzipCompressorInputStream bzIn = new GzipCompressorInputStream(inputStream);
       try {
-         final byte[] buffer = new byte[BUFFER_READ_SIZE];
-         int byteInput = 0;
-         while (-1 != (byteInput = bzIn.read(buffer))) {
-            out.write(buffer, 0, byteInput);
-         }
-      } finally {
-         out.close();
-         bzIn.close();
-      }
 
-      return name;
+         String name = FilenameUtils.concat(
+               repertory, 
+               FilenameUtils.getName(GzipUtils.getUncompressedFilename(this.compressFileName)));
+   
+         FileOutputStream out = new FileOutputStream(name);
+         try {
+         
+            GzipCompressorInputStream bzIn = new GzipCompressorInputStream(inputStream);
+            try {
+               final byte[] buffer = new byte[BUFFER_READ_SIZE];
+               int byteInput = 0;
+               while (-1 != (byteInput = bzIn.read(buffer))) {
+                  out.write(buffer, 0, byteInput);
+               }
+            } finally {
+               if (bzIn!=null) {
+                  bzIn.close();
+               }
+            }
+      
+            return name;
+            
+         }
+         finally {
+            if (out!=null) {
+               out.close();
+            }
+         }
+         
+      }
+      finally {
+         if (inputStream!=null) {
+            inputStream.close();
+         }
+      }
+         
    }
 }

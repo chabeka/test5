@@ -1,5 +1,9 @@
 package fr.urssaf.image.commons.util.object;
 
+
+/**
+ * Méthodes utilitaires pour le type Java <code>{@link Object}</code>
+ */
 public final class ObjectUtil {
 
 	private ObjectUtil() {
@@ -14,7 +18,14 @@ public final class ObjectUtil {
 	private static boolean booleanDefault;
 	private static byte byteDefault;
 
-	@SuppressWarnings("unchecked")
+	
+	/**
+	 * Renvoie la valeur par défaut d'un type
+	 * 
+	 * @param classe le type dont on veut la valeur par défaut
+	 * @return la valeur par défaut
+	 */
+	@SuppressWarnings({"unchecked","PMD.AvoidUsingShortType"})
 	public static Object getDefaultValue(Class classe) {
 
 		Object value = null;
@@ -33,9 +44,8 @@ public final class ObjectUtil {
 			value = longDefault;
 		} else if (char.class.isAssignableFrom(classe)) {
 			value = charDefault;
-		} else if (classe.isPrimitive()) {
-			// cas pour char
-			value = 0;
+		} else if (short.class.isAssignableFrom(classe)) {
+			value = intDefault;
 		}
 
 		return value;

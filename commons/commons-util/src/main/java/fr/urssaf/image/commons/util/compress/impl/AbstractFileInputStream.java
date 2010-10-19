@@ -28,33 +28,41 @@ abstract class AbstractFileInputStream<F extends ArchiveInputStream> {
 
       // création d'un flux d'écriture sur fichier
       FileInputStream inputStream = new FileInputStream(this.compressFileName);
-      ArchiveInputStream archiveInput = getArchiveInputStream(inputStream);
       try {
-         ArchiveEntry archiveEntry = archiveInput.getNextEntry();
-         while (archiveEntry != null) {
-
-            // traitement des fichiers compressés
-
-            String name = this.getFileName(archiveEntry);
-
-            FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
-
-            if (!archiveEntry.isDirectory()) {
-               FileOutputStream output = new FileOutputStream(name);
-
-               try {
-                  IOUtils.copy(archiveInput, output);
-               } finally {
-                  output.close();
+         ArchiveInputStream archiveInput = getArchiveInputStream(inputStream);
+         try {
+            ArchiveEntry archiveEntry = archiveInput.getNextEntry();
+            while (archiveEntry != null) {
+   
+               // traitement des fichiers compressés
+   
+               String name = this.getFileName(archiveEntry);
+   
+               FileUtils.forceMkdir(new File(FilenameUtils.getFullPath(name)));
+   
+               if (!archiveEntry.isDirectory()) {
+                  FileOutputStream output = new FileOutputStream(name);
+                  try {
+                     IOUtils.copy(archiveInput, output);
+                  } finally {
+                     if (output!=null) {
+                        output.close();
+                     }
+                  }
                }
+   
+               archiveEntry = archiveInput.getNextEntry();
             }
-
-            archiveEntry = archiveInput.getNextEntry();
+         } finally {
+            if (archiveInput!=null) {
+               archiveInput.close();
+            }
          }
-      } finally {
-         archiveInput.close();
-         inputStream.close();
-
+      }
+      finally {
+         if (inputStream!=null) {
+            inputStream.close();
+         }
       }
 
    }

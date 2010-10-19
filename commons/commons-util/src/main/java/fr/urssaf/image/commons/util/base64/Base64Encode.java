@@ -152,15 +152,32 @@ public final class Base64Encode {
          throws IOException {
 
       FileInputStream input = new FileInputStream(fichierSource);
-
-      Base64OutputStream output = new Base64OutputStream(new FileOutputStream(
-            fichierDest), true, longueurLigne, separateurLigne);
-      
       try {
-         IOUtils.copy(input, output);
-      } finally {
-         input.close();
-         output.close();
+
+         FileOutputStream fos = new FileOutputStream(fichierDest);
+         try {
+         
+            Base64OutputStream output = new Base64OutputStream(
+                  fos, true, longueurLigne, separateurLigne);
+            
+            try {
+               IOUtils.copy(input, output);
+            } finally {
+               if (output!=null) {
+                  output.close();
+               }
+            }
+         }
+         finally {
+            if (fos!=null) {
+               fos.close();
+            }
+         }
+      }
+      finally {
+         if (input!=null) {
+            input.close();
+         }
       }
 
    }
@@ -175,24 +192,38 @@ public final class Base64Encode {
     *  
     */
    public static String encodeFileToString(String cheminFichier) throws IOException {
-      FileInputStream fis = new FileInputStream(cheminFichier); 
-      Base64InputStream base64inputStream = new Base64InputStream(fis,true,-1,null);
-      StringBuffer base64 = new StringBuffer();
-      byte[] buffer = new byte[BUFFER_READ_SIZE];
-      int lus;
-      do
-      {
-         lus = base64inputStream.read(buffer);
-         if (lus>0)
-         {
-            for(int i=0;i<lus;i++)
+      FileInputStream fis = new FileInputStream(cheminFichier);
+      try {
+         Base64InputStream base64inputStream = new Base64InputStream(fis,true,-1,null);
+         try {
+            StringBuffer base64 = new StringBuffer();
+            byte[] buffer = new byte[BUFFER_READ_SIZE];
+            int lus;
+            do
             {
-               base64.append((char)buffer[i]);
+               lus = base64inputStream.read(buffer);
+               if (lus>0)
+               {
+                  for(int i=0;i<lus;i++)
+                  {
+                     base64.append((char)buffer[i]);
+                  }
+               }
+            }
+            while (lus>0);
+            return base64.toString();
+         }
+         finally {
+            if (base64inputStream!=null) {
+               base64inputStream.close();
             }
          }
       }
-      while (lus>0);
-      return base64.toString();
+      finally {
+         if (fis!=null) {
+            fis.close();
+         }
+      }
    }
    
    

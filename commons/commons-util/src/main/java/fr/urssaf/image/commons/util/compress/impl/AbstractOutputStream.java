@@ -30,15 +30,24 @@ abstract class AbstractOutputStream<F extends OutputStream> {
 
       // création d'un buffer d'écriture
       BufferedOutputStream buff = new BufferedOutputStream(dest);
-
-      // création d'un flux d'écriture pour la compression
-      F out = createOutputStream(buff);
       try {
-         write(out);
-      } finally {
-         // fermeture du flux d'écriture
-         out.close();
-         buff.close();
+
+         // création d'un flux d'écriture pour la compression
+         F out = createOutputStream(buff);
+         try {
+            write(out);
+         } finally {
+            // fermeture du flux d'écriture
+            if (out!=null) {
+               out.close();
+            }
+         }
+      
+      }
+      finally {
+         if (buff!=null) {
+            buff.close();
+         }
       }
 
    }
@@ -50,11 +59,16 @@ abstract class AbstractOutputStream<F extends OutputStream> {
       File file = new File(this.fileName);
 
       if (file.isDirectory()) {
-         Collection<File> files = FileUtils.listFiles(file, this.extensions,
+         
+         Collection<File> files = FileUtils.listFiles(
+               file, 
+               this.extensions,
                true);
+         
          for (File tmpFile : files) {
             compressFile(tmpFile, out);
          }
+         
       } else {
          compressFile(file, out);
       }
