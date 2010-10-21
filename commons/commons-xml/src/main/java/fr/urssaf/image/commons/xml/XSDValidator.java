@@ -12,16 +12,14 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * 
- * @author Bertrand BARAULT
- * 
+ * Classe de validation d'un document XML par un schéma XSD
  */
-
 public final class XSDValidator {
 
 	private XSDValidator() {
@@ -36,39 +34,176 @@ public final class XSDValidator {
 
 	private static final Logger LOGGER = Logger.getLogger(XSDValidator.class);
 
-	public enum ExceptionType {
-		fatalError("FATAL ERROR"), error("ERROR"), warning("WARNING");
 
-		protected String label;
+	/**
+	 * Type d'erreur dans une SAXParseExceptionType
+	 */
+	public enum ExceptionType {
+		
+	   fatalError("FATAL ERROR"), 
+	   
+	   error("ERROR"), 
+	   
+	   warning("WARNING");
+
+		private String label;
 
 		/** Constructeur */
-		ExceptionType(String pLabel) {
-			this.label = pLabel;
+		ExceptionType(String label) {
+			this.label = label;
 		}
 
+		/**
+		 * Renvoie un texte représentant le type d'exception
+		 * @return un texte représentant le type d'exception
+		 */
 		public String getLabel() {
 			return this.label;
 		}
 	}
+	
 
 	/**
-	 * Méthode permettant de tester la validité d'un fichier En cas d'erreur de
-	 * validation
-	 * 
-	 * @param xmlFile
-	 *            : nom et emplacement du fichier XML à tester
-	 * @param xsdFile
-	 *            : nom du ficier XSD de référance
-	 * @return List<SAXParseExceptionType> : renvoie une liste des
-	 *         SAXParseException avec le type d'execption
-	 *         error,fatalError,warning
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
+	 * Représente une erreur de validation du XML avec un schéma XSD. 
 	 */
-	public static List<SAXParseExceptionType> validXMLWithDOM(String xmlFile,
-			String xsdFile) throws ParserConfigurationException, IOException,
-			SAXException {
+	public static final class SAXParseExceptionType {
+
+      private final SAXParseException exception;
+      
+      private final ExceptionType type;
+
+      /**
+       * Constructeur
+       * 
+       * @param exception l'exception SAX
+       * @param type le type d'exception
+       */
+      public SAXParseExceptionType(
+            SAXParseException exception,
+            ExceptionType type) {
+         
+         this.exception = exception;
+         this.type = type;
+         // LOGGER.debug(exception.getMessage(), exception);
+         
+      }
+
+      
+      /**
+       * Renvoie l'exception SAX
+       * @return l'exception SAX
+       */
+      public SAXParseException getException() {
+         return this.exception;
+      }
+      
+      
+      /**
+       * Renvoie le type de l'exception
+       * @return le type de l'exception
+       */
+      public ExceptionType getType() {
+         return this.type;
+      }
+      
+   }
+	
+	
+	private static class DomErrorHandler implements ErrorHandler {
+	   
+	   private final List<SAXParseExceptionType> errors;
+	   
+	   public DomErrorHandler(List<SAXParseExceptionType> errors) {
+	      this.errors = errors;
+	   }
+	   
+	   @Override
+      public void warning(SAXParseException exception) {
+         errors.add(
+               new SAXParseExceptionType(
+                     exception,
+                     ExceptionType.warning));
+      }
+	   
+	   
+	   @Override
+      public void error(SAXParseException exception) {
+         errors.add(
+               new SAXParseExceptionType(
+                     exception,
+                     ExceptionType.error));
+      }
+	   
+	   
+	   @Override
+      public void fatalError(SAXParseException exception) {
+         errors.add(
+               new SAXParseExceptionType(
+                     exception,
+                     ExceptionType.fatalError));
+      }
+
+	   
+	}
+	
+	
+	private static class SaxErrorHandler extends DefaultHandler {
+      
+      private final List<SAXParseExceptionType> errors;
+      
+      public SaxErrorHandler(List<SAXParseExceptionType> errors) {
+         super();
+         this.errors = errors;
+      }
+      
+      
+      @Override
+      public void warning(SAXParseException exception) {
+         errors.add(
+               new SAXParseExceptionType(
+                     exception,
+                     ExceptionType.warning));
+      }
+      
+      
+      @Override
+      public void error(SAXParseException exception) {
+         errors.add(
+               new SAXParseExceptionType(
+                     exception,
+                     ExceptionType.error));
+      }
+      
+      
+      @Override
+      public void fatalError(SAXParseException exception) {
+         errors.add(
+               new SAXParseExceptionType(
+                     exception,
+                     ExceptionType.fatalError));
+      }
+
+   }
+	
+
+	/**
+	 * Valide un fichier XML à l'aide d'un fichier XSD.
+	 * 
+	 * @param xmlFile nom et emplacement du fichier XML à tester
+	 * @param xsdFile chemin complet du fichier XSD
+	 * 
+	 * @return List<SAXParseExceptionType> liste des erreurs trouvées dans le document, le cas échéant
+	 *         
+	 * @throws ParserConfigurationException problème de parser
+	 * @throws IOException problème d'E/S
+	 * @throws SAXException problème SAX
+	 */
+	public static List<SAXParseExceptionType> validXMLWithDOM(
+	      String xmlFile,String xsdFile) 
+	throws
+	   ParserConfigurationException,
+	   IOException,
+		SAXException {
 
 		final ArrayList<SAXParseExceptionType> errors = new ArrayList<SAXParseExceptionType>();
 
@@ -86,82 +221,59 @@ public final class XSDValidator {
 		
 		// Parsage du fichier XML avec DOM
 		DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-		documentBuilder.setErrorHandler(new DefaultHandler() {
-
-			@Override
-			public void fatalError(SAXParseException exception) {
-				errors.add(new SAXParseExceptionType(exception,
-						ExceptionType.fatalError));
-			}
-
-			@Override
-			public void error(SAXParseException exception) {
-				errors.add(new SAXParseExceptionType(exception,
-						ExceptionType.error));
-			}
-
-			@Override
-			public void warning(SAXParseException exception) {
-				errors.add(new SAXParseExceptionType(exception,
-						ExceptionType.warning));
-			}
-
-		});
-		
+		documentBuilder.setErrorHandler(new DomErrorHandler(errors));
 		documentBuilder.parse(xmlFile);
 
+		// Renvoie des erreurs trouvées dans le XML (le cas échéant)
 		return errors;
+
 	}
 
-	public static List<SAXParseExceptionType> validXMLWithSAX(String xmlFile,
-			String xsdFile) throws SAXException, IOException,
-			ParserConfigurationException {
+	
+	/**
+	 * Valide un fichier XML à l'aide d'un fichier XSD.
+	 * 
+	 * @param xmlFile nom et emplacement du fichier XML à tester
+    * @param xsdFile chemin complet du fichier XSD
+    * 
+	 * @return liste des erreurs trouvées dans le document, le cas échéant
+	 * 
+	 * @throws SAXException problème SAX
+	 * @throws IOException problème d'E/S
+	 * @throws ParserConfigurationException problème de parser
+	 */
+	public static List<SAXParseExceptionType> validXMLWithSAX(
+	      String xmlFile,
+			String xsdFile)
+	throws 
+	   SAXException,
+	   IOException,
+		ParserConfigurationException {
 
 		final ArrayList<SAXParseExceptionType> errors = new ArrayList<SAXParseExceptionType>();
 
 		SAXParserFactory spf = SAXParserFactory.newInstance();
+		
 		spf.setNamespaceAware(true);
 		spf.setValidating(true);
+		
 		SAXParser saxParser = spf.newSAXParser();
 		saxParser.setProperty(SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
 		saxParser.setProperty(SCHEMA_SOURCE, xsdFile);
-		saxParser.parse(xmlFile, new DefaultHandler() {
-			@Override
-			public void fatalError(SAXParseException exception) {
-				errors.add(new SAXParseExceptionType(exception,
-						ExceptionType.fatalError));
-			}
-
-			@Override
-			public void error(SAXParseException exception) {
-				errors.add(new SAXParseExceptionType(exception,
-						ExceptionType.error));
-			}
-
-			@Override
-			public void warning(SAXParseException exception) {
-				errors.add(new SAXParseExceptionType(exception,
-						ExceptionType.warning));
-			}
-		});
+		saxParser.parse(xmlFile, new SaxErrorHandler(errors));
 
 		return errors;
+		
 	}
 
-	public static class SAXParseExceptionType {
-
-		public final SAXParseException exception;
-		public final ExceptionType type;
-
-		public SAXParseExceptionType(SAXParseException exception,
-				ExceptionType type) {
-			this.exception = exception;
-			this.type = type;
-			LOGGER.fatal(exception.getMessage(), exception);
-		}
-
-	}
-
+	
+	/**
+	 * Affiche dans le Logger au niveau debug la liste d'erreurs passé en paramètre<br>
+	 * <br>
+	 * Utile pour le "déboguage"
+	 * 
+	 * @param liste la liste des erreurs
+	 */
 	public static void afficher(List<SAXParseExceptionType> liste) {
 		Iterator<SAXParseExceptionType> iter = liste.iterator();
 		while (iter.hasNext()) {
@@ -170,9 +282,9 @@ public final class XSDValidator {
 					+ type.exception.getLineNumber() + " "
 					+ type.exception.getMessage();
 			if (iter.hasNext()) {
-				LOGGER.info(log);
+				LOGGER.debug(log);
 			} else {
-				LOGGER.info(log + "\n");
+				LOGGER.debug(log + "\n");
 			}
 		}
 

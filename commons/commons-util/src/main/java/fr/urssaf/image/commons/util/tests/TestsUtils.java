@@ -2,15 +2,11 @@ package fr.urssaf.image.commons.util.tests;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.security.SecureRandom;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import org.junit.Assert;
 
 import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
+import fr.urssaf.image.commons.util.tempfile.TempFileUtils;
 
 /**
  * Fonctions utilitaires pour les tests unitaires
@@ -79,44 +75,8 @@ public final class TestsUtils {
          String prefixe,
          String suffixe)
    {
-      
-      // NB : Il n'est pas possible de tester unitairement l'intégralité du résultat de cette
-      // méthode car elle contient un calcul de nombre aléatoire ainsi qu'une date
-      // correspondant à "maintenant"
-      
-      // Création de l'objet résultat
-      StringBuffer nomFicTemp = new StringBuffer();
-      
-      // 1ère partie du nom : le préfixe
-      if (prefixe!=null) {
-         nomFicTemp.append(prefixe);
-      }
-      
-      // 2ème partie du nom : la date de maintenant, de l'année à la milli-secondes  
-      final Date dMaintenant = new Date();
-      final DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_hhmmss_SSS",Locale.FRENCH);
-      nomFicTemp.append(dateFormat.format(dMaintenant));
-      
-      // 3ème partie du nom : un nombre aléatoire
-      // L'algorithme utilisé est emprunté à java.io.File.createTempFile 
-      final SecureRandom random = new SecureRandom();
-      long nextLong = random.nextLong();
-      if (nextLong == Long.MIN_VALUE) {
-          nextLong = 0;      // corner case
-      } else {
-          nextLong = Math.abs(nextLong);
-      }
-      nomFicTemp.append('_');
-      nomFicTemp.append(nextLong);
-      
-      // Dernière partie du nom : le suffixe
-      if (suffixe!=null) {
-         nomFicTemp.append(suffixe);
-      }
-      
-      // Renvoie du résultat
-      return nomFicTemp.toString();
-      
+      // La méthode getTemporaryFileName() est déplacée dans la classe TestsUtils
+      return TempFileUtils.getTemporaryFileName(prefixe, suffixe);
    }
    
    
@@ -136,7 +96,8 @@ public final class TestsUtils {
     * @throws TestConstructeurPriveException en cas de problème lors du test 
     */
    @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")
-   public static Boolean testConstructeurPriveSansArgument(final Class<?> classe) throws TestConstructeurPriveException { 
+   public static Boolean testConstructeurPriveSansArgument(final Class<?> classe)
+   throws TestConstructeurPriveException { 
       Boolean result = false;
       final Constructor<?>[] constructeurs = classe.getDeclaredConstructors();
       try {

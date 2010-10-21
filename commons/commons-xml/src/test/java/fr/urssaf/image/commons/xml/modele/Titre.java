@@ -1,7 +1,14 @@
 package fr.urssaf.image.commons.xml.modele;
 
+/**
+ * Le titre d'un livre
+ */
 public interface Titre {
 
-	String getValue();
+	/**
+	 * Le titre
+	 * @return le titre
+	 */
+   String getValue();
 	
 }

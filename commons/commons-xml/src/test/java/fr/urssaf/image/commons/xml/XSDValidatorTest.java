@@ -12,63 +12,217 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
 import fr.urssaf.image.commons.util.resource.ResourceUtil;
+import fr.urssaf.image.commons.util.tests.TestsUtils;
 import fr.urssaf.image.commons.xml.XSDValidator.SAXParseExceptionType;
 
+
+/**
+ * Tests unitaires de la classe {@link XSDValidator}
+ */
+@SuppressWarnings("PMD")
 public class XSDValidatorTest {
 
+   
+   /**
+    * Test unitaire du constructeur privé, pour le code coverage
+    */
    @Test
-	public void validatorInfoByDOMSuccess() throws
+   public void constructeurPrive() throws TestConstructeurPriveException {
+      Boolean result = TestsUtils.testConstructeurPriveSansArgument(XSDValidator.class);
+      assertTrue("Le constructeur privé n'a pas été trouvé",result);
+   }
+   
+   
+   private String getXsdFile() throws URISyntaxException
+   {
+      return ResourceUtil.getResourceFullPath(this, "/info.xsd");
+   }
+   
+   
+   /**
+    * Test unitaire de la méthode {@link XSDValidator#validXMLWithDOM(String, String)}<br>
+    * <br>
+    * Cas de test : le document XML est valide<br>
+    * <br>
+    * Résultat attendu : la validation ne renvoie pas d'erreur
+    */
+   @Test
+	public void validXMLWithDOM_Succes() throws
 	   URISyntaxException,
 	   ParserConfigurationException,
 	   IOException,
 	   SAXException
 	{
-		String xmlFile = "src/test/resources/info_success.xml";
-		String xsdFile = getXsdFile();
-		assertSuccess(xmlFile, xsdFile);
-	}
-
-	@Test
-	public void validatorInfoByDOMFailure() throws
-	   URISyntaxException,
-	   ParserConfigurationException,
-	   IOException,
-	   SAXException
-	{
-		String xmlFile = "src/test/resources/info_failure.xml";
 		
-			List<SAXParseExceptionType> exceptions = XSDValidator
-					.validXMLWithDOM(xmlFile, getXsdFile());
-
-			SAXParseExceptionType exception = exceptions.get(0);
-
-			assertEquals("erreur de type", "ERROR", exception.type.getLabel());
-			assertEquals("erreur de ligne", 10, exception.exception
-					.getLineNumber());
-			assertEquals(
-					"erreur de message",
-					"cvc-complex-type.2.4.d: Invalid content was found starting with element 'baliseinconnue'. No child element is expected at this point.",
-					exception.exception.getMessage());
-
-			assertEquals("Le nombre d'erreurs trouvées dans le XML n'est pas celui attendu",1, exceptions.size());
-
+      // Le fichier XML à valider
+      String xmlFile = "src/test/resources/info_success.xml";
+		
+      // Le fichier du schéma XSD
+      // NB : on a besoin du chemin complet
+      String xsdFile = getXsdFile();
+      
+      // Appel de la méthode à tester;
+      List<SAXParseExceptionType> erreurs = XSDValidator.validXMLWithDOM(xmlFile,xsdFile);
+		
+		// Vérification du résultat
+      assertTrue(
+            "La validation du XML aurait dû réussir",
+            erreurs.isEmpty());
+		
 	}
 
-	private void assertSuccess(String xmlFile, String xsdFile) throws
+   
+   
+   /**
+    * Test unitaire de la méthode {@link XSDValidator#validXMLWithDOM(String, String)}<br>
+    * <br>
+    * Cas de test : le document XML n'est pas valide<br>
+    * <br>
+    * Résultat attendu : la validation renvoie des erreurs
+    */
+	@Test
+	public void validXMLWithDOM_Echec() throws
+	   URISyntaxException,
 	   ParserConfigurationException,
 	   IOException,
 	   SAXException
 	{
-	   assertTrue(
-	         "La validation du XML aurait due réussir",
-	         XSDValidator.validXMLWithDOM(xmlFile, xsdFile).isEmpty());
+		
+	   // Le fichier XML à valider
+	   String xmlFile = "src/test/resources/info_failure.xml";
+	   
+	   // Le fichier du schéma XSD
+      // NB : on a besoin du chemin complet
+      String xsdFile = getXsdFile();
+      
+      // Appel de la méthode à tester;
+      List<SAXParseExceptionType> erreurs = XSDValidator.validXMLWithDOM(xmlFile,xsdFile);
+      
+		// Vérifications générales
+      
+      XSDValidator.afficher(erreurs);
+      
+      
+      // La liste des erreurs ne doit pas être vide
+      assertEquals(
+            "Le nombre d'erreurs trouvées dans le XML n'est pas celui attendu",
+            1, 
+            erreurs.size());
+      
+      // Vérifie la 1ère erreur
+      
+      SAXParseExceptionType erreur = erreurs.get(0);
+      
+      assertEquals(
+            "erreur de type", 
+            "ERROR", 
+            erreur.getType().getLabel());
+      
+      assertEquals(
+            "erreur de ligne", 
+            10, 
+            erreur.getException().getLineNumber());
+      
+      assertEquals(
+            "erreur de message",
+            "cvc-complex-type.2.4.d: Invalid content was found starting with element 'baliseinconnue'. No child element is expected at this point.",
+            erreur.getException().getMessage());
+
+
+	}
+	
+	
+	/**
+    * Test unitaire de la méthode {@link XSDValidator#validXMLWithSAX(String, String)}<br>
+    * <br>
+    * Cas de test : le document XML est valide<br>
+    * <br>
+    * Résultat attendu : la validation ne renvoie pas d'erreur
+    */
+	@Test
+	public void validXMLWithSAX_Success()
+	throws 
+	   URISyntaxException, 
+	   SAXException, 
+	   IOException, 
+	   ParserConfigurationException {
+	   
+	   // Le fichier XML à valider
+      String xmlFile = "src/test/resources/info_success.xml";
+      
+      // Le fichier du schéma XSD
+      // NB : on a besoin du chemin complet
+      String xsdFile = getXsdFile();
+      
+      // Appel de la méthode à tester;
+      List<SAXParseExceptionType> erreurs = XSDValidator.validXMLWithSAX(xmlFile, xsdFile);
+      
+      // Vérification du résultat
+      assertTrue(
+            "La validation du XML aurait dû réussir",
+            erreurs.isEmpty());
+	   
 	}
 
 	
-	private String getXsdFile() throws URISyntaxException
-	{
-	   return ResourceUtil.getResourceFullPath(this, "/info.xsd");
-	}
+	/**
+    * Test unitaire de la méthode {@link XSDValidator#validXMLWithSAX(String, String)}<br>
+    * <br>
+    * Cas de test : le document XML n'est pas valide<br>
+    * <br>
+    * Résultat attendu : la validation renvoie des erreurs
+    */
+   @Test
+   public void validXMLWithSAX_Echec() throws
+      URISyntaxException,
+      ParserConfigurationException,
+      IOException,
+      SAXException
+   {
+      
+      // Le fichier XML à valider
+      String xmlFile = "src/test/resources/info_failure.xml";
+      
+      // Le fichier du schéma XSD
+      // NB : on a besoin du chemin complet
+      String xsdFile = getXsdFile();
+      
+      // Appel de la méthode à tester;
+      List<SAXParseExceptionType> erreurs = XSDValidator.validXMLWithSAX(xmlFile,xsdFile);
+      
+      // Vérifications générales
+      
+      XSDValidator.afficher(erreurs);
+      
+      
+      // La liste des erreurs ne doit pas être vide
+      assertEquals(
+            "Le nombre d'erreurs trouvées dans le XML n'est pas celui attendu",
+            1, 
+            erreurs.size());
+      
+      // Vérifie la 1ère erreur
+      
+      SAXParseExceptionType erreur = erreurs.get(0);
+      
+      assertEquals(
+            "erreur de type", 
+            "ERROR", 
+            erreur.getType().getLabel());
+      
+      assertEquals(
+            "erreur de ligne", 
+            10, 
+            erreur.getException().getLineNumber());
+      
+      assertEquals(
+            "erreur de message",
+            "cvc-complex-type.2.4.d: Invalid content was found starting with element 'baliseinconnue'. No child element is expected at this point.",
+            erreur.getException().getMessage());
 
+
+   }
+	
 }
