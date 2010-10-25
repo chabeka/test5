@@ -21,6 +21,7 @@
       <module>../commons-controller-spring3-exemple</module>
       <module>../commons-controller-spring3-jndi-exemple</module>
       <module>../commons-controller-springsecurity-exemple</module>
+      <module>../commons-dao-spring-exemple</module>
       <module>../commons-maquette-exemple</module>
       <module>../commons-webservice-exemple</module>
       <module>../commons-webservice-exemple-ssl</module>
