@@ -6,9 +6,9 @@
 	<modelVersion>4.0.0</modelVersion>
    
    <groupId>fr.urssaf.image.commons</groupId>
-   <artifactId>commons-dao-spring</artifactId>
+   <artifactId>commons-dao-spring-exemple2</artifactId>
    <version>0.0.1-SNAPSHOT</version>
-   <name>commons-dao-spring</name>
+   <name>commons-dao-spring-exemple2</name>
    
    <parent>
 		<groupId>fr.urssaf.image.commons</groupId>
