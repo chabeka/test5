@@ -72,12 +72,6 @@ public class DocumentJdbcDaoImpl implements DocumentDao {
 	}
 
 	@Override
-	public void delete(Document obj) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	@Transactional
 	@SuppressWarnings({"PMD.ShortVariable","PMD.ConsecutiveLiteralAppends"})
 	public void save(Document document) {
@@ -94,12 +88,6 @@ public class DocumentJdbcDaoImpl implements DocumentDao {
 		int id = this.jdbcTemplate.queryForInt("CALL IDENTITY();");
 
 		document.setId(id);
-	}
-
-	@Override
-	public void update(Document obj) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

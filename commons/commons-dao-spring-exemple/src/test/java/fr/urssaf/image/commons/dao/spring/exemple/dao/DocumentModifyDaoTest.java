@@ -34,7 +34,10 @@ public class DocumentModifyDaoTest {
 	private final static String FAILURE = "le test doit être un échec";
 
 	@Autowired
-	private DocumentDao documentDao;
+	private DocumentModifyDao modifyDao;
+	
+	@Autowired
+   private DocumentDao documentDao;
 
 	@Test
 	@Transactional
@@ -48,7 +51,7 @@ public class DocumentModifyDaoTest {
 		document.setDate(new Date());
 		document.setAuteur(auteur);
 
-		documentDao.save(document);
+		modifyDao.save(document);
 		
 		assertEquals(6, documentDao.count());
 
@@ -70,7 +73,7 @@ public class DocumentModifyDaoTest {
 		document.setDate(new Date());
 		document.setAuteur(auteur);
 
-		documentDao.saveSQL(document);
+		modifyDao.saveSQL(document);
 
 		assertEquals(6, documentDao.count());
 
@@ -89,7 +92,7 @@ public class DocumentModifyDaoTest {
 		document.setTitre(TITRE);
 
 		try {
-			documentDao.save(document);
+		   modifyDao.save(document);
 			fail(FAILURE);
 		} catch (DataAccessException e) {
 
@@ -111,7 +114,7 @@ public class DocumentModifyDaoTest {
 	   
 	   Document document = new Document();
 		document.setTitre(TITRE);
-		documentDao.saveSQL(document);
+		modifyDao.saveSQL(document);
 	}
 
 	@Test (expected=DataAccessException.class)
@@ -122,7 +125,7 @@ public class DocumentModifyDaoTest {
 
 		Document document = documentDao.find(ID_TEST);
 
-		documentDao.delete(document);
+		modifyDao.delete(document);
 		documentDao.find(ID_TEST);
 
 	}
@@ -136,7 +139,7 @@ public class DocumentModifyDaoTest {
 		Document document = documentDao.find(ID_TEST);
 
 		try {
-			documentDao.deleteSQL(document);
+			modifyDao.deleteSQL(document);
 			fail(FAILURE);
 		} catch (DataAccessException e) {
 			assertEquals(5, documentDao.count());
@@ -152,7 +155,7 @@ public class DocumentModifyDaoTest {
 
 		Document document = documentDao.find(ID_TEST);
 
-		documentDao.delete(document);
+		modifyDao.delete(document);
 
 		assertEquals(4, documentDao.count());
 		document = documentDao.find(ID_TEST);
@@ -168,7 +171,7 @@ public class DocumentModifyDaoTest {
 
 		Document document = documentDao.findSQL(ID_TEST);
 
-		documentDao.deleteSQL(document);
+		modifyDao.deleteSQL(document);
 
 		assertEquals(4, documentDao.count());
 		document = documentDao.find(ID_TEST);
@@ -185,7 +188,7 @@ public class DocumentModifyDaoTest {
 		Document document = documentDao.find(ID_TEST);
 
 		document.setTitre(UPDATE_TITRE);
-		documentDao.update(document);
+		modifyDao.update(document);
 
 		assertEquals(5, documentDao.count());
 
@@ -204,7 +207,7 @@ public class DocumentModifyDaoTest {
 		Document document = documentDao.findSQL(ID_TEST);
 
 		document.setTitre(UPDATE_TITRE);
-		documentDao.updateSQL(document);
+		modifyDao.updateSQL(document);
 
 		assertEquals(5, documentDao.count());
 

@@ -24,7 +24,6 @@ import fr.urssaf.image.commons.dao.spring.exemple.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
-@SuppressWarnings("PMD")
 public class DocumentServiceTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	@Autowired
@@ -123,6 +122,7 @@ public class DocumentServiceTest extends AbstractTransactionalJUnit4SpringContex
 
 	}
 	
+	@SuppressWarnings("PMD")
 	private void assertDocument(int id, String titre) {
 		Document doc = documentDao.find(id);
 		assertEquals(titre, doc.getTitre());

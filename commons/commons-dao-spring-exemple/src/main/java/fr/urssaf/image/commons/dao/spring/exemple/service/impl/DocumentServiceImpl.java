@@ -6,28 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.urssaf.image.commons.dao.spring.exemple.dao.DocumentDao;
+import fr.urssaf.image.commons.dao.spring.exemple.dao.DocumentModifyDao;
 import fr.urssaf.image.commons.dao.spring.exemple.modele.Document;
 import fr.urssaf.image.commons.dao.spring.exemple.service.DocumentService;
-
-
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
 
-	@Autowired
-	private DocumentDao documentDao;
-	
-	
-	@Override
-	@Transactional
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-	public void save(List<Document> documents) {
+   @Autowired
+   private DocumentModifyDao documentDao;
 
-	   for (Document document: documents) {
-	      documentDao.save(document);
-	   }
-		
-	}
+   @Override
+   @Transactional
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   public void save(List<Document> documents) {
+
+      for (Document document : documents) {
+         documentDao.save(document);
+      }
+
+   }
 
 }

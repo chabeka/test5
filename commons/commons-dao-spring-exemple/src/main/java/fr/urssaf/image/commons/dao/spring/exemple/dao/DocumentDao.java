@@ -1,51 +1,45 @@
 package fr.urssaf.image.commons.dao.spring.exemple.dao;
 
-import java.util.List;
-
 import fr.urssaf.image.commons.dao.spring.exemple.modele.Document;
-import fr.urssaf.image.commons.dao.spring.service.EntityCountDao;
-import fr.urssaf.image.commons.dao.spring.service.EntityFindDao;
-import fr.urssaf.image.commons.dao.spring.service.EntityIdDao;
-import fr.urssaf.image.commons.dao.spring.service.EntityModifyDao;
 
+public interface DocumentDao {
 
-@SuppressWarnings("PMD.TooManyMethods")
-public interface DocumentDao
-   extends
-      EntityModifyDao<Document>,
-		EntityIdDao<Document, Integer>, 
-		EntityFindDao<Document>, 
-		EntityCountDao 
-{
+   /**
+    * Renvoie un objet document persisté.<br>
+    * L'identifiant du document est défini dans le mapping Hibernate.<br>  
+    * Cherche en session puis en base.
+    * 
+    * @param identifiant identifiant Hibernate du document
+    * @return document persisté
+    */
+   Document get(Integer identifiant);
 
-	List<Document> findSQL(int firstResult, int maxResults, String order, boolean inverse);
-
-	List<Document> findHQL(int firstResult, int maxResults, String order, boolean inverse);
-	
-	List<Document> findEtats(int firstResult, int maxResults, String order, boolean inverse);
-	
-	List<Document> findOrderBy(int firstResult, int maxResults, String table,String order, boolean inverse);
-	
-	void saveSQL(Document document);
-
-	Document findSQL(Integer idUnique);
-
-	void deleteSQL(Document document);
-
-	void updateSQL(Document document);
-
-	Document findHQL(Integer idUnique);
-
-	List<Document> findByHQL();
-
-	List<Document> findBySQL();
-
-	List<Document> findByCriteria();
-	
-	List<Document> findByHQLWithEtats();
-
-	List<Document> findByCriteriaWithEtats();
-	
-	void scroll();
-
+   
+   /**
+    * Renvoie un objet document persisté.<br>
+    * L'identifiant du document est défini dans le mapping Hibernate.<br> 
+    * Cherche en base.
+    * 
+    * @param identifiant identifiant Hibernate du document
+    * @return document persisté
+    */
+   Document find(Integer identifiant);
+   
+   /**
+    * Renvoie un objet document persisté.<br>
+    * L'identifiant du document correspond à la clé primaire en base de données .<br> 
+    * Cherche en base.
+    * 
+    * @param identifiant clé primaire du document
+    * @return document persisté
+    */
+   Document findSQL(Integer identifiant);
+   
+   /**
+    * Compte le nombre de documents persistés
+    * 
+    * @return nombre de document persistés
+    */
+   int count();
+   
 }

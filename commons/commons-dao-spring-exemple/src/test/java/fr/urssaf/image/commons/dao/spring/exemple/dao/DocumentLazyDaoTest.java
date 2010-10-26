@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.LazyInitializationException;
 import org.junit.Test;
@@ -21,17 +19,17 @@ import fr.urssaf.image.commons.dao.spring.exemple.modele.Document;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-service.xml")
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage","PMD.ConsecutiveLiteralAppends"})
-public class DocumentLazyLoadingTest {
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
+public class DocumentLazyDaoTest {
 
 	private static final Logger LOG= Logger
-			.getLogger(DocumentLazyLoadingTest.class);
+			.getLogger(DocumentLazyDaoTest.class);
 
 	@Autowired
 	private DocumentDao documentDao;
-
+	
 	@Test
-	public void getFailure() {
+	public void lazyException() {
 
 		Document document = documentDao.get(3);
 		try {
@@ -46,7 +44,7 @@ public class DocumentLazyLoadingTest {
 
 	@Test
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public void getInSession() {
+	public void noLazyException() {
 
 		Document document = documentDao.get(3);
 		assertNotNull(document.getAuteur().getNom());
@@ -54,7 +52,8 @@ public class DocumentLazyLoadingTest {
 	}
 
 	@Test
-	public void getCollection() {
+	@SuppressWarnings("PMD.ConsecutiveLiteralAppends")
+	public void collectionlazyException() {
 
 		Document document = documentDao.get(3);
 		try {
@@ -77,7 +76,7 @@ public class DocumentLazyLoadingTest {
 
 	@Test
 	@Transactional(propagation = Propagation.SUPPORTS)
-	public void getCollectionInSession() {
+	public void collectionNolazyException() {
 
 		Document document = documentDao.get(3);
 		LOG.debug(document.getEtats().size());
@@ -86,39 +85,9 @@ public class DocumentLazyLoadingTest {
 
 	}
 	
-	@Test
-	public void getCollectionByHQL() {
-		
-		List<Document> documents = documentDao.findByHQLWithEtats();
-		assertCollection(documents);
-	}
-	
-	@Test
-	public void getCollectionByCriteria() {
-		
-		List<Document> documents = documentDao.findByCriteriaWithEtats();
-		assertCollection(documents);
-	}
-	
 	private void assertCollection(Document document){
 		assertEquals(2, document.getEtats().size());
 	}
-	
-	private void assertCollection(List<Document> documents) {
 
-		assertEquals(3, documents.size());
-
-		//check doc
-		assertEquals("titre 1", documents.get(0).getTitre());
-		assertEquals("titre 2", documents.get(1).getTitre());
-		assertEquals("titre 3", documents.get(2).getTitre());
-		
-		//check etats
-		assertEquals(1, documents.get(0).getEtats().size());
-		assertEquals(2, documents.get(1).getEtats().size());
-		assertEquals(2, documents.get(2).getEtats().size());
-		
-	}
-	
 
 }
