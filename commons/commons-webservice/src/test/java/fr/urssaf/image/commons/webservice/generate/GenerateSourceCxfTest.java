@@ -33,7 +33,7 @@ public class GenerateSourceCxfTest {
       String PACKAGEPATH = "Document";
 
       GenerateSourceCxf generateSource = new GenerateSourceCxf(PACKAGEPATH,
-            "src/TEST/resources/cxf/document_literal.wsdl", TEST.getPath());
+            "src/test/resources/cxf/document_literal.wsdl", TEST.getPath());
       generateSource.generate();
 
       TEST.assertFile(PACKAGEPATH, "AllDocuments.java");
@@ -59,7 +59,7 @@ public class GenerateSourceCxfTest {
       String PACKAGEPATH = "RpcEncoded";
 
       GenerateSourceCxf generateSource = new GenerateSourceCxf(PACKAGEPATH,
-            "src/TEST/resources/cxf/rpc_encoded.wsdl", TEST.getPath());
+            "src/test/resources/cxf/rpc_encoded.wsdl", TEST.getPath());
       generateSource.generate();
 
       TEST.assertFile(PACKAGEPATH, "DocService.java");
@@ -80,7 +80,7 @@ public class GenerateSourceCxfTest {
       String PACKAGEPATH = "RpcLiteral";
 
       GenerateSourceCxf generateSource = new GenerateSourceCxf(PACKAGEPATH,
-            "src/TEST/resources/cxf/rpc_literal.wsdl", TEST.getPath());
+            "src/test/resources/cxf/rpc_literal.wsdl", TEST.getPath());
       generateSource.generate();
 
       TEST.assertFile(PACKAGEPATH, "DocService.java");
