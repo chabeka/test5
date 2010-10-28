@@ -9,10 +9,10 @@ import org.junit.Test;
 @SuppressWarnings("PMD")
 public class GenerateSourceAxisTest {
 
-   private final static TestUtil TEST;
+   private final static GenerateUtil TEST;
 
    static {
-      TEST = new TestUtil("generateByAxis");
+      TEST = new GenerateUtil("generateByAxis");
    }
 
    @BeforeClass
@@ -23,7 +23,7 @@ public class GenerateSourceAxisTest {
 
    @AfterClass
    public static void clean() throws IOException {
-      //TEST.clean();
+      TEST.clean();
 
    }
 

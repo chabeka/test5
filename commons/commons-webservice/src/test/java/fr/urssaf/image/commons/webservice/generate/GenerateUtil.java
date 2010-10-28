@@ -13,11 +13,11 @@ import org.apache.commons.lang.SystemUtils;
 /**
  * Classe utilitaire pour les test de génération
  */
-final class TestUtil {
+final class GenerateUtil {
     
    private final String path;
    
-   protected TestUtil(String path){
+   protected GenerateUtil(String path){
       this.path = FilenameUtils.concat(SystemUtils.getJavaIoTmpDir()
             .getAbsolutePath(), path);
    }

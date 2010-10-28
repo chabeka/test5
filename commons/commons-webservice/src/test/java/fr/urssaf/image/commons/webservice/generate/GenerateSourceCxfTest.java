@@ -9,10 +9,10 @@ import org.junit.Test;
 @SuppressWarnings("PMD")
 public class GenerateSourceCxfTest {
 
-   private final static TestUtil TEST;
+   private final static GenerateUtil TEST;
 
    static {
-      TEST = new TestUtil("generateByCxf");
+      TEST = new GenerateUtil("generateByCxf");
    }
 
    @BeforeClass
@@ -33,7 +33,7 @@ public class GenerateSourceCxfTest {
       String PACKAGEPATH = "Document";
 
       GenerateSourceCxf generateSource = new GenerateSourceCxf(PACKAGEPATH,
-            "src/TEST/resources/cxf/DocServiceDocument.xml", TEST.getPath());
+            "src/TEST/resources/cxf/DocServiceDocument.wsdl", TEST.getPath());
       generateSource.generate();
 
       TEST.assertFile(PACKAGEPATH, "AllDocuments.java");
@@ -59,7 +59,7 @@ public class GenerateSourceCxfTest {
       String PACKAGEPATH = "RpcEncoded";
 
       GenerateSourceCxf generateSource = new GenerateSourceCxf(PACKAGEPATH,
-            "src/TEST/resources/cxf/DocServiceRpcEncoded.xml", TEST.getPath());
+            "src/TEST/resources/cxf/DocServiceRpcEncoded.wsdl", TEST.getPath());
       generateSource.generate();
 
       TEST.assertFile(PACKAGEPATH, "DocService.java");
@@ -80,7 +80,7 @@ public class GenerateSourceCxfTest {
       String PACKAGEPATH = "RpcLiteral";
 
       GenerateSourceCxf generateSource = new GenerateSourceCxf(PACKAGEPATH,
-            "src/TEST/resources/cxf/DocServiceRpcLiteral.xml", TEST.getPath());
+            "src/TEST/resources/cxf/DocServiceRpcLiteral.wsdl", TEST.getPath());
       generateSource.generate();
 
       TEST.assertFile(PACKAGEPATH, "DocService.java");
