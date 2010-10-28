@@ -8,6 +8,13 @@ import org.apache.axis.utils.Messages;
 import org.apache.axis.wsdl.WSDL2Java;
 import org.apache.log4j.Logger;
 
+/**
+ * Classe de génération de code d'un webservice.<br>
+ * Basée sur le Framework <u>Apache Axis</u><br>
+ * elle instancie un objet WSDLToJava {@link org.apache.axis.wsdl.WSDL2Java}.
+ * <br><br>
+ * Utilisé pour les webservices de type RPC/Literal & RPC/Encoded
+ */
 public class GenerateSourceAxis {
 
 	protected static final Logger LOGGER = Logger
@@ -18,7 +25,16 @@ public class GenerateSourceAxis {
 	private final String wsdl;
 
 	private final MyWSDL2Java myWSDL2Java;
+	
+	private String path = "src/main/java";
 
+	/**
+    * Paramétrage du fichier wsdl et du nom du package des classes générées<br>
+    * L'emplacement du package généré est src/main/java
+    * 
+    * @param packagePath nom du package des classes générées
+    * @param wsdl chemin du fichier wsdl
+    */
 	public GenerateSourceAxis(String packagePath, String wsdl) {
 
 		myWSDL2Java = new MyWSDL2Java();
@@ -27,17 +43,34 @@ public class GenerateSourceAxis {
 		this.packagePath = packagePath;
 
 	}
+	
+	/**
+    *  Paramétrage du fichier wsdl, du nom du package des classes générées et du chemin du package généré<br>
+    * 
+    * @param packagePath nom du package des classes générées
+    * @param wsdl chemin du fichier wsdl
+    * @param path emplacement du package généré
+    */
+	public GenerateSourceAxis(String packagePath, String wsdl,String path) {
 
-	public void generate() {
+      this(packagePath,wsdl);
+      this.path = path;
+
+   }
+
+	/**
+    * Génére le code source
+    */
+	public final void generate() {
 
 		String[] args = new String[] { "-p" + this.packagePath,
-				"-osrc/main/java", this.wsdl };
+				"-o"+path, this.wsdl };
 
 		myWSDL2Java.run(args);
 
 	}
 
-	private class MyWSDL2Java extends WSDL2Java {
+	private static class MyWSDL2Java extends WSDL2Java {
 
 		@SuppressWarnings("unchecked")
 		@Override
