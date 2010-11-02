@@ -8,21 +8,46 @@ import javax.net.ssl.SSLContext;
 import org.apache.axis.components.net.JSSESocketFactory;
 import org.apache.axis.components.net.SecureSocketFactory;
 
-public abstract class AbstractJSSESocketFactory extends JSSESocketFactory implements
-		SecureSocketFactory {
+/**
+ * Classe de surcharge de (@link
+ * org.apache.axis.components.net.JSSESocketFactory) Cette classe est utilisé
+ * lorsque l'on utilse le framework Axis pour initialiser la propriété
+ * axis.socketSecureFactory<br>
+ * ex: AxisProperties.setProperty("axis.socketSecureFactory", Class<? extends
+ * AbstractJSSESocketFactory> classe);
+ * 
+ */
+public abstract class AbstractJSSESocketFactory extends JSSESocketFactory
+      implements SecureSocketFactory {
 
-	@SuppressWarnings("PMD.ReplaceHashtableWithMap")
-	public AbstractJSSESocketFactory(Hashtable<String, String> attributes) {
-		super(attributes);
-	}
+   /**
+    * On est obligé de surcharger le constructeur de
+    * org.apache.axis.components.net.JSSESocketFactory
+    * 
+    * @param attributes
+    *           propriétés de la connexion
+    */
+   @SuppressWarnings("PMD.ReplaceHashtableWithMap")
+   public AbstractJSSESocketFactory(Hashtable<String, String> attributes) {
+      super(attributes);
+   }
 
-	@Override
-	protected void initFactory() throws IOException {
+   /**
+    * Méthode pour surcharger SSLSocketFactory de
+    * org.apache.axis.components.net.JSSESocketFactory
+    */
+   @Override
+   protected final void initFactory() throws IOException {
 
-		sslFactory = getSSLContext().getSocketFactory();
+      sslFactory = getSSLContext().getSocketFactory();
 
-	}
+   }
 
-	public abstract SSLContext getSSLContext();
+   /**
+    * Méthode à surcharger pour renvoyer un objet de type SSLContext
+    * 
+    * @return SSLContext
+    */
+   public abstract SSLContext getSSLContext();
 
 }
