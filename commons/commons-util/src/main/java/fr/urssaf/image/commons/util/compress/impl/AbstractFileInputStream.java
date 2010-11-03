@@ -23,6 +23,11 @@ abstract class AbstractFileInputStream<F extends ArchiveInputStream> {
       this.repertory = repertory;
    }
 
+   /**
+    * Méthode de décompression
+    * 
+    * @throws IOException exception sur les fichiers
+    */
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    public void uncompress() throws IOException {
 

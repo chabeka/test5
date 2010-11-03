@@ -23,6 +23,12 @@ abstract class AbstractFileOutputStream<F extends OutputStream>
       this.fileName = fileName;
    }
 
+   /**
+    * Méthode de compression
+    * 
+    * @return checksum du fichier compressé au format hexa
+    * @throws IOException
+    */
    public String compress() throws IOException {
 
       // création d'un flux d'écriture sur fichier
