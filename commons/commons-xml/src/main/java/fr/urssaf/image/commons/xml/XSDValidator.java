@@ -113,7 +113,7 @@ public final class XSDValidator {
 	   
 	   private final List<SAXParseExceptionType> errors;
 	   
-	   public DomErrorHandler(List<SAXParseExceptionType> errors) {
+	   DomErrorHandler(List<SAXParseExceptionType> errors) {
 	      this.errors = errors;
 	   }
 	   
@@ -151,7 +151,7 @@ public final class XSDValidator {
       
       private final List<SAXParseExceptionType> errors;
       
-      public SaxErrorHandler(List<SAXParseExceptionType> errors) {
+      SaxErrorHandler(List<SAXParseExceptionType> errors) {
          super();
          this.errors = errors;
       }

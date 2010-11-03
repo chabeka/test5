@@ -56,7 +56,7 @@ public final class JDOMFactory<O> {
       private final Element element;
       
       
-      public MyInvocationHandler(Element element) {
+      MyInvocationHandler(Element element) {
          super();
          this.element = element;
       }
