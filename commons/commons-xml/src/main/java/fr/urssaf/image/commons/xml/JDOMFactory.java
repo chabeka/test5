@@ -106,7 +106,7 @@ public final class JDOMFactory<O> {
       @SuppressWarnings(UNCHECKED)
       @Override
       public Object invoke(Object proxy, Method method,
-            Object[] args) throws Throwable {
+            Object[] args) {
 
          Object result = null; // NOPMD
          
