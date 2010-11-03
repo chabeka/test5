@@ -13,7 +13,7 @@ class TarOutputStream extends
 
    private final String fileName;
 
-   public TarOutputStream(String fileName) {
+   TarOutputStream(String fileName) {
       super(fileName);
       this.fileName = fileName;
 
