@@ -57,7 +57,7 @@ public class GenerateSourceCxf {
 		ToolContext context = new ToolContext();
 		context.setPackageName(this.packagePath);
 
-		myWSDL2Java.setArguments(new String[] { "-d", path,
+		myWSDL2Java.setArguments(new String[] { "-d", path,"-verbose",
 				this.wsdl });
 
 		try {

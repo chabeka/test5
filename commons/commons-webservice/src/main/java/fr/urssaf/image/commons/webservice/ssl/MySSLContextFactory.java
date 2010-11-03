@@ -96,22 +96,7 @@ public class MySSLContextFactory {
       ctx = SSLContext.getInstance("SSL");
 
       ctx.init(kmf.getKeyManagers(),
-            new TrustManager[] { new X509TrustManager() {
-
-               public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                  return new X509Certificate[0];
-               }
-
-               public void checkClientTrusted(
-                     java.security.cert.X509Certificate[] chain, String authType) {
-                  // aucune implémentation
-               }
-
-               public void checkServerTrusted(
-                     java.security.cert.X509Certificate[] chain, String authType) {
-                  // aucune implémentation
-               }
-            } }, null);
+            new TrustManager[] { new MyTrustManager() }, null);
 
       LOGGER.debug("alias:" + alias);
       LOGGER.debug(cert.getType());
@@ -124,25 +109,7 @@ public class MySSLContextFactory {
 
       try {
          ctx = SSLContext.getInstance("SSL");
-         ctx.init(null, new TrustManager[] { new X509TrustManager() {
-
-            @Override
-            public void checkClientTrusted(X509Certificate[] arg0, String arg1)
-                  throws CertificateException {
-               // aucune implémentation
-            }
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] arg0, String arg1)
-                  throws CertificateException {
-               // aucune implémentation
-            }
-
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-               return new X509Certificate[0];
-            }
-         } }, null);
+         ctx.init(null, new TrustManager[] { new MyTrustManager() }, null);
 
       } catch (Exception e) {
          LOGGER.error(e.getMessage(), e);
@@ -200,6 +167,27 @@ public class MySSLContextFactory {
       }
 
       return this.ctx;
+   }
+
+   private static class MyTrustManager implements X509TrustManager {
+
+      @Override
+      public void checkClientTrusted(X509Certificate[] arg0, String arg1)
+            throws CertificateException {
+         // aucune implémentation
+      }
+
+      @Override
+      public void checkServerTrusted(X509Certificate[] arg0, String arg1)
+            throws CertificateException {
+         // aucune implémentation
+      }
+
+      @Override
+      public X509Certificate[] getAcceptedIssuers() {
+         return new X509Certificate[0];
+      }
+
    }
 
 }
