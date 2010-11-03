@@ -8,6 +8,13 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * Classe de décompression des fichier de type gzip<br>
+ * <br>
+ * un exemple est utilisé dans la classe utilitaire
+ * {@link fr.urssaf.image.commons.util.compress.UnCompressUtil#ungz(String, String)}
+ * 
+ */
 public class GzFileInputStream {
 
    private final String compressFileName;
@@ -19,11 +26,21 @@ public class GzFileInputStream {
    private static final int BUFFER_READ_SIZE = 2048;
    
 
+   /**
+    * Initialisation des paramètres de décompression
+    * @param compressFileName nom du fichier à décompresser
+    * @param repertory répertoire de décompression
+    */
    public GzFileInputStream(String compressFileName, String repertory) {
       this.compressFileName = compressFileName;
       this.repertory = repertory;
    }
 
+   /**
+    * Methode de de décompression
+    * @return nom du fichier décompressé
+    * @throws IOException exception sur les fichiers
+    */
    @SuppressWarnings("PMD.AssignmentInOperand")
    public final String uncompress() throws IOException {
       FileInputStream inputStream = new FileInputStream(this.compressFileName);

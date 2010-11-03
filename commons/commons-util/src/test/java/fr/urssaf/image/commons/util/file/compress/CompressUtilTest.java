@@ -22,7 +22,7 @@ import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
 import fr.urssaf.image.commons.util.tests.TestsUtils;
 
 /**
- * les fichiers de compression sont placé dans le repertoire archive du
+ * les fichiers de compression sont placés dans le repertoire archive du
  * répertoire temporaire si il n'existe pas il est créé
  * 
  * @author Bertrand BARAULT

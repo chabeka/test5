@@ -12,7 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import fr.urssaf.image.commons.util.file.FileWriterUtil;
 
-public final class ArchiveUtil {
+final class ArchiveUtil {
 
    private ArchiveUtil() {
 

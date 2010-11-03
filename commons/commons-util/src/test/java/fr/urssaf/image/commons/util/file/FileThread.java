@@ -10,7 +10,7 @@ import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 
 @SuppressWarnings("PMD")
-public final class FileThread extends Thread {
+final class FileThread extends Thread {
 
 	private final int numero;
 

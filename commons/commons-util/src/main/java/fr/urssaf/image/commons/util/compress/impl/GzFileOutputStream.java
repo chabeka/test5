@@ -8,8 +8,23 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 
 import fr.urssaf.image.commons.util.file.FileWriterUtil;
 
-public class GzFileOutputStream extends AbstractFileOutputStream<GzipCompressorOutputStream>{
+/**
+ * Classe de compression des fichier de type gzip<br>
+ * <br>
+ * un exemple est utilisé dans la classe utilitaire
+ * {@link fr.urssaf.image.commons.util.compress.CompressUtil#gzip(String, String)}
+ */
+public class GzFileOutputStream extends
+      AbstractFileOutputStream<GzipCompressorOutputStream> {
 
+   /**
+    * initialisation des fichiers de compression
+    * 
+    * @param compressFileName
+    *           nom de l'archive (avec une extension .gz)
+    * @param fileName
+    *           nom du fichier à compresser
+    */
    public GzFileOutputStream(String compressFileName, String fileName) {
       super(compressFileName, fileName);
    }
@@ -24,8 +39,6 @@ public class GzFileOutputStream extends AbstractFileOutputStream<GzipCompressorO
    @Override
    protected final GzipCompressorOutputStream createOutputStream(
          BufferedOutputStream buff) throws IOException {
-      GzipCompressorOutputStream out = new GzipCompressorOutputStream(
-            buff);
-      return out;
+      return new GzipCompressorOutputStream(buff);
    }
 }

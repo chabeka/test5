@@ -7,7 +7,8 @@ import java.io.IOException;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
-public class TarOutputStream extends
+
+class TarOutputStream extends
       AbstractOutputStream<TarArchiveOutputStream> {
 
    private final String fileName;
