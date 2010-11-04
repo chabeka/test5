@@ -7,7 +7,6 @@
 
 package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 
-@SuppressWarnings("unchecked")
 public class FichierWS  implements java.io.Serializable {
     private java.lang.String nom;
 
@@ -204,7 +203,7 @@ public class FichierWS  implements java.io.Serializable {
     /**
      * Get Custom Serializer
      */
-   public static org.apache.axis.encoding.Serializer getSerializer(
+    public static org.apache.axis.encoding.Serializer getSerializer(
            java.lang.String mechType, 
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {

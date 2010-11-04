@@ -11,7 +11,6 @@ package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 /**
  * Element contenant la description d'un type zone
  */
-@SuppressWarnings("unchecked")
 public class TypeZoneWS  implements java.io.Serializable {
     private java.lang.String code;
 

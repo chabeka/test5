@@ -7,7 +7,6 @@
 
 package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 
-@SuppressWarnings("unchecked")
 public class Format implements java.io.Serializable {
     private java.lang.String _value_;
     private static java.util.HashMap _table_ = new java.util.HashMap();

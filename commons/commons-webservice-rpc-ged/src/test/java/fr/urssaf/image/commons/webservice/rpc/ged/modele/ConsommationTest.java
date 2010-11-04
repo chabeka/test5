@@ -7,10 +7,10 @@ import javax.xml.rpc.ServiceException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class ConsommationTest {
 
    @Test
-   @Ignore
    /**
     * Test du Ping() directement à partir des classes modèles
     * Uniquement pour des besoins d'explication dans la fiche de développement F011

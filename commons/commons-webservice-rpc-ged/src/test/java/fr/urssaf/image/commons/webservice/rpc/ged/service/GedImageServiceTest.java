@@ -5,12 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.rmi.RemoteException;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.rpc.ged.modele.AuthInfo;
 
-@Ignore
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class GedImageServiceTest {
 
