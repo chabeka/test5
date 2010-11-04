@@ -11,6 +11,10 @@
    <packaging>pom</packaging>
    <version>0.0.1-SNAPSHOT</version>
    <name>commons-webservice-parent</name>
+   
+   <properties>
+      <cxf.version>2.3.0</cxf.version>
+   </properties>
 
    <modules>
       <module>../commons-webservice</module>
