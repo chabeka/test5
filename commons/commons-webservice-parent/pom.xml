@@ -14,6 +14,7 @@
    
    <properties>
       <cxf.version>2.3.0</cxf.version>
+      <axis.version>1.4</axis.version>
    </properties>
 
    <modules>
