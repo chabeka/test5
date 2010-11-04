@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele.Document;
 
-@Ignore
 @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 public class DocumentServiceTest {
 
@@ -37,6 +36,7 @@ public class DocumentServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void saveDocument() throws RemoteException {
 
 		Document document = new Document();
