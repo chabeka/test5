@@ -39,27 +39,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AllDocumentsResponse }
-     * 
-     */
-    public AllDocumentsResponse createAllDocumentsResponse() {
-        return new AllDocumentsResponse();
-    }
-
-    /**
      * Create an instance of {@link GetDocument }
      * 
      */
     public GetDocument createGetDocument() {
         return new GetDocument();
-    }
-
-    /**
-     * Create an instance of {@link GetDocumentResponse }
-     * 
-     */
-    public GetDocumentResponse createGetDocumentResponse() {
-        return new GetDocumentResponse();
     }
 
     /**
@@ -71,14 +55,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SaveResponse }
-     * 
-     */
-    public SaveResponse createSaveResponse() {
-        return new SaveResponse();
-    }
-
-    /**
      * Create an instance of {@link Save }
      * 
      */
@@ -87,11 +63,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AllDocumentsResponse }
+     * 
+     */
+    public AllDocumentsResponse createAllDocumentsResponse() {
+        return new AllDocumentsResponse();
+    }
+
+    /**
      * Create an instance of {@link Document }
      * 
      */
     public Document createDocument() {
         return new Document();
+    }
+
+    /**
+     * Create an instance of {@link SaveResponse }
+     * 
+     */
+    public SaveResponse createSaveResponse() {
+        return new SaveResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetDocumentResponse }
+     * 
+     */
+    public GetDocumentResponse createGetDocumentResponse() {
+        return new GetDocumentResponse();
     }
 
     /**

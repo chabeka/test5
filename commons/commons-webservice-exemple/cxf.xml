@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://cxf.apache.org/configuration/security"
+   xmlns:http="http://cxf.apache.org/transports/http/configuration"
+   xmlns:cxf="http://cxf.apache.org/core"
+   xsi:schemaLocation="
+          http://cxf.apache.org/configuration/security
+          http://cxf.apache.org/schemas/configuration/security.xsd
+          http://cxf.apache.org/transports/http/configuration
+          http://cxf.apache.org/schemas/configuration/http-conf.xsd
+          http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+   <bean id="SSLSocketFactory"
+      class="fr.urssaf.image.commons.util.net.HttpsConfiguration"
+      init-method="initDefaultSSLSocketFactory" >
+   </bean>
+   
+    <bean id="DefaultHostnameVerifier"
+       class="fr.urssaf.image.commons.util.net.HttpsConfiguration"
+      init-method="initDefaultHostnameVerifier" >
+   </bean>
+
+   <http:conduit name="*.http-conduit">
+
+      <http:tlsClientParameters disableCNCheck="true"
+         useHttpsURLConnectionDefaultSslSocketFactory="true">
+      </http:tlsClientParameters>
+   </http:conduit>
+
+</beans>
