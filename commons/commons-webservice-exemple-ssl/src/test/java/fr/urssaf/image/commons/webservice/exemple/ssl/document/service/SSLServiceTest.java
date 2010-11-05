@@ -2,36 +2,39 @@ package fr.urssaf.image.commons.webservice.exemple.ssl.document.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.rmi.RemoteException;
-
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
-import fr.urssaf.image.commons.webservice.exemple.ssl.base.RPCJSSESocketFactory;
-import fr.urssaf.image.commons.webservice.ssl.InitAxisProperties;
-
-@Ignore
 public class SSLServiceTest {
 
 	private static final Logger LOG = Logger.getLogger(SSLServiceTest.class);
 
-	private final SSLService service;
+	private SSLService service;
 
-	public SSLServiceTest() {
-		service = new SSLServiceImpl();
-		InitAxisProperties.initSoketSecureFactory(RPCJSSESocketFactory.class);
+   @Before
+   public void init() {
 
-	}
+      service = new SSLServiceImpl();
 
-	@Test
-	public void wsTest1() throws RemoteException {
+   }
 
-		String resultat = service.wsTest1("nom", "prenom");
+   @Test
+   public void bonjour() {
 
-		LOG.debug(resultat);
+      String resultat = service.bonjour("nom", "prenom");
+      LOG.debug(resultat);
+      assertEquals("échec du test", "Hello prenom nom (en rpc/literal)",
+            resultat);
 
-		assertEquals("échec du test","Hello prenom nom (en document/literal)", resultat);
+   }
 
-	}
+   @Test
+   public void multiplie() {
+
+      long resultat = service.multiplie(4, 6);
+      LOG.debug(resultat);
+      assertEquals("échec du test", 24, resultat);
+
+   }
 }

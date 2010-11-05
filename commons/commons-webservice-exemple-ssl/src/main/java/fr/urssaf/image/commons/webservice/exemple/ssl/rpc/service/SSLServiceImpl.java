@@ -1,32 +1,28 @@
 package fr.urssaf.image.commons.webservice.exemple.ssl.rpc.service;
 
-import java.rmi.RemoteException;
+import java.math.BigInteger;
 
-import javax.xml.rpc.ServiceException;
-
-import org.apache.log4j.Logger;
-
-import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele.Service1Locator;
-import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele.Service1PortType;
+import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele.HelloService;
+import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele.HelloServicePortType;
 
 public class SSLServiceImpl implements SSLService {
 
-	private static final Logger LOG = Logger.getLogger(SSLServiceImpl.class);
+   private HelloServicePortType port;
 
-	private Service1PortType port;
+   public SSLServiceImpl() {
+      HelloService locator = new HelloService();
+      port = locator.getHelloServicePort();
 
-	public SSLServiceImpl() {
-		Service1Locator locator = new Service1Locator();
-		try {
-			port = locator.getservice1Port();
-		} catch (ServiceException e) {
-		   LOG.error(e);
-		}
-	}
+   }
 
-	@Override
-	public String wsTest1(String nom, String prenom) throws RemoteException {
-		return port.ws_test1(nom, prenom);
-	}
+   @Override
+   public String bonjour(String nom, String prenom) {
+      return port.bonjour(nom, prenom);
+   }
 
+   @Override
+   public long multiplie(long valeur1, long valeur2) {
+      return port.multiplie(BigInteger.valueOf(valeur1),
+            BigInteger.valueOf(valeur2)).longValue();
+   }
 }
