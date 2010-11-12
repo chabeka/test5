@@ -18,7 +18,6 @@
    </properties>
 
    <modules>
-      <module>../commons-webservice</module>
       <module>../commons-webservice-custom</module>
    </modules>
 
