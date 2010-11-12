@@ -2,24 +2,34 @@ package fr.urssaf.image.commons.webservice.rpc.aed.context;
 
 import javax.net.ssl.SSLContext;
 
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
+import fr.urssaf.image.commons.util.net.MySSLContextFactory;
 
-import fr.urssaf.image.commons.webservice.ssl.MySSLContextFactory;
-
+/**
+ * Classe de création de SSLContext
+ * 
+ * 
+ */
 public final class AEDSSLContextFactory {
-   
-   private AEDSSLContextFactory(){
-      
+
+   private AEDSSLContextFactory() {
+
    }
 
-	public static SSLContext getSSLContext() {
+   /**
+    * Méthode pour récupérer un SSLContext initialiser pour AED
+    * 
+    * @return SSLContext
+    */
+   public static SSLContext getSSLContext() {
 
-		MySSLContextFactory ctx = (MySSLContextFactory) (new XmlBeanFactory(
-				new ClassPathResource("applicationContext.xml")))
-				.getBean("SSLContextFactory");
+      try {
+         MySSLContextFactory ctx = new MySSLContextFactory(AEDConfig.P12,
+               AEDConfig.PASSWORD);
 
-		return ctx.getSSLContext();
+         return ctx.getSSLContext();
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
 
-	}
+   }
 }

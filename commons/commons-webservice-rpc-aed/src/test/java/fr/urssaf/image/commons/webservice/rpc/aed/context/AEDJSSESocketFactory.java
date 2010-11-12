@@ -1,32 +1,43 @@
 package fr.urssaf.image.commons.webservice.rpc.aed.context;
 
+import java.io.IOException;
 import java.util.Hashtable;
 
-import javax.net.ssl.SSLContext;
+import org.apache.axis.components.net.JSSESocketFactory;
 
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.ClassPathResource;
+/**
+ * Classe de surcharge de (@link
+ * org.apache.axis.components.net.JSSESocketFactory) Cette classe est utilisé
+ * lorsque l'on utilse le framework Axis pour initialiser la propriété
+ * axis.socketSecureFactory<br>
+ * ex: AxisProperties.setProperty("axis.socketSecureFactory", Class<? extends
+ * AEDJSSESocketFactory> classe);
+ * 
+ */
+public class AEDJSSESocketFactory extends JSSESocketFactory {
 
-import fr.urssaf.image.commons.webservice.ssl.AbstractJSSESocketFactory;
-import fr.urssaf.image.commons.webservice.ssl.MySSLContextFactory;
-
-public class AEDJSSESocketFactory extends AbstractJSSESocketFactory {
-
-   private final SSLContext sslContext;
-
-   @SuppressWarnings( { "PMD.ReplaceHashtableWithMap",
-         "PMD.ConstructorCallsOverridableMethod" })
+   /**
+    * On est obligé de surcharger le constructeur de
+    * org.apache.axis.components.net.JSSESocketFactory
+    * 
+    * @param attributes
+    *           propriétés de la connexion
+    */
+   @SuppressWarnings("PMD.ReplaceHashtableWithMap")
    public AEDJSSESocketFactory(Hashtable<String, String> attributes) {
       super(attributes);
-      sslContext = ((MySSLContextFactory) (new XmlBeanFactory(
-            new ClassPathResource("applicationContext.xml")))
-            .getBean("SSLContextFactory")).getSSLContext();
 
    }
 
    @Override
-   public SSLContext getSSLContext() {
-      return sslContext;
+   protected final void initFactory() throws IOException {
+
+      try {
+         sslFactory = AEDSSLContextFactory.getSSLContext().getSocketFactory();
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
+
    }
 
 }
