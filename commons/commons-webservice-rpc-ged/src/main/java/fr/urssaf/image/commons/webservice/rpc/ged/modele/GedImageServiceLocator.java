@@ -7,6 +7,7 @@
 
 package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 
+@SuppressWarnings("all")
 public class GedImageServiceLocator extends org.apache.axis.client.Service implements fr.urssaf.image.commons.webservice.rpc.ged.modele.GedImageService {
 
     public GedImageServiceLocator() {

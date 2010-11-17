@@ -12,6 +12,7 @@ package fr.urssaf.image.commons.webservice.rpc.ged.modele;
  * Element contenant la description d'un type zone ainsi que l'indice
  * de sa catégorie
  */
+@SuppressWarnings("all")
 public class CategorieTypeZoneWS  implements java.io.Serializable {
     private int indice;
 

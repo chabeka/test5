@@ -7,6 +7,7 @@
 
 package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 
+@SuppressWarnings("all")
 public class FichierWS  implements java.io.Serializable {
     private java.lang.String nom;
 

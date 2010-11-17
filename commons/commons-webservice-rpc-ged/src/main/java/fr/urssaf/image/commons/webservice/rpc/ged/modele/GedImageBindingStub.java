@@ -7,6 +7,7 @@
 
 package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 
+@SuppressWarnings("all")
 public class GedImageBindingStub extends org.apache.axis.client.Stub implements fr.urssaf.image.commons.webservice.rpc.ged.modele.GedImagePortType {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();

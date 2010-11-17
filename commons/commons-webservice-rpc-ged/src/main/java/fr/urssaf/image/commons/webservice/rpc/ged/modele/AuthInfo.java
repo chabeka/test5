@@ -11,6 +11,7 @@ package fr.urssaf.image.commons.webservice.rpc.ged.modele;
 /**
  * Infos d'autentification
  */
+@SuppressWarnings("all")
 public class AuthInfo  implements java.io.Serializable {
     private java.lang.String login;
 

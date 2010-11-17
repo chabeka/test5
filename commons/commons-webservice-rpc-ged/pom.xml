@@ -36,6 +36,28 @@
                </execution>
             </executions>
          </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+               <execution>
+                  <phase>generate-sources</phase>
+                  <configuration>
+                     <target name="addSuppressWarnings">
+                        <replace dir="${basedir}/src/main/java"
+                           includes="**/modele/*.java" token="public class"
+                           value='@SuppressWarnings("all")&#xA;public class' />
+                     </target>
+                  </configuration>
+                  <goals>
+                     <goal>run</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
       </plugins>
    </build>
 
