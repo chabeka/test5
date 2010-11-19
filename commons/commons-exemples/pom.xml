@@ -29,6 +29,7 @@
       <module>../commons-webservice-spring-exemple</module>
       <module>../commons-webservice-wssecurity-spring</module>
       <module>../commons-webservice-wssecurity-spring-client</module>
+      <module>../commons-xml-jaxb-parent</module>
       <module>../commons-xml-jaxb</module>
       <module>../commons-xml-jaxb-exemple-sandre</module>
       <module>../commons-xml-jaxb-exemple-seda</module>
