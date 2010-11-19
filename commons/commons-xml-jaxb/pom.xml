@@ -25,7 +25,7 @@
             </executions>
             <configuration>
                <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
-               <generatePackage>fr.urssaf.image.commons.xml.jaxb</generatePackage>
+               <generatePackage>fr.urssaf.image.commons.xml.jaxb.modele</generatePackage>
                <generateDirectory>${basedir}/src/main/java</generateDirectory>
             </configuration>
          </plugin>
@@ -61,6 +61,7 @@
          <version>2.5</version>
          <scope>test</scope>
       </dependency>
+
    </dependencies>
 
 </project>
