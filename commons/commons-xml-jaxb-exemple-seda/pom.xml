@@ -82,7 +82,7 @@
                   <exclude>un/unece/**</exclude>
                </excludes>
                <rulesets>
-                  <ruleset>S:\produits\Outils\Springsource Tool Suite\regles-pmd-aed-webservice.xml</ruleset>
+                   <ruleset>http://cer69-hudson2.cer69.recouv:80/pmd_rules/pmd_commons-parent.xml</ruleset>
                </rulesets>
             </configuration>
          </plugin>
