@@ -20,6 +20,7 @@ import fr.gouv.ae.archive.draft.standard_echange_v0.DocumentType;
 import fr.gouv.ae.archive.draft.standard_echange_v0.ObjectFactory;
 import fr.gouv.ae.archive.draft.standard_echange_v0_2.qualifieddatatype._1.ArchivesBinaryObjectType;
 
+@SuppressWarnings("PMD")
 public class ArchiveObjectTypeTest {
 
    private static final String REPERTORY;
