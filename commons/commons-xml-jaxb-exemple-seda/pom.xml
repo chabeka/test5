@@ -11,39 +11,47 @@
    <name>commons-xml-jaxb-exemple-seda</name>
    <version>0.0.1-SNAPSHOT</version>
 
-   <build>
+   <profiles>
+      <profile>
+         <id>generateJaxb</id>
 
-      <plugins>
+         <build>
 
-         <plugin>
-            <groupId>com.sun.tools.xjc.maven2</groupId>
-            <artifactId>maven-jaxb-plugin</artifactId>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>generate</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
-               <generateDirectory>${basedir}/src/main/java</generateDirectory>
-            </configuration>
-         </plugin>
+            <plugins>
 
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-               <source>1.6</source>
-               <target>1.6</target>
-               <encoding>${file.encoding}</encoding>
-            </configuration>
-         </plugin>
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                  </configuration>
+               </plugin>
 
-      </plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <configuration>
+                     <source>1.6</source>
+                     <target>1.6</target>
+                     <encoding>${file.encoding}</encoding>
+                  </configuration>
+               </plugin>
 
-   </build>
+            </plugins>
+
+         </build>
+
+      </profile>
+   </profiles>
+
 
 
    <dependencies>
@@ -82,7 +90,7 @@
                   <exclude>un/unece/**</exclude>
                </excludes>
                <rulesets>
-                   <ruleset>http://cer69-hudson2.cer69.recouv:80/pmd_rules/pmd_commons-parent.xml</ruleset>
+                  <ruleset>http://cer69-hudson2.cer69.recouv:80/pmd_rules/pmd_commons-parent.xml</ruleset>
                </rulesets>
             </configuration>
          </plugin>
