@@ -9,7 +9,7 @@ import fr.urssaf.image.commons.webservice.exemple.ssl.document.modele.MultiplieR
 
 public class SSLServiceImpl implements SSLService {
 
-   private HelloServicePortType port;
+   private final HelloServicePortType port;
 
    public SSLServiceImpl() {
 

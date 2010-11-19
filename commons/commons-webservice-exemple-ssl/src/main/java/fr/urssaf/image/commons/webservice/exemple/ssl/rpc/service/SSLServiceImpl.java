@@ -7,7 +7,7 @@ import fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele.HelloServicePor
 
 public class SSLServiceImpl implements SSLService {
 
-   private HelloServicePortType port;
+   private final HelloServicePortType port;
 
    public SSLServiceImpl() {
       HelloService locator = new HelloService();
