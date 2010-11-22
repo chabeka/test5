@@ -12,42 +12,48 @@
    <version>0.0.1-SNAPSHOT</version>
    <name>commons-xml-jaxb-exemple-sandre</name>
 
+   <profiles>
+      <profile>
+         <id>generateJaxb</id>
 
-   <build>
+         <build>
 
-      <plugins>
+            <plugins>
 
-         <plugin>
-            <groupId>com.sun.tools.xjc.maven2</groupId>
-            <artifactId>maven-jaxb-plugin</artifactId>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>generate</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
-               <generateDirectory>${basedir}/src/main/java</generateDirectory>
-               <includeSchemas>
-                  <includeSchema>scenario/acq/1/acquittement.xsd</includeSchema>
-               </includeSchemas>
-            </configuration>
-         </plugin>
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                     <includeSchemas>
+                        <includeSchema>scenario/acq/1/acquittement.xsd</includeSchema>
+                     </includeSchemas>
+                  </configuration>
+               </plugin>
 
-         <plugin>
-            <inherited>true</inherited>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-               <encoding>${file.encoding}</encoding>
-            </configuration>
-         </plugin>
+               <plugin>
+                  <inherited>true</inherited>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <configuration>
+                     <encoding>${file.encoding}</encoding>
+                  </configuration>
+               </plugin>
 
-      </plugins>
+            </plugins>
 
-   </build>
+         </build>
+
+      </profile>
+   </profiles>
 
    <dependencies>
 

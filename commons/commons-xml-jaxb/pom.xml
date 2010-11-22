@@ -10,39 +10,48 @@
    <artifactId>commons-xml-jaxb</artifactId>
    <version>0.0.1-SNAPSHOT</version>
    <name>commons-xml-jaxb</name>
-   <build>
 
-      <plugins>
+   <profiles>
+      <profile>
+         <id>generateJaxb</id>
 
-         <plugin>
-            <groupId>com.sun.tools.xjc.maven2</groupId>
-            <artifactId>maven-jaxb-plugin</artifactId>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>generate</goal>
-                  </goals>
-               </execution>
-            </executions>
-            <configuration>
-               <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
-               <generatePackage>fr.urssaf.image.commons.xml.jaxb.modele</generatePackage>
-               <generateDirectory>${basedir}/src/main/java</generateDirectory>
-            </configuration>
-         </plugin>
 
-        <plugin>
-            <inherited>true</inherited>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-               <encoding>${file.encoding}</encoding>
-            </configuration>
-         </plugin>
+         <build>
+            <plugins>
 
-      </plugins>
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
+                     <generatePackage>fr.urssaf.image.commons.xml.jaxb.modele</generatePackage>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                  </configuration>
+               </plugin>
 
-   </build>
+               <plugin>
+                  <inherited>true</inherited>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <configuration>
+                     <encoding>${file.encoding}</encoding>
+                  </configuration>
+               </plugin>
+
+            </plugins>
+         </build>
+      
+      </profile>
+   </profiles>
+
+
 
 
    <dependencies>
