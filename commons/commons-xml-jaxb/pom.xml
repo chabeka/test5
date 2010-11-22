@@ -30,6 +30,16 @@
                <generateDirectory>${basedir}/src/main/java</generateDirectory>
             </configuration>
          </plugin>
+
+        <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <encoding>${file.encoding}</encoding>
+            </configuration>
+         </plugin>
+
       </plugins>
 
    </build>
