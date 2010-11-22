@@ -12,6 +12,7 @@
    <version>0.0.1-SNAPSHOT</version>
    <name>commons-xml-jaxb-exemple-sandre</name>
 
+
    <build>
 
       <plugins>
@@ -36,11 +37,10 @@
          </plugin>
 
          <plugin>
+            <inherited>true</inherited>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
-               <source>1.6</source>
-               <target>1.6</target>
                <encoding>${file.encoding}</encoding>
             </configuration>
          </plugin>
@@ -48,7 +48,6 @@
       </plugins>
 
    </build>
-
 
    <dependencies>
 
