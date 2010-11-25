@@ -12,6 +12,12 @@
    
    <name>sae-modules</name>
    
+   <parent>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <artifactId>sae-parent</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   
    <modules>
       <module>../sae-parent</module>
       <module>../sae-anais-framework</module>
