@@ -20,23 +20,34 @@ public class SaeAnaisService {
 
    private final ConnectionFactory connectionFactory;
 
+   /**
+    * initialise la connection factory
+    * 
+    * @param connectionFactory
+    *           connection factory pour le serveur ANAIS
+    */
    public SaeAnaisService(ConnectionFactory connectionFactory) {
       this.connectionFactory = connectionFactory;
    }
 
    /**
+    * Création d’un jeton d’authentification à partir d’un couple login/mot de
+    * passe
     * 
     * @param userLogin
+    *           Le login de l’utilisateur
     * @param userPassword
+    *           Le mot de passe de l’utilisateur
     * @param codeInterRegion
+    *           Le code de l’inter-région où chercher les habilitations (peut
+    *           être vide)
     * @param codeOrganisme
-    * @return
-    * @throws SaeAnaisApiException
-    * @throws IllegalArgumentException
+    *           Le code de l’organisme où chercher les habilitations (peut être
+    *           vide)
+    * @return Le jeton d’authentification sous la forme d’un flux XML
     */
-   public String authentifierPourSaeParLoginPassword(String userLogin,
-         String userPassword, String codeInterRegion, String codeOrganisme)
-         throws SaeAnaisApiException, IllegalArgumentException {
+   public final String authentifierPourSaeParLoginPassword(String userLogin,
+         String userPassword, String codeInterRegion, String codeOrganisme) {
 
       if (userLogin == null) {
          throw new IllegalArgumentException(
