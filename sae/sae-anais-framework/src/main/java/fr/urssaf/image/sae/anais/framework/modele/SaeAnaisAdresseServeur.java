@@ -9,7 +9,7 @@ public class SaeAnaisAdresseServeur {
 
    private String hote;
 
-   private int port;
+   private Integer port;
 
    private boolean tls;
 
@@ -36,7 +36,7 @@ public class SaeAnaisAdresseServeur {
     * 
     * @return port Le numéro de port TCP sur lequel se serveur écoute
     */
-   public int getPort() {
+   public Integer getPort() {
       return port;
    }
 
@@ -45,7 +45,7 @@ public class SaeAnaisAdresseServeur {
     * @param port
     *           Le numéro de port TCP sur lequel se serveur écoute
     */
-   public void setPort(int port) {
+   public void setPort(Integer port) {
       this.port = port;
    }
 

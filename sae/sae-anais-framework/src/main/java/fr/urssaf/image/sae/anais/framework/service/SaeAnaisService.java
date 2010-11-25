@@ -2,13 +2,12 @@ package fr.urssaf.image.sae.anais.framework.service;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import anaisJavaApi.AnaisConnection_Application;
-import anaisJavaApi.AnaisHabilitationList;
-import anaisJavaApi.AnaisUserInfo;
-import anaisJavaApi.AnaisUserResult;
-import fr.urssaf.image.sae.anais.framework.component.AnaisConnectionSupport;
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
-import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
+import fr.urssaf.image.sae.anais.framework.component.DataSource;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilConnexion;
+import fr.urssaf.image.sae.anais.framework.service.dao.AuthentificationDAO;
 
 /**
  * Classe de services sur le serveur ANAIS<br>
@@ -18,22 +17,14 @@ import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiExceptio
  */
 public class SaeAnaisService {
 
-   private final ConnectionFactory connectionFactory;
-
-   /**
-    * initialise la connection factory
-    * 
-    * @param connectionFactory
-    *           connection factory pour le serveur ANAIS
-    */
-   public SaeAnaisService(ConnectionFactory connectionFactory) {
-      this.connectionFactory = connectionFactory;
-   }
-
    /**
     * Création d’un jeton d’authentification à partir d’un couple login/mot de
     * passe
     * 
+    * @param environnement
+    *           L’environnement (Développement / Validation / Production)
+    * @param serveur
+    *           Les paramètres de connexion au serveur ANAIS
     * @param userLogin
     *           Le login de l’utilisateur
     * @param userPassword
@@ -46,40 +37,78 @@ public class SaeAnaisService {
     *           vide)
     * @return Le jeton d’authentification sous la forme d’un flux XML
     */
-   public final String authentifierPourSaeParLoginPassword(String userLogin,
-         String userPassword, String codeInterRegion, String codeOrganisme) {
+   public final String authentifierPourSaeParLoginPassword(
+         SaeAnaisEnumCodesEnvironnement environnement,
+         SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
+         String codeInterRegion, String codeOrganisme) {
 
-      if (userLogin == null) {
+      if (environnement == null) {
          throw new IllegalArgumentException(
-               "L’identifiant de l’utilisateur doit être renseigné");
+               "L’environnement (Développement / Validation  / Production) doit être renseigné");
       }
 
-      if (userPassword == null) {
-         throw new IllegalArgumentException(
-               "Le mot de passe de l’utilisateur doit être renseigné");
+      // TODO TROUVER LE PROFIL EN FONCTION DE L'ENVIRONNEMENT
+
+      throw new NotImplementedException();
+
+   }
+
+   protected final String createXMLToken(SaeAnaisProfilConnexion profil,
+         SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
+         String codeInterRegion, String codeOrganisme) {
+
+      // TODO SPECIFIER LES EXCEPTIONS
+
+      if (serveur != null) {
+
+         if (serveur.getHote() == null) {
+            throw new IllegalArgumentException(
+                  "L’adresse IP ou le nom d’hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+         }
+
+         if (serveur.getPort() == null) {
+            throw new IllegalArgumentException(
+                  "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+         }
+
       }
 
-      AnaisConnection_Application connection = connectionFactory
-            .createConnection();
+      // initialisation du data source
+      DataSource dataSource = new DataSource();
+      dataSource.setAppdn(profil.getCompteApplicatifDn());
+      dataSource.setCodeapp(profil.getCodeApplication());
+      dataSource.setCodeenv(profil.getCodeEnvironnement().code());
+      dataSource.setPasswd(profil.getCompteApplicatifPassword());
 
-      AnaisConnectionSupport support = new AnaisConnectionSupport(connection);
+      if (serveur == null) {
+         throw new NotImplementedException();
+         // TODO QUELLE ADRESSE SERVEUR CHOISIR POUR UN PROFIL DONNE?
 
-      try {
-         AnaisUserResult userResult = support.checkUserCredential(userLogin,
-               userPassword);
-
-         AnaisUserInfo userInfo = support.getUserInfo(userResult.getUserDn());
-
-         AnaisHabilitationList hablist = support.getUserHabilitations(
-               userResult.getUserDn(), codeInterRegion, codeOrganisme);
-
-         throw new NotImplementedException("user info:" + userInfo
-               + " habilitations:" + hablist);
-
-      } finally {
-         support.close();
       }
 
+      else {
+
+         initAdresseServeur(dataSource, serveur);
+
+      }
+
+      // initialisation du connection factory
+      ConnectionFactory connection = new ConnectionFactory(dataSource);
+
+      AuthentificationDAO authDAO = new AuthentificationDAO(connection);
+
+      return authDAO.createXMLToken(userLogin, userPassword, codeInterRegion,
+            codeOrganisme);
+
+   }
+
+   private void initAdresseServeur(DataSource dataSource,
+         SaeAnaisAdresseServeur serveur) {
+
+      dataSource.setHostname(serveur.getHote());
+      dataSource.setPort(serveur.getPort());
+      dataSource.setTimeout(Integer.toString(serveur.getTimeout()));
+      dataSource.setUsetls(serveur.isTls());
    }
 
 }
