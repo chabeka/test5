@@ -42,10 +42,7 @@ public class SaeAnaisService {
          SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
          String codeInterRegion, String codeOrganisme) {
 
-      if (environnement == null) {
-         throw new IllegalArgumentException(
-               "L’environnement (Développement / Validation  / Production) doit être renseigné");
-      }
+      
 
       // TODO TROUVER LE PROFIL EN FONCTION DE L'ENVIRONNEMENT
 
@@ -56,22 +53,6 @@ public class SaeAnaisService {
    protected final String createXMLToken(SaeAnaisProfilConnexion profil,
          SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
          String codeInterRegion, String codeOrganisme) {
-
-      // TODO SPECIFIER LES EXCEPTIONS
-
-      if (serveur != null) {
-
-         if (serveur.getHote() == null) {
-            throw new IllegalArgumentException(
-                  "L’adresse IP ou le nom d’hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion");
-         }
-
-         if (serveur.getPort() == null) {
-            throw new IllegalArgumentException(
-                  "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion");
-         }
-
-      }
 
       // initialisation du data source
       DataSource dataSource = new DataSource();

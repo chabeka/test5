@@ -21,7 +21,7 @@ public class DataSource {
    /**
     * @return adresse IP du serveur ANAIS
     */
-   public String getHostname() {
+   public final String getHostname() {
       return hostname;
    }
 
@@ -30,7 +30,7 @@ public class DataSource {
     * @param hostname
     *           adresse IP du serveur ANAIS
     */
-   public void setHostname(String hostname) {
+   public final void setHostname(String hostname) {
       this.hostname = hostname;
    }
 
@@ -38,7 +38,7 @@ public class DataSource {
     * 
     * @return port TCP du serveur ANAIS
     */
-   public Integer getPort() {
+   public final Integer getPort() {
       return port;
    }
 
@@ -47,7 +47,7 @@ public class DataSource {
     * @param port
     *           port TCP du serveur ANAIS
     */
-   public void setPort(Integer port) {
+   public final void setPort(Integer port) {
       this.port = port;
    }
 
@@ -55,7 +55,7 @@ public class DataSource {
     * 
     * @return activation de TLS pour la connexion au serveur ANAIS
     */
-   public boolean isUsetls() {
+   public final boolean isUsetls() {
       return usetls;
    }
 
@@ -64,7 +64,7 @@ public class DataSource {
     * @param usetls
     *           activation de TLS pour la connexion au serveur ANAIS
     */
-   public void setUsetls(boolean usetls) {
+   public final void setUsetls(boolean usetls) {
       this.usetls = usetls;
    }
 
@@ -72,7 +72,7 @@ public class DataSource {
     * 
     * @return DN du compte applicatif
     */
-   public String getAppdn() {
+   public final String getAppdn() {
       return appdn;
    }
 
@@ -81,7 +81,7 @@ public class DataSource {
     * @param appdn
     *           DN du compte applicatif
     */
-   public void setAppdn(String appdn) {
+   public final void setAppdn(String appdn) {
       this.appdn = appdn;
    }
 
@@ -89,7 +89,7 @@ public class DataSource {
     * 
     * @return mot de passe du compte applicatif
     */
-   public String getPasswd() {
+   public final String getPasswd() {
       return passwd;
    }
 
@@ -98,7 +98,7 @@ public class DataSource {
     * @param passwd
     *           mot de passe du compte applicatif
     */
-   public void setPasswd(String passwd) {
+   public final void setPasswd(String passwd) {
       this.passwd = passwd;
    }
 
@@ -106,7 +106,7 @@ public class DataSource {
     * 
     * @return code de l'application
     */
-   public String getCodeapp() {
+   public final String getCodeapp() {
       return codeapp;
    }
 
@@ -115,7 +115,7 @@ public class DataSource {
     * @param codeapp
     *           code de l'application
     */
-   public void setCodeapp(String codeapp) {
+   public final void setCodeapp(String codeapp) {
       this.codeapp = codeapp;
    }
 
@@ -123,7 +123,7 @@ public class DataSource {
     * 
     * @return Code environnement
     */
-   public String getCodeenv() {
+   public final String getCodeenv() {
       return codeenv;
    }
 
@@ -132,7 +132,7 @@ public class DataSource {
     * @param codeenv
     *           Code environnement
     */
-   public void setCodeenv(String codeenv) {
+   public final void setCodeenv(String codeenv) {
       this.codeenv = codeenv;
    }
 
@@ -140,7 +140,7 @@ public class DataSource {
     * 
     * @return délai de la connexion
     */
-   public String getTimeout() {
+   public final String getTimeout() {
       return timeout;
    }
 
@@ -149,7 +149,7 @@ public class DataSource {
     * @param timeout
     *           délai de la connexion
     */
-   public void setTimeout(String timeout) {
+   public final void setTimeout(String timeout) {
       this.timeout = timeout;
    }
 

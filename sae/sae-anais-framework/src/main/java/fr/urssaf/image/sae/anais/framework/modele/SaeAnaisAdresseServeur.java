@@ -19,7 +19,7 @@ public class SaeAnaisAdresseServeur {
     * 
     * @return L’adresse IP ou le nom DNS
     */
-   public String getHote() {
+   public final String getHote() {
       return hote;
    }
 
@@ -28,7 +28,7 @@ public class SaeAnaisAdresseServeur {
     * @param hote
     *           L’adresse IP ou le nom DNS
     */
-   public void setHote(String hote) {
+   public final void setHote(String hote) {
       this.hote = hote;
    }
 
@@ -36,7 +36,7 @@ public class SaeAnaisAdresseServeur {
     * 
     * @return port Le numéro de port TCP sur lequel se serveur écoute
     */
-   public Integer getPort() {
+   public final Integer getPort() {
       return port;
    }
 
@@ -45,7 +45,7 @@ public class SaeAnaisAdresseServeur {
     * @param port
     *           Le numéro de port TCP sur lequel se serveur écoute
     */
-   public void setPort(Integer port) {
+   public final void setPort(Integer port) {
       this.port = port;
    }
 
@@ -54,7 +54,7 @@ public class SaeAnaisAdresseServeur {
     * @return Flag indiquant si TLS doit être activé pour la communication avec
     *         le serveur
     */
-   public boolean isTls() {
+   public final boolean isTls() {
       return tls;
    }
 
@@ -64,7 +64,7 @@ public class SaeAnaisAdresseServeur {
     *           Flag indiquant si TLS doit être activé pour la communication
     *           avec le serveur
     */
-   public void setTls(boolean tls) {
+   public final void setTls(boolean tls) {
       this.tls = tls;
    }
 
@@ -72,7 +72,7 @@ public class SaeAnaisAdresseServeur {
     * 
     * @return Le timeout de connexion au serveur, en millisecondes
     */
-   public int getTimeout() {
+   public final int getTimeout() {
       return timeout;
    }
 
@@ -81,7 +81,7 @@ public class SaeAnaisAdresseServeur {
     * @param timeout
     *           Le timeout de connexion au serveur, en millisecondes
     */
-   public void setTimeout(int timeout) {
+   public final void setTimeout(int timeout) {
       this.timeout = timeout;
    }
 

@@ -79,32 +79,4 @@ public class AuthentificationDAOTest {
 
    }
 
-   @Test
-   public void loginEmpty() {
-
-      try {
-         dao.createXMLToken(null, PASSWORD_SUCCESS, CODEIR, CODE_ORG);
-         fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
-         assertEquals("le login doit être renseigné",
-               "L’identifiant de l’utilisateur doit être renseigné", e
-                     .getMessage());
-      }
-
-   }
-
-   @Test
-   public void passwordEmpty() {
-
-      try {
-         dao.createXMLToken(LOGIN_SUCCESS, null, CODEIR, CODE_ORG);
-         fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
-         assertEquals("le password doit être renseigné",
-               "Le mot de passe de l’utilisateur doit être renseigné", e
-                     .getMessage());
-      }
-
-   }
-
 }

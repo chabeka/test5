@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class SaeAnaisProfilConnexion {
 
-   private String compteApplicatifDn;
+   private String cptDn;
 
-   private String compteApplicatifPassword;
+   private String password;
 
    private String codeApplication;
 
@@ -24,8 +24,8 @@ public class SaeAnaisProfilConnexion {
     * 
     * @return Le DN du compte applicatif utilisé pour se connecter à l’annuaire
     */
-   public String getCompteApplicatifDn() {
-      return compteApplicatifDn;
+   public final String getCompteApplicatifDn() {
+      return cptDn;
    }
 
    /**
@@ -34,16 +34,16 @@ public class SaeAnaisProfilConnexion {
     *           Le DN du compte applicatif utilisé pour se connecter à
     *           l’annuaire
     */
-   public void setCompteApplicatifDn(String compteApplicatifDn) {
-      this.compteApplicatifDn = compteApplicatifDn;
+   public final void setCompteApplicatifDn(String cptDn) {
+      this.cptDn = cptDn;
    }
 
    /**
     * 
     * @return Le mot de passe du compte applicatif
     */
-   public String getCompteApplicatifPassword() {
-      return compteApplicatifPassword;
+   public final String getCompteApplicatifPassword() {
+      return password;
    }
 
    /**
@@ -51,15 +51,15 @@ public class SaeAnaisProfilConnexion {
     * @param compteApplicatifPassword
     *           Le mot de passe du compte applicatif
     */
-   public void setCompteApplicatifPassword(String compteApplicatifPassword) {
-      this.compteApplicatifPassword = compteApplicatifPassword;
+   public final void setCompteApplicatifPassword(String password) {
+      this.password = password;
    }
 
    /**
     * 
     * @return Le code de l’application utilisé pour se connecter à l’annuaire
     */
-   public String getCodeApplication() {
+   public final String getCodeApplication() {
       return codeApplication;
    }
 
@@ -68,7 +68,7 @@ public class SaeAnaisProfilConnexion {
     * @param codeApplication
     *           Le code de l’application utilisé pour se connecter à l’annuaire
     */
-   public void setCodeApplication(String codeApplication) {
+   public final void setCodeApplication(String codeApplication) {
       this.codeApplication = codeApplication;
    }
 
@@ -77,7 +77,7 @@ public class SaeAnaisProfilConnexion {
     * 
     * @return Le code de l’environnement
     */
-   public SaeAnaisEnumCodesEnvironnement getCodeEnvironnement() {
+   public final SaeAnaisEnumCodesEnvironnement getCodeEnvironnement() {
       return codeEnvironnement;
    }
 
@@ -87,7 +87,7 @@ public class SaeAnaisProfilConnexion {
     * @param codeEnvironnement
     *           Le code de l’environnement
     */
-   public void setCodeEnvironnement(
+   public final void setCodeEnvironnement(
          SaeAnaisEnumCodesEnvironnement codeEnvironnement) {
       this.codeEnvironnement = codeEnvironnement;
    }
@@ -100,7 +100,7 @@ public class SaeAnaisProfilConnexion {
     *           La liste des adresses des serveurs ANAIS
     * 
     */
-   public void setServeurs(List<SaeAnaisAdresseServeur> serveurs) {
+   public final void setServeurs(List<SaeAnaisAdresseServeur> serveurs) {
       this.serveurs = serveurs;
    }
 
@@ -109,7 +109,7 @@ public class SaeAnaisProfilConnexion {
     * 
     * @return La liste des adresses des serveurs ANAIS
     */
-   public List<SaeAnaisAdresseServeur> getServeurs() {
+   public final List<SaeAnaisAdresseServeur> getServeurs() {
       return serveurs;
    }
 

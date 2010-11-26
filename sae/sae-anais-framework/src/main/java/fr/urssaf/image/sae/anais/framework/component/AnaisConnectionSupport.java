@@ -25,22 +25,19 @@ public class AnaisConnectionSupport {
 
    private final AnaisConnection_Application connection;
 
-   private final ConnectionFactory connectionFactory;
-
    /**
     * initialise la connection Anais
     * 
-    * @param connection
-    *           connection Anais initialisée
+    * @param connectionFactory
+    *           connection factory pour ANAIS
     */
    public AnaisConnectionSupport(ConnectionFactory connectionFactory) {
 
-      this.connectionFactory = connectionFactory;
-      if (this.connectionFactory == null) {
+      if (connectionFactory == null) {
          throw new IllegalStateException("'connectionFactory' is required");
       }
 
-      this.connection = this.connectionFactory.createConnection();
+      this.connection = connectionFactory.createConnection();
    }
 
    /**
@@ -53,7 +50,7 @@ public class AnaisConnectionSupport {
     *           param passwd
     * @return return checkUserCredential
     */
-   public final AnaisUserResult checkUserCredential(String userLogin,
+   protected final AnaisUserResult checkUserCredential(String userLogin,
          String userPassword) {
 
       try {

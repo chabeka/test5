@@ -1,39 +1,70 @@
 package fr.urssaf.image.sae.anais.framework.component.aspect;
 
-import java.util.Calendar;
-
-import org.apache.log4j.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
+
+/**
+ * Classe de validation des arguments en entrée des méthode de la classe
+ * {@link fr.urssaf.image.sae.anais.framework.service.SaeAnaisService}<br>
+ */
 @Aspect
 public class SaeAnaisServiceCheck {
 
-   protected static final Logger LOGGER = Logger.getLogger(SaeAnaisServiceCheck.class);
+   private static final String METHODE = "execution(public * fr.urssaf.image.sae.anais.framework.service.SaeAnaisService.authentifierPourSaeParLoginPassword(..))";
 
-   private static final String TIME = "target(fr.urssaf.image.commons.dao.spring.support.MyHibernateDaoSupport) && execution(public * *(..))";
+   /**
+    * la méthode vérifie les arguments en entrée de la méthode
+    * authentifierPourSaeParLoginPassword
+    * @param joinPoint
+    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
+    */
+   @Before(METHODE)
+   public final void authentifierPourSaeParLoginPasswordCheck(
+         JoinPoint joinPoint) {
 
-   private static final long NB_MILLI_IN_SEC = 1000;
+      SaeAnaisEnumCodesEnvironnement environnement = (SaeAnaisEnumCodesEnvironnement) joinPoint
+            .getArgs()[0];
+      SaeAnaisAdresseServeur serveur = (SaeAnaisAdresseServeur) joinPoint
+            .getArgs()[1];
+      String userLogin = (String) joinPoint.getArgs()[2];
 
-   @Around(TIME)
-   public final Object logControllerTime(ProceedingJoinPoint pjp)
-         throws Throwable {
+      String userPassword = (String) joinPoint.getArgs()[3];
 
-      Calendar calendar1 = Calendar.getInstance();
+      // TODO SPECIFIER LES EXCEPTIONS
 
-      Object retVal = pjp.proceed();
-      Calendar calendar2 = Calendar.getInstance();
+      if (environnement == null) {
+         throw new IllegalArgumentException(
+               "L’environnement (Développement / Validation  / Production) doit être renseigné");
+      }
 
-      // On écrit un message du type :
-      // [NomCourtClasse] time:[Temps en secondes]
-      long tempsExecutionMs = calendar2.getTimeInMillis()
-            - calendar1.getTimeInMillis();
-      long tempsExecutionSec = tempsExecutionMs / NB_MILLI_IN_SEC;
-      LOGGER.debug(String.format("%s time: %s", pjp.getThis().getClass()
-            .getSimpleName(), tempsExecutionSec));
+      if (userLogin == null) {
+         throw new IllegalArgumentException(
+               "L’identifiant de l’utilisateur doit être renseigné");
+      }
 
-      return retVal;
+      if (userPassword == null) {
+         throw new IllegalArgumentException(
+               "Le mot de passe de l’utilisateur doit être renseigné");
+      }
+
+      if (serveur != null) {
+
+         if (serveur.getHote() == null) {
+            throw new IllegalArgumentException(
+                  "L’adresse IP ou le nom d’hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+         }
+
+         if (serveur.getPort() == null) {
+            throw new IllegalArgumentException(
+                  "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+         }
+
+      }
+
    }
 
 }

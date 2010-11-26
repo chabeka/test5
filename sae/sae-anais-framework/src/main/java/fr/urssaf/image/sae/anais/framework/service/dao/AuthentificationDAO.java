@@ -44,16 +44,6 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
    public final String createXMLToken(String userLogin, String userPassword,
          String codeInterRegion, String codeOrganisme) {
 
-      if (userLogin == null) {
-         throw new IllegalArgumentException(
-               "L’identifiant de l’utilisateur doit être renseigné");
-      }
-
-      if (userPassword == null) {
-         throw new IllegalArgumentException(
-               "Le mot de passe de l’utilisateur doit être renseigné");
-      }
-
       try {
          AnaisUserResult userResult = this.checkUserCredential(userLogin,
                userPassword);
@@ -64,6 +54,7 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
                .getUserDn(), codeInterRegion, codeOrganisme);
 
          // TODO CREER JETON SECURITE
+         // return null;
          throw new NotImplementedException("user info:" + userInfo
                + " habilitations:" + hablist);
 
