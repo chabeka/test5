@@ -25,14 +25,22 @@ public class AnaisConnectionSupport {
 
    private final AnaisConnection_Application connection;
 
+   private final ConnectionFactory connectionFactory;
+
    /**
     * initialise la connection Anais
     * 
     * @param connection
     *           connection Anais initialisée
     */
-   public AnaisConnectionSupport(AnaisConnection_Application connection) {
-      this.connection = connection;
+   public AnaisConnectionSupport(ConnectionFactory connectionFactory) {
+
+      this.connectionFactory = connectionFactory;
+      if (this.connectionFactory == null) {
+         throw new IllegalStateException("'connectionFactory' is required");
+      }
+
+      this.connection = this.connectionFactory.createConnection();
    }
 
    /**

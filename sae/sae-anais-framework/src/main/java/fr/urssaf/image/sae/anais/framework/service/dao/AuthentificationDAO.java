@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.anais.framework.service.dao;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import anaisJavaApi.AnaisConnection_Application;
 import anaisJavaApi.AnaisHabilitationList;
 import anaisJavaApi.AnaisUserInfo;
 import anaisJavaApi.AnaisUserResult;
@@ -15,9 +14,7 @@ import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
  * 
  * @see ConnectionFactory
  */
-public class AuthentificationDAO {
-
-   private final ConnectionFactory connectionFactory;
+public class AuthentificationDAO extends AnaisConnectionSupport {
 
    /**
     * initialise la connection factory
@@ -26,7 +23,7 @@ public class AuthentificationDAO {
     *           connection factory pour le serveur ANAIS
     */
    public AuthentificationDAO(ConnectionFactory connectionFactory) {
-      this.connectionFactory = connectionFactory;
+      super(connectionFactory);
    }
 
    /**
@@ -57,27 +54,21 @@ public class AuthentificationDAO {
                "Le mot de passe de l’utilisateur doit être renseigné");
       }
 
-      AnaisConnection_Application connection = connectionFactory
-            .createConnection();
-
-      AnaisConnectionSupport support = new AnaisConnectionSupport(connection);
-
       try {
-         AnaisUserResult userResult = support.checkUserCredential(userLogin,
+         AnaisUserResult userResult = this.checkUserCredential(userLogin,
                userPassword);
 
-         AnaisUserInfo userInfo = support.getUserInfo(userResult.getUserDn());
+         AnaisUserInfo userInfo = this.getUserInfo(userResult.getUserDn());
 
-         AnaisHabilitationList hablist = support.getUserHabilitations(
-               userResult.getUserDn(), codeInterRegion, codeOrganisme);
+         AnaisHabilitationList hablist = this.getUserHabilitations(userResult
+               .getUserDn(), codeInterRegion, codeOrganisme);
 
          // TODO CREER JETON SECURITE
-
          throw new NotImplementedException("user info:" + userInfo
                + " habilitations:" + hablist);
 
       } finally {
-         support.close();
+         this.close();
       }
 
    }
