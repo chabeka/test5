@@ -13,7 +13,7 @@ public class UserLoginNonRenseigneException extends IllegalArgumentException {
     * initialisation du message de l'exception
     */
    public UserLoginNonRenseigneException() {
-      super("L’identifiant de l’utilisateur doit être renseigné");
+      super("L'identifiant de l'utilisateur doit être renseigné");
    }
 
 }

@@ -8,6 +8,11 @@ import org.junit.Test;
 
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
+import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.PortNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 
 @SuppressWarnings("PMD")
 public class SaeAnaisServiceTest {
@@ -29,9 +34,9 @@ public class SaeAnaisServiceTest {
                new SaeAnaisAdresseServeur(), NOTEMPTY, NOTEMPTY, NOTEMPTY,
                NOTEMPTY);
          fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
+      } catch (EnvironnementNonRenseigneException e) {
          assertEquals(
-               "L’environnement (Développement / Validation  / Production) doit être renseigné",
+               "L'environnement (Développement / Validation  / Production) doit être renseigné",
                e.getMessage());
       }
 
@@ -47,8 +52,8 @@ public class SaeAnaisServiceTest {
                      new SaeAnaisAdresseServeur(), null, NOTEMPTY, NOTEMPTY,
                      NOTEMPTY);
          fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
-         assertEquals("L’identifiant de l’utilisateur doit être renseigné", e
+      } catch (UserLoginNonRenseigneException e) {
+         assertEquals("L'identifiant de l'utilisateur doit être renseigné", e
                .getMessage());
       }
 
@@ -64,8 +69,8 @@ public class SaeAnaisServiceTest {
                      new SaeAnaisAdresseServeur(), NOTEMPTY, null, NOTEMPTY,
                      NOTEMPTY);
          fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
-         assertEquals("Le mot de passe de l’utilisateur doit être renseigné", e
+      } catch (UserPasswordNonRenseigneException e) {
+         assertEquals("Le mot de passe de l'utilisateur doit être renseigné", e
                .getMessage());
       }
 
@@ -83,9 +88,9 @@ public class SaeAnaisServiceTest {
                SaeAnaisEnumCodesEnvironnement.Developpement, serveur, NOTEMPTY,
                NOTEMPTY, NOTEMPTY, NOTEMPTY);
          fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
+      } catch (HoteNonRenseigneException e) {
          assertEquals(
-               "L’adresse IP ou le nom d’hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion",
+               "L'adresse IP ou le nom d'hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion",
                e.getMessage());
       }
 
@@ -103,9 +108,10 @@ public class SaeAnaisServiceTest {
                SaeAnaisEnumCodesEnvironnement.Developpement, serveur, NOTEMPTY,
                NOTEMPTY, NOTEMPTY, NOTEMPTY);
          fail("le test ne doit pas passer");
-      } catch (IllegalArgumentException e) {
-         assertEquals("Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion", e
-               .getMessage());
+      } catch (PortNonRenseigneException e) {
+         assertEquals(
+               "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion",
+               e.getMessage());
       }
 
    }

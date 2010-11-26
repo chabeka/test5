@@ -17,7 +17,7 @@ public class HoteNonRenseigneException extends IllegalArgumentException {
     */
    public HoteNonRenseigneException() {
       super(
-            "L’adresse IP ou le nom d’hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+            "L'adresse IP ou le nom d'hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion");
    }
 
 }

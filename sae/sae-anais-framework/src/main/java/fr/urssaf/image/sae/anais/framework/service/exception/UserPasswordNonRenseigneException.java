@@ -16,7 +16,7 @@ public class UserPasswordNonRenseigneException extends IllegalArgumentException 
     * initialisation du message de l'exception
     */
    public UserPasswordNonRenseigneException() {
-      super("Le mot de passe de l’utilisateur doit être renseigné");
+      super("Le mot de passe de l'utilisateur doit être renseigné");
 
    }
 

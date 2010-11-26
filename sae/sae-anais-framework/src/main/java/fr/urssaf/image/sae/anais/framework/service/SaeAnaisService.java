@@ -75,7 +75,6 @@ public class SaeAnaisService {
 
       // initialisation du connection factory
       ConnectionFactory connection = new ConnectionFactory(dataSource);
-
       AuthentificationDAO authDAO = new AuthentificationDAO(connection);
 
       return authDAO.createXMLToken(userLogin, userPassword, codeInterRegion,

@@ -17,7 +17,7 @@ public class EnvironnementNonRenseigneException extends
     */
    public EnvironnementNonRenseigneException() {
       super(
-            "L’environnement (Développement / Validation  / Production) doit être renseigné");
+            "L'environnement (Développement / Validation  / Production) doit être renseigné");
    }
 
 }
