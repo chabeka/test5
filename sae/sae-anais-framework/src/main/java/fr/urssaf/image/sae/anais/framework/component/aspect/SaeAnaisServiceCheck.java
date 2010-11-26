@@ -6,6 +6,11 @@ import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
+import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.PortNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 
 /**
  * Classe de validation des arguments en entrée des méthode de la classe
@@ -19,6 +24,7 @@ public class SaeAnaisServiceCheck {
    /**
     * la méthode vérifie les arguments en entrée de la méthode
     * authentifierPourSaeParLoginPassword
+    * 
     * @param joinPoint
     *           joinpoint de la méthode authentifierPourSaeParLoginPassword
     */
@@ -34,33 +40,26 @@ public class SaeAnaisServiceCheck {
 
       String userPassword = (String) joinPoint.getArgs()[3];
 
-      // TODO SPECIFIER LES EXCEPTIONS
-
       if (environnement == null) {
-         throw new IllegalArgumentException(
-               "L’environnement (Développement / Validation  / Production) doit être renseigné");
+         throw new EnvironnementNonRenseigneException();
       }
 
       if (userLogin == null) {
-         throw new IllegalArgumentException(
-               "L’identifiant de l’utilisateur doit être renseigné");
+         throw new UserLoginNonRenseigneException();
       }
 
       if (userPassword == null) {
-         throw new IllegalArgumentException(
-               "Le mot de passe de l’utilisateur doit être renseigné");
+         throw new UserPasswordNonRenseigneException();
       }
 
       if (serveur != null) {
 
          if (serveur.getHote() == null) {
-            throw new IllegalArgumentException(
-                  "L’adresse IP ou le nom d’hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+            throw new HoteNonRenseigneException();
          }
 
          if (serveur.getPort() == null) {
-            throw new IllegalArgumentException(
-                  "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion");
+            throw new PortNonRenseigneException();
          }
 
       }

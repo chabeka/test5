@@ -30,7 +30,7 @@ public class SaeAnaisProfilConnexion {
 
    /**
     * 
-    * @param compteApplicatifDn
+    * @param cptDn
     *           Le DN du compte applicatif utilisé pour se connecter à
     *           l’annuaire
     */
@@ -48,7 +48,7 @@ public class SaeAnaisProfilConnexion {
 
    /**
     * 
-    * @param compteApplicatifPassword
+    * @param password
     *           Le mot de passe du compte applicatif
     */
    public final void setCompteApplicatifPassword(String password) {
