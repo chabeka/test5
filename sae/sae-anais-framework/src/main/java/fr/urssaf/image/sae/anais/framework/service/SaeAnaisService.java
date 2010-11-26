@@ -4,6 +4,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 import fr.urssaf.image.sae.anais.framework.component.DataSource;
+import fr.urssaf.image.sae.anais.framework.component.ProfilFactory;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilConnexion;
@@ -42,11 +43,10 @@ public class SaeAnaisService {
          SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
          String codeInterRegion, String codeOrganisme) {
 
-      
+      ProfilFactory factory = new ProfilFactory();
 
-      // TODO TROUVER LE PROFIL EN FONCTION DE L'ENVIRONNEMENT
-
-      throw new NotImplementedException();
+      return this.createXMLToken(factory.createProfil(environnement), serveur,
+            userLogin, userPassword, codeInterRegion, codeOrganisme);
 
    }
 

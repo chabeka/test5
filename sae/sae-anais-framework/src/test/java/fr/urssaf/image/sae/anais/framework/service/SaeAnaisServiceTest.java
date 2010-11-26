@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
@@ -24,6 +26,29 @@ public class SaeAnaisServiceTest {
    @Before
    public void initService() {
       service = new SaeAnaisService();
+   }
+
+   private static SaeAnaisAdresseServeur SERVEUR;
+
+   @BeforeClass
+   public static void initClass() {
+
+      SERVEUR = new SaeAnaisAdresseServeur();
+      SERVEUR.setHote("cer44anaistest.cer44.recouv");
+      SERVEUR.setPort(389);
+      SERVEUR.setTimeout(5000);
+      SERVEUR.setTls(false);
+
+   }
+
+   @Test
+   @Ignore
+   public void serveurNotNull() {
+
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, SERVEUR,
+            Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
+            Users.User1.CODE_ORG);
    }
 
    @Test

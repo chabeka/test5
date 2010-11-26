@@ -12,22 +12,13 @@ import org.junit.Test;
 import anaisJavaApi.AnaisExceptionAuthFailure;
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 import fr.urssaf.image.sae.anais.framework.component.DataSource;
+import fr.urssaf.image.sae.anais.framework.service.Users;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 
 @SuppressWarnings("PMD")
 public class AuthentificationDAOTest {
 
    private static ConnectionFactory factory;
-
-   private static final String CODEIR = "IR69";
-
-   private static final String CODE_ORG = "CER69";
-
-   private static final String LOGIN_SUCCESS = "CER6990430";
-
-   private static final String PASSWORD_SUCCESS = null;// EN ATTENTE;
-
-   private static final String PASSWORD_FAILURE = "inconnu";
 
    @BeforeClass
    public static void initClass() {
@@ -59,8 +50,8 @@ public class AuthentificationDAOTest {
    @Ignore
    public void authentifactionSucess() {
 
-      String xml = dao.createXMLToken(LOGIN_SUCCESS, PASSWORD_SUCCESS, CODEIR,
-            CODE_ORG);
+      String xml = dao.createXMLToken(Users.User1.LOGIN, Users.User1.PASSWORD,
+            Users.User1.CODEIR, Users.User1.CODE_ORG);
 
       assertNull(xml);
 
@@ -70,7 +61,8 @@ public class AuthentificationDAOTest {
    public void authFailure() {
 
       try {
-         dao.createXMLToken(LOGIN_SUCCESS, PASSWORD_FAILURE, CODEIR, CODE_ORG);
+         dao.createXMLToken(Users.User1.LOGIN, "inconnu", Users.User1.CODEIR,
+               Users.User1.CODE_ORG);
          fail("le test ne doit pas passer");
       } catch (SaeAnaisApiException e) {
          assertEquals("le login est incorrect",

@@ -35,7 +35,7 @@ public class ConnectionFactory {
    public final AnaisConnection_Application createConnection() {
 
       AnaisConnection_Application connection = new AnaisConnection_Application();
-
+      
       try {
          connection.init(dataSource.getHostname(), dataSource.getPort(),
                dataSource.isUsetls(), dataSource.getAppdn(),

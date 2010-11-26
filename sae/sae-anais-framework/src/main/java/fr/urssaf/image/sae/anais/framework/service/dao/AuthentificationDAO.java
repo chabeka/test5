@@ -54,7 +54,7 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
                .getUserDn(), codeInterRegion, codeOrganisme);
 
          // TODO CREER JETON SECURITE
-         // return null;
+
          throw new NotImplementedException("user info:" + userInfo
                + " habilitations:" + hablist);
 
