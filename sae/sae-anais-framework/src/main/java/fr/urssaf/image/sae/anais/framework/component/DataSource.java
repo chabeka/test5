@@ -1,10 +1,32 @@
 package fr.urssaf.image.sae.anais.framework.component;
 
 /**
- * data source de connexion à ANAIS<br>
- * un data source est nécessaire pour instancier ConnectionFactory
+ * Classe de paramétrage pour la connexion à ANAIS<br>
+ * Il est d'indispensable d'instancier cet objet pour utiliser les
+ * fonctionnalités d'ANAIS<br>
+ * Les attributs reprennent les arguments de
+ * {@link anaisJavaApi.AnaisConnection_Application#init(String, Integer, boolean, String, String, String, String, String)}
+ * <br>
+ * L'objet est utilisé en argument dans {@link ConnectionFactory} pour
+ * configurer la connexion<br>
+ * <br>
+ * <br>
+ * Voici un exemple de paramétrage<br>
+ * <br>
+ * <code>
+      DataSource dataSource = new DataSource();<br>
+      <br>
+      dataSource.setCodeapp("APPLIQUATION-1");<br>
+      dataSource.setPasswd("password");<br>
+      dataSource.setCodeenv("PROD");<br>
+      dataSource.setAppdn("cn=APPLIS,OU=APPLI-1,OU=appli");<br>
+      dataSource.setPort(1532);<br>
+      dataSource.setHostname("cer98applis.cer98.appli");<br>
+      dataSource.setTimeout("5000");<br>
+      dataSource.setUsetls(false);</code>
  * 
- * @see ConnectionFactory
+ * @see {@link ConnectionFactory}
+ * @see {@link anaisJavaApi.AnaisConnection_Application#init(String, Integer, boolean, String, String, String, String, String)}
  * 
  */
 public class DataSource {

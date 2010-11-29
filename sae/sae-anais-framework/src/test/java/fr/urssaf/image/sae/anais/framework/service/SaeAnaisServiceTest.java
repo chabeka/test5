@@ -8,11 +8,14 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import anaisJavaApi.AnaisExceptionAuthFailure;
+
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
 import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.PortNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 
@@ -43,10 +46,52 @@ public class SaeAnaisServiceTest {
 
    @Test
    @Ignore
-   public void serveurNotNull() {
+   public void envDEV() {
 
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, SERVEUR,
+            Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
+            Users.User1.CODE_ORG);
+   }
+
+   @Test
+   @Ignore
+   public void envPROD() {
+
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Production, SERVEUR,
+            Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
+            Users.User1.CODE_ORG);
+   }
+
+   @Test
+   @Ignore
+   public void envVAL() {
+
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Validation, SERVEUR,
+            Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
+            Users.User1.CODE_ORG);
+   }
+
+   @Test
+   @Ignore
+   public void serveurNotNull() {
+
+      // TODO test de comparaison avec un fichier xml modele
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, SERVEUR,
+            Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
+            Users.User1.CODE_ORG);
+   }
+
+   @Test
+   @Ignore
+   public void serveurNull() {
+
+      // TODO test de comparaison avec un fichier xml modele
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, null,
             Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
             Users.User1.CODE_ORG);
    }
@@ -137,6 +182,23 @@ public class SaeAnaisServiceTest {
          assertEquals(
                "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion",
                e.getMessage());
+      }
+
+   }
+
+   @Test
+   @Ignore
+   public void authFailure() {
+
+      try {
+         service.authentifierPourSaeParLoginPassword(
+               SaeAnaisEnumCodesEnvironnement.Developpement, SERVEUR,
+               Users.User1.LOGIN, "inconnu", Users.User1.CODEIR,
+               Users.User1.CODE_ORG);
+         fail("le test ne doit pas passer");
+      } catch (SaeAnaisApiException e) {
+         assertEquals("le login est incorrect",
+               AnaisExceptionAuthFailure.class, e.getCause().getClass());
       }
 
    }

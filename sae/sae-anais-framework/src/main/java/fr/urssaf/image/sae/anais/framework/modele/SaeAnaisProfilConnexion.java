@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Profil de connexion à ANAIS pour une application donnée
- * 
+ * Classe de paramétrage d'un profil ANAIS (Developpement/Validation/Production)<br>
  * 
  */
 public class SaeAnaisProfilConnexion {
@@ -22,7 +21,7 @@ public class SaeAnaisProfilConnexion {
 
    /**
     * 
-    * @return Le DN du compte applicatif utilisé pour se connecter à l’annuaire
+    * @return Le DN du compte applicatif utilisé pour se connecter à l'annuaire
     */
    public final String getCompteApplicatifDn() {
       return cptDn;
@@ -32,7 +31,7 @@ public class SaeAnaisProfilConnexion {
     * 
     * @param cptDn
     *           Le DN du compte applicatif utilisé pour se connecter à
-    *           l’annuaire
+    *           l'annuaire
     */
    public final void setCompteApplicatifDn(String cptDn) {
       this.cptDn = cptDn;
@@ -57,7 +56,7 @@ public class SaeAnaisProfilConnexion {
 
    /**
     * 
-    * @return Le code de l’application utilisé pour se connecter à l’annuaire
+    * @return Le code de l’application utilisé pour se connecter à l'annuaire
     */
    public final String getCodeApplication() {
       return codeApplication;
@@ -66,7 +65,7 @@ public class SaeAnaisProfilConnexion {
    /**
     * 
     * @param codeApplication
-    *           Le code de l’application utilisé pour se connecter à l’annuaire
+    *           Le code de l'application utilisé pour se connecter à l'annuaire
     */
    public final void setCodeApplication(String codeApplication) {
       this.codeApplication = codeApplication;
@@ -75,7 +74,7 @@ public class SaeAnaisProfilConnexion {
    /**
     * @see SaeAnaisAdresseServeur
     * 
-    * @return Le code de l’environnement
+    * @return Le code de l'environnement
     */
    public final SaeAnaisEnumCodesEnvironnement getCodeEnvironnement() {
       return codeEnvironnement;
@@ -85,7 +84,7 @@ public class SaeAnaisProfilConnexion {
     * @see SaeAnaisAdresseServeur
     * 
     * @param codeEnvironnement
-    *           Le code de l’environnement
+    *           Le code de l'environnement
     */
    public final void setCodeEnvironnement(
          SaeAnaisEnumCodesEnvironnement codeEnvironnement) {

@@ -16,9 +16,41 @@ import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiExceptio
 
 /**
  * La classe encapsule les méthode de la classe
- * {@link anaisJavaApi.AnaisConnection_Application} <br>
- * Le but est d'englober les exceptions du Framework Anais dans
- * {@link SaeAnaisApiException}
+ * {@link AnaisConnection_Application} <br>
+ * Les méthodes concernées sont
+ * <ul>
+ * <li>{@link AnaisConnection_Application#checkUserCredential(String, String)}</li>
+ * <li>{@link AnaisConnection_Application#close()}</li>
+ * <li>{@link AnaisConnection_Application#getUserInfo(String)}</li>
+ * <li>
+ * {@link AnaisConnection_Application#getUserHabilitations(String, String, String)}
+ * </li>
+ * </ul>
+ * L'instianciation de cette classe a recours à un objet de type
+ * {@ConnectionFactory}<br>
+ * La classe est la classe mère des classe DAO<br>
+ * Voici un exemple<br>
+ * <code>
+    <br>
+    public class AuthentificationDAO extends AnaisConnectionSupport {<br>
+    <br>
+    &nbsp;public AuthentificationDAO(ConnectionFactory connectionFactory) {<br>
+    &nbsp;&nbsp;&nbsp;super(connectionFactory);<br>
+    &nbsp;}<br>
+ 
+ * </code><br>
+ * Les exceptions levées par ANAIS sont encapsulées dans
+ * {@link SaeAnaisApiException} :
+ * <ul>
+ * <li>{@link AnaisExceptionServerCommunication}</li>
+ * <li>{@link AnaisExceptionAuthFailure}</li>
+ * <li>{@link AnaisExceptionPwdExpired}</li>
+ * <li>{@link AnaisExceptionPwdExpiring}</li>
+ * <li>{@link AnaisExceptionAuthAccountLocked}</li>
+ * <li>{@link AnaisExceptionAuthMultiUid}</li>
+ * <li>{@link AnaisExceptionFailure}</li>
+ * <li>{@link AnaisExceptionNoObject}</li>
+ * </ul>
  * 
  */
 public class AnaisConnectionSupport {
@@ -26,7 +58,7 @@ public class AnaisConnectionSupport {
    private final AnaisConnection_Application connection;
 
    /**
-    * initialise la connection Anais
+    * initialise la connection à ANAIS
     * 
     * @param connectionFactory
     *           connection factory pour ANAIS
@@ -48,9 +80,10 @@ public class AnaisConnectionSupport {
     *           param login
     * @param userPassword
     *           param passwd
-    * @return return checkUserCredential
+    * @return {@link AnaisUserResult}
+    * @throws SaeAnaisApiException
     */
-   protected final AnaisUserResult checkUserCredential(String userLogin,
+   public final AnaisUserResult checkUserCredential(String userLogin,
          String userPassword) {
 
       try {
@@ -74,6 +107,8 @@ public class AnaisConnectionSupport {
 
    /**
     * Encapsule {@link anaisJavaApi.AnaisConnection_Application#close()}
+    * 
+    * @throws SaeAnaisApiException
     */
    public final void close() {
       try {
@@ -89,7 +124,8 @@ public class AnaisConnectionSupport {
     * 
     * @param userDn
     *           param userdn
-    * @return return getUserInfo
+    * @return {@link AnaisUserInfo}
+    * @throws SaeAnaisApiException
     */
    public final AnaisUserInfo getUserInfo(String userDn) {
       try {
@@ -109,7 +145,8 @@ public class AnaisConnectionSupport {
     *           param codeir
     * @param codeOrganisme
     *           param codeorg
-    * @return return getUserHabilitations
+    * @return {@link AnaisHabilitationList}
+    * @throws SaeAnaisApiException
     */
    public final AnaisHabilitationList getUserHabilitations(String userDn,
          String codeInterRegion, String codeOrganisme) {

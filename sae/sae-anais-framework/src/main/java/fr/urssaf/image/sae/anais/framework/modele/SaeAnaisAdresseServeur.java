@@ -3,7 +3,8 @@ package fr.urssaf.image.sae.anais.framework.modele;
 /**
  * classe de paramétrage d'adressage du serveur ANAIS
  * 
- * 
+ * @see SaeAnaisProfilConnexion#getServeurs()
+ * @see SaeAnaisService
  */
 public class SaeAnaisAdresseServeur {
 

@@ -11,8 +11,7 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilConnexion;
 import fr.urssaf.image.sae.anais.framework.service.dao.AuthentificationDAO;
 
 /**
- * Classe de services sur le serveur ANAIS<br>
- * Necessite une l'instanciation d'une connection factory
+ * Classe principale de services sur le serveur ANAIS<br>
  * 
  * @see ConnectionFactory
  */
@@ -20,7 +19,23 @@ public class SaeAnaisService {
 
    /**
     * Création d’un jeton d’authentification à partir d’un couple login/mot de
-    * passe
+    * passe <br>
+    * Si <code>serveur</code> n'est pas renseigné <code>environnement</code>
+    * paramètre l'adressage du serveur ANAIS<br>
+    * <br>
+    * L'appel de la méthode instancie dans l'ordre
+    * <ol>
+    * <li>{@link DataSource}</li>
+    * <li>{@link ConnectionFactory}</li>
+    * <li>{@link AuthentificationDAO}</li>
+    * </ol>
+    * Enfin elle appelle la méthode
+    * {@link AuthentificationDAO#createXMLToken(String, String, String, String)}<br>
+    * <br>
+    * La méthode est soumise à une vérification par la méthode
+    * {@link SaeAnaisServiceCheck#authentifierPourSaeParLoginPasswordCheck} par
+    * une approche Aspect <br>
+    * <br>
     * 
     * @param environnement
     *           L’environnement (Développement / Validation / Production)
@@ -37,6 +52,12 @@ public class SaeAnaisService {
     *           Le code de l’organisme où chercher les habilitations (peut être
     *           vide)
     * @return Le jeton d’authentification sous la forme d’un flux XML
+    * @throws EnvironnementNonRenseigneException
+    * @throws UserLoginNonRenseigneException
+    * @throws UserPasswordNonRenseigneException
+    * @throws HoteNonRenseigneException
+    * @throws PortNonRenseigneException
+    * @throws SaeAnaisApiException
     */
    public final String authentifierPourSaeParLoginPassword(
          SaeAnaisEnumCodesEnvironnement environnement,
@@ -50,7 +71,7 @@ public class SaeAnaisService {
 
    }
 
-   protected final String createXMLToken(SaeAnaisProfilConnexion profil,
+   private String createXMLToken(SaeAnaisProfilConnexion profil,
          SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
          String codeInterRegion, String codeOrganisme) {
 

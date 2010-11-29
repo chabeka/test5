@@ -13,8 +13,16 @@ import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseig
 import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 
 /**
- * Classe de validation des arguments en entrée des méthode de la classe
+ * La classe valide les arguments en entrée des méthode de la classe
  * {@link fr.urssaf.image.sae.anais.framework.service.SaeAnaisService}<br>
+ * C'est une classe Aspect qui neccessite une compilation particulière<br>
+ * <br>
+ * Avec Eclipse il suffit de convertir le projet en projet AspectJ Project<br>
+ * Configure --> Convert to AspectJ Project <br>
+ * <br>
+ * Avec Maven il suffit de configurer le plugin <a
+ * href='http://mojo.codehaus.org/aspectj-maven-plugin/'>
+ * <code>aspectj-maven-plugin</code></a>
  */
 @Aspect
 public class SaeAnaisServiceCheck {
@@ -23,10 +31,32 @@ public class SaeAnaisServiceCheck {
 
    /**
     * la méthode vérifie les arguments en entrée de la méthode
-    * authentifierPourSaeParLoginPassword
+    * {@link SaeAnaisService#authentifierPourSaeParLoginPassword} <br>
+    * Si une des règles n'est pas respectée elle lève une exception spécifique<br>
+    * <ul>
+    * <li>environnement vide :{@link EnvironnementNonRenseigneException}</li>
+    * <li>userLogin vide :{@link UserLoginNonRenseigneException}</li>
+    * <li>userPassword vide :{@link UserPasswordNonRenseigneException}</li>
+    * <li>serveur non vide et hote vide:{@link HoteNonRenseigneException}</li>
+    * <li>serveur non vide et port vide:{@link PortNonRenseigneException}</li>
+    * </ul>
+    * <br>
+    * l'ordre des arguments
+    * {@link SaeAnaisService#authentifierPourSaeParLoginPassword} est importante<br>
+    * <ul>
+    * <li><code>joinPoint.getArgs()[0]</code>:<code>environnement</code></li>
+    * <li><code>joinPoint.getArgs()[1]</code>:<code>serveur</code></li>
+    * <li><code>joinPoint.getArgs()[2]</code>:<code>userLogin</code></li>
+    * <li><code>joinPoint.getArgs()[1]</code>:<code>userPassword</code></li>
+    * </ul>
     * 
     * @param joinPoint
     *           joinpoint de la méthode authentifierPourSaeParLoginPassword
+    * @throws EnvironnementNonRenseigneException
+    * @throws UserLoginNonRenseigneException
+    * @throws UserPasswordNonRenseigneException
+    * @throws HoteNonRenseigneException
+    * @throws PortNonRenseigneException
     */
    @Before(METHODE)
    public final void authentifierPourSaeParLoginPasswordCheck(

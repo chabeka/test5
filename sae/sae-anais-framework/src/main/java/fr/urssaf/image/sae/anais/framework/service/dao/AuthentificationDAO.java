@@ -10,7 +10,16 @@ import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 
 /**
  * Classe de type DAO sur le serveur ANAIS<br>
- * Necessite une l'instanciation d'une connection factory
+ * Cette classe permet d'accéder aux différentes méthodes de ANAIS à travers la
+ * classe {@link AnaisConnectionSupport}<br>
+ * Les méthodes implémentées suivent le modèle: <code><br>
+ * try {<br><br>
+   &nbsp;&nbsp;//APPEL DES METHODES DE AnaisConnectionSupport<br><br>
+   } finally {<br>
+   &nbsp;&nbsp;this.close();<br>
+   }<br>
+ * </code>
+ * 
  * 
  * @see ConnectionFactory
  */
@@ -40,6 +49,7 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
     *           Le code de l’organisme où chercher les habilitations
     * 
     * @return Le jeton d’authentification sous la forme d’un flux XML
+    * @throws SaeAnaisApiException
     */
    public final String createXMLToken(String userLogin, String userPassword,
          String codeInterRegion, String codeOrganisme) {

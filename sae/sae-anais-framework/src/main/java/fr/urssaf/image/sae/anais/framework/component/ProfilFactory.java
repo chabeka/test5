@@ -43,7 +43,7 @@ public class ProfilFactory {
       return profil;
    }
 
-   //TODO prévoir des profil sur des fichiers de parametres
+   //TODO prévoir des profils sur des fichiers de parametres
    private static final int PORT = 389;
 
    private static final int TIMEOUT = 5000;

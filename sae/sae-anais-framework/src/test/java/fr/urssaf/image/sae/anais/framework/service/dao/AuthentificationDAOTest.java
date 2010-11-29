@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.anais.framework.service.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import org.junit.Before;
@@ -48,12 +47,11 @@ public class AuthentificationDAOTest {
 
    @Test
    @Ignore
-   public void authentifactionSucess() {
+   public void authSucess() {
 
-      String xml = dao.createXMLToken(Users.User1.LOGIN, Users.User1.PASSWORD,
+      // TODO comparaison avec un fichier xml modele
+      dao.createXMLToken(Users.User1.LOGIN, Users.User1.PASSWORD,
             Users.User1.CODEIR, Users.User1.CODE_ORG);
-
-      assertNull(xml);
 
    }
 
