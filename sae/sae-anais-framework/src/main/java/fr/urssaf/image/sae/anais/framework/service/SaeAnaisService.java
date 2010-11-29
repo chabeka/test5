@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.anais.framework.service;
 
-import org.apache.commons.lang.NotImplementedException;
-
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 import fr.urssaf.image.sae.anais.framework.component.DataSource;
 import fr.urssaf.image.sae.anais.framework.component.ProfilFactory;
@@ -20,8 +18,13 @@ public class SaeAnaisService {
    /**
     * Création d’un jeton d’authentification à partir d’un couple login/mot de
     * passe <br>
+    * <br>
+    * A partir de <code>environnement</code> on récupère un objet
+    * {@link SaeAnaisProfilConnexion} grâce à la classe {@link ProfilFactory}<br>
+    * <br>
     * Si <code>serveur</code> n'est pas renseigné <code>environnement</code>
-    * paramètre l'adressage du serveur ANAIS<br>
+    * paramètre l'adressage du serveur ANAIS avec le premier serveur paramatré dans {@link SaeAnaisProfilConnexion#getServeurs()}<br>
+    * Sinon <code>serveur</code> paramètre l'adressage au serveur ANAIS<br>
     * <br>
     * L'appel de la méthode instancie dans l'ordre
     * <ol>
@@ -83,8 +86,8 @@ public class SaeAnaisService {
       dataSource.setPasswd(profil.getCompteApplicatifPassword());
 
       if (serveur == null) {
-         throw new NotImplementedException();
-         // TODO QUELLE ADRESSE SERVEUR CHOISIR POUR UN PROFIL DONNE?
+
+         initAdresseServeur(dataSource, profil.getServeurs().get(0));
 
       }
 

@@ -49,7 +49,7 @@ public class SaeAnaisServiceTest {
    public void envDEV() {
 
       service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Developpement, SERVEUR,
+            SaeAnaisEnumCodesEnvironnement.Developpement, null,
             Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
             Users.User1.CODE_ORG);
    }
@@ -59,7 +59,7 @@ public class SaeAnaisServiceTest {
    public void envPROD() {
 
       service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, SERVEUR,
+            SaeAnaisEnumCodesEnvironnement.Production, null,
             Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
             Users.User1.CODE_ORG);
    }
@@ -69,7 +69,7 @@ public class SaeAnaisServiceTest {
    public void envVAL() {
 
       service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Validation, SERVEUR,
+            SaeAnaisEnumCodesEnvironnement.Validation, null,
             Users.User1.LOGIN, Users.User1.PASSWORD, Users.User1.CODEIR,
             Users.User1.CODE_ORG);
    }
@@ -187,7 +187,6 @@ public class SaeAnaisServiceTest {
    }
 
    @Test
-   @Ignore
    public void authFailure() {
 
       try {

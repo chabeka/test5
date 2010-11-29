@@ -24,6 +24,6 @@ public final class Users {
 
       public static final String LOGIN = "CER6990430";
 
-      public static final String PASSWORD = "beber1980";// A CREER
+      public static final String PASSWORD = null;// A CREER
    }
 }
