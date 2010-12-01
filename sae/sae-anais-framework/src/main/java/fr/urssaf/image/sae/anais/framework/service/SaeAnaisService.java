@@ -2,10 +2,13 @@ package fr.urssaf.image.sae.anais.framework.service;
 
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 import fr.urssaf.image.sae.anais.framework.component.DataSource;
-import fr.urssaf.image.sae.anais.framework.component.ProfilFactory;
+import fr.urssaf.image.sae.anais.framework.component.ProfilAppliFactory;
+import fr.urssaf.image.sae.anais.framework.component.ProfilServeurFactory;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
-import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilConnexion;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilCompteApplicatif;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilServeur;
 import fr.urssaf.image.sae.anais.framework.service.dao.AuthentificationDAO;
 
 /**
@@ -19,12 +22,17 @@ public class SaeAnaisService {
     * Création d’un jeton d’authentification à partir d’un couple login/mot de
     * passe <br>
     * <br>
-    * A partir de <code>environnement</code> on récupère un objet
-    * {@link SaeAnaisProfilConnexion} grâce à la classe {@link ProfilFactory}<br>
+    * A partir de <code>environnement</code> et <code>serveur</code> on
+    * instancie {@link SaeAnaisProfilserveur}<br>
     * <br>
     * Si <code>serveur</code> n'est pas renseigné <code>environnement</code>
-    * paramètre l'adressage du serveur ANAIS avec le premier serveur paramatré dans {@link SaeAnaisProfilConnexion#getServeurs()}<br>
+    * paramètre l'adressage du serveur ANAIS avec la classe
+    * {@link ProfilServeurFactory}<br>
     * Sinon <code>serveur</code> paramètre l'adressage au serveur ANAIS<br>
+    * <br>
+    * A partir de <code>profilCptAppli</code> et <code>compteApplicatif</code>
+    * on instancie {@link SaeAnaisProfilCompteApplicatif} avec la classe
+    * {@link ProfilAppliFactory} <br>
     * <br>
     * L'appel de la méthode instancie dans l'ordre
     * <ol>
@@ -40,10 +48,15 @@ public class SaeAnaisService {
     * une approche Aspect <br>
     * <br>
     * 
+    * 
     * @param environnement
     *           L’environnement (Développement / Validation / Production)
     * @param serveur
     *           Les paramètres de connexion au serveur ANAIS
+    * @param profilCptAppli
+    *           Profil du compte applicatif(Sae/Autre)
+    * @param compteApplicatif
+    *           Les paramètres du compte applicatif
     * @param userLogin
     *           Le login de l’utilisateur
     * @param userPassword
@@ -54,51 +67,54 @@ public class SaeAnaisService {
     * @param codeOrganisme
     *           Le code de l’organisme où chercher les habilitations (peut être
     *           vide)
-    * @return Le jeton d’authentification sous la forme d’un flux XML
     * @throws EnvironnementNonRenseigneException
     * @throws UserLoginNonRenseigneException
     * @throws UserPasswordNonRenseigneException
     * @throws HoteNonRenseigneException
     * @throws PortNonRenseigneException
     * @throws SaeAnaisApiException
+    * @throws ParametresApplicatifsNonRenseigneException
+    * @return Le jeton d’authentification sous la forme d’un flux XML
     */
    public final String authentifierPourSaeParLoginPassword(
          SaeAnaisEnumCodesEnvironnement environnement,
-         SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
-         String codeInterRegion, String codeOrganisme) {
+         SaeAnaisAdresseServeur serveur,
+         SaeAnaisEnumCompteApplicatif profilCptAppli,
+         SaeAnaisProfilCompteApplicatif compteApplicatif, String userLogin,
+         String userPassword, String codeInterRegion, String codeOrganisme) {
 
-      ProfilFactory factory = new ProfilFactory();
-
-      return this.createXMLToken(factory.createProfil(environnement), serveur,
-            userLogin, userPassword, codeInterRegion, codeOrganisme);
-
-   }
-
-   private String createXMLToken(SaeAnaisProfilConnexion profil,
-         SaeAnaisAdresseServeur serveur, String userLogin, String userPassword,
-         String codeInterRegion, String codeOrganisme) {
+      ProfilAppliFactory appliFactory = new ProfilAppliFactory();
+      SaeAnaisProfilCompteApplicatif profilAppli = appliFactory.createProfil(
+            profilCptAppli, compteApplicatif);
 
       // initialisation du data source
       DataSource dataSource = new DataSource();
-      dataSource.setAppdn(profil.getCompteApplicatifDn());
-      dataSource.setCodeapp(profil.getCodeApplication());
-      dataSource.setCodeenv(profil.getCodeEnvironnement().code());
-      dataSource.setPasswd(profil.getCompteApplicatifPassword());
+      dataSource.setAppdn(profilAppli.getDn());
+      dataSource.setCodeapp(profilAppli.getCodeApplication());
+      dataSource.setPasswd(profilAppli.getPassword());
 
       if (serveur == null) {
 
-         initAdresseServeur(dataSource, profil.getServeurs().get(0));
+         ProfilServeurFactory serveurFactory = new ProfilServeurFactory();
+
+         SaeAnaisProfilServeur serveurProfil = serveurFactory
+               .createProfil(environnement);
+
+         dataSource.setCodeenv(serveurProfil.getCodeEnvironnement().code());
+         initAdresseServeur(dataSource, serveurProfil.getServeurs().get(0));
 
       }
 
       else {
 
+         dataSource.setCodeenv(environnement.code());
          initAdresseServeur(dataSource, serveur);
 
       }
 
       // initialisation du connection factory
       ConnectionFactory connection = new ConnectionFactory(dataSource);
+      // initialisation du dao authentification
       AuthentificationDAO authDAO = new AuthentificationDAO(connection);
 
       return authDAO.createXMLToken(userLogin, userPassword, codeInterRegion,

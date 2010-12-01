@@ -6,12 +6,13 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 
+import fr.urssaf.image.sae.anais.framework.modele.ObjectFactory;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
-import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilConnexion;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilServeur;
 
 /**
- * Classe de création de profil pour ANAIS<br>
+ * Classe d'instanciation de profil serveur pour ANAIS<br>
  * La configuration s'appuie sur le fichier sae-anais-framework.properties dans
  * le classpath<br>
  * les paramètres de ce fichier sont:
@@ -21,31 +22,28 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilConnexion;
  * </li>
  * <li>anais.timeout : Le temps de réponse maximal d'un serveur lors d'une
  * connexion</li>
- * <li>anais.cn : DN du compte applicatif utilisé pour se connecter à l’annuaire
- * </li>
- * <li>anais.code-application : Code de l'application</li>
- * <li>anais.compte-applicatif-password : Mot de passe du compte applicatif pour
- * se connecter à l'annuaire</li>
- * <li>anais.host.DEV : Nom d'hôte ou adresse IP du serveur ANAIS en mode «
- * Tests pour les développements »</li>
- * <li>anais.host.VAL : Nom d'hôte ou adresse IP du serveur ANAIS en mode «
- * Validation »</li>
- * <li>anais.host.PROD : Nom d'hôte ou adresse IP du serveur ANAIS en mode «
- * Production »</li>
+ * <li>anais.host.DEV : Liste des noms d'hôte ou adresses IP du serveur ANAIS en
+ * mode « Tests pour les développements »</li>
+ * <li>anais.host.VAL : Liste des noms d'hôte ou adresses IP du serveur ANAIS en
+ * mode « Validation »</li>
+ * <li>anais.host.PROD : Liste des noms d'hôte ou adresses IP du serveur ANAIS
+ * en mode « Production »</li>
  * </ul>
- * <br>
+ * Les adresses IP sont séparées par des '|', ex: host1|host2|host3 <br>
  * <br>
  * La récupération des paramètres dans le fichier de properties s'appuie sur le
  * Framework <a href='http://commons.apache.org/configuration/'>Apache commons
  * configuration</a><br>
- * Le délimiteur des valeurs de chaque paramètre est '|'
+ * 
+ * @see SaeAnaisProfilServeur
  */
-public class ProfilFactory {
+public class ProfilServeurFactory {
 
-   private static final Logger LOG = Logger.getLogger(ProfilFactory.class);
+   private static final Logger LOG = Logger
+         .getLogger(ProfilServeurFactory.class);
 
    /**
-    * Méthode de création de profil pour ANAIS à partir d'un code
+    * Méthode d'instanciation d'un profil serveur à partir d'un code
     * d'environnement
     * 
     * @see SaeAnaisEnumCodesEnvironnement
@@ -54,10 +52,10 @@ public class ProfilFactory {
     *           code d'environnement de ANAIS
     * @return profil ANAIS spécifique au code environnement
     */
-   public final SaeAnaisProfilConnexion createProfil(
+   public final SaeAnaisProfilServeur createProfil(
          SaeAnaisEnumCodesEnvironnement environnement) {
 
-      SaeAnaisProfilConnexion profil = null;
+      SaeAnaisProfilServeur profil = null;
 
       switch (environnement) {
       case Developpement:
@@ -72,13 +70,21 @@ public class ProfilFactory {
       default:
          throw new IllegalArgumentException("'SaeAnaisEnumCodesEnvironnement' "
                + environnement.name() + " is not used ");
-
       }
+
+      profil.setCodeEnvironnement(environnement);
+
+      SaeAnaisAdresseServeur profilServeur = profil.getServeurs().get(0);
+      LOG.debug("INFO SERVEUR");
+      LOG.debug("host : " + profilServeur.getHote());
+      LOG.debug("port : " + profilServeur.getPort());
+      LOG.debug("timeout : " + profilServeur.getTimeout());
+      LOG.debug("tls : " + profilServeur.isTls());
 
       return profil;
    }
 
-   private abstract class AbstractProfil extends SaeAnaisProfilConnexion {
+   private abstract class AbstractProfil extends SaeAnaisProfilServeur {
 
       protected AbstractProfil(SaeAnaisEnumCodesEnvironnement codeEnvironnement) {
          super();
@@ -89,37 +95,22 @@ public class ProfilFactory {
             Configuration config = new PropertiesConfiguration(
                   "sae-anais-framework.properties");
 
-            this.setCompteApplicatifDn(config.getString("anais.cn"));
-            this.setCodeApplication(config.getString("anais.code-application"));
-            this.setCompteApplicatifPassword(config
-                  .getString("anais.compte-applicatif-password"));
-            this.setCodeEnvironnement(codeEnvironnement);
-
             int port = config.getInt("anais.port");
             int timeout = config.getInt("anais.timeout");
             boolean tls = config.getBoolean("anais.tls");
-            String host = config.getString("anais.host."
-                  + codeEnvironnement.code(),null);
-            
-            SaeAnaisAdresseServeur serveur = new SaeAnaisAdresseServeur();
-            serveur.setHote(host);
-            serveur.setPort(port);
-            serveur.setTimeout(timeout);
-            serveur.setTls(tls);
+            String[] hosts = config.getStringArray("anais.host."
+                  + codeEnvironnement.code());
 
-            this.getServeurs().add(serveur);
+            for (String host : hosts) {
+               SaeAnaisAdresseServeur serveur = ObjectFactory
+                     .createSaeAnaisAdresseServeur();
+               serveur.setHote(host);
+               serveur.setPort(port);
+               serveur.setTimeout(timeout);
+               serveur.setTls(tls);
 
-            LOG.debug("INFO APPLICATION");
-            LOG.debug("codeenv : " + this.getCodeEnvironnement().code());
-            LOG.debug("appdn : " + this.getCompteApplicatifDn());
-            LOG.debug("codeapp : " + this.getCodeApplication());
-            LOG.debug("paswd : " + this.getCompteApplicatifPassword());
-
-            LOG.debug("INFO SERVEUR");
-            LOG.debug("host : " + host);
-            LOG.debug("port : " + port);
-            LOG.debug("timeout : " + timeout);
-            LOG.debug("tls : " + tls);
+               this.getServeurs().add(serveur);
+            }
 
          } catch (ConfigurationException e) {
             throw new IllegalStateException(e);

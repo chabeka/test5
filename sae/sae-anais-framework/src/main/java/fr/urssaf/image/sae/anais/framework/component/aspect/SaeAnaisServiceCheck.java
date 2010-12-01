@@ -6,8 +6,11 @@ import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
+import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.ParametresApplicatifsNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.PortNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
@@ -22,65 +25,111 @@ import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRens
  * <br>
  * Avec Maven il suffit de configurer le plugin <a
  * href='http://mojo.codehaus.org/aspectj-maven-plugin/'>
- * <code>aspectj-maven-plugin</code></a>
+ * <code>aspectj-maven-plugin</code></a> <br>
+ * Si une des règles n'est pas respectée elle lève une exception spécifique<br>
+ * <ul>
+ * <li>environnement vide :{@link EnvironnementNonRenseigneException}</li>
+ * <li>userLogin vide :{@link UserLoginNonRenseigneException}</li>
+ * <li>userPassword vide :{@link UserPasswordNonRenseigneException}</li>
+ * <li>serveur non vide et hote vide:{@link HoteNonRenseigneException}</li>
+ * <li>serveur non vide et port vide:{@link PortNonRenseigneException}</li>
+ * <li>compteApplicatif à « AUTRE » et compteApplicatifParametres vide:
+ * {@link ParametresApplicatifsNonRenseigneException}</li>
+ * </ul>
+ * <br>
+ * l'ordre des arguments
+ * {@link SaeAnaisService#authentifierPourSaeParLoginPassword} est importante<br>
+ * <ul>
+ * <li><code>joinPoint.getArgs()[0]</code> : <code>environnement</code></li>
+ * <li><code>joinPoint.getArgs()[1]</code> : <code>serveur</code></li>
+ * <li><code>joinPoint.getArgs()[2]</code> : <code>profilCompteApplicatif</code>
+ * </li>
+ * <li><code>joinPoint.getArgs()[3]</code> : <code>compteApplicatif</code></li>
+ * <li><code>joinPoint.getArgs()[4]</code> : <code>userLogin</code></li>
+ * <li><code>joinPoint.getArgs()[5]</code> : <code>userPassword</code></li>
+ * </ul>
  */
 @Aspect
 public class SaeAnaisServiceCheck {
 
    private static final String METHODE = "execution(public * fr.urssaf.image.sae.anais.framework.service.SaeAnaisService.authentifierPourSaeParLoginPassword(..))";
 
+   // ordre des arguments
+   private static final int ENVIRONNEMENT = 0;
+   private static final int SERVEUR = 1;
+   private static final int PROFIL_CPT_APPLI = 2;
+   private static final int COMPTE_APPLICATIF = 3;
+   private static final int USER_LOGIN = 4;
+   private static final int USER_PASSWORD = 5;
+
    /**
-    * la méthode vérifie les arguments en entrée de la méthode
-    * {@link SaeAnaisService#authentifierPourSaeParLoginPassword} <br>
-    * Si une des règles n'est pas respectée elle lève une exception spécifique<br>
-    * <ul>
-    * <li>environnement vide :{@link EnvironnementNonRenseigneException}</li>
-    * <li>userLogin vide :{@link UserLoginNonRenseigneException}</li>
-    * <li>userPassword vide :{@link UserPasswordNonRenseigneException}</li>
-    * <li>serveur non vide et hote vide:{@link HoteNonRenseigneException}</li>
-    * <li>serveur non vide et port vide:{@link PortNonRenseigneException}</li>
-    * </ul>
+    * Validation de <code>profilCptAppli</code> et <code>compteApplicatif</code><br>
+    * Règle : si le paramètre <code>compteApplicatif</code> est à « AUTRE »
+    * alors <code>compteApplicatif<Code> doit être renseigné<br>
     * <br>
-    * l'ordre des arguments
-    * {@link SaeAnaisService#authentifierPourSaeParLoginPassword} est importante<br>
+    * Pour rappel
     * <ul>
-    * <li><code>joinPoint.getArgs()[0]</code>:<code>environnement</code></li>
-    * <li><code>joinPoint.getArgs()[1]</code>:<code>serveur</code></li>
-    * <li><code>joinPoint.getArgs()[2]</code>:<code>userLogin</code></li>
-    * <li><code>joinPoint.getArgs()[1]</code>:<code>userPassword</code></li>
+    * <li><code>joinPoint.getArgs()[2]</code> : <code>profilCptAppli</code></li>
+    * <li><code>joinPoint.getArgs()[3]</code> : <code>compteApplicatif</code></li>
     * </ul>
     * 
     * @param joinPoint
     *           joinpoint de la méthode authentifierPourSaeParLoginPassword
+    * @throws ParametresApplicatifsNonRenseigneException
+    */
+   @Before(METHODE)
+   public final void compteApplicatifCheck(JoinPoint joinPoint) {
+
+      SaeAnaisEnumCompteApplicatif profilCptAppli = (SaeAnaisEnumCompteApplicatif) joinPoint
+            .getArgs()[PROFIL_CPT_APPLI];
+      SaeAnaisProfilCompteApplicatif compteApplicatif = (SaeAnaisProfilCompteApplicatif) joinPoint
+            .getArgs()[COMPTE_APPLICATIF];
+
+      if (profilCptAppli.equals(SaeAnaisEnumCompteApplicatif.Autre)
+            && compteApplicatif == null) {
+         throw new ParametresApplicatifsNonRenseigneException();
+      }
+
+   }
+
+   /**
+    * Validation de <code>environnement</code><br>
+    * Règle : le paramètre <code>environnement</code> doit être renseigné<br>
+    * <br>
+    * Pour rappel <code>joinPoint.getArgs()[0]</code> :
+    * <code>environnement</code>
+    * 
+    * @param joinPoint
+    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
     * @throws EnvironnementNonRenseigneException
-    * @throws UserLoginNonRenseigneException
-    * @throws UserPasswordNonRenseigneException
+    */
+   @Before(METHODE)
+   public final void environnementCheck(JoinPoint joinPoint) {
+
+      SaeAnaisEnumCodesEnvironnement environnement = (SaeAnaisEnumCodesEnvironnement) joinPoint
+            .getArgs()[ENVIRONNEMENT];
+      if (environnement == null) {
+         throw new EnvironnementNonRenseigneException();
+      }
+   }
+
+   /**
+    * Validation de <code>serveur</code><br>
+    * Règle : si le paramètre <code>serveur</code> est renseigné alors ses
+    * attributs hote et port doivent l'être aussi<br>
+    * <br>
+    * Pour rappel <code>joinPoint.getArgs()[1]</code> : <code>serveur</code>
+    * 
+    * @param joinPoint
+    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
     * @throws HoteNonRenseigneException
     * @throws PortNonRenseigneException
     */
    @Before(METHODE)
-   public final void authentifierPourSaeParLoginPasswordCheck(
-         JoinPoint joinPoint) {
+   public final void serveurCheck(JoinPoint joinPoint) {
 
-      SaeAnaisEnumCodesEnvironnement environnement = (SaeAnaisEnumCodesEnvironnement) joinPoint
-            .getArgs()[0];
       SaeAnaisAdresseServeur serveur = (SaeAnaisAdresseServeur) joinPoint
-            .getArgs()[1];
-      String userLogin = (String) joinPoint.getArgs()[2];
-
-      String userPassword = (String) joinPoint.getArgs()[3];
-
-      if (environnement == null) {
-         throw new EnvironnementNonRenseigneException();
-      }
-
-      if (userLogin == null) {
-         throw new UserLoginNonRenseigneException();
-      }
-
-      if (userPassword == null) {
-         throw new UserPasswordNonRenseigneException();
-      }
+            .getArgs()[SERVEUR];
 
       if (serveur != null) {
 
@@ -93,7 +142,44 @@ public class SaeAnaisServiceCheck {
          }
 
       }
-
    }
 
+   /**
+    * Validation de <code>userLogin</code><br>
+    * Règle : le paramètre <code>userLogin</code> doit être renseigné <br>
+    * <br>
+    * Pour rappel <code>joinPoint.getArgs()[4]</code> : <code>userLogin</code>
+    * 
+    * @param joinPoint
+    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
+    * @throws UserLoginNonRenseigneException
+    */
+   @Before(METHODE)
+   public final void loginCheck(JoinPoint joinPoint) {
+
+      String userLogin = (String) joinPoint.getArgs()[USER_LOGIN];
+      if (userLogin == null) {
+         throw new UserLoginNonRenseigneException();
+      }
+   }
+
+   /**
+    * Validation de <code>userPassword</code><br>
+    * Règle : le paramètre <code>userPassword</code> doit être renseigné<br>
+    * <br>
+    * Pour rappel <code>joinPoint.getArgs()[5]</code> :
+    * <code>userPassword</code>
+    * 
+    * @param joinPoint
+    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
+    * @throws UserPasswordNonRenseigneException
+    */
+   @Before(METHODE)
+   public final void passwordCheck(JoinPoint joinPoint) {
+
+      String userPassword = (String) joinPoint.getArgs()[USER_PASSWORD];
+      if (userPassword == null) {
+         throw new UserPasswordNonRenseigneException();
+      }
+   }
 }

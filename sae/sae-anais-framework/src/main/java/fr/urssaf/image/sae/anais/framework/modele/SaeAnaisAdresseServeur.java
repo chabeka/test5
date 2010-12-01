@@ -3,8 +3,7 @@ package fr.urssaf.image.sae.anais.framework.modele;
 /**
  * classe de paramétrage d'adressage du serveur ANAIS
  * 
- * @see SaeAnaisProfilConnexion#getServeurs()
- * @see SaeAnaisService
+ * @see ObjectFactory
  */
 public class SaeAnaisAdresseServeur {
 
@@ -15,6 +14,11 @@ public class SaeAnaisAdresseServeur {
    private boolean tls;
 
    private int timeout;
+   
+   @SuppressWarnings("PMD.UncommentedEmptyConstructor")
+   protected SaeAnaisAdresseServeur(){
+      
+   }
 
    /**
     * 
