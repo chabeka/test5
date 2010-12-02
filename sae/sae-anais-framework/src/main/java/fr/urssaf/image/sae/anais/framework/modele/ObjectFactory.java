@@ -6,7 +6,8 @@ package fr.urssaf.image.sae.anais.framework.modele;
  * Les modèles instanciés sont:<br>
  * <ul>
  * <li>{@link SaeAnaisAdresseServeur}</li>
- * <li>{@SaeAnaisProfilCompteApplicatif}</li>
+ * <li>{@link SaeAnaisProfilCompteApplicatif}</li>
+ * <li>{@link DroitApplicatif}</li>
  * </ul>
  * 
  * 
@@ -33,5 +34,14 @@ public final class ObjectFactory {
     */
    public static SaeAnaisProfilCompteApplicatif createSaeAnaisProfilCompteApplicatif() {
       return new SaeAnaisProfilCompteApplicatif();
+   }
+   
+   /**
+    * Méthode d'instanciation de {@link DroitApplicatif}
+    * 
+    * @return {@link DroitApplicatif}
+    */
+   public static DroitApplicatif createDroitAplicatif(){
+      return new DroitApplicatif();
    }
 }

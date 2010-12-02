@@ -1,12 +1,19 @@
 package fr.urssaf.image.sae.anais.framework.service.dao;
 
-import org.apache.commons.lang.NotImplementedException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import anaisJavaApi.AnaisHabilitation;
 import anaisJavaApi.AnaisHabilitationList;
 import anaisJavaApi.AnaisUserInfo;
 import anaisJavaApi.AnaisUserResult;
 import fr.urssaf.image.sae.anais.framework.component.AnaisConnectionSupport;
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
+import fr.urssaf.image.sae.anais.framework.component.TokenFactory;
+import fr.urssaf.image.sae.anais.framework.modele.DroitApplicatif;
+import fr.urssaf.image.sae.anais.framework.modele.ObjectFactory;
 
 /**
  * Classe de type DAO sur le serveur ANAIS<br>
@@ -24,6 +31,9 @@ import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
  * @see ConnectionFactory
  */
 public class AuthentificationDAO extends AnaisConnectionSupport {
+
+   private static final Logger LOG = Logger
+         .getLogger(AnaisConnectionSupport.class);
 
    /**
     * initialise la connection factory
@@ -63,10 +73,31 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
          AnaisHabilitationList hablist = this.getUserHabilitations(userResult
                .getUserDn(), codeInterRegion, codeOrganisme);
 
-         // TODO CREER JETON SECURITE
+         String lastname = userInfo.getInfo("sn");
+         String firstname = userInfo.getInfo("givenName");
 
-         throw new NotImplementedException("user info:" + userInfo
-               + " habilitations:" + hablist);
+         LOG.debug("INFO CONNECTION");
+         LOG.debug(userInfo);
+         LOG.debug("sn:" + lastname);
+         LOG.debug("givenName:" + firstname);
+
+         List<DroitApplicatif> droits = new ArrayList<DroitApplicatif>();
+         for (AnaisHabilitation hab : hablist.getHabilitationsList()) {
+            LOG.debug("habilitation:" + hab.getHabilitation());
+            LOG.debug(hab.getOrganisme());
+
+            DroitApplicatif droit = ObjectFactory.createDroitAplicatif();
+
+            droit.setCode(hab.getHabilitation());
+            droit.setPerimetreValue(hab.getOrganisme());
+            droit.setPerimetreType("?");
+
+            droits.add(droit);
+
+         }
+
+         TokenFactory factory = new TokenFactory();
+         return factory.createTokenSecurity(lastname, firstname, droits);
 
       } finally {
          this.close();

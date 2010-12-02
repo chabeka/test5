@@ -13,6 +13,37 @@
    <name>sae-anais-framework</name>
    <version>0.0.1-SNAPSHOT</version>
 
+
+   <profiles>
+      <profile>
+         <id>generateJaxb</id>
+
+         <build>
+            <plugins>
+
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/resources/META-INF</schemaDirectory>
+                     <generatePackage>fr.urssaf.image.sae.anais.framework.schema</generatePackage>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                  </configuration>
+               </plugin>
+
+            </plugins>
+         </build>
+
+      </profile>
+   </profiles>
+
    <build>
       <plugins>
          <plugin>
@@ -59,9 +90,21 @@
          <version>1.6</version>
       </dependency>
 
-
    </dependencies>
 
-
+   <reporting>
+      <plugins>
+         <plugin>
+            <inherited>true</inherited>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <configuration>
+               <excludes>
+                  <exclude>**/schema/**</exclude>
+               </excludes>
+            </configuration>
+         </plugin>
+      </plugins>
+   </reporting>
 
 </project>

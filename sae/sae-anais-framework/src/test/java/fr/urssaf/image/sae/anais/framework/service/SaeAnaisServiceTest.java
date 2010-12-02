@@ -60,10 +60,12 @@ public class SaeAnaisServiceTest {
    @Ignore
    public void envPROD() {
 
-      service.authentifierPourSaeParLoginPassword(
+      String xml = service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Production, null,
             SaeAnaisEnumCompteApplicatif.Sae, null, Users.User1.LOGIN,
             Users.User1.PASSWORD, Users.User1.CODEIR, Users.User1.CODE_ORG);
+
+      System.out.println(xml);
    }
 
    @Test
