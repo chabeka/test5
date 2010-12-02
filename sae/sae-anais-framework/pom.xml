@@ -89,6 +89,13 @@
          <artifactId>commons-configuration</artifactId>
          <version>${apache.commons-configuration.version}</version>
       </dependency>
+      
+      <dependency>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>${apache.commons-io.version}</version>
+         <scope>test</scope>
+      </dependency>
 
    </dependencies>
 

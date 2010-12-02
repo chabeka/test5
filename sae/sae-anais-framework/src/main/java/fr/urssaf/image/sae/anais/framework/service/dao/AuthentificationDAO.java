@@ -34,6 +34,8 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
 
    private static final Logger LOG = Logger
          .getLogger(AnaisConnectionSupport.class);
+   
+   private static final String TYPE_PERIMETRE = "URSSAF - Code organisme";
 
    /**
     * initialise la connection factory
@@ -90,7 +92,7 @@ public class AuthentificationDAO extends AnaisConnectionSupport {
 
             droit.setCode(hab.getHabilitation());
             droit.setPerimetreValue(hab.getOrganisme());
-            droit.setPerimetreType("?");
+            droit.setPerimetreType(TYPE_PERIMETRE);
 
             droits.add(droit);
 

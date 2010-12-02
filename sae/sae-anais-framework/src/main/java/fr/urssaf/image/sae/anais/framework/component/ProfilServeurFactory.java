@@ -93,7 +93,7 @@ public class ProfilServeurFactory {
             AbstractConfiguration.setDefaultListDelimiter("|".charAt(0));
 
             Configuration config = new PropertiesConfiguration(
-                  "sae-anais-framework.properties");
+                  AnaisConnectionSupport.ANAIS_CONNECTION);
 
             int port = config.getInt("anais.port");
             int timeout = config.getInt("anais.timeout");

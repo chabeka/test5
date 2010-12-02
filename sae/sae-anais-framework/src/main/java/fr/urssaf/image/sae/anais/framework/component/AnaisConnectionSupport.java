@@ -56,6 +56,8 @@ import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiExceptio
 public class AnaisConnectionSupport {
 
    private final AnaisConnection_Application connection;
+   
+   public static final String ANAIS_CONNECTION = "sae-anais-framework.properties";
 
    /**
     * initialise la connection à ANAIS

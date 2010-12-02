@@ -1,41 +1,41 @@
 package fr.urssaf.image.sae.anais.framework.service.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
+
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import anaisJavaApi.AnaisExceptionAuthFailure;
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 import fr.urssaf.image.sae.anais.framework.component.DataSource;
-import fr.urssaf.image.sae.anais.framework.service.Users;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
+import fr.urssaf.image.sae.anais.framework.util.CTD;
+import fr.urssaf.image.sae.anais.framework.util.InitFactory;
+import fr.urssaf.image.sae.anais.framework.util.TokenCheck;
 
-@SuppressWarnings("PMD")
+@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
 public class AuthentificationDAOTest {
 
+   private static final Logger LOG = Logger
+         .getLogger(AuthentificationDAOTest.class);
+
    private static ConnectionFactory factory;
+
+   private static CTD ctd;
 
    @BeforeClass
    public static void initClass() {
 
-      DataSource dataSource = new DataSource();
-
-      dataSource.setCodeapp("RECHERCHE-DOCUMENTAIRE");
-      dataSource.setPasswd("rechercheDoc");
-      dataSource.setCodeenv("PROD");
-      dataSource
-            .setAppdn("cn=USR_READ_NAT_APP_RECHERCHE-DOCUMENTAIRE,OU=RECHERCHE-DOCUMENTAIRE,OU=Applications,OU=Technique,dc=recouv");
-      dataSource.setPort(389);
-
-      dataSource.setHostname("cer44anaistest.cer44.recouv");
-      dataSource.setTimeout("5000");
-      dataSource.setUsetls(false);
-
+      DataSource dataSource = InitFactory.initDataSource();
       factory = new ConnectionFactory(dataSource);
+
+      ctd = InitFactory.initCTD("ctd1");
    }
 
    private AuthentificationDAO dao;
@@ -46,12 +46,13 @@ public class AuthentificationDAOTest {
    }
 
    @Test
-   @Ignore
-   public void authSucess() {
+   public void authSucess() throws IOException {
 
-      // TODO comparaison avec un fichier xml modele
-      dao.createXMLToken(Users.User1.LOGIN, Users.User1.PASSWORD,
-            Users.User1.CODEIR, Users.User1.CODE_ORG);
+      String xml = dao.createXMLToken(ctd.getUserLogin(),
+            ctd.getUserPassword(), ctd.getCodeir(), ctd.getCodeorg());
+
+      LOG.debug(xml);
+      assertTrue(TokenCheck.checkCTD0(xml));
 
    }
 
@@ -59,8 +60,8 @@ public class AuthentificationDAOTest {
    public void authFailure() {
 
       try {
-         dao.createXMLToken(Users.User1.LOGIN, "inconnu", Users.User1.CODEIR,
-               Users.User1.CODE_ORG);
+         dao.createXMLToken(ctd.getUserLogin(), "inconnu", ctd.getCodeir(), ctd
+               .getCodeorg());
          fail("le test ne doit pas passer");
       } catch (SaeAnaisApiException e) {
          assertEquals("le login est incorrect",

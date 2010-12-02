@@ -88,7 +88,7 @@ public class ProfilAppliFactory {
       try {
          AbstractConfiguration.setDefaultListDelimiter("|".charAt(0));
          Configuration config = new PropertiesConfiguration(
-               "sae-anais-framework.properties");
+               AnaisConnectionSupport.ANAIS_CONNECTION);
 
          profil.setDn(config.getString("anais.cn"));
          profil.setCodeApplication(config.getString("anais.code-application"));
