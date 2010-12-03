@@ -7,4 +7,14 @@
 
 
 
+   <bean id="messageSource"
+      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+      <property name="basenames">
+         <list>
+            <value>/message/labels</value>
+         </list>
+      </property>
+      <property name="cacheSeconds" value="0" />
+   </bean>
+
 </beans>
