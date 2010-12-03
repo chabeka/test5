@@ -76,10 +76,10 @@ public class ConnectionController {
       } else {
 
          try {
-            String token = connectionService.connect(connectionForm
-                  .getUserLogin(), connectionForm.getUserPassword());
 
-            model.addAttribute("token", token);
+            model.addAttribute("token", connectionService.connect(
+                  connectionForm.getUserLogin(), connectionForm
+                        .getUserPassword()));
             view = successServlet();
          } catch (SaeAnaisApiException e) {
             model.addAttribute("failure", e.getMessage());
