@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 
 import org.apache.axis.AxisProperties;
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.rpc.aed.context.AEDJSSESocketFactory;
@@ -30,6 +31,7 @@ public class AEServiceTest {
    }
 
    @Test
+   @Ignore("L'hébergement du service web n'est pas garanti, ce dernier peut très bien être indisponible (sans parler des problèmes de certificats ...)")
    public void ping() throws RemoteException {
 
       LOG.debug(service.ping());
@@ -40,6 +42,7 @@ public class AEServiceTest {
 
    @Test
    @SuppressWarnings("PMD.ShortVariable")
+   @Ignore("L'hébergement du service web n'est pas garanti, ce dernier peut très bien être indisponible (sans parler des problèmes de certificats ...)")
    public void parametrageTransfert() throws RemoteException,
          UnknownHostException {
 
