@@ -1,79 +1,97 @@
 package fr.urssaf.image.sae.anais.portail.controller;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.support.BindingAwareModelMap;
-
-import fr.urssaf.image.sae.anais.portail.form.ConnectionForm;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring-servlet.xml" })
 @SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
-public class ConnectionControllerTest {
+public class ConnectionControllerTest extends
+      ControllerTestSupport<ConnectionController> {
 
    @Autowired
    private ConnectionController servlet;
 
+   private ControllerAssert<ConnectionController> controllerAssert;
+
+   private static final String PASSWORD_VALUE = "CER6990010";
+
+   private static final String LOGIN_VALUE = "CER6990010";
+
+   private static final String PASSWORD_FIELD = "userPassword";
+
+   private static final String LOGIN_FIELD = "userLogin";
+
+   @Before
+   public void init() {
+
+      controllerAssert = new ControllerAssert<ConnectionController>(this,
+            servlet);
+
+   }
+
    @Test
    public void getDefaultView() {
-      Model model = new BindingAwareModelMap();
-      assertEquals("connection/connection", servlet.getDefaultView(model));
+
+      this.initGet();
+
+      controllerAssert.assertView("connection/connection");
    }
 
    @Test
    public void connectSuccess() {
 
-      ConnectionForm form = new ConnectionForm();
-      form.setUserLogin("CER6990010");
-      form.setUserPassword("CER6990010");
+      this.initPost();
 
-      BindingResult result = new BeanPropertyBindingResult(null, null);
-      Model model = new BindingAwareModelMap();
+      this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
+      this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
 
-      assertEquals("forward:/success.html", servlet
-            .connect(form, result, model));
+      controllerAssert.assertView("forward:/success.html");
 
    }
 
    @Test
-   @Ignore
-   public void connectFailure() {
+   @SuppressWarnings( { "PMD.MethodNamingConventions" })
+   public void connectFailure_password() {
 
-      ConnectionForm form = new ConnectionForm();
-      form.setUserLogin("CER6990010");
-      form.setUserPassword("");
+      this.initPost();
 
-      BindingResult result = new BeanPropertyBindingResult(null, null);
-      Model model = new BindingAwareModelMap();
+      this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
+      controllerAssert.assertError(PASSWORD_FIELD, null, "connectionForm",
+            "NotEmpty", "Le mot de passe doit être renseigné");
 
-      assertEquals("connection/connection", servlet
-            .connect(form, result, model));
+      controllerAssert.assertView("connection/connection");
 
    }
 
    @Test
-   public void connectException() {
+   @SuppressWarnings( { "PMD.MethodNamingConventions" })
+   public void connectFailure_login() {
 
-      ConnectionForm form = new ConnectionForm();
-      form.setUserLogin("CER6990012");
-      form.setUserPassword("inconnu");
+      this.initPost();
 
-      BindingResult result = new BeanPropertyBindingResult(null, null);
+      this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
+      controllerAssert.assertError(LOGIN_FIELD, null, "connectionForm",
+            "NotEmpty", "L'identifiant doit être renseigné");
 
-      Model model = new BindingAwareModelMap();
-      
+      controllerAssert.assertView("connection/connection");
 
-      assertEquals("connection/connection_failure", servlet.connect(form,
-            result, model));
+   }
+
+   @Test
+   @SuppressWarnings( { "PMD.MethodNamingConventions" })
+   public void connectFaillure_authentification() {
+
+      this.initPost();
+
+      this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
+      this.initParameter(PASSWORD_FIELD, "inconnu");
+
+      controllerAssert.assertView("connection/connection_failure");
 
    }
 }

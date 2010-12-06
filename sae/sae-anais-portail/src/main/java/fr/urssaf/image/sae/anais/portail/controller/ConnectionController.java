@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.anais.portail.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +55,8 @@ public class ConnectionController {
     * 
     * La méthode appelle {@link ConnectionService#connect} avec les paramètres
     * du formulaire <br>
+    * <br>
+    * Le formulaire est validé
     * 
     * @param connectionForm
     *           {@link ConnectionForm}
@@ -67,7 +71,7 @@ public class ConnectionController {
     *         <ul>
     */
    @RequestMapping(method = RequestMethod.POST)
-   protected final String connect(ConnectionForm connectionForm,
+   protected final String connect(@Valid ConnectionForm connectionForm,
          BindingResult result, Model model) {
 
       String view;
