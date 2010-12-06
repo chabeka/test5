@@ -74,9 +74,10 @@ public class ConnectionController {
    protected final String connect(@Valid ConnectionForm connectionForm,
          BindingResult result, Model model) {
 
+      
       String view;
       if (result.hasErrors()) {
-         view = defaultView();
+         view = failureView();
       } else {
 
          try {
