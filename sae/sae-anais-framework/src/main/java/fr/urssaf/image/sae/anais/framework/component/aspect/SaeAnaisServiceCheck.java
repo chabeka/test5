@@ -12,6 +12,7 @@ import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRen
 import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.ParametresApplicatifsNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.PortNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.ProfilCompteApplicatifNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 
@@ -27,15 +28,18 @@ import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRens
  * href='http://mojo.codehaus.org/aspectj-maven-plugin/'>
  * <code>aspectj-maven-plugin</code></a> <br>
  * Si une des règles n'est pas respectée elle lève une exception spécifique<br>
- * <ul>
- * <li>environnement vide :{@link EnvironnementNonRenseigneException}</li>
- * <li>userLogin vide :{@link UserLoginNonRenseigneException}</li>
- * <li>userPassword vide :{@link UserPasswordNonRenseigneException}</li>
- * <li>serveur non vide et hote vide:{@link HoteNonRenseigneException}</li>
- * <li>serveur non vide et port vide:{@link PortNonRenseigneException}</li>
- * <li>compteApplicatif à « AUTRE » et compteApplicatifParametres vide:
+ * Les règles sont ordonnées:
+ * <ol>
+ * <li>environnement vide : {@link EnvironnementNonRenseigneException}</li>
+ * <li>serveur non vide et hote vide : {@link HoteNonRenseigneException}</li>
+ * <li>serveur non vide et port vide : {@link PortNonRenseigneException}</li>
+ * <li>compteApplicatif vide :
+ * {@link ProfilCompteApplicatifNonRenseigneException}</li>
+ * <li>compteApplicatif à « AUTRE » et compteApplicatifParametres vide :
  * {@link ParametresApplicatifsNonRenseigneException}</li>
- * </ul>
+ * <li>userLogin vide : {@link UserLoginNonRenseigneException}</li>
+ * <li>userPassword vide : {@link UserPasswordNonRenseigneException}</li>
+ * </ol>
  * <br>
  * l'ordre des arguments
  * {@link SaeAnaisService#authentifierPourSaeParLoginPassword} est importante<br>
@@ -61,36 +65,6 @@ public class SaeAnaisServiceCheck {
    private static final int COMPTE_APPLICATIF = 3;
    private static final int USER_LOGIN = 4;
    private static final int USER_PASSWORD = 5;
-
-   /**
-    * Validation de <code>profilCptAppli</code> et <code>compteApplicatif</code><br>
-    * Règle : si le paramètre <code>compteApplicatif</code> est à « AUTRE »
-    * alors <code>compteApplicatif<Code> doit être renseigné<br>
-    * <br>
-    * Pour rappel
-    * <ul>
-    * <li><code>joinPoint.getArgs()[2]</code> : <code>profilCptAppli</code></li>
-    * <li><code>joinPoint.getArgs()[3]</code> : <code>compteApplicatif</code></li>
-    * </ul>
-    * 
-    * @param joinPoint
-    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
-    * @throws ParametresApplicatifsNonRenseigneException
-    */
-   @Before(METHODE)
-   public final void compteApplicatifCheck(JoinPoint joinPoint) {
-
-      SaeAnaisEnumCompteApplicatif profilCptAppli = (SaeAnaisEnumCompteApplicatif) joinPoint
-            .getArgs()[PROFIL_CPT_APPLI];
-      SaeAnaisProfilCompteApplicatif compteApplicatif = (SaeAnaisProfilCompteApplicatif) joinPoint
-            .getArgs()[COMPTE_APPLICATIF];
-
-      if (profilCptAppli.equals(SaeAnaisEnumCompteApplicatif.Autre)
-            && compteApplicatif == null) {
-         throw new ParametresApplicatifsNonRenseigneException();
-      }
-
-   }
 
    /**
     * Validation de <code>environnement</code><br>
@@ -142,6 +116,41 @@ public class SaeAnaisServiceCheck {
          }
 
       }
+   }
+
+   /**
+    * Validation de <code>profilCptAppli</code> et <code>compteApplicatif</code><br>
+    * Règle 1 : le paramètre <code>compteApplicatif</code> doit être renseigné<br>
+    * Règle 2 : si le paramètre <code>compteApplicatif</code> est à « AUTRE »
+    * alors <code>compteApplicatif<Code> doit être renseigné<br>
+    * <br>
+    * Pour rappel
+    * <ul>
+    * <li><code>joinPoint.getArgs()[2]</code> : <code>profilCptAppli</code></li>
+    * <li><code>joinPoint.getArgs()[3]</code> : <code>compteApplicatif</code></li>
+    * </ul>
+    * 
+    * @param joinPoint
+    *           joinpoint de la méthode authentifierPourSaeParLoginPassword
+    * @throws ParametresApplicatifsNonRenseigneException
+    */
+   @Before(METHODE)
+   public final void compteApplicatifCheck(JoinPoint joinPoint) {
+
+      SaeAnaisEnumCompteApplicatif profilCptAppli = (SaeAnaisEnumCompteApplicatif) joinPoint
+            .getArgs()[PROFIL_CPT_APPLI];
+      SaeAnaisProfilCompteApplicatif compteApplicatif = (SaeAnaisProfilCompteApplicatif) joinPoint
+            .getArgs()[COMPTE_APPLICATIF];
+
+      if (profilCptAppli == null) {
+         throw new ProfilCompteApplicatifNonRenseigneException();
+      }
+
+      if (profilCptAppli.equals(SaeAnaisEnumCompteApplicatif.Autre)
+            && compteApplicatif == null) {
+         throw new ParametresApplicatifsNonRenseigneException();
+      }
+
    }
 
    /**

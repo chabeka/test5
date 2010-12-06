@@ -2,7 +2,7 @@ package fr.urssaf.image.sae.anais.framework.service.exception;
 
 /**
  * Classe d'exception hérite de {@link IllegalArgumentException}<br>
- * L’adresse IP ou le nom d’hôte du serveur ANAIS n’est pas renseigné dans les
+ * L'adresse IP ou le nom d’hôte du serveur ANAIS n'est pas renseigné dans les
  * paramètres de connexion <br><br>
  * Cette exception peut être levée par l'appel de la méthode
  * <code>authentifierPourSaeParLoginPassword<code>

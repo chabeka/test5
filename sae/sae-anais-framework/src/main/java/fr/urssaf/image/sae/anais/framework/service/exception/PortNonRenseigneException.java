@@ -2,7 +2,7 @@ package fr.urssaf.image.sae.anais.framework.service.exception;
 
 /**
  * Classe d'exception hérite de {@link IllegalArgumentException}<br>
- * Le port du serveur ANAIS n’est pas renseigné dans les paramètres de connexion
+ * Le port du serveur ANAIS n'est pas renseigné dans les paramètres de connexion
  * transmis<br>
  * <br>
  * Cette exception peut être levée par l'appel de la méthode

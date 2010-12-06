@@ -16,17 +16,18 @@ import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRen
 import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.ParametresApplicatifsNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.PortNonRenseigneException;
+import fr.urssaf.image.sae.anais.framework.service.exception.ProfilCompteApplicatifNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
 
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class SaeAnaisServiceTest {
 
    private SaeAnaisService service;
 
    private static final String NOTEMPTY = "not empty";
-   
+
    private static final String FAIL_MESSAGE = "le test ne doit pas passer";
 
    @Before
@@ -55,6 +56,21 @@ public class SaeAnaisServiceTest {
          assertEquals(
                "L'environnement (Développement / Validation  / Production) doit être renseigné",
                e.getMessage());
+      }
+
+   }
+
+   @Test
+   public void emptyCompteApplicatif() {
+
+      try {
+         service.authentifierPourSaeParLoginPassword(
+               SaeAnaisEnumCodesEnvironnement.Developpement, serveur, null,
+               null, NOTEMPTY, NOTEMPTY, NOTEMPTY, NOTEMPTY);
+         fail(FAIL_MESSAGE);
+      } catch (ProfilCompteApplicatifNonRenseigneException e) {
+         assertEquals("Le profil du compte applicatif n'est pas renseigné", e
+               .getMessage());
       }
 
    }

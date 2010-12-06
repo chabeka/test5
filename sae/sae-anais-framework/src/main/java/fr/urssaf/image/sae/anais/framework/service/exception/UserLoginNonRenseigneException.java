@@ -2,7 +2,7 @@ package fr.urssaf.image.sae.anais.framework.service.exception;
 
 /**
  * Classe d'exception heritant de {@link IllegalArgumentException}<br>
- * L’identifiant de l’utilisateur n’est pas renseigné<br>
+ * L'identifiant de l’utilisateur n'est pas renseigné<br>
  * <br>
  * Cette exception peut être levée par l'appel de la méthode
  * <code>authentifierPourSaeParLoginPassword<code>

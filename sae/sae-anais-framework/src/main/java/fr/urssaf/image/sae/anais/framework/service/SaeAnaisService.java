@@ -68,6 +68,7 @@ public class SaeAnaisService {
     *           Le code de l’organisme où chercher les habilitations (peut être
     *           vide)
     * @throws EnvironnementNonRenseigneException
+    * @throws ProfilCompteApplicatifNonRenseigneException
     * @throws UserLoginNonRenseigneException
     * @throws UserPasswordNonRenseigneException
     * @throws HoteNonRenseigneException
