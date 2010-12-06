@@ -2,7 +2,9 @@ package fr.urssaf.image.sae.anais.framework.modele;
 
 /**
  * Classe pour un droit applicatif dans le jeton d'authentification<br>
- * 
+ * <br>
+ * L'instanciation est uniquement possible avec
+ * {@link ObjectFactory#createDroitAplicatif()}
  * 
  */
 public class DroitApplicatif {

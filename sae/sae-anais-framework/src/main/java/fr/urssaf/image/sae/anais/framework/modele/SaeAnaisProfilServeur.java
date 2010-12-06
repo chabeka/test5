@@ -6,6 +6,9 @@ import java.util.List;
 /**
  * Profil de connexion à ANAIS pour un code environnement donné
  * (Developpement/Validation/Production)<br>
+ * <br>
+ * L'instanciation est uniquement possible avec
+ * {@link ObjectFactory#createSaeAnaisProfilServeur()}
  * 
  * @see ObjectFactory
  */
@@ -16,10 +19,10 @@ public class SaeAnaisProfilServeur {
    private List<SaeAnaisAdresseServeur> serveurs = new ArrayList<SaeAnaisAdresseServeur>();
 
    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-   protected SaeAnaisProfilServeur(){
-      
+   protected SaeAnaisProfilServeur() {
+
    }
-   
+
    /**
     * 
     * @return Le code de l'environnement (développement / validation /

@@ -2,7 +2,10 @@ package fr.urssaf.image.sae.anais.framework.modele;
 
 /**
  * Paramètres décrivant le compte applicatif à utiliser pour que l'application
- * s'authentifie à ANAIS avant de demander les droits de l'utilisateur
+ * s'authentifie à ANAIS avant de demander les droits de l'utilisateur<br>
+ * <br>
+ * L'instanciation est uniquement possible avec
+ * {@link ObjectFactory#createSaeAnaisProfilCompteApplicatif()}
  * 
  * @see ObjectFactory
  */

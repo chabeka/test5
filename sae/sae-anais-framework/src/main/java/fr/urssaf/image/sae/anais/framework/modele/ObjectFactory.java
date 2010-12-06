@@ -8,6 +8,7 @@ package fr.urssaf.image.sae.anais.framework.modele;
  * <li>{@link SaeAnaisAdresseServeur}</li>
  * <li>{@link SaeAnaisProfilCompteApplicatif}</li>
  * <li>{@link DroitApplicatif}</li>
+ * <li>{@link SaeAnaisProfilServeur}</li>
  * </ul>
  * 
  * 
@@ -35,13 +36,22 @@ public final class ObjectFactory {
    public static SaeAnaisProfilCompteApplicatif createSaeAnaisProfilCompteApplicatif() {
       return new SaeAnaisProfilCompteApplicatif();
    }
-   
+
    /**
     * Méthode d'instanciation de {@link DroitApplicatif}
     * 
     * @return {@link DroitApplicatif}
     */
-   public static DroitApplicatif createDroitAplicatif(){
+   public static DroitApplicatif createDroitAplicatif() {
       return new DroitApplicatif();
+   }
+
+   /**
+    * Méthode d'instanciation de {@link SaeAnaisProfilServeur}
+    * 
+    * @return {@link SaeAnaisProfilServeur}
+    */
+   public static SaeAnaisProfilServeur createSaeAnaisProfilServeur() {
+      return new SaeAnaisProfilServeur();
    }
 }

@@ -1,7 +1,10 @@
 package fr.urssaf.image.sae.anais.framework.modele;
 
 /**
- * classe de paramétrage d'adressage du serveur ANAIS
+ * classe de paramétrage d'adressage du serveur ANAIS<br>
+ * <br>
+ * L'instanciation est uniquement possible avec
+ * {@link ObjectFactory#createSaeAnaisAdresseServeur()}
  * 
  * @see ObjectFactory
  */
@@ -14,10 +17,10 @@ public class SaeAnaisAdresseServeur {
    private boolean tls;
 
    private int timeout;
-   
+
    @SuppressWarnings("PMD.UncommentedEmptyConstructor")
-   protected SaeAnaisAdresseServeur(){
-      
+   protected SaeAnaisAdresseServeur() {
+
    }
 
    /**
