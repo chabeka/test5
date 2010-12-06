@@ -75,7 +75,8 @@ public class ProfilAppliFactory {
       LOG.debug("INFO APPLICATION");
       LOG.debug("appdn : " + profil.getDn());
       LOG.debug("codeapp : " + profil.getCodeApplication());
-      LOG.debug("paswd : " + profil.getPassword());
+      //ne pas faire apparaitre le mot de passe
+      //LOG.debug("paswd : " + profil.getPassword());
 
       return profil;
    }

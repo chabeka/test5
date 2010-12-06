@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.anais.framework.component.aspect;
 
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -52,6 +53,9 @@ import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRens
  * <li><code>joinPoint.getArgs()[4]</code> : <code>userLogin</code></li>
  * <li><code>joinPoint.getArgs()[5]</code> : <code>userPassword</code></li>
  * </ul>
+ * <br>
+ * la classe utilise {@link StringUtils#isNotBlank(String)} pour tester les
+ * chaines de caractères non renseignées
  */
 @Aspect
 public class SaeAnaisServiceCheck {
@@ -107,7 +111,7 @@ public class SaeAnaisServiceCheck {
 
       if (serveur != null) {
 
-         if (serveur.getHote() == null) {
+         if (isEmpty(serveur.getHote())) {
             throw new HoteNonRenseigneException();
          }
 
@@ -156,6 +160,7 @@ public class SaeAnaisServiceCheck {
    /**
     * Validation de <code>userLogin</code><br>
     * Règle : le paramètre <code>userLogin</code> doit être renseigné <br>
+    * 
     * <br>
     * Pour rappel <code>joinPoint.getArgs()[4]</code> : <code>userLogin</code>
     * 
@@ -167,7 +172,7 @@ public class SaeAnaisServiceCheck {
    public final void loginCheck(JoinPoint joinPoint) {
 
       String userLogin = (String) joinPoint.getArgs()[USER_LOGIN];
-      if (userLogin == null) {
+      if (isEmpty(userLogin)) {
          throw new UserLoginNonRenseigneException();
       }
    }
@@ -187,8 +192,12 @@ public class SaeAnaisServiceCheck {
    public final void passwordCheck(JoinPoint joinPoint) {
 
       String userPassword = (String) joinPoint.getArgs()[USER_PASSWORD];
-      if (userPassword == null) {
+      if (isEmpty(userPassword)) {
          throw new UserPasswordNonRenseigneException();
       }
+   }
+
+   private static boolean isEmpty(String str) {
+      return !StringUtils.isNotBlank(str);
    }
 }

@@ -1,8 +1,5 @@
 package fr.urssaf.image.sae.anais.framework.component.aspect;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,8 +25,6 @@ public class SaeAnaisServiceTest {
 
    private static final String NOTEMPTY = "not empty";
 
-   private static final String FAIL_MESSAGE = "le test ne doit pas passer";
-
    @Before
    public void initService() {
       service = new SaeAnaisService();
@@ -44,70 +39,45 @@ public class SaeAnaisServiceTest {
 
    }
 
-   @Test
+   @Test(expected = EnvironnementNonRenseigneException.class)
    public void emptyEnvironnement() {
 
-      try {
-         service.authentifierPourSaeParLoginPassword(null, serveur,
-               SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
-               NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (EnvironnementNonRenseigneException e) {
-         assertEquals(
-               "L'environnement (Développement / Validation  / Production) doit être renseigné",
-               e.getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(null, serveur,
+            SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
+            NOTEMPTY, NOTEMPTY);
 
    }
 
-   @Test
+   @Test(expected = ProfilCompteApplicatifNonRenseigneException.class)
    public void emptyCompteApplicatif() {
 
-      try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur, null,
-               null, NOTEMPTY, NOTEMPTY, NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (ProfilCompteApplicatifNonRenseigneException e) {
-         assertEquals("Le profil du compte applicatif n'est pas renseigné", e
-               .getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur, null, null,
+            NOTEMPTY, NOTEMPTY, NOTEMPTY, NOTEMPTY);
 
    }
 
-   @Test
+   @Test(expected = UserLoginNonRenseigneException.class)
    public void emptyLogin() {
 
-      try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-               SaeAnaisEnumCompteApplicatif.Sae, null, null, NOTEMPTY,
-               NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (UserLoginNonRenseigneException e) {
-         assertEquals("L'identifiant de l'utilisateur doit être renseigné", e
-               .getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Sae, null, " ", NOTEMPTY, NOTEMPTY,
+            NOTEMPTY);
 
    }
 
-   @Test
+   @Test(expected = UserPasswordNonRenseigneException.class)
    public void emptyPassword() {
 
-      try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-               SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, null,
-               NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (UserPasswordNonRenseigneException e) {
-         assertEquals("Le mot de passe de l'utilisateur doit être renseigné", e
-               .getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, "", NOTEMPTY,
+            NOTEMPTY);
 
    }
 
-   @Test
+   @Test(expected = HoteNonRenseigneException.class)
    public void emptyHost() {
 
       SaeAnaisAdresseServeur serveur = ObjectFactory
@@ -115,21 +85,14 @@ public class SaeAnaisServiceTest {
       serveur.setHote(null);
       serveur.setPort(1352);
 
-      try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-               SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
-               NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (HoteNonRenseigneException e) {
-         assertEquals(
-               "L'adresse IP ou le nom d'hôte du serveur ANAIS doit être renseigné dans les paramètres de connexion",
-               e.getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
+            NOTEMPTY, NOTEMPTY);
 
    }
 
-   @Test
+   @Test(expected = PortNonRenseigneException.class)
    public void emptyPort() {
 
       SaeAnaisAdresseServeur serveur = ObjectFactory
@@ -137,34 +100,21 @@ public class SaeAnaisServiceTest {
       serveur.setHote("hostname");
       serveur.setPort(null);
 
-      try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-               SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
-               NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (PortNonRenseigneException e) {
-         assertEquals(
-               "Le port du serveur ANAIS doit être renseigné dans les paramètres de connexion",
-               e.getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
+            NOTEMPTY, NOTEMPTY);
 
    }
 
-   @Test
+   @Test(expected = ParametresApplicatifsNonRenseigneException.class)
    public void emptyCompteAppli() {
 
-      try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-               SaeAnaisEnumCompteApplicatif.Autre, null, NOTEMPTY, NOTEMPTY,
-               NOTEMPTY, NOTEMPTY);
-         fail(FAIL_MESSAGE);
-      } catch (ParametresApplicatifsNonRenseigneException e) {
-         assertEquals(
-               "Les paramètres du compte applicatif ne sont pas renseignés alors qu'aucun profil de compte applicatif n'a été spécifié",
-               e.getMessage());
-      }
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Autre, null, NOTEMPTY, NOTEMPTY,
+            NOTEMPTY, NOTEMPTY);
+
    }
 
 }
