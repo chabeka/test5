@@ -1,10 +1,11 @@
 package fr.urssaf.image.sae.anais.portail.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
-import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.service.SaeAnaisService;
+import fr.urssaf.image.sae.anais.portail.configuration.AnaisConfiguration;
 
 /**
  * Classe de service pour la connexion à ANAIS<br>
@@ -18,6 +19,24 @@ import fr.urssaf.image.sae.anais.framework.service.SaeAnaisService;
  */
 @Service
 public class ConnectionService {
+
+   private AnaisConfiguration configuration;
+
+   /**
+    * Initialisation de la configuration à ANAIS<br>
+    * <br>
+    * Cette étape est obligatoire avant d'appeller la méthode
+    * {@link #connect(String, String)}
+    * 
+    * @see AnaisConfiguration
+    * @param configuration
+    *           configuration à ANAIS
+    */
+   @Autowired
+   public void setConfiguration(
+         @Qualifier("configuration") AnaisConfiguration configuration) {
+      this.configuration = configuration;
+   }
 
    private final SaeAnaisService service = new SaeAnaisService();
 
@@ -53,10 +72,9 @@ public class ConnectionService {
     */
    public final String connect(String userLogin, String userPassword) {
 
-      String token = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, null,
-            SaeAnaisEnumCompteApplicatif.Sae, null, userLogin, userPassword,
-            null, null);
+      String token = service.authentifierPourSaeParLoginPassword(configuration
+            .getEnvironnement(), null, configuration.getCompteApplicatif(),
+            null, userLogin, userPassword, null, null);
 
       return token;
    }

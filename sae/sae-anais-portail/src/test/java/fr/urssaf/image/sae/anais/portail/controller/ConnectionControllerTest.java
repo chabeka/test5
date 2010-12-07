@@ -8,7 +8,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring-servlet.xml" })
+@ContextConfiguration(locations = { "/spring-servlet.xml",
+      "/applicationContext.xml" })
 @SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class ConnectionControllerTest extends
       ControllerTestSupport<ConnectionController> {
