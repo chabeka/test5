@@ -33,7 +33,7 @@ public class ConnectionService {
     *           configuration à ANAIS
     */
    @Autowired
-   public void setConfiguration(
+   public final void setConfiguration(
          @Qualifier("configuration") AnaisConfiguration configuration) {
       this.configuration = configuration;
    }

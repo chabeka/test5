@@ -91,6 +91,21 @@ public class ControllerAssert<C> {
    public final void assertView(String view) {
 
       assertEquals(view, test.handle(controller).getViewName());
+
+   }
+
+   /**
+    * Test sur les attributs de la session
+    * 
+    * @param name
+    *           nom de l'attribut en session
+    * @param value
+    *           valeur de l'attribut en session
+    */
+   public final void assertSession(String name, Object value) {
+
+      assertEquals(value, test.getSession().getAttribute(name));
+
    }
 
 }

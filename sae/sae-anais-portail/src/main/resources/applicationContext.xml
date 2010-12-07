@@ -11,6 +11,12 @@
       <property name="compteApplicatif" value="Sae" />
    </bean>
 
+   <bean id="configurationSuccess"
+      class="fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration">
+      <property name="url" value="/success.html" />
+      <property name="service" value="service" />
+   </bean>
+
    <bean id="messageSource"
       class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
       <property name="basenames">

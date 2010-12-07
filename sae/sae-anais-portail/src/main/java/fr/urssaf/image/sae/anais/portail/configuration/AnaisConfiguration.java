@@ -10,6 +10,7 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
  * <code>applicationContext.xml</code><br>
  * <br>
  * exemple:
+ * 
  * <pre>
  * &lt;bean id="configuration"
  *       class="fr.urssaf.image.sae.anais.portail.configuration.AnaisConfiguration">
@@ -30,7 +31,7 @@ public class AnaisConfiguration {
     * 
     * @return code environnement de ANAIS
     */
-   public SaeAnaisEnumCodesEnvironnement getEnvironnement() {
+   public final SaeAnaisEnumCodesEnvironnement getEnvironnement() {
       return environnement;
    }
 
@@ -39,7 +40,8 @@ public class AnaisConfiguration {
     * @param environnement
     *           code environnement de ANAIS
     */
-   public void setEnvironnement(SaeAnaisEnumCodesEnvironnement environnement) {
+   public final void setEnvironnement(
+         SaeAnaisEnumCodesEnvironnement environnement) {
       this.environnement = environnement;
    }
 
@@ -48,7 +50,7 @@ public class AnaisConfiguration {
     * 
     * @return code de l'application
     */
-   public SaeAnaisEnumCompteApplicatif getCompteApplicatif() {
+   public final SaeAnaisEnumCompteApplicatif getCompteApplicatif() {
       return compteApplicatif;
    }
 
@@ -57,7 +59,8 @@ public class AnaisConfiguration {
     * @param compteApplicatif
     *           code de l'applicatio
     */
-   public void setCompteApplicatif(SaeAnaisEnumCompteApplicatif compteApplicatif) {
+   public final void setCompteApplicatif(
+         SaeAnaisEnumCompteApplicatif compteApplicatif) {
       this.compteApplicatif = compteApplicatif;
    }
 

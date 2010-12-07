@@ -1,8 +1,10 @@
 package fr.urssaf.image.sae.anais.portail.controller;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
+import fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration;
 import fr.urssaf.image.sae.anais.portail.form.ConnectionForm;
 import fr.urssaf.image.sae.anais.portail.service.ConnectionService;
 
@@ -24,6 +27,23 @@ public class ConnectionController {
 
    @Autowired
    private ConnectionService connectionService;
+
+   private SuccessConfiguration configuration;
+
+   /**
+    * initialisation de la configuration de l'application web du SAE<br>
+    * <br>
+    * initialisation obligatoire avant d'appeller la méthode
+    * {@link #successServlet()}
+    * 
+    * @param configuration
+    *           configuration d'une application web
+    */
+   @Autowired
+   public final void setConfiguration(
+         @Qualifier("configurationSuccess") SuccessConfiguration configuration) {
+      this.configuration = configuration;
+   }
 
    /**
     * Action pour l'affichage par défaut en GET<br>
@@ -72,9 +92,8 @@ public class ConnectionController {
     */
    @RequestMapping(method = RequestMethod.POST)
    protected final String connect(@Valid ConnectionForm connectionForm,
-         BindingResult result, Model model) {
+         BindingResult result, Model model, HttpSession session) {
 
-      
       String view;
       if (result.hasErrors()) {
          view = failureView();
@@ -82,9 +101,10 @@ public class ConnectionController {
 
          try {
 
-            model.addAttribute("token", connectionService.connect(
+            session.setAttribute("SAMLResponse", connectionService.connect(
                   connectionForm.getUserLogin(), connectionForm
                         .getUserPassword()));
+            session.setAttribute("RelayState", configuration.getService());
             view = successServlet();
          } catch (SaeAnaisApiException e) {
             model.addAttribute("failure", e.getMessage());
@@ -116,12 +136,16 @@ public class ConnectionController {
    }
 
    /**
-    * Servlet en cas de succcès de la connexion
+    * Servlet en cas de succcès de la connexion<br>
+    * <br>
+    * l'URL est configuré : <br>
+    * <code>"redirect:" + configuration.getUrl()</code>
     * 
-    * @return <code>success.html</code>
+    * @see SuccessConfiguration
+    * @return URL de l'application web du SAE
     */
    protected final String successServlet() {
-      return "forward:/success.html";
+      return "redirect:" + configuration.getUrl();
    }
 
 }

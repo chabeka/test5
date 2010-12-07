@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.anais.portail.controller;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,14 +46,21 @@ public class ConnectionControllerTest extends
    }
 
    @Test
-   public void connectSuccess() {
+   public void connectSuccess() throws IOException {
 
       this.initPost();
 
       this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
       this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
 
-      controllerAssert.assertView("forward:/success.html");
+      controllerAssert.assertView("redirect:/success.html");
+
+      controllerAssert.assertSession("RelayState", "service");
+
+      // File file = new File("src/test/resources/SAMLResponse.xml");
+
+      // controllerAssert.assertSession("SAMLResponse", FileUtils
+      // .readFileToString(file, "UTF-8"));
 
    }
 
