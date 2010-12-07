@@ -2,28 +2,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+<div class="center"><form:form method="post"
+	modelAttribute="connectionForm" name="form_cirti">
 
-<html>
-<head>
-<title>Connection</title>
-</head>
-<body>
-<form:form method="post" modelAttribute="connectionForm" name="form_cirti">
 
-	<table>
-		<tr>
-			<td><fmt:message key="user.login" /></td>
-			<td><form:input path='userLogin' id="login"/></td>
-			<td><form:errors path='userLogin' /></td>
-		</tr>
-		<tr>
-			<td><fmt:message key="user.password" /></td>
-			<td><form:password path='userPassword' id="password"/></td>
-			<td><form:errors path='userPassword' /></td>
-		</tr>
-	</table>
-	<input type="submit" id="boutton_login"/>
-</form:form>
-<c:out value="${failure}" />
-</body>
-</html>
+
+
+	<div><form:label path="userLogin" cssClass="field">
+		<fmt:message key="user.login" />
+	</form:label>:<form:input path='userLogin' id='login' cssClass="value" /><form:errors
+		path='userLogin' cssClass="error" /></div>
+
+	<div><form:label path="userPassword" cssClass="field">
+		<fmt:message key='user.password' />
+	</form:label>:<form:password path='userPassword' id='password' cssClass="value" /><form:errors
+		path='userPassword' cssClass="error" /></div>
+
+
+	<div style="padding-top: 1em;" >
+	
+		<label class="field">&nbsp;</label>
+		<input type='submit' id='boutton_login' class="button"
+		value='<fmt:message key="button.connection" />' />
+	
+	</div>
+
+
+</form:form> <p class="error"><c:out value="${failure}" /></p></div>

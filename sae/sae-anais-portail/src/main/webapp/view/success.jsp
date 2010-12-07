@@ -2,8 +2,8 @@
 <html>
 
 <h1>connection réussie!</h1>
-<font color="couleur arrière plan">Anais::LoginOK</font>
+<font color="#FFFFFF">Anais::LoginOK</font>
 <br>
-<c:out value="${token}" />
+<p><c:out value="${token}" /></p>
 
 </html>

@@ -1,12 +1,13 @@
 
 
-
-<html>
+<head>
+<title>Portail d'authentification au SAE</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
 <body>
-<font color="ici couleur d'arrière plan">Anais::Badpwd</font>
+<font color="#FFFFFF">Anais::Badpwd</font>
 
 <%@ include file='/view/connection/form.jsp'%>
 
 
 </body>
-</html>
