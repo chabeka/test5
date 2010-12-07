@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.anais.framework.util;
 
+// CHECKSTYLE:OFF
+
 import java.io.File;
 import java.io.IOException;
 
@@ -35,3 +37,5 @@ public final class TokenCheck {
       return FileUtils.readFileToString(file, "UTF-8").equals(xml);
    }
 }
+
+//CHECKSTYLE:ON

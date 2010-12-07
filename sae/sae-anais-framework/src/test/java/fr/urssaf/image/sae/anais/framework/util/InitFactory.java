@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.anais.framework.util;
 
+//CHECKSTYLE:OFF
+
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -109,3 +111,5 @@ public final class InitFactory {
 
    }
 }
+
+//CHECKSTYLE:ON

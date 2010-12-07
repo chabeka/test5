@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.anais.framework.util;
 
+//CHECKSTYLE:OFF
+
 public final class CTD {
 
    private String userLogin;
@@ -43,3 +45,5 @@ public final class CTD {
    }
 
 }
+
+//CHECKSTYLE:ON
