@@ -30,7 +30,7 @@ public final class InitFactory {
          Configuration config = new PropertiesConfiguration(
                AnaisConnectionSupport.ANAIS_CONNECTION);
 
-         serveur.setHote(config.getStringArray("anais.host.DEV")[0]);
+         serveur.setHote(config.getStringArray("anais.host.Developpement")[0]);
          serveur.setPort(config.getInt("anais.port"));
          serveur.setTimeout(config.getInt("anais.timeout"));
          serveur.setTls(config.getBoolean("anais.tls"));
@@ -99,7 +99,7 @@ public final class InitFactory {
          dataSource.setAppdn(config.getString("anais.cn"));
          dataSource.setPort(config.getInt("anais.port"));
 
-         dataSource.setHostname(config.getStringArray("anais.host.DEV")[0]);
+         dataSource.setHostname(config.getStringArray("anais.host.Developpement")[0]);
          dataSource.setTimeout(config.getString("anais.timeout"));
          dataSource.setUsetls(config.getBoolean("anais.tls"));
 

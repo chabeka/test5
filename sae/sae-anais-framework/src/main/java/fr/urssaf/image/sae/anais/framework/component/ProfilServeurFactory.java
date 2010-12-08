@@ -22,11 +22,11 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilServeur;
  * </li>
  * <li>anais.timeout : Le temps de réponse maximal d'un serveur lors d'une
  * connexion</li>
- * <li>anais.host.DEV : Liste des noms d'hôte ou adresses IP du serveur ANAIS en
+ * <li>anais.host.Developpement : Liste des noms d'hôte ou adresses IP du serveur ANAIS en
  * mode « Tests pour les développements »</li>
- * <li>anais.host.VAL : Liste des noms d'hôte ou adresses IP du serveur ANAIS en
+ * <li>anais.host.Validation : Liste des noms d'hôte ou adresses IP du serveur ANAIS en
  * mode « Validation »</li>
- * <li>anais.host.PROD : Liste des noms d'hôte ou adresses IP du serveur ANAIS
+ * <li>anais.host.Production : Liste des noms d'hôte ou adresses IP du serveur ANAIS
  * en mode « Production »</li>
  * </ul>
  * Les adresses IP sont séparées par des '|', ex: host1|host2|host3 <br>
@@ -99,7 +99,7 @@ public class ProfilServeurFactory {
             int timeout = config.getInt("anais.timeout");
             boolean tls = config.getBoolean("anais.tls");
             String[] hosts = config.getStringArray("anais.host."
-                  + codeEnvironnement.code());
+                  + codeEnvironnement.name());
 
             for (String host : hosts) {
                SaeAnaisAdresseServeur serveur = ObjectFactory
