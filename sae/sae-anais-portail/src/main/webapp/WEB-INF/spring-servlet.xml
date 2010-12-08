@@ -13,7 +13,7 @@
    
    <mvc:annotation-driven/>
    
-   <mvc:view-controller path="/success.html" view-name="serviceTest" />
+   <mvc:view-controller path="/succes.html" view-name="serviceTest" />
 
    <bean
       class="org.springframework.web.servlet.view.InternalResourceViewResolver">
