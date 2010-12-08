@@ -7,7 +7,7 @@
 
    <bean id="configuration"
       class="fr.urssaf.image.sae.anais.portail.configuration.AnaisConfiguration">
-      <property name="environnement" value="Production" />
+      <property name="environnement" value="Developpement" />
       <property name="compteApplicatif" value="Sae" />
    </bean>
 
