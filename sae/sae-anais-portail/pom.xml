@@ -89,19 +89,20 @@
          <scope>provided</scope>
       </dependency>
 
+      <!-- COMMONS APACHE -->
+ 
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-util</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
       <!--  TEST -->
 
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
          <version>${spring.framework.version}</version>
-         <scope>test</scope>
-      </dependency>
-
-      <dependency>
-         <groupId>commons-io</groupId>
-         <artifactId>commons-io</artifactId>
-         <version>${apache.commons-io.version}</version>
          <scope>test</scope>
       </dependency>
 

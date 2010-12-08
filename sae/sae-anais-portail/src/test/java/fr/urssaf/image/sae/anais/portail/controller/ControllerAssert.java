@@ -94,18 +94,4 @@ public class ControllerAssert<C> {
 
    }
 
-   /**
-    * Test sur les attributs de la session
-    * 
-    * @param name
-    *           nom de l'attribut en session
-    * @param value
-    *           valeur de l'attribut en session
-    */
-   public final void assertSession(String name, Object value) {
-
-      assertEquals(value, test.getSession().getAttribute(name));
-
-   }
-
 }

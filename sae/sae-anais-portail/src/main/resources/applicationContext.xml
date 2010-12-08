@@ -13,8 +13,8 @@
 
    <bean id="configurationSuccess"
       class="fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration">
-      <property name="url" value="/success.html" />
-      <property name="service" value="service" />
+      <property name="url" value="success.html" />
+      <property name="service" value="/serviceTest" />
    </bean>
 
    <bean id="messageSource"

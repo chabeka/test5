@@ -13,12 +13,4 @@
    
    <mvc:annotation-driven/>
    
-   <mvc:view-controller path="/success.html" view-name="success" />
-
-   <bean
-      class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name="prefix" value="/view/" />
-      <property name="suffix" value=".jsp" />
-   </bean>
-
 </beans>

@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.anais.portail.controller;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.urssaf.image.commons.util.base64.Base64Encode;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 import fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration;
 import fr.urssaf.image.sae.anais.portail.form.ConnectionForm;
@@ -92,7 +92,7 @@ public class ConnectionController {
     */
    @RequestMapping(method = RequestMethod.POST)
    protected final String connect(@Valid ConnectionForm connectionForm,
-         BindingResult result, Model model, HttpSession session) {
+         BindingResult result, Model model) {
 
       String view;
       if (result.hasErrors()) {
@@ -101,10 +101,11 @@ public class ConnectionController {
 
          try {
 
-            session.setAttribute("SAMLResponse", connectionService.connect(
-                  connectionForm.getUserLogin(), connectionForm
-                        .getUserPassword()));
-            session.setAttribute("RelayState", configuration.getService());
+            model.addAttribute("SAMLResponse", Base64Encode
+                  .encode(connectionService.connect(connectionForm
+                        .getUserLogin(), connectionForm.getUserPassword())));
+            model.addAttribute("RelayState", configuration.getService());
+            model.addAttribute("action", configuration.getUrl());
             view = successServlet();
          } catch (SaeAnaisApiException e) {
             model.addAttribute("failure", e.getMessage());
@@ -136,16 +137,12 @@ public class ConnectionController {
    }
 
    /**
-    * Servlet en cas de succcès de la connexion<br>
-    * <br>
-    * l'URL est configuré : <br>
-    * <code>"redirect:" + configuration.getUrl()</code>
+    * Vue en cas de succcès de la connexion
     * 
-    * @see SuccessConfiguration
-    * @return URL de l'application web du SAE
+    * @return <code>connection/connection_success</code>
     */
    protected final String successServlet() {
-      return "redirect:" + configuration.getUrl();
+      return "connection/connection_success";
    }
 
 }

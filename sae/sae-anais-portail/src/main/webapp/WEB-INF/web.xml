@@ -38,7 +38,7 @@
 
       <init-param>
          <param-name>appTitle</param-name>
-         <param-value>le titre</param-value>
+         <param-value>Application test</param-value>
       </init-param>
 
       <init-param>

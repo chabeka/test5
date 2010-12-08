@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring-servlet.xml",
       "/applicationContext.xml" })
-@SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
+@SuppressWarnings("PMD")
 public class ConnectionControllerTest extends
       ControllerTestSupport<ConnectionController> {
 
@@ -53,24 +53,26 @@ public class ConnectionControllerTest extends
       this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
       this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
 
-      controllerAssert.assertView("redirect:/success.html");
-
-      controllerAssert.assertSession("RelayState", "service");
-
-      // File file = new File("src/test/resources/SAMLResponse.xml");
-
-      // controllerAssert.assertSession("SAMLResponse", FileUtils
-      // .readFileToString(file, "UTF-8"));
-
+      controllerAssert.assertView("connection/connection_success");
+      
    }
 
    @Test
-   @SuppressWarnings( { "PMD.MethodNamingConventions" })
    public void connectFailure_password() {
+
+      this.connectFailure_password(null);
+      this.connectFailure_password(" ");
+      this.connectFailure_password("");
+
+   }
+   
+   private void connectFailure_password(String password) {
 
       this.initPost();
 
       this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
+      this.initParameter(PASSWORD_FIELD, password);
+      
       controllerAssert.assertError(PASSWORD_FIELD, null, "connectionForm",
             "NotEmpty", "Le mot de passe doit être renseigné");
 
@@ -79,11 +81,19 @@ public class ConnectionControllerTest extends
    }
 
    @Test
-   @SuppressWarnings( { "PMD.MethodNamingConventions" })
    public void connectFailure_login() {
+
+      this.connectFailure_login(null);
+      this.connectFailure_login("");
+      this.connectFailure_login(" ");
+
+   }
+   
+   private void connectFailure_login(String login) {
 
       this.initPost();
 
+      this.initParameter(LOGIN_FIELD, login);
       this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
       controllerAssert.assertError(LOGIN_FIELD, null, "connectionForm",
             "NotEmpty", "L''identifiant doit être renseigné");
@@ -93,7 +103,6 @@ public class ConnectionControllerTest extends
    }
 
    @Test
-   @SuppressWarnings( { "PMD.MethodNamingConventions" })
    public void connectFaillure_authentification() {
 
       this.initPost();

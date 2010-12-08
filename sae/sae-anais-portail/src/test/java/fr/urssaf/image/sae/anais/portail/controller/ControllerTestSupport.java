@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.anais.portail.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,14 +103,5 @@ public class ControllerTestSupport<C> {
       }
 
    }
-
-   /**
-    * Renvoie la session
-    * 
-    * @return request.getSession()
-    */
-   protected final HttpSession getSession() {
-      return request.getSession();
-   }
-
+   
 }
