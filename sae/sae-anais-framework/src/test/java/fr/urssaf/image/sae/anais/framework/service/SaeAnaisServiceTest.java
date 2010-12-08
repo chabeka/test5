@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.anais.framework.service;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
@@ -16,9 +14,9 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.util.CTD;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
-import fr.urssaf.image.sae.anais.framework.util.TokenCheck;
+import fr.urssaf.image.sae.anais.framework.util.TokenAssert;
 
-@SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
+@SuppressWarnings("PMD")
 public class SaeAnaisServiceTest {
 
    private static final Logger LOG = Logger
@@ -33,97 +31,60 @@ public class SaeAnaisServiceTest {
 
    private static SaeAnaisAdresseServeur serveur;
 
-   private static CTD ctd0;
+   private static CTD ctd_0_right;
 
-   private static CTD ctd1;
+   private static CTD ctd_1_right;
 
-   private static CTD ctd2;
+   private static CTD ctd_rights;
 
    @BeforeClass
    public static void initClass() {
 
       serveur = InitFactory.initServeur();
 
-      ctd0 = InitFactory.initCTD("ctd0");
-      ctd1 = InitFactory.initCTD("ctd1");
-      ctd2 = InitFactory.initCTD("ctd2");
+      ctd_0_right = InitFactory.initCTD("ctd_0_right");
+      ctd_1_right = InitFactory.initCTD("ctd_1_right");
+      ctd_rights = InitFactory.initCTD("ctd_rights");
 
+   }
+
+   @Test
+   public void envDEV() throws IOException {
+
+      this.assertEnv(SaeAnaisEnumCodesEnvironnement.Developpement);
    }
 
    @Test
    @Ignore
-   public void envDEV() throws IOException {
-
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Developpement, null,
-            SaeAnaisEnumCompteApplicatif.Sae, null, ctd1.getUserLogin(), ctd1
-                  .getUserPassword(), ctd1.getCodeir(), ctd1.getCodeorg());
-
-      LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD1(xml));
-   }
-
-   @Test
    public void envPROD() throws IOException {
 
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, null,
-            SaeAnaisEnumCompteApplicatif.Sae, null, ctd1.getUserLogin(), ctd1
-                  .getUserPassword(), ctd1.getCodeir(), ctd1.getCodeorg());
-
-      LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      this.assertEnv(SaeAnaisEnumCodesEnvironnement.Production);
    }
 
    @Test
+   @Ignore
    public void envVAL() throws IOException {
 
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Validation, null,
-            SaeAnaisEnumCompteApplicatif.Sae, null, ctd1.getUserLogin(), ctd1
-                  .getUserPassword(), ctd1.getCodeir(), ctd1.getCodeorg());
-
-      LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      this.assertEnv(SaeAnaisEnumCodesEnvironnement.Validation);
    }
 
    @Test
-   @SuppressWarnings( { "PMD.MethodNamingConventions" })
-   public void serveurNotNull_CTD0() throws IOException {
+   public void serveurNotNull_CTD_0_right() throws IOException {
 
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, serveur,
-            SaeAnaisEnumCompteApplicatif.Sae, null, ctd0.getUserLogin(), ctd0
-                  .getUserPassword(), ctd0.getCodeir(), ctd0.getCodeorg());
-
-      LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      this.AssertServeurNotNull(ctd_0_right, "ctd_0_right.xml");
    }
 
    @Test
-   @SuppressWarnings( { "PMD.MethodNamingConventions" })
-   public void serveurNotNull_CTD1() throws IOException {
+   @Ignore
+   public void serveurNotNull_CTD_1_right() throws IOException {
 
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, serveur,
-            SaeAnaisEnumCompteApplicatif.Sae, null, ctd1.getUserLogin(), ctd1
-                  .getUserPassword(), ctd1.getCodeir(), ctd1.getCodeorg());
-
-      LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      this.AssertServeurNotNull(ctd_1_right, "ctd_1_right.xml");
    }
 
    @Test
-   @SuppressWarnings( { "PMD.MethodNamingConventions" })
-   public void serveurNotNull_CTD2() throws IOException {
+   public void serveurNotNull_CTD_rights() throws IOException {
 
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, serveur,
-            SaeAnaisEnumCompteApplicatif.Sae, null, ctd2.getUserLogin(), ctd2
-                  .getUserPassword(), ctd2.getCodeir(), ctd2.getCodeorg());
-
-      LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      this.AssertServeurNotNull(ctd_rights, "ctd_rights.xml");
    }
 
    @Test
@@ -132,14 +93,44 @@ public class SaeAnaisServiceTest {
       SaeAnaisProfilCompteApplicatif profil = InitFactory
             .initCompteApplicatif();
 
-      String xml = service.authentifierPourSaeParLoginPassword(
-            SaeAnaisEnumCodesEnvironnement.Production, serveur,
-            SaeAnaisEnumCompteApplicatif.Autre, profil, ctd1.getUserLogin(),
-            ctd1.getUserPassword(), ctd1.getCodeir(), ctd1.getCodeorg());
+      String xml = this.createToken(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Autre, profil, ctd_rights);
 
       LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      TokenAssert.assertCTD_rights(xml);
 
+   }
+
+   private void assertEnv(SaeAnaisEnumCodesEnvironnement environnement)
+         throws IOException {
+
+      String xml = this.createToken(environnement, null,
+            SaeAnaisEnumCompteApplicatif.Sae, null, ctd_rights);
+
+      LOG.debug(xml);
+      TokenAssert.assertCTD_rights(xml);
+   }
+
+   private void AssertServeurNotNull(CTD ctd, String key) throws IOException {
+
+      String xml = this.createToken(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
+            SaeAnaisEnumCompteApplicatif.Sae, null, ctd);
+
+      LOG.debug(xml);
+      TokenAssert.assertCTD(key, xml);
+   }
+
+   private String createToken(SaeAnaisEnumCodesEnvironnement environnement,
+         SaeAnaisAdresseServeur serveur, SaeAnaisEnumCompteApplicatif cptAppli,
+         SaeAnaisProfilCompteApplicatif profil, CTD ctd) throws IOException {
+
+      String xml = service.authentifierPourSaeParLoginPassword(environnement,
+            serveur, cptAppli, profil, ctd.getUserLogin(), ctd
+                  .getUserPassword(), ctd.getCodeir(), ctd.getCodeorg());
+
+      return xml;
    }
 
 }

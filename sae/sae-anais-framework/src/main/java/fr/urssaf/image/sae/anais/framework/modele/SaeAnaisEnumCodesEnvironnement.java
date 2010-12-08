@@ -16,7 +16,7 @@ public enum SaeAnaisEnumCodesEnvironnement {
 
    // TODO La valeur pour developpement n'est pas définitive
    // TODO inverser le nom et le code
-   Developpement("DEV"), Validation("VAL"), Production("PROD");
+   Developpement("PROD"), Validation("VAL"), Production("PROD");
 
    private final String code;
 

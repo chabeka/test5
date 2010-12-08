@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.anais.framework.service.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -17,9 +16,9 @@ import fr.urssaf.image.sae.anais.framework.component.DataSource;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 import fr.urssaf.image.sae.anais.framework.util.CTD;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
-import fr.urssaf.image.sae.anais.framework.util.TokenCheck;
+import fr.urssaf.image.sae.anais.framework.util.TokenAssert;
 
-@SuppressWarnings({"PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings("PMD")
 public class AuthentificationDAOTest {
 
    private static final Logger LOG = Logger
@@ -35,7 +34,7 @@ public class AuthentificationDAOTest {
       DataSource dataSource = InitFactory.initDataSource();
       factory = new ConnectionFactory(dataSource);
 
-      ctd = InitFactory.initCTD("ctd1");
+      ctd = InitFactory.initCTD("ctd_rights");
    }
 
    private AuthentificationDAO dao;
@@ -52,7 +51,7 @@ public class AuthentificationDAOTest {
             ctd.getUserPassword(), ctd.getCodeir(), ctd.getCodeorg());
 
       LOG.debug(xml);
-      assertTrue(TokenCheck.checkCTD0(xml));
+      TokenAssert.assertCTD_rights(xml);
 
    }
 

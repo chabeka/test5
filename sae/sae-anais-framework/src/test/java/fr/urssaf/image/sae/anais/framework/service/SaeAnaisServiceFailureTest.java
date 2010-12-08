@@ -17,7 +17,7 @@ import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiExceptio
 import fr.urssaf.image.sae.anais.framework.util.CTD;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
 
-@SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
+@SuppressWarnings("PMD")
 public class SaeAnaisServiceFailureTest {
 
    private SaeAnaisService service;
@@ -36,19 +36,15 @@ public class SaeAnaisServiceFailureTest {
 
       serveur = InitFactory.initServeur();
 
-      ctd = InitFactory.initCTD("ctd1");
+      ctd = InitFactory.initCTD("ctd_1_right");
 
    }
 
    @Test
    public void failureAuth() {
-
+      ctd.setUserPassword("inconnu");
       try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-               SaeAnaisEnumCompteApplicatif.Sae, null, ctd.getUserLogin(),
-               "inconnu", ctd.getCodeir(), ctd.getCodeorg());
-         fail("le test ne doit pas passer");
+         this.assertFailure(SaeAnaisEnumCompteApplicatif.Sae, null);
       } catch (SaeAnaisApiException e) {
          assertEquals("le login est incorrect",
                AnaisExceptionAuthFailure.class, e.getCause().getClass());
@@ -64,17 +60,22 @@ public class SaeAnaisServiceFailureTest {
       profil.setDn("cn=USR_READ_NAT_APP_RECHERCHE-DOCUMENTAIRE");
 
       try {
-         service.authentifierPourSaeParLoginPassword(
-               SaeAnaisEnumCodesEnvironnement.Production, serveur,
-               SaeAnaisEnumCompteApplicatif.Autre, profil, ctd.getUserLogin(),
-               ctd.getUserPassword(), ctd.getCodeir(), ctd.getCodeorg());
-
-         fail("le test ne doit pas passer");
+         this.assertFailure(SaeAnaisEnumCompteApplicatif.Autre, profil);
       } catch (SaeAnaisApiException e) {
          assertEquals(AnaisExceptionServerAuthentication.class, e.getCause()
                .getClass());
       }
+   }
 
+   private void assertFailure(SaeAnaisEnumCompteApplicatif compteAppli,
+         SaeAnaisProfilCompteApplicatif profil) {
+
+      service.authentifierPourSaeParLoginPassword(
+            SaeAnaisEnumCodesEnvironnement.Developpement, serveur, compteAppli,
+            profil, ctd.getUserLogin(), ctd.getUserPassword(), ctd.getCodeir(),
+            ctd.getCodeorg());
+
+      fail("le test ne doit pas passer");
    }
 
 }

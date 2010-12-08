@@ -18,7 +18,7 @@ import fr.urssaf.image.sae.anais.framework.service.exception.UserLoginNonRenseig
 import fr.urssaf.image.sae.anais.framework.service.exception.UserPasswordNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
 
-@SuppressWarnings( { "PMD.JUnitAssertionsShouldIncludeMessage" })
+@SuppressWarnings("PMD")
 public class SaeAnaisServiceTest {
 
    private SaeAnaisService service;
@@ -60,9 +60,17 @@ public class SaeAnaisServiceTest {
    @Test(expected = UserLoginNonRenseigneException.class)
    public void emptyLogin() {
 
+      this.emptyLogin(null);
+      this.emptyLogin(" ");
+      this.emptyLogin("");
+
+   }
+
+   private void emptyLogin(String login) {
+
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-            SaeAnaisEnumCompteApplicatif.Sae, null, " ", NOTEMPTY, NOTEMPTY,
+            SaeAnaisEnumCompteApplicatif.Sae, null, login, NOTEMPTY, NOTEMPTY,
             NOTEMPTY);
 
    }
@@ -70,19 +78,35 @@ public class SaeAnaisServiceTest {
    @Test(expected = UserPasswordNonRenseigneException.class)
    public void emptyPassword() {
 
+      this.emptyPassword(null);
+      this.emptyPassword(" ");
+      this.emptyPassword("");
+
+   }
+
+   private void emptyPassword(String password) {
+
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
-            SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, "", NOTEMPTY,
-            NOTEMPTY);
+            SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, password,
+            NOTEMPTY, NOTEMPTY);
 
    }
 
    @Test(expected = HoteNonRenseigneException.class)
    public void emptyHost() {
 
+      this.emptyHost(null);
+      this.emptyHost(" ");
+      this.emptyHost("");
+
+   }
+
+   private void emptyHost(String host) {
+
       SaeAnaisAdresseServeur serveur = ObjectFactory
             .createSaeAnaisAdresseServeur();
-      serveur.setHote(null);
+      serveur.setHote(host);
       serveur.setPort(1352);
 
       service.authentifierPourSaeParLoginPassword(
