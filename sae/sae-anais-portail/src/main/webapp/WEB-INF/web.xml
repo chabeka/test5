@@ -50,6 +50,11 @@
          <param-name>theme</param-name>
          <param-value>aed</param-value>
       </init-param>
+      
+      <init-param>
+         <param-name>excludeFiles</param-name>
+         <param-value>/sae-anais-portail/succes.html</param-value>
+      </init-param>
 
    </filter>
 

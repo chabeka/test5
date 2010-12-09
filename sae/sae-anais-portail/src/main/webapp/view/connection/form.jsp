@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+
+
+
+
 <div class="center"><form:form method="post"
 	modelAttribute="connectionForm" name="form_cirti">
 
@@ -29,3 +33,15 @@
 
 
 </form:form> <p class="error"><c:out value="${failure}" /></p></div>
+
+<script>
+
+	if(document.form_cirti.login.value == ''){
+		document.form_cirti.login.focus();
+	}
+
+	else if(document.form_cirti.password.value == ''){
+		document.form_cirti.password.focus();
+	}
+
+</script>
