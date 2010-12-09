@@ -6,7 +6,7 @@ package fr.urssaf.image.sae.anais.framework.modele;
  * <br>
  * Codes prises en compte
  * <ul>
- * <li><code>Developpement</code> : <code>DEV</code></li>
+ * <li><code>Developpement</code> : <code>PROD</code></li>
  * <li><code>Validation</code> : <code>VAL</code></li>
  * <li><code>Production</code> : <code>PROD</code></li>
  * </ul>
@@ -14,8 +14,6 @@ package fr.urssaf.image.sae.anais.framework.modele;
  */
 public enum SaeAnaisEnumCodesEnvironnement {
 
-   // TODO La valeur pour developpement n'est pas définitive
-   // TODO inverser le nom et le code
    Developpement("PROD"), Validation("VAL"), Production("PROD");
 
    private final String code;
