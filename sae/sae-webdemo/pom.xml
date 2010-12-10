@@ -14,6 +14,42 @@
 
    <dependencies>
 
+      <!-- JSR 303 -->
+
+      <dependency>
+         <groupId>javax.validation</groupId>
+         <artifactId>validation-api</artifactId>
+         <version>${jsr303.api.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-validator</artifactId>
+         <version>${jsr303.impl.hibernate.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${org.slf4j.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>jcl-over-slf4j</artifactId>
+         <version>${org.slf4j.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-log4j12</artifactId>
+         <version>${org.slf4j.version}</version>
+         <scope>runtime</scope>
+      </dependency>
+
       <!-- MAQUETTE -->
 
       <dependency>

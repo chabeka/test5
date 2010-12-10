@@ -13,16 +13,4 @@
 
    <mvc:annotation-driven />
 
-   <mvc:view-controller path="/accueil.html"
-      view-name="welcome" />
-
-   <mvc:view-controller path="/erreur403_viko.html"
-      view-name="error/error_403" />
-
-   <bean
-      class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <property name="prefix" value="/view/" />
-      <property name="suffix" value=".jsp" />
-   </bean>
-
 </beans>
