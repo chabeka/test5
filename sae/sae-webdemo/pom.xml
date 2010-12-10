@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <artifactId>sae-parent</artifactId>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>fr.urssaf.image.sae</groupId>
+   <artifactId>sae-webdemo</artifactId>
+   <packaging>war</packaging>
+   <name>sae-webdemo</name>
+   <version>0.0.1-SNAPSHOT</version>
+
+   <dependencies>
+
+      <!-- MAQUETTE -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-maquette</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
+      <!--  SPRING -->
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-webmvc</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+
+      <!--  JSTL -->
+
+      <dependency>
+         <groupId>jstl</groupId>
+         <artifactId>jstl</artifactId>
+         <version>${jstl.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
+         <version>2.5</version>
+         <scope>provided</scope>
+      </dependency>
+
+      <!--  TEST -->
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${spring.framework.version}</version>
+         <scope>test</scope>
+      </dependency>
+
+   </dependencies>
+
+</project>
