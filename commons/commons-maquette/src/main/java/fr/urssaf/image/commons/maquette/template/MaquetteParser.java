@@ -10,6 +10,7 @@ import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.OutputDocument;
+import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTagType;
 
@@ -334,25 +335,25 @@ public final class MaquetteParser {
       // Récupération du contenu du <body> de l'application métier
       List<Element> elBody = htmlSrcFromAppl.getAllElements("body");
       StringBuilder sbBody = new StringBuilder();
+      Attributes bodyAppMetierAttr = null ;
       if (elBody.isEmpty()) {
          // prise en compte du cas où l'on a pas de body dans le html de l'application
          sbBody.append(htmlSrcFromAppl.toString());
       }
       else {
          
-         // Récupère le <body> de l'application métier
-         String body = elBody.get(0).toString() ;
-
-         // Supprime les balises <body> et </body>
-         if (StringUtils.startsWithIgnoreCase(body, "<body>")) {
-            body = body.substring("<body>".length());
-         }
-         if (StringUtils.endsWithIgnoreCase(body, "</body>")) {
-            body = body.substring(0,body.length()-"</body>".length());
-         }
+         // Récupère l'élément BODY
+         Element body = elBody.get(0);
          
-         // Termine
-         sbBody.append(body);
+         // Récupère le contenu du BODY en chaîne de caractères 
+         Segment contenuBody = body.getContent();
+         String sContenuBody = contenuBody.toString();
+         
+         // Ajout le contenu du BODY
+         sbBody.append(sContenuBody);
+         
+         // Mémorise les attributs du BODY pour plus tard
+         bodyAppMetierAttr = body.getAttributes();
          
       }
 
@@ -372,6 +373,18 @@ public final class MaquetteParser {
       // construit plus haut
       MaquetteParserHelper.ecritContenuBalise(
             outDoc,capTpl.getContentAppTag(), sbBody.toString(), false);
+      
+      // Fusionne les attributs du BODY de la maquette avec ceux de l'application métier
+      if (bodyAppMetierAttr!=null) {
+         
+         Element bodyMaquette = htmlSrcFromTmpl.getAllElements("body").get(0);
+         
+         MaquetteParserHelper.fusionneAttributs(
+               outDoc,
+               bodyMaquette,
+               bodyAppMetierAttr);
+         
+      }
       
    }
    

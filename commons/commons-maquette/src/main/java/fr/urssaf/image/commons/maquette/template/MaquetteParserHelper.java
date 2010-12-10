@@ -1,5 +1,9 @@
 package fr.urssaf.image.commons.maquette.template;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Attributes;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.OutputDocument;
@@ -75,6 +79,44 @@ public final class MaquetteParserHelper {
       }
       
       document.replace(start, end, valeurAttributOk) ;
+      
+   }
+   
+   
+   /**
+    * Fusionne les attributs d'une balise source avec ceux fournis
+    * en paramètres.
+    * 
+    * @param document le document HTML
+    * @param baliseSource la balise source contenant les attributs
+    * @param attrSupp les attributs supplémentaires
+    */
+   protected static void fusionneAttributs(
+         OutputDocument document,
+         final Element baliseSource,
+         final Attributes attrSupp) {
+      
+      // Récupère les attributs de la balise source
+      // dans une structure du parser
+      Attributes sourceAttributes = baliseSource.getAttributes();
+      
+      // Fusionne les attributs de la balise source
+      // avec ceux fournis en paramètres de la méthode
+      // dans une Map
+      // Création de la Map
+      // Map<String,String> mapAttributs = new HashMap<String, String>();
+      Map<String,String> mapAttributs = new TreeMap<String, String>();
+      // Ajout des attributs de la balise source
+      for(Attribute attr : sourceAttributes) {
+         mapAttributs.put(attr.getKey(),attr.getValue());
+      }
+      // Ajout des attributs supplémentaires
+      for(Attribute attr : attrSupp) {
+         mapAttributs.put(attr.getKey(),attr.getValue());
+      }
+      
+      // Met les attributs dans le document de sortie
+      document.replace(sourceAttributes, mapAttributs);
       
    }
    
