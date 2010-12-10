@@ -318,10 +318,23 @@ var MenuClass = new Class(
 					}
 					else if( this.focus == false )
 					{
-						event.preventDefault(); // bloc la tabulation sur le précédent
 						
-						this.ulIndex = this.tree.getChildren().count() - 1 ;
-						this.tree.getChildren()[this.ulIndex].getFirst().getElement('a.firstrow').focus() ;
+					   var nbItems = this.tree.getChildren().count();
+					   if (nbItems>0) { // Le menu n'est pas vide
+					      
+					      event.preventDefault(); // bloc la tabulation sur le précédent
+					      
+					      this.ulIndex = nbItems - 1 ;
+					      
+					      this.tree.getChildren()[this.ulIndex].getFirst().getElement('a.firstrow').focus() ;
+					      
+					   }
+					   else { // Le menu est vide
+					      
+					      this.ulIndex = -1;
+					      
+					   }
+					      
 					}
 			  	}.bind( this ),
 			  				  	
