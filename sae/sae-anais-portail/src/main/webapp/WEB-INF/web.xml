@@ -7,7 +7,7 @@
    <display-name>Sae Anais Portail</display-name>
 
    <welcome-file-list>
-      <welcome-file>/view/index.jsp</welcome-file>
+      <welcome-file>connection.html</welcome-file>
    </welcome-file-list>
    
    <!-- context de l'application -->
@@ -30,6 +30,10 @@
    <servlet-mapping>
       <servlet-name>spring</servlet-name>
       <url-pattern>*.html</url-pattern>
+   </servlet-mapping>
+   <servlet-mapping>
+      <servlet-name>spring</servlet-name>
+      <url-pattern>/connection.html</url-pattern>
    </servlet-mapping>
 
    <filter>

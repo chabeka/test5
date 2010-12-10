@@ -7,12 +7,12 @@
 
 	<div><form:label path="userLogin" cssClass="field">
 		<fmt:message key="user.login" />
-	</form:label>:<form:input path='userLogin' id='login' cssClass="value" /><form:errors
+	</form:label>:<form:input path='userLogin' id='userLogin' cssClass="value" /><form:errors
 		path='userLogin' cssClass="error" /></div>
 
 	<div><form:label path="userPassword" cssClass="field">
 		<fmt:message key='user.password' />
-	</form:label>:<form:password path='userPassword' id='password' cssClass="value" /><form:errors
+	</form:label>:<form:password path='userPassword' id='userPassword' cssClass="value" /><form:errors
 		path='userPassword' cssClass="error" /></div>
 
 
@@ -30,13 +30,15 @@
 <script type="text/javascript">
 
 	var form_cirti = document.getElementById('form_cirti');
+	var login = form_cirti.userLogin;
+	var password = form_cirti.userPassword;
 
-	if(form_cirti.login.value == ''){
-	   form_cirti.login.focus();
+	if(login.value == ''){
+	   login.focus();
 	}
 
-	else if(form_cirti.password.value == ''){
-	  form_cirti.password.focus();
+	else if(password.value == ''){
+	  password.focus();
 	}
 
 </script>
