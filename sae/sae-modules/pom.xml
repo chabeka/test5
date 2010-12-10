@@ -22,6 +22,7 @@
       <module>../sae-parent</module>
       <module>../sae-anais-framework</module>
       <module>../sae-anais-portail</module>
+      <module>../sae-webdemo</module>
    </modules>
 
 </project>
