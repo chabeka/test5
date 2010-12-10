@@ -2,15 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-
-
-
-
 <div class="center"><form:form method="post"
-	modelAttribute="connectionForm" name="form_cirti">
-
-
-
+	modelAttribute="connectionForm" id="form_cirti" name='form_cirti'>
 
 	<div><form:label path="userLogin" cssClass="field">
 		<fmt:message key="user.login" />
@@ -34,14 +27,17 @@
 
 </form:form> <p class="error"><c:out value="${failure}" /></p></div>
 
-<script>
+<script type="text/javascript">
 
-	if(document.form_cirti.login.value == ''){
-		document.form_cirti.login.focus();
+	var form_cirti = document.getElementById('form_cirti');
+
+	if(form_cirti.login.value == ''){
+	   form_cirti.login.focus();
 	}
 
-	else if(document.form_cirti.password.value == ''){
-		document.form_cirti.password.focus();
+	else if(form_cirti.password.value == ''){
+	  form_cirti.password.focus();
 	}
 
 </script>
+
