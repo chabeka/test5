@@ -13,4 +13,7 @@
 
    <mvc:annotation-driven />
 
+   <mvc:view-controller path="/accueil.html"
+      view-name="welcome" />
+
 </beans>

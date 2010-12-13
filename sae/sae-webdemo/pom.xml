@@ -81,6 +81,20 @@
          <scope>provided</scope>
       </dependency>
 
+      <!-- COMMONS APACHE -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-util</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-xml</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
       <!--  TEST -->
 
       <dependency>
