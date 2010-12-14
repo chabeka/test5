@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.MarshalException;
 import javax.xml.bind.Marshaller;
+import javax.xml.validation.Schema;
 
 import fr.urssaf.image.sae.vi.modele.DroitApplicatif;
 import fr.urssaf.image.sae.vi.schema.DroitType;
@@ -13,8 +15,6 @@ import fr.urssaf.image.sae.vi.schema.IdentiteUtilisateurType;
 import fr.urssaf.image.sae.vi.schema.ObjectFactory;
 import fr.urssaf.image.sae.vi.schema.PerimetreType;
 import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
-
-
 
 /**
  * Classe de création de jeton de sécurité<br>
@@ -32,6 +32,20 @@ import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
  */
 public class TokenFactory {
 
+   private final Schema schema;
+
+   /**
+    * initialisation du {@link Schema}<br>
+    * 
+    * @see SchemaXSDFactory
+    */
+   public TokenFactory() {
+
+      SchemaXSDFactory factory = new SchemaXSDFactory();
+      schema = factory.createSchema();
+
+   }
+
    /**
     * Méthode de création d'un jeton de sécurité
     * 
@@ -43,6 +57,8 @@ public class TokenFactory {
     *           liste des drois applicatifs de l'utilisateur pour une
     *           application donnée
     * @return contenu d'un schéma XML
+    * @throws MarshalException
+    * @throws SAXException
     * @throws IllegalStateException
     */
    public final String createTokenSecurity(String lastname, String firstname,
@@ -84,10 +100,13 @@ public class TokenFactory {
 
          StringWriter writer = new StringWriter();
 
+         marshaller.setSchema(schema);
          marshaller.marshal(factory.createSaeJetonAuthentification(jeton),
                writer);
 
          return writer.toString();
+      } catch (MarshalException e) {
+         throw new IllegalArgumentException(e);
       } catch (JAXBException e) {
          throw new IllegalStateException(e);
       }

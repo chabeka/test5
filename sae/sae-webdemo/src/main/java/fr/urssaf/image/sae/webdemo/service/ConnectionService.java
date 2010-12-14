@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.webdemo.service;
 
-import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -31,13 +30,9 @@ public class ConnectionService {
     * 
     */
    public ConnectionService() {
-      try {
-         String xsdPath = this.getClass().getResource("/sae-anais.xsd").toURI()
-               .getPath();
-         validateService = new ValidateService(xsdPath);
-      } catch (URISyntaxException e) {
-         throw new IllegalStateException(e);
-      }
+
+      validateService = new ValidateService();
+
    }
 
    /**

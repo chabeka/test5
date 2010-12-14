@@ -69,6 +69,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test
+   @Ignore
    public void serveurNotNull_CTD_0_right() throws IOException {
 
       this.AssertServeurNotNull(ctd_0_right, "ctd_0_right.xml");

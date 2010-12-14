@@ -7,6 +7,12 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/sae-anais-framework/sae-anais-framework">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/sae-vi/sae-vi">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-maquette/commons-maquette">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-util/commons-util">
             <dependency-type>uses</dependency-type>
         </dependent-module>

@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import javax.xml.bind.JAXBException;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,13 +21,11 @@ public class ValidateServiceTest {
    @Before
    public void before() throws URISyntaxException {
 
-      String xsdPath = this.getClass().getResource("/xsd/sae-anais.xsd").toURI()
-            .getPath();
-      service = new ValidateService(xsdPath);
+      service = new ValidateService();
    }
 
    @Test
-   public void validate_success() throws IOException {
+   public void validate_success() throws IOException, JAXBException {
 
       File file = new File("src/test/resources/ctd_2_rights.xml");
       String xml = FileUtils.readFileToString(file, "UTF-8");
@@ -35,7 +35,7 @@ public class ValidateServiceTest {
    }
 
    @Test
-   public void validate_failure() throws IOException {
+   public void validate_failure() throws IOException, JAXBException {
 
       File file = new File("src/test/resources/ctd_0_right.xml");
       String xml = FileUtils.readFileToString(file, "UTF-8");

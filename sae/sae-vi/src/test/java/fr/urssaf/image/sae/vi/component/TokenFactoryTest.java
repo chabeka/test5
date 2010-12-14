@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.MarshalException;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +39,19 @@ public class TokenFactoryTest {
       File file = new File("src/test/resources/ctd_2_rights.xml");
 
       assertEquals(FileUtils.readFileToString(file, "UTF-8"), token);
+   }
+
+   @Test
+   public void createTokenSecurity_failure() throws IOException,
+         MarshalException {
+
+      try {
+         List<DroitApplicatif> droits = new ArrayList<DroitApplicatif>();
+         factory.createTokenSecurity("Nom", "Prenom", droits);
+      } catch (IllegalArgumentException e) {
+         assertEquals(MarshalException.class, e.getCause().getClass());
+      }
+
    }
 
    private DroitApplicatif createDroitApplicatif(String code, String type,
