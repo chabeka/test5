@@ -11,9 +11,9 @@ import anaisJavaApi.AnaisUserInfo;
 import anaisJavaApi.AnaisUserResult;
 import fr.urssaf.image.sae.anais.framework.component.AnaisConnectionSupport;
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
-import fr.urssaf.image.sae.anais.framework.component.TokenFactory;
-import fr.urssaf.image.sae.anais.framework.modele.DroitApplicatif;
-import fr.urssaf.image.sae.anais.framework.modele.ObjectFactory;
+import fr.urssaf.image.sae.vi.component.TokenFactory;
+import fr.urssaf.image.sae.vi.modele.ObjectFactory;
+import fr.urssaf.image.sae.vi.modele.DroitApplicatif;
 
 /**
  * Classe de type DAO sur le serveur ANAIS<br>

@@ -7,7 +7,21 @@ import javax.servlet.http.HttpServletRequest;
 import fr.urssaf.image.commons.maquette.definition.ILeftCol;
 import fr.urssaf.image.commons.maquette.tool.InfoBoxItem;
 
-public class BoitesGauches implements ILeftCol{
+/**
+ * Boites de gauche de l'IHM maquette<br>
+ * La configuration correspond à dans le fichier <code>web.xml</code>
+ * 
+ * <pre>
+ * &lt;init-param>
+ *          &lt;param-name>implementationILeftCol</param-name>
+ *          &lt;param-value>fr.urssaf.image.sae.webdemo.maquette.BoitesGauches</param-value>
+ * &lt;/init-param>
+ * 
+ * </pre>
+ * 
+ * @see ILeftCol
+ */
+public class BoitesGauches implements ILeftCol {
 
    @Override
    public final List<InfoBoxItem> getInfoBox(HttpServletRequest request) {

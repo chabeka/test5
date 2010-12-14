@@ -1,23 +1,16 @@
 package fr.urssaf.image.sae.webdemo.service;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping;
-import org.xml.sax.SAXException;
 
 import fr.urssaf.image.commons.util.base64.Base64Decode;
-import fr.urssaf.image.commons.util.resource.ResourceUtil;
-import fr.urssaf.image.commons.xml.XSDValidator;
-import fr.urssaf.image.commons.xml.XSDValidator.SAXParseExceptionType;
+import fr.urssaf.image.sae.vi.service.ValidateService;
 
 /**
  * Service de connexion de l'application demo
@@ -30,7 +23,7 @@ public class ConnectionService {
    @Autowired
    private ApplicationContext context;
 
-   private final String xsdPath;
+   private final ValidateService validateService;
 
    /**
     * Initialisation du chemin du fichier XSD <code>sae-anais.xsd</code><br>
@@ -38,9 +31,10 @@ public class ConnectionService {
     * 
     */
    public ConnectionService() {
-
       try {
-         xsdPath = ResourceUtil.getResourceFullPath(this, "/sae-anais.xsd");
+         String xsdPath = this.getClass().getResource("/sae-anais.xsd").toURI()
+               .getPath();
+         validateService = new ValidateService(xsdPath);
       } catch (URISyntaxException e) {
          throw new IllegalStateException(e);
       }
@@ -71,7 +65,7 @@ public class ConnectionService {
       boolean inContext = false;
 
       for (AbstractUrlHandlerMapping handlerMapping : matchingBeans.values()) {
-         System.out.println(handlerMapping.getHandlerMap());
+
          inContext = handlerMapping.getHandlerMap().containsKey(servlet);
          if (inContext) {
             break;
@@ -88,36 +82,16 @@ public class ConnectionService {
     * Le jeton est décodé en base 64 en appelant la méthode
     * {@link Base64Decode#decode(String)}<br>
     * Le résultat décodé est validé par l'appel de la méthode
-    * {@link XSDValidator#validXMLStringWithSAX(String, String)}<br>
-    * <br>
-    * Si le jeton comporte la moindre {@link SAXParseExceptionType} ou lève une
-    * exception alors le jeton est considéré comme invalide
+    * {@link ValidateService#isValidate(String)}<br>
     * 
     * @param samlResponse
     *           VI du jeton d'authentification en base 64
     * @return true si le jeton n'est pas conforme faux sinon
     */
-   @SuppressWarnings("PMD")
    public final boolean isValidateVI(String samlResponse) {
 
       String decodeSaml = Base64Decode.decode(samlResponse);
-
-      boolean validate = false;
-
-      try {
-         List<SAXParseExceptionType> exceptions = XSDValidator
-               .validXMLStringWithSAX(decodeSaml, xsdPath);
-         XSDValidator.afficher(exceptions);
-         validate = exceptions.isEmpty();
-      } catch (SAXException e) {
-         // not implemented
-      } catch (IOException e) {
-         // not implemented
-      } catch (ParserConfigurationException e) {
-         // not implemented
-      }
-
-      return validate;
+      return validateService.isValidate(decodeSaml);
 
    }
 }
