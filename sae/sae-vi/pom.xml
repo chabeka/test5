@@ -43,10 +43,19 @@
 
    <dependencies>
 
+      <!-- COMMONS LIBRARIES -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-xml</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
          <version>${apache.commons-io.version}</version>
+         <scope>test</scope>
       </dependency>
 
    </dependencies>

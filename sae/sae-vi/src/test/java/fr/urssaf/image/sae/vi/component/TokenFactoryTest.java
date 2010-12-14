@@ -34,7 +34,7 @@ public class TokenFactoryTest {
 
       String token = factory.createTokenSecurity("Nom", "Prenom", droits);
 
-      File file = new File("src/test/resources/token.xml");
+      File file = new File("src/test/resources/ctd_2_rights.xml");
 
       assertEquals(FileUtils.readFileToString(file, "UTF-8"), token);
    }
