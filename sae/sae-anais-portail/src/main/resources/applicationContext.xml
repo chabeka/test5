@@ -13,7 +13,7 @@
 
    <bean id="configurationSuccess"
       class="fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration">
-      <property name="url" value="http://localhost:8080/sae-webdemo/" />
+      <property name="url" value="succes.html" />
       <property name="service" value="/accueil.html" />
    </bean>
 

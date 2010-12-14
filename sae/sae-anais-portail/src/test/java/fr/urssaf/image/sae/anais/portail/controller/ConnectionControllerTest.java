@@ -71,9 +71,7 @@ public class ConnectionControllerTest extends
       this.initPost();
 
       this.initParameter(LOGIN_FIELD, LOGIN_VALUE);
-      this.initParameter(PASSWORD_FIELD, password);
-      
-      controllerAssert.assertError(PASSWORD_FIELD, null, "connectionForm",
+      controllerAssert.assertError(PASSWORD_FIELD, password, "connectionForm",
             "NotEmpty", "Le mot de passe doit être renseigné");
 
       controllerAssert.assertView("connection/connection_failure");
@@ -93,9 +91,8 @@ public class ConnectionControllerTest extends
 
       this.initPost();
 
-      this.initParameter(LOGIN_FIELD, login);
       this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
-      controllerAssert.assertError(LOGIN_FIELD, null, "connectionForm",
+      controllerAssert.assertError(LOGIN_FIELD, login, "connectionForm",
             "NotEmpty", "L''identifiant doit être renseigné");
 
       controllerAssert.assertView("connection/connection_failure");

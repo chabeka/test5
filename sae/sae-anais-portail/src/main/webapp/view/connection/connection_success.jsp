@@ -20,8 +20,8 @@
 <div style="padding-top: 0.5em;"><input type="submit"
 	value='redirection vers "${action}"' /></div>
 </noscript>
-
-
+<div id="connection_msg">
+</div>
 </form>
 
 <script type="text/javascript">
@@ -29,12 +29,12 @@
 	var connection = document.getElementById('connection');
 
 	function redirect(){
-     connection.submit();
-   }	
+     	connection.submit();
+   	}
 
-   var o = document.createElement("div");
-   o.innerHTML = "<span>Veuillez patienter quelques instants, vous allez &ecirc;tre redirig&eacute; vers '${action}'</span>";
-   connection.appendChild(o);
+	var connection_msg = document.getElementById('connection_msg');	
+   	connection_msg.innerHTML = "Veuillez patienter quelques instants, vous allez &ecirc;tre redirig&eacute; vers '${action}'";
+ 
 
 </script>
 
