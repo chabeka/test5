@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.webdemo.controller;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -111,13 +112,25 @@ public class ConnectionControllerTest extends
    }
 
    @Test
-   public void connectFailure_auth() throws IOException {
-
-      assertFailure_auth("000");
+   public void connectFailure_auth_noright() throws IOException {
 
       String saml = FileUtils.readFileToString(new File(
             "src/test/resources/saml/ctd_0_right.txt"), "UTF-8");
       assertFailure_auth(saml);
+
+   }
+
+   @Test
+   public void connectFailure_auth_noxml() {
+
+      assertFailure_auth(Base64.encodeBase64String("no xml".getBytes()));
+
+   }
+   
+   @Test
+   public void connectFailure_auth_nobase64() {
+
+      assertFailure_auth("no base 64");
 
    }
 

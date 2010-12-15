@@ -9,6 +9,7 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.service.SaeAnaisService;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
 import fr.urssaf.image.sae.anais.framework.service.exception.EnvironnementNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.HoteNonRenseigneException;
 import fr.urssaf.image.sae.anais.framework.service.exception.ParametresApplicatifsNonRenseigneException;
@@ -40,7 +41,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = EnvironnementNonRenseigneException.class)
-   public void emptyEnvironnement() {
+   public void emptyEnvironnement() throws AucunDroitException {
 
       service.authentifierPourSaeParLoginPassword(null, serveur,
             SaeAnaisEnumCompteApplicatif.Sae, null, NOTEMPTY, NOTEMPTY,
@@ -49,7 +50,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = ProfilCompteApplicatifNonRenseigneException.class)
-   public void emptyCompteApplicatif() {
+   public void emptyCompteApplicatif() throws AucunDroitException {
 
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur, null, null,
@@ -58,7 +59,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = UserLoginNonRenseigneException.class)
-   public void emptyLogin() {
+   public void emptyLogin() throws AucunDroitException {
 
       this.emptyLogin(null);
       this.emptyLogin(" ");
@@ -66,7 +67,7 @@ public class SaeAnaisServiceTest {
 
    }
 
-   private void emptyLogin(String login) {
+   private void emptyLogin(String login) throws AucunDroitException {
 
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
@@ -76,7 +77,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = UserPasswordNonRenseigneException.class)
-   public void emptyPassword() {
+   public void emptyPassword() throws AucunDroitException {
 
       this.emptyPassword(null);
       this.emptyPassword(" ");
@@ -84,7 +85,7 @@ public class SaeAnaisServiceTest {
 
    }
 
-   private void emptyPassword(String password) {
+   private void emptyPassword(String password) throws AucunDroitException {
 
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
@@ -94,7 +95,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = HoteNonRenseigneException.class)
-   public void emptyHost() {
+   public void emptyHost() throws AucunDroitException {
 
       this.emptyHost(null);
       this.emptyHost(" ");
@@ -102,7 +103,7 @@ public class SaeAnaisServiceTest {
 
    }
 
-   private void emptyHost(String host) {
+   private void emptyHost(String host) throws AucunDroitException {
 
       SaeAnaisAdresseServeur serveur = ObjectFactory
             .createSaeAnaisAdresseServeur();
@@ -117,7 +118,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = PortNonRenseigneException.class)
-   public void emptyPort() {
+   public void emptyPort() throws AucunDroitException {
 
       SaeAnaisAdresseServeur serveur = ObjectFactory
             .createSaeAnaisAdresseServeur();
@@ -132,7 +133,7 @@ public class SaeAnaisServiceTest {
    }
 
    @Test(expected = ParametresApplicatifsNonRenseigneException.class)
-   public void emptyCompteAppli() {
+   public void emptyCompteAppli() throws AucunDroitException {
 
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur,

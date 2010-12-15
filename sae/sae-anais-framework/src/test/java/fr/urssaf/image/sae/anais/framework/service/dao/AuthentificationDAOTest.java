@@ -13,10 +13,12 @@ import org.junit.Test;
 import anaisJavaApi.AnaisExceptionAuthFailure;
 import fr.urssaf.image.sae.anais.framework.component.ConnectionFactory;
 import fr.urssaf.image.sae.anais.framework.component.DataSource;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 import fr.urssaf.image.sae.anais.framework.util.CTD;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
 import fr.urssaf.image.sae.anais.framework.util.TokenAssert;
+import fr.urssaf.image.sae.vi.exception.VIException;
 
 @SuppressWarnings("PMD")
 public class AuthentificationDAOTest {
@@ -45,7 +47,7 @@ public class AuthentificationDAOTest {
    }
 
    @Test
-   public void authSucess() throws IOException {
+   public void authSucess() throws IOException, VIException, AucunDroitException {
 
       String xml = dao.createXMLToken(ctd.getUserLogin(),
             ctd.getUserPassword(), ctd.getCodeir(), ctd.getCodeorg());
@@ -56,7 +58,7 @@ public class AuthentificationDAOTest {
    }
 
    @Test
-   public void authFailure() {
+   public void authFailure() throws VIException, AucunDroitException {
 
       try {
          dao.createXMLToken(ctd.getUserLogin(), "inconnu", ctd.getCodeir(), ctd

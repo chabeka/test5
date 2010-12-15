@@ -10,6 +10,9 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilServeur;
 import fr.urssaf.image.sae.anais.framework.service.dao.AuthentificationDAO;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
+import fr.urssaf.image.sae.anais.framework.service.exception.ValidationXmlParXsdException;
+import fr.urssaf.image.sae.vi.exception.VIException;
 
 /**
  * Classe principale de services sur le serveur ANAIS<br>
@@ -75,14 +78,16 @@ public class SaeAnaisService {
     * @throws PortNonRenseigneException
     * @throws SaeAnaisApiException
     * @throws ParametresApplicatifsNonRenseigneException
+    * @throws ValidationXmlParXsdException
     * @return Le jeton d’authentification sous la forme d’un flux XML
+    * @throws AucunDroitException Le CTD n'a aucun droit
     */
    public final String authentifierPourSaeParLoginPassword(
          SaeAnaisEnumCodesEnvironnement environnement,
          SaeAnaisAdresseServeur serveur,
          SaeAnaisEnumCompteApplicatif profilCptAppli,
          SaeAnaisProfilCompteApplicatif compteApplicatif, String userLogin,
-         String userPassword, String codeInterRegion, String codeOrganisme) {
+         String userPassword, String codeInterRegion, String codeOrganisme) throws AucunDroitException {
 
       ProfilAppliFactory appliFactory = new ProfilAppliFactory();
       SaeAnaisProfilCompteApplicatif profilAppli = appliFactory.createProfil(
@@ -118,8 +123,12 @@ public class SaeAnaisService {
       // initialisation du dao authentification
       AuthentificationDAO authDAO = new AuthentificationDAO(connection);
 
-      return authDAO.createXMLToken(userLogin, userPassword, codeInterRegion,
-            codeOrganisme);
+      try {
+         return authDAO.createXMLToken(userLogin, userPassword, codeInterRegion,
+               codeOrganisme);
+      } catch (VIException e) {
+         throw new ValidationXmlParXsdException(e);
+      }
 
    }
 

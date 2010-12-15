@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.urssaf.image.commons.util.base64.Base64Encode;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 import fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration;
 import fr.urssaf.image.sae.anais.portail.form.ConnectionForm;
@@ -87,6 +88,7 @@ public class ConnectionController {
     * @return <ul>
     *         <li>erreurs sur le formulaire: {@link #defaultView()}</i>
     *         <li>échec {@link SaeAnaisApiException} : {@link #failuretView()}</li>
+    *         <li>échec {@link AucunDroitException} : {@link #failuretView()}</li>
     *         <li>succès : {@link #successServlet()}</li>
     *         <ul>
     */
@@ -108,6 +110,9 @@ public class ConnectionController {
             model.addAttribute("action", configuration.getUrl());
             view = successServlet();
          } catch (SaeAnaisApiException e) {
+            model.addAttribute("failure", e.getMessage());
+            view = failureView();
+         } catch (AucunDroitException e) {
             model.addAttribute("failure", e.getMessage());
             view = failureView();
          }

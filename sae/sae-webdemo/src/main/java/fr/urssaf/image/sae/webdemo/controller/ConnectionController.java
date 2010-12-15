@@ -10,6 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.urssaf.image.commons.util.base64.Base64Decode;
+import fr.urssaf.image.sae.vi.exception.VIException;
+import fr.urssaf.image.sae.vi.service.VIService;
 import fr.urssaf.image.sae.webdemo.form.ConnectionForm;
 import fr.urssaf.image.sae.webdemo.service.ConnectionService;
 
@@ -25,17 +28,30 @@ public class ConnectionController {
    @Autowired
    private ConnectionService connection;
 
+   private final VIService viService = new VIService();
+
    /**
     * action pour la connection en POST<br>
-    * 
+    * <br>
+    * le POST comporte deux paramètres obligatoires
+    * <ul>
+    * <li>RelayState : URL du service demandé commençant par '/' </li>
+    * <li>SAMLResponse : VI codé en base 64</li>
+    * </ul>
+    * Gestion des vues ordonnées:
+    * <ol>
+    * <li>RelayState & SAMLResponse non renseignés : <code>erreur403_viko.html<code></li>
+    * <li>RelayState n'existe pas en tant que service : <code>erreur404_serviceinexistant.html<code></li>
+    * <li>VI incorrecte : <code>erreur403_viformatko.html</code></li>
+    * <li>Authentifcation réussie : valeur de <code>relayState</code></li>
+    * </ol>
     * @param connectionForm
     *           formulaire de la connection
-    * @param result
-    * @param response
-    * @param model
-    * @return
+    * @param result erreurs sur les paramètres de la requête
+    * @param response status de la réponse
+    * @param model paramètres renvoyés
+    * @return view de la connection
     */
-   // TODO finir commentaire de l'action connect
    @RequestMapping(method = RequestMethod.POST)
    protected final String connect(@Valid ConnectionForm connectionForm,
          BindingResult result, HttpServletResponse response, Model model) {
@@ -67,37 +83,34 @@ public class ConnectionController {
    private String getServlet(String relayState, String samlResponse,
          HttpServletResponse response, Model model) {
 
-      boolean validateService = connection.isValidateService(relayState);
-
-      boolean validateVI = connection.isValidateVI(samlResponse);
-
       String servlet = null;
 
-      if (validateService && validateVI) {
+      if (connection.isValidateService(relayState)) {
 
-         // on enleve le '/' devant le servlet
-         servlet = this.defaultView(relayState.substring(1));
+         String decodeSaml = Base64Decode.decode(samlResponse);
+         try {
+            
+            viService.readVI(decodeSaml);
+         
+            // on enleve le '/' devant le servlet
+            servlet = this.defaultView(relayState.substring(1));
+         
+         } catch (VIException e) {
+            
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            servlet = this.errorView("erreur403_viformatko.html");
+         }
+
+        
 
       } else {
 
-         if (!validateService) {
-
-            // response.setStatus(HttpServletResponse.SC_FOUND);
-            // TODO initialiser le status de la réponse avec
-            // HttpServletResponse.SC_FOUND
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            model.addAttribute("service", relayState);
-            servlet = this.errorView("erreur404_serviceinexistant.html");
-
-         }
-
-         if (!validateVI) {
-
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            model.addAttribute("service", relayState);
-            servlet = this.errorView("erreur403_viformatko.html");
-
-         }
+         // response.setStatus(HttpServletResponse.SC_FOUND);
+         // TODO initialiser le status de la réponse avec
+         // HttpServletResponse.SC_FOUND
+         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+         model.addAttribute("service", relayState);
+         servlet = this.errorView("erreur404_serviceinexistant.html");
 
       }
 

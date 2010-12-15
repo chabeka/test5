@@ -13,6 +13,7 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilCompteApplicatif;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
 import fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException;
 import fr.urssaf.image.sae.anais.framework.util.CTD;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
@@ -41,7 +42,7 @@ public class SaeAnaisServiceFailureTest {
    }
 
    @Test
-   public void failureAuth() {
+   public void failureAuth() throws AucunDroitException {
       ctd.setUserPassword("inconnu");
       try {
          this.assertFailure(SaeAnaisEnumCompteApplicatif.Sae, null);
@@ -53,7 +54,7 @@ public class SaeAnaisServiceFailureTest {
    }
 
    @Test
-   public void failureDN() {
+   public void failureDN() throws AucunDroitException {
 
       SaeAnaisProfilCompteApplicatif profil = InitFactory
             .initCompteApplicatif();
@@ -68,7 +69,7 @@ public class SaeAnaisServiceFailureTest {
    }
 
    private void assertFailure(SaeAnaisEnumCompteApplicatif compteAppli,
-         SaeAnaisProfilCompteApplicatif profil) {
+         SaeAnaisProfilCompteApplicatif profil) throws AucunDroitException {
 
       service.authentifierPourSaeParLoginPassword(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur, compteAppli,

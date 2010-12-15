@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.anais.framework.service.SaeAnaisService;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
 import fr.urssaf.image.sae.anais.portail.configuration.AnaisConfiguration;
 
 /**
@@ -68,9 +69,10 @@ public class ConnectionService {
     * @param userPassword
     *           mot de passe de l'utilisateur
     * @return Vecteur d'identification au format XML
+    * @throws AucunDroitException le CTD ne possède aucun droit
     * @throws fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException
     */
-   public final String connect(String userLogin, String userPassword) {
+   public final String connect(String userLogin, String userPassword) throws AucunDroitException {
 
       String token = service.authentifierPourSaeParLoginPassword(configuration
             .getEnvironnement(), null, configuration.getCompteApplicatif(),

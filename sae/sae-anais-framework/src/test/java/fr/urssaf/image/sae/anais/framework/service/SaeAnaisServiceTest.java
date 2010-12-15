@@ -12,6 +12,7 @@ import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisAdresseServeur;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCodesEnvironnement;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisEnumCompteApplicatif;
 import fr.urssaf.image.sae.anais.framework.modele.SaeAnaisProfilCompteApplicatif;
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
 import fr.urssaf.image.sae.anais.framework.util.CTD;
 import fr.urssaf.image.sae.anais.framework.util.InitFactory;
 import fr.urssaf.image.sae.anais.framework.util.TokenAssert;
@@ -49,47 +50,47 @@ public class SaeAnaisServiceTest {
    }
 
    @Test
-   public void envDEV() throws IOException {
+   public void envDEV() throws IOException, AucunDroitException {
 
       this.assertEnv(SaeAnaisEnumCodesEnvironnement.Developpement);
    }
 
    @Test
    @Ignore
-   public void envPROD() throws IOException {
+   public void envPROD() throws IOException, AucunDroitException {
 
       this.assertEnv(SaeAnaisEnumCodesEnvironnement.Production);
    }
 
    @Test
    @Ignore
-   public void envVAL() throws IOException {
+   public void envVAL() throws IOException, AucunDroitException {
 
       this.assertEnv(SaeAnaisEnumCodesEnvironnement.Validation);
    }
 
-   @Test
-   @Ignore
-   public void serveurNotNull_CTD_0_right() throws IOException {
+   @Test(expected = AucunDroitException.class)
+   public void serveurNotNull_CTD_0_right() throws IOException, AucunDroitException {
 
       this.AssertServeurNotNull(ctd_0_right, "ctd_0_right.xml");
+
    }
 
    @Test
    @Ignore
-   public void serveurNotNull_CTD_1_right() throws IOException {
+   public void serveurNotNull_CTD_1_right() throws IOException, AucunDroitException {
 
       this.AssertServeurNotNull(ctd_1_right, "ctd_1_right.xml");
    }
 
    @Test
-   public void serveurNotNull_CTD_rights() throws IOException {
+   public void serveurNotNull_CTD_rights() throws IOException, AucunDroitException {
 
       this.AssertServeurNotNull(ctd_rights, "ctd_rights.xml");
    }
 
    @Test
-   public void cptAppliNotNull() throws IOException {
+   public void cptAppliNotNull() throws IOException, AucunDroitException {
 
       SaeAnaisProfilCompteApplicatif profil = InitFactory
             .initCompteApplicatif();
@@ -104,7 +105,7 @@ public class SaeAnaisServiceTest {
    }
 
    private void assertEnv(SaeAnaisEnumCodesEnvironnement environnement)
-         throws IOException {
+         throws IOException, AucunDroitException {
 
       String xml = this.createToken(environnement, null,
             SaeAnaisEnumCompteApplicatif.Sae, null, ctd_rights);
@@ -113,7 +114,7 @@ public class SaeAnaisServiceTest {
       TokenAssert.assertCTD_rights(xml);
    }
 
-   private void AssertServeurNotNull(CTD ctd, String key) throws IOException {
+   private void AssertServeurNotNull(CTD ctd, String key) throws IOException, AucunDroitException {
 
       String xml = this.createToken(
             SaeAnaisEnumCodesEnvironnement.Developpement, serveur,
@@ -125,7 +126,7 @@ public class SaeAnaisServiceTest {
 
    private String createToken(SaeAnaisEnumCodesEnvironnement environnement,
          SaeAnaisAdresseServeur serveur, SaeAnaisEnumCompteApplicatif cptAppli,
-         SaeAnaisProfilCompteApplicatif profil, CTD ctd) throws IOException {
+         SaeAnaisProfilCompteApplicatif profil, CTD ctd) throws IOException, AucunDroitException {
 
       String xml = service.authentifierPourSaeParLoginPassword(environnement,
             serveur, cptAppli, profil, ctd.getUserLogin(), ctd
