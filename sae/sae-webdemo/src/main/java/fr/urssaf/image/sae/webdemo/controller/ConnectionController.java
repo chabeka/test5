@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -35,15 +36,30 @@ public class ConnectionController {
 
    public static final String SAE_JETON = "SaeJetonAuthentification";
 
+   private final ConnectionService connection;
+
+   private final VIService viService;
+
+   /**
+    * Initialisation de la variable <code>connection<code> et instanciation d'un {@link VIService}<br>
+    * <br>
+    * <code>connection<code> ne peut pas être null
+    * 
+    * @see ConnectionService
+    * @param connection
+    *           service de connection
+    */
    @Autowired
-   private ConnectionService connection;
+   public ConnectionController(@Qualifier("connectionService") ConnectionService connection) {
 
-   private final VIService viService; 
+      if (connection == null) {
+         throw new IllegalStateException("'connectionService' is required");
+      }
 
-   protected ConnectionController(){
-      viService = new VIService();
+      this.connection = connection;
+      this.viService = new VIService();
    }
-   
+
    /**
     * action pour la connection en POST<br>
     * <br>
@@ -138,7 +154,7 @@ public class ConnectionController {
 
       // creation d'un objet SaeJetonAuthentification en session;
       WebUtils.setSessionAttribute(request, SAE_JETON, jeton);
-      
+
    }
 
    @InitBinder

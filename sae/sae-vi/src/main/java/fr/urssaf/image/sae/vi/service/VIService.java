@@ -91,7 +91,7 @@ public final class VIService {
     * @throws VIException
     *            le VI créé est non conforme au XSD du VI
     */
-   public final String createVI(String lastname, String firstname,
+   public String createVI(String lastname, String firstname,
          List<DroitApplicatif> droits) throws VIException {
 
       // utilisation de jaxb2 pour créer un fichier xml
@@ -159,7 +159,7 @@ public final class VIService {
     * @throws VIException
     *            le VI lu est non conforme au XSD du VI
     */
-   public final SaeJetonAuthentificationType readVI(String xml)
+   public SaeJetonAuthentificationType readVI(String xml)
          throws VIException {
 
       VIValidationEventHandler eventHandler = new VIValidationEventHandler();

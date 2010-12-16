@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping;
@@ -15,8 +16,26 @@ import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping;
 @Service
 public class ConnectionService {
 
+   private final ApplicationContext context;
+
+   /**
+    * Initialisation de la variable <code>context</code><br>
+    * <br>
+    * <code>context</code> ne peut être null
+    * 
+    * @see ApplicationContex
+    * @param context
+    *           contexte de l'application
+    */
    @Autowired
-   private ApplicationContext context;
+   public ConnectionService(@Qualifier("applicationContext") ApplicationContext context) {
+
+      if (context == null) {
+         throw new IllegalStateException("'applicationContext' is required");
+      }
+
+      this.context = context;
+   }
 
    /**
     * Retourne si la servlet est valide dans l'application<br>

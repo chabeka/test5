@@ -26,13 +26,12 @@ import fr.urssaf.image.sae.anais.portail.service.ConnectionService;
 @RequestMapping(value = "/connection")
 public class ConnectionController {
 
-   @Autowired
-   private ConnectionService connectionService;
+   private final ConnectionService connectionService;
 
    private final SuccessConfiguration configuration;
 
    /**
-    * initialisation de la configuration de l'application web du SAE<br>
+    * Initialisation de la configuration de l'application web du SAE<br>
     * <br>
     * <code>SuccessConfiguration</code> doit être non null<br>
     * <br>
@@ -44,18 +43,31 @@ public class ConnectionController {
     * &nbsp;&nbsp;&nbsp;&lt;property name="url" value="..." /><br>
     * &nbsp;&nbsp;&nbsp;&lt;property name="service" value="..." /><br> 
     * &lt;/bean>
-    * </code>
+    * </code><br>
+    * Initialisation <code>connectionService</code><br>
+    * <br>
+    * <code>connectionService</code> doit être non null<br>
+    * <br>
     * 
+    * @see ConnectionService
     * @param configuration
     *           configuration d'une application web
+    * @param connectionService
+    *           service de connection
     */
    @Autowired
    public ConnectionController(
-         @Qualifier("configurationSuccess") SuccessConfiguration configuration) {
+         @Qualifier("configurationSuccess") SuccessConfiguration configuration,
+         @Qualifier("connectionService") ConnectionService connectionService) {
       if (configuration == null) {
          throw new IllegalStateException("'successConfiguration' is required");
       }
+
+      if (connectionService == null) {
+         throw new IllegalStateException("'connectionService' is required");
+      }
       this.configuration = configuration;
+      this.connectionService = connectionService;
    }
 
    /**
