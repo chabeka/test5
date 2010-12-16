@@ -43,7 +43,11 @@ import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
  * 
  * 
  */
-public class VIService {
+// Bad practice - Usage of GetResource may be unsafe if class is extended :
+// L'utilisation de GetResource dans new
+// fr.urssaf.image.sae.vi.service.VIService() peut-être instable si la classe
+// est étendue
+public final class VIService {
 
    private final Schema schema;
 
@@ -61,6 +65,7 @@ public class VIService {
             .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
       try {
+
          schema = schemaFactory.newSchema(this.getClass().getResource(
                VIConfiguration.path()));
       } catch (SAXException e) {
@@ -116,7 +121,6 @@ public class VIService {
          }
       }
 
-     
       VIValidationEventHandler eventHandler = new VIValidationEventHandler();
 
       try {
@@ -190,7 +194,8 @@ public class VIService {
 
    }
 
-   private class VIValidationEventHandler implements ValidationEventHandler {
+   private static class VIValidationEventHandler implements
+         ValidationEventHandler {
 
       private final List<ValidationEvent> validationEvents = new ArrayList<ValidationEvent>();
 
@@ -200,7 +205,7 @@ public class VIService {
          return true;
       }
 
-      public void validate() throws VIException {
+      private void validate() throws VIException {
 
          if (!validationEvents.isEmpty()) {
             throw new VIException(validationEvents);
