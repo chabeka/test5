@@ -23,6 +23,7 @@ public class ConnectionServiceTest {
 
       this.assertTrueValidateService("/accueil.html");
       this.assertTrueValidateService("/connection");
+      this.assertTrueValidateService("/");
       
    }
    

@@ -61,10 +61,17 @@ public class ConnectionControllerTest extends
    @Test
    public void connectSuccess() {
 
-      this.initParameter(SAML_FIELD, SAML_VALUE);
-      this.initParameter(RELAY_FIELD, RELAY_VALUE);
+      this.assertConnectSuccess(RELAY_VALUE,"accueil.html");
+      this.assertConnectSuccess("/","");
 
-      controllerAssert.assertView("redirect:accueil.html");
+   }
+
+   private void assertConnectSuccess(String relayValue,String redirect) {
+
+      this.initParameter(SAML_FIELD, SAML_VALUE);
+      this.initParameter(RELAY_FIELD, relayValue);
+
+      controllerAssert.assertView("redirect:"+redirect);
 
       SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) this
             .getAttributeSession("SaeJetonAuthentification");
@@ -76,12 +83,12 @@ public class ConnectionControllerTest extends
             "GESTIONNAIREACCESCOMPLET", "URSSAF - Code organisme", "CER69");
       assertDroit(jeton.getDroits().getDroit().get(1),
             "GESTIONNAIREACCESCOMPLET", "URSSAF - Code organisme", "UR030");
-      assertDroit(jeton.getDroits().getDroit().get(2),
-            "GESTIONNAIRESRVRH", "URSSAF - Code organisme", "UR710");
-      assertDroit(jeton.getDroits().getDroit().get(3),
-            "GESTIONNAIRESRVRH", "URSSAF - Code organisme", "UR730");
-      
-      assertEquals(4,jeton.getDroits().getDroit().size());
+      assertDroit(jeton.getDroits().getDroit().get(2), "GESTIONNAIRESRVRH",
+            "URSSAF - Code organisme", "UR710");
+      assertDroit(jeton.getDroits().getDroit().get(3), "GESTIONNAIRESRVRH",
+            "URSSAF - Code organisme", "UR730");
+
+      assertEquals(4, jeton.getDroits().getDroit().size());
 
    }
 

@@ -28,7 +28,8 @@ public class ConnectionService {
     *           contexte de l'application
     */
    @Autowired
-   public ConnectionService(@Qualifier("applicationContext") ApplicationContext context) {
+   public ConnectionService(
+         @Qualifier("applicationContext") ApplicationContext context) {
 
       if (context == null) {
          throw new IllegalStateException("'applicationContext' is required");
@@ -44,7 +45,7 @@ public class ConnectionService {
     * partir de {@link ApplicationContext} et vérifie si l'un d'entre contient
     * bien la servlet<br>
     * <br>
-    * ex : /connection, /accueil.html sont valides<br>
+    * ex : /, /connection, /accueil.html sont valides<br>
     * /service.html ne l'est pas
     * 
     * @see AbstractUrlHandlerMapping#getHandlerMap()
@@ -61,11 +62,15 @@ public class ConnectionService {
 
       boolean inContext = false;
 
-      for (AbstractUrlHandlerMapping handlerMapping : matchingBeans.values()) {
+      if ("/".equals(servlet)) {
+         inContext = true;
+      } else {
+         for (AbstractUrlHandlerMapping handlerMapping : matchingBeans.values()) {
 
-         inContext = handlerMapping.getHandlerMap().containsKey(servlet);
-         if (inContext) {
-            break;
+            inContext = handlerMapping.getHandlerMap().containsKey(servlet);
+            if (inContext) {
+               break;
+            }
          }
       }
 
