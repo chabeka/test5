@@ -57,7 +57,9 @@ public class BoitesGauches implements ILeftCol {
       SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) request
             .getSession().getAttribute(ConnectionController.SAE_JETON);
 
-      return StringUtils.upperCase(jeton.getIdentiteUtilisateur().getNom());
+      return StringUtils.capitalize(jeton.getIdentiteUtilisateur().getPrenom())
+            + " "
+            + StringUtils.upperCase(jeton.getIdentiteUtilisateur().getNom());
    }
 
    @Override
