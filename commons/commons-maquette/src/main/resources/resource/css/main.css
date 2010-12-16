@@ -65,6 +65,7 @@ body.frUrssafImageCommonsMaquette > #container.frUrssafImageCommonsMaquette
 #container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > p.boxContent
 {
     background: #EAEAEF ;
+    word-wrap: break-word;
 }
 
 #container.frUrssafImageCommonsMaquette > #leftcol.frUrssafImageCommonsMaquette > h3.boxTitle
