@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.webdemo.controller;
 
+import java.beans.PropertyEditorSupport;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -7,7 +9,10 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,6 +47,8 @@ public class ConnectionController {
     * <li>RelayState : URL du service demandé commençant par '/'</li>
     * <li>SAMLResponse : VI codé en base 64</li>
     * </ul>
+    * <code>SAMLResponse</code> est décodé automatiquement de la base64<br>
+    * <br>
     * Gestion des vues ordonnées:
     * <ol>
     * <li>RelayState & SAMLResponse non renseignés :
@@ -118,17 +125,38 @@ public class ConnectionController {
    private void createSession(String samlResponse, HttpServletRequest request)
          throws VIException {
 
-      // décodage en base 64
-      String decodeSaml = Base64Decode.decode(samlResponse);
-
       // lecture du jeton
-      SaeJetonAuthentificationType jeton = viService.readVI(decodeSaml);
+      SaeJetonAuthentificationType jeton = viService.readVI(samlResponse);
 
       // invalidation de la session
       request.getSession().invalidate();
 
       // creation d'un objet SaeJetonAuthentification en session;
       request.getSession().setAttribute(SAE_JETON, jeton);
+
+   }
+
+   @InitBinder
+   protected final void decodageBase64(WebDataBinder binder,
+         HttpServletRequest request) {
+
+      binder.registerCustomEditor(String.class, "SAMLResponse",
+            new DecodageBase64());
+   }
+
+   private static class DecodageBase64 extends PropertyEditorSupport {
+
+      @Override
+      public void setAsText(String text) {
+         if (StringUtils.hasText(text)) {
+            this.setValue(Base64Decode.decode(text));
+
+         } else {
+
+            setValue(null);
+         }
+
+      }
 
    }
 
