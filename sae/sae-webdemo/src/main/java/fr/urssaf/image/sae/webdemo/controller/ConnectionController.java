@@ -26,7 +26,7 @@ import fr.urssaf.image.sae.webdemo.service.ConnectionService;
 @Controller
 @RequestMapping(value = "/connection")
 public class ConnectionController {
-   
+
    public static final String SAE_JETON = "SaeJetonAuthentification";
 
    @Autowired
@@ -64,7 +64,8 @@ public class ConnectionController {
     */
    @RequestMapping(method = RequestMethod.POST)
    protected final String connect(@Valid ConnectionForm connectionForm,
-         BindingResult result,HttpServletRequest request, HttpServletResponse response,Model model) {
+         BindingResult result, HttpServletRequest request,
+         HttpServletResponse response, Model model) {
 
       String servlet = null;
 
@@ -117,16 +118,16 @@ public class ConnectionController {
    private void createSession(String samlResponse, HttpServletRequest request)
          throws VIException {
 
-      // décodage en base 64 
+      // décodage en base 64
       String decodeSaml = Base64Decode.decode(samlResponse);
 
-      //lecture du jeton
+      // lecture du jeton
       SaeJetonAuthentificationType jeton = viService.readVI(decodeSaml);
 
-      //invalidation de la session
+      // invalidation de la session
       request.getSession().invalidate();
 
-      //creation d'un objet SaeJetonAuthentification en session;
+      // creation d'un objet SaeJetonAuthentification en session;
       request.getSession().setAttribute(SAE_JETON, jeton);
 
    }
