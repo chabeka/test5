@@ -29,20 +29,32 @@ public class ConnectionController {
    @Autowired
    private ConnectionService connectionService;
 
-   private SuccessConfiguration configuration;
+   private final SuccessConfiguration configuration;
 
    /**
     * initialisation de la configuration de l'application web du SAE<br>
     * <br>
-    * initialisation obligatoire avant d'appeller la méthode
-    * {@link #successServlet()}
+    * <code>SuccessConfiguration</code> doit être non null<br>
+    * <br>
+    * Cette configuration correspond à <br>
+    * <br>
+    * <code>
+    * &lt;bean id="configurationSuccess" class=
+    *    "fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration"><br>
+    * &nbsp;&nbsp;&nbsp;&lt;property name="url" value="..." /><br>
+    * &nbsp;&nbsp;&nbsp;&lt;property name="service" value="..." /><br> 
+    * &lt;/bean>
+    * </code>
     * 
     * @param configuration
     *           configuration d'une application web
     */
    @Autowired
-   public final void setConfiguration(
+   public ConnectionController(
          @Qualifier("configurationSuccess") SuccessConfiguration configuration) {
+      if (configuration == null) {
+         throw new IllegalStateException("'successConfiguration' is required");
+      }
       this.configuration = configuration;
    }
 

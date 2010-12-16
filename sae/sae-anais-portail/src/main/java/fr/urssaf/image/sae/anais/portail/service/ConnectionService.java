@@ -21,25 +21,38 @@ import fr.urssaf.image.sae.anais.portail.configuration.AnaisConfiguration;
 @Service
 public class ConnectionService {
 
-   private AnaisConfiguration configuration;
+   private final AnaisConfiguration configuration;
+
+   private final SaeAnaisService service;
 
    /**
     * Initialisation de la configuration à ANAIS<br>
     * <br>
-    * Cette étape est obligatoire avant d'appeller la méthode
-    * {@link #connect(String, String)}
+    * <code>Configuration</code> est doit être non null<br>
+    * <br>
+    * Cette configuration correspond à <br>
+    * <br>
+    * <code>
+    * &lt;bean id="configuration" class=
+    *    "fr.urssaf.image.sae.anais.portail.configuration.AnaisConfiguration"><br>
+    * &nbsp;&nbsp;&nbsp;&lt;property name="environnement" value="..." /><br>
+    * &nbsp;&nbsp;&nbsp;&lt;property name="compteApplicatif" value="..." /><br> 
+    * &lt;/bean>
+    * </code>
     * 
-    * @see AnaisConfiguration
     * @param configuration
     *           configuration à ANAIS
     */
    @Autowired
-   public final void setConfiguration(
-         @Qualifier("configuration") AnaisConfiguration configuration) {
+   public ConnectionService(@Qualifier("configuration") AnaisConfiguration configuration) {
+      
+      if(configuration == null){
+         throw new IllegalStateException("'anaisConfiguration' is required");
+      }
+      
       this.configuration = configuration;
+      this.service = new SaeAnaisService();
    }
-
-   private final SaeAnaisService service = new SaeAnaisService();
 
    /**
     * La connection appelle la méthode
@@ -69,10 +82,12 @@ public class ConnectionService {
     * @param userPassword
     *           mot de passe de l'utilisateur
     * @return Vecteur d'identification au format XML
-    * @throws AucunDroitException le CTD ne possède aucun droit
+    * @throws AucunDroitException
+    *            le CTD ne possède aucun droit
     * @throws fr.urssaf.image.sae.anais.framework.service.exception.SaeAnaisApiException
     */
-   public final String connect(String userLogin, String userPassword) throws AucunDroitException {
+   public final String connect(String userLogin, String userPassword)
+         throws AucunDroitException {
 
       String token = service.authentifierPourSaeParLoginPassword(configuration
             .getEnvironnement(), null, configuration.getCompteApplicatif(),

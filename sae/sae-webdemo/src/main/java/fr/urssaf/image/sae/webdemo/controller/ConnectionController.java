@@ -15,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.WebUtils;
 
 import fr.urssaf.image.commons.util.base64.Base64Decode;
 import fr.urssaf.image.sae.vi.exception.VIException;
@@ -37,8 +38,12 @@ public class ConnectionController {
    @Autowired
    private ConnectionService connection;
 
-   private final VIService viService = new VIService();
+   private final VIService viService; 
 
+   protected ConnectionController(){
+      viService = new VIService();
+   }
+   
    /**
     * action pour la connection en POST<br>
     * <br>
@@ -132,8 +137,8 @@ public class ConnectionController {
       request.getSession().invalidate();
 
       // creation d'un objet SaeJetonAuthentification en session;
-      request.getSession().setAttribute(SAE_JETON, jeton);
-
+      WebUtils.setSessionAttribute(request, SAE_JETON, jeton);
+      
    }
 
    @InitBinder
