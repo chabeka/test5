@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.webdemo.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.urssaf.image.commons.util.base64.Base64Decode;
 import fr.urssaf.image.sae.vi.exception.VIException;
+import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
 import fr.urssaf.image.sae.vi.service.VIService;
 import fr.urssaf.image.sae.webdemo.form.ConnectionForm;
 import fr.urssaf.image.sae.webdemo.service.ConnectionService;
@@ -24,6 +26,8 @@ import fr.urssaf.image.sae.webdemo.service.ConnectionService;
 @Controller
 @RequestMapping(value = "/connection")
 public class ConnectionController {
+   
+   public static final String SAE_JETON = "SaeJetonAuthentification";
 
    @Autowired
    private ConnectionService connection;
@@ -35,26 +39,32 @@ public class ConnectionController {
     * <br>
     * le POST comporte deux paramètres obligatoires
     * <ul>
-    * <li>RelayState : URL du service demandé commençant par '/' </li>
+    * <li>RelayState : URL du service demandé commençant par '/'</li>
     * <li>SAMLResponse : VI codé en base 64</li>
     * </ul>
     * Gestion des vues ordonnées:
     * <ol>
-    * <li>RelayState & SAMLResponse non renseignés : <code>erreur403_viko.html<code></li>
-    * <li>RelayState n'existe pas en tant que service : <code>erreur404_serviceinexistant.html<code></li>
+    * <li>RelayState & SAMLResponse non renseignés :
+    * <code>erreur403_viko.html<code></li>
+    * <li>RelayState n'existe pas en tant que service :
+    * <code>erreur404_serviceinexistant.html<code></li>
     * <li>VI incorrecte : <code>erreur403_viformatko.html</code></li>
     * <li>Authentifcation réussie : valeur de <code>relayState</code></li>
     * </ol>
+    * 
     * @param connectionForm
     *           formulaire de la connection
-    * @param result erreurs sur les paramètres de la requête
-    * @param response status de la réponse
-    * @param model paramètres renvoyés
+    * @param result
+    *           erreurs sur les paramètres de la requête
+    * @param response
+    *           status de la réponse
+    * @param model
+    *           paramètres renvoyés
     * @return view de la connection
     */
    @RequestMapping(method = RequestMethod.POST)
    protected final String connect(@Valid ConnectionForm connectionForm,
-         BindingResult result, HttpServletResponse response, Model model) {
+         BindingResult result,HttpServletRequest request, HttpServletResponse response,Model model) {
 
       String servlet = null;
 
@@ -65,8 +75,32 @@ public class ConnectionController {
 
       } else {
 
-         servlet = this.getServlet(connectionForm.getRelayState(),
-               connectionForm.getSAMLResponse(), response, model);
+         if (connection.isValidateService(connectionForm.getRelayState())) {
+
+            try {
+
+               this.createSession(connectionForm.getSAMLResponse(), request);
+
+               // on enleve le '/' devant le servlet
+               servlet = this.defaultView(connectionForm.getRelayState()
+                     .substring(1));
+
+            } catch (VIException e) {
+
+               response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+               servlet = this.errorView("erreur403_viformatko.html");
+            }
+
+         } else {
+
+            // response.setStatus(HttpServletResponse.SC_FOUND);
+            // TODO initialiser le status de la réponse avec
+            // HttpServletResponse.SC_FOUND
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            model.addAttribute("service", connectionForm.getRelayState());
+            servlet = this.errorView("erreur404_serviceinexistant.html");
+
+         }
       }
 
       return servlet;
@@ -80,40 +114,21 @@ public class ConnectionController {
       return "redirect:" + servlet;
    }
 
-   private String getServlet(String relayState, String samlResponse,
-         HttpServletResponse response, Model model) {
+   private void createSession(String samlResponse, HttpServletRequest request)
+         throws VIException {
 
-      String servlet = null;
+      // décodage en base 64 
+      String decodeSaml = Base64Decode.decode(samlResponse);
 
-      if (connection.isValidateService(relayState)) {
+      //lecture du jeton
+      SaeJetonAuthentificationType jeton = viService.readVI(decodeSaml);
 
-         String decodeSaml = Base64Decode.decode(samlResponse);
-         try {
-            
-            viService.readVI(decodeSaml);
-         
-            // on enleve le '/' devant le servlet
-            servlet = this.defaultView(relayState.substring(1));
-         
-         } catch (VIException e) {
-            
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            servlet = this.errorView("erreur403_viformatko.html");
-         }
+      //invalidation de la session
+      request.getSession().invalidate();
 
-        
+      //creation d'un objet SaeJetonAuthentification en session;
+      request.getSession().setAttribute(SAE_JETON, jeton);
 
-      } else {
-
-         // response.setStatus(HttpServletResponse.SC_FOUND);
-         // TODO initialiser le status de la réponse avec
-         // HttpServletResponse.SC_FOUND
-         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-         model.addAttribute("service", relayState);
-         servlet = this.errorView("erreur404_serviceinexistant.html");
-
-      }
-
-      return servlet;
    }
+
 }

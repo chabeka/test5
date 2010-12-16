@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.webdemo.controller;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.sae.vi.schema.DroitType;
+import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
 import fr.urssaf.image.sae.webdemo.ControllerAssert;
 import fr.urssaf.image.sae.webdemo.ControllerTestSupport;
 
@@ -62,6 +66,30 @@ public class ConnectionControllerTest extends
 
       controllerAssert.assertView("redirect:accueil.html");
 
+      SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) this
+            .getAttributeSession("SaeJetonAuthentification");
+
+      assertEquals("AGENT-CTD", jeton.getIdentiteUtilisateur().getNom());
+      assertEquals("Prenom", jeton.getIdentiteUtilisateur().getPrenom());
+
+      assertDroit(jeton.getDroits().getDroit().get(0),
+            "GESTIONNAIREACCESCOMPLET", "URSSAF - Code organisme", "CER69");
+      assertDroit(jeton.getDroits().getDroit().get(1),
+            "GESTIONNAIREACCESCOMPLET", "URSSAF - Code organisme", "UR030");
+      assertDroit(jeton.getDroits().getDroit().get(2),
+            "GESTIONNAIRESRVRH", "URSSAF - Code organisme", "UR710");
+      assertDroit(jeton.getDroits().getDroit().get(3),
+            "GESTIONNAIRESRVRH", "URSSAF - Code organisme", "UR730");
+      
+      assertEquals(4,jeton.getDroits().getDroit().size());
+
+   }
+
+   private void assertDroit(DroitType droit, String code, String type,
+         String value) {
+      assertEquals(code, droit.getCode());
+      assertEquals(type, droit.getPerimetre().getCodeType());
+      assertEquals(value, droit.getPerimetre().getValeur());
    }
 
    @Test
@@ -126,7 +154,7 @@ public class ConnectionControllerTest extends
       assertFailure_auth(Base64.encodeBase64String("no xml".getBytes()));
 
    }
-   
+
    @Test
    public void connectFailure_auth_nobase64() {
 
