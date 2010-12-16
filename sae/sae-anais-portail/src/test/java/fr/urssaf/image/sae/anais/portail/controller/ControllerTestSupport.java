@@ -72,8 +72,9 @@ public class ControllerTestSupport<C> {
     *           valeur du champ
     */
    protected final void initParameter(String name, String value) {
-
-      request.setParameter(name, value);
+      if (value != null) {
+         request.setParameter(name, value);
+      }
    }
 
    /**
@@ -103,5 +104,5 @@ public class ControllerTestSupport<C> {
       }
 
    }
-   
+
 }
