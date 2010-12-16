@@ -25,6 +25,14 @@
    <mvc:view-controller path="/erreur403_viformatko.html"
       view-name="error/erreur403_viformatko" />
 
+   <mvc:view-controller path="/erreur403_pasauthentifie.html"
+      view-name="error/erreur403_pasauthentifie"  />
+      
+   <mvc:interceptors>
+      <bean
+         class="fr.urssaf.image.sae.webdemo.interceptor.ConnectionInterceptor" />
+   </mvc:interceptors>
+
    <bean
       class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name="prefix" value="/view/" />
