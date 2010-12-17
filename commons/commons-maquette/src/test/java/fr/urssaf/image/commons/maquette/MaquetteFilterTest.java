@@ -531,13 +531,13 @@ public class MaquetteFilterTest{
     * <br>
     * Cas de test : l'URI demandée provoque une erreur 404
     * <br>
-    * Résultat attendu : pas de décoration 
+    * Résultat attendu : décoration 
     * 
     * @throws ServletException
     * @throws IOException
     */
    @Test
-   public void doFilter_Test4_Erreur404NePasDecorer() throws ServletException, IOException {
+   public void doFilter_Test4_Erreur404Decorer() throws ServletException, IOException {
       
       // Création des objets
       MaquetteFilter filtre = new MaquetteFilter();
@@ -554,10 +554,10 @@ public class MaquetteFilterTest{
       filtre.doFilter(request, response, chain);
       
       // Vérifie le résultat
-      String sExpected = resultatErreur404;
+      String sNotExpected = resultatHtml;
       String sActual = response.getContentAsString();
-      assertEquals("La réponse n'aurait pas dû être décorée",sExpected,sActual);
-            
+      assertFalse("La page aurait dû être décorée",sActual.equals(sNotExpected));
+           
    }
    
    

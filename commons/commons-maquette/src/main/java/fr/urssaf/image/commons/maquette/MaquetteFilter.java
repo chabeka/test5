@@ -2,6 +2,7 @@ package fr.urssaf.image.commons.maquette;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -13,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 
 import fr.urssaf.image.commons.maquette.config.MaquetteFilterConfig;
 import fr.urssaf.image.commons.maquette.constantes.ConstantesConfigFiltre;
@@ -129,12 +128,7 @@ public final class MaquetteFilter implements Filter {
          // Traces
          LOGGER.debug("wrapper status : " + wrapper.getStatus()) ;
          LOGGER.debug("wrapper content type : " + wrapper.getContentType()) ;
-	      
-         // On vérifie qu'aucun problème n'a été rencontré (erreur 404, ...)
-	      if (wrapper.getStatus()==CharResponseWrapper.DEFAULT_STATUS) {
-	         
-	         // => Aucun problème rencontré (erreur 404, ...)
-	         
+	          
 	         // Selon si la réponse est décorable ou non (par son type MIME)
 	         if (isReponseDecorable(wrapper)) {
 
@@ -163,21 +157,6 @@ public final class MaquetteFilter implements Filter {
 	            doFilterEcritReponseSansDecoration(wrapper,originalCharSet,printWriter);
 	            
 	         }
-	         
-	      }
-	      else {
-	         
-	         // => Un problème rencontré (erreur 404, ...)
-	         LOGGER.debug(
-	               String.format(
-	                     "Un problème a été rencontré, code HTTP : %s",
-	                     wrapper.getStatus())
-	                     ) ;
-	         
-	         // On renvoie la réponse telle quelle
-	         doFilterEcritReponseSansDecoration(wrapper,originalCharSet,printWriter);
-	         
-	      }
 
 	   }
 	   else {
@@ -264,11 +243,13 @@ public final class MaquetteFilter implements Filter {
 	 */
 	protected boolean isUriDeGetResource( HttpServletRequest request )
 	{			
-		String uri = request.getRequestURI();
-		RegularExpression regex = new RegularExpression( MaquetteConstant.GETRESOURCEURI );
-		Boolean match = regex.matches(uri) ;
-		LOGGER.debug( "checkGetResource : " + match.toString() );
-		return match ;
+	   String uri = request.getRequestURI();
+     
+      Pattern regex = Pattern.compile(MaquetteConstant.GETRESOURCEURI);
+      Boolean match = regex.matcher(uri).find();
+
+      LOGGER.debug("checkGetResource : " + match.toString());
+      return match;
 	}
 	
 	/**
