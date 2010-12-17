@@ -1,6 +1,6 @@
 package fr.urssaf.image.sae.webdemo.form;
 
-import fr.urssaf.image.sae.webdemo.validation.NotEmpty;
+import fr.urssaf.image.commons.web.validator.NotEmpty;
 
 /**
  * Classe de formulaire pour la connection
@@ -52,7 +52,8 @@ public class ConnectionForm {
    /**
     * Initialise le contenu du paramètre <code>SAMLResponse</code>
     * 
-    * @param saml le jeton VI de la connection
+    * @param saml
+    *           le jeton VI de la connection
     */
    public final void setSAMLResponse(String saml) {
       this.saml = saml;
