@@ -32,6 +32,7 @@ import fr.urssaf.image.sae.webdemo.controller.ConnectionController;
  * 
  * @see ILeftCol
  */
+// TODO faire des tests sur la maquette
 public class BoitesGauches implements ILeftCol {
 
    @Override
@@ -57,9 +58,17 @@ public class BoitesGauches implements ILeftCol {
       SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) request
             .getSession().getAttribute(ConnectionController.SAE_JETON);
 
-      return StringUtils.capitalize(jeton.getIdentiteUtilisateur().getPrenom())
-            + " "
-            + StringUtils.upperCase(jeton.getIdentiteUtilisateur().getNom());
+      String nomUtilisateur = null;
+
+      if (jeton != null) {
+
+         nomUtilisateur = StringUtils.capitalize(jeton.getIdentiteUtilisateur()
+               .getPrenom())
+               + " "
+               + StringUtils.upperCase(jeton.getIdentiteUtilisateur().getNom());
+      }
+
+      return nomUtilisateur;
    }
 
    @Override
@@ -68,7 +77,14 @@ public class BoitesGauches implements ILeftCol {
       SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) request
             .getSession().getAttribute(ConnectionController.SAE_JETON);
 
-      return jeton.getDroits().getDroit().get(0).getCode();
+      String roleUtilisateur = null;
+
+      if (jeton != null) {
+
+         roleUtilisateur = jeton.getDroits().getDroit().get(0).getCode();
+      }
+
+      return roleUtilisateur;
    }
 
    @Override
