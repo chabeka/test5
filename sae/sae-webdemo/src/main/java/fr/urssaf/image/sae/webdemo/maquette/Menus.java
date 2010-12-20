@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.webdemo.maquette;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ import fr.urssaf.image.commons.maquette.tool.MenuItem;
  * 
  * @see IMenu
  */
-public class Menus implements IMenu{
+public class Menus implements IMenu {
 
    @Override
    public final String getBreadcrumb(HttpServletRequest request) {
@@ -30,11 +31,29 @@ public class Menus implements IMenu{
       return null;
    }
 
+   /**
+    * Menus :
+    * <ul>
+    * <li>Registre d'exploitation : <code>/registre_exploitation.html</code></li>
+    * </ul>
+    * 
+    * {@inheritDoc}
+    */
    @Override
    public final List<MenuItem> getMenu(HttpServletRequest request)
          throws MenuException {
-      // TODO Auto-generated method stub
-      return null;
+
+      List<MenuItem> listMenuItem = new ArrayList<MenuItem>();
+
+      // String prefixeLinks = "/commons-maquette-exemple/";
+
+      // accueil
+      MenuItem regExpl = new MenuItem();
+      regExpl.setTitle("Registre d'exploitation");
+      regExpl.setLink("registre_exploitation.html");
+      listMenuItem.add(regExpl);
+
+      return listMenuItem;
    }
 
 }
