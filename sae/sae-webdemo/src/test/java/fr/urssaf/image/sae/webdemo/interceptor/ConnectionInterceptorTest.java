@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.webdemo.interceptor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -55,13 +56,14 @@ public class ConnectionInterceptorTest {
             "src/test/resources/saml/ctd_rights.xml"), "UTF-8");
 
       connectionController.createSession(samlResponse, request);
-      assertTrue(interceptor.preHandle(request, response, testController));
+      assertConnect(testController);
    }
 
    @Test
    public void connect_failure() throws Exception {
 
-      assertFalse(interceptor.preHandle(request, response, testController));
+      assertFalse("il ne doit pas être possible d'être connecté", interceptor
+            .preHandle(request, response, testController));
       assertEquals("connectionFailure.html", response.getRedirectedUrl());
 
    }
@@ -75,11 +77,16 @@ public class ConnectionInterceptorTest {
    @Test
    public void connect_exception() throws Exception {
 
-      assertTrue(interceptor.preHandle(request, response, connectionController));
-      assertTrue(interceptor.preHandle(request, response,
-            connectionFailureController));
-      assertTrue(interceptor.preHandle(request, response,
-            applicationdemoController));
+      assertConnect(connectionController);
+      assertConnect(connectionFailureController);
+      assertConnect(applicationdemoController);
+
+   }
+
+   public void assertConnect(Object handler) throws Exception {
+
+      assertTrue("on doit être connecté",interceptor.preHandle(request, response, handler));
+      assertNull(response.getRedirectedUrl());
 
    }
 }

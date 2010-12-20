@@ -31,11 +31,11 @@ public class ConnectionControllerTest extends
 
    private ControllerAssert<ConnectionController> controllerAssert;
 
-   private static final String SAML_FIELD = "SAMLResponse";
+   static final String SAML_FIELD = "SAMLResponse";
 
    private static String SAML_VALUE;
 
-   private static final String RELAY_FIELD = "RelayState";
+   static final String RELAY_FIELD = "RelayState";
 
    private static final String RELAY_VALUE = "/accueil.html";
 
