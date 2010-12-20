@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.sae.anais.framework.service.exception.AucunDroitException;
+import fr.urssaf.image.sae.anais.portail.configuration.SuccessConfiguration;
+import fr.urssaf.image.sae.anais.portail.service.ConnectionService;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring-servlet.xml",
       "/applicationContext.xml" })
@@ -54,7 +58,7 @@ public class ConnectionControllerTest extends
       this.initParameter(PASSWORD_FIELD, PASSWORD_VALUE);
 
       controllerAssert.assertView("connection/connection_success");
-      
+
    }
 
    @Test
@@ -65,7 +69,7 @@ public class ConnectionControllerTest extends
       this.connectFailure_password("");
 
    }
-   
+
    private void connectFailure_password(String password) {
 
       this.initPost();
@@ -86,7 +90,7 @@ public class ConnectionControllerTest extends
       this.connectFailure_login(" ");
 
    }
-   
+
    private void connectFailure_login(String login) {
 
       this.initPost();
@@ -100,7 +104,7 @@ public class ConnectionControllerTest extends
    }
 
    @Test
-   public void connectFaillure_authentification() {
+   public void connectFailure_authentification() {
 
       this.initPost();
 
@@ -109,5 +113,35 @@ public class ConnectionControllerTest extends
 
       controllerAssert.assertView("connection/connection_failure");
 
+   }
+
+   @Test
+   public void connectFailure_noright() throws AucunDroitException {
+
+      this.initPost();
+
+      this.initParameter(LOGIN_FIELD, "CER6990012");
+      this.initParameter(PASSWORD_FIELD, "CER6990012");
+
+      controllerAssert.assertView("connection/connection_failure");
+   }
+
+   @Autowired
+   private SuccessConfiguration successConfiguration;
+
+   @Autowired
+   private ConnectionService connectionService;
+
+   @Test(expected = IllegalStateException.class)
+   public void connectException_successConfiguration()
+         throws AucunDroitException {
+
+      new ConnectionController(null, connectionService);
+   }
+
+   @Test(expected = IllegalStateException.class)
+   public void connectException_connectionService() throws AucunDroitException {
+
+      new ConnectionController(successConfiguration, null);
    }
 }
