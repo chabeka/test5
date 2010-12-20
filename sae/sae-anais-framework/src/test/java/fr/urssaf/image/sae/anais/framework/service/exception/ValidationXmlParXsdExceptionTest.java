@@ -1,11 +1,17 @@
 package fr.urssaf.image.sae.anais.framework.service.exception;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.vi.exception.VIException;
@@ -16,12 +22,10 @@ public class ValidationXmlParXsdExceptionTest {
 
    private static final String FAIL_MESSAGE = "le test ne doit pas passer";
 
-   private static final Logger LOG = Logger
-         .getLogger(ValidationXmlParXsdExceptionTest.class);
-
+   @SuppressWarnings("unchecked")
    @Test
    public void validationXmlParXsdException() throws VIException,
-         AucunDroitException {
+         AucunDroitException, IOException {
 
       VIService service = new VIService();
 
@@ -35,8 +39,23 @@ public class ValidationXmlParXsdExceptionTest {
          assertEquals("sae-anais.xsd", exception.getNomDuSchemaXsd());
          assertEquals("VECTEUR IDENTIFICATION", exception.getNomDuDocumentXml());
          assertEquals(2, exception.getErreurs().length);
-         
-         LOG.debug(exception.getMessage());
+
+         List<String> lines = FileUtils.readLines(new File(
+               "src/test/resources/ValidationXmlParXsdException.txt"), "UTF-8");
+
+         String[] str = StringUtils.split(exception.getMessage(),
+               SystemUtils.LINE_SEPARATOR);
+
+         int index = 0;
+         for (String line : lines) {
+
+            assertTrue("le message doit commencer par " + line
+                  + " à la ligne " + index, str[index].startsWith(line));
+            index++;
+         }
+
+         assertEquals(lines.size(), str.length);
+
       }
 
    }

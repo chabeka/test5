@@ -2,6 +2,8 @@ package fr.urssaf.image.sae.anais.framework.service.exception;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang.SystemUtils;
+
 import fr.urssaf.image.sae.vi.exception.VIException;
 
 /**
@@ -56,6 +58,9 @@ public class ValidationXmlParXsdException extends RuntimeException {
     * <li><code>{2}</code> : la 1ère <code>erreurs</code></li>
     * <li><code>{n}</code> : les autres <code>erreurs</code></li>
     * </ul>
+    * 
+    * 
+    * {@inheritDoc}
     */
    @Override
    @SuppressWarnings("PMD.InsufficientStringBufferDeclaration")
@@ -63,13 +68,14 @@ public class ValidationXmlParXsdException extends RuntimeException {
 
       StringBuffer msg = new StringBuffer();
       msg.append("Le document XML " + this.nomDuDocumentXml
-            + " n'est pas conforme au schéma XSD " + this.nomDuDocumentXml
-            + "\n");
-
+            + " n'est pas conforme au schéma XSD " + this.nomDuDocumentXml);
+      msg.append(SystemUtils.LINE_SEPARATOR);
       for (String erreur : erreurs) {
-         msg.append("\t- " + erreur + "\n");
+         msg.append("\t- ");
+         msg.append(erreur);
+         msg.append(SystemUtils.LINE_SEPARATOR);
       }
-
+      
       return msg.toString();
 
    }
