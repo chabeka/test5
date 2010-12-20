@@ -50,7 +50,8 @@ public class ConnectionController {
     *           service de connection
     */
    @Autowired
-   public ConnectionController(@Qualifier("connectionService") ConnectionService connection) {
+   public ConnectionController(
+         @Qualifier("connectionService") ConnectionService connection) {
 
       if (connection == null) {
          throw new IllegalStateException("'connectionService' is required");
@@ -72,11 +73,10 @@ public class ConnectionController {
     * <br>
     * Gestion des vues ordonnées:
     * <ol>
-    * <li>RelayState & SAMLResponse non renseignés :
-    * <code>erreur403_viko.html<code></li>
+    * <li>RelayState & SAMLResponse non renseignés : <code>erreur403_viko<code></li>
     * <li>RelayState n'existe pas en tant que service :
-    * <code>erreur404_serviceinexistant.html<code></li>
-    * <li>VI incorrecte : <code>erreur403_viformatko.html</code></li>
+    * <code>erreur404_serviceinexistant<code></li>
+    * <li>VI incorrecte : <code>erreur403_viformatko</code></li>
     * <li>Authentifcation réussie : valeur de <code>relayState</code></li>
     * </ol>
     * 
@@ -100,7 +100,7 @@ public class ConnectionController {
       if (result.hasErrors()) {
 
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-         servlet = this.errorView("erreur403_viko.html");
+         servlet = this.errorView("erreur403_viko");
 
       } else {
 
@@ -117,7 +117,7 @@ public class ConnectionController {
             } catch (VIException e) {
 
                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-               servlet = this.errorView("erreur403_viformatko.html");
+               servlet = this.errorView("erreur403_viformatko");
             }
 
          } else {
@@ -127,7 +127,7 @@ public class ConnectionController {
             // HttpServletResponse.SC_FOUND
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             model.addAttribute("service", connectionForm.getRelayState());
-            servlet = this.errorView("erreur404_serviceinexistant.html");
+            servlet = this.errorView("erreur404_serviceinexistant");
 
          }
       }
@@ -136,14 +136,27 @@ public class ConnectionController {
    }
 
    protected final String errorView(String servlet) {
-      return "forward:" + servlet;
+      return "error/" + servlet;
    }
 
    protected final String defaultView(String servlet) {
       return "redirect:" + servlet;
    }
 
-   private void createSession(String samlResponse, HttpServletRequest request)
+   /**
+    * Cette méthode permet de garder en session un objet de type
+    * {@link SaeJetonAuthentificationType} sous le nom de {@link #SAE_JETON}<br>
+    * <br>
+    * Cet objet permet par la suite de savoir si l'utilisateur a une connexion
+    * valide<br>
+    * <br>
+    * Le session est invalidée avant de recréer<br>
+    * @see VIService#readVI(String)
+    * @param samlResponse VI du jeton d'authentification
+    * @param request requête HTTP
+    * @throws VIException exception lévée lors de la création du jeton
+    */
+   public final void createSession(String samlResponse, HttpServletRequest request)
          throws VIException {
 
       // lecture du jeton

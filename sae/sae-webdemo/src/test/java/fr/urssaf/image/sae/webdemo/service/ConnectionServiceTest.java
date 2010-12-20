@@ -1,7 +1,7 @@
 package fr.urssaf.image.sae.webdemo.service;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,20 +18,27 @@ public class ConnectionServiceTest {
    @Autowired
    private ConnectionService service;
 
+   @Test(expected = IllegalStateException.class)
+   public void isValidateService_exception() {
+
+      new ConnectionService(null);
+
+   }
+
    @Test
    public void isValidateService_success() {
 
       this.assertTrueValidateService("/accueil.html");
       this.assertTrueValidateService("/connection");
       this.assertTrueValidateService("/");
-      
+
    }
-   
+
    @Test
    public void isValidateService_failure() {
 
       this.assertFalseValidateService("/service");
-      
+
    }
 
    private void assertTrueValidateService(String servlet) {
@@ -39,7 +46,7 @@ public class ConnectionServiceTest {
       assertTrue("la servlet est invalide " + servlet, service
             .isValidateService(servlet));
    }
-   
+
    private void assertFalseValidateService(String servlet) {
 
       assertFalse("la servlet est valide " + servlet, service

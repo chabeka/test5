@@ -15,18 +15,6 @@
 
    <mvc:view-controller path="/accueil.html"
       view-name="welcome" />
-
-   <mvc:view-controller path="/erreur403_viko.html"
-      view-name="error/error403_viko" />
-
-   <mvc:view-controller path="/erreur404_serviceinexistant.html"
-      view-name="error/erreur404_serviceinexistant" />
-
-   <mvc:view-controller path="/erreur403_viformatko.html"
-      view-name="error/erreur403_viformatko" />
-
-   <mvc:view-controller path="/erreur403_pasauthentifie.html"
-      view-name="error/erreur403_pasauthentifie"  />
       
    <mvc:interceptors>
       <bean

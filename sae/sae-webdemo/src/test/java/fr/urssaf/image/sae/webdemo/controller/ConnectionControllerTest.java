@@ -39,11 +39,11 @@ public class ConnectionControllerTest extends
 
    private static final String RELAY_VALUE = "/accueil.html";
 
-   private static final String FORWARD_403 = "forward:erreur403_viko.html";
+   private static final String FORWARD_403 = "error/erreur403_viko";
 
-   private static final String FORWARD_403_AUTH = "forward:erreur403_viformatko.html";
+   private static final String FORWARD_403_AUTH = "error/erreur403_viformatko";
 
-   private static final String FORWARD_404 = "forward:erreur404_serviceinexistant.html";
+   private static final String FORWARD_404 = "error/erreur404_serviceinexistant";
 
    @Before
    public void init() throws IOException {
@@ -55,6 +55,13 @@ public class ConnectionControllerTest extends
 
       SAML_VALUE = FileUtils.readFileToString(new File(
             "src/test/resources/saml/ctd_rights.txt"), "UTF-8");
+
+   }
+   
+   @Test(expected = IllegalStateException.class)
+   public void connectException() {
+
+      new ConnectionController(null);
 
    }
 

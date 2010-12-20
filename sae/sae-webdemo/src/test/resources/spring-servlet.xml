@@ -16,4 +16,9 @@
    <mvc:view-controller path="/accueil.html"
       view-name="welcome" />
 
+   <mvc:interceptors>
+      <bean
+         class="fr.urssaf.image.sae.webdemo.interceptor.ConnectionInterceptor" />
+   </mvc:interceptors>
+
 </beans>
