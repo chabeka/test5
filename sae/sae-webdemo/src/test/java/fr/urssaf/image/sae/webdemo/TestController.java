@@ -1,11 +1,13 @@
 package fr.urssaf.image.sae.webdemo;
 
+import org.junit.Ignore;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/other")
+@RequestMapping(value = "/test")
 @SuppressWarnings("PMD")
-public class OtherController {
+@Ignore
+public class TestController {
 
 }

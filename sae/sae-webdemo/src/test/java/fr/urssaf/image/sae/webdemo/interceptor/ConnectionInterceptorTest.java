@@ -17,7 +17,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.urssaf.image.sae.webdemo.OtherController;
+import fr.urssaf.image.sae.webdemo.TestController;
 import fr.urssaf.image.sae.webdemo.controller.ApplicationDemoController;
 import fr.urssaf.image.sae.webdemo.controller.ConnectionController;
 import fr.urssaf.image.sae.webdemo.controller.ConnectionFailureController;
@@ -47,7 +47,7 @@ public class ConnectionInterceptorTest {
    private ConnectionController connectionController;
 
    @Autowired
-   private OtherController otherController;
+   private TestController controller;
 
    @Test
    public void connection_success() throws Exception {
@@ -56,14 +56,14 @@ public class ConnectionInterceptorTest {
             "src/test/resources/saml/ctd_rights.xml"), "UTF-8");
 
       connectionController.createSession(samlResponse, request);
-      assertConnect(otherController);
+      assertConnect(controller);
    }
 
    @Test
    public void connect_failure() throws Exception {
 
       assertFalse("il ne doit pas être possible d'être connecté", interceptor
-            .preHandle(request, response, otherController));
+            .preHandle(request, response, controller));
       assertEquals("connectionFailure.html", response.getRedirectedUrl());
 
    }
