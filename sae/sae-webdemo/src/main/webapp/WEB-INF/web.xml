@@ -65,6 +65,11 @@
          <param-value>fr.urssaf.image.sae.webdemo.maquette.BoitesGauches</param-value>
       </init-param>
       
+      <init-param>
+         <param-name>excludeFiles</param-name>
+         <param-value>/sae-webdemo/registre_exploitation/search.html</param-value>
+      </init-param>
+      
    </filter>
 
    <filter-mapping>

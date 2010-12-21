@@ -109,6 +109,13 @@
          <scope>provided</scope>
       </dependency>
 
+      <!-- JSON avec Jackson -->
+      <dependency>
+         <groupId>org.codehaus.jackson</groupId>
+         <artifactId>jackson-mapper-asl</artifactId>
+         <version>${jackson-json.version}</version>
+      </dependency>
+      
       <!--  TEST -->
 
       <dependency>

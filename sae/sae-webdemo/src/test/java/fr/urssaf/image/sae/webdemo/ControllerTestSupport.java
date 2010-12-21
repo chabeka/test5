@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.webdemo;
 
-import java.util.Enumeration;
-
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,26 +86,11 @@ public class ControllerTestSupport<C> {
     *           contrôleur à tester
     * @return vue renvoyée par l'action
     */
-   @SuppressWarnings("unchecked")
    protected final ModelAndView handle(C controller) {
 
       try {
          ModelAndView model = handlerAdapter.handle(request, response,
                controller);
-         
-         for (String key : model.getModel().keySet()) {
-
-            LOG.debug(key + " --> " + model.getModel().get(key));
-         }
-
-         Enumeration<String> attributes = request.getSession()
-               .getAttributeNames();
-         while (attributes.hasMoreElements()) {
-
-            String name = attributes.nextElement();
-
-            LOG.debug(name + " --> " + request.getSession().getAttribute(name));
-         }
 
          return model;
 
@@ -117,8 +100,26 @@ public class ControllerTestSupport<C> {
 
    }
 
+   protected final String json(C controller) {
+
+      try {
+         handlerAdapter.handle(request, response, controller);
+
+         return response.getContentAsString();
+
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
+
+   }
+
    public Object getAttributeSession(String name) {
       return request.getSession().getAttribute(name);
+   }
+
+   public void setURI(String requestURI) {
+
+      this.request.setRequestURI(requestURI);
    }
 
 }
