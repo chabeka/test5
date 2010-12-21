@@ -86,5 +86,17 @@
       <servlet-name>MaquetteServlet</servlet-name>
       <url-pattern>/getResourceImageMaquette.do</url-pattern>
    </servlet-mapping>
+   
+   <!-- Servlet pour extjs -->
+   <servlet>
+      <description></description>
+      <display-name>ExtJsServlet</display-name>
+      <servlet-name>ExtJsServlet</servlet-name>
+      <servlet-class>fr.urssaf.image.commons.controller.spring.servlet.ExtJsServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>ExtJsServlet</servlet-name>
+      <url-pattern>/getResourceExtJs.getResourceExtJs</url-pattern>
+   </servlet-mapping>
 
 </web-app>

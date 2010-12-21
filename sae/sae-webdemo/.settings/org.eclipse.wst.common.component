@@ -10,6 +10,9 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-util/commons-util">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/commons-controller-spring-extjs/commons-controller-spring-extjs">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/sae-vi/sae-vi">
             <dependency-type>uses</dependency-type>
         </dependent-module>
