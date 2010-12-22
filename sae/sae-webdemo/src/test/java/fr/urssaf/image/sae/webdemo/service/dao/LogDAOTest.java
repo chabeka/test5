@@ -24,7 +24,7 @@ public class LogDAOTest {
    @Test
    public void find(){
       
-      List<Log> logs = service.find(10,100,"iseq",Dir.ASC);
+      List<Log> logs = service.find(10,100,"idseq",Dir.ASC);
       assertEquals(100,logs.size());
    }
 }
