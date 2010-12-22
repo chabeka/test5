@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.webdemo.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fr.urssaf.image.sae.webdemo.modele.Log;
+import fr.urssaf.image.sae.webdemo.resource.Dir;
 import fr.urssaf.image.sae.webdemo.service.dao.LogDAO;
 
 /**
@@ -61,11 +60,12 @@ public class LoggerController {
    protected final @ResponseBody
    Map<String, ? extends Object> search(@RequestParam int start,
          @RequestParam int limit, @RequestParam String sort,
-         @RequestParam String dir) {
+         @RequestParam Dir dir) {
 
-      Map<String, List<Log>> search = new HashMap<String, List<Log>>();
+      Map<String,Object> search = new HashMap<String,Object>();
 
-      search.put("logs", logDAO.find());
+      search.put("logs", logDAO.find(start,limit,sort,dir));
+      search.put("totalCount", logDAO.count());
 
       return search;
    }
