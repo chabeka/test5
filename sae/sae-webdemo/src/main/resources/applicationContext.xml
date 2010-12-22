@@ -5,4 +5,9 @@
 		http://www.springframework.org/schema/beans	
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+   <import resource="applicationContext-dataSources.xml" />
+   <import resource="applicationContext-sessionFactory.xml" />
+   <import resource="applicationContext-transactionManager.xml" />
+
+
 </beans>
