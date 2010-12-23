@@ -9,5 +9,15 @@
    <import resource="applicationContext-sessionFactory.xml" />
    <import resource="applicationContext-transactionManager.xml" />
 
+   <bean id="messageSource"
+      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+      <property name="basenames">
+         <list>
+            <value>/message/title</value>
+         </list>
+      </property>
+      <property name="cacheSeconds" value="0" />
+   </bean>
+
 
 </beans>

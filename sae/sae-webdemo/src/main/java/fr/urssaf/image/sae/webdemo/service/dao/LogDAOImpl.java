@@ -46,6 +46,9 @@ public class LogDAOImpl extends HibernateDaoSupport implements LogDAO {
       this.setSessionFactory(sessionFactory);
    }
 
+   /**
+    * {@inheritDoc}
+    */
    @SuppressWarnings("unchecked")
    @Override
    public final List<Log> find(int firstResult, int maxResults, String order,
@@ -69,6 +72,9 @@ public class LogDAOImpl extends HibernateDaoSupport implements LogDAO {
       return criteria.list();
    }
 
+   /**
+    * {@inheritDoc}
+    */
    @Override
    public final int count() {
 
