@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -50,8 +49,7 @@ public class ConnectionController {
     *           service de connection
     */
    @Autowired
-   public ConnectionController(
-         @Qualifier("connectionService") ConnectionService connection) {
+   public ConnectionController(ConnectionService connection) {
 
       if (connection == null) {
          throw new IllegalStateException("'connectionService' is required");

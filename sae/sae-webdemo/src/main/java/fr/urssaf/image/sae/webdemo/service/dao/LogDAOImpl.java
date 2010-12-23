@@ -15,15 +15,27 @@ import fr.urssaf.image.sae.webdemo.modele.Log;
 import fr.urssaf.image.sae.webdemo.resource.Dir;
 
 /**
- * DAO des traces d'explotation<br>
+ * DAO d'implémentation du service {@link LogDAO}<br>
+ * <br>
+ * Implémentation Hibernate<br>
+ * La classe hérite de {@link HibernateDaoSupport}
  * 
  * 
  */
-@Repository("logDAO")
+@Repository
 public class LogDAOImpl extends HibernateDaoSupport implements LogDAO {
 
    /**
-    * intitialisation de SessionFactory
+    * initialisation de SessionFactory<br>
+    * <br>
+    * L'instanciation du session factory s'effectue dans le fichier
+    * <code>applicationContext-sessionFactory</code>
+    * 
+    * <pre>
+    * &lt;bean id="sessionFactory" class="...">
+    *       ...
+    * &lt/bean>
+    * </pre>
     * 
     * @param sessionFactory
     *           sessionfactory
@@ -44,20 +56,21 @@ public class LogDAOImpl extends HibernateDaoSupport implements LogDAO {
       criteria.setFirstResult(firstResult);
       criteria.setMaxResults(maxResults);
 
-      switch (dir) {
-      case ASC:
-         criteria.addOrder(Order.asc(order));
-         break;
-      case DESC:
-         criteria.addOrder(Order.desc(order));
-         break;
+      if (order != null) {
+
+         if (dir == Dir.ASC) {
+            criteria.addOrder(Order.asc(order));
+         } else if (dir == Dir.DESC) {
+            criteria.addOrder(Order.desc(order));
+         }
+
       }
 
       return criteria.list();
    }
 
    @Override
-   public int count() {
+   public final int count() {
 
       Criteria criteria = createCriteria();
 

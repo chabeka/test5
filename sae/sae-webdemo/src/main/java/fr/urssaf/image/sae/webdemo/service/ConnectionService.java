@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping;
@@ -28,8 +27,7 @@ public class ConnectionService {
     *           contexte de l'application
     */
    @Autowired
-   public ConnectionService(
-         @Qualifier("applicationContext") ApplicationContext context) {
+   public ConnectionService(ApplicationContext context) {
 
       if (context == null) {
          throw new IllegalStateException("'applicationContext' is required");

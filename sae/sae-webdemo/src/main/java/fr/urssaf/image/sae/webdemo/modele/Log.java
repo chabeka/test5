@@ -26,7 +26,7 @@ public class Log {
    private String infos;
 
    /**
-    * @return the idseq
+    * @return identifiant de séquentialité
     */
    public final long getIdseq() {
       return idseq;
@@ -34,30 +34,30 @@ public class Log {
 
    /**
     * @param idseq
-    *           the idseq to set
+    *           identifiant de séquentialité
     */
    public final void setIdseq(long idseq) {
       this.idseq = idseq;
    }
 
    /**
-    * @return the horodatage
+    * @return horodatage
     */
    @JsonSerialize(using = CustomDateSerializer.class)
    public final Date getHorodatage() {
-      return horodatage;
+      return (Date) horodatage.clone();
    }
 
    /**
     * @param horodatage
-    *           the horodatage to set
+    *           horodatage
     */
    public final void setHorodatage(Date horodatage) {
-      this.horodatage = horodatage;
+      this.horodatage = (Date) horodatage.clone();
    }
 
    /**
-    * @return the occurences
+    * @return nombre d'occurrence du problème
     */
    public final int getOccurences() {
       return occurences;
@@ -65,14 +65,14 @@ public class Log {
 
    /**
     * @param occurences
-    *           the occurences to set
+    *           nombre d'occurrence du problème
     */
    public final void setOccurences(int occurences) {
       this.occurences = occurences;
    }
 
    /**
-    * @return the probleme
+    * @return libellé du problème survenu
     */
    public final String getProbleme() {
       return probleme;
@@ -80,14 +80,14 @@ public class Log {
 
    /**
     * @param probleme
-    *           the probleme to set
+    *           libellé du problème survenu
     */
    public final void setProbleme(String probleme) {
       this.probleme = probleme;
    }
 
    /**
-    * @return the action
+    * @return code de l'action à réaliser pour corriger le problème
     */
    public final String getAction() {
       return action;
@@ -95,14 +95,14 @@ public class Log {
 
    /**
     * @param action
-    *           the action to set
+    *           code de l'action à réaliser pour corriger le problème
     */
    public final void setAction(String action) {
       this.action = action;
    }
 
    /**
-    * @return the infos
+    * @return informations complémentaires
     */
    public final String getInfos() {
       return infos;
@@ -110,7 +110,7 @@ public class Log {
 
    /**
     * @param infos
-    *           the infos to set
+    *           informations complémentaires
     */
    public final void setInfos(String infos) {
       this.infos = infos;
