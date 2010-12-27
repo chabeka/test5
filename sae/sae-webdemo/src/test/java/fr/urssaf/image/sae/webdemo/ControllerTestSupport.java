@@ -126,5 +126,9 @@ public class ControllerTestSupport<C> {
 
       this.request.getSession().setAttribute(name, value);
    }
+   
+   public int getStatut(){
+      return response.getStatus();
+   }
 
 }

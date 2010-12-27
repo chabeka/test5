@@ -60,6 +60,19 @@ public class ConnectionController {
    }
 
    /**
+    * action GET non prise en compte<br>
+    * renvoie une erreur <code>404</code>
+    * 
+    * @param response
+    *           réponse HTTP
+    */
+   @RequestMapping(method = RequestMethod.GET)
+   protected final void connect(HttpServletResponse response) {
+
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+   }
+
+   /**
     * action pour la connection en POST<br>
     * <br>
     * le POST comporte deux paramètres obligatoires
@@ -120,10 +133,7 @@ public class ConnectionController {
 
          } else {
 
-            // response.setStatus(HttpServletResponse.SC_FOUND);
-            // TODO initialiser le status de la réponse avec
-            // HttpServletResponse.SC_FOUND
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             model.addAttribute("service", connectionForm.getRelayState());
             servlet = this.errorView("erreur404_serviceinexistant");
 
@@ -149,13 +159,17 @@ public class ConnectionController {
     * valide<br>
     * <br>
     * Le session est invalidée avant de recréer<br>
+    * 
     * @see VIService#readVI(String)
-    * @param samlResponse VI du jeton d'authentification
-    * @param request requête HTTP
-    * @throws VIException exception lévée lors de la création du jeton
+    * @param samlResponse
+    *           VI du jeton d'authentification
+    * @param request
+    *           requête HTTP
+    * @throws VIException
+    *            exception lévée lors de la création du jeton
     */
-   public final void createSession(String samlResponse, HttpServletRequest request)
-         throws VIException {
+   public final void createSession(String samlResponse,
+         HttpServletRequest request) throws VIException {
 
       // lecture du jeton
       SaeJetonAuthentificationType jeton = viService.readVI(samlResponse);

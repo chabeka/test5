@@ -28,7 +28,7 @@ public class LoggerForm {
     */
    public final void setStartDate(Date start) {
       if (start == null) {
-         this.start = null;
+         this.start = start;
       } else {
          this.start = (Date) start.clone();
       }
@@ -47,7 +47,7 @@ public class LoggerForm {
     */
    public final void setEndDate(Date end) {
       if (end == null) {
-         this.end = null;
+         this.end = end;
       } else {
          this.end = (Date) end.clone();
       }

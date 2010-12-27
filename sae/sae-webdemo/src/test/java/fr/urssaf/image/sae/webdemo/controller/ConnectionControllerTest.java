@@ -47,8 +47,6 @@ public class ConnectionControllerTest extends
    @Before
    public void init() throws IOException {
 
-      this.initPost();
-
       controllerAssert = new ControllerAssert<ConnectionController>(this,
             servlet);
 
@@ -56,7 +54,7 @@ public class ConnectionControllerTest extends
             "src/test/resources/saml/ctd_rights.txt"), "UTF-8");
 
    }
-   
+
    @Test(expected = IllegalStateException.class)
    public void connectException() {
 
@@ -65,19 +63,32 @@ public class ConnectionControllerTest extends
    }
 
    @Test
-   public void connectSuccess() {
+   public void connectGet() {
 
-      this.assertConnectSuccess(RELAY_VALUE,"accueil.html");
-      this.assertConnectSuccess("/","");
+      this.initGet();
+
+      this.handle(servlet);
+
+      assertEquals(404, this.getStatut());
 
    }
 
-   private void assertConnectSuccess(String relayValue,String redirect) {
+   @Test
+   public void connectSuccess() {
+
+      this.initPost();
+
+      this.assertConnectSuccess(RELAY_VALUE, "accueil.html");
+      this.assertConnectSuccess("/", "");
+
+   }
+
+   private void assertConnectSuccess(String relayValue, String redirect) {
 
       this.initParameter(SAML_FIELD, SAML_VALUE);
       this.initParameter(RELAY_FIELD, relayValue);
 
-      controllerAssert.assertView("redirect:"+redirect);
+      controllerAssert.assertView("redirect:" + redirect);
 
       SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) this
             .getAttributeSession("SaeJetonAuthentification");
@@ -108,6 +119,8 @@ public class ConnectionControllerTest extends
    @Test
    public void connectFailure_SAML() {
 
+      this.initPost();
+
       this.assertFailure_SAML("");
       this.assertFailure_SAML(" ");
       this.assertFailure_SAML(null);
@@ -121,11 +134,14 @@ public class ConnectionControllerTest extends
             "NotEmpty");
 
       controllerAssert.assertView(FORWARD_403);
+      assertEquals(403, this.getStatut());
 
    }
 
    @Test
    public void connectFailure_Relay() {
+
+      this.initPost();
 
       this.assertFailure_Relay("");
       this.assertFailure_Relay(" ");
@@ -139,21 +155,27 @@ public class ConnectionControllerTest extends
             "NotEmpty");
 
       controllerAssert.assertView(FORWARD_403);
+      assertEquals(403, this.getStatut());
 
    }
 
    @Test
    public void connectFailure_service() {
 
+      this.initPost();
+
       this.initParameter(SAML_FIELD, SAML_VALUE);
       this.initParameter(RELAY_FIELD, "\\service_inconnu.html");
 
       controllerAssert.assertView(FORWARD_404);
+      assertEquals(404, this.getStatut());
 
    }
 
    @Test
    public void connectFailure_auth_noright() throws IOException {
+
+      this.initPost();
 
       String saml = FileUtils.readFileToString(new File(
             "src/test/resources/saml/ctd_0_right.txt"), "UTF-8");
@@ -164,12 +186,16 @@ public class ConnectionControllerTest extends
    @Test
    public void connectFailure_auth_noxml() {
 
+      this.initPost();
+
       assertFailure_auth(Base64.encodeBase64String("no xml".getBytes()));
 
    }
 
    @Test
    public void connectFailure_auth_nobase64() {
+
+      this.initPost();
 
       assertFailure_auth("no base 64");
 
@@ -181,6 +207,7 @@ public class ConnectionControllerTest extends
       this.initParameter(RELAY_FIELD, RELAY_VALUE);
 
       controllerAssert.assertView(FORWARD_403_AUTH);
+      assertEquals(403, this.getStatut());
 
    }
 }

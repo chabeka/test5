@@ -32,7 +32,6 @@ import fr.urssaf.image.sae.webdemo.controller.ConnectionController;
  * 
  * @see ILeftCol
  */
-// TODO faire des tests sur la maquette
 public class BoitesGauches implements ILeftCol {
 
    @Override
