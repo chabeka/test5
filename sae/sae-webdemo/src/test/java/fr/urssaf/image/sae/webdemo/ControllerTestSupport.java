@@ -121,5 +121,10 @@ public class ControllerTestSupport<C> {
 
       this.request.setRequestURI(requestURI);
    }
-   
+
+   public void setSession(String name, Object value) {
+
+      this.request.getSession().setAttribute(name, value);
+   }
+
 }

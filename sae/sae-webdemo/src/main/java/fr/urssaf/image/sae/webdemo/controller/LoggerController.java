@@ -5,19 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.urssaf.image.sae.webdemo.form.LoggerForm;
 import fr.urssaf.image.sae.webdemo.resource.Dir;
@@ -36,8 +38,10 @@ import fr.urssaf.image.sae.webdemo.service.dao.LogDAO;
  * <li><code>/registre_exploitation/filter</code> en POST : filtrage du tableau
  * des traces</li>
  * </ul>
+ * 
  */
 @Controller
+@SessionAttributes("logger_controller")
 @RequestMapping(value = "/registre_exploitation")
 public class LoggerController {
 
@@ -45,40 +49,55 @@ public class LoggerController {
 
    private static final String FORM_FAILURE_MSG = "error.form_failure_msg";
 
+   private static final String FORM_SESSION = "logger_controller";
+
    private final LogDAO logDAO;
 
-   @Autowired
-   private MessageSource messageSource;
+   private final MessageSource messageSource;
 
    /**
-    * Initialisation de la variable <code>logDAO<code><br>
+    * Initialisation de la variable
+    * <code>logDAO<code> && <code>messageSource</code><br>
     * <br>
-    * <code>logDAO<code> ne peut pas être null
+    * <code>logDAO<code> ne peut pas être null<br>
+    * <code>messageSource<code> ne peut pas être null<br>
     * 
     * @see LogDAO
     * @param logDAO
     *           dao des traces
+    * @param messageSource
+    *           ensemble des messages de l'application
     */
    @Autowired
-   public LoggerController(LogDAO logDAO) {
+   public LoggerController(LogDAO logDAO, MessageSource messageSource) {
 
       if (logDAO == null) {
          throw new IllegalStateException("'logDAO' is required");
       }
 
+      if (messageSource == null) {
+         throw new IllegalStateException("'messageSource' is required");
+      }
+
       this.logDAO = logDAO;
+      this.messageSource = messageSource;
    }
 
    /**
     * Action GET principale pour l'affichage de la vue
     * <code>registre_exploitation</code><br>
-    * Ne fait que renvoyer la vue
+    * <br>
+    * instancie en session un objet de type {@link LoggerForm} pour la variable
+    * {@link #FORM_SESSION}<br>
     * 
+    * @param Model
+    *           initialisation du formulaire en session
     * @return la vue principale de l'écran de présentation des traces
     */
    @RequestMapping(method = RequestMethod.GET)
-   protected final String main() {
+   protected final String main(Model model) {
 
+      model.addAttribute(FORM_SESSION, new LoggerForm());
       return "registre_exploitation";
    }
 
@@ -98,20 +117,18 @@ public class LoggerController {
     * </ul>
     * 
     * @param form
-    *           formulaire pour l'écran des traces
+    *           formulaire en session pour l'écran des traces
     * @param result
     *           résultats du formulaire
     * @param request
     *           requête HTTP
-    * @param response
-    *           réponse HTTP
     * @return
     */
    @RequestMapping(value = "/filter", method = RequestMethod.POST)
    protected final @ResponseBody
-   Map<String, ? extends Object> filter(@Valid LoggerForm form,
-         BindingResult result, HttpServletRequest request,
-         HttpServletResponse response) {
+   Map<String, ? extends Object> filter(
+         @ModelAttribute(FORM_SESSION) @Valid LoggerForm form,
+         BindingResult result, HttpServletRequest request) {
 
       form.validate(result);
 
@@ -156,6 +173,8 @@ public class LoggerController {
     * <li><code>totalCount</code> : nombre de traces</li>
     * </ul>
     * 
+    * @param form
+    *           récupération du formulaire en session
     * @param start
     *           numéro de page du tableau
     * @param limit
@@ -168,16 +187,18 @@ public class LoggerController {
     */
    @RequestMapping(value = "/search", method = RequestMethod.POST)
    protected final @ResponseBody
-   Map<String, ? extends Object> search(@RequestParam int start,
-         @RequestParam int limit, @RequestParam String sort,
-         @RequestParam Dir dir) {
+   Map<String, ? extends Object> search(
+         @ModelAttribute(FORM_SESSION) LoggerForm form,
+         @RequestParam int start, @RequestParam int limit,
+         @RequestParam String sort, @RequestParam Dir dir) {
 
       Map<String, Object> search = new HashMap<String, Object>();
 
-      search.put("logs", logDAO.find(start, limit, sort, dir));
-      search.put("totalCount", logDAO.count());
+      search.put("logs", logDAO.find(start, limit, sort, dir, form
+            .getStartDate(), form.getEndDate()));
+      search.put("totalCount", logDAO.count(form.getStartDate(), form
+            .getEndDate()));
 
       return search;
    }
-
 }

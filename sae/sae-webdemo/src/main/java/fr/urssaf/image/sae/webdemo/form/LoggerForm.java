@@ -18,31 +18,39 @@ public class LoggerForm {
    /**
     * @return valeur du critère 'A partir de'
     */
-   public final Date getStart() {
-      return start;
+   public final Date getStartDate() {
+      return start == null ? null : (Date) start.clone();
    }
 
    /**
     * @param start
     *           initialise le critère 'A partir de'
     */
-   public final void setStart(Date start) {
-      this.start = start;
+   public final void setStartDate(Date start) {
+      if (start == null) {
+         this.start = null;
+      } else {
+         this.start = (Date) start.clone();
+      }
    }
 
    /**
     * @return valeur du critère 'Jusqu'au'
     */
-   public final Date getEnd() {
-      return end;
+   public final Date getEndDate() {
+      return end == null ? null : (Date) end.clone();
    }
 
    /**
     * @param end
     *           initialise le critère 'Jusqu'au'
     */
-   public final void setEnd(Date end) {
-      this.end = end;
+   public final void setEndDate(Date end) {
+      if (end == null) {
+         this.end = null;
+      } else {
+         this.end = (Date) end.clone();
+      }
    }
 
    /**
@@ -59,7 +67,7 @@ public class LoggerForm {
 
       if (this.end != null && this.start != null
             && this.end.compareTo(this.start) < 0) {
-         errors.rejectValue("end", "error.validDate");
+         errors.rejectValue("endDate", "error.validDate");
       }
 
    }

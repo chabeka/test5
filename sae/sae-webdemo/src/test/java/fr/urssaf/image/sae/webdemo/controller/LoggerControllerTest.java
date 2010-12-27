@@ -10,14 +10,18 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.webdemo.ControllerTestSupport;
+import fr.urssaf.image.sae.webdemo.form.LoggerForm;
+import fr.urssaf.image.sae.webdemo.service.dao.LogDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext-test.xml")
@@ -36,14 +40,37 @@ public class LoggerControllerTest extends
 
    private static final String DIR_FIELD = "dir";
 
-   private static final String PARAM_START = "start";
+   private static final String PARAM_START = "startDate";
 
-   private static final String PARAM_END = "end";
+   private static final String PARAM_END = "endDate";
+
+   @Before
+   public void init() {
+
+      LoggerForm form = new LoggerForm();
+      form.setEndDate(null);
+      form.setStartDate(null);
+
+      this.setSession("logger_controller", form);
+   }
+
+   @Autowired
+   private LogDAO logDAO;
+
+   @Autowired
+   private MessageSource messageSource;
 
    @Test(expected = IllegalStateException.class)
-   public void loggerException() {
+   public void loggerException_logDAO() {
 
-      new LoggerController(null);
+      new LoggerController(null, messageSource);
+
+   }
+
+   @Test(expected = IllegalStateException.class)
+   public void loggerException_messageSource() {
+
+      new LoggerController(logDAO, null);
 
    }
 
@@ -117,11 +144,11 @@ public class LoggerControllerTest extends
             .getTextValue());
 
       ObjectNode errors = (ObjectNode) results.get("errors");
-      System.out.println(errors);
 
-      assertTrue(errors.get("start").getTextValue(), errors.get("start")
-            .getTextValue().contains(ConversionFailedException.class.getName()));
-      assertTrue(errors.get("end").getTextValue(), errors.get("start")
+      assertTrue(errors.get(PARAM_START).getTextValue(), errors
+            .get(PARAM_START).getTextValue().contains(
+                  ConversionFailedException.class.getName()));
+      assertTrue(errors.get(PARAM_END).getTextValue(), errors.get(PARAM_END)
             .getTextValue().contains(ConversionFailedException.class.getName()));
 
       assertEquals(2, errors.size());
@@ -148,7 +175,7 @@ public class LoggerControllerTest extends
             .getTextValue());
 
       ObjectNode errors = (ObjectNode) results.get("errors");
-      assertEquals("error.validDate", errors.get("end").getTextValue());
+      assertEquals("error.validDate", errors.get(PARAM_END).getTextValue());
 
       assertEquals(1, errors.size());
 

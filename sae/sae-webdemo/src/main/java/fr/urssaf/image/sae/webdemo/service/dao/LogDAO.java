@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.webdemo.service.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import fr.urssaf.image.sae.webdemo.modele.Log;
@@ -23,14 +24,22 @@ public interface LogDAO {
     *           colonne triée
     * @param dir
     *           sens du tri (DESC/ASC)
+    * @param start
+    *           critere sur horodatage
+    * @param end
+    *           critere sur horodatage
     * @return liste des traces
     */
-   List<Log> find(int firstResult, int maxResults, String order, Dir dir);
+   List<Log> find(int firstResult, int maxResults, String order, Dir dir,
+         Date start, Date end);
 
    /**
-    * 
+    * @param start
+    *           critere sur horodatage
+    * @param end
+    *           critere sur horodatage
     * @return nombre total des traces
     */
-   int count();
+   int count(Date start, Date end);
 
 }
