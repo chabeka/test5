@@ -67,7 +67,7 @@
       
       <init-param>
          <param-name>excludeFiles</param-name>
-         <param-value>/sae-webdemo/registre_exploitation/search.html</param-value>
+         <param-value>/sae-webdemo/registre_exploitation/search.html;/sae-webdemo/registre_exploitation/filter.html</param-value>
       </init-param>
       
    </filter>

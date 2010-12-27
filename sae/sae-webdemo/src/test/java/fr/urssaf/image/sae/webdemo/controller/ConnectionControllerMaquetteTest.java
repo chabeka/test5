@@ -24,8 +24,7 @@ import fr.urssaf.image.sae.webdemo.maquette.BoitesGauches;
 import fr.urssaf.image.sae.webdemo.maquette.Menus;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring-servlet.xml",
-      "/applicationContext.xml" })
+@ContextConfiguration("/applicationContext-test.xml")
 @SuppressWarnings("PMD")
 public class ConnectionControllerMaquetteTest {
 

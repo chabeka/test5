@@ -11,8 +11,7 @@ import fr.urssaf.image.sae.webdemo.ControllerAssert;
 import fr.urssaf.image.sae.webdemo.ControllerTestSupport;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring-servlet.xml",
-      "/applicationContext.xml" })
+@ContextConfiguration("/applicationContext-test.xml")
 @SuppressWarnings("PMD")
 public class ApplicationDemoControllerTest extends
       ControllerTestSupport<ApplicationDemoController> {

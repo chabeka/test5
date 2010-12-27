@@ -94,10 +94,4 @@ public class ControllerAssert<C> {
 
    }
 
-   public final void assertResponseBody(String body) {
-      // TODO faire un assertequals sur le body
-      test.json(controller);
-
-   }
-
 }

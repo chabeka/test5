@@ -23,8 +23,7 @@ import fr.urssaf.image.sae.webdemo.controller.ConnectionController;
 import fr.urssaf.image.sae.webdemo.controller.ConnectionFailureController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring-servlet.xml",
-      "/applicationContext.xml" })
+@ContextConfiguration("/applicationContext-test.xml")
 @SuppressWarnings("PMD")
 public class ConnectionInterceptorTest {
 

@@ -12,8 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.sae.webdemo.resource.Dir;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring-servlet.xml",
-      "/applicationContext.xml" })
+@ContextConfiguration("/applicationContext-test.xml")
 @SuppressWarnings("PMD")
 public class LogDAOTest {
 
