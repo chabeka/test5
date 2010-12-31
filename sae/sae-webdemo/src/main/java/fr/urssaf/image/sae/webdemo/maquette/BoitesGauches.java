@@ -5,11 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.urssaf.image.commons.maquette.definition.ILeftCol;
 import fr.urssaf.image.commons.maquette.tool.InfoBoxItem;
-import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
-import fr.urssaf.image.sae.webdemo.controller.ConnectionController;
+import fr.urssaf.image.sae.webdemo.security.SecurityAuthentication;
 
 /**
  * Boites de gauche de l'IHM maquette<br>
@@ -54,17 +54,20 @@ public class BoitesGauches implements ILeftCol {
    @Override
    public final String getNomUtilisateur(HttpServletRequest request) {
 
-      SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) request
-            .getSession().getAttribute(ConnectionController.SAE_JETON);
-
       String nomUtilisateur = null;
 
-      if (jeton != null) {
+      if (SecurityContextHolder.getContext().getAuthentication() instanceof SecurityAuthentication) {
 
-         nomUtilisateur = StringUtils.capitalize(jeton.getIdentiteUtilisateur()
-               .getPrenom())
-               + " "
-               + StringUtils.upperCase(jeton.getIdentiteUtilisateur().getNom());
+         SecurityAuthentication jeton = (SecurityAuthentication) SecurityContextHolder
+               .getContext().getAuthentication();
+
+         if (jeton != null) {
+
+            nomUtilisateur = StringUtils.capitalize(jeton.getPrincipal()
+                  .getPrenom())
+                  + " " + StringUtils.upperCase(jeton.getPrincipal().getNom());
+         }
+
       }
 
       return nomUtilisateur;
@@ -73,14 +76,19 @@ public class BoitesGauches implements ILeftCol {
    @Override
    public final String getRoleUtilisateur(HttpServletRequest request) {
 
-      SaeJetonAuthentificationType jeton = (SaeJetonAuthentificationType) request
-            .getSession().getAttribute(ConnectionController.SAE_JETON);
-
       String roleUtilisateur = null;
 
-      if (jeton != null) {
+      if (SecurityContextHolder.getContext().getAuthentication() instanceof SecurityAuthentication) {
 
-         roleUtilisateur = jeton.getDroits().getDroit().get(0).getCode();
+         SecurityAuthentication jeton = (SecurityAuthentication) SecurityContextHolder
+               .getContext().getAuthentication();
+
+         if (jeton != null) {
+
+            roleUtilisateur = jeton.getCredentials().getDroit().get(0)
+                  .getCode();
+         }
+
       }
 
       return roleUtilisateur;

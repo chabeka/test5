@@ -10,4 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Ignore
 public class TestController {
 
+   public static final String SERVLET = "connection.html";
+
+  
+   @RequestMapping
+   protected final String doPost() {
+      return "accueil.html";
+   }
 }

@@ -23,12 +23,12 @@ import fr.urssaf.image.sae.webdemo.controller.ConnectionFailureController;
  * <ul>
  * <li>'<code>/applicationDemo.html</code>'</li>
  * <li>'<code>/connection.html</code>'</li>
- * <li>'<code>/pasauthentifie.html</code>'</li>
+ * <li>'<code>/connectionFailure.html</code>'</li>
  * </ul>
  * sont exemptés</li>
  * </ul>
  * 
- * 
+ * @deprecated le contrôleur est devenu obsolète avec SPRING SECURITY
  */
 public class ConnectionInterceptor extends HandlerInterceptorAdapter {
 

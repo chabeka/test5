@@ -28,6 +28,7 @@ import fr.urssaf.image.sae.webdemo.service.ConnectionService;
  * Classe de manipulation de la servlet <code>/connection.html</code><br>
  * la classe ne possède qu'une méthode en POST {@link #connect}
  * 
+ * @deprecated le contrôleur est devenu obsolète avec SPRING SECURITY
  */
 @Controller
 @RequestMapping(value = "/connection")

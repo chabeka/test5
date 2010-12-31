@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * <code>/connectionFailure.html</code><br>
  * Le contôleur renvoie la vue <code>error/erreur403_pasauthentifie</code> avec
  * un code status <b><code>403</code></b><br>
- * La session devient invalide 
+ * La session devient invalide
  * 
  * @see HttpSession#invalidate()
- * 
+ * @deprecated le contrôleur est devenu obsolète avec SPRING SECURITY
  */
 @Controller
 @RequestMapping(value = "/connectionFailure")

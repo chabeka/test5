@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Servlet d'entrée de l'application web demo<br>
  * <br>
  * <code>http://[serveur]/webdemo/applicationDemo.html</code>
- * 
+ * @deprecated le contrôleur est devenu obsolète avec SPRING SECURITY
  */
 @Controller
-@RequestMapping(value = "/applicationDemo")
+//@RequestMapping(value = "/applicationDemo")
 public class ApplicationDemoController {
 
    public static final String SERVLET = "connection.html";

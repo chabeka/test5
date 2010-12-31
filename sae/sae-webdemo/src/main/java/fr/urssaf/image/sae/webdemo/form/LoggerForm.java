@@ -27,11 +27,13 @@ public class LoggerForm {
     *           initialise le critère 'A partir de'
     */
    public final void setStartDate(Date start) {
-      if (start == null) {
-         this.start = start;
-      } else {
-         this.start = (Date) start.clone();
+      Date value = null;
+
+      if (start != null) {
+         value = (Date) start.clone();
       }
+      
+      this.start = value;
    }
 
    /**
@@ -46,11 +48,14 @@ public class LoggerForm {
     *           initialise le critère 'Jusqu'au'
     */
    public final void setEndDate(Date end) {
-      if (end == null) {
-         this.end = end;
-      } else {
-         this.end = (Date) end.clone();
+      Date value = null;
+
+      if (end != null) {
+         value = (Date) end.clone();
       }
+      
+      this.end = value;
+
    }
 
    /**

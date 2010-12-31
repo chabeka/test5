@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+   xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+         http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/security
+         http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
+
+
+   <http use-expressions="true" entry-point-ref="authenticationEntryPoint">
+      <intercept-url pattern=".css||.js||.jsp" access="permitAll" />
+      <intercept-url pattern="/getResourceImageMaquette.do"
+         access="permitAll" />
+      <intercept-url pattern="/authentication.html"
+         access="permitAll" />
+      <intercept-url pattern="/authenticationFailure.html"
+         access="permitAll" />
+      <intercept-url pattern="/**" access="isAuthenticated()" />
+      <!--form-login login-page="/connection.html" /-->
+      <custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+   </http>
+
+   <authentication-manager alias="authenticationManager">
+
+      <authentication-provider ref="authenticationProvider" />
+
+   </authentication-manager>
+
+   <beans:bean id="authenticationProvider"
+      class="fr.urssaf.image.sae.webdemo.security.SecurityProvider">
+   </beans:bean>
+
+   <beans:bean id="authenticationFilter"
+      class="fr.urssaf.image.sae.webdemo.security.SecurityFilter">
+      <beans:constructor-arg ref="connectionService" />
+      <beans:property name="authenticationManager" ref="authenticationManager" />
+   </beans:bean>
+
+   <beans:bean id="authenticationEntryPoint"
+      class="fr.urssaf.image.sae.webdemo.security.SecurityEntryPoint">
+   </beans:bean>
+
+   <!--
+      <authentication-manager> <authentication-provider> <user-service>
+      <user name="joe" password="joepassword" authorities="ROLE_USER,
+      ROLE_ADMIN" /> <user name="bob" password="bobpassword"
+      authorities="ROLE_USER" /> </user-service>
+      </authentication-provider> </authentication-manager>
+   -->
+
+</beans:beans>

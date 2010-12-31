@@ -1,13 +1,11 @@
-package fr.urssaf.image.sae.webdemo.form;
+package fr.urssaf.image.sae.webdemo.security;
 
-import fr.urssaf.image.commons.web.validator.NotEmpty;
 
 /**
- * Classe de formulaire pour la connection
+ * Classe de formulaire pour l'authentification
  * 
- * @deprecated le contrôleur est devenu obsolète avec SPRING SECURITY
  */
-public class ConnectionForm {
+public class AuthentificationForm {
 
    private String relay;
 
@@ -15,13 +13,9 @@ public class ConnectionForm {
 
    /**
     * Retourne le contenu du paramètre <code>RelayState</code><br>
-    * <br>
-    * La valeur n'est pas valide si il n'y a aucun text.<br>
-    * Dans ce cas un message est renvoyé: user.login.empty
     * 
-    * @return la servlet demandé la connection
+    * @return la servlet demandé à l'authentification
     */
-   @NotEmpty
    public final String getRelayState() {
       return relay;
    }
@@ -30,7 +24,7 @@ public class ConnectionForm {
     * Initialise le contenu du paramètre <code>RelayState</code>
     * 
     * @param relay
-    *           la servlet demandé la connection
+    *           la servlet demandé à l'authentification
     */
    public final void setRelayState(String relay) {
       this.relay = relay;
@@ -38,13 +32,9 @@ public class ConnectionForm {
 
    /**
     * Retourne le contenu du paramètre <code>SAMLResponse</code><br>
-    * <br>
-    * La valeur n'est pas valide si il n'y a aucun text.<br>
-    * Dans ce cas un message est renvoyé: user.login.empty
     * 
-    * @return le jeton VI de la connection
+    * @return le jeton VI de l'authentification
     */
-   @NotEmpty
    public final String getSAMLResponse() {
       return saml;
    }
@@ -53,7 +43,7 @@ public class ConnectionForm {
     * Initialise le contenu du paramètre <code>SAMLResponse</code>
     * 
     * @param saml
-    *           le jeton VI de la connection
+    *           le jeton VI de l'authentification
     */
    public final void setSAMLResponse(String saml) {
       this.saml = saml;

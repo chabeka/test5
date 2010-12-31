@@ -154,6 +154,29 @@
          <version>${spring.framework.version}</version>
       </dependency>
 
+      <!--  SPRING SECURITY -->
+
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-config</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-taglibs</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-web</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-acl</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+
       <!--  JSTL -->
 
       <dependency>
@@ -199,6 +222,19 @@
          <artifactId>spring-test</artifactId>
          <version>${spring.framework.version}</version>
          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.seleniumhq.webdriver</groupId>
+         <artifactId>webdriver-htmlunit</artifactId>
+         <version>0.9.7376</version>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>commons-collections</groupId>
+         <artifactId>commons-collections</artifactId>
+         <version>${apache.commons-collections.version}</version>
       </dependency>
 
    </dependencies>
