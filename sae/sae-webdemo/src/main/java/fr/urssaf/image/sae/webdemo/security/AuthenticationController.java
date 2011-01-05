@@ -97,11 +97,7 @@ public class AuthenticationController {
          if (StringUtils.hasText(text)) {
             this.setValue(Base64Decode.decode(text));
 
-         } else {
-
-            setValue(null);
          }
-
       }
 
    }

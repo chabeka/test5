@@ -174,6 +174,7 @@ public class SecurityFilter extends AbstractAuthenticationProcessingFilter {
    protected static class SecuritySuccess implements
          AuthenticationSuccessHandler {
 
+      //TODO revoir avec SessionAuthenticationStrategy
       @Override
       public final void onAuthenticationSuccess(HttpServletRequest request,
             HttpServletResponse response, Authentication authentication)

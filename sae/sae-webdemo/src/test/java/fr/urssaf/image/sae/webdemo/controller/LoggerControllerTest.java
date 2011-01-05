@@ -2,8 +2,10 @@ package fr.urssaf.image.sae.webdemo.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
@@ -19,6 +21,7 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.commons.web.resource.DateFormatter;
 import fr.urssaf.image.sae.webdemo.ControllerTestSupport;
 import fr.urssaf.image.sae.webdemo.form.LoggerForm;
 import fr.urssaf.image.sae.webdemo.service.dao.LogDAO;
@@ -50,6 +53,8 @@ public class LoggerControllerTest extends
       LoggerForm form = new LoggerForm();
       form.setEndDate(null);
       form.setStartDate(null);
+
+      //assertNull(form.getStartDate());
 
       this.setSession("logger_controller", form);
    }
@@ -121,6 +126,16 @@ public class LoggerControllerTest extends
       JsonNode results = mapper.readValue(body, JsonNode.class);
 
       assertEquals(true, results.get("success").getBooleanValue());
+
+      LoggerForm form = (LoggerForm) this
+            .getAttributeSession("logger_controller");
+
+      DateFormatter dateFormatter = new DateFormatter("dd/MM/yyyy");
+
+      assertEquals("05/12/1998", dateFormatter.print(form.getStartDate(),
+            Locale.getDefault()));
+      assertEquals("10/01/1999", dateFormatter.print(form.getEndDate(), Locale
+            .getDefault()));
 
    }
 
