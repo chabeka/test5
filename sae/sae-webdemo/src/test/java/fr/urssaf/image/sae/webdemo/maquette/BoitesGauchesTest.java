@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.webdemo.maquette;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,6 @@ import javax.servlet.ServletException;
 import net.htmlparser.jericho.Source;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +28,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
 import fr.urssaf.image.commons.maquette.MaquetteFilter;
-import fr.urssaf.image.commons.maquette.exception.MissingHtmlElementInTemplateParserException;
-import fr.urssaf.image.commons.maquette.exception.MissingSourceParserException;
-import fr.urssaf.image.commons.maquette.template.parser.internal.LeftColParser;
 import fr.urssaf.image.sae.vi.service.VIService;
 import fr.urssaf.image.sae.webdemo.TestController;
 import fr.urssaf.image.sae.webdemo.security.SecurityAuthentication;
@@ -39,8 +36,6 @@ import fr.urssaf.image.sae.webdemo.security.SecurityAuthentication;
 @ContextConfiguration("/applicationContext-test.xml")
 @SuppressWarnings("PMD")
 public class BoitesGauchesTest {
-
-   private static final Logger LOG = Logger.getLogger(BoitesGauchesTest.class);
 
    private MaquetteFilter filtre;
 
@@ -87,6 +82,10 @@ public class BoitesGauchesTest {
       filter();
 
       assertLeftCol();
+
+      assertNullElement(source, "user-name");
+      assertNullElement(source, "user-rights");
+      assertNullElement(source, "logout-user");
    }
 
    @Test
@@ -95,21 +94,13 @@ public class BoitesGauchesTest {
       authenticate();
       filter();
 
-      try {
-         LeftColParser parser = new LeftColParser(source);
-         LOG.debug(parser.getLeftColTag().toString());
-      } catch (MissingHtmlElementInTemplateParserException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      } catch (MissingSourceParserException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-
       assertLeftCol();
 
       assertElement(source, "Prenom AGENT-CTD", "user-name");
       assertElement(source, "GESTIONNAIREACCESCOMPLET", "user-rights");
+
+      assertEquals("javascript:document.location.href='logout'", source
+            .getElementById("logout-user").getAttributeValue("onclick"));
 
    }
 
@@ -148,6 +139,11 @@ public class BoitesGauchesTest {
    private static void assertElement(Source source, String expected, String id) {
 
       assertEquals(expected, source.getElementById(id).getContent().toString());
+   }
+
+   private static void assertNullElement(Source source, String id) {
+
+      assertNull(id + " ne doit pas être présent", source.getElementById(id));
    }
 
 }

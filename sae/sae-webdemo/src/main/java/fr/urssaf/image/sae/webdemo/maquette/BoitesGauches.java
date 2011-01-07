@@ -43,7 +43,15 @@ public class BoitesGauches implements ILeftCol {
 
    @Override
    public final String getLienDeconnexion(HttpServletRequest request) {
-      return "javascript:document.location.href='logout'";
+
+      String link = null;
+
+      if (SecurityContextHolder.getContext().getAuthentication() instanceof SecurityAuthentication) {
+
+         link = "javascript:document.location.href='logout'";
+      }
+
+      return link;
    }
 
    @Override

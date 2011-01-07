@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,8 +77,6 @@ public class AuthenticationFailureController {
          view = "error/erreur403_pasauthentifie";
       }
 
-      SecurityContextHolder.clearContext();
-      session.invalidate();
       return view;
    }
 

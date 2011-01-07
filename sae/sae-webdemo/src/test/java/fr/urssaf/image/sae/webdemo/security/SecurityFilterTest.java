@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.webdemo.security;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotSame;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +77,8 @@ public class SecurityFilterTest {
       String samlValue = FileUtils.readFileToString(new File(
             "src/test/resources/saml/ctd_rights.xml"), "UTF-8");
 
+      String idSession = request.getSession().getId();
+      
       authenticate(samlValue, relay);
 
       assertEquals(relay, response.getRedirectedUrl());
@@ -96,9 +99,9 @@ public class SecurityFilterTest {
             "GESTIONNAIRESRVRH", "URSSAF - Code organisme", "UR730");
 
       assertEquals(4, authenticate.getCredentials().getDroit().size());
+      
+      assertNotSame("le session doit être invalidée",idSession,request.getSession().getId());
 
-      assertEquals(authenticate, request.getSession().getAttribute(
-            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY));
    }
 
    private void assertDroit(DroitType droit, String code, String type,

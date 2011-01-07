@@ -1,5 +1,9 @@
 package fr.urssaf.image.sae.webdemo.security;
 
+import static fr.urssaf.image.sae.webdemo.security.AuthenticationConfiguration.SECURITY_URL;
+import static fr.urssaf.image.sae.webdemo.security.AuthenticationConfiguration.SERVICE_FIELD;
+import static fr.urssaf.image.sae.webdemo.security.AuthenticationConfiguration.TOKEN_FIELD;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -7,15 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -23,9 +20,6 @@ import fr.urssaf.image.sae.vi.exception.VIException;
 import fr.urssaf.image.sae.vi.schema.SaeJetonAuthentificationType;
 import fr.urssaf.image.sae.vi.service.VIService;
 import fr.urssaf.image.sae.webdemo.service.ConnectionService;
-import static fr.urssaf.image.sae.webdemo.security.AuthenticationConfiguration.SERVICE_FIELD;
-import static fr.urssaf.image.sae.webdemo.security.AuthenticationConfiguration.TOKEN_FIELD;
-import static fr.urssaf.image.sae.webdemo.security.AuthenticationConfiguration.SECURITY_URL;
 
 /**
  * Contrôleur d'authentification appelé à chaque fois que l'utilisateur n'est
@@ -70,8 +64,6 @@ public class SecurityFilter extends AbstractAuthenticationProcessingFilter {
       this.connection = connection;
 
       this.setAuthenticationSuccessHandler(new SecuritySuccess());
-      this.setAuthenticationFailureHandler(new SecurityFailure());
-
    }
 
    /**
@@ -165,60 +157,21 @@ public class SecurityFilter extends AbstractAuthenticationProcessingFilter {
       return authentification;
    }
 
-   /**
-    * En cas de succès {@link SecurityContextHolder#getContext()} permet de
-    * récupérer {@link Authentification} de l'utilisateur
-    * 
-    * 
-    */
-   protected static class SecuritySuccess implements
-         AuthenticationSuccessHandler {
+   protected static class SecuritySuccess extends
+         SimpleUrlAuthenticationSuccessHandler {
 
-      //TODO revoir avec SessionAuthenticationStrategy
       @Override
       public final void onAuthenticationSuccess(HttpServletRequest request,
             HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
 
          String service = (String) request.getAttribute(SERVICE_FIELD);
-         request.getSession().invalidate();
-
-         SecurityContextHolder.getContext().setAuthentication(authentication);
-         WebUtils
-               .setSessionAttribute(
-                     request,
-                     HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                     authentication);
-
-         RedirectStrategy redirectStratety = new DefaultRedirectStrategy();
-         redirectStratety.sendRedirect(request, response, service);
+         this.setDefaultTargetUrl(service);
+         
+         super.onAuthenticationSuccess(request, response, authentication);
 
       }
 
    }
 
-   /**
-    * En cas d'échec on renvoie vers le contrôleur
-    * {@link AuthenticationFailureController}
-    * 
-    * 
-    */
-   protected static class SecurityFailure implements
-         AuthenticationFailureHandler {
-
-      @Override
-      public final void onAuthenticationFailure(HttpServletRequest request,
-            HttpServletResponse response, AuthenticationException exception)
-            throws IOException, ServletException {
-
-         WebUtils.setSessionAttribute(request,
-               WebAttributes.AUTHENTICATION_EXCEPTION, exception);
-
-         RedirectStrategy redirectStratety = new DefaultRedirectStrategy();
-         redirectStratety.sendRedirect(request, response,
-               "/authenticationFailure.html");
-
-      }
-
-   }
 }
