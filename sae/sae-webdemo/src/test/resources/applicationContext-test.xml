@@ -15,7 +15,7 @@
       class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
       <property name="basenames">
          <list>
-            <value>/error</value>
+            <value>/msg</value>
          </list>
       </property>
       <property name="cacheSeconds" value="0" />
