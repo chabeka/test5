@@ -21,6 +21,9 @@
    <mvc:view-controller path="/applicationDemo.html"
       view-name="welcome" />
 
+   <mvc:view-controller path="/deconnection.html"
+      view-name="deconnection" />
+
    <import resource="applicationContext-dataSources.xml" />
    <import resource="applicationContext-sessionFactory.xml" />
    <import resource="applicationContext-transactionManager.xml" />

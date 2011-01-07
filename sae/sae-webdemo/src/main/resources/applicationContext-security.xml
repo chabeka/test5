@@ -15,8 +15,10 @@
          access="permitAll" />
       <intercept-url pattern="/authenticationFailure.html"
          access="permitAll" />
+      <intercept-url pattern="/deconnection.html" access="permitAll" />
       <intercept-url pattern="/**" access="isAuthenticated()" />
       <custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+      <logout logout-success-url="/deconnection.html" logout-url="/logout" />
    </http>
 
    <authentication-manager alias="authenticationManager">
@@ -35,10 +37,10 @@
 
    <beans:bean id="authenticationEntryPoint"
       class="fr.urssaf.image.sae.webdemo.security.SecurityEntryPoint">
-      <beans:property name="loginFormUrl" value="/authentication.html"/>
-      <beans:property name="useForward" value="true"/>
-      <beans:property name="failureURL" value="/authenticationFailure.html"/>
-      <beans:property name="authenticateURL" value="/applicationDemo.html"/>
+      <beans:property name="loginFormUrl" value="/authentication.html" />
+      <beans:property name="useForward" value="true" />
+      <beans:property name="failureURL" value="/authenticationFailure.html" />
+      <beans:property name="authenticateURL" value="/applicationDemo.html" />
    </beans:bean>
 
 </beans:beans>

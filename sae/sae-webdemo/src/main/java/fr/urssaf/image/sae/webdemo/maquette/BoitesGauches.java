@@ -28,6 +28,7 @@ import fr.urssaf.image.sae.webdemo.security.SecurityAuthentication;
  * <li><code>nomApplication</code> :
  * <code>SAE - Application web de démonstration</code></li>
  * <li><code>versionApplication</code> : <code>0.1</code></li>
+ * <li><code>Déconnexion</code> : <code>/logout</code></li>
  * </ul>
  * 
  * @see ILeftCol
@@ -42,8 +43,7 @@ public class BoitesGauches implements ILeftCol {
 
    @Override
    public final String getLienDeconnexion(HttpServletRequest request) {
-      // TODO Auto-generated method stub
-      return null;
+      return "javascript:document.location.href='logout'";
    }
 
    @Override
