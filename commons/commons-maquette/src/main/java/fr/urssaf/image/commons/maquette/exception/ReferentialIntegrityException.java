@@ -5,7 +5,7 @@ package fr.urssaf.image.commons.maquette.exception;
  * Si un problème survient dans la génération du menu de la maquette (menu haut)
  *
  */
-public class ReferentialIntegrityException extends Exception {
+public class ReferentialIntegrityException extends RuntimeException {
 
 	
    private static final long serialVersionUID = -2616404742235902030L;

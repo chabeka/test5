@@ -38,6 +38,8 @@ import fr.urssaf.image.commons.maquette.tool.UrlPatternMatcher;
  *    télécharger ses ressources image et Javascript, alors il ne faut pas décorer</li>
  *    <li>si l'URI demandée fait partie des URI à exclure de la décoration, qui sont
  *    définies dans le web.xml, alors il ne faut pas décorer</li>
+ *    <li>si l'URI est en mode AJAX alors il ne faut pas décorer. Dans ce cas l'entête de la requête HTTP possède l'entrée 
+ *    <code>X-Requested-With</code> avec la valeur <code>XMLHttpRequest</code> </li>
  *    <li>sinon, il faut décorer</li>
  * </ul>
  *
@@ -208,8 +210,14 @@ public final class MaquetteFilter implements Filter {
 		
 	   boolean result;
 	   
-	   // Exclusion par défaut lié à la MaquetteServlet
-		if( isUriDeGetResource(request) )
+	   // les requêtes AJAX sont exclues de du filtre de décoration
+      if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+
+         result = false;
+      }
+
+      // Exclusion par défaut lié à la MaquetteServlet
+      else if( isUriDeGetResource(request) )
 		{
 			result = false ;
 		}

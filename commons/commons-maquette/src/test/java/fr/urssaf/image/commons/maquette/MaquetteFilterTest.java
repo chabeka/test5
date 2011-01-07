@@ -355,6 +355,16 @@ public class MaquetteFilterTest{
       bExpected = false;
       assertEquals("Le filtre n'aurait pas dû être appliqué",bExpected,bActual);
       
+      // Test 4 : requête HTTP en Ajax
+      // => le filtre ne doit pas être appliqué
+      filterConfig = new MockFilterConfig();
+      filtre.init(filterConfig);
+      request.setRequestURI("/page1.do");
+      request.addHeader("X-Requested-With", "XMLHttpRequest");
+      bActual = filtre.doitAppliquerFiltre(request);
+      bExpected = false;
+      assertEquals("Le filtre n'aurait pas dû être appliqué",bExpected,bActual);
+      
    }
    
    
