@@ -15,7 +15,6 @@
 
    <modules>
       <module>../commons-birt</module>
-      <module>../commons-controller-spring-extjs</module>
       <module>../commons-maquette</module>
       <module>../commons-util</module>
       <module>../commons-xml</module>
