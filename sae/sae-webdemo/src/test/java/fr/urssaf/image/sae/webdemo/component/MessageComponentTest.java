@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,11 +25,16 @@ public class MessageComponentTest {
    private static final String MSG_FAILURE_CODE = "msg.notexist";
    
    private static final String MSG_DEFAULT = "default";
+   
+   @Autowired
+   private MessageSource source;
 
    @Before
    public void before() {
 
       request = new MockHttpServletRequest();
+      MessageComponent component = new MessageComponent();
+      component.setMessageSource(source);
    }
 
    @Test(expected = IllegalArgumentException.class)

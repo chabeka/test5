@@ -28,7 +28,7 @@ public class ConnectionServiceTest {
    public void isValidateService_success() {
 
       this.assertTrueValidateService("/accueil.html");
-      this.assertTrueValidateService("/connection");
+      this.assertTrueValidateService("/authentication");
       this.assertTrueValidateService("/");
 
    }
