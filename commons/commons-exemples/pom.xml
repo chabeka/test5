@@ -19,6 +19,7 @@
       <module>../commons-controller-spring3-exemple</module>
       <module>../commons-controller-spring3-jndi-exemple</module>
       <module>../commons-controller-springsecurity-exemple</module>
+      <module>../commons-controller-spring-extjs-exemple</module>
       <module>../commons-dao-spring-exemple</module>
       <module>../commons-dao-spring-exemple2</module>
       <module>../commons-maquette-exemple</module>
