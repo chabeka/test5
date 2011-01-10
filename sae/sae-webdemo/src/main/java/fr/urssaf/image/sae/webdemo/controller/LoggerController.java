@@ -103,6 +103,8 @@ public class LoggerController {
 
    /**
     * Action POST en AJAX pour le filtrage du tableau des traces d'exploitations<br>
+    * La requête HTTP doit comporter l'attribut
+    * <code>...&action=filter&...</code><br>
     * <br>
     * le formulaire comporte erreurs
     * <ul>
@@ -124,7 +126,7 @@ public class LoggerController {
     *           requête HTTP
     * @return
     */
-   @RequestMapping(value = "/filter", method = RequestMethod.POST)
+   @RequestMapping(method = RequestMethod.POST, params = { "action=filter" })
    protected final @ResponseBody
    Map<String, ? extends Object> filter(
          @ModelAttribute(FORM_SESSION) @Valid LoggerForm form,
@@ -163,6 +165,8 @@ public class LoggerController {
 
    /**
     * Action POST en AJAX pour l'affichage du tableau des traces d'exploitation<br>
+    * La requête HTTP doit comporter l'attribut
+    * <code>...&action=search&...</code><br>
     * <br>
     * L'action appelle le service {@link LogDAO} pour récuperer la liste des
     * traces<br>
@@ -185,7 +189,7 @@ public class LoggerController {
     *           ordre du tri {DESC/ASC)
     * @return corps de la réponse
     */
-   @RequestMapping(value = "/search", method = RequestMethod.POST)
+   @RequestMapping(method = RequestMethod.POST, params = { "action=search" })
    protected final @ResponseBody
    Map<String, ? extends Object> search(
          @ModelAttribute(FORM_SESSION) LoggerForm form,

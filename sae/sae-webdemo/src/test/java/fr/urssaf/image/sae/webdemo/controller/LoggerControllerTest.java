@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.webdemo.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -46,6 +45,8 @@ public class LoggerControllerTest extends
    private static final String PARAM_START = "startDate";
 
    private static final String PARAM_END = "endDate";
+   
+   private static final String ACTION_FIELD = "action";
 
    @Before
    public void init() {
@@ -93,12 +94,13 @@ public class LoggerControllerTest extends
          IOException {
 
       this.initPost();
-      this.setURI("/registre_exploitation/search.html");
+      this.setURI("/registre_exploitation.html");
 
       this.initParameter(START_FIELD, "0");
       this.initParameter(LIMIT_FIELD, "25");
       this.initParameter(SORT_FIELD, "idseq");
       this.initParameter(DIR_FIELD, "DESC");
+      this.initParameter(ACTION_FIELD, "search");
 
       String body = this.json(servlet);
 
@@ -115,10 +117,11 @@ public class LoggerControllerTest extends
          IOException {
 
       this.initPost();
-      this.setURI("/registre_exploitation/filter.html");
+      this.setURI("/registre_exploitation.html");
 
       this.initParameter(PARAM_START, "05/12/1998");
       this.initParameter(PARAM_END, "10/01/1999");
+      this.initParameter(ACTION_FIELD, "filter");
 
       String body = this.json(servlet);
 
@@ -144,10 +147,11 @@ public class LoggerControllerTest extends
          JsonMappingException, IOException {
 
       this.initPost();
-      this.setURI("/registre_exploitation/filter.html");
+      this.setURI("/registre_exploitation.html");
 
       this.initParameter(PARAM_START, "01-10-1990");
       this.initParameter(PARAM_END, "10/13/1998");
+      this.initParameter(ACTION_FIELD, "filter");
 
       String body = this.json(servlet);
 
@@ -175,10 +179,11 @@ public class LoggerControllerTest extends
          JsonMappingException, IOException {
 
       this.initPost();
-      this.setURI("/registre_exploitation/filter.html");
+      this.setURI("/registre_exploitation.html");
 
       this.initParameter(PARAM_START, "05/12/1998");
       this.initParameter(PARAM_END, "10/01/1997");
+      this.initParameter(ACTION_FIELD, "filter");
 
       String body = this.json(servlet);
 

@@ -4,4 +4,3 @@
 <script type="text/javascript" src="js/extjs/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="js/extjs/ext-all-debug.js"></script>
 <script type="text/javascript" src="js/extjs/src/locale/ext-lang-fr.js"></script>
-<script type="text/javascript" src="getResourceExtJs.getResourceExtJs?name=/js/fr.urssaf.image.commons.js.extjs.js">image extjs</script>
