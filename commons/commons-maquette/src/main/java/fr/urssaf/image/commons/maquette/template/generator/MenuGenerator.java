@@ -67,9 +67,20 @@ public final class MenuGenerator {
 	{
 	   
 	   // Si l'URL demandée correspond au lien du menu, alors il s'agit du menu
-	   // en cours
-	   String requestURL = request.getRequestURI();
-	   if( requestURL.compareTo( menuItem.getLink() ) == 0 )
+      // en cours
+      // on vérifie si il s'agait d'une servlet ou non
+      // la méthode getServletPath() renvoie une chaine vide si le pattern est
+      // /* ce qui semble signifier qu'il n'y a pas de servletContext
+      String requestURL;
+      if ("".equals(request.getServletPath())) {
+         requestURL = request.getRequestURI();
+      } else {
+
+         requestURL = request.getServletPath().substring(
+               request.getServletPath().indexOf("/") + 1);
+      }
+	   
+      if( requestURL.compareTo( menuItem.getLink() ) == 0 )
 	   {
 	      LOGGER.debug(
 	            String.format(

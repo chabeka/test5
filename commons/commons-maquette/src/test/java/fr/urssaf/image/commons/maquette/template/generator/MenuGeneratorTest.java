@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -16,27 +18,25 @@ import fr.urssaf.image.commons.maquette.tool.MenuItem;
 import fr.urssaf.image.commons.util.exceptions.TestConstructeurPriveException;
 import fr.urssaf.image.commons.util.tests.TestsUtils;
 
-
 /**
  * Tests unitaires de la classe {@link MenuGenerator}
- *
+ * 
  */
 @SuppressWarnings("PMD")
 public class MenuGeneratorTest {
 
-   
    /**
     * Test unitaire du constructeur privé, pour le code coverage
     * 
-    * @throws TestConstructeurPriveException 
+    * @throws TestConstructeurPriveException
     */
    @Test
    public void constructeurPrive() throws TestConstructeurPriveException {
-      Boolean result = TestsUtils.testConstructeurPriveSansArgument(MenuGenerator.class);
-      assertTrue("Le constructeur privé n'a pas été trouvé",result);
+      Boolean result = TestsUtils
+            .testConstructeurPriveSansArgument(MenuGenerator.class);
+      assertTrue("Le constructeur privé n'a pas été trouvé", result);
    }
-   
-   
+
    /**
     * Test unitaire de la méthode {@link MenuGenerator#buildMenu}<br>
     * <br>
@@ -46,26 +46,25 @@ public class MenuGeneratorTest {
     */
    @Test
    public void buildMenu_MenuVide() {
-      
+
       // La request
       MockHttpServletRequest request = new MockHttpServletRequest();
       request.setRequestURI("/site/page1.do");
-         
+
       // Construction du menu
       // => menu vide
       List<MenuItem> listItemsMenu = new ArrayList<MenuItem>();
-           
+
       // Appel de la méthode de rendu
       StringBuilder sbHtml = MenuGenerator.buildMenu(listItemsMenu, request);
-      
+
       // Vérifie le résultat attendu
       String sExpected = "";
       String sActual = sbHtml.toString();
-      assertEquals("Le rendu HTML aurait dû être vide",sExpected,sActual);
-      
+      assertEquals("Le rendu HTML aurait dû être vide", sExpected, sActual);
+
    }
-   
-   
+
    /**
     * Test unitaire de la méthode {@link MenuGenerator#buildMenu}
     * 
@@ -73,22 +72,22 @@ public class MenuGeneratorTest {
     */
    @Test
    public void buildMenu() throws ReferentialIntegrityException {
-      
+
       // La request
       // On utilise le lien du 1er item de menu pour passer
       // dans la condition qui stocke le menu en cours afin
       // de constituer ensuite le fil d'ariane
       MockHttpServletRequest request = new MockHttpServletRequest();
       request.setRequestURI("C1L1_link");
-            
+
       // Construction du menu
       List<MenuItem> listItemsMenu = new ArrayList<MenuItem>();
 
       // Menu à construire :
-      //  C1L1    C2L1
-      //          C2L2
-      //          C2L3
-      
+      // C1L1 C2L1
+      // C2L2
+      // C2L3
+
       // C1L1
       MenuItem item_C1L1 = new MenuItem();
       item_C1L1.setTitle("C1L1_titre");
@@ -113,69 +112,86 @@ public class MenuGeneratorTest {
       item_C2L3.setDescription("C2L3_description_<éà");
       item_C2L3.setLink("C2L3_link");
       item_C2L1.addChild(item_C2L3);
-      
+
       // Appel de la méthode de rendu
       StringBuilder sbHtml = MenuGenerator.buildMenu(listItemsMenu, request);
-      
+
       // Résultat attendu
       StringBuilder sbExpected = new StringBuilder();
       sbExpected.append("<ul>");
       sbExpected.append("<li>");
-      sbExpected.append("<a href='C1L1_link' class='firstrow' title='C1L1_description' tabindex='0'>C1L1_titre</a>");
+      sbExpected
+            .append("<a href='C1L1_link' class='firstrow' title='C1L1_description' tabindex='0'>C1L1_titre</a>");
       sbExpected.append("</li>");
       sbExpected.append("</ul>");
       sbExpected.append("<ul>");
       sbExpected.append("<li>");
-      sbExpected.append("<a href='C2L1_link' class='firstrow' title='C2L1_description' tabindex='0'>C2L1_titre</a>");
+      sbExpected
+            .append("<a href='C2L1_link' class='firstrow' title='C2L1_description' tabindex='0'>C2L1_titre</a>");
       sbExpected.append("<ul>");
       sbExpected.append("<li>");
-      sbExpected.append("<a href='C2L2_link' title='C2L2_description' tabindex='9999'>C2L2_titre</a>");
+      sbExpected
+            .append("<a href='C2L2_link' title='C2L2_description' tabindex='9999'>C2L2_titre</a>");
       sbExpected.append("</li>");
       sbExpected.append("<li>");
-      sbExpected.append("<a href='C2L3_link' title='C2L3_description_&lt;&eacute;&agrave;' tabindex='9999'>C2L3_titre_&lt;&eacute;&agrave;</a>");
+      sbExpected
+            .append("<a href='C2L3_link' title='C2L3_description_&lt;&eacute;&agrave;' tabindex='9999'>C2L3_titre_&lt;&eacute;&agrave;</a>");
       sbExpected.append("</li>");
       sbExpected.append("</ul>");
       sbExpected.append("</li>");
       sbExpected.append("</ul>");
-      
+
       // Vérification du résultat
-      assertEquals(
-            "Le rendu du menu est incorrect",
-            sbExpected.toString(),
+      assertEquals("Le rendu du menu est incorrect", sbExpected.toString(),
             sbHtml.toString());
-      
+
       // On en profite pour vérifier que le menu C1L1 est bien
       // considéré comme le menu sélectionné
-      assertSame(
-            "Le menu sélectionné est incorrect",
-            item_C1L1,
-            SessionTools.getSelectedMenu(request));
-      
+      assertSame("Le menu sélectionné est incorrect", item_C1L1, SessionTools
+            .getSelectedMenu(request));
+
    }
-   
+
+   /**
+    * Test unitaire de la méthode {@link MenuGenerator#buildBreadcrumb}
+    */
+   @Test
+   public void buildBreadcrumb_requestURI(){
+    
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      request.setRequestURI("item3_link");
+      
+      buildBreadcrumb(request);
+   }
    
    /**
     * Test unitaire de la méthode {@link MenuGenerator#buildBreadcrumb}
-    * 
-    * @throws ReferentialIntegrityException 
     */
    @Test
-   public void buildBreadcrumb() throws ReferentialIntegrityException {
+   public void buildBreadcrumb_servletPath(){
+    
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      request.setServletPath("item3_link");
       
+      buildBreadcrumb(request);
+   }
+
+   private void buildBreadcrumb(HttpServletRequest request) {
+
       // ---------------------------------------------------------------
       // 1ère étape : appel de la construction du menu
       // pour provoquer le stockage du menu en cours
       // ---------------------------------------------------------------
-      
+
       // Menu à construire :
-      //  item1
-      //   item2
-      //    item3    <==== menu sélectioné   
-      
+      // item1
+      // item2
+      // item3 <==== menu sélectioné
+
       // La request
-      MockHttpServletRequest request = new MockHttpServletRequest();
-      request.setRequestURI("item3_link");
-      
+      //MockHttpServletRequest request = new MockHttpServletRequest();
+      //request.setRequestURI("item3_link");
+
       // Liste
       List<MenuItem> listItemsMenu = new ArrayList<MenuItem>();
       // item1
@@ -196,30 +212,27 @@ public class MenuGeneratorTest {
       item3.setDescription("item3_description");
       item3.setLink("item3_link");
       item2.addChild(item3);
-      
-      // Construction du menu      
+
+      // Construction du menu
       MenuGenerator.buildMenu(listItemsMenu, request);
-      
-      // Vérifie que le menu sélectionné est le bon, 
+
+      // Vérifie que le menu sélectionné est le bon,
       // avant de continuer
-      assertSame(
-            "Le menu sélectionné est incorrect",
-            item3,
-            SessionTools.getSelectedMenu(request));
-      
-      
+      assertSame("Le menu sélectionné est incorrect", item3, SessionTools
+            .getSelectedMenu(request));
+
       // ---------------------------------------------------------------
       // 2ème étape : construction du fil d'ariane
       // ---------------------------------------------------------------
-      
+
       // Appel de la méthode à tester
       String filAriane = MenuGenerator.buildBreadcrumb(request);
-      
+
       // Vérification du résultat
       String sExpected = "item1_titre &gt; item2_titre &gt; item3_titre";
       String sActual = filAriane;
-      assertEquals("Le fil d'ariane est incorrect",sExpected,sActual);
-      
+      assertEquals("Le fil d'ariane est incorrect", sExpected, sActual);
+
    }
-   
+
 }

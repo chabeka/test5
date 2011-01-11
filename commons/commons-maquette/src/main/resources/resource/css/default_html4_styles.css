@@ -39,7 +39,6 @@ html,
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * caption, caption.frUrssafImageCommonsMaquette	{ display: table-caption }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * th, th.frUrssafImageCommonsMaquette			{ font-weight: bolder; text-align: center }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * caption, caption.frUrssafImageCommonsMaquette	{ text-align: center }
-body.frUrssafImageCommonsMaquette	{ margin: 8px }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * h1, h1.frUrssafImageCommonsMaquette	{ font-size: 2em; margin: .67em 0 }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * h2, h2.frUrssafImageCommonsMaquette   { font-size: 1.5em; margin: .75em 0 }
 #container.frUrssafImageCommonsMaquette > #content.frUrssafImageCommonsMaquette > * h3, h3.frUrssafImageCommonsMaquette   { font-size: 1.17em; margin: .83em 0 }
