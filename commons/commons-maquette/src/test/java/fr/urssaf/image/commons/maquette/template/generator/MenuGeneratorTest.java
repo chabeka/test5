@@ -7,8 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -78,7 +76,7 @@ public class MenuGeneratorTest {
       // dans la condition qui stocke le menu en cours afin
       // de constituer ensuite le fil d'ariane
       MockHttpServletRequest request = new MockHttpServletRequest();
-      request.setRequestURI("C1L1_link");
+      request.setServletPath("/C1L1_link");
 
       // Construction du menu
       List<MenuItem> listItemsMenu = new ArrayList<MenuItem>();
@@ -156,27 +154,10 @@ public class MenuGeneratorTest {
     * Test unitaire de la méthode {@link MenuGenerator#buildBreadcrumb}
     */
    @Test
-   public void buildBreadcrumb_requestURI(){
-    
-      MockHttpServletRequest request = new MockHttpServletRequest();
-      request.setRequestURI("item3_link");
-      
-      buildBreadcrumb(request);
-   }
-   
-   /**
-    * Test unitaire de la méthode {@link MenuGenerator#buildBreadcrumb}
-    */
-   @Test
-   public void buildBreadcrumb_servletPath(){
-    
-      MockHttpServletRequest request = new MockHttpServletRequest();
-      request.setServletPath("item3_link");
-      
-      buildBreadcrumb(request);
-   }
+   public void buildBreadcrumb() {
 
-   private void buildBreadcrumb(HttpServletRequest request) {
+      MockHttpServletRequest request = new MockHttpServletRequest();
+      request.setServletPath("/item3_link");
 
       // ---------------------------------------------------------------
       // 1ère étape : appel de la construction du menu
@@ -189,8 +170,8 @@ public class MenuGeneratorTest {
       // item3 <==== menu sélectioné
 
       // La request
-      //MockHttpServletRequest request = new MockHttpServletRequest();
-      //request.setRequestURI("item3_link");
+      // MockHttpServletRequest request = new MockHttpServletRequest();
+      // request.setRequestURI("item3_link");
 
       // Liste
       List<MenuItem> listItemsMenu = new ArrayList<MenuItem>();
