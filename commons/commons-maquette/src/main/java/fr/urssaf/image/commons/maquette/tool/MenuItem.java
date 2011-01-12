@@ -170,9 +170,9 @@ public final class MenuItem implements Serializable
 	/**
 	 * Définit le parent
 	 * @param leParent le parent
-	 * @throws ReferentialIntegrityException s'il y a un problème d'intégrité référentielle
+	 * @throws ReferentialIntegrityException
 	 */
-	public void setParent( MenuItem leParent ) throws ReferentialIntegrityException {
+	public void setParent( MenuItem leParent ) {
       
 	   // Vérification intégrité référentielle
       
@@ -215,9 +215,9 @@ public final class MenuItem implements Serializable
 	/**
 	 * Ajoute un enfant
 	 * @param enfant l'enfant
-	 * @throws ReferentialIntegrityException s'il y a un problème d'intégrité référentielle
+	 * @throws ReferentialIntegrityException
 	 */
-	public void addChild( MenuItem enfant )throws ReferentialIntegrityException {
+	public void addChild( MenuItem enfant ) {
 		// vérification de l'intégrité
 		if( enfant==parent) // NOPMD
 		{
