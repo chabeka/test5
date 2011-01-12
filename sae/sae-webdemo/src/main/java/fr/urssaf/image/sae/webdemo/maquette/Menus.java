@@ -26,9 +26,11 @@ import fr.urssaf.image.sae.webdemo.component.MessageComponent;
  */
 public class Menus implements IMenu {
 
+   /**
+    * aucune implémentation
+    */
    @Override
    public final String getBreadcrumb(HttpServletRequest request) {
-      // TODO Auto-generated method stub
       return null;
    }
 
