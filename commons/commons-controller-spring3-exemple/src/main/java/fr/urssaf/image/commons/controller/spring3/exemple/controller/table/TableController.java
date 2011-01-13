@@ -58,7 +58,7 @@ public class TableController extends BaseExempleController<TableFormulaire> {
 		return view;
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET, params = { "action=add" })
 	public String add(HttpServletRequest request, HttpServletResponse reponse) {
 
 		return "redirect:/form.do";
