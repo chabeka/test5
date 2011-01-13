@@ -57,7 +57,7 @@
       
       <init-param>
          <param-name>excludeFiles</param-name>
-         <param-value>/sae-anais-portail/succes.html</param-value>
+         <param-value>/succes.html</param-value>
       </init-param>
 
    </filter>

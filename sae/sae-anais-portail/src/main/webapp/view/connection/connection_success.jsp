@@ -5,7 +5,7 @@
 <title>Portail d'authentification au SAE</title>
 
 </head>
-<body onload="setTimeout('redirect()',5000)">
+<body onload="setTimeout('redirect()',1000)">
 
 <form action="${action}" method="post" id="connection" >
 <div>
