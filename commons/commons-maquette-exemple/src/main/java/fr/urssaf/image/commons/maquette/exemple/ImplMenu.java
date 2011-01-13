@@ -77,6 +77,16 @@ public final class ImplMenu implements IMenu {
          miTestXX.setLink("08_texte.txt");
          miTestXX.setTitle("Fichier texte");
          miTests.addChild(miTestXX);
+         
+         miTestXX = new MenuItem();
+         miTestXX.setLink("09_exclude_1.html");
+         miTestXX.setTitle("Exclude 1");
+         miTests.addChild(miTestXX);
+         
+         miTestXX = new MenuItem();
+         miTestXX.setLink("10_exclude_2.html");
+         miTestXX.setTitle("Exclude 2");
+         miTests.addChild(miTestXX);
 	      
 	   } catch (Exception ex) {
 	      throw new MenuException(ex);

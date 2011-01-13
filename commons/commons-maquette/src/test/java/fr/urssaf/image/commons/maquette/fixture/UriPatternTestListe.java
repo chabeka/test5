@@ -43,7 +43,7 @@ public final class UriPatternTestListe {
       
       // Des tests inspirés de http://www.caucho.com/resin-3.0/servlet/servlet.xtp#url-pattern
       liste.add(new UriPatternTestItem("/foo/bar.html", "/foo/bar.html", true));                // 9
-      liste.add(new UriPatternTestItem("/foo/bar.html", "/application-name/foo/bar.html", false)); // 10
+      liste.add(new UriPatternTestItem("/foo/bar.html", "/application-name/foo/bar.html", true)); // 10
       liste.add(new UriPatternTestItem("/foo/*", "/foo", true));                                // 11
       liste.add(new UriPatternTestItem("/foo/*", "/foo/", true));                               // 12
       liste.add(new UriPatternTestItem("/foo/*", "/foo/bar.html", true));                       // 13

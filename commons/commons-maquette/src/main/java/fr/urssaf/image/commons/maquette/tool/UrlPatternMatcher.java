@@ -1,5 +1,7 @@
 package fr.urssaf.image.commons.maquette.tool;
 
+import java.util.regex.Pattern;
+
 
 /**
  * 
@@ -69,6 +71,8 @@ public final class UrlPatternMatcher {
      * @param urlMapping le pattern
      * @param requestPath le chemin relatif au contexte de la request
      * @return true s'il y a match, false sinon
+     * @throws  PatternSyntaxException
+     *         si urlMapping est une expression régulière invalide
      */
    protected static boolean match(
          String urlMapping, 
@@ -112,9 +116,11 @@ public final class UrlPatternMatcher {
          result = matchCasExtension(urlMapping,requestPath);
       }
 
-      // Tous les autres cas
+      // Tous les autres cas on vérifie si il s'agit d'une expression régulière
+      //
       else {
-         result = false;
+         Pattern regex = Pattern.compile(urlMapping);
+         result = regex.matcher(requestPath).find();
       }
 
       // Renvoie du résultat

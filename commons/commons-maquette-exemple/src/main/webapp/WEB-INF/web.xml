@@ -25,7 +25,7 @@
       <!-- Pour exclure les pages d'accueil (welcome file list), ajouter la valeur "/commons-maquette-exemple/" -->
       <init-param>
          <param-name>excludeFiles</param-name>
-         <param-value></param-value>
+         <param-value>$*exclude*</param-value>
       </init-param>
       
       <init-param>
