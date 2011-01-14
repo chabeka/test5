@@ -17,15 +17,6 @@
       <logout logout-success-url="/login.do" logout-url="/logout" />
    </http>
 
-   <authentication-manager alias="authenticationManager">
-      <authentication-provider ref="authenticationProvider" />
-   </authentication-manager>
-
-   <beans:bean id="authenticationProvider"
-      class="fr.urssaf.image.commons.controller.springsecurity.exemple.authenticate.SecurityProvider">
-      <beans:constructor-arg ref="userService" />
-   </beans:bean>
-
    <beans:bean id="authenticationFilter"
       class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
       <beans:property name="authenticationManager" ref="authenticationManager" />

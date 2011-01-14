@@ -75,6 +75,12 @@
          <version>2.5</version>
       </dependency>
 
+      <dependency>
+         <groupId>commons-codec</groupId>
+         <artifactId>commons-codec</artifactId>
+         <version>1.4</version>
+      </dependency>
+
       <!--  layout avec sitemesh -->
       <dependency>
          <groupId>opensymphony</groupId>
