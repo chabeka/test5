@@ -2,17 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-<title>Page non sécurisée</title>
-<c:import url="/view/header.jsp" />
+<title>Page 1</title>
 </head>
 <body>
 
-<h6>&nbsp;page 1&nbsp;</h6>
-
-<button type="button" onclick="javascript:location.href='page2.do';">page 2</button>
-<button type="button" onclick="javascript:location.href='page3.do';">page 3</button>
-
-<button type="button" onclick="javascript:location.href='j_spring_security_logout';">deconnexion</button>
+<p>&nbsp;page 1&nbsp;</p>
 
 </body>
 </html>

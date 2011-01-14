@@ -4,17 +4,11 @@
 
 <html>
 <head>
-<title>Page sécurisée</title>
-<c:import url="/view/header.jsp" />
+<title>Page 2</title>
 </head>
 <body>
 
-<h6>&nbsp;page 2&nbsp;</h6>
-
-<button type="button" onclick="javascript:location.href='page1.do';">page 1</button>
-<button type="button" onclick="javascript:location.href='page3.do';">page 3</button>
-
-<button type="button" onclick="javascript:location.href='j_spring_security_logout';">deconnexion</button>
+<p>&nbsp;page 2&nbsp;</p>
 
 </body>
 </html>

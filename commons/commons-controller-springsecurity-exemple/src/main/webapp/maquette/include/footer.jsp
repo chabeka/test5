@@ -1,1 +1,1 @@
-<h1 class="title">Spring Web Exemple</h1>
+<h1 class="title">Copyright CIRTIL 2010</h1>

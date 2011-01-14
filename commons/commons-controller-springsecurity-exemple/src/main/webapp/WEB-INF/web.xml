@@ -25,10 +25,14 @@
 		<servlet-name>spring</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+      <servlet-name>spring</servlet-name>
+      <url-pattern>/welcome.do</url-pattern>
+   </servlet-mapping>
 
 	<!-- index -->
 	<welcome-file-list>
-		<welcome-file>/view/index.jsp</welcome-file>
+		<welcome-file>welcome.do</welcome-file>
 	</welcome-file-list>
 
 	<!-- encodage -->
@@ -62,16 +66,13 @@
    
 	<!-- sitemesh -->
 	<filter>
-		<filter-name>sitemesh</filter-name>
-		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>sitemesh</filter-name>
-		<url-pattern>*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+      <filter-name>sitemesh</filter-name>
+      <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+   </filter>
+   <filter-mapping>
+      <filter-name>sitemesh</filter-name>
+      <url-pattern>*.do</url-pattern>
+   </filter-mapping>
 
 	<!-- durée de vie de la session -->
 	<session-config>
