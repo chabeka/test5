@@ -6,8 +6,19 @@
          http://www.springframework.org/schema/security
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-   <authentication-manager alias="authenticationManager">
-      <authentication-provider user-service-ref="userEncodedService">
+
+   <http use-expressions="true">
+      <intercept-url pattern="/css/**" access="permitAll" />
+      <intercept-url pattern="/login_basic.do" access="permitAll" />
+      <intercept-url pattern="/" access="permitAll" />
+      <intercept-url pattern="/welcome.do" access="permitAll" />
+      <intercept-url pattern="/**" access="isAuthenticated()" />
+      <form-login login-page="/login_basic.do" />
+      <logout logout-success-url="/login_basic.do" logout-url="/logout" />
+   </http>
+   
+   <authentication-manager>
+      <authentication-provider user-service-ref="userDetailsServiceImpl">
          <password-encoder hash="md5" />
       </authentication-provider>
    </authentication-manager>

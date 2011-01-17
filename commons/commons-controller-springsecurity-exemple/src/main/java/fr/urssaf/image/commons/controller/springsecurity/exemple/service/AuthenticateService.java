@@ -5,20 +5,18 @@ import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.commons.controller.springsecurity.exemple.authenticate.SecurityUser;
 
-@Service
-public class UserEncodedService implements UserDetailsService{
+public final class AuthenticateService {
+   
+   private AuthenticateService(){
+      
+   }
 
    private static Map<String, SecurityUser> users = new HashMap<String, SecurityUser>();
 
-   private static final Logger LOG = Logger.getLogger(UserEncodedService.class);
+   private static final Logger LOG = Logger.getLogger(AuthenticateService.class);
 
    static {
 
@@ -35,24 +33,9 @@ public class UserEncodedService implements UserDetailsService{
       }
 
    }
-
-   public SecurityUser findByLoginPasswd(String login, String password) {
+   
+   protected static SecurityUser find(String login) {
 
       return users.get(login);
    }
-
-   @Override
-   public UserDetails loadUserByUsername(String username)
-         throws UsernameNotFoundException, DataAccessException {
-      
-      
-      SecurityUser user = users.get(username);
-
-      if (user == null) {
-         throw new UsernameNotFoundException("le compte n'existe pas");
-      }
-
-      return user;
-   }
-
 }

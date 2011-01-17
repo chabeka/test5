@@ -11,15 +11,14 @@
       base-package="fr.urssaf.image.commons.controller.springsecurity.exemple" />
 
    <!-- Configures Spring security -->
-   <import resource="applicationContext-security.xml" />
-   <import resource="applicationContext-security-abstract.xml" />
-
-
+   <import resource="applicationContext-security-basic.xml" />
+    
    <bean id="messageSource"
       class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
       <property name="basenames">
          <list>
             <value>/message/labels</value>
+            <value>/message/messages</value>
          </list>
       </property>
       <property name="cacheSeconds" value="0" />

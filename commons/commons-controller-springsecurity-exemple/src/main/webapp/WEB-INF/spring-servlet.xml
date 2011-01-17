@@ -9,7 +9,9 @@
    <mvc:annotation-driven />
    
    <mvc:view-controller path="/welcome.do" view-name="index" />
+   
    <mvc:view-controller path="/login.do" view-name="security/login" />
+   <mvc:view-controller path="/login_basic.do" view-name="security/login_basic" />
 
    <mvc:view-controller path="/page1.do" view-name="page/page1" />
    <mvc:view-controller path="/page2.do" view-name="page/page2" />
