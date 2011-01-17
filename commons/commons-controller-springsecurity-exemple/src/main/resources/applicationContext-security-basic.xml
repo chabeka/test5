@@ -15,8 +15,12 @@
       <intercept-url pattern="/**" access="isAuthenticated()" />
       <form-login login-page="/login_basic.do" />
       <logout logout-success-url="/login_basic.do" logout-url="/logout" />
+      <session-management>
+         <concurrency-control max-sessions="1"
+            error-if-maximum-exceeded="true" />
+      </session-management>
    </http>
-   
+
    <authentication-manager>
       <authentication-provider user-service-ref="userDetailsServiceImpl">
          <password-encoder hash="md5" />
