@@ -5,9 +5,9 @@
   
    <modelVersion>4.0.0</modelVersion>
    <groupId>fr.urssaf.image.commons</groupId>
-   <artifactId>commons-controller-spring-extjs</artifactId>
+   <artifactId>commons-controller-spring-extjs-exemple</artifactId>
    <version>0.0.1-SNAPSHOT</version>
-   <name>commons-controller-spring-extjs</name>
+   <name>commons-controller-spring-extjs-exemple</name>
    
    <parent>
       <groupId>fr.urssaf.image.commons</groupId>
