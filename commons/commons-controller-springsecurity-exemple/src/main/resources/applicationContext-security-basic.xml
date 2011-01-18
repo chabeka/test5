@@ -6,23 +6,23 @@
          http://www.springframework.org/schema/security
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-
-   <http use-expressions="true">
+   <http use-expressions="true" access-decision-manager-ref="authorizeManager">
       <intercept-url pattern="/css/**" access="permitAll" />
       <intercept-url pattern="/login_basic.do" access="permitAll" />
       <intercept-url pattern="/" access="permitAll" />
       <intercept-url pattern="/welcome.do" access="permitAll" />
+      <intercept-url pattern="/accessDenied.do" access="permitAll" />
       <intercept-url pattern="/**" access="isAuthenticated()" />
       <form-login login-page="/login_basic.do" />
-      <logout logout-success-url="/login_basic.do" logout-url="/logout" />
+      <logout logout-success-url="/login_basic.do" logout-url="/logout"/>
+      <access-denied-handler error-page="/accessDenied.do" />
       <session-management>
-         <concurrency-control max-sessions="1"
-            error-if-maximum-exceeded="true" />
+         <concurrency-control max-sessions="1" />
       </session-management>
    </http>
 
    <authentication-manager>
-      <authentication-provider user-service-ref="userDetailsServiceImpl">
+      <authentication-provider user-service-ref="securityBasicService">
          <password-encoder hash="md5" />
       </authentication-provider>
    </authentication-manager>

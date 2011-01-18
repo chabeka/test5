@@ -9,14 +9,17 @@
          http://www.springframework.org/schema/mvc
          http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-   <http use-expressions="true" entry-point-ref="authenticationEntryPoint">
+   <http use-expressions="true" entry-point-ref="authenticationEntryPoint"
+      access-decision-manager-ref="authorizeManager">
       <intercept-url pattern="/css/**" access="permitAll" />
       <intercept-url pattern="/login.do" access="permitAll" />
       <intercept-url pattern="/" access="permitAll" />
       <intercept-url pattern="/welcome.do" access="permitAll" />
+      <intercept-url pattern="/accessDenied.do" access="permitAll" />
       <intercept-url pattern="/**" access="isAuthenticated()" />
       <custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
       <logout logout-success-url="/login.do" logout-url="/logout" />
+      <access-denied-handler error-page="/accessDenied.do" />
    </http>
 
    <authentication-manager alias="authenticationManager">
@@ -25,7 +28,7 @@
 
    <beans:bean id="authenticationProvider"
       class="fr.urssaf.image.commons.controller.springsecurity.exemple.authenticate.SecurityProvider">
-      <beans:constructor-arg ref="userService" />
+      <beans:constructor-arg ref="securityService" />
    </beans:bean>
 
    <beans:bean id="authenticationFilter"

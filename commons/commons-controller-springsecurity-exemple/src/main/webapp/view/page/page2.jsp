@@ -1,6 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 
 <html>
 <head>
@@ -9,7 +6,7 @@
 <body>
 
 <p>&nbsp;page 2&nbsp;</p>
-
+<p>Cette page est accessible aux utilisateurs</p>
 </body>
 </html>
 

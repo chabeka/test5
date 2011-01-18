@@ -12,7 +12,8 @@
 
    <!-- Configures Spring security -->
    <import resource="applicationContext-security-basic.xml" />
-    
+   <import resource="applicationContext-security-authorize.xml" />
+
    <bean id="messageSource"
       class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
       <property name="basenames">

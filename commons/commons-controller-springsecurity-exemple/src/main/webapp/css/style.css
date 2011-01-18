@@ -9,7 +9,7 @@ div#content {
 	min-height: 600px;
 }
 
-div#content>p {
+div#content> * p, p {
 	text-align: center;
 }
 

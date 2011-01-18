@@ -72,6 +72,9 @@
    <filter-mapping>
       <filter-name>sitemesh</filter-name>
       <url-pattern>*.do</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
+      <dispatcher>FORWARD</dispatcher>
+      <dispatcher>ERROR</dispatcher>
    </filter-mapping>
 
 	<!-- durée de vie de la session -->

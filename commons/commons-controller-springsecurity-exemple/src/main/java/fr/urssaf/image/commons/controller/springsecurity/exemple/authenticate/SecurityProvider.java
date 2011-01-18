@@ -8,13 +8,12 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import fr.urssaf.image.commons.controller.springsecurity.exemple.service.UserService;
 
 public class SecurityProvider extends AbstractUserDetailsAuthenticationProvider {
 
-   private final UserService userService;
+   private final SecurityService userService;
 
-   protected SecurityProvider(UserService userService) {
+   protected SecurityProvider(SecurityService userService) {
       super();
       if (userService == null) {
          throw new IllegalStateException("'userService' is required");

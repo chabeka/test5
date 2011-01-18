@@ -3,6 +3,7 @@ package fr.urssaf.image.commons.controller.springsecurity.exemple.authenticate;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecurityUser implements UserDetails {
@@ -12,17 +13,20 @@ public class SecurityUser implements UserDetails {
    private final String username;
 
    private final String password;
+   
+   private final Collection<GrantedAuthority> authories;
 
-   public SecurityUser(String username, String password) {
+   public SecurityUser(String username, String password,String... roles) {
 
       this.username = username;
       this.password = password;
+      this.authories = AuthorityUtils.createAuthorityList(roles);
+      
    }
 
    @Override
    public Collection<GrantedAuthority> getAuthorities() {
-      // TODO Auto-generated method stub
-      return null;
+      return authories;
    }
 
    @Override
