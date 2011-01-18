@@ -25,7 +25,7 @@ public class AuthenticateService {
       users.put(user1.getUsername(), user1);
 
       SecurityUser user2 = new SecurityUser("admin", DigestUtils
-            .md5Hex("adminpassword"), Role.role_admin.getAuthority());
+            .md5Hex("adminpassword"), Role.role_user.getAuthority(),Role.role_admin.getAuthority());
       users.put(user2.getUsername(), user2);
 
       for (SecurityUser user : users.values()) {
