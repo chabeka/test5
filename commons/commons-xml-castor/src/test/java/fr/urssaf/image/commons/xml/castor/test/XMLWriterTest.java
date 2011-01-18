@@ -19,6 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.commons.xml.castor.XMLWriter;
@@ -105,6 +106,7 @@ public class XMLWriterTest {
 
    @SuppressWarnings( { "unchecked", "PMD.JUnitTestsShouldIncludeAssert" })
    @Test
+   @Ignore
    public void xmlWriterHibernateTest() throws IOException, MarshalException,
          ValidationException, MappingException {
 
