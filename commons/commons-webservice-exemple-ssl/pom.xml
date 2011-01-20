@@ -18,66 +18,77 @@
       <wsdl.rpc.encoded>/rpc_encoded.wsdl</wsdl.rpc.encoded>
    </properties>
 
+   <profiles>
+      <profile>
+         <id>generateWebService</id>
+
+         <build>
+            <plugins>
+
+               <plugin>
+                  <groupId>org.apache.cxf</groupId>
+                  <artifactId>cxf-codegen-plugin</artifactId>
+                  <version>${cxf.version}</version>
+                  <executions>
+                     <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                           <sourceRoot>${basedir}/src/main/java</sourceRoot>
+                           <wsdlOptions>
+                              <wsdlOption>
+                                 <wsdl>${server}${wsdl.document}</wsdl>
+                                 <extraargs>
+                                    <extraarg>-verbose</extraarg>
+                                 </extraargs>
+                                 <packagenames>
+                                    <packagename>fr.urssaf.image.commons.webservice.exemple.ssl.document.modele</packagename>
+                                 </packagenames>
+                              </wsdlOption>
+                              <wsdlOption>
+                                 <wsdl>${server}${wsdl.rpc.literal}</wsdl>
+                                 <extraargs>
+                                    <extraarg>-verbose</extraarg>
+                                 </extraargs>
+                                 <packagenames>
+                                    <packagename>fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele</packagename>
+                                 </packagenames>
+                              </wsdlOption>
+                           </wsdlOptions>
+                        </configuration>
+                        <goals>
+                           <goal>wsdl2java</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+
+               <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>axistools-maven-plugin</artifactId>
+                  <version>${axis.version}</version>
+                  <configuration>
+                     <outputDirectory>${basedir}/src/main/java</outputDirectory>
+                     <urls>
+
+                     </urls>
+                     <packageSpace>fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele</packageSpace>
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>wsdl2java</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
    <build>
       <plugins>
-
-         <plugin>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-codegen-plugin</artifactId>
-            <version>${cxf.version}</version>
-            <executions>
-               <execution>
-                  <id>generate-sources</id>
-                  <phase>generate-sources</phase>
-                  <configuration>
-                     <sourceRoot>${basedir}/src/main/java</sourceRoot>
-                     <wsdlOptions>
-                        <wsdlOption>
-                           <wsdl>${server}${wsdl.document}</wsdl>
-                           <extraargs>
-                              <extraarg>-verbose</extraarg>
-                           </extraargs>
-                           <packagenames>
-                              <packagename>fr.urssaf.image.commons.webservice.exemple.ssl.document.modele</packagename>
-                           </packagenames>
-                        </wsdlOption>
-                        <wsdlOption>
-                           <wsdl>${server}${wsdl.rpc.literal}</wsdl>
-                           <extraargs>
-                              <extraarg>-verbose</extraarg>
-                           </extraargs>
-                           <packagenames>
-                              <packagename>fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele</packagename>
-                           </packagenames>
-                        </wsdlOption>
-                     </wsdlOptions>
-                  </configuration>
-                  <goals>
-                     <goal>wsdl2java</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-         
-         <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>axistools-maven-plugin</artifactId>
-            <version>${axis.version}</version>
-            <configuration>
-               <outputDirectory>${basedir}/src/main/java</outputDirectory>
-               <urls>
-                  
-               </urls>
-               <packageSpace>fr.urssaf.image.commons.webservice.exemple.ssl.rpc.modele</packageSpace>
-            </configuration>
-            <executions>
-               <execution>
-                  <goals>
-                     <goal>wsdl2java</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
 
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -106,7 +117,7 @@
          <artifactId>cxf-rt-frontend-jaxws</artifactId>
          <version>${cxf.version}</version>
       </dependency>
-      
+
       <!-- AXIS  -->
 
       <dependency>

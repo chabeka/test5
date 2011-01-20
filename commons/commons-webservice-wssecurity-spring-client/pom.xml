@@ -15,37 +15,49 @@
       <wsdl.document>src/test/resources/DocumentService.xml</wsdl.document>
    </properties>
 
+   <profiles>
+      <profile>
+         <id>generateWebService</id>
+
+         <build>
+            <plugins>
+
+               <plugin>
+                  <groupId>org.apache.cxf</groupId>
+                  <artifactId>cxf-codegen-plugin</artifactId>
+                  <version>${cxf.version}</version>
+                  <executions>
+                     <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                           <sourceRoot>${basedir}/src/main/java</sourceRoot>
+                           <wsdlOptions>
+                              <wsdlOption>
+                                 <wsdl>${wsdl.document}</wsdl>
+                                 <extraargs>
+                                    <extraarg>-verbose</extraarg>
+                                 </extraargs>
+                                 <packagenames>
+                                    <packagename>fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele</packagename>
+                                 </packagenames>
+                              </wsdlOption>
+                           </wsdlOptions>
+                        </configuration>
+                        <goals>
+                           <goal>wsdl2java</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+
+         </build>
+      </profile>
+   </profiles>
+
    <build>
       <plugins>
-
-         <plugin>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-codegen-plugin</artifactId>
-            <version>${cxf.version}</version>
-            <executions>
-               <execution>
-                  <id>generate-sources</id>
-                  <phase>generate-sources</phase>
-                  <configuration>
-                     <sourceRoot>${basedir}/src/main/java</sourceRoot>
-                     <wsdlOptions>
-                        <wsdlOption>
-                           <wsdl>${wsdl.document}</wsdl>
-                           <extraargs>
-                              <extraarg>-verbose</extraarg>
-                           </extraargs>
-                           <packagenames>
-                              <packagename>fr.urssaf.image.commons.webservice.wssecurity.spring.client.modele</packagename>
-                           </packagenames>
-                        </wsdlOption>
-                     </wsdlOptions>
-                  </configuration>
-                  <goals>
-                     <goal>wsdl2java</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
 
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
