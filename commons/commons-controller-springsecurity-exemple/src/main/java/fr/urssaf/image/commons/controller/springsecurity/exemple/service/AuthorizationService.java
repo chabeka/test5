@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import fr.urssaf.image.commons.controller.springsecurity.exemple.modele.Role;
 
@@ -20,9 +22,9 @@ public class AuthorizationService {
 
    static {
 
-      pages.put("page1", null);
-      pages.put("page2", new Role[] { Role.role_user, Role.role_admin });
-      pages.put("page3", new Role[] { Role.role_admin });
+      pages.put("/page1*", null);
+      pages.put("/page2*", new Role[] { Role.role_user, Role.role_admin });
+      pages.put("/page3*", new Role[] { Role.role_admin });
 
       for (String page : pages.keySet()) {
 
@@ -32,15 +34,24 @@ public class AuthorizationService {
 
    }
 
-   public Boolean isAuthorized(String page, Collection<String> roles) {
+   private final PathMatcher urlMatcher ;
+   
+   public AuthorizationService (){
+      urlMatcher = new AntPathMatcher();
+   }
+
+   public Boolean isAuthorized(String url, Collection<String> roles) {
 
       Boolean authorized = null;
+      for (String page : pages.keySet()) {
 
-      if (pages.containsKey(page)) {
+         if (urlMatcher.match(page, url)) {
 
-         Role[] authorizedRoles = pages.get(page);
-         authorized = isAuthorized(authorizedRoles, roles);
+            Role[] authorizedRoles = pages.get(page);
+            authorized = isAuthorized(authorizedRoles, roles);
 
+            break;
+         }
       }
 
       return authorized;

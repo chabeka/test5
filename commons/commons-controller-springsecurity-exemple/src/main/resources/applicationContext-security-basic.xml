@@ -6,7 +6,9 @@
          http://www.springframework.org/schema/security
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-   <http use-expressions="true" access-decision-manager-ref="authorizeManager">
+   <beans:import resource="security/applicationContext-security-aspect.xml" />
+
+   <http use-expressions="true" access-decision-manager-ref="pageAuthorizeManager">
       <intercept-url pattern="/css/**" access="permitAll" />
       <intercept-url pattern="/login_basic.do" access="permitAll" />
       <intercept-url pattern="/" access="permitAll" />
@@ -14,7 +16,7 @@
       <intercept-url pattern="/accessDenied.do" access="permitAll" />
       <intercept-url pattern="/**" access="isAuthenticated()" />
       <form-login login-page="/login_basic.do" />
-      <logout logout-success-url="/login_basic.do" logout-url="/logout"/>
+      <logout logout-success-url="/login_basic.do" logout-url="/logout" />
       <access-denied-handler error-page="/accessDenied.do" />
       <session-management>
          <concurrency-control max-sessions="1" />
@@ -26,5 +28,19 @@
          <password-encoder hash="md5" />
       </authentication-provider>
    </authentication-manager>
+
+   <beans:bean id="pageAuthorizeManager"
+      class="org.springframework.security.access.vote.UnanimousBased">
+      <beans:property name="decisionVoters">
+         <beans:list>
+            <beans:bean
+               class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+            <beans:bean
+               class="fr.urssaf.image.commons.controller.springsecurity.exemple.access.PageAuthorizedAccess">
+               <beans:constructor-arg ref="authorizationService" />
+            </beans:bean>
+         </beans:list>
+      </beans:property>
+   </beans:bean>
 
 </beans:beans>

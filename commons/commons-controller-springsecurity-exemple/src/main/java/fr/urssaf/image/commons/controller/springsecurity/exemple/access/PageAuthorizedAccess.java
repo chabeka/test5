@@ -8,7 +8,6 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.FilterInvocation;
-import org.springframework.web.util.WebUtils;
 
 import fr.urssaf.image.commons.controller.springsecurity.exemple.service.AuthorizationService;
 
@@ -41,8 +40,8 @@ public class PageAuthorizedAccess implements AccessDecisionVoter {
          Collection<ConfigAttribute> attributes) {
 
       FilterInvocation filter = (FilterInvocation) object;
-      String url = WebUtils.extractFilenameFromUrlPath(filter.getRequestUrl());
-    
+      String url = filter.getRequestUrl();
+
       int access = ACCESS_ABSTAIN;
 
       Boolean authorized = authService.isAuthorized(url, AuthorityUtils
@@ -57,7 +56,7 @@ public class PageAuthorizedAccess implements AccessDecisionVoter {
 
          access = ACCESS_DENIED;
       }
-     
+
       return access;
    }
 

@@ -43,6 +43,10 @@
 		<sec:authorize url="/page3.do">
 			<li><a href="page3.do">page 3</a></li>
 		</sec:authorize>
+		
+		<sec:authorize url="/pageForm.do">
+			<li><a href="pageForm.do">formulaire</a></li>
+		</sec:authorize>
 	</ul>
 
 	<sec:authorize access="isAuthenticated()">
