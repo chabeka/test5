@@ -24,7 +24,7 @@
 	
 	<div>
 	<form:label path="text">Texte&nbsp;:</form:label>
-	<form:textarea path="text"/>
+	<form:textarea path="text" cols="20" rows="3"/>
 	<span class="error" style="vertical-align:top;"><form:errors path="text" /></span>
 	</div>
 	

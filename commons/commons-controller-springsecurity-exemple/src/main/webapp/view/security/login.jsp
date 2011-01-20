@@ -6,7 +6,6 @@
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
 <title>Connexion</title>
 </head>
@@ -15,35 +14,42 @@
 
 <form action="j_spring_security_check" method="post">
 
+	<div id="form_login">
+
 	<div>
-	<label id="login" class="field">
+	<label for="login">
 		<fmt:message key="login" />
 	</label>:
-	<input type="text" name='login' id='login' class="value" value="${SPRING_SECURITY_LAST_USERNAME}" />
+	<input type="text" name='login' id='login' value="${SPRING_SECURITY_LAST_USERNAME}" />
 		
 	</div>
 
 	<div>
-	<label id="password" class="field">
+	<label for="password">
 		<fmt:message key='password' />
 	</label>:
 	
-	<input type="password" name='password' id='password' class="value" />
+	<input type="password" name='password' id='password'/>
 	</div>
 
 
-	<div class="center">
+	<div id="submit">
 
-	<input type='submit' id='boutton_login' class="button"
+	<input type='submit' id='boutton_login'
 		value='<fmt:message key="connection" />' />
 		
 	<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
-		<p class="error">${SPRING_SECURITY_LAST_EXCEPTION.message}</p>
+		<p class="error">
+			${SPRING_SECURITY_LAST_EXCEPTION.message}</p>
 	</c:if>
+
+	
 		
 	</div>
-
-
+	
+	</div>
+	
+	
 </form>
 
 
