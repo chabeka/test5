@@ -7,8 +7,10 @@
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
 
-   <global-method-security jsr250-annotations="enabled" />
-     
+   <global-method-security
+      access-decision-manager-ref="methodAuthorizeManager"
+      jsr250-annotations="enabled" />
+
    <beans:bean id="formService"
       class="fr.urssaf.image.commons.controller.springsecurity.exemple.service.FormServiceImplJSR250" />
 

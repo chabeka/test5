@@ -6,10 +6,13 @@
          http://www.springframework.org/schema/security
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-   <global-method-security>
+   <global-method-security
+      access-decision-manager-ref="methodAuthorizeManager">
+      
       <protect-pointcut
          expression="execution(* fr.urssaf.image.commons.controller.springsecurity.exemple.service.FormService.save(..))"
-         access="ROLE_ADMIN" />
+         access="ROLE_USER" />
+      
    </global-method-security>
 
    <beans:bean id="formService"

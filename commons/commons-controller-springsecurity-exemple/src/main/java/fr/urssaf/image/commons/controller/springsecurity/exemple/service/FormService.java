@@ -1,8 +1,12 @@
 package fr.urssaf.image.commons.controller.springsecurity.exemple.service;
 
+import fr.urssaf.image.commons.controller.springsecurity.exemple.form.FormFormulaire;
+
 public interface FormService {
 
-   void display(String title, String text);
-   
-   void save(String title, String text);
+   void display(FormFormulaire form);
+
+   void save(FormFormulaire form);
+
+   void populate(FormFormulaire form);
 }

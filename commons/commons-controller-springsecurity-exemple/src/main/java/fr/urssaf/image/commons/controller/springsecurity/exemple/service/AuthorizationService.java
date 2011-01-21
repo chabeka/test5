@@ -23,7 +23,7 @@ public class AuthorizationService {
    static {
 
       pages.put("/page1*", null);
-      pages.put("/page2*", new Role[] { Role.role_user, Role.role_admin });
+      pages.put("/page2*", new Role[] { Role.role_user });
       pages.put("/page3*", new Role[] { Role.role_admin });
 
       for (String page : pages.keySet()) {
@@ -34,9 +34,9 @@ public class AuthorizationService {
 
    }
 
-   private final PathMatcher urlMatcher ;
-   
-   public AuthorizationService (){
+   private final PathMatcher urlMatcher;
+
+   public AuthorizationService() {
       urlMatcher = new AntPathMatcher();
    }
 

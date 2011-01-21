@@ -23,6 +23,11 @@
       </session-management>
    </http>
 
+   <beans:bean id="authorizeBeanPostProcessor"
+      class="fr.urssaf.image.commons.controller.springsecurity.exemple.access.AuthorizeBeanPostProcessor">
+      <beans:property name="roleHierarchy" ref="roleHierarchy" />
+   </beans:bean>
+
    <authentication-manager>
       <authentication-provider user-service-ref="securityBasicService">
          <password-encoder hash="md5" />
@@ -34,13 +39,44 @@
       <beans:property name="decisionVoters">
          <beans:list>
             <beans:bean
-               class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+               class="fr.urssaf.image.commons.controller.springsecurity.exemple.access.WebExpressionAccess">
+               <beans:property name="roleHierarchy" ref="roleHierarchy" />
+            </beans:bean>
             <beans:bean
                class="fr.urssaf.image.commons.controller.springsecurity.exemple.access.PageAuthorizedAccess">
                <beans:constructor-arg ref="authorizationService" />
+               <beans:property name="roleHierarchy" ref="roleHierarchy" />
             </beans:bean>
          </beans:list>
       </beans:property>
    </beans:bean>
+
+
+   <beans:bean id="methodAuthorizeManager"
+      class="org.springframework.security.access.vote.AffirmativeBased">
+      <beans:property name="decisionVoters">
+         <beans:list>
+            <beans:bean
+               class="org.springframework.security.access.vote.RoleHierarchyVoter">
+               <beans:constructor-arg ref="roleHierarchy" />
+            </beans:bean>
+         </beans:list>
+      </beans:property>
+   </beans:bean>
+
+   <beans:bean id="roleHierarchy"
+      class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+      <beans:property name="hierarchy">
+         <beans:value>
+            ROLE_ADMIN > ROLE_USER
+            ROLE_ADMIN > ROLE_USER2
+            ROLE_USER > ROLE_AUTH
+         </beans:value>
+      </beans:property>
+   </beans:bean>
+
+
+
+
 
 </beans:beans>

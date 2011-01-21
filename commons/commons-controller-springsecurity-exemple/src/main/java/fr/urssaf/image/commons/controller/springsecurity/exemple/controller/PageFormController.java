@@ -49,7 +49,7 @@ public class PageFormController {
    protected String save(@Valid FormFormulaire formFormulaire,
          BindingResult result, Model model) {
 
-      formService.display(formFormulaire.getTitle(), formFormulaire.getText());
+      formService.display(formFormulaire);
 
       String view;
       if (result.hasErrors()) {
@@ -57,12 +57,23 @@ public class PageFormController {
          model.addAttribute("message", "form.failure");
       } else {
 
-         formService.save(formFormulaire.getTitle(), formFormulaire.getText());
+         formService.save(formFormulaire);
          model.addAttribute("message", "form.success");
          view = defaultView();
       }
 
       return view;
+
+   }
+
+   @RequestMapping(method = RequestMethod.POST, params = { "populate" })
+   protected String populate(Model model) {
+
+      FormFormulaire formFormulaire = new FormFormulaire();
+      formService.populate(formFormulaire);
+      model.addAttribute(formFormulaire);
+
+      return defaultView();
 
    }
 

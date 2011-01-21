@@ -7,7 +7,9 @@
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
 
-   <global-method-security secured-annotations="enabled" />
+   <global-method-security
+      access-decision-manager-ref="methodAuthorizeManager"
+      secured-annotations="enabled" />
 
    <beans:bean id="formService"
       class="fr.urssaf.image.commons.controller.springsecurity.exemple.service.FormServiceImplSecured" />

@@ -58,6 +58,8 @@ Comptes utilisateurs:
 <ul>
 <li> admin : adminpassword</li>
 <li> user  : userpassword</li>
+<li> auth  : authpassword</li>
+<li> users : userpassword</li>
 </ul>
 
 </div>
