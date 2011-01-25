@@ -6,8 +6,6 @@
          http://www.springframework.org/schema/security
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-   <beans:import resource="security/applicationContext-security-aspect.xml" />
-
    <http use-expressions="true" access-decision-manager-ref="pageAuthorizeManager">
       <intercept-url pattern="/css/**" access="permitAll" />
       <intercept-url pattern="/login_basic.do" access="permitAll" />

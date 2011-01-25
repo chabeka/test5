@@ -48,5 +48,7 @@
       <beans:property name="loginFormUrl" value="/login.do" />
    </beans:bean>
 
+   <beans:bean id="formService"
+      class="fr.urssaf.image.commons.controller.springsecurity.exemple.service.FormServiceImplAspect" />
 
 </beans:beans>

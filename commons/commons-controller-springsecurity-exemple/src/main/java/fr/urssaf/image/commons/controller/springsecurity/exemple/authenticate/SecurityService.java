@@ -3,6 +3,7 @@ package fr.urssaf.image.commons.controller.springsecurity.exemple.authenticate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import fr.urssaf.image.commons.controller.springsecurity.exemple.service.AuthenticateService;
 
@@ -14,9 +15,7 @@ public class SecurityService {
    @Autowired
    public SecurityService(AuthenticateService authService) {
 
-      if (authService == null) {
-         throw new IllegalStateException("'authService' is required");
-      }
+      Assert.notNull(authService, "'authService' is required");
       this.authService = authService;
    }
 

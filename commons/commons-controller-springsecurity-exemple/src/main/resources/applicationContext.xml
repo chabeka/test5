@@ -12,10 +12,7 @@
       <context:exclude-filter type="annotation"
          expression="org.springframework.stereotype.Controller" />
    </context:component-scan>
-
-   <!-- Configures Spring security -->
-   <import resource="applicationContext-security-basic.xml" />
-   
+ 
    <bean id="messageSource"
       class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
       <property name="basenames">

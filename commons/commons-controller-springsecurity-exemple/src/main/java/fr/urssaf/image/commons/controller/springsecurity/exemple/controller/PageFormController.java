@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,9 +27,7 @@ public class PageFormController {
    @Autowired
    public PageFormController(FormService formService) {
 
-      if (formService == null) {
-         throw new IllegalStateException("'formService' is required");
-      }
+      Assert.notNull(formService, "'formService' is required");
 
       LOG.debug("service formulaire :"
             + AopUtils.getTargetClass(formService).getAnnotation(

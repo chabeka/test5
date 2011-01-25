@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.util.Assert;
 
 public class SecurityProvider extends AbstractUserDetailsAuthenticationProvider {
 
@@ -15,9 +15,7 @@ public class SecurityProvider extends AbstractUserDetailsAuthenticationProvider 
 
    protected SecurityProvider(SecurityService userService) {
       super();
-      if (userService == null) {
-         throw new IllegalStateException("'userService' is required");
-      }
+      Assert.notNull(userService, "'userService' is required");
 
       this.userService = userService;
    }
