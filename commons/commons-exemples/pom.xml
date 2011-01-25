@@ -37,6 +37,7 @@
       <module>../commons-xml-jaxb-exemple-sandre</module>
       <module>../commons-xml-jaxb-exemple-seda</module>
       <module>../commons-springsecurity-service</module>
+      <module>../commons-springsecurity-web</module>
    </modules>
 
    <build>
