@@ -1,6 +1,7 @@
 package fr.urssaf.image.commons.util.tests;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import org.junit.Assert;
@@ -100,22 +101,32 @@ public final class TestsUtils {
    throws TestConstructeurPriveException { 
       Boolean result = false;
       final Constructor<?>[] constructeurs = classe.getDeclaredConstructors();
-      try {
-         for(final Constructor<?> constructeur : constructeurs) {
-            if ((
-                  Modifier.isPrivate(constructeur.getModifiers())) && // constructeur privé 
-                  (constructeur.getParameterTypes().length==0))       // constructeur sans argument
-            {
-               constructeur.setAccessible(true); 
-               final Object objet = constructeur.newInstance((Object[])null);
+
+      for(final Constructor<?> constructeur : constructeurs) {
+         if ((
+               Modifier.isPrivate(constructeur.getModifiers())) && // constructeur privé 
+               (constructeur.getParameterTypes().length==0))       // constructeur sans argument
+         {
+            constructeur.setAccessible(true); 
+            Object objet;
+            try {
+
+               objet = constructeur.newInstance((Object[])null);
                Assert.assertNotNull(objet);
                result = true;
                break;
+
+            } catch (IllegalArgumentException e) {
+               throw new TestConstructeurPriveException(e);
+            } catch (InstantiationException e) {
+               throw new TestConstructeurPriveException(e);
+            } catch (IllegalAccessException e) {
+               throw new TestConstructeurPriveException(e);
+            } catch (InvocationTargetException e) {
+               throw new TestConstructeurPriveException(e);
             }
+
          }
-      }
-      catch (Exception ex) {
-         throw new TestConstructeurPriveException(ex);
       }
       return result;
    }
