@@ -1,6 +1,5 @@
 package fr.urssaf.image.commons.springsecurity.service;
 
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,12 +65,6 @@ public class SimpleServiceImplTest {
 
       authenticate("ROLE_AUTH");
       service.load();
-   }
-
-   @After
-   public void after() {
-
-      SecurityContextHolder.clearContext();
    }
 
 }
