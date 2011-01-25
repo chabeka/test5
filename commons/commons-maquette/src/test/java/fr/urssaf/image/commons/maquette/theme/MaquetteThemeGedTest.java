@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import fr.urssaf.image.commons.maquette.exception.MaquetteThemeException;
+
 
 /**
  * Test de la classe {@link MaquetteThemeGed}
@@ -14,64 +16,64 @@ public class MaquetteThemeGedTest {
 
    
    @Test
-   public void testTheme() {
+   public void testTheme() throws MaquetteThemeException {
       
       MaquetteThemeGed theme = new MaquetteThemeGed(null);
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.APPLOGO,
+            "getResourceImageMaquette.do?name=/resource/img/logo_ged.png",
             theme.getAppLogo());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSCONTENTBACKGROUNDCOLOR,
+            "#fff",
             theme.getCssContentBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSCONTENTFONTCOLOR,
+            "#000",
             theme.getCssContentFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSHEADERBACKGROUNDCOLOR,
+            "#044a6e",
             theme.getCssHeaderBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSHEADERBACKGROUNDIMG,
+            "getResourceImageMaquette.do?name=/resource/img/degrade_h_ged.png",
             theme.getCssHeaderBackgroundImg());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSINFOBOXBACKGROUNDCOLOR,
+            "#EAEAEF",
             theme.getCssInfoboxBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSLEFTCOLORBACKGROUNDIMG,
+            "getResourceImageMaquette.do?name=/resource/img/leftcol_ged.png",
             theme.getCssLeftcolBackgroundImg());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSMAINBACKGROUNDCOLOR,
+            "#AAB9BD",
             theme.getCssMainBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSMAINFONTCOLOR,
+            "#fff",
             theme.getCssMainFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSMENUFIRSTROWFONTCOLOR,
+            "#CEEDFF",
             theme.getCssMenuFirstRowFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSMENULINKFONTCOLOR,
+            "#fff",
             theme.getCssMenuLinkFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSMENULINKHOVERFONTCOLOR,
+            "#000",
             theme.getCssMenuLinkHoverFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.CSSSELECTEDMENUBACKGROUNDCOLOR,
+            "#05577D",
             theme.getCssSelectedMenuBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeGed.MAINLOGO,
+            "getResourceImageMaquette.do?name=/resource/img/logo_image_ged.png",
             theme.getMainLogo());
       
    }

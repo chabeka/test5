@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.mock.web.MockFilterConfig;
 
+import fr.urssaf.image.commons.maquette.exception.MaquetteThemeException;
+
 /**
  * Tests unitaires de la classe {@link AbstractMaquetteTheme}
  *
@@ -15,9 +17,11 @@ public class AbstractMaquetteThemeTest {
    
    /**
     * Tests unitaires de la méthode {@link AbstractMaquetteTheme#getFilterValue(String)}
+    * 
+    * @throws MaquetteThemeException 
     */
    @Test
-   public void getFilterValue() {
+   public void getFilterValue() throws MaquetteThemeException {
       
       MockFilterConfig filterConfig;
       AbstractMaquetteTheme theme;

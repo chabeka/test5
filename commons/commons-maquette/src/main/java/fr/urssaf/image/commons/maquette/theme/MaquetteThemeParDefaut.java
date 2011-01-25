@@ -5,6 +5,7 @@ import javax.servlet.FilterConfig;
 import org.apache.commons.lang.StringUtils;
 
 import fr.urssaf.image.commons.maquette.constantes.ConstantesConfigFiltre;
+import fr.urssaf.image.commons.maquette.exception.MaquetteThemeException;
 
 
 /**
@@ -24,94 +25,52 @@ public final class MaquetteThemeParDefaut extends AbstractMaquetteTheme {
     * Constructeur
     * 
     * @param filterConfig la configuration du filtre
+    * @throws MaquetteThemeException un problème est survenu 
     */
-   public MaquetteThemeParDefaut(FilterConfig filterConfig) {
+   public MaquetteThemeParDefaut(FilterConfig filterConfig) throws MaquetteThemeException {
+      
       super(filterConfig);
+      
+      updateValeurThemesDepuisConfigFiltre();
+      
    }
 
    
    @Override
-   public String getAppLogo() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.APPLOGO) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.APPLOGO : valeurFiltre;
+   protected String getFichierRessourceTheme() {
+      return "theme_defaut.properties";
    }
+   
 
-   @Override
-   public String getCssContentBackgroundColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSCONTENTBACKGROUNDCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSCONTENTBACKGROUNDCOLOR : valeurFiltre;
+   
+   private void updateValeurThemesDepuisConfigFiltre() throws MaquetteThemeException {
+      
+      // Si des valeurs sont passées dans la configuration du filtre, 
+      // elles sont prioritaires
+      
+      surchargeConfig(ConstantesConfigFiltre.CSSMAINBACKGROUNDCOLOR,ConstantesConfigTheme.CSSMAINBACKGROUNDCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSCONTENTBACKGROUNDCOLOR,ConstantesConfigTheme.CSSCONTENTBACKGROUNDCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSLEFTCOLORBACKGROUNDIMG,ConstantesConfigTheme.CSSLEFTCOLBACKGROUNDIMG);
+      surchargeConfig(ConstantesConfigFiltre.CSSINFOBOXBACKGROUNDCOLOR,ConstantesConfigTheme.CSSINFOBOXBACKGROUNDCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSHEADERBACKGROUNDCOLOR,ConstantesConfigTheme.CSSHEADERBACKGROUNDCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSHEADERBACKGROUNDIMG,ConstantesConfigTheme.CSSHEADERBACKGROUNDIMG);
+      surchargeConfig(ConstantesConfigFiltre.CSSSELECTEDMENUBACKGROUNDCOLOR,ConstantesConfigTheme.CSSSELECTEDMENUBACKGROUNDCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSMAINFONTCOLOR,ConstantesConfigTheme.CSSMAINFONTCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSCONTENTFONTCOLOR,ConstantesConfigTheme.CSSCONTENTFONTCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSMENUFIRSTROWFONTCOLOR,ConstantesConfigTheme.CSSMENUFIRSTROWFONTCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSMENULINKFONTCOLOR,ConstantesConfigTheme.CSSMENULINKFONTCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.CSSMENULINKHOVERFONTCOLOR,ConstantesConfigTheme.CSSMENULINKHOVERFONTCOLOR);
+      surchargeConfig(ConstantesConfigFiltre.MAINLOGO,ConstantesConfigTheme.MAINLOGO);
+      surchargeConfig(ConstantesConfigFiltre.APPLOGO,ConstantesConfigTheme.APPLOGO);
+      
    }
-
-   @Override
-   public String getCssContentFontColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSCONTENTFONTCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSCONTENTFONTCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssHeaderBackgroundColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSHEADERBACKGROUNDCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSHEADERBACKGROUNDCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssHeaderBackgroundImg() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSHEADERBACKGROUNDIMG) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSHEADERBACKGROUNDIMG : valeurFiltre;
-   }
-
-   @Override
-   public String getCssInfoboxBackgroundColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSINFOBOXBACKGROUNDCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSINFOBOXBACKGROUNDCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssLeftcolBackgroundImg() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSLEFTCOLORBACKGROUNDIMG) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSLEFTCOLORBACKGROUNDIMG : valeurFiltre;
-   }
-
-   @Override
-   public String getCssMainBackgroundColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSMAINBACKGROUNDCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSMAINBACKGROUNDCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssMainFontColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSMAINFONTCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSMAINFONTCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssMenuFirstRowFontColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSMENUFIRSTROWFONTCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSMENUFIRSTROWFONTCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssMenuLinkFontColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSMENULINKFONTCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSMENULINKFONTCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssMenuLinkHoverFontColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSMENULINKHOVERFONTCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSMENULINKHOVERFONTCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getCssSelectedMenuBackgroundColor() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.CSSSELECTEDMENUBACKGROUNDCOLOR) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.CSSSELECTEDMENUBACKGROUNDCOLOR : valeurFiltre;
-   }
-
-   @Override
-   public String getMainLogo() {
-      String valeurFiltre = getFilterValue(ConstantesConfigFiltre.MAINLOGO) ; 
-      return StringUtils.isEmpty(valeurFiltre) ? ConstantesThemeParDefaut.MAINLOGO : valeurFiltre;
+   
+   
+   private void surchargeConfig(String paramDansFiltre, String paramDansConfig) {
+      String valeurFiltre = getFilterValue(paramDansFiltre);
+      if (!StringUtils.isEmpty(valeurFiltre)) {
+         getTheme().setProperty(paramDansConfig, valeurFiltre);
+      }
    }
 
 }

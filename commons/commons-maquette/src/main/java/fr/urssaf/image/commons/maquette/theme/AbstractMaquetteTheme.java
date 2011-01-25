@@ -1,8 +1,14 @@
 package fr.urssaf.image.commons.maquette.theme;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Properties;
 
 import javax.servlet.FilterConfig;
+
+import fr.urssaf.image.commons.maquette.exception.MaquetteThemeException;
+
 
 /**
  * Représente un thème graphique de la maquette.<br>
@@ -12,11 +18,31 @@ import javax.servlet.FilterConfig;
  */
 public abstract class AbstractMaquetteTheme implements Serializable {
    
-   
+
    private static final long serialVersionUID = 3801358133753378008L;
    
    
    private final FilterConfig filterConfig;
+   
+   
+   /**
+    * Les valeurs du thème chargées à partir d'un fichier properties
+    */
+   private final Properties theme = new Properties();
+   
+   
+   
+   /**
+    * Renvoie l'objet Properties contenant les valeurs du thème<br>
+    * <br>
+    * En protected pour permettre aux classes dérivées de modifier le contenu
+    * de cet objet
+    * 
+    * @return l'objet Properties contenant les valeurs du thème
+    */
+   protected final Properties getTheme() {
+      return this.theme;
+   }
    
    
    /**
@@ -30,7 +56,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return Le chemin de l'image du logo principal
     * 
     */
-   public abstract String getMainLogo() ;
+   public final String getMainLogo() {
+      return theme.getProperty(ConstantesConfigTheme.MAINLOGO);
+   }
 
    
    /**
@@ -43,7 +71,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return Le chemin de l'image du logo de l'application (positionnée en haut à droite).
     * 
     */
-   public abstract String getAppLogo();
+   public final String getAppLogo() {
+      return theme.getProperty(ConstantesConfigTheme.APPLOGO);
+   }
    
 
 
@@ -57,7 +87,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return CSS de la couleur de fond de la fenêtre
     * 
     */
-   public abstract String getCssMainBackgroundColor();
+   public final String getCssMainBackgroundColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSMAINBACKGROUNDCOLOR);
+   }
 
 
    /**
@@ -71,7 +103,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * applicatif (zone centrale et menu de gauche)
     * 
     */
-   public abstract String getCssContentBackgroundColor();
+   public final String getCssContentBackgroundColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSCONTENTBACKGROUNDCOLOR);
+   }
 
 
    /**
@@ -86,7 +120,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * applicatif
     * 
     */
-   public abstract String getCssHeaderBackgroundColor();
+   public final String getCssHeaderBackgroundColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSHEADERBACKGROUNDCOLOR);
+   }
 
 
    /**
@@ -99,7 +135,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return CSS de l'image du dégradé du header (1920*1px)
     * 
     */
-   public abstract String getCssHeaderBackgroundImg();
+   public final String getCssHeaderBackgroundImg() {
+      return theme.getProperty(ConstantesConfigTheme.CSSHEADERBACKGROUNDIMG);
+   }
 
 
    /**
@@ -114,7 +152,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * pour simuler la colonne de gauche (140*1px)
     * 
     */
-   public abstract String getCssLeftcolBackgroundImg();
+   public final String getCssLeftcolBackgroundImg() {
+      return theme.getProperty(ConstantesConfigTheme.CSSLEFTCOLBACKGROUNDIMG);
+   }
 
 
    /**
@@ -129,7 +169,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * zone de contenu (appTitle, appCopyright, titres des boîtes de gauche)
     * 
     */
-   public abstract String getCssMainFontColor() ;
+   public final String getCssMainFontColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSMAINFONTCOLOR); 
+   }
 
 
    /**
@@ -142,7 +184,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return CSS de la couleur des polices pour les textes de la zone de contenu
     * 
     */
-   public abstract String getCssContentFontColor() ;
+   public final String getCssContentFontColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSCONTENTFONTCOLOR);
+   }
 
 
    /**
@@ -155,7 +199,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return CSS de la couleur de fond des boîtes contextuelles de la colonne de gauche
     * 
     */
-   public abstract String getCssInfoboxBackgroundColor() ;
+   public final String getCssInfoboxBackgroundColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSINFOBOXBACKGROUNDCOLOR);
+   }
 
 
    /**
@@ -170,7 +216,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * titre des boîtes contextuelles
     * 
     */
-   public abstract String getCssSelectedMenuBackgroundColor();
+   public final String getCssSelectedMenuBackgroundColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSSELECTEDMENUBACKGROUNDCOLOR);
+   }
 
 
    /**
@@ -183,7 +231,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return CSS de la couleur des polices pour les liens de la première ligne du menu
     * 
     */
-   public abstract String getCssMenuFirstRowFontColor();
+   public final String getCssMenuFirstRowFontColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSMENUFIRSTROWFONTCOLOR);
+   }
 
 
    /**
@@ -196,7 +246,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * @return CSS de la couleur des polices pour les liens du menu
     * 
     */
-   public abstract String getCssMenuLinkFontColor();
+   public final String getCssMenuLinkFontColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSMENULINKFONTCOLOR);
+   }
 
 
    /**
@@ -209,7 +261,9 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     *  @return CSS de la couleur des polices pour les liens survolés du menu
     *  
     */
-   public abstract String getCssMenuLinkHoverFontColor();
+   public final String getCssMenuLinkHoverFontColor() {
+      return theme.getProperty(ConstantesConfigTheme.CSSMENULINKHOVERFONTCOLOR);
+   }
    
    
    
@@ -217,9 +271,12 @@ public abstract class AbstractMaquetteTheme implements Serializable {
     * Constructeur
     * 
     * @param filterConfig la configuration du filtre
+    * 
+    * @throws MaquetteThemeException un problème est survenu sur le thème de la maquette 
     */
-   public AbstractMaquetteTheme(FilterConfig filterConfig) {
+   public AbstractMaquetteTheme(FilterConfig filterConfig) throws MaquetteThemeException{
       this.filterConfig = filterConfig;
+      chargeTheme();
    }
    
    
@@ -252,6 +309,45 @@ public abstract class AbstractMaquetteTheme implements Serializable {
       }
       
       return valeur;
+      
+   }
+   
+   
+   /**
+    * Renvoie le nom du fichier properties de <b>src/main/ressources/themes</b>
+    * contenant la définition des valeurs du thème.<br>
+    * <br>
+    * Exemple : "theme_defaut.properties"
+    * @return le nom du fichier properties contenant la définition des valeurs du thème
+    */
+   protected abstract String getFichierRessourceTheme(); 
+   
+   
+   /**
+    * Charge le fichier properties contenant les valeurs du thème dans un
+    * objet Java de type {@link Properties} 
+    * 
+    * @throws MaquetteThemeException un problème est survenu ... 
+    */
+   private void chargeTheme() throws MaquetteThemeException {
+      
+      // Récupère le chemin du fichier properties de ressource contenant les
+      // valeurs du thème. La méthode getFichierRessourceTheme() est implémentée
+      // dans les classes dérivées de AbstractMaquetteTheme
+      String fichierTheme = "themes/" + getFichierRessourceTheme();
+      
+      // Charge dans un flux le fichier properties contenant les valeurs du thème
+      try {
+         InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(fichierTheme);
+         try {
+            theme.load(inStream);
+         } 
+         finally {
+            inStream.close();
+         }
+      } catch (IOException ex) {
+         throw new MaquetteThemeException(ex);
+      }
       
    }
    

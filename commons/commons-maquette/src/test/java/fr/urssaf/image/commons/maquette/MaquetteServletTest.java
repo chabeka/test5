@@ -26,9 +26,9 @@ import fr.urssaf.image.commons.maquette.exception.MaquetteThemeException;
 import fr.urssaf.image.commons.maquette.exception.RessourceNonSpecifieeException;
 import fr.urssaf.image.commons.maquette.exception.RessourceNonTrouveeException;
 import fr.urssaf.image.commons.maquette.session.SessionTools;
-import fr.urssaf.image.commons.maquette.theme.ConstantesThemeParDefaut;
 import fr.urssaf.image.commons.maquette.theme.AbstractMaquetteTheme;
 import fr.urssaf.image.commons.maquette.theme.MaquetteThemeTools;
+import fr.urssaf.image.commons.maquette.tool.MaquetteConstant;
 import fr.urssaf.image.commons.util.resource.ResourceUtil;
 
 
@@ -432,73 +432,73 @@ public class MaquetteServletTest {
          sbResultatAttendu.append(
                String.format(
                      "balise01 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSMAINBACKGROUNDCOLOR));
+                     "#A6A9CA"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise02 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSCONTENTBACKGROUNDCOLOR));
+                     "#fff"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise03 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSHEADERBACKGROUNDCOLOR));
+                     "#051A7D"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise04 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSHEADERBACKGROUNDIMG));
+                     MaquetteConstant.GETRESOURCEURI + "?name=/resource/img/degrade_h_aed.png"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise05 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSLEFTCOLORBACKGROUNDIMG));
+                     MaquetteConstant.GETRESOURCEURI + "?name=/resource/img/leftcol_aed.png"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise06 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSMAINFONTCOLOR));
+                     "#fff"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise07 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSCONTENTFONTCOLOR));
+                     "#000"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise08 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSINFOBOXBACKGROUNDCOLOR));
+                     "#EAEAEF"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise09 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSSELECTEDMENUBACKGROUNDCOLOR));
+                     "#05577D"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise10 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSMENUFIRSTROWFONTCOLOR));
+                     "#000"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise11 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSMENULINKFONTCOLOR));
+                     "#000"));
          sbResultatAttendu.append("\r\n");
          
          sbResultatAttendu.append(
                String.format(
                      "balise12 {attribut: %s;}",
-                     ConstantesThemeParDefaut.CSSMENULINKHOVERFONTCOLOR));
+                     "#000"));
          sbResultatAttendu.append("\r\n");
          
          

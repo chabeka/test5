@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.mock.web.MockFilterConfig;
 
 import fr.urssaf.image.commons.maquette.constantes.ConstantesConfigFiltre;
+import fr.urssaf.image.commons.maquette.exception.MaquetteThemeException;
+import fr.urssaf.image.commons.maquette.tool.MaquetteConstant;
 
 
 /**
@@ -17,72 +19,72 @@ public class MaquetteThemeParDefautTest {
 
    
    @Test
-   public void testValeurParDefaut() {
+   public void testValeurParDefaut() throws MaquetteThemeException {
       
       MaquetteThemeParDefaut theme = new MaquetteThemeParDefaut(null);
       
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.APPLOGO,
+            MaquetteConstant.GETRESOURCEURI + "?name=/resource/img/logo_aed.png",
             theme.getAppLogo());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSCONTENTBACKGROUNDCOLOR,
+            "#fff",
             theme.getCssContentBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSCONTENTFONTCOLOR,
+            "#000",
             theme.getCssContentFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSHEADERBACKGROUNDCOLOR,
+            "#051A7D",
             theme.getCssHeaderBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSHEADERBACKGROUNDIMG,
+            MaquetteConstant.GETRESOURCEURI + "?name=/resource/img/degrade_h_aed.png",
             theme.getCssHeaderBackgroundImg());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSINFOBOXBACKGROUNDCOLOR,
+            "#EAEAEF",
             theme.getCssInfoboxBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSLEFTCOLORBACKGROUNDIMG,
+            MaquetteConstant.GETRESOURCEURI + "?name=/resource/img/leftcol_aed.png",
             theme.getCssLeftcolBackgroundImg());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSMAINBACKGROUNDCOLOR,
+            "#A6A9CA",
             theme.getCssMainBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSMAINFONTCOLOR,
+            "#fff",
             theme.getCssMainFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSMENUFIRSTROWFONTCOLOR,
+            "#000",
             theme.getCssMenuFirstRowFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSMENULINKFONTCOLOR,
+            "#000",
             theme.getCssMenuLinkFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSMENULINKHOVERFONTCOLOR,
+            "#000",
             theme.getCssMenuLinkHoverFontColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.CSSSELECTEDMENUBACKGROUNDCOLOR,
+            "#05577D",
             theme.getCssSelectedMenuBackgroundColor());
       assertEquals(
             "Erreur dans le thème",
-            ConstantesThemeParDefaut.MAINLOGO,
+            MaquetteConstant.GETRESOURCEURI + "?name=/resource/img/logo_image_aed.png",
             theme.getMainLogo());
       
    }
    
    
    @Test
-   public void testValeurDansConfigFiltre() {
+   public void testValeurDansConfigFiltre() throws MaquetteThemeException {
       
       MockFilterConfig filterConfig = new MockFilterConfig(); 
       filterConfig.addInitParameter(ConstantesConfigFiltre.APPLOGO, "APPLOGO");
