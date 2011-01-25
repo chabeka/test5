@@ -32,8 +32,7 @@ public final class ResourceUtil {
 	 */
 	public static String getResourceFullPath(Object arg, String resourcePath)
 			throws URISyntaxException {
-		return arg.getClass().getResource(resourcePath).toURI().getPath()
-				.toString();
+		return arg.getClass().getResource(resourcePath).toURI().getPath();
 	}
 
 }
