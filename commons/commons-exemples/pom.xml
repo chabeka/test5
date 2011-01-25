@@ -38,6 +38,8 @@
       <module>../commons-xml-jaxb-exemple-seda</module>
       <module>../commons-springsecurity-service</module>
       <module>../commons-springsecurity-web</module>
+      <module>../commons-springsecurity-webservice</module>
+      <module>../commons-springsecurity-webservice-custom</module>
    </modules>
 
    <build>
