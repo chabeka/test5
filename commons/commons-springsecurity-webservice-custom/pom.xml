@@ -13,7 +13,7 @@
 
    <properties>
       <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
-      <cxf.version>2.3.0</cxf.version>
+      <cxf.version>2.3.2</cxf.version>
       <wsdl>http://localhost:8080/commons-springsecurity-webservice/service/SimpleService?wsdl</wsdl>
    </properties>
 
@@ -95,6 +95,8 @@
 
    <dependencies>
 
+      <!--  CXF -->
+
       <dependency>
          <groupId>org.apache.cxf</groupId>
          <artifactId>cxf-rt-transports-http</artifactId>
@@ -106,6 +108,36 @@
          <artifactId>cxf-rt-frontend-jaxws</artifactId>
          <version>${cxf.version}</version>
       </dependency>
+
+      <dependency>
+         <groupId>org.apache.cxf</groupId>
+         <artifactId>cxf-rt-ws-security</artifactId>
+         <version>${cxf.version}</version>
+      </dependency>
+
+      <!-- SPRING -->
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-core</artifactId>
+         <version>${org.springframework.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework.ws</groupId>
+         <artifactId>spring-ws-security</artifactId>
+         <version>2.0.0-M1</version>
+      </dependency>
+
+      <!-- SAML -->
+
+      <dependency>
+         <groupId>org.opensaml</groupId>
+         <artifactId>opensaml</artifactId>
+         <version>1.1</version>
+      </dependency>
+
+      <!--  TEST -->
 
       <dependency>
          <groupId>org.springframework</groupId>

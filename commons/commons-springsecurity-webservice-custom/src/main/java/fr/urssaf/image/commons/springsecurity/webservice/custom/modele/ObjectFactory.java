@@ -37,11 +37,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Load }
+     * 
+     */
+    public Load createLoad() {
+        return new Load();
+    }
+
+    /**
      * Create an instance of {@link LoadResponse }
      * 
      */
     public LoadResponse createLoadResponse() {
         return new LoadResponse();
+    }
+
+    /**
+     * Create an instance of {@link Modele }
+     * 
+     */
+    public Modele createModele() {
+        return new Modele();
     }
 
     /**
@@ -58,22 +74,6 @@ public class ObjectFactory {
      */
     public Save createSave() {
         return new Save();
-    }
-
-    /**
-     * Create an instance of {@link Load }
-     * 
-     */
-    public Load createLoad() {
-        return new Load();
-    }
-
-    /**
-     * Create an instance of {@link Modele }
-     * 
-     */
-    public Modele createModele() {
-        return new Modele();
     }
 
     /**

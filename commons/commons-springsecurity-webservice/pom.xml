@@ -14,7 +14,7 @@
 
    <properties>
       <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
-      <cxf.version>2.3.0</cxf.version>
+      <cxf.version>2.3.2</cxf.version>
    </properties>
 
    <dependencies>
@@ -35,12 +35,29 @@
          <version>${org.springframework.version}</version>
       </dependency>
 
+      <!-- COMMONS APACHE -->
+
+      <dependency>
+         <groupId>commons-collections</groupId>
+         <artifactId>commons-collections</artifactId>
+         <version>3.2.1</version>
+      </dependency>
+
       <!-- SPRING  SECURITY-->
 
       <dependency>
          <groupId>org.springframework.security</groupId>
          <artifactId>spring-security-config</artifactId>
          <version>${org.springframework.version}</version>
+      </dependency>
+
+      <!-- SERVLET -->
+
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>servlet-api</artifactId>
+         <version>2.5</version>
+         <scope>provided</scope>
       </dependency>
 
       <!-- CXF -->
@@ -57,6 +74,20 @@
          <version>${cxf.version}</version>
       </dependency>
 
+      <dependency>
+         <groupId>org.apache.cxf</groupId>
+         <artifactId>cxf-rt-ws-security</artifactId>
+         <version>${cxf.version}</version>
+      </dependency>
+
+      <!-- SAML -->
+
+      <dependency>
+         <groupId>org.opensaml</groupId>
+         <artifactId>opensaml</artifactId>
+         <version>1.1</version>
+      </dependency>
+
       <!--  TEST -->
 
       <dependency>
@@ -65,15 +96,7 @@
          <version>${org.springframework.version}</version>
          <scope>test</scope>
       </dependency>
-
-      <dependency>
-         <groupId>javax.servlet</groupId>
-         <artifactId>servlet-api</artifactId>
-         <version>2.5</version>
-         <scope>test</scope>
-      </dependency>
-
-
+      
    </dependencies>
 
 </project>

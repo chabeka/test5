@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.springsecurity.webservice.custom.service;
+package fr.urssaf.image.commons.springsecurity.webservice.custom.modele;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -11,25 +11,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.commons.springsecurity.webservice.custom.modele.SimpleWebService;
+import fr.urssaf.image.commons.springsecurity.webservice.custom.wssecurity.SecurityContextInterceptor;
+import static fr.urssaf.image.commons.springsecurity.webservice.custom.SAMLTestConfig.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicationContext.xml")
-public class SimpleServiceTest {
+@ContextConfiguration({"/applicationContext.xml","/applicationContext-jaxws.xml"})
+public class SimpleWebServiceTest {
 
    @Autowired
-   private SimpleService service;
+   private SimpleWebService service;
+
+   @Autowired
+   private SecurityContextInterceptor interceptor;
 
    @Test
    public void saveSuccess() {
 
-      service.save("ROLE_ADMIN");
+      interceptor.setSAMLFile(SAML_ADMIN);
+      service.save("title", "text");
 
    }
 
    @Test
    public void saveFailure() {
 
+      interceptor.setSAMLFile(SAML_USER);
       try {
-         service.save("ROLE_USER");
+         service.save("title", "text");
          fail("doit lever une exception " + SOAPFaultException.class);
       } catch (SOAPFaultException e) {
          assertEquals("Access is denied", e.getMessage());
@@ -39,16 +48,16 @@ public class SimpleServiceTest {
 
    @Test
    public void loadSuccess() {
-
-      service.load("ROLE_USER");
+      interceptor.setSAMLFile(SAML_USER);
+      service.load();
 
    }
 
    @Test
    public void loadFailure() {
-
+      interceptor.setSAMLFile(SAML_ADMIN);
       try {
-         service.load("ROLE_ADMIN");
+         service.load();
          fail("doit lever une exception " + SOAPFaultException.class);
       } catch (SOAPFaultException e) {
          assertEquals("Access is denied", e.getMessage());

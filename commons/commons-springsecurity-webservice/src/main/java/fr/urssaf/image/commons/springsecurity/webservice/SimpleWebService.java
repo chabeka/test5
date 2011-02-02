@@ -10,10 +10,9 @@ import fr.urssaf.image.commons.springsecurity.service.modele.Modele;
 public interface SimpleWebService {
 
    @WebMethod
-   void save(@WebParam(name = "role") String role,
-         @WebParam(name = "title") String title,
+   void save(@WebParam(name = "title") String title,
          @WebParam(name = "text") String text);
 
    @WebMethod
-   Modele load(@WebParam(name = "role") String role);
+   Modele load();
 }
