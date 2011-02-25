@@ -11,19 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.urssaf.image.commons.springsecurity.webservice.custom.modele.SimpleWebService;
-import fr.urssaf.image.commons.springsecurity.webservice.custom.wssecurity.SecurityContextInterceptor;
-import static fr.urssaf.image.commons.springsecurity.webservice.custom.SAMLTestConfig.*;
+import fr.urssaf.image.commons.springsecurity.webservice.custom.wssecurity.SecurityContextByFileInterceptor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"/applicationContext.xml","/applicationContext-jaxws.xml"})
+@ContextConfiguration( { "/applicationContext.xml",
+      "/applicationContext-jaxws.xml" })
 public class SimpleWebServiceTest {
 
    @Autowired
    private SimpleWebService service;
 
    @Autowired
-   private SecurityContextInterceptor interceptor;
+   private SecurityContextByFileInterceptor interceptor;
+
+   private static final String SAML_USER = "src/test/resources/saml/saml_role_user.xml";
+
+   private static final String SAML_ADMIN = "src/test/resources/saml/saml_role_admin.xml";
 
    @Test
    public void saveSuccess() {

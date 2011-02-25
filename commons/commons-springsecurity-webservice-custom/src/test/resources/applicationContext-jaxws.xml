@@ -27,7 +27,7 @@
                </map>
             </constructor-arg>
          </bean>
-         <ref bean="securityContextInterceptor" />
+         <ref bean="securityContextByFileInterceptor" />
       </jaxws:outInterceptors>
 
    </jaxws:client>

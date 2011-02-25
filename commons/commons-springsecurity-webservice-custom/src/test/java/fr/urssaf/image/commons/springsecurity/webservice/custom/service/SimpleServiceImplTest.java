@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.urssaf.image.commons.springsecurity.webservice.custom.wssecurity.SecurityContextInterceptor;
-
-import static fr.urssaf.image.commons.springsecurity.webservice.custom.SAMLTestConfig.*;
+import fr.urssaf.image.commons.springsecurity.webservice.custom.wssecurity.SecurityContextByRoleInterceptor;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext.xml")
@@ -23,12 +21,16 @@ public class SimpleServiceImplTest {
    private SimpleServiceImpl service;
 
    @Autowired
-   private SecurityContextInterceptor interceptor;
+   private SecurityContextByRoleInterceptor interceptor;
+
+   private static final String SAML_USER = "ROLE_USER";
+
+   private static final String SAML_ADMIN = "ROLE_ADMIN";
 
    @Test
    public void saveSuccess() {
 
-      interceptor.setSAMLFile(SAML_ADMIN);
+      interceptor.setRoles(SAML_ADMIN);
       service.save();
 
    }
@@ -36,7 +38,7 @@ public class SimpleServiceImplTest {
    @Test
    public void saveFailure() {
 
-      interceptor.setSAMLFile(SAML_USER);
+      interceptor.setRoles(SAML_USER);
       try {
          service.save();
          fail("doit lever une exception " + SOAPFaultException.class);
@@ -49,7 +51,7 @@ public class SimpleServiceImplTest {
    @Test
    public void loadSuccess() {
 
-      interceptor.setSAMLFile(SAML_USER);
+      interceptor.setRoles(SAML_USER);
       service.load();
 
    }
@@ -57,7 +59,7 @@ public class SimpleServiceImplTest {
    @Test
    public void loadFailure() {
 
-      interceptor.setSAMLFile(SAML_ADMIN);
+      interceptor.setRoles(SAML_ADMIN);
       try {
          service.load();
          fail("doit lever une exception " + SOAPFaultException.class);

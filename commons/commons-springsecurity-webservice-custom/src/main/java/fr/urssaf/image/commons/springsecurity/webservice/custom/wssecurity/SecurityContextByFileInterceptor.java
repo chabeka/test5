@@ -1,7 +1,5 @@
 package fr.urssaf.image.commons.springsecurity.webservice.custom.wssecurity;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Set;
 
@@ -16,19 +14,12 @@ import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.phase.Phase;
 import org.apache.cxf.phase.PhaseInterceptor;
 import org.apache.cxf.ws.security.wss4j.AbstractWSS4JInterceptor;
-import org.apache.log4j.Logger;
-import org.opensaml.SAMLAssertion;
-import org.opensaml.SAMLException;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Element;
 
 @Component
-public class SecurityContextInterceptor extends AbstractWSS4JInterceptor {
+public class SecurityContextByFileInterceptor extends AbstractWSS4JInterceptor {
 
-   private static final Logger LOG = Logger
-         .getLogger(SecurityContextInterceptor.class);
-
-   public SecurityContextInterceptor() {
+   public SecurityContextByFileInterceptor() {
 
       super();
       setPhase(Phase.POST_PROTOCOL);
@@ -78,10 +69,10 @@ public class SecurityContextInterceptor extends AbstractWSS4JInterceptor {
       @Override
       public void handleMessage(SoapMessage msg) {
 
-         if(samlFile == null){
+         if (samlFile == null) {
             throw new IllegalStateException("'samlFile' is required");
          }
-        
+
          SOAPMessage soapMsg = msg.getContent(SOAPMessage.class);
 
          try {
@@ -89,29 +80,16 @@ public class SecurityContextInterceptor extends AbstractWSS4JInterceptor {
             SOAPElement wsseSecurity = (SOAPElement) soapHeader
                   .getElementsByTagName("wsse:Security").item(0);
 
-            FileInputStream inputStream = new FileInputStream(samlFile);
-
-            SAMLAssertion samlAssertion = new SAMLAssertion(inputStream);
-
             SOAPFactory soapFactory = SOAPFactory.newInstance();
 
             SOAPElement assertionSOAP = soapFactory
-                  .createElement((Element) samlAssertion.toDOM());
+                  .createElement(SAMLTokenFactory.createSAMLToken(samlFile));
             wsseSecurity.addChildElement(assertionSOAP);
-
-            LOG.debug(samlAssertion.getId());
 
          } catch (SOAPException e) {
 
             throw new Fault(e);
 
-         } catch (SAMLException e) {
-
-            throw new Fault(e);
-
-         } catch (FileNotFoundException e) {
-
-            throw new Fault(e);
          }
 
       }
