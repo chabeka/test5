@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <artifactId>commons-parent</artifactId>
+      <groupId>fr.urssaf.image.commons</groupId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>fr.urssaf.image.commons</groupId>
+   <artifactId>commons-webservice-spring-ws</artifactId>
+   <packaging>war</packaging>
+   <name>commons-webservice-spring-ws</name>
+   <version>0.0.1-SNAPSHOT</version>
+
+   <properties>
+      <org.springframework.ws.version>2.0.0.RELEASE</org.springframework.ws.version>
+      <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+   </properties>
+
+   <dependencies>
+
+      <dependency>
+         <groupId>org.springframework.ws</groupId>
+         <artifactId>spring-ws-core</artifactId>
+         <version>${org.springframework.ws.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>jdom</groupId>
+         <artifactId>jdom</artifactId>
+         <version>1.0</version>
+      </dependency>
+      <dependency>
+         <groupId>jaxen</groupId>
+         <artifactId>jaxen</artifactId>
+         <version>1.1</version>
+      </dependency>
+      
+      <!--  TEST -->
+
+      <dependency>
+         <groupId>org.easymock</groupId>
+         <artifactId>easymock</artifactId>
+         <scope>test</scope>
+         <version>2.5.2</version>
+      </dependency>
+
+   </dependencies>
+
+</project>
