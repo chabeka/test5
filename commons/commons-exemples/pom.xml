@@ -41,6 +41,8 @@
       <module>../commons-springsecurity-webservice</module>
       <module>../commons-springsecurity-webservice-custom</module>
       <module>../commons-webservice-spring-ws</module>
+      <module>../commons-webservice-axis</module>
+      <module>../commons-webservice-axis-client</module>
    </modules>
 
    <build>
