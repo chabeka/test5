@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <parent>
+      <artifactId>commons-parent</artifactId>
+      <groupId>fr.urssaf.image.commons</groupId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>fr.urssaf.image.commons</groupId>
+   <artifactId>commons-webservice-axis</artifactId>
+   <name>commons-webservice-axis</name>
+   <version>0.0.1-SNAPSHOT</version>
+
+   <properties>
+      <axis.version>1.5.4</axis.version>
+   </properties>
+
+   <profiles>
+      <profile>
+         <id>generateSkeleton</id>
+
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.axis2</groupId>
+                  <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+                  <version>${axis.version}</version>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>wsdl2code</goal>
+                        </goals>
+                        <configuration>
+                           <packageName>fr.urssaf.image.commons.webservice.axis.skeleton</packageName>
+                           <wsdlFile>src/main/resources/Axis2UserGuideService.wsdl</wsdlFile>
+                           <outputDirectory>src</outputDirectory>
+                           <generateServicesXml>true</generateServicesXml>
+                           <generateServerSide>true</generateServerSide>
+                           <generateServerSideInterface>true</generateServerSideInterface>
+                           <generateTestcase>true</generateTestcase>
+                           <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
+                           <targetResourcesFolderLocation>main/resources/META-INF</targetResourcesFolderLocation>
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+
+
+            </plugins>
+         </build>
+
+      </profile>
+
+   </profiles>
+
+   <build>
+
+      <plugins>
+         <plugin>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-aar-maven-plugin</artifactId>
+            <version>${axis.version}</version>
+            <extensions>true</extensions>
+         </plugin>
+      </plugins>
+
+   </build>
+
+
+   <dependencies>
+
+      <!--  AXIS 2 -->
+
+      <dependency>
+         <groupId>org.apache.axis2</groupId>
+         <artifactId>axis2</artifactId>
+         <version>${axis.version}</version>
+      </dependency>
+
+      <!--  AXIOM  -->
+
+      <dependency>
+         <groupId>org.apache.ws.commons.axiom</groupId>
+         <artifactId>axiom-api</artifactId>
+         <version>1.2.9</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.apache.ws.commons.axiom</groupId>
+         <artifactId>axiom-impl</artifactId>
+         <version>1.2.9</version>
+      </dependency>
+
+   </dependencies>
+</project>

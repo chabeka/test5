@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET) -->
+<serviceGroup>
+    <service name="Axis2UserGuideService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="fr.urssaf.image.commons.webservice.axis.skeleton.Axis2UserGuideServiceMessageReceiverInOut"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="fr.urssaf.image.commons.webservice.axis.skeleton.Axis2UserGuideServiceMessageReceiverInOnly"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">fr.urssaf.image.commons.webservice.axis.skeleton.Axis2UserGuideServiceSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="DoInOnly" mep="http://www.w3.org/ns/wsdl/in-only" namespace="http://apache.org/axis2/Axis2UserGuide">
+            <actionMapping>DoInOnly</actionMapping>
+        </operation>
+        <operation name="TwoWayOneParameterEcho" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://apache.org/axis2/Axis2UserGuide">
+            <actionMapping>TwoWayOneParameterEcho</actionMapping>
+            <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/TwoWayOneParameterEchoResponseMessage</outputActionMapping>
+        </operation>
+        <operation name="NoParameters" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://apache.org/axis2/Axis2UserGuide">
+            <actionMapping>NoParameters</actionMapping>
+            <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/NoParametersResponseMessage</outputActionMapping>
+        </operation>
+        <operation name="MultipleParametersAddItem" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://apache.org/axis2/Axis2UserGuide">
+            <actionMapping>MultipleParametersAddItem</actionMapping>
+            <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/MultipleParametersAddItemResponseMessage</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
