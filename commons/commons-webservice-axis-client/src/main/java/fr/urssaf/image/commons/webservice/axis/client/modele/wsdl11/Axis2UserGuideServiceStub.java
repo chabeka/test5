@@ -14,7 +14,8 @@
         */
 
         
-        public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
+@SuppressWarnings("all")
+public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
         {
         protected org.apache.axis2.description.AxisOperation[] _operations;
 

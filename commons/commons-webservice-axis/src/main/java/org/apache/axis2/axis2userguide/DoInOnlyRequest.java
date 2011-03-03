@@ -13,7 +13,8 @@
             *  DoInOnlyRequest bean class
             */
         
-        public  class DoInOnlyRequest
+@SuppressWarnings("all")
+public class DoInOnlyRequest
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

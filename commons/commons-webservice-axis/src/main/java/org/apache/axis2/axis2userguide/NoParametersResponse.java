@@ -13,7 +13,8 @@
             *  NoParametersResponse bean class
             */
         
-        public  class NoParametersResponse
+@SuppressWarnings("all")
+public class NoParametersResponse
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

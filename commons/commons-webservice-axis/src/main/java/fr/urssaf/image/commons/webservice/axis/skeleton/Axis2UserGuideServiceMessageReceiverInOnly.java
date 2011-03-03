@@ -12,7 +12,8 @@
         *  Axis2UserGuideServiceMessageReceiverInOnly message receiver
         */
 
-        public class Axis2UserGuideServiceMessageReceiverInOnly extends org.apache.axis2.receivers.AbstractInMessageReceiver{
+@SuppressWarnings("all")
+public class Axis2UserGuideServiceMessageReceiverInOnly extends org.apache.axis2.receivers.AbstractInMessageReceiver{
 
         public void invokeBusinessLogic(org.apache.axis2.context.MessageContext inMessage) throws org.apache.axis2.AxisFault{
 
