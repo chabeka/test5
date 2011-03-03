@@ -51,7 +51,6 @@
                   <groupId>com.google.code.maven-replacer-plugin</groupId>
                   <artifactId>maven-replacer-plugin</artifactId>
                   <version>1.3.6</version>
-
                   <executions>
                      <execution>
                         <phase>generate-sources</phase>
@@ -62,7 +61,6 @@
                   </executions>
                   <configuration>
                      <basedir>src/main/java</basedir>
-                     <quiet>true</quiet>
                      <includes>
                         <include>**/skeleton/*.java</include>
                         <include>**/cirtil/www/saeservice/*.java</include>
@@ -70,8 +68,16 @@
                      <excludes>
                         <exclude>**/skeleton/*Skeleton.java</exclude>
                      </excludes>
-                     <token>[ ]*public[ ]*class</token>
-                     <value>@SuppressWarnings("all")&#xA;public class</value>
+                     <replacements>
+                        <replacement>
+                        <token>[ ]*public[ ]*class</token>
+                        <value>@SuppressWarnings("all")&#xA;public class</value>
+                        </replacement>
+                        <replacement>
+                        <token>[ ]*public[ ]*interface</token>
+                        <value>@SuppressWarnings("all")&#xA;public interface</value>
+                        </replacement>
+                     </replacements>    
                   </configuration>
                </plugin>
 

@@ -60,12 +60,23 @@
                   </executions>
                   <configuration>
                      <basedir>src/main/java</basedir>
-                     <quiet>true</quiet>
                      <includes>
                         <include>**/modele/*.java</include>
                      </includes>
-                     <token>[ ]*public[ ]*class</token>
-                     <value>@SuppressWarnings("all")&#xA;public class</value>
+                     <replacements>
+                        <replacement>
+                        <token>[ ]*public[ ]*class</token>
+                        <value>@SuppressWarnings("all")&#xA;public class</value>
+                        </replacement>
+                        <replacement>
+                        <token>[ ]*public[ ]*abstract[ ]*class</token>
+                        <value>@SuppressWarnings("all")&#xA;public class</value>
+                        </replacement>
+                        <replacement>
+                        <token>[ ]*public[ ]*interface</token>
+                        <value>@SuppressWarnings("all")&#xA;public interface</value>
+                        </replacement>
+                     </replacements>    
                   </configuration>
                </plugin>
 

@@ -9,7 +9,8 @@
     /**
      *  SaeServiceSkeletonInterface java skeleton interface for the axisService
      */
-    public interface SaeServiceSkeletonInterface {
+@SuppressWarnings("all")
+public interface SaeServiceSkeletonInterface {
      
          
         /**
