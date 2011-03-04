@@ -19,7 +19,7 @@ import org.springframework.ws.test.server.ResponseMatchers;
 import org.springframework.xml.transform.StringSource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicationContext.xml")
+@ContextConfiguration(locations = { "/applicationContext.xml"})
 public class HolidayEndpointTest {
 
    @Autowired
@@ -30,6 +30,7 @@ public class HolidayEndpointTest {
    @Before
    public void createClient() {
       mockClient = MockWebServiceClient.createClient(context);
+
    }
 
    @Test
