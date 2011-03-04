@@ -1,7 +1,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:hr="http://mycompany.com/hr/schemas" elementFormDefault="qualified"
    targetNamespace="http://mycompany.com/hr/schemas">
-   
+
    <xs:element name="HolidayRequest">
       <xs:complexType>
          <xs:all>
@@ -11,14 +11,22 @@
          </xs:all>
       </xs:complexType>
    </xs:element>
-   
+
+   <xs:element name="HolidayResponse">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="echo" type="xs:string" />
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
    <xs:complexType name="HolidayType">
       <xs:sequence>
          <xs:element name="StartDate" type="xs:date" />
          <xs:element name="EndDate" type="xs:date" />
       </xs:sequence>
    </xs:complexType>
-   
+
    <xs:complexType name="EmployeeType">
       <xs:sequence>
          <xs:element name="Number" type="xs:integer" />

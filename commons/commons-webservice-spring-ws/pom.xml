@@ -14,8 +14,37 @@
 
    <properties>
       <org.springframework.ws.version>2.0.0.RELEASE</org.springframework.ws.version>
-      <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
    </properties>
+
+   <profiles>
+      <profile>
+         <id>generateJaxb</id>
+
+         <build>
+            <plugins>
+
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/webapp/WEB-INF</schemaDirectory>
+                     <generatePackage>fr.urssaf.image.commons.webservice.spring.ws.schema</generatePackage>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                  </configuration>
+               </plugin>
+
+            </plugins>
+         </build>
+
+      </profile>
+   </profiles>
 
    <dependencies>
 
@@ -24,24 +53,14 @@
          <artifactId>spring-ws-core</artifactId>
          <version>${org.springframework.ws.version}</version>
       </dependency>
-      <dependency>
-         <groupId>jdom</groupId>
-         <artifactId>jdom</artifactId>
-         <version>1.0</version>
-      </dependency>
-      <dependency>
-         <groupId>jaxen</groupId>
-         <artifactId>jaxen</artifactId>
-         <version>1.1</version>
-      </dependency>
-      
+
       <!--  TEST -->
 
       <dependency>
-         <groupId>org.easymock</groupId>
-         <artifactId>easymock</artifactId>
+         <groupId>org.springframework.ws</groupId>
+         <artifactId>spring-ws-test</artifactId>
+         <version>2.0.0.RELEASE</version>
          <scope>test</scope>
-         <version>2.5.2</version>
       </dependency>
 
    </dependencies>
