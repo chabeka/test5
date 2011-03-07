@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET) -->
+<serviceGroup>
+    <service name="SaeService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="fr.urssaf.image.sae.webservices.skeleton.SaeServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">false</parameter>
+        <operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.cirtil.fr/saeService">
+            <actionMapping>Ping</actionMapping>
+            <outputActionMapping>Ping</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
