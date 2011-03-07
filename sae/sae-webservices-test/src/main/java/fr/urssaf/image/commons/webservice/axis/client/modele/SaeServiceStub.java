@@ -107,7 +107,7 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
      */
     public SaeServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://192.168.91.1:8080/axis2/services/SaeService.SaeServiceEndpoint/" );
+                    this(configurationContext,"http://localhost:8080/axis2/services/SaeService/" );
                 
     }
 
@@ -116,7 +116,7 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
      */
     public SaeServiceStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://192.168.91.1:8080/axis2/services/SaeService.SaeServiceEndpoint/" );
+                    this("http://localhost:8080/axis2/services/SaeService/" );
                 
     }
 
@@ -426,7 +426,7 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
         }
         return false;
     }
-     //http://192.168.91.1:8080/axis2/services/SaeService.SaeServiceEndpoint/
+     //http://localhost:8080/axis2/services/SaeService/
         public static class PingRequest
         implements org.apache.axis2.databinding.ADBBean{
         
