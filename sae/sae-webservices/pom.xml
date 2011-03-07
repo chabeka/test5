@@ -33,13 +33,14 @@
                         </goals>
                         <configuration>
                            <packageName>fr.urssaf.image.sae.webservices.skeleton</packageName>
-                           <wsdlFile>src/main/resources/SaeService.wsdl</wsdlFile>
+                           <wsdlFile>src/test/resources/SaeService.wsdl</wsdlFile>
                            <wsdlVersion>2.0</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
                            <generateServicesXml>true</generateServicesXml>
                            <generateServerSide>true</generateServerSide>
                            <generateServerSideInterface>true</generateServerSideInterface>
-                           <generateTestcase>true</generateTestcase>
+                           <skipBuildXML>true</skipBuildXML>
+                           <skipWSDL>false</skipWSDL>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
                            <targetResourcesFolderLocation>main/resources/META-INF</targetResourcesFolderLocation>
                         </configuration>
@@ -70,14 +71,14 @@
                      </excludes>
                      <replacements>
                         <replacement>
-                        <token>[ ]*public[ ]*class</token>
-                        <value>@SuppressWarnings("all")&#xA;public class</value>
+                           <token>[ ]*public[ ]*class</token>
+                           <value>@SuppressWarnings("all")&#xA;public class</value>
                         </replacement>
                         <replacement>
-                        <token>[ ]*public[ ]*interface</token>
-                        <value>@SuppressWarnings("all")&#xA;public interface</value>
+                           <token>[ ]*public[ ]*interface</token>
+                           <value>@SuppressWarnings("all")&#xA;public interface</value>
                         </replacement>
-                     </replacements>    
+                     </replacements>
                   </configuration>
                </plugin>
 
@@ -87,6 +88,19 @@
       </profile>
 
    </profiles>
+
+   <build>
+
+      <plugins>
+         <plugin>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-aar-maven-plugin</artifactId>
+            <version>${axis.version}</version>
+            <extensions>true</extensions>
+         </plugin>
+      </plugins>
+
+   </build>
 
    <dependencies>
 
