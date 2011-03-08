@@ -14,6 +14,7 @@
    <properties>
       <axis.version>1.5.4</axis.version>
       <axiom.version>1.2.9</axiom.version>
+      <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
    </properties>
 
    <profiles>
@@ -38,7 +39,6 @@
                            <outputDirectory>src</outputDirectory>
                            <generateServicesXml>true</generateServicesXml>
                            <generateServerSide>true</generateServerSide>
-                           <generateServerSideInterface>true</generateServerSideInterface>
                            <skipBuildXML>true</skipBuildXML>
                            <skipWSDL>false</skipWSDL>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
@@ -112,6 +112,45 @@
          <version>${axis.version}</version>
       </dependency>
 
+      <dependency>
+         <groupId>org.apache.axis2</groupId>
+         <artifactId>axis2-spring</artifactId>
+         <version>1.5.4</version>
+         <exclusions>
+
+            <exclusion>
+
+               <groupId>org.springframework</groupId>
+               <artifactId>spring-web</artifactId>
+
+            </exclusion>
+
+
+            <exclusion>
+
+               <groupId>org.springframework</groupId>
+               <artifactId>spring-beans</artifactId>
+
+            </exclusion>
+
+            <exclusion>
+
+               <groupId>org.springframework</groupId>
+               <artifactId>spring-context</artifactId>
+
+            </exclusion>
+
+
+            <exclusion>
+
+               <groupId>org.springframework</groupId>
+               <artifactId>spring-core</artifactId>
+
+            </exclusion>
+
+         </exclusions>
+      </dependency>
+
       <!--  AXIOM  -->
 
       <dependency>
@@ -124,6 +163,21 @@
          <groupId>org.apache.ws.commons.axiom</groupId>
          <artifactId>axiom-impl</artifactId>
          <version>${axiom.version}</version>
+      </dependency>
+
+      <!-- SPRING -->
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-web</artifactId>
+         <version>${org.springframework.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${org.springframework.version}</version>
+         <scope>test</scope>
       </dependency>
 
    </dependencies>
