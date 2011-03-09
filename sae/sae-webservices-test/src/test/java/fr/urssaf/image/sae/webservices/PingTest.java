@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.webservices.modele;
+package fr.urssaf.image.sae.webservices;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse;
 
@@ -39,6 +40,6 @@ public class PingTest {
 
       LOG.debug(response.getPingString());
 
-      assertEquals("Les services SAE sont en ligne", response.getPingString());
+      assertEquals("Test du ping","Les services SAE sont en ligne", response.getPingString());
    }
 }
