@@ -18,6 +18,6 @@ public class SaeServiceTest {
    @Test
    public void ping(){
       
-      assertEquals("Les services SAE sont en ligne",service.ping());
+      assertEquals("Test du ping","Les services SAE sont en ligne",service.ping());
    }
 }

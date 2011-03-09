@@ -26,6 +26,6 @@ public class SaeServiceSkeletonTest {
       
       PingResponse response = skeleton.ping(request);
       
-      assertEquals("Les services SAE sont en ligne",response.getPingString());
+      assertEquals("Test du ping","Les services SAE sont en ligne",response.getPingString());
    }
 }
