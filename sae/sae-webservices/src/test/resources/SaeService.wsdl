@@ -1,47 +1,72 @@
-<wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl"
-   xmlns:impl="http://www.cirtil.fr/saeService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-   xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:apachesoap="http://xml.apache.org/xml-soap"
-   xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:tns="http://www.cirtil.fr/saeService"
-   xmlns:wsoap="http://www.w3.org/ns/wsdl/soap" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
-   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
-   xmlns:whttp="http://www.w3.org/ns/wsdl/http" xmlns:intf="http://www.cirtil.fr/saeService"
-   targetNamespace="http://www.cirtil.fr/saeService">
-   <wsdl2:documentation>
-      Services offerts par le SAE aux applications
-      clientes
-   </wsdl2:documentation>
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.cirtil.fr/saeService"
+   xmlns:impl="http://www.cirtil.fr/saeService" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+   xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:intf="http://www.cirtil.fr/saeService">
+  
+   <wsdl:types>
+      <schema elementFormDefault="qualified"
+         targetNamespace="http://www.cirtil.fr/saeService" xmlns="http://www.w3.org/2001/XMLSchema">
 
-   <wsdl2:types>
-      <schema xmlns="http://www.w3.org/2001/XMLSchema"
-         attributeFormDefault="unqualified" elementFormDefault="qualified"
-         targetNamespace="http://www.cirtil.fr/saeService">
          <element name="PingRequest">
             <complexType />
+
          </element>
          <element name="PingResponse">
-            <complexType>
+           <complexType>
                <sequence>
                   <element name="pingString" type="xsd:string" />
                </sequence>
             </complexType>
          </element>
+
       </schema>
-   </wsdl2:types>
-   <wsdl2:interface name="SaeServiceInterface">
-      <wsdl2:operation name="Ping"
-         pattern="http://www.w3.org/ns/wsdl/in-out">
-         <wsdl2:input element="impl:PingRequest"
-            wsaw:Action="Ping" />
-         <wsdl2:output element="impl:PingResponse"
-            wsaw:Action="Ping" />
-      </wsdl2:operation>
-   </wsdl2:interface>
-   <wsdl2:binding name="SaeServiceBinding" interface="tns:SaeServiceInterface"
-      type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2">
-      <wsdl2:operation ref="tns:Ping" wsoap:action="Ping" />
-   </wsdl2:binding>
-   <wsdl2:service name="SaeService" interface="tns:SaeServiceInterface">
-      <wsdl2:endpoint name="SaeServiceEndpoint" binding="tns:SaeServiceBinding"
-         address="http://localhost:8080/axis2/services/SaeService/" />
-   </wsdl2:service>
-</wsdl2:description>
+   </wsdl:types>
+   
+   <wsdl:message name="PingResponseMessage">
+      <wsdl:part name="output" element="impl:PingResponse">
+      </wsdl:part>
+   </wsdl:message>
+   
+   <wsdl:message name="PingRequestMessage">
+      <wsdl:part name="input" element="impl:PingRequest">
+      </wsdl:part>
+   </wsdl:message>
+  
+   <wsdl:portType name="SaeServicePortType">
+     
+     
+      <wsdl:operation name="Ping" parameterOrder="input">
+         <wsdl:input name="PingRequestMessage"
+            message="impl:PingRequestMessage">
+         </wsdl:input>
+         <wsdl:output name="PingResponseMessage"
+            message="impl:PingResponseMessage">
+         </wsdl:output>
+      </wsdl:operation>
+      
+   </wsdl:portType>
+   <wsdl:binding name="SaeServiceSoapBinding" type="impl:SaeServicePortType">
+      <wsdlsoap:binding style="document"
+         transport="http://schemas.xmlsoap.org/soap/http" />
+      
+      <wsdl:operation name="Ping">
+         <wsdlsoap:operation soapAction="Ping" />
+         <wsdl:input>
+            <wsdlsoap:body use="literal" />
+
+         </wsdl:input>
+         <wsdl:output>
+            <wsdlsoap:body use="literal" />
+         </wsdl:output>
+      </wsdl:operation>
+     
+   </wsdl:binding>
+   <wsdl:service name="SaeService">
+      <wsdl:port name="SaeService" binding="impl:SaeServiceSoapBinding">
+         <wsdlsoap:address
+            location="http://localhost:8080/axis2/services/SaeService/" />
+
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

@@ -35,7 +35,7 @@
                         <configuration>
                            <packageName>fr.urssaf.image.sae.webservices.skeleton</packageName>
                            <wsdlFile>src/test/resources/SaeService.wsdl</wsdlFile>
-                           <wsdlVersion>2.0</wsdlVersion>
+                           <wsdlVersion>1.1</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
                            <generateServicesXml>true</generateServicesXml>
                            <generateServerSide>true</generateServerSide>
