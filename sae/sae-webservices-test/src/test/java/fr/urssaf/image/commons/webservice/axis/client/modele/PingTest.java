@@ -1,10 +1,13 @@
 package fr.urssaf.image.commons.webservice.axis.client.modele;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.rmi.RemoteException;
 
 import org.apache.axis2.AxisFault;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,16 +15,18 @@ import org.junit.Test;
 import fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest;
 import fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse;
 
-public class SaeServiceTest {
+public class PingTest {
 
    private SaeServiceStub service;
 
-   private static final Logger LOG = Logger.getLogger(SaeServiceTest.class);
+   private static final Logger LOG = Logger.getLogger(PingTest.class);
 
    @Before
-   public void before() throws AxisFault {
+   public void before() throws AxisFault, ConfigurationException {
 
-      service = new SaeServiceStub();
+      Configuration config = new PropertiesConfiguration(
+            "sae-webservices-test.properties");
+      service = new SaeServiceStub(config.getString("urlServiceWeb"));
 
    }
 
