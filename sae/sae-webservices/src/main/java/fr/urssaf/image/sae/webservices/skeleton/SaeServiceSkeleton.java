@@ -8,7 +8,6 @@ package fr.urssaf.image.sae.webservices.skeleton;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
@@ -48,9 +47,9 @@ import fr.urssaf.image.sae.webservices.SaeService;
  * 
  */
 @Component
-public class SaeServiceSkeleton extends SpringBeanAutowiringSupport {
+public class SaeServiceSkeleton {
 
-   private SaeService service;
+   private final SaeService service;
 
    /**
     * Instanciation du service {@link SaeService}
