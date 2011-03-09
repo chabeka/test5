@@ -6,7 +6,7 @@
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET)
  */
 
-    package fr.urssaf.image.commons.webservice.axis.client.modele;
+    package fr.urssaf.image.sae.webservices.modele;
 
     /**
      *  SaeServiceCallbackHandler Callback class, Users can extend this class and implement
@@ -51,7 +51,7 @@ public class SaeServiceCallbackHandler{
             * override this method for handling normal response from ping operation
             */
            public void receiveResultping(
-                    fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse result
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse result
                         ) {
            }
 

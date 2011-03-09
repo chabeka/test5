@@ -34,9 +34,9 @@
                         </goals>
                         <configuration>
                            <wsdlFile>http://localhost:8080/axis2/services/SaeService?wsdl</wsdlFile>
+                           <packageName>fr.urssaf.image.sae.webservices.modele</packageName>
                            <wsdlVersion>1.1</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
-                           <packageName>fr.urssaf.image.commons.webservice.axis.client.modele</packageName>
                            <databindingName>adb</databindingName>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
                            <skipBuildXML>true</skipBuildXML>

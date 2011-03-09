@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.webservice.axis.client.modele;
+package fr.urssaf.image.sae.webservices.modele;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse;
 
 public class PingTest {
 

@@ -5,7 +5,7 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET)
  */
-        package fr.urssaf.image.commons.webservice.axis.client.modele;
+        package fr.urssaf.image.sae.webservices.modele;
 
         
 
@@ -131,16 +131,16 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                     /**
                      * Auto generated method signature
                      * 
-                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.SaeService#ping
+                     * @see fr.urssaf.image.sae.webservices.modele.SaeService#ping
                      * @param pingRequest0
                     
                      */
 
                     
 
-                            public  fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse ping(
+                            public  fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse ping(
 
-                            fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest pingRequest0)
+                            fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest pingRequest0)
                         
 
                     throws java.rmi.RemoteException
@@ -190,11 +190,11 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse.class,
+                                             fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse)object;
+                                        return (fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -250,15 +250,15 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                 /**
                 * Auto generated method signature for Asynchronous Invocations
                 * 
-                * @see fr.urssaf.image.commons.webservice.axis.client.modele.SaeService#startping
+                * @see fr.urssaf.image.sae.webservices.modele.SaeService#startping
                     * @param pingRequest0
                 
                 */
                 public  void startping(
 
-                 fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest pingRequest0,
+                 fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest pingRequest0,
 
-                  final fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceCallbackHandler callback)
+                  final fr.urssaf.image.sae.webservices.modele.SaeServiceCallbackHandler callback)
 
                 throws java.rmi.RemoteException{
 
@@ -301,10 +301,10 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                                 org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
                                 
                                         java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse.class,
+                                                                         fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse.class,
                                                                          getEnvelopeNamespaces(resultEnv));
                                         callback.receiveResultping(
-                                        (fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse)object);
+                                        (fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse)object);
                                         
                             } catch (org.apache.axis2.AxisFault e) {
                                 callback.receiveErrorping(e);
@@ -1276,12 +1276,12 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
 
         }
     
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -1290,12 +1290,12 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -1305,14 +1305,14 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
             }
         
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest param, boolean optimizeContent)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest param, boolean optimizeContent)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -1342,16 +1342,16 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
 
         try {
         
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest.class.equals(type)){
+                if (fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse.class.equals(type)){
+                if (fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.SaeServiceStub.PingResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
