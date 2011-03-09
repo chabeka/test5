@@ -14,6 +14,7 @@
         */
 
         
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class SaeServiceStub extends org.apache.axis2.client.Stub
         {
