@@ -11,6 +11,7 @@
         *  Axis2UserGuideServiceMessageReceiverInOut message receiver
         */
 
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class Axis2UserGuideServiceMessageReceiverInOut extends org.apache.axis2.receivers.AbstractInOutMessageReceiver{
 
@@ -23,7 +24,7 @@ public class Axis2UserGuideServiceMessageReceiverInOut extends org.apache.axis2.
         // get the implementation class for the Web Service
         Object obj = getTheImplementationObject(msgContext);
 
-        Axis2UserGuideServiceSkeletonInterface skel = (Axis2UserGuideServiceSkeletonInterface)obj;
+        Axis2UserGuideServiceSkeleton skel = (Axis2UserGuideServiceSkeleton)obj;
         //Out Envelop
         org.apache.axiom.soap.SOAPEnvelope envelope = null;
         //Find the axisOperation that has been set by the Dispatch phase.
@@ -39,56 +40,56 @@ public class Axis2UserGuideServiceMessageReceiverInOut extends org.apache.axis2.
 
             if("twoWayOneParameterEcho".equals(methodName)){
                 
-                org.apache.axis2.axis2userguide.TwoWayOneParameterEchoResponse twoWayOneParameterEchoResponse8 = null;
+                org.apache.axis2.axis2userguide.TwoWayOneParameterEchoResponse twoWayOneParameterEchoResponse1 = null;
 	                        org.apache.axis2.axis2userguide.TwoWayOneParameterEchoRequest wrappedParam =
                                                              (org.apache.axis2.axis2userguide.TwoWayOneParameterEchoRequest)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     org.apache.axis2.axis2userguide.TwoWayOneParameterEchoRequest.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               twoWayOneParameterEchoResponse8 =
+                                               twoWayOneParameterEchoResponse1 =
                                                    
                                                    
                                                          skel.twoWayOneParameterEcho(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), twoWayOneParameterEchoResponse8, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), twoWayOneParameterEchoResponse1, false);
                                     } else 
 
             if("noParameters".equals(methodName)){
                 
-                org.apache.axis2.axis2userguide.NoParametersResponse noParametersResponse10 = null;
+                org.apache.axis2.axis2userguide.NoParametersResponse noParametersResponse3 = null;
 	                        org.apache.axis2.axis2userguide.NoParametersRequest wrappedParam =
                                                              (org.apache.axis2.axis2userguide.NoParametersRequest)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     org.apache.axis2.axis2userguide.NoParametersRequest.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               noParametersResponse10 =
+                                               noParametersResponse3 =
                                                    
                                                    
                                                          skel.noParameters(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), noParametersResponse10, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), noParametersResponse3, false);
                                     } else 
 
             if("multipleParametersAddItem".equals(methodName)){
                 
-                org.apache.axis2.axis2userguide.MultipleParametersAddItemResponse multipleParametersAddItemResponse12 = null;
+                org.apache.axis2.axis2userguide.MultipleParametersAddItemResponse multipleParametersAddItemResponse5 = null;
 	                        org.apache.axis2.axis2userguide.MultipleParametersAddItemRequest wrappedParam =
                                                              (org.apache.axis2.axis2userguide.MultipleParametersAddItemRequest)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     org.apache.axis2.axis2userguide.MultipleParametersAddItemRequest.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               multipleParametersAddItemResponse12 =
+                                               multipleParametersAddItemResponse5 =
                                                    
                                                    
                                                          skel.multipleParametersAddItem(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), multipleParametersAddItemResponse12, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), multipleParametersAddItemResponse5, false);
                                     
             } else {
               throw new java.lang.RuntimeException("method not found");

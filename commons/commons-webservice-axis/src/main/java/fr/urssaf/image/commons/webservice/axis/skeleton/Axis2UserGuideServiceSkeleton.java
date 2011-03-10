@@ -6,89 +6,78 @@
  */
 package fr.urssaf.image.commons.webservice.axis.skeleton;
 
+import org.apache.axis2.axis2userguide.DoInOnlyRequest;
+import org.apache.axis2.axis2userguide.MultipleParametersAddItemRequest;
 import org.apache.axis2.axis2userguide.MultipleParametersAddItemResponse;
+import org.apache.axis2.axis2userguide.NoParametersRequest;
 import org.apache.axis2.axis2userguide.NoParametersResponse;
+import org.apache.axis2.axis2userguide.TwoWayOneParameterEchoRequest;
 import org.apache.axis2.axis2userguide.TwoWayOneParameterEchoResponse;
-import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import fr.urssaf.image.commons.webservice.axis.service.UserGuideService;
 
 /**
  * Axis2UserGuideServiceSkeleton java skeleton for the axisService
  */
-public class Axis2UserGuideServiceSkeleton implements
-      Axis2UserGuideServiceSkeletonInterface {
+@Component
+public class Axis2UserGuideServiceSkeleton {
 
-   private static final Logger LOG = Logger
-         .getLogger(Axis2UserGuideServiceSkeleton.class);
+   private UserGuideService service;
+   
+   @Autowired
+   public Axis2UserGuideServiceSkeleton(UserGuideService service) {
+      this.service = service;
+   }
 
    /**
     * Auto generated method signature
     * 
-    * @param doInOnlyRequest0
+    * @param doInOnlyRequest
     */
 
-   public void doInOnly(
-         org.apache.axis2.axis2userguide.DoInOnlyRequest doInOnlyRequest0) {
-
-      LOG.info(doInOnlyRequest0.getMessageString());
+   public void doInOnly(DoInOnlyRequest doInOnlyRequest) {
+     
+      service.doInOnly(doInOnlyRequest);
 
    }
 
    /**
     * Auto generated method signature
     * 
-    * @param twoWayOneParameterEchoRequest1
+    * @param twoWayOneParameterEchoRequest
     */
 
-   public org.apache.axis2.axis2userguide.TwoWayOneParameterEchoResponse twoWayOneParameterEcho(
-         org.apache.axis2.axis2userguide.TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest1) {
+   public TwoWayOneParameterEchoResponse twoWayOneParameterEcho(
+         TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest) {
 
-      LOG.info(twoWayOneParameterEchoRequest1.getEchoString());
-
-      TwoWayOneParameterEchoResponse res = new TwoWayOneParameterEchoResponse();
-
-      res.setEchoString(twoWayOneParameterEchoRequest1.getEchoString());
-
-      return res;
+      return service.twoWayOneParameterEcho(twoWayOneParameterEchoRequest);
    }
 
    /**
     * Auto generated method signature
     * 
-    * @param noParametersRequest3
+    * @param noParametersRequest
     */
 
-   public org.apache.axis2.axis2userguide.NoParametersResponse noParameters(
-         org.apache.axis2.axis2userguide.NoParametersRequest noParametersRequest3) {
+   public NoParametersResponse noParameters(
+         NoParametersRequest noParametersRequest) {
 
-      LOG.info(noParametersRequest3);
-
-      NoParametersResponse res = new NoParametersResponse();
-
-      return res;
-
+      return service.noParameters(noParametersRequest);
    }
 
    /**
     * Auto generated method signature
     * 
-    * @param multipleParametersAddItemRequest5
+    * @param multipleParametersAddItemRequest
     */
 
-   public org.apache.axis2.axis2userguide.MultipleParametersAddItemResponse multipleParametersAddItem(
-         org.apache.axis2.axis2userguide.MultipleParametersAddItemRequest multipleParametersAddItemRequest5) {
+   public MultipleParametersAddItemResponse multipleParametersAddItem(
+         MultipleParametersAddItemRequest multipleParametersAddItemRequest) {
 
-      LOG.info(multipleParametersAddItemRequest5.getPrice());
-      LOG.info(multipleParametersAddItemRequest5.getItemId());
-      LOG.info(multipleParametersAddItemRequest5.getDescription());
-      LOG.info(multipleParametersAddItemRequest5.getItemName());
-
-      MultipleParametersAddItemResponse res = new MultipleParametersAddItemResponse();
-
-      res.setSuccessfulAdd(true);
-      res.setItemId(multipleParametersAddItemRequest5.getItemId());
-
-      return res;
-
+      return service
+            .multipleParametersAddItem(multipleParametersAddItemRequest);
    }
 
 }

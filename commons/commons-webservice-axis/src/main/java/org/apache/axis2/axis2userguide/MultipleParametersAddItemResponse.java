@@ -13,6 +13,7 @@
             *  MultipleParametersAddItemResponse bean class
             */
         
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class MultipleParametersAddItemResponse
         implements org.apache.axis2.databinding.ADBBean{

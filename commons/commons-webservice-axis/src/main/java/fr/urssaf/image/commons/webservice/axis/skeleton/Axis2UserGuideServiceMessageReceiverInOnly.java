@@ -12,6 +12,7 @@
         *  Axis2UserGuideServiceMessageReceiverInOnly message receiver
         */
 
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class Axis2UserGuideServiceMessageReceiverInOnly extends org.apache.axis2.receivers.AbstractInMessageReceiver{
 
@@ -22,7 +23,7 @@ public class Axis2UserGuideServiceMessageReceiverInOnly extends org.apache.axis2
         // get the implementation class for the Web Service
         Object obj = getTheImplementationObject(inMessage);
 
-        Axis2UserGuideServiceSkeletonInterface skel = (Axis2UserGuideServiceSkeletonInterface)obj;
+        Axis2UserGuideServiceSkeleton skel = (Axis2UserGuideServiceSkeleton)obj;
         //Out Envelop
         org.apache.axiom.soap.SOAPEnvelope envelope = null;
         //Find the axisOperation that has been set by the Dispatch phase.

@@ -13,6 +13,7 @@
             *  DoInOnlyRequest bean class
             */
         
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class DoInOnlyRequest
         implements org.apache.axis2.databinding.ADBBean{

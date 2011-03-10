@@ -13,6 +13,7 @@
             *  TwoWayOneParameterEchoResponse bean class
             */
         
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class TwoWayOneParameterEchoResponse
         implements org.apache.axis2.databinding.ADBBean{

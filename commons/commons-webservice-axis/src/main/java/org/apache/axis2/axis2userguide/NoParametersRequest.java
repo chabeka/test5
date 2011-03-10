@@ -13,6 +13,7 @@
             *  NoParametersRequest bean class
             */
         
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class NoParametersRequest
         implements org.apache.axis2.databinding.ADBBean{

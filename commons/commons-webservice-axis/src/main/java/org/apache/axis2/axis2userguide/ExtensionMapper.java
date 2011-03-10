@@ -13,6 +13,7 @@
             *  ExtensionMapper class
             */
         
+// CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class ExtensionMapper{
 
