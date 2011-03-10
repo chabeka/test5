@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11;
+package fr.urssaf.image.commons.webservice.axis.client.modele;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,12 +10,12 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11.Axis2UserGuideServiceStub.DoInOnlyRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse;
-import fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11.Axis2UserGuideServiceStub.NoParametersRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.wsdl11.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse;
+import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse;
+import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse;
 
 public class Axis2UserGuideServiceTest {
 
@@ -27,7 +27,8 @@ public class Axis2UserGuideServiceTest {
    @Before
    public void before() throws AxisFault {
 
-      service = new Axis2UserGuideServiceStub();
+      service = new Axis2UserGuideServiceStub(
+            "http://localhost:8080/axis2/services/Axis2UserGuide/");
 
    }
 
@@ -63,26 +64,26 @@ public class Axis2UserGuideServiceTest {
       assertNotNull(service.noParameters(request));
 
    }
-   
+
    @Test
-   public void ets() throws RemoteException{
-      
+   public void ets() throws RemoteException {
+
       int id = 1;
-      
+
       MultipleParametersAddItemRequest request = new MultipleParametersAddItemRequest();
       request.setDescription("description");
       request.setItemId(1);
       request.setItemName("name");
       request.setPrice(new Float(24.2));
-      
-      MultipleParametersAddItemResponse response = service.multipleParametersAddItem(request);
-      
+
+      MultipleParametersAddItemResponse response = service
+            .multipleParametersAddItem(request);
+
       LOG.debug(response.getItemId());
       LOG.debug(response.getSuccessfulAdd());
-      
+
       assertEquals(id, response.getItemId());
       assertEquals(true, response.getSuccessfulAdd());
-      
-      
+
    }
 }
