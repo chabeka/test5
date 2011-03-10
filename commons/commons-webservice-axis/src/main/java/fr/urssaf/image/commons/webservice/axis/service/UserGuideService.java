@@ -15,28 +15,28 @@ public class UserGuideService {
 
    private static final Logger LOG = Logger.getLogger(UserGuideService.class);
 
-   public void doInOnly(DoInOnlyRequest doInOnlyRequest) {
+   public void doInOnly(DoInOnlyRequest request) {
 
-      LOG.debug(doInOnlyRequest.getMessageString());
+      LOG.debug(request.getMessageString());
 
    }
 
    public TwoWayOneParameterEchoResponse twoWayOneParameterEcho(
-         TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest) {
+         TwoWayOneParameterEchoRequest request) {
 
-      LOG.debug(twoWayOneParameterEchoRequest.getEchoString());
+      LOG.debug(request.getEchoString());
 
       TwoWayOneParameterEchoResponse response = new TwoWayOneParameterEchoResponse();
 
-      response.setEchoString(twoWayOneParameterEchoRequest.getEchoString());
+      response.setEchoString(request.getEchoString());
 
       return response;
    }
 
    public NoParametersResponse noParameters(
-         NoParametersRequest noParametersRequest) {
+         NoParametersRequest request) {
 
-      LOG.debug(noParametersRequest);
+      LOG.debug(request);
 
       NoParametersResponse response = new NoParametersResponse();
 
@@ -44,16 +44,16 @@ public class UserGuideService {
    }
 
    public MultipleParametersAddItemResponse multipleParametersAddItem(
-         MultipleParametersAddItemRequest multipleParametersAddItemRequest) {
+         MultipleParametersAddItemRequest request) {
 
-      LOG.debug(multipleParametersAddItemRequest.getDescription());
-      LOG.debug(multipleParametersAddItemRequest.getItemId());
-      LOG.debug(multipleParametersAddItemRequest.getItemName());
-      LOG.debug(multipleParametersAddItemRequest.getPrice());
+      LOG.debug(request.getDescription());
+      LOG.debug(request.getItemId());
+      LOG.debug(request.getItemName());
+      LOG.debug(request.getPrice());
 
       MultipleParametersAddItemResponse response = new MultipleParametersAddItemResponse();
 
-      response.setItemId(multipleParametersAddItemRequest.getItemId());
+      response.setItemId(request.getItemId());
       response.setSuccessfulAdd(true);
 
       return response;

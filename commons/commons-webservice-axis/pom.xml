@@ -43,6 +43,7 @@
                            <skipWSDL>false</skipWSDL>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
                            <targetResourcesFolderLocation>main/resources/META-INF</targetResourcesFolderLocation>
+                           <overWrite>true</overWrite>
                         </configuration>
                      </execution>
                   </executions>

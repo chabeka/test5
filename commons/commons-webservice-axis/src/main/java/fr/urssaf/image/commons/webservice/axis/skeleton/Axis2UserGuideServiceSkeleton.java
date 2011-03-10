@@ -24,7 +24,7 @@ import fr.urssaf.image.commons.webservice.axis.service.UserGuideService;
 @Component
 public class Axis2UserGuideServiceSkeleton {
 
-   private UserGuideService service;
+   private final UserGuideService service;
    
    @Autowired
    public Axis2UserGuideServiceSkeleton(UserGuideService service) {
@@ -37,9 +37,9 @@ public class Axis2UserGuideServiceSkeleton {
     * @param doInOnlyRequest
     */
 
-   public void doInOnly(DoInOnlyRequest doInOnlyRequest) {
+   public void doInOnly(DoInOnlyRequest request) {
      
-      service.doInOnly(doInOnlyRequest);
+      service.doInOnly(request);
 
    }
 
@@ -50,9 +50,9 @@ public class Axis2UserGuideServiceSkeleton {
     */
 
    public TwoWayOneParameterEchoResponse twoWayOneParameterEcho(
-         TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest) {
+         TwoWayOneParameterEchoRequest request) {
 
-      return service.twoWayOneParameterEcho(twoWayOneParameterEchoRequest);
+      return service.twoWayOneParameterEcho(request);
    }
 
    /**
@@ -62,9 +62,9 @@ public class Axis2UserGuideServiceSkeleton {
     */
 
    public NoParametersResponse noParameters(
-         NoParametersRequest noParametersRequest) {
+         NoParametersRequest request) {
 
-      return service.noParameters(noParametersRequest);
+      return service.noParameters(request);
    }
 
    /**
@@ -74,10 +74,10 @@ public class Axis2UserGuideServiceSkeleton {
     */
 
    public MultipleParametersAddItemResponse multipleParametersAddItem(
-         MultipleParametersAddItemRequest multipleParametersAddItemRequest) {
+         MultipleParametersAddItemRequest request) {
 
       return service
-            .multipleParametersAddItem(multipleParametersAddItemRequest);
+            .multipleParametersAddItem(request);
    }
 
 }
