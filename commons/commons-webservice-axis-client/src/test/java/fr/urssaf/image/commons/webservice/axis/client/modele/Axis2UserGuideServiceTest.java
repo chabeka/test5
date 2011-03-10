@@ -28,7 +28,7 @@ public class Axis2UserGuideServiceTest {
    public void before() throws AxisFault {
 
       service = new Axis2UserGuideServiceStub(
-            "http://localhost:8080/axis2/services/Axis2UserGuide/");
+            "http://localhost:8080/axis2/services/Axis2UserGuideService/");
 
    }
 

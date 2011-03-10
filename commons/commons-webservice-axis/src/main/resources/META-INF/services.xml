@@ -16,7 +16,7 @@
             class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
       </operation>
    </service>
-   <service name="Axis2UserGuide">
+   <service name="Axis2UserGuideService">
       <messageReceivers>
          <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
             class="fr.urssaf.image.commons.webservice.axis.skeleton.Axis2UserGuideServiceMessageReceiverInOut" />

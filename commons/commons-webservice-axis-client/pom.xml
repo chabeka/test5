@@ -33,7 +33,7 @@
                            <goal>wsdl2code</goal>
                         </goals>
                         <configuration>
-                           <wsdlFile>http://localhost:8080/axis2/services/Axis2UserGuide?wsdl</wsdlFile>
+                           <wsdlFile>http://localhost:8080/axis2/services/Axis2UserGuideService?wsdl</wsdlFile>
                            <packageName>fr.urssaf.image.commons.webservice.axis.client.modele</packageName>
                            <wsdlVersion>1.1</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
