@@ -5,7 +5,15 @@ import static org.junit.Assert.assertNotNull;
 
 import java.rmi.RemoteException;
 
-import org.apache.axis2.AxisFault;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.client.ServiceClient;
+import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +32,16 @@ public class Axis2UserGuideServiceTest {
    private static final Logger LOG = Logger
          .getLogger(Axis2UserGuideServiceTest.class);
 
-   @Before
-   public void before() throws AxisFault {
+   private static final String SECURITY_PATH = "src/main/resources/META-INF";
 
-      service = new Axis2UserGuideServiceStub(
+   @Before
+   public void before() throws Exception {
+
+      ConfigurationContext ctx = ConfigurationContextFactory
+            .createConfigurationContextFromFileSystem(SECURITY_PATH,
+                  SECURITY_PATH + "/axis2.xml");
+
+      service = new Axis2UserGuideServiceStub(ctx,
             "http://localhost:8080/axis2/services/Axis2UserGuideService/");
 
    }
@@ -85,5 +99,40 @@ public class Axis2UserGuideServiceTest {
       assertEquals(id, response.getItemId());
       assertEquals(true, response.getSuccessfulAdd());
 
+   }
+
+   public static void main(String[] args) throws Exception {
+
+      if (args.length != 2) {
+         System.out
+               .println("Usage: $java Client endpoint_address client_repo_path");
+      }
+
+      ConfigurationContext ctx = ConfigurationContextFactory
+            .createConfigurationContextFromFileSystem("C:\\axis2.xml");
+
+      ServiceClient client = new ServiceClient(ctx, null);
+      Options options = new Options();
+      options.setAction("urn:echo");
+      options.setTo(new EndpointReference(
+            "http://localhost:8082/axis2/services/Axis2UserGuideService/"));
+      client.setOptions(options);
+
+      OMElement response = client.sendReceive(getPayload("Hello world"));
+
+      System.out.println(response);
+
+   }
+
+   private static OMElement getPayload(String value) {
+      OMFactory factory = OMAbstractFactory.getOMFactory();
+      OMNamespace ns = factory.createOMNamespace(
+            "http://sample02.samples.rampart.apache.org", "ns1");
+      OMElement elem = factory.createOMElement("echo", ns);
+      OMElement childElem = factory.createOMElement("param0", null);
+      childElem.setText(value);
+      elem.addChild(childElem);
+
+      return elem;
    }
 }

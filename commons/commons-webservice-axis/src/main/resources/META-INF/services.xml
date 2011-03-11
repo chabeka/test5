@@ -8,7 +8,8 @@
    <service name="SpringInit"
       class="fr.urssaf.image.commons.webservice.axis.component.Axis2SpringContext">
       <description>This web service initializes Spring.</description>
-      <parameter name="ServiceClass">fr.urssaf.image.commons.webservice.axis.component.Axis2SpringContext</parameter>
+      <parameter name="ServiceClass">fr.urssaf.image.commons.webservice.axis.component.Axis2SpringContext
+      </parameter>
       <parameter name="ServiceTCCL">composite</parameter>
       <parameter name="load-on-startup">true</parameter>
       <operation name="springInit">
@@ -23,8 +24,10 @@
          <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
             class="fr.urssaf.image.commons.webservice.axis.skeleton.Axis2UserGuideServiceMessageReceiverInOnly" />
       </messageReceivers>
-      <parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringAppContextAwareObjectSupplier</parameter>
-      <parameter name="SpringBeanName" locked="false">axis2UserGuideServiceSkeleton</parameter>
+      <parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringAppContextAwareObjectSupplier
+      </parameter>
+      <parameter name="SpringBeanName" locked="false">axis2UserGuideServiceSkeleton
+      </parameter>
       <parameter name="useOriginalwsdl">false</parameter>
       <parameter name="modifyUserWSDLPortAddress">false</parameter>
       <operation name="DoInOnly" mep="http://www.w3.org/ns/wsdl/in-only"
@@ -34,17 +37,29 @@
       <operation name="TwoWayOneParameterEcho" mep="http://www.w3.org/ns/wsdl/in-out"
          namespace="http://apache.org/axis2/Axis2UserGuide">
          <actionMapping>TwoWayOneParameterEcho</actionMapping>
-         <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/TwoWayOneParameterEchoResponseMessage</outputActionMapping>
+         <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/TwoWayOneParameterEchoResponseMessage
+         </outputActionMapping>
       </operation>
       <operation name="NoParameters" mep="http://www.w3.org/ns/wsdl/in-out"
          namespace="http://apache.org/axis2/Axis2UserGuide">
          <actionMapping>NoParameters</actionMapping>
-         <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/NoParametersResponseMessage</outputActionMapping>
+         <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/NoParametersResponseMessage
+         </outputActionMapping>
       </operation>
       <operation name="MultipleParametersAddItem" mep="http://www.w3.org/ns/wsdl/in-out"
          namespace="http://apache.org/axis2/Axis2UserGuide">
          <actionMapping>MultipleParametersAddItem</actionMapping>
-         <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/MultipleParametersAddItemResponseMessage</outputActionMapping>
+         <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/MultipleParametersAddItemResponseMessage
+         </outputActionMapping>
       </operation>
+      <module ref="rampart"/>
+      <parameter name="InflowSecurity">
+         <action>
+            <items>UsernameToken</items>
+            <passwordCallbackClass>fr.urssaf.image.commons.webservice.axis.security.PasswordCallbackHandler
+            </passwordCallbackClass>
+         </action>
+      </parameter>
+
    </service>
 </serviceGroup>
