@@ -24,6 +24,7 @@
       <module>../sae-webdemo</module>
       <module>../sae-webservices</module>
       <module>../sae-webservices-test</module>
+      <module>../sae-saml</module>
    </modules>
 
 </project>
