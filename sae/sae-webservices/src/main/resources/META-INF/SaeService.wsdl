@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions targetNamespace="http://www.cirtil.fr/saeService" xmlns:impl="http://www.cirtil.fr/saeService" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:intf="http://www.cirtil.fr/saeService">
+<wsdl:definitions
+   targetNamespace="http://www.cirtil.fr/saeService"
+   xmlns:tns="http://www.cirtil.fr/saeService"
+   xmlns:apachesoap="http://xml.apache.org/xml-soap"
+   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  
   <wsdl:types>
-    <schema elementFormDefault="qualified" targetNamespace="http://www.cirtil.fr/saeService" xmlns="http://www.w3.org/2001/XMLSchema">
+    <schema
+      elementFormDefault="qualified"
+      targetNamespace="http://www.cirtil.fr/saeService"
+      xmlns="http://www.w3.org/2001/XMLSchema">
 
          <element name="PingRequest">
             <complexType/>
-
          </element>
+         
          <element name="PingResponse">
            <complexType>
                <sequence>
@@ -17,37 +27,41 @@
 
       </schema>
   </wsdl:types>
-  <wsdl:message name="PingResponseMessage">
-    <wsdl:part name="output" element="impl:PingResponse">
-    </wsdl:part>
-  </wsdl:message>
+  
   <wsdl:message name="PingRequestMessage">
-    <wsdl:part name="input" element="impl:PingRequest">
+    <wsdl:part name="input" element="tns:PingRequest">
     </wsdl:part>
   </wsdl:message>
+  
+  <wsdl:message name="PingResponseMessage">
+    <wsdl:part name="output" element="tns:PingResponse">
+    </wsdl:part>
+  </wsdl:message>
+  
   <wsdl:portType name="SaeServicePortType">
     <wsdl:operation name="Ping" parameterOrder="input">
-      <wsdl:input name="PingRequestMessage" message="impl:PingRequestMessage">
-    </wsdl:input>
-      <wsdl:output name="PingResponseMessage" message="impl:PingResponseMessage">
-    </wsdl:output>
+      <wsdl:input message="tns:PingRequestMessage" />
+      <wsdl:output message="tns:PingResponseMessage" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="SaeServiceSoapBinding" type="impl:SaeServicePortType">
-    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  
+  <wsdl:binding name="SaeServiceSoapBinding" type="tns:SaeServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="Ping">
-      <wsdlsoap:operation soapAction="Ping"/>
+      <soap:operation soapAction="Ping"/>
       <wsdl:input>
-        <wsdlsoap:body use="literal"/>
+        <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <wsdlsoap:body use="literal"/>
+        <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
+  
   <wsdl:service name="SaeService">
-    <wsdl:port name="SaeService" binding="impl:SaeServiceSoapBinding">
-      <wsdlsoap:address location="http://localhost:8080/axis2/services/SaeService/"/>
+    <wsdl:port name="SaeServicePort" binding="tns:SaeServiceSoapBinding">
+      <soap:address location="http://localhost:8080/axis2/services/SaeService/"/>
     </wsdl:port>
   </wsdl:service>
+  
 </wsdl:definitions>
