@@ -1,22 +1,19 @@
 package fr.urssaf.image.sae.saml.service;
 
 import java.security.KeyStore;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
-import org.opensaml.Configuration;
-import org.opensaml.DefaultBootstrap;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.AttributeStatement;
 import org.opensaml.saml2.core.AuthnStatement;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Subject;
-import org.opensaml.xml.ConfigurationException;
-import org.opensaml.xml.io.Marshaller;
-import org.opensaml.xml.io.MarshallerFactory;
-import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Element;
 
+import fr.urssaf.image.sae.saml.component.SAMLConfiguration;
 import fr.urssaf.image.sae.saml.component.SAMLFactory;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.util.PrintUtil;
@@ -31,26 +28,27 @@ import fr.urssaf.image.sae.saml.util.PrintUtil;
  */
 public class SamlAssertionCreationService {
 
-   private final MarshallerFactory marshallerFactory;
+   private final SamlAssertionService assertionService;
 
    /**
-    * Configuration de la libraire OpenSAML
+    * Configuration de la libraire OpenSAML {@link SAMLConfiguration#init()}<br>
+    * initialisation de {@link SamlAssertionService} pour la validation des
+    * jetons SAML<br>
     */
    public SamlAssertionCreationService() {
 
-      try {
-         DefaultBootstrap.bootstrap();
-      } catch (ConfigurationException e) {
-         throw new IllegalStateException(e);
-      }
+      SAMLConfiguration.init();
 
-      marshallerFactory = Configuration.getMarshallerFactory();
+      assertionService = new SamlAssertionService();
 
    }
 
    /**
     * Génération d'une assertion SAML 2.0 signée électroniquement, pour être
-    * utilisée dans le cadre de l'authentification aux services web du SAE
+    * utilisée dans le cadre de l'authentification aux services web du SAE<br>
+    * <br>
+    * Les paramètres d'entrées sont vérifiés par AOP par la classe
+    * {@link fr.urssaf.image.sae.saml.component.aspect.SamlAssertionValidate}
     * 
     * @param assertionParams
     *           Les paramètres de génération de l'assertion SAML
@@ -69,10 +67,11 @@ public class SamlAssertionCreationService {
             .getIssueInstant() == null ? systemDate : new DateTime(
             assertionParams.getCommonsParams().getIssueInstant());
 
-      String identifiant = assertionParams.getCommonsParams().getId()
-            .toString();
+      UUID identifiant = assertionParams.getCommonsParams().getId() == null ? UUID
+            .randomUUID()
+            : assertionParams.getCommonsParams().getId();
 
-      Assertion assertion = SAMLFactory.createAssertion(identifiant,
+      Assertion assertion = SAMLFactory.createAssertion(identifiant.toString(),
             issueInstant);
 
       // ISSUER
@@ -107,8 +106,8 @@ public class SamlAssertionCreationService {
             assertionParams.getCommonsParams().getAuthnInstant());
 
       AuthnStatement authnStatement = SAMLFactory.createAuthnStatement(
-            authnInstant, identifiant, assertionParams.getMethodAuthn2()
-                  .toASCIIString());
+            authnInstant, identifiant.toString(), assertionParams
+                  .getMethodAuthn2().toASCIIString());
       assertion.getAuthnStatements().add(authnStatement);
 
       // ATTRIBUTESTATEMENT
@@ -118,15 +117,23 @@ public class SamlAssertionCreationService {
                   .getPagm());
       assertion.getAttributeStatements().add(attrStatement);
 
-      Marshaller marshaller = marshallerFactory.getMarshaller(assertion);
-      try {
-         Element element = marshaller.marshall(assertion);
-         return PrintUtil.print(element);
+      // VALIDATION DU JETON SAML
+      validate(assertion);
 
-      } catch (MarshallingException e) {
+      Element element = assertionService.marshaller(assertion);
+      return PrintUtil.print(element);
+
+   }
+
+   private void validate(Assertion assertion) {
+
+      try {
+
+         assertionService.validate(assertion);
+
+      } catch (ValidationException e) {
          throw new IllegalStateException(e);
       }
-
    }
 
 }

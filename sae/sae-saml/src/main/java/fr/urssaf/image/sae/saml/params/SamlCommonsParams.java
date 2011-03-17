@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.ObjectUtils;
+
 /**
  * Paramètres communs aux formats SAML 1.1 et SAML 2.0 (assertion SAML 1.1,
  * assertion SAML 2.0, réponse SAML 2.0)
@@ -52,7 +54,7 @@ public class SamlCommonsParams {
     * @return Instant de génération de l'assertion
     */
    public final Date getIssueInstant() {
-      return issueInstant;
+      return (Date) ObjectUtils.clone(issueInstant);
    }
 
    /**
@@ -61,7 +63,7 @@ public class SamlCommonsParams {
     *           Instant de génération de l'assertion
     */
    public final void setIssueInstant(Date issueInstant) {
-      this.issueInstant = issueInstant;
+      this.issueInstant = (Date) ObjectUtils.clone(issueInstant);
    }
 
    /**
@@ -86,7 +88,7 @@ public class SamlCommonsParams {
     * @return Date d’expiration de l'assertion
     */
    public final Date getNotOnOrAfter() {
-      return notOnOrAfter;
+      return (Date) ObjectUtils.clone(notOnOrAfter);
    }
 
    /**
@@ -95,7 +97,7 @@ public class SamlCommonsParams {
     *           Date d’expiration de l'assertion
     */
    public final void setNotOnOrAfter(Date notOnOrAfter) {
-      this.notOnOrAfter = notOnOrAfter;
+      this.notOnOrAfter = (Date) ObjectUtils.clone(notOnOrAfter);
    }
 
    /**
@@ -103,7 +105,7 @@ public class SamlCommonsParams {
     * @return Date de début de validité de l'assertion
     */
    public final Date getNotOnBefore() {
-      return notOnBefore;
+      return (Date) ObjectUtils.clone(notOnBefore);
    }
 
    /**
@@ -112,7 +114,7 @@ public class SamlCommonsParams {
     *           Date de début de validité de l'assertion
     */
    public final void setNotOnBefore(Date notOnBefore) {
-      this.notOnBefore = notOnBefore;
+      this.notOnBefore = (Date) ObjectUtils.clone(notOnBefore);
    }
 
    /**
@@ -137,7 +139,7 @@ public class SamlCommonsParams {
     * @return Instant d’authentification de l'usager sur le SI.
     */
    public final Date getAuthnInstant() {
-      return authnInstant;
+      return (Date) ObjectUtils.clone(authnInstant);
    }
 
    /**
@@ -146,7 +148,7 @@ public class SamlCommonsParams {
     *           Instant d’authentification de l'usager sur le SI.
     */
    public final void setAuthnInstant(Date authnInstant) {
-      this.authnInstant = authnInstant;
+      this.authnInstant = (Date) ObjectUtils.clone(authnInstant);
    }
 
    /**

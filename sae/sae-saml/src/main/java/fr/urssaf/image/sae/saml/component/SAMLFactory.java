@@ -26,6 +26,8 @@ import org.opensaml.xml.schema.XSAny;
 
 /**
  * Fabrique des différentes balises du jeton SAML<br>
+ * Le recours à cette classe nécessite une initialisation de la librairie
+ * OpenSAML : {@link SAMLConfiguration#init}<br>
  * 
  * 
  */
@@ -157,7 +159,7 @@ public final class SAMLFactory {
     * <pre>
     * 
     * &lt;saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" 
-    *                    ID="<i><b>[id]</b></i>" 
+    *                    ID="<i><b>[i]</b></i>" 
     *                    IssueInstant="<i><b>[issueInstant]</b></i>" 
     *                    Version="2.0">
     * 
