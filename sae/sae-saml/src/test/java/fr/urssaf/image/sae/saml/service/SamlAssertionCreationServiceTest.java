@@ -1,11 +1,13 @@
 package fr.urssaf.image.sae.saml.service;
 
+import java.io.FileInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -28,7 +30,23 @@ public class SamlAssertionCreationServiceTest {
    @BeforeClass
    public static void beforeClass() throws KeyStoreException {
       service = new SamlAssertionCreationService();
-      keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+      keystore = KeyStore.getInstance("PKCS12");
+
+      try {
+         FileInputStream in = new FileInputStream(
+               "src/test/resources/Portail_Image.p12");
+         keystore.load(in, "hiUnk6O3QnRN".toCharArray());
+         in.close();
+      } catch (Exception ex) {
+         System.out.println("Failed to read keystore:");
+         ex.printStackTrace();
+      }
+
+      Enumeration<String> aliases = keystore.aliases();
+      while(aliases.hasMoreElements()){
+         
+         LOG.debug("alias:["+aliases.nextElement()+"]");
+      }
    }
 
    private SamlAssertionParams params;

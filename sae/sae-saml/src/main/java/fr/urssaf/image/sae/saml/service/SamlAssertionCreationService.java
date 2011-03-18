@@ -10,11 +10,15 @@ import org.opensaml.saml2.core.AuthnStatement;
 import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Subject;
+import org.opensaml.xml.signature.Signature;
+import org.opensaml.xml.signature.SignatureException;
+import org.opensaml.xml.signature.Signer;
 import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.component.SAMLConfiguration;
 import fr.urssaf.image.sae.saml.component.SAMLFactory;
+import fr.urssaf.image.sae.saml.component.SignatureFactory;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.util.PrintUtils;
 
@@ -117,10 +121,19 @@ public class SamlAssertionCreationService {
                   .getPagm());
       assertion.getAttributeStatements().add(attrStatement);
 
+      // SIGNATURE
+      SignatureFactory signatureFactory = new SignatureFactory(keyStore);
+      Signature signature = signatureFactory.createSignature();
+      assertion.setSignature(signature);
+
       // VALIDATION DU JETON SAML
       validate(assertion);
 
       Element element = assertionService.marshaller(assertion);
+
+      // SIGNATURE DU JETON
+      sign(signature);
+
       return PrintUtils.print(element);
 
    }
@@ -132,6 +145,15 @@ public class SamlAssertionCreationService {
          assertionService.validate(assertion);
 
       } catch (ValidationException e) {
+         throw new IllegalStateException(e);
+      }
+   }
+
+   private void sign(Signature signature) {
+
+      try {
+         Signer.signObject(signature);
+      } catch (SignatureException e) {
          throw new IllegalStateException(e);
       }
    }

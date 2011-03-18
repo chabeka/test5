@@ -256,7 +256,7 @@ public final class SAMLFactory {
    }
 
    @SuppressWarnings("unchecked")
-   private static <T> T create(QName qname) {
+   protected static <T> T create(QName qname) {
       return (T) ((XMLObjectBuilder) Configuration.getBuilderFactory()
             .getBuilder(qname)).buildObject(qname);
    }
