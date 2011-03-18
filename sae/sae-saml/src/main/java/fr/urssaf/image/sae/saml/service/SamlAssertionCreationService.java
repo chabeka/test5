@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 import fr.urssaf.image.sae.saml.component.SAMLConfiguration;
 import fr.urssaf.image.sae.saml.component.SAMLFactory;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
-import fr.urssaf.image.sae.saml.util.PrintUtil;
+import fr.urssaf.image.sae.saml.util.PrintUtils;
 
 /**
  * Classe de création de jeton SAML 2.0<br>
@@ -121,7 +121,7 @@ public class SamlAssertionCreationService {
       validate(assertion);
 
       Element element = assertionService.marshaller(assertion);
-      return PrintUtil.print(element);
+      return PrintUtils.print(element);
 
    }
 

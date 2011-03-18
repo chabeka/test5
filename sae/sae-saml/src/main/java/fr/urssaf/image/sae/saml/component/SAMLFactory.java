@@ -24,6 +24,8 @@ import org.opensaml.saml2.core.SubjectConfirmationData;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.schema.XSAny;
 
+import fr.urssaf.image.sae.saml.util.ListUtils;
+
 /**
  * Fabrique des différentes balises du jeton SAML<br>
  * Le recours à cette classe nécessite une initialisation de la librairie
@@ -49,6 +51,8 @@ public final class SAMLFactory {
     * &lt;/saml:AttributeStatement>
     * </pre>
     * 
+    * Les pagms non renseignés sont filtrés tels que null, "" et "  "
+    * 
     * @param pagms
     *           Liste des PAGM
     * @return balise XML
@@ -62,7 +66,7 @@ public final class SAMLFactory {
       Attribute attribute = create(Attribute.DEFAULT_ELEMENT_NAME);
       attribute.setName("PAGM");
 
-      for (String pagm : pagms) {
+      for (String pagm : ListUtils.filter(pagms)) {
 
          XMLObjectBuilder<XSAny> builder = Configuration.getBuilderFactory()
                .getBuilder(XSAny.TYPE_NAME);

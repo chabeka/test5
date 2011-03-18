@@ -57,7 +57,8 @@ public class SamlAssertionCreationServiceTest {
       commonsParams.setNotOnBefore(notOnBefore);
       Date notOnOrAfter = new Date();
       commonsParams.setNotOnOrAfter(notOnOrAfter);
-      commonsParams.setPagm(Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
+      commonsParams.setPagm(Arrays.asList("ROLE_USER", "", " ", "ROLE_ADMIN",
+            null));
       params.setCommonsParams(commonsParams);
    }
 

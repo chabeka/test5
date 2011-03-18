@@ -36,7 +36,7 @@ public class SamlAssertionValidateTest {
    private SamlCommonsParams commonsParams;
 
    private KeyStore keystore;
-  
+
    @Before
    public void before() throws KeyStoreException {
 
@@ -144,25 +144,33 @@ public class SamlAssertionValidateTest {
    @Test
    public void genererAssertionFailure_PAGM_null() throws URISyntaxException {
 
-      assertionParams.setCommonsParams(commonsParams);
-      commonsParams.setIssuer("issuer");
-      commonsParams.setNotOnOrAfter(new Date());
-      commonsParams.setNotOnBefore(new Date());
-      commonsParams.setAudience(new URI("http://audience"));
-
-      assertException("Il faut spécifier au moins un PAGM");
+      genererAssertionFailure_PAGM(null);
    }
 
    @Test
    public void genererAssertionFailure_PAGM_empty() throws URISyntaxException {
 
+      List<String> pagm = Collections.emptyList();
+      genererAssertionFailure_PAGM(pagm);
+
+   }
+
+   @Test
+   public void genererAssertionFailure_PAGM_blank() throws URISyntaxException {
+
+      List<String> pagm = Arrays.asList(null, " ", "");
+      genererAssertionFailure_PAGM(pagm);
+
+   }
+
+   private void genererAssertionFailure_PAGM(List<String> pagm)
+         throws URISyntaxException {
+
       assertionParams.setCommonsParams(commonsParams);
       commonsParams.setIssuer("issuer");
       commonsParams.setNotOnOrAfter(new Date());
       commonsParams.setNotOnBefore(new Date());
       commonsParams.setAudience(new URI("http://audience"));
-
-      List<String> pagm = Collections.emptyList();
 
       commonsParams.setPagm(pagm);
 
@@ -178,7 +186,7 @@ public class SamlAssertionValidateTest {
       commonsParams.setNotOnOrAfter(new Date());
       commonsParams.setNotOnBefore(new Date());
       commonsParams.setAudience(new URI("http://audience"));
-      commonsParams.setPagm(Arrays.asList("PAGM"));
+      commonsParams.setPagm(Arrays.asList("PAGM", "", null, " "));
 
       assertException(getMessage("assertionParams.subjectFormat2"));
    }

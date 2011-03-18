@@ -2,15 +2,18 @@ package fr.urssaf.image.sae.saml.component.aspect;
 
 import java.security.KeyStore;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
+import fr.urssaf.image.sae.saml.util.ListUtils;
 
 /**
  * La classe implémenté en AOP permet de vérifier les arguments de la méthode
@@ -92,7 +95,11 @@ public class SamlAssertionValidate {
             "assertionParams.commonsParams.audience", PARAM_EMPTY);
 
       // PAGM not null
-      if (CollectionUtils.isEmpty(assertionParams.getCommonsParams().getPagm())) {
+      //on filtre les pagms
+      List<String> pagm = ListUtils.filter(assertionParams.getCommonsParams()
+            .getPagm());
+
+      if (CollectionUtils.isEmpty(pagm)) {
 
          throw new IllegalArgumentException(
                "Il faut spécifier au moins un PAGM");
@@ -119,6 +126,19 @@ public class SamlAssertionValidate {
    private void notNullValidate(Object obj, String name, String message) {
 
       if (obj == null) {
+
+         Map<String, String> args = new HashMap<String, String>();
+         args.put("0", name);
+
+         throw new IllegalArgumentException(StrSubstitutor.replace(message,
+               args));
+      }
+
+   }
+
+   private void notNullValidate(String obj, String name, String message) {
+
+      if (!StringUtils.isNotBlank(obj)) {
 
          Map<String, String> args = new HashMap<String, String>();
          args.put("0", name);

@@ -19,9 +19,9 @@ import org.w3c.dom.Node;
  * 
  * 
  */
-public final class PrintUtil {
+public final class PrintUtils {
 
-   private PrintUtil() {
+   private PrintUtils() {
 
    }
 
