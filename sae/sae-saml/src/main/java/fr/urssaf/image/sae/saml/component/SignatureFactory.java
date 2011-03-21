@@ -7,9 +7,9 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
 
-import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.log4j.Logger;
 import org.opensaml.xml.security.credential.Credential;
 import org.opensaml.xml.security.x509.BasicX509Credential;
@@ -137,9 +137,8 @@ public class SignatureFactory {
             X509Certificate x509Cert = SAMLFactory
                   .create(X509Certificate.DEFAULT_ELEMENT_NAME);
 
-            // TODO revoir l'affichage de l'encodage de la chaine des
-            // certificats
-            x509Cert.setValue(Hex.encodeHexString(cert.getEncoded()));
+            x509Cert.setValue(StringUtils.newStringUtf8(Base64.encodeBase64(
+                  cert.getPublicKey().getEncoded(), false)));
             x509Data.getX509Certificates().add(x509Cert);
 
          }
@@ -147,8 +146,6 @@ public class SignatureFactory {
          keyInfo.getX509Datas().add(x509Data);
 
       } catch (KeyStoreException e) {
-         LOG.error(e.getMessage(), e);
-      } catch (CertificateEncodingException e) {
          LOG.error(e.getMessage(), e);
       }
 
