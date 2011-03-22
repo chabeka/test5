@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.saml.component.aspect;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -19,16 +20,19 @@ import org.junit.Test;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
-
-import static org.easymock.EasyMock.*;
+import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 
 public class SamlAssertionValidateTest {
 
    private static SamlAssertionCreationService service;
 
+   private static SamlAssertionExtractionService readService;
+
    @BeforeClass
    public static void beforeClass() {
       service = createMock(SamlAssertionCreationService.class);
+
+      readService = createMock(SamlAssertionExtractionService.class);
    }
 
    private SamlAssertionParams assertionParams;
@@ -237,6 +241,18 @@ public class SamlAssertionValidateTest {
       assertionParams.setMethodAuthn2(new URI("http://methodAuthn2"));
 
       assertException(getMessage("assertionParams.recipient"));
+   }
+
+   @Test
+   public void extraitDonneesFailure_assertionSaml() {
+
+      try {
+         readService.extraitDonnees(" ");
+         fail("IllegalArgumentException attendue");
+      } catch (IllegalArgumentException e) {
+
+         assertEquals(getEmptyMessage("assertionSaml"), e.getMessage());
+      }
    }
 
 }

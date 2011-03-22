@@ -100,7 +100,7 @@ public class SamlAssertionServiceTest {
             new DateTime());
 
       service.marshaller(samlObject);
-      
-      
+
    }
+
 }

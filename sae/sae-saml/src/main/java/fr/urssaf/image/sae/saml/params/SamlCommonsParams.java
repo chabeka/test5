@@ -68,7 +68,7 @@ public class SamlCommonsParams {
 
    /**
     * 
-    * @return Identifiant de l’émetteur de l'assertion
+    * @return Identifiant de l'émetteur de l'assertion
     */
    public final String getIssuer() {
       return issuer;
@@ -77,7 +77,7 @@ public class SamlCommonsParams {
    /**
     * 
     * @param issuer
-    *           Identifiant de l’émetteur de l'assertion
+    *           Identifiant de l'émetteur de l'assertion
     */
    public final void setIssuer(String issuer) {
       this.issuer = issuer;
@@ -85,7 +85,7 @@ public class SamlCommonsParams {
 
    /**
     * 
-    * @return Date d’expiration de l'assertion
+    * @return Date d'expiration de l'assertion
     */
    public final Date getNotOnOrAfter() {
       return (Date) ObjectUtils.clone(notOnOrAfter);
@@ -94,7 +94,7 @@ public class SamlCommonsParams {
    /**
     * 
     * @param notOnOrAfter
-    *           Date d’expiration de l'assertion
+    *           Date d'expiration de l'assertion
     */
    public final void setNotOnOrAfter(Date notOnOrAfter) {
       this.notOnOrAfter = (Date) ObjectUtils.clone(notOnOrAfter);
@@ -136,7 +136,7 @@ public class SamlCommonsParams {
 
    /**
     * 
-    * @return Instant d’authentification de l'usager sur le SI.
+    * @return Instant d'authentification de l'usager sur le SI.
     */
    public final Date getAuthnInstant() {
       return (Date) ObjectUtils.clone(authnInstant);
@@ -145,7 +145,7 @@ public class SamlCommonsParams {
    /**
     * 
     * @param authnInstant
-    *           Instant d’authentification de l'usager sur le SI.
+    *           Instant d'authentification de l'usager sur le SI.
     */
    public final void setAuthnInstant(Date authnInstant) {
       this.authnInstant = (Date) ObjectUtils.clone(authnInstant);

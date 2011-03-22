@@ -19,21 +19,33 @@ import fr.urssaf.image.sae.saml.util.ListUtils;
  * La classe implémenté en AOP permet de vérifier les arguments de la méthode
  * {@link fr.urssaf.image.sae.saml.service.SamlAssertionCreationService#genererAssertion}
  * <br>
- * 
+ * Les règles sont les suivantes :
+ * <ul>
+ * <li>Les paramètres sont non renseignés quand ils sont à null</li>
+ * <li>Les attributs sont non renseignées quand :
+ * <ul>
+ * <li>ils sont à null</li>
+ * <li>chaine vide pour les caractères</li>
+ * <li>liste vide pour les collections</li>
+ * </ul>
+ * </li>
+ * </ul>
  * 
  * 
  */
 @Aspect
 public class SamlAssertionValidate {
 
-   private static final String METHODE = "execution(public * fr.urssaf.image.sae.saml.service.SamlAssertionCreationService.genererAssertion(..))";
+   private static final String WRITE_METHODE = "execution(public * fr.urssaf.image.sae.saml.service.SamlAssertionCreationService.genererAssertion(..))";
+
+   private static final String READ_METHODE = "execution(public * fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService.extraitDonnees(..))";
 
    private static final String ARG_EMPTY = "Le paramètre [${0}] n'est pas renseigné alors qu'il est obligatoire";
 
    private static final String PARAM_EMPTY = "Il faut renseigner [${0}]";
 
    /**
-    * méthode appeler avant l'appel de 'genererAssertion'<br>
+    * méthode appelée avant l'appel de 'genererAssertion'<br>
     * <br>
     * paramètres analysés :
     * <ul>
@@ -52,16 +64,13 @@ public class SamlAssertionValidate {
     * "Il faut renseigner [<i>&lt;nom de l'attribut></i>]"</li>
     * <li>PAGM non renseigné : "Il faut spécifier au moins un PAGM"</li>
     * </ul>
-    * Les paramètres sont non renseignés quand ils sont à null<br>
-    * Les attrobuts sont non renseignées quand ils sont à null, chaine vide pour
-    * les caractères ou liste vide pour les collections<br>
     * <br>
     * 
     * @param joinPoint
     *           jointure de la méthode 'genererAssertion'
     * 
     */
-   @Before(METHODE)
+   @Before(WRITE_METHODE)
    public final void assertionCreate(JoinPoint joinPoint) {
 
       // récupération des paramétres de la méthode genererAssertion
@@ -95,7 +104,7 @@ public class SamlAssertionValidate {
             "assertionParams.commonsParams.audience", PARAM_EMPTY);
 
       // PAGM not null
-      //on filtre les pagms
+      // on filtre les pagms
       List<String> pagm = ListUtils.filter(assertionParams.getCommonsParams()
             .getPagm());
 
@@ -121,6 +130,28 @@ public class SamlAssertionValidate {
       notNullValidate(assertionParams.getRecipient(),
             "assertionParams.recipient", PARAM_EMPTY);
 
+   }
+
+   /**
+    * méthode appelée avant l'appel de 'extraitDonnees'<br>
+    * <br>
+    * l'unique paramètre 'assertionSaml' est vérifié. la méthode lève
+    * {@link IllegalArgumentException} si le paramètre n'est pas renseigné<br>
+    * message de l'exception non renseigné :"Le paramètre [<i>&lt;nom du paramètre></i>] n'est pas renseigné alors qu'il est obligatoire"
+    * 
+    * 
+    * @param joinPoint
+    *           jointure de la méthode 'extraitDonnees'
+    * 
+    */
+   @Before(READ_METHODE)
+   public final void assertioneextraction(JoinPoint joinPoint) {
+
+      // récupération des paramétres de la méthode extraitDonnnees
+      String assertionSaml = (String) joinPoint.getArgs()[0];
+
+      // assertionSaml not null
+      notNullValidate(assertionSaml, "assertionSaml", ARG_EMPTY);
    }
 
    private void notNullValidate(Object obj, String name, String message) {

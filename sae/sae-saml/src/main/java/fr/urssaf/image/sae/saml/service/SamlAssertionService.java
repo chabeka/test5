@@ -2,9 +2,13 @@ package fr.urssaf.image.sae.saml.service;
 
 import org.opensaml.Configuration;
 import org.opensaml.common.SAMLObject;
+import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.Marshaller;
 import org.opensaml.xml.io.MarshallerFactory;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.io.Unmarshaller;
+import org.opensaml.xml.io.UnmarshallerFactory;
+import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.ValidatorSuite;
 import org.w3c.dom.Element;
@@ -19,6 +23,8 @@ public class SamlAssertionService {
 
    private final MarshallerFactory marshallerFactory;
 
+   private final UnmarshallerFactory unmarshallFactory;
+
    /**
     * initialisation de {@link MarshallerFactory} pour la transformation du
     * jeton SAML au format XML<br>
@@ -26,6 +32,7 @@ public class SamlAssertionService {
    public SamlAssertionService() {
 
       marshallerFactory = Configuration.getMarshallerFactory();
+      unmarshallFactory = Configuration.getUnmarshallerFactory();
    }
 
    /**
@@ -80,5 +87,25 @@ public class SamlAssertionService {
       } catch (MarshallingException e) {
          throw new IllegalStateException(e);
       }
+   }
+
+   /**
+    * méthode de transformation un objet de type {@link Element} en un objet de
+    * type {@link XMLObject}
+    * 
+    * @param element
+    *           jeton SAML
+    * @return jeton SAML
+    */
+   public final XMLObject unmarshaller(Element element) {
+
+      Unmarshaller unmarshaller = unmarshallFactory.getUnmarshaller(element);
+
+      try {
+         return unmarshaller.unmarshall(element);
+      } catch (UnmarshallingException e) {
+         throw new IllegalStateException(e);
+      }
+
    }
 }
