@@ -12,9 +12,7 @@
    <version>0.0.1-SNAPSHOT</version>
 
    <properties>
-      <axis.version>1.5.4</axis.version>
       <axiom.version>1.2.9</axiom.version>
-      <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
    </properties>
 
    <profiles>
@@ -26,7 +24,7 @@
                <plugin>
                   <groupId>org.apache.axis2</groupId>
                   <artifactId>axis2-wsdl2code-maven-plugin</artifactId>
-                  <version>${axis.version}</version>
+                  <version>${axis2.version}</version>
                   <executions>
                      <execution>
                         <goals>
@@ -91,7 +89,7 @@
          <plugin>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-aar-maven-plugin</artifactId>
-            <version>${axis.version}</version>
+            <version>${axis2.version}</version>
             <extensions>true</extensions>
          </plugin>
       </plugins>
@@ -105,13 +103,13 @@
       <dependency>
          <groupId>org.apache.axis2</groupId>
          <artifactId>axis2</artifactId>
-         <version>${axis.version}</version>
+         <version>${axis2.version}</version>
       </dependency>
 
       <dependency>
          <groupId>org.apache.axis2</groupId>
          <artifactId>axis2-spring</artifactId>
-         <version>${axis.version}</version>
+         <version>${axis2.version}</version>
          <exclusions>
 
             <exclusion>
@@ -166,13 +164,13 @@
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
-         <version>${org.springframework.version}</version>
+         <version>${spring.framework.version}</version>
       </dependency>
 
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
-         <version>${org.springframework.version}</version>
+         <version>${spring.framework.version}</version>
          <scope>test</scope>
       </dependency>
 

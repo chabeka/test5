@@ -68,13 +68,10 @@
 
       <!-- APACHE COMMONS -->
 
-      <!--
-         on passe à la version 2.6 pour bénéficier de nouvelles méthodes
-      -->
       <dependency>
          <groupId>commons-lang</groupId>
          <artifactId>commons-lang</artifactId>
-         <version>2.6</version>
+         <version>${apache.commons-lang.version}</version>
       </dependency>
 
       <dependency>
@@ -83,21 +80,16 @@
          <version>${apache.commons-collections.version}</version>
       </dependency>
 
-      <!--
-         on passe à la version 2.0.1 pour bénéficier de nouvelles
-         méthodes
-      -->
-
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
-         <version>2.0.1</version>
+         <version>${apache.commons-io.version}</version>
       </dependency>
 
       <dependency>
          <groupId>commons-codec</groupId>
          <artifactId>commons-codec</artifactId>
-         <version>1.4</version>
+         <version>${apache.commons-codec.version}</version>
       </dependency>
 
       <!-- EASYMOCK -->
