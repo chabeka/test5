@@ -17,10 +17,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import fr.urssaf.image.sae.saml.exception.SamlFormatException;
+import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
+import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 
 public class SamlAssertionValidateTest {
 
@@ -28,11 +31,19 @@ public class SamlAssertionValidateTest {
 
    private static SamlAssertionExtractionService readService;
 
+   private static SamlAssertionVerificationService checkService;
+
+   private static final String ALIAS = "alias";
+
+   private static final String PASSWORD = "passowrd";
+
+   private static final String SAML = "saml";
+
    @BeforeClass
    public static void beforeClass() {
       service = createMock(SamlAssertionCreationService.class);
-
       readService = createMock(SamlAssertionExtractionService.class);
+      checkService = createMock(SamlAssertionVerificationService.class);
    }
 
    private SamlAssertionParams assertionParams;
@@ -52,7 +63,7 @@ public class SamlAssertionValidateTest {
    private void assertException(String message) {
 
       try {
-         service.genererAssertion(assertionParams, keystore);
+         service.genererAssertion(assertionParams, keystore, ALIAS, PASSWORD);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
 
@@ -77,7 +88,7 @@ public class SamlAssertionValidateTest {
    public void genererAssertionFailure_assertionParams() {
 
       try {
-         service.genererAssertion(null, keystore);
+         service.genererAssertion(null, keystore, ALIAS, PASSWORD);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
 
@@ -90,11 +101,36 @@ public class SamlAssertionValidateTest {
    public void genererAssertionFailure_keystore() {
 
       try {
-         service.genererAssertion(assertionParams, null);
+         service.genererAssertion(assertionParams, null, ALIAS, PASSWORD);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
 
          assertEquals(getEmptyMessage("keyStore"), e.getMessage());
+      }
+
+   }
+
+   @Test
+   public void genererAssertionFailure_alias() {
+
+      try {
+         service.genererAssertion(assertionParams, keystore, null, PASSWORD);
+         fail("IllegalArgumentException attendue");
+      } catch (IllegalArgumentException e) {
+
+         assertEquals(getEmptyMessage("alias"), e.getMessage());
+      }
+   }
+
+   @Test
+   public void genererAssertionFailure_password() {
+
+      try {
+         service.genererAssertion(assertionParams, keystore, ALIAS, null);
+         fail("IllegalArgumentException attendue");
+      } catch (IllegalArgumentException e) {
+
+         assertEquals(getEmptyMessage("password"), e.getMessage());
       }
 
    }
@@ -252,6 +288,42 @@ public class SamlAssertionValidateTest {
       } catch (IllegalArgumentException e) {
 
          assertEquals(getEmptyMessage("assertionSaml"), e.getMessage());
+      }
+   }
+
+   @Test
+   public void verificaionSamlFailure_assertionSaml()
+         throws SamlFormatException, SamlSignatureException {
+
+      try {
+         checkService.verifierAssertion(null, keystore, ALIAS, null);
+         fail("IllegalArgumentException attendue");
+      } catch (IllegalArgumentException e) {
+         assertEquals(getEmptyMessage("assertionSaml"), e.getMessage());
+      }
+   }
+
+   @Test
+   public void verificaionSamlFailure_keystore() throws SamlFormatException,
+         SamlSignatureException {
+
+      try {
+         checkService.verifierAssertion(SAML, null, ALIAS, null);
+         fail("IllegalArgumentException attendue");
+      } catch (IllegalArgumentException e) {
+         assertEquals(getEmptyMessage("keystore"), e.getMessage());
+      }
+   }
+
+   @Test
+   public void verificaionSamlFailure_alias() throws SamlFormatException,
+         SamlSignatureException {
+
+      try {
+         checkService.verifierAssertion(SAML, keystore, null, null);
+         fail("IllegalArgumentException attendue");
+      } catch (IllegalArgumentException e) {
+         assertEquals(getEmptyMessage("alias"), e.getMessage());
       }
    }
 

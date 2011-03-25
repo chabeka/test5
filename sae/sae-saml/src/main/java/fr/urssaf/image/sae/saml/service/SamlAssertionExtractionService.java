@@ -1,51 +1,33 @@
 package fr.urssaf.image.sae.saml.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import fr.urssaf.image.sae.saml.component.SAMLConfiguration;
-import fr.urssaf.image.sae.saml.data.ObjectFactory;
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
+import fr.urssaf.image.sae.saml.opensaml.SamlAssertionService;
+import fr.urssaf.image.sae.saml.opensaml.service.SamlXML;
+import fr.urssaf.image.sae.saml.util.XMLUtils;
 
 /**
- * Classe d'extraction des jetons SAML 2.0<br>
+ * Extraction des données d'une assertion SAML 2.0<br>
  * <br>
+ * Le recours à cette classe nécessite une instanciation au préalable de
+ * {@link fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration}
  * 
- * @see ObjectFactory
  */
 public class SamlAssertionExtractionService {
 
    private final SamlAssertionService assertionService;
 
-   private final DocumentBuilder builder;
-
    /**
     * Configuration de la libraire OpenSAML {@link SAMLConfiguration#init()}<br>
-    * initialisation de {@link SamlAssertionService} pour la transformation d'un
-    * flux en objet {@link Assertion}<br>
+    * initialisation de {@link SamlAssertionService}
     */
    public SamlAssertionExtractionService() {
 
-      SAMLConfiguration.init();
-
       assertionService = new SamlAssertionService();
 
-      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      factory.setNamespaceAware(true);
-      try {
-         builder = factory.newDocumentBuilder();
-      } catch (ParserConfigurationException e) {
-         throw new IllegalStateException(e);
-      }
    }
 
    /**
@@ -61,18 +43,16 @@ public class SamlAssertionExtractionService {
 
       try {
 
-         InputStream input = new ByteArrayInputStream(assertionSaml.getBytes());
-         Element element = builder.parse(input).getDocumentElement();
-         Assertion assertion = (Assertion) assertionService
-               .unmarshaller(element);
+         Element element = XMLUtils.parse(assertionSaml);
 
-         return ObjectFactory.createSamlAssertionData(assertion);
+         Assertion assertion = (Assertion) SamlXML.unmarshaller(element);
+
+         return assertionService.load(assertion);
 
       } catch (SAXException e) {
-         throw new IllegalStateException(e);
-      } catch (IOException e) {
          throw new IllegalStateException(e);
       }
 
    }
+
 }

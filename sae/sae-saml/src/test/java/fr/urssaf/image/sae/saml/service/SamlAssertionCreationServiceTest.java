@@ -1,22 +1,33 @@
 package fr.urssaf.image.sae.saml.service;
 
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.UUID;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import fr.urssaf.image.sae.saml.exception.SamlFormatException;
+import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
+import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
+import fr.urssaf.image.sae.saml.util.XMLUtils;
 
 public class SamlAssertionCreationServiceTest {
 
@@ -25,34 +36,31 @@ public class SamlAssertionCreationServiceTest {
 
    private static SamlAssertionCreationService service;
 
-   private static KeyStore keystore;
+   private static SamlAssertionVerificationService validationService;
+
+   private KeyStore keystore;
+
+   private String alias;
+
+   private static final String PASSWORD = "hiUnk6O3QnRN";
 
    @BeforeClass
-   public static void beforeClass() throws KeyStoreException {
+   public static void beforeClass() {
+
+      new SamlConfiguration();
+
       service = new SamlAssertionCreationService();
-      keystore = KeyStore.getInstance("PKCS12");
+      validationService = new SamlAssertionVerificationService();
 
-      try {
-         FileInputStream in = new FileInputStream(
-               "src/test/resources/Portail_Image.p12");
-         keystore.load(in, "hiUnk6O3QnRN".toCharArray());
-         in.close();
-      } catch (Exception ex) {
-         System.out.println("Failed to read keystore:");
-         ex.printStackTrace();
-      }
-
-      Enumeration<String> aliases = keystore.aliases();
-      while(aliases.hasMoreElements()){
-         
-         LOG.debug("alias:["+aliases.nextElement()+"]");
-      }
    }
 
    private SamlAssertionParams params;
 
+   private String assertion;
+
    @Before
-   public void before() throws URISyntaxException {
+   public void before() throws URISyntaxException, KeyStoreException,
+         NoSuchAlgorithmException, CertificateException, IOException {
 
       params = new SamlAssertionParams();
 
@@ -78,14 +86,38 @@ public class SamlAssertionCreationServiceTest {
       commonsParams.setPagm(Arrays.asList("ROLE_USER", "", " ", "ROLE_ADMIN",
             null));
       params.setCommonsParams(commonsParams);
+
+      keystore = KeyStoreFactory.createKeystore();
+      alias = keystore.aliases().nextElement();
+   }
+
+   @After
+   public void after() throws SAXException, SamlFormatException,
+         SamlSignatureException {
+
+      LOG.debug("\n" + assertion);
+
+      validationService.verifierAssertion(assertion, keystore, alias, null);
+
+      Element element = XMLUtils.parse(assertion);
+      Transformer transformer = XMLUtils.initTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      transformer.setOutputProperty(
+            "{http://xml.apache.org/xslt}indent-amount", "4");
+
+      LOG.debug("\n" + XMLUtils.print(element, "UTF-8", transformer));
    }
 
    /**
     * cas où id,issueInstant & authnInstant ne sont pas renseignés
     * 
+    * @throws SamlSignatureException
+    * @throws SamlFormatException
+    * 
     */
    @Test
-   public void genererAssertion() {
+   public void genererAssertion() throws SamlFormatException,
+         SamlSignatureException {
 
       SamlCommonsParams commonsParams = params.getCommonsParams();
       Date authnInstant = new Date();
@@ -95,9 +127,8 @@ public class SamlAssertionCreationServiceTest {
       Date issueInstant = new Date();
       commonsParams.setIssueInstant(issueInstant);
 
-      String assertion = service.genererAssertion(params, keystore);
+      assertion = service.genererAssertion(params, keystore, alias, PASSWORD);
 
-      LOG.debug("\n" + assertion);
    }
 
    /**
@@ -107,9 +138,8 @@ public class SamlAssertionCreationServiceTest {
    @Test
    public void genererAssertion_empty() {
 
-      String assertion = service.genererAssertion(params, keystore);
+      assertion = service.genererAssertion(params, keystore, alias, PASSWORD);
 
-      LOG.debug("\n" + assertion);
    }
-
+  
 }

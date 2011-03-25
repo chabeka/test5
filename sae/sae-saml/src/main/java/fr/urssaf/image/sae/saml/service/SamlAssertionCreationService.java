@@ -1,33 +1,48 @@
 package fr.urssaf.image.sae.saml.service;
 
 import java.security.KeyStore;
-import java.util.UUID;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.Collection;
 
-import org.joda.time.DateTime;
+import javax.xml.transform.Transformer;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.opensaml.saml2.core.Assertion;
-import org.opensaml.saml2.core.AttributeStatement;
-import org.opensaml.saml2.core.AuthnStatement;
-import org.opensaml.saml2.core.Conditions;
-import org.opensaml.saml2.core.Issuer;
-import org.opensaml.saml2.core.Subject;
-import org.opensaml.xml.signature.Signature;
-import org.opensaml.xml.signature.SignatureException;
-import org.opensaml.xml.signature.Signer;
-import org.opensaml.xml.validation.ValidationException;
 import org.w3c.dom.Element;
 
-import fr.urssaf.image.sae.saml.component.SAMLConfiguration;
-import fr.urssaf.image.sae.saml.component.SAMLFactory;
-import fr.urssaf.image.sae.saml.component.SignatureFactory;
+import fr.urssaf.image.sae.saml.exception.SamlFormatException;
+import fr.urssaf.image.sae.saml.opensaml.SamlAssertionService;
+import fr.urssaf.image.sae.saml.opensaml.service.SamlXML;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
-import fr.urssaf.image.sae.saml.util.PrintUtils;
+import fr.urssaf.image.sae.saml.util.SecurityUtil;
+import fr.urssaf.image.sae.saml.util.XMLUtils;
 
 /**
- * Classe de création de jeton SAML 2.0<br>
+ * Génération d'une assertion SAML 2.0 signée électroniquement<br>
  * <br>
  * la classe s'appuie sur le framework <a
- * href="https://spaces.internet2.edu/display/OpenSAML/Home" />OpenSAML</a>
+ * href="https://spaces.internet2.edu/display/OpenSAML/Home" />OpenSAML</a><br>
+ * <br>
+ * Le recours à cette classe nécessite une instanciation au préalable de
+ * {@link fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration}
  * 
+ * <pre>
+ * exemple pour instancier un keystore à partir d'un P12
+ * 
+ * KeyStore keystore = KeyStore.getInstance("PKCS12");
+ * FileInputStream in = new FileInputStream("/mon_certificat.p12");
+ * try {
+ *    keystore.load(in, "mon_password".toCharArray());
+ * } finally {
+ *    in.close();
+ * }
+ * </pre>
  * 
  */
 public class SamlAssertionCreationService {
@@ -41,10 +56,7 @@ public class SamlAssertionCreationService {
     */
    public SamlAssertionCreationService() {
 
-      SAMLConfiguration.init();
-
       assertionService = new SamlAssertionService();
-
    }
 
    /**
@@ -52,90 +64,90 @@ public class SamlAssertionCreationService {
     * utilisée dans le cadre de l'authentification aux services web du SAE<br>
     * <br>
     * Les paramètres d'entrées sont vérifiés par AOP par la classe
-    * {@link fr.urssaf.image.sae.saml.component.aspect.SamlAssertionValidate}
+    * {@link fr.urssaf.image.sae.saml.component.aspect.SamlAssertionValidate}<br>
+    * <br>
+    * <ol>
+    * <li>instanciation d'un jeton SAML :
+    * {@link SamlAssertionService#write(SamlAssertionParams)}</li>
+    * <li>validation du corps du jeton SAML :
+    * {@link SamlAssertionService#validate(Assertion)}</li>
+    * <li>signature du jeton SAML :
+    * {@link SamlAssertionService#sign(Assertion, X509Certificate, PrivateKey, Collection)}
+    * </li>
+    * <li>impression du jeton SAML sous forme d'une chaine de caractère</li>
+    * </ol>
+    * 
+    * Il est important de noter que la jeton SAML instancié est une chaine de
+    * caratère sur une seule ligne et non indenté. Ceci a pour but de ne pas
+    * modifier le contenu du jeon en particulier celui de la signature
     * 
     * @param assertionParams
     *           Les paramètres de génération de l'assertion SAML
     * @param keyStore
     *           La clé privée et sa chaîne de certification pour la signature de
     *           l'assertion SAML
+    * @param alias
+    *           alias du certificat pour la signature
+    * @param password
+    *           mot du de la clé privée
     * @return L'assertion SAML 2.0 signée électroniquement
     */
    public final String genererAssertion(SamlAssertionParams assertionParams,
-         KeyStore keyStore) {
+         KeyStore keyStore, String alias, String password) {
 
-      DateTime systemDate = new DateTime();
-
-      // ASSERTION
-      DateTime issueInstant = assertionParams.getCommonsParams()
-            .getIssueInstant() == null ? systemDate : new DateTime(
-            assertionParams.getCommonsParams().getIssueInstant());
-
-      UUID identifiant = assertionParams.getCommonsParams().getId() == null ? UUID
-            .randomUUID()
-            : assertionParams.getCommonsParams().getId();
-
-      Assertion assertion = SAMLFactory.createAssertion(identifiant.toString(),
-            issueInstant);
-
-      // ISSUER
-      Issuer issuer = SAMLFactory.createIssuer(assertionParams
-            .getCommonsParams().getIssuer());
-      assertion.setIssuer(issuer);
-
-      // SUBJECT
-      DateTime notOnOrAfter = new DateTime(assertionParams.getCommonsParams()
-            .getNotOnOrAfter());
-
-      Subject subject = SAMLFactory.createSubject(assertionParams
-            .getSubjectId2(), assertionParams.getSubjectFormat2()
-            .toASCIIString(), notOnOrAfter, assertionParams.getRecipient()
-            .toASCIIString());
-      assertion.setSubject(subject);
-
-      // CONDITION
-
-      DateTime notBefore = new DateTime(assertionParams.getCommonsParams()
-            .getNotOnBefore());
-
-      Conditions conditions = SAMLFactory.createConditions(notBefore,
-            notOnOrAfter, assertionParams.getCommonsParams().getAudience()
-                  .toASCIIString());
-      assertion.setConditions(conditions);
-
-      // AUTHNSTATEMENT
-
-      DateTime authnInstant = assertionParams.getCommonsParams()
-            .getIssueInstant() == null ? systemDate : new DateTime(
-            assertionParams.getCommonsParams().getAuthnInstant());
-
-      AuthnStatement authnStatement = SAMLFactory.createAuthnStatement(
-            authnInstant, identifiant.toString(), assertionParams
-                  .getMethodAuthn2().toASCIIString());
-      assertion.getAuthnStatements().add(authnStatement);
-
-      // ATTRIBUTESTATEMENT
-
-      AttributeStatement attrStatement = SAMLFactory
-            .createAttributeStatementPAGM(assertionParams.getCommonsParams()
-                  .getPagm());
-      assertion.getAttributeStatements().add(attrStatement);
-
-      // SIGNATURE
-      SignatureFactory signatureFactory = new SignatureFactory(keyStore);
-      Signature signature = signatureFactory.createSignature();
-      assertion.setSignature(signature);
+      // GENERATION DU JETON SAML
+      Assertion assertion = assertionService.write(assertionParams);
 
       // VALIDATION DU JETON SAML
       validate(assertion);
 
-      Element element = assertionService.marshaller(assertion);
-
       // SIGNATURE DU JETON
-      sign(signature);
+      sign(assertion, keyStore, alias, password);
 
-      return PrintUtils.print(element);
+      // IMPRESSION DU JETON
+      Element element = SamlXML.marshaller(assertion);
 
+      // inutile de out.close() car la méthode ne fait rien pour
+
+      return print(element);
+
+   }
+
+   private void sign(Assertion assertion, KeyStore keystore, String alias,
+         String password) {
+
+      try {
+
+         PrivateKey privatekey = SecurityUtil.loadPrivateKey(keystore, alias,
+               password);
+         X509Certificate x509Certificate = SecurityUtil.loadX509Certificate(
+               keystore, alias);
+
+         Collection<X509Certificate> certs = loadCertificateChain(keystore,
+               alias);
+
+         assertionService.sign(assertion, x509Certificate, privatekey, certs);
+      } catch (UnrecoverableKeyException e) {
+         throw new IllegalStateException(e);
+      } catch (KeyStoreException e) {
+         throw new IllegalStateException(e);
+      } catch (NoSuchAlgorithmException e) {
+         throw new IllegalStateException(e);
+      }
+   }
+
+   @SuppressWarnings("unchecked")
+   private Collection<X509Certificate> loadCertificateChain(KeyStore keystore,
+         String alias) throws KeyStoreException {
+
+      Collection<X509Certificate> certs = null;
+      if (ArrayUtils.isNotEmpty(keystore.getCertificateChain(alias))) {
+
+         certs = CollectionUtils.typedCollection(Arrays.asList(keystore
+               .getCertificateChain(alias)), X509Certificate.class);
+
+      }
+      return certs;
    }
 
    private void validate(Assertion assertion) {
@@ -144,18 +156,24 @@ public class SamlAssertionCreationService {
 
          assertionService.validate(assertion);
 
-      } catch (ValidationException e) {
+      } catch (SamlFormatException e) {
          throw new IllegalStateException(e);
       }
    }
 
-   private void sign(Signature signature) {
+   private String print(Element element) {
 
-      try {
-         Signer.signObject(signature);
-      } catch (SignatureException e) {
-         throw new IllegalStateException(e);
-      }
+      Transformer transformer = XMLUtils.initTransformer();
+      // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
+      // "no");
+      // transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      // transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      // transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+      // transformer.setOutputProperty(
+      // "{http://xml.apache.org/xslt}indent-amount", "4");
+
+      return XMLUtils.print(element, "UTF-8", transformer);
+
    }
 
 }

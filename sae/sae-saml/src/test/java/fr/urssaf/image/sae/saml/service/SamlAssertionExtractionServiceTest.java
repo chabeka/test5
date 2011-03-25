@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.saml.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import org.xml.sax.SAXParseException;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
+import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 
@@ -27,6 +29,7 @@ public class SamlAssertionExtractionServiceTest {
 
    @BeforeClass
    public static void beforeClass() {
+      new SamlConfiguration();
       service = new SamlAssertionExtractionService();
    }
 
@@ -59,6 +62,24 @@ public class SamlAssertionExtractionServiceTest {
             .getIssuer());
       assertDate("2009-03-21T12:50:01.137Z", commons.getNotOnBefore());
       assertDate("2010-03-21T12:50:01.152Z", commons.getNotOnOrAfter());
+      assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(commons.getPagm(),
+            ","));
+
+   }
+   
+   @Test
+   public void extraitDonnees_success_issuer_empty() throws IOException {
+
+      File file = new File("src/test/resources/saml/saml_extraction.xml");
+      String assertionSaml = FileUtils.readFileToString(file, "UTF-8");
+
+      SamlAssertionData data = service.extraitDonnees(assertionSaml);
+
+      SamlAssertionParams params = data.getAssertionParams();
+      SamlCommonsParams commons = params.getCommonsParams();
+     
+      assertNull("urn:interops:73282932000074:idp:test:version", commons
+            .getIssuer());
       assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(commons.getPagm(),
             ","));
 

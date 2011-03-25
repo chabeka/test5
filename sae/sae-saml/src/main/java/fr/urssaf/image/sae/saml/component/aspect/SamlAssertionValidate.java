@@ -17,7 +17,17 @@ import fr.urssaf.image.sae.saml.util.ListUtils;
 
 /**
  * La classe implémenté en AOP permet de vérifier les arguments de la méthode
+ * <ul>
+ * <li>
  * {@link fr.urssaf.image.sae.saml.service.SamlAssertionCreationService#genererAssertion}
+ * </li>
+ * <li>
+ * {@link fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService#extraitDonnees}
+ * </li>
+ * <li>
+ * {@link fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService#verifierAssertion}
+ * </li>
+ * <ul>
  * <br>
  * Les règles sont les suivantes :
  * <ul>
@@ -36,13 +46,25 @@ import fr.urssaf.image.sae.saml.util.ListUtils;
 @Aspect
 public class SamlAssertionValidate {
 
-   private static final String WRITE_METHODE = "execution(public * fr.urssaf.image.sae.saml.service.SamlAssertionCreationService.genererAssertion(..))";
+   private static final String SERVICE_PACKAGE = "fr.urssaf.image.sae.saml.service";
 
-   private static final String READ_METHODE = "execution(public * fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService.extraitDonnees(..))";
+   private static final String WRITE_METHODE = "execution(public * "
+         + SERVICE_PACKAGE
+         + ".SamlAssertionCreationService.genererAssertion(..))";
+
+   private static final String READ_METHODE = "execution(public * "
+         + SERVICE_PACKAGE
+         + ".SamlAssertionExtractionService.extraitDonnees(..))";
+
+   private static final String CHECK_METHODE = "execution(public * "
+         + SERVICE_PACKAGE
+         + ".SamlAssertionVerificationService.verifierAssertion(..))";
 
    private static final String ARG_EMPTY = "Le paramètre [${0}] n'est pas renseigné alors qu'il est obligatoire";
 
    private static final String PARAM_EMPTY = "Il faut renseigner [${0}]";
+
+   private static final int INDEX_3 = 3;
 
    /**
     * méthode appelée avant l'appel de 'genererAssertion'<br>
@@ -77,11 +99,17 @@ public class SamlAssertionValidate {
       SamlAssertionParams assertionParams = (SamlAssertionParams) joinPoint
             .getArgs()[0];
       KeyStore keyStore = (KeyStore) joinPoint.getArgs()[1];
+      String alias = (String) joinPoint.getArgs()[2];
+      String password = (String) joinPoint.getArgs()[INDEX_3];
 
       // assertionParams not null
       notNullValidate(assertionParams, "assertionParams", ARG_EMPTY);
       // keystore not null
       notNullValidate(keyStore, "keyStore", ARG_EMPTY);
+      // alias not null
+      notNullValidate(alias, "alias", ARG_EMPTY);
+      // password not null
+      notNullValidate(password, "password", ARG_EMPTY);
 
       // commonsParams not null
       notNullValidate(assertionParams.getCommonsParams(),
@@ -145,13 +173,40 @@ public class SamlAssertionValidate {
     * 
     */
    @Before(READ_METHODE)
-   public final void assertioneextraction(JoinPoint joinPoint) {
+   public final void assertionExtraction(JoinPoint joinPoint) {
 
       // récupération des paramétres de la méthode extraitDonnnees
       String assertionSaml = (String) joinPoint.getArgs()[0];
 
       // assertionSaml not null
       notNullValidate(assertionSaml, "assertionSaml", ARG_EMPTY);
+   }
+
+   /**
+    * méthode appelée avant l'appel de 'verifierAssertion'<br>
+    * <br>
+    * les différents paramètres doivent être renseignés. la méthode lève
+    * {@link IllegalArgumentException} si le paramètre n'est pas renseigné<br>
+    * message de l'exception non renseigné :"Le paramètre [<i>&lt;nom du paramètre></i>] n'est pas renseigné alors qu'il est obligatoire"
+    * 
+    * 
+    * @param joinPoint
+    *           jointure de la méthode 'verifierAssertion'
+    */
+   @Before(CHECK_METHODE)
+   public final void assertionVerification(JoinPoint joinPoint) {
+
+      // récupération des paramétres de la méthode verifierAssertion
+      String assertionSaml = (String) joinPoint.getArgs()[0];
+      KeyStore keystore = (KeyStore) joinPoint.getArgs()[1];
+      String alias = (String) joinPoint.getArgs()[2];
+
+      // assertionSaml not null
+      notNullValidate(assertionSaml, "assertionSaml", ARG_EMPTY);
+      // keystore not null
+      notNullValidate(keystore, "keystore", ARG_EMPTY);
+      // alias not null
+      notNullValidate(alias, "alias", ARG_EMPTY);
    }
 
    private void notNullValidate(Object obj, String name, String message) {
