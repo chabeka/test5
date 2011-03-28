@@ -17,10 +17,10 @@ import org.junit.Test;
 import org.xml.sax.SAXParseException;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.JUnitAssertionsShouldIncludeMessage"})
 public class SamlAssertionExtractionServiceTest {
 
    private static SamlAssertionExtractionService service;
@@ -29,7 +29,6 @@ public class SamlAssertionExtractionServiceTest {
 
    @BeforeClass
    public static void beforeClass() {
-      new SamlConfiguration();
       service = new SamlAssertionExtractionService();
    }
 

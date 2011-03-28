@@ -77,17 +77,18 @@ public class SamlAssertionCreationService {
     * <li>impression du jeton SAML sous forme d'une chaine de caractère</li>
     * </ol>
     * 
-    * Il est important de noter que la jeton SAML instancié est une chaine de
-    * caratère sur une seule ligne et non indenté. Ceci a pour but de ne pas
-    * modifier le contenu du jeon en particulier celui de la signature
+    * Il est important de noter que le jeton SAML instancié est une chaine de
+    * caractères sur une seule ligne et non indentée. Ceci a pour but de ne pas
+    * modifier le contenu du jeton, sinon la signature n'est plus valable.<br>
+    * <br>
     * 
     * @param assertionParams
     *           Les paramètres de génération de l'assertion SAML
     * @param keyStore
-    *           La clé privée et sa chaîne de certification pour la signature de
-    *           l'assertion SAML
+    *           La clé privée, sa clé publique et sa chaîne de certification
+    *           pour la signature de l'assertion SAML
     * @param alias
-    *           alias du certificat pour la signature
+    *           L'alias de la clé privée du KeyStore à utiliser pour la signature de l'assertion
     * @param password
     *           mot du de la clé privée
     * @return L'assertion SAML 2.0 signée électroniquement

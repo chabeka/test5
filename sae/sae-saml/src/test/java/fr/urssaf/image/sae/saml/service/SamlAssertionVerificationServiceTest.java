@@ -17,8 +17,8 @@ import org.junit.Test;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
 
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.JUnitAssertionsShouldIncludeMessage"})
 public class SamlAssertionVerificationServiceTest {
 
    private static SamlAssertionVerificationService service;
@@ -29,8 +29,6 @@ public class SamlAssertionVerificationServiceTest {
 
    @BeforeClass
    public static void beforeClass() {
-
-      new SamlConfiguration();
 
       service = new SamlAssertionVerificationService();
 

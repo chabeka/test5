@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.JUnitAssertionsShouldIncludeMessage"})
 public class ConverterUtilsTest {
 
    private static final String FAIL_MESSAGE = "le test doit échouer";

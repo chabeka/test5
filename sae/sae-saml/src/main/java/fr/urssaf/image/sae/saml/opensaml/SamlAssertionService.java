@@ -24,6 +24,7 @@ import org.opensaml.xml.validation.ValidatorSuite;
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
+import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
 import fr.urssaf.image.sae.saml.opensaml.service.SamlCoreService;
 import fr.urssaf.image.sae.saml.opensaml.service.SamlSignatureService;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
@@ -51,6 +52,7 @@ public class SamlAssertionService {
     * </ul>
     */
    public SamlAssertionService() {
+      new SamlConfiguration();
       coreService = new SamlCoreService();
       signatureService = new SamlSignatureService();
    }

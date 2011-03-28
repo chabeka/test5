@@ -24,11 +24,11 @@ import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.util.XMLUtils;
 
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class SamlAssertionCreationServiceTest {
 
    private static final Logger LOG = Logger
@@ -46,8 +46,6 @@ public class SamlAssertionCreationServiceTest {
 
    @BeforeClass
    public static void beforeClass() {
-
-      new SamlConfiguration();
 
       service = new SamlAssertionCreationService();
       validationService = new SamlAssertionVerificationService();
@@ -122,8 +120,8 @@ public class SamlAssertionCreationServiceTest {
       SamlCommonsParams commonsParams = params.getCommonsParams();
       Date authnInstant = new Date();
       commonsParams.setAuthnInstant(authnInstant);
-      UUID id = UUID.fromString("f81d4fae-7dec-11d0-a765-00a0c91e6bf6");
-      commonsParams.setId(id);
+      UUID uuid = UUID.fromString("f81d4fae-7dec-11d0-a765-00a0c91e6bf6");
+      commonsParams.setId(uuid);
       Date issueInstant = new Date();
       commonsParams.setIssueInstant(issueInstant);
 

@@ -1,23 +1,22 @@
 package fr.urssaf.image.sae.saml.opensaml.service;
 
-import java.security.cert.Certificate;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.security.SAMLSignatureProfileValidator;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.MarshallingException;
+import org.opensaml.xml.security.SecurityConfiguration;
+import org.opensaml.xml.security.SecurityException;
+import org.opensaml.xml.security.keyinfo.KeyInfoGenerator;
+import org.opensaml.xml.security.keyinfo.KeyInfoGeneratorManager;
+import org.opensaml.xml.security.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xml.security.x509.X509Credential;
+import org.opensaml.xml.security.x509.X509KeyInfoGeneratorFactory;
 import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.SignatureException;
 import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xml.signature.Signer;
-import org.opensaml.xml.signature.X509Certificate;
-import org.opensaml.xml.signature.X509Data;
 import org.opensaml.xml.validation.ValidationException;
 
 /**
@@ -73,7 +72,11 @@ public class SamlSignatureService {
       signature
             .setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
 
-      signature.setKeyInfo(getKeyInfo(credential));
+      try {
+         signature.setKeyInfo(getKeyInfo(credential));
+      } catch (SecurityException e) {
+         throw new IllegalStateException(e);
+      }
 
       assertion.setSignature(signature);
 
@@ -92,31 +95,25 @@ public class SamlSignatureService {
 
    }
 
-   private KeyInfo getKeyInfo(X509Credential credential) {
+   private KeyInfo getKeyInfo(X509Credential credential) throws SecurityException {
 
-      KeyInfo keyInfo = null;
-
-      if (CollectionUtils.isNotEmpty(credential.getEntityCertificateChain())) {
-
-         keyInfo = SamlXML.create(KeyInfo.DEFAULT_ELEMENT_NAME);
-
-         X509Data x509Data = SamlXML.create(X509Data.DEFAULT_ELEMENT_NAME);
-
-         for (Certificate cert : credential.getEntityCertificateChain()) {
-
-            X509Certificate x509Cert = SamlXML
-                  .create(X509Certificate.DEFAULT_ELEMENT_NAME);
-
-            x509Cert.setValue(StringUtils.newStringUtf8(Base64.encodeBase64(
-                  cert.getPublicKey().getEncoded(), false)));
-            x509Data.getX509Certificates().add(x509Cert);
-
-         }
-
-         keyInfo.getX509Datas().add(x509Data);
-
-      }
-
+      SecurityConfiguration secConfig = 
+         Configuration.getGlobalSecurityConfiguration();
+      
+      NamedKeyInfoGeneratorManager namedKiGenMan = 
+         secConfig.getKeyInfoGeneratorManager();
+      
+      KeyInfoGeneratorManager keyInfoGenMan =
+         namedKiGenMan.getDefaultManager();
+      
+      X509KeyInfoGeneratorFactory keyInfoGenFac =
+         (X509KeyInfoGeneratorFactory) keyInfoGenMan.getFactory(credential);
+      keyInfoGenFac.setEmitEntityCertificateChain(true);
+      
+      KeyInfoGenerator keyInfoGenerator = keyInfoGenFac.newInstance();
+      
+      KeyInfo keyInfo = keyInfoGenerator.generate(credential);
+      
       return keyInfo;
    }
 

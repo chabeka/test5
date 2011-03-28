@@ -7,8 +7,16 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-public final class KeyStoreFactory {
 
+/**
+ * Outils de création de java.security.KeyStore
+ */
+public final class KeyStoreFactory {
+   
+   private KeyStoreFactory() {
+
+   }
+   
    protected static KeyStore createKeystore() throws KeyStoreException,
          NoSuchAlgorithmException, CertificateException, IOException {
 
@@ -23,12 +31,12 @@ public final class KeyStoreFactory {
 
       KeyStore keystore = KeyStore.getInstance("PKCS12");
 
-      FileInputStream in = new FileInputStream(file);
+      FileInputStream inputStream = new FileInputStream(file);
       try {
-         keystore.load(in, password.toCharArray());
+         keystore.load(inputStream, password.toCharArray());
 
       } finally {
-         in.close();
+         inputStream.close();
       }
 
       return keystore;

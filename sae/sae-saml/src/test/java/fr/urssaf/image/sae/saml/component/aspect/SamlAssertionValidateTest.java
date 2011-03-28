@@ -25,6 +25,11 @@ import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 
+@SuppressWarnings({
+   "PMD.MethodNamingConventions",
+   "PMD.JUnitAssertionsShouldIncludeMessage",
+   "PMD.TooManyMethods" +
+   "PMD.AvoidDuplicateLiterals"})
 public class SamlAssertionValidateTest {
 
    private static SamlAssertionCreationService service;
@@ -38,7 +43,7 @@ public class SamlAssertionValidateTest {
    private static final String PASSWORD = "passowrd";
 
    private static final String SAML = "saml";
-
+   
    @BeforeClass
    public static void beforeClass() {
       service = createMock(SamlAssertionCreationService.class);
