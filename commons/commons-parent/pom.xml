@@ -20,6 +20,7 @@
       <module>../commons-xml</module>
       <module>../commons-webservice-parent</module>
       <module>../commons-web</module>
+      <module>../commons-signature</module>
    </modules>
 
    <build>
