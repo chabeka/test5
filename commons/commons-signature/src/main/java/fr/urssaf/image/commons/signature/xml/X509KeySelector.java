@@ -15,11 +15,46 @@ import javax.xml.crypto.dsig.SignatureMethod;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 
+
+/**
+ * Implémentation de l'interface {@link javax.xml.crypto.KeySelector} pour les besoins de
+ * la classe {@link fr.urssaf.image.commons.signature.xml.XmlSignature}
+ *
+ */
 class X509KeySelector extends KeySelector {
    
+   
+   /**
+    * Attempts to find a key that satisfies the specified constraints.
+    *
+    * @param keyInfo a <code>KeyInfo</code> (may be <code>null</code>)
+    * @param purpose the key's purpose ({@link Purpose#SIGN}, 
+    *    {@link Purpose#VERIFY}, {@link Purpose#ENCRYPT}, or 
+    *    {@link Purpose#DECRYPT})
+    * @param method the algorithm method that this key is to be used for.
+    *    Only keys that are compatible with the algorithm and meet the 
+    *    constraints of the specified algorithm should be returned.
+    * @param context an <code>XMLCryptoContext</code> that may contain
+    *    useful information for finding an appropriate key. If this key 
+    *    selector supports resolving {@link RetrievalMethod} types, the 
+    *    context's <code>baseURI</code> and <code>dereferencer</code> 
+    *    parameters (if specified) should be used by the selector to 
+    *    resolve and dereference the URI.
+    * @return the result of the key selector
+    * @throws KeySelectorException if an exceptional condition occurs while 
+    *    attempting to find a key. Note that an inability to find a key is not 
+    *    considered an exception (<code>null</code> should be
+    *    returned in that case). However, an error condition (ex: network 
+    *    communications failure) that prevented the <code>KeySelector</code>
+    *    from finding a potential key should be considered an exception.
+    * @throws ClassCastException if the data type of <code>method</code> 
+    *    is not supported by this key selector
+    */
    @SuppressWarnings("unchecked")
-   public KeySelectorResult select(KeyInfo keyInfo,
-         KeySelector.Purpose purpose, AlgorithmMethod method,
+   public KeySelectorResult select(
+         KeyInfo keyInfo,
+         KeySelector.Purpose purpose, 
+         AlgorithmMethod method,
          XMLCryptoContext context) throws KeySelectorException {
       Iterator keyInfoIterator = keyInfo.getContent().iterator();
       while (keyInfoIterator.hasNext()) {
