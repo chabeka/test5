@@ -74,6 +74,12 @@ class X509KeySelector extends KeySelector {
             // with the method.
             if (algEquals(method.getAlgorithm(), key.getAlgorithm())) {
                return new KeySelectorResult() {
+                  
+                  /**
+                   * Returns the selected key.
+                   *
+                   * @return the selected key, or <code>null</code> if none can be found
+                   */
                   public Key getKey() {
                      return key;
                   }
