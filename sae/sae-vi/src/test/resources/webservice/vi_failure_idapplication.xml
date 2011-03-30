@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+   ID="f81d4fae-7dec-11d0-a765-00a0c91e6bf6" IssueInstant="2011-03-24T16:31:34.700Z"
+   Version="2.0">
+   <saml2:Issuer>service_failure
+   </saml2:Issuer>
+   <saml2:Subject>
+      <saml2:NameID
+         Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent">subjectId2</saml2:NameID>
+      <saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+         <saml2:SubjectConfirmationData
+            NotOnOrAfter="2011-03-24T16:31:34.700Z" Recipient="urn:interops:sp:73282932000074:test" />
+      </saml2:SubjectConfirmation>
+   </saml2:Subject>
+   <saml2:Conditions NotBefore="1998-12-01T01:00:00"
+      NotOnOrAfter="1999-12-31T01:00:00">
+      <saml2:AudienceRestriction>
+         <saml2:Audience>http://sae.urssaf.fr</saml2:Audience>
+      </saml2:AudienceRestriction>
+   </saml2:Conditions>
+   <saml2:AuthnStatement AuthnInstant="2011-03-24T16:31:34.700Z"
+      SessionIndex="f81d4fae-7dec-11d0-a765-00a0c91e6bf6">
+      <saml2:AuthnContext>
+         <saml2:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password
+         </saml2:AuthnContextClassRef>
+      </saml2:AuthnContext>
+   </saml2:AuthnStatement>
+   <saml2:AttributeStatement>
+      <saml2:Attribute Name="PAGM">
+         <saml2:AttributeValue>ROLE_USER</saml2:AttributeValue>
+         <saml2:AttributeValue>ROLE_ADMIN</saml2:AttributeValue>
+      </saml2:Attribute>
+   </saml2:AttributeStatement>
+</saml2:Assertion>

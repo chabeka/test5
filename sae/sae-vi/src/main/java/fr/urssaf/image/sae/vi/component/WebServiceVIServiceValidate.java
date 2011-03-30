@@ -1,6 +1,8 @@
 package fr.urssaf.image.sae.vi.component;
 
+import java.net.URI;
 import java.security.KeyStore;
+import java.security.cert.X509CRL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.saml.util.ListUtils;
+import fr.urssaf.image.sae.vi.util.FilterUtils;
 
 /**
  * La classe implémenté en AOP permet de vérifier les arguments des méthodes
@@ -25,8 +28,11 @@ public class WebServiceVIServiceValidate {
 
    private static final String SERVICE_PACKAGE = "fr.urssaf.image.sae.vi.service.WebServiceVIService";
 
-   private static final String WRITE_METHODE = "execution(public * "
+   private static final String WRITE_METHODE = "execution(public final * "
          + SERVICE_PACKAGE + ".creerVIpourServiceWeb(..))";
+
+   private static final String CHECK_METHODE = "execution(public final * "
+         + SERVICE_PACKAGE + ".verifierVIdeServiceWeb(..))";
 
    private static final String ARG_EMPTY = "Le paramètre [${0}] n'est pas renseigné alors qu'il est obligatoire";
 
@@ -35,6 +41,8 @@ public class WebServiceVIServiceValidate {
    private static final int INDEX_4 = 4;
 
    private static final int INDEX_5 = 5;
+
+   private static final int INDEX_6 = 6;
 
    /**
     * Vérification des paramètres d'entrée de la méthode
@@ -63,7 +71,7 @@ public class WebServiceVIServiceValidate {
       String password = (String) joinPoint.getArgs()[INDEX_5];
 
       // issuer not null
-      notNullValidate(issuer, "issuer", ARG_EMPTY);
+      notNullValidate(issuer, "issuer");
       // PAGM not null
       // on filtre les pagms
       if (CollectionUtils.isEmpty(ListUtils.filter(pagm))) {
@@ -72,37 +80,94 @@ public class WebServiceVIServiceValidate {
                "Il faut spécifier au moins un PAGM");
       }
       // keystore not null
-      notNullValidate(keystore, "keystore", ARG_EMPTY);
+      notNullValidate(keystore, "keystore");
       // alias
-      notNullValidate(alias, "alias", ARG_EMPTY);
+      notNullValidate(alias, "alias");
       // password
-      notNullValidate(password, "password", ARG_EMPTY);
+      notNullValidate(password, "password");
 
    }
 
-   private void notNullValidate(Object obj, String name, String message) {
+   /**
+    * Vérification des paramètres d'entrée de la méthode
+    * {@link fr.urssaf.image.sae.vi.service.WebServiceVIService#verifierVIdeServiceWeb}
+    * <br>
+    * <ul>
+    * <li>identification : doit être renseigné</li>
+    * <li>serviceVise : doit être renseigné</li>
+    * <li>idAppliClient : doit être renseigné</li>
+    * <li>keystore : doit être renseigné</li>
+    * <li>alias : doit être renseigné</li>
+    * <li>password: doit être renseigné</li>
+    * <li>crl : doit contenir au moins un CRL</li>
+    * </ul>
+    * 
+    * @param joinPoint
+    *           point de jointure de la méthode
+    */
+   @Before(CHECK_METHODE)
+   public final void verifierVIdeServiceWeb(JoinPoint joinPoint) {
+
+      // récupération des paramétres
+      String identification = (String) joinPoint.getArgs()[0];
+      URI serviceVise = (URI) joinPoint.getArgs()[1];
+      String idAppliClient = (String) joinPoint.getArgs()[2];
+      KeyStore keystore = (KeyStore) joinPoint.getArgs()[INDEX_3];
+      String alias = (String) joinPoint.getArgs()[INDEX_4];
+      String password = (String) joinPoint.getArgs()[INDEX_5];
+      @SuppressWarnings("unchecked")
+      List<X509CRL> crl = (List<X509CRL>) joinPoint.getArgs()[INDEX_6];
+
+      // identification not null
+      notNullValidate(identification, "identification");
+
+      // serviceVise not null
+      notNullValidate(serviceVise, "serviceVise");
+
+      // idAppliClient not null
+      notNullValidate(idAppliClient, "idAppliClient");
+
+      // keystore not null
+      notNullValidate(keystore, "keystore");
+
+      // alias
+      notNullValidate(alias, "alias");
+
+      // password
+      notNullValidate(password, "password");
+
+      // au moins un crl doit exister
+      if (CollectionUtils.isEmpty(FilterUtils.filter(crl))) {
+
+         throw new IllegalArgumentException("Il faut spécifier au moins un CRL");
+      }
+
+   }
+
+   private void notNullValidate(Object obj, String name) {
 
       if (obj == null) {
 
          Map<String, String> args = new HashMap<String, String>();
          args.put("0", name);
 
-         throw new IllegalArgumentException(StrSubstitutor.replace(message,
-               args));
+         throw new IllegalArgumentException(StrSubstitutor
+               .replace(ARG_EMPTY, args));
       }
 
    }
 
-   private void notNullValidate(String obj, String name, String message) {
+   private void notNullValidate(String obj, String name) {
 
       if (!StringUtils.isNotBlank(obj)) {
 
          Map<String, String> args = new HashMap<String, String>();
          args.put("0", name);
 
-         throw new IllegalArgumentException(StrSubstitutor.replace(message,
-               args));
+         throw new IllegalArgumentException(StrSubstitutor
+               .replace(ARG_EMPTY, args));
       }
 
    }
+
 }
