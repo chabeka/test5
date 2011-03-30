@@ -15,6 +15,12 @@ public class SaeServiceImpl implements SaeService {
    @Override
    public final String ping() {
 
-      return PING_MESSAGE;
+      return PING_MSG;
+   }
+
+   @Override
+   public final String pingSecure() {
+
+      return PING_SECURE_MSG;
    }
 }

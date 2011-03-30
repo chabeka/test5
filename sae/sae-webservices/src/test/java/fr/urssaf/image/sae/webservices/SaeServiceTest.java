@@ -9,15 +9,24 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml"})
+@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class SaeServiceTest {
 
    @Autowired
    private SaeService service;
-   
+
    @Test
-   public void ping(){
-      
-      assertEquals("Test du ping","Les services SAE sont en ligne",service.ping());
+   public void ping() {
+
+      assertEquals("Test du ping", "Les services SAE sont en ligne", service
+            .ping());
+   }
+
+   @Test
+   public void pingSecure() {
+
+      assertEquals("Test du ping sécurisé",
+            "Les services du SAE sécurisés par authentification sont en ligne",
+            service.pingSecure());
    }
 }

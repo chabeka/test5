@@ -6,7 +6,7 @@
    -->
 <serviceGroup>
     <service name="SpringInit" class="fr.urssaf.image.sae.webservices.component.Axis2SpringContext">
-         <description>This web service initializes Spring.</description>
+        <description>This web service initializes Spring.</description>
         <parameter name="ServiceClass">fr.urssaf.image.sae.webservices.component.Axis2SpringContext</parameter>
         <parameter name="ServiceTCCL">composite</parameter>
         <parameter name="load-on-startup">true</parameter>
@@ -27,6 +27,10 @@
         <operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.cirtil.fr/saeService">
             <actionMapping>Ping</actionMapping>
             <outputActionMapping>Ping</outputActionMapping>
+        </operation>
+        <operation name="PingSecure" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.cirtil.fr/saeService">
+            <actionMapping>PingSecure</actionMapping>
+            <outputActionMapping>PingSecure</outputActionMapping>
         </operation>
     </service>
 </serviceGroup>

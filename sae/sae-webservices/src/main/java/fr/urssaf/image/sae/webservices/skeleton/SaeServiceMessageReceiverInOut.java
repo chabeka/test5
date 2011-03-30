@@ -54,6 +54,24 @@ public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.A
                                                     ;
                                             
                                         envelope = toEnvelope(getSOAPFactory(msgContext), pingResponse1, false);
+                                    } else 
+
+            if("pingSecure".equals(methodName)){
+                
+                fr.cirtil.www.saeservice.PingSecureResponse pingSecureResponse3 = null;
+	                        fr.cirtil.www.saeservice.PingSecureRequest wrappedParam =
+                                                             (fr.cirtil.www.saeservice.PingSecureRequest)fromOM(
+                                    msgContext.getEnvelope().getBody().getFirstElement(),
+                                    fr.cirtil.www.saeservice.PingSecureRequest.class,
+                                    getEnvelopeNamespaces(msgContext.getEnvelope()));
+                                                
+                                               pingSecureResponse3 =
+                                                   
+                                                   
+                                                         skel.pingSecure(wrappedParam)
+                                                    ;
+                                            
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), pingSecureResponse3, false);
                                     
             } else {
               throw new java.lang.RuntimeException("method not found");
@@ -97,6 +115,34 @@ public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.A
 
             }
         
+            private  org.apache.axiom.om.OMElement  toOM(fr.cirtil.www.saeservice.PingSecureRequest param, boolean optimizeContent)
+            throws org.apache.axis2.AxisFault {
+
+            
+                        try{
+                             return param.getOMElement(fr.cirtil.www.saeservice.PingSecureRequest.MY_QNAME,
+                                          org.apache.axiom.om.OMAbstractFactory.getOMFactory());
+                        } catch(org.apache.axis2.databinding.ADBException e){
+                            throw org.apache.axis2.AxisFault.makeFault(e);
+                        }
+                    
+
+            }
+        
+            private  org.apache.axiom.om.OMElement  toOM(fr.cirtil.www.saeservice.PingSecureResponse param, boolean optimizeContent)
+            throws org.apache.axis2.AxisFault {
+
+            
+                        try{
+                             return param.getOMElement(fr.cirtil.www.saeservice.PingSecureResponse.MY_QNAME,
+                                          org.apache.axiom.om.OMAbstractFactory.getOMFactory());
+                        } catch(org.apache.axis2.databinding.ADBException e){
+                            throw org.apache.axis2.AxisFault.makeFault(e);
+                        }
+                    
+
+            }
+        
                     private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.cirtil.www.saeservice.PingResponse param, boolean optimizeContent)
                         throws org.apache.axis2.AxisFault{
                       try{
@@ -113,6 +159,25 @@ public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.A
                     
                          private fr.cirtil.www.saeservice.PingResponse wrapPing(){
                                 fr.cirtil.www.saeservice.PingResponse wrappedElement = new fr.cirtil.www.saeservice.PingResponse();
+                                return wrappedElement;
+                         }
+                    
+                    private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.cirtil.www.saeservice.PingSecureResponse param, boolean optimizeContent)
+                        throws org.apache.axis2.AxisFault{
+                      try{
+                          org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
+                           
+                                    emptyEnvelope.getBody().addChild(param.getOMElement(fr.cirtil.www.saeservice.PingSecureResponse.MY_QNAME,factory));
+                                
+
+                         return emptyEnvelope;
+                    } catch(org.apache.axis2.databinding.ADBException e){
+                        throw org.apache.axis2.AxisFault.makeFault(e);
+                    }
+                    }
+                    
+                         private fr.cirtil.www.saeservice.PingSecureResponse wrapPingSecure(){
+                                fr.cirtil.www.saeservice.PingSecureResponse wrappedElement = new fr.cirtil.www.saeservice.PingSecureResponse();
                                 return wrappedElement;
                          }
                     
@@ -143,6 +208,20 @@ public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.A
                 if (fr.cirtil.www.saeservice.PingResponse.class.equals(type)){
                 
                            return fr.cirtil.www.saeservice.PingResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                    
+
+                }
+           
+                if (fr.cirtil.www.saeservice.PingSecureRequest.class.equals(type)){
+                
+                           return fr.cirtil.www.saeservice.PingSecureRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                    
+
+                }
+           
+                if (fr.cirtil.www.saeservice.PingSecureResponse.class.equals(type)){
+                
+                           return fr.cirtil.www.saeservice.PingSecureResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }

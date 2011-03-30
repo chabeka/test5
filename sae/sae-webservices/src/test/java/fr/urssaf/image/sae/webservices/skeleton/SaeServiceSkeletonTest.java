@@ -10,22 +10,36 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
+import fr.cirtil.www.saeservice.PingSecureRequest;
+import fr.cirtil.www.saeservice.PingSecureResponse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml"})
+@ContextConfiguration(locations = { "/applicationContext.xml" })
 public class SaeServiceSkeletonTest {
 
    @Autowired
    private SaeServiceSkeleton skeleton;
-  
+
    @Test
-   public void ping(){
-      
+   public void ping() {
+
       PingRequest request = new PingRequest();
-     
-      
+
       PingResponse response = skeleton.ping(request);
-      
-      assertEquals("Test du ping","Les services SAE sont en ligne",response.getPingString());
+
+      assertEquals("Test du ping", "Les services SAE sont en ligne", response
+            .getPingString());
+   }
+
+   @Test
+   public void pingSecure() {
+
+      PingSecureRequest request = new PingSecureRequest();
+
+      PingSecureResponse response = skeleton.pingSecure(request);
+
+      assertEquals("Test du ping",
+            "Les services du SAE sécurisés par authentification sont en ligne",
+            response.getPingString());
    }
 }

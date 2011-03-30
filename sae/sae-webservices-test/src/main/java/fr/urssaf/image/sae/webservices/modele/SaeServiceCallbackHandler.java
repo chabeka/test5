@@ -62,6 +62,22 @@ public class SaeServiceCallbackHandler{
             public void receiveErrorping(java.lang.Exception e) {
             }
                 
+           /**
+            * auto generated Axis2 call back method for pingSecure method
+            * override this method for handling normal response from pingSecure operation
+            */
+           public void receiveResultpingSecure(
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from pingSecure operation
+           */
+            public void receiveErrorpingSecure(java.lang.Exception e) {
+            }
+                
 
 
     }

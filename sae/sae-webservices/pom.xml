@@ -13,6 +13,7 @@
 
    <properties>
       <axiom.version>1.2.9</axiom.version>
+      <axis2.version>1.5.4</axis2.version>
    </properties>
 
    <profiles>

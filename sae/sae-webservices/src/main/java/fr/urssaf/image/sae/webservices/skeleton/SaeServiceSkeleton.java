@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
+import fr.cirtil.www.saeservice.PingSecureRequest;
+import fr.cirtil.www.saeservice.PingSecureResponse;
 import fr.urssaf.image.sae.webservices.SaeService;
 
 /**
@@ -32,9 +34,13 @@ import fr.urssaf.image.sae.webservices.SaeService;
  *       &lt;parameter name="modifyUserWSDLPortAddress">false&lt;/parameter>
  *       &lt;operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out"
  *          namespace="http://www.cirtil.fr/saeService">
- *          &lt;actionMapping>Ping</actionMapping>
- *          &lt;outputActionMapping>Ping</outputActionMapping>
+ *          &lt;actionMapping>Ping&lt;/actionMapping>
+ *          &lt;outputActionMapping>Ping&lt;/outputActionMapping>
  *       &lt;/operation>
+ *       &lt;operation name="PingSecure" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.cirtil.fr/saeService">
+ *             &lt;actionMapping>PingSecure&lt;/actionMapping>
+ *             &lt;outputActionMapping>PingSecure&lt;/outputActionMapping>
+ *         &lt;/operation>
  *    &lt;/service>
  * 
  * </pre>
@@ -74,6 +80,22 @@ public class SaeServiceSkeleton {
       PingResponse response = new PingResponse();
 
       response.setPingString(service.ping());
+
+      return response;
+   }
+   
+   /**
+    * endpoint du ping sécurisé
+    * 
+    * @param pingRequest
+    *           vide
+    * @return reponse du web service
+    */
+   public final PingSecureResponse pingSecure(PingSecureRequest pingRequest) {
+
+      PingSecureResponse response = new PingSecureResponse();
+
+      response.setPingString(service.pingSecure());
 
       return response;
    }
