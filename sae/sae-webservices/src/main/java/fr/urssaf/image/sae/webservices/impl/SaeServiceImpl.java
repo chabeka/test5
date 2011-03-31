@@ -2,6 +2,8 @@ package fr.urssaf.image.sae.webservices.impl;
 
 import org.springframework.stereotype.Service;
 
+import javax.annotation.security.RolesAllowed;
+
 import fr.urssaf.image.sae.webservices.SaeService;
 
 /**
@@ -18,6 +20,7 @@ public class SaeServiceImpl implements SaeService {
       return PING_MSG;
    }
 
+   @RolesAllowed("ROLE_TOUS")
    @Override
    public final String pingSecure() {
 

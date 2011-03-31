@@ -12,9 +12,11 @@ import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
 import fr.cirtil.www.saeservice.PingSecureRequest;
 import fr.cirtil.www.saeservice.PingSecureResponse;
+import fr.urssaf.image.sae.webservices.security.AuthenticateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@ContextConfiguration(locations = { "/applicationContext-service.xml",
+      "/applicationContext-security.xml" })
 public class SaeServiceSkeletonTest {
 
    @Autowired
@@ -33,6 +35,8 @@ public class SaeServiceSkeletonTest {
 
    @Test
    public void pingSecure() {
+
+      AuthenticateUtils.authenticate();
 
       PingSecureRequest request = new PingSecureRequest();
 

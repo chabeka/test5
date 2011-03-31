@@ -13,6 +13,7 @@
 
    <properties>
       <axiom.version>1.2.9</axiom.version>
+      <!-- on repète le n° de version pour les plugins  'org.apache.axis2' -->
       <axis2.version>1.5.4</axis2.version>
    </properties>
 
@@ -173,6 +174,21 @@
          <artifactId>spring-test</artifactId>
          <version>${spring.framework.version}</version>
          <scope>test</scope>
+      </dependency>
+      
+      <!-- SPRING  SECURITY-->
+
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-config</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+      
+      <!-- JSR 250 -->
+      <dependency>
+         <groupId>javax.annotation</groupId>
+         <artifactId>jsr250-api</artifactId>
+         <version>1.0</version>
       </dependency>
 
    </dependencies>

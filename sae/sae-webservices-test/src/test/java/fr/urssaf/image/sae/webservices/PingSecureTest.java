@@ -10,6 +10,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub;
@@ -32,7 +33,8 @@ public class PingSecureTest {
    }
 
    @Test
-   public void pingSecure() throws RemoteException {
+   @Ignore
+   public void pingSecure_success() throws RemoteException {
 
       PingSecureRequest request = new PingSecureRequest();
 
@@ -40,7 +42,23 @@ public class PingSecureTest {
 
       LOG.debug(response.getPingString());
 
-      assertEquals("Test du ping securisé", "Les services du SAE sécurisés par authentification sont en ligne",
+      assertEquals("Test du ping securisé",
+            "Les services du SAE sécurisés par authentification sont en ligne",
             response.getPingString());
+   }
+
+   @Test
+   public void pingSecure_failure() throws RemoteException {
+
+      PingSecureRequest request = new PingSecureRequest();
+
+      try {
+         service.pingSecure(request);
+      } catch (AxisFault fault) {
+         assertEquals(
+               "An Authentication object was not found in the SecurityContext",
+               fault.getMessage());
+      }
+
    }
 }
