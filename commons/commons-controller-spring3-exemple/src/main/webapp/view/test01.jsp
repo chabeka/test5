@@ -10,7 +10,7 @@
 
 <h1>Aperçu rapide d'une page web avec formulaire</h1>
 
-<form:form method="post" modelAttribute="test01Formulaire">
+<form:form method="post" modelAttribute="leFormulaire">
 	<form:input path='question' />
 	<form:input path='reponse' />
 	<input type="submit" />
