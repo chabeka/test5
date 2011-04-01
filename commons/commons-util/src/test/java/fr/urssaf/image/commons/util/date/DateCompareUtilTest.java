@@ -62,11 +62,7 @@ public class DateCompareUtilTest {
    
    private static Date hier() {
       Calendar calendar = Calendar.getInstance();
-      calendar.set(Calendar.HOUR_OF_DAY, 0);
-      calendar.set(Calendar.MINUTE, 0);
-      calendar.set(Calendar.SECOND, 0);
-      calendar.set(Calendar.MILLISECOND, 0);
-      calendar.roll(Calendar.DATE, false);
+      calendar.add(Calendar.DATE, -1);
       Date laDate = calendar.getTime();
       return laDate;
    }
