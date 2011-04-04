@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+   <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+      <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+         <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="1">
+            <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-1">
+               <wsse:Username>myuser</wsse:Username>
+               <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">Sz+Rf227qzqac4u02IFsAflmH3c=</wsse:Password>
+               <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">D3jb97jpV2RWHKlumBPH3g==</wsse:Nonce>
+               <wsu:Created>2011-04-04T12:56:19.063Z</wsu:Created>
+            </wsse:UsernameToken>
+         </wsse:Security>
+         <wsa:To>http://localhost:8082/axis2/services/SaeService/</wsa:To>
+         <wsa:MessageID>urn:uuid:8096ABF81A9A6CE7F51301921778635</wsa:MessageID>
+         <wsa:Action>PingSecure</wsa:Action>
+      </soapenv:Header>
+      <soapenv:Body>
+         <ns1:PingSecureRequest xmlns:ns1="http://www.cirtil.fr/saeService" />
+      </soapenv:Body>
+   </soapenv:Envelope>

@@ -1,21 +1,24 @@
 package fr.urssaf.image.sae.webservices;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.rmi.RemoteException;
 
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureRequest;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureResponse;
+import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
 public class PingSecureTest {
 
@@ -23,18 +26,24 @@ public class PingSecureTest {
 
    private static final Logger LOG = Logger.getLogger(PingSecureTest.class);
 
+   private static final String SECURITY_PATH = "src/main/resources/META-INF";
+
    @Before
    public void before() throws AxisFault, ConfigurationException {
 
-      Configuration config = new PropertiesConfiguration(
-            "sae-webservices-test.properties");
-      service = new SaeServiceStub(config.getString("urlServiceWeb"));
+      Configuration config = new PropertiesConfiguration("sae-webservices-test.properties");
 
+      ConfigurationContext ctx = ConfigurationContextFactory
+            .createConfigurationContextFromFileSystem(SECURITY_PATH,
+                  SECURITY_PATH + "/axis2.xml");
+
+      service = new SaeServiceStub(ctx, config.getString("urlServiceWeb"));
    }
 
    @Test
-   @Ignore
-   public void pingSecure_success() throws RemoteException {
+   public void pingSecureAvecViOk_success() throws RemoteException {
+
+      AuthenticateUtils.authenticate("ROLE_TOUS");
 
       PingSecureRequest request = new PingSecureRequest();
 
@@ -48,17 +57,31 @@ public class PingSecureTest {
    }
 
    @Test
-   public void pingSecure_failure() throws RemoteException {
+   public void pingSecureAvecViOk_failure() throws RemoteException {
+
+      AuthenticateUtils.authenticate("OTHER_ROLE");
 
       PingSecureRequest request = new PingSecureRequest();
 
       try {
          service.pingSecure(request);
+         fail("le test doit échouer");
       } catch (AxisFault fault) {
-         assertEquals(
-               "An Authentication object was not found in the SecurityContext",
-               fault.getMessage());
+         assertEquals("Access is denied", fault.getMessage());
       }
 
+   }
+
+   @Test
+   public void pingSecureSansVI() throws RemoteException {
+
+      PingSecureRequest request = new PingSecureRequest();
+
+      try {
+         service.pingSecure(request);
+         fail("le test doit échouer");
+      } catch (AxisFault fault) {
+         assertEquals("Access is denied", fault.getMessage());
+      }
    }
 }

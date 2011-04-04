@@ -12,6 +12,10 @@
       <level value="warn" />
    </logger>
    
+   <logger name="httpclient">
+      <level value="warn" />
+   </logger>
+   
    <root>
       <priority value="debug" />
       <appender-ref ref="console" />

@@ -20,6 +20,10 @@ public class SaeServiceImpl implements SaeService {
       return PING_MSG;
    }
 
+   /**
+    * roles autorisés: 'ROLE_TOUS'<br>
+    * 
+    */
    @RolesAllowed("ROLE_TOUS")
    @Override
    public final String pingSecure() {

@@ -64,7 +64,7 @@
                      <includes>
                         <include>**/modele/*.java</include>
                      </includes>
-                    <replacements>
+                     <replacements>
                         <replacement>
                            <token>[ ]*public[ ]*class</token>
                            <valueFile>src/main/config/add_suppress_warnings.txt</valueFile>
@@ -97,6 +97,22 @@
    </build>
 
    <dependencies>
+
+      <!--  SAE VI -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-vi</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+         <exclusions>
+
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-log4j12</artifactId>
+            </exclusion>
+
+         </exclusions>
+      </dependency>
 
       <!--  AXIS 2 -->
 
@@ -138,13 +154,46 @@
          <artifactId>axiom-impl</artifactId>
          <version>${axiom.version}</version>
       </dependency>
+
+      <!-- APACHE RAMPART -->
+
+      <dependency>
+         <groupId>org.apache.rampart</groupId>
+         <artifactId>rampart-core</artifactId>
+         <version>1.5.1</version>
+          <exclusions>
+
+            <exclusion>
+               <groupId>commons-lang</groupId>
+               <artifactId>commons-lang</artifactId>
+            </exclusion>
+
+         </exclusions>
+      </dependency>
       
+       <!-- SPRING  SECURITY-->
+
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-core</artifactId>
+         <version>${spring.framework.version}</version>
+      </dependency>
+
       <!--  TEST -->
-      
+
       <dependency>
          <groupId>commons-configuration</groupId>
          <artifactId>commons-configuration</artifactId>
          <version>${apache.commons-configuration.version}</version>
+         <exclusions>
+
+            <exclusion>
+               <groupId>commons-lang</groupId>
+               <artifactId>commons-lang</artifactId>
+            </exclusion>
+
+         </exclusions>
+
       </dependency>
 
 

@@ -10,6 +10,7 @@
    <artifactId>sae-webservices</artifactId>
    <name>sae-webservices</name>
    <version>0.0.1-SNAPSHOT</version>
+   <packaging>aar</packaging>
 
    <properties>
       <axiom.version>1.2.9</axiom.version>
@@ -88,6 +89,26 @@
    <build>
 
       <plugins>
+
+
+         <!-- COMPILATION ASPECT -->
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <version>1.3</version>
+            <configuration>
+               <source>1.6</source>
+            </configuration>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>compile</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <!-- ARCHIVAGE AXIS2 -->
          <plugin>
             <groupId>org.apache.axis2</groupId>
             <artifactId>axis2-aar-maven-plugin</artifactId>
@@ -99,6 +120,14 @@
    </build>
 
    <dependencies>
+
+      <!--  SAE SAML -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-saml</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
       <!--  AXIS 2 -->
 
@@ -147,6 +176,25 @@
          </exclusions>
       </dependency>
 
+      <!-- RAMPART -->
+
+      <dependency>
+         <groupId>org.apache.rampart</groupId>
+         <artifactId>rampart</artifactId>
+         <version>1.5.1</version>
+
+         <exclusions>
+
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-api</artifactId>
+            </exclusion>
+
+         </exclusions>
+
+      </dependency>
+
+
       <!--  AXIOM  -->
 
       <dependency>
@@ -159,6 +207,20 @@
          <groupId>org.apache.ws.commons.axiom</groupId>
          <artifactId>axiom-impl</artifactId>
          <version>${axiom.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.apache.ws.commons.axiom</groupId>
+         <artifactId>axiom-tests</artifactId>
+         <version>${axiom.version}</version>
+         <scope>test</scope>
+      </dependency>
+
+      <!-- JASPECT -->
+      <dependency>
+         <groupId>org.aspectj</groupId>
+         <artifactId>aspectjrt</artifactId>
+         <version>${aspectj.version}</version>
       </dependency>
 
       <!-- SPRING -->
@@ -175,7 +237,7 @@
          <version>${spring.framework.version}</version>
          <scope>test</scope>
       </dependency>
-      
+
       <!-- SPRING  SECURITY-->
 
       <dependency>
@@ -183,7 +245,7 @@
          <artifactId>spring-security-config</artifactId>
          <version>${spring.framework.version}</version>
       </dependency>
-      
+
       <!-- JSR 250 -->
       <dependency>
          <groupId>javax.annotation</groupId>
