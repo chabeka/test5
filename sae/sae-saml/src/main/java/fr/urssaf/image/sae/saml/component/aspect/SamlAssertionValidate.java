@@ -11,6 +11,7 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.util.ListUtils;
@@ -176,7 +177,7 @@ public class SamlAssertionValidate {
    public final void assertionExtraction(JoinPoint joinPoint) {
 
       // récupération des paramétres de la méthode extraitDonnnees
-      String assertionSaml = (String) joinPoint.getArgs()[0];
+      Element assertionSaml = (Element) joinPoint.getArgs()[0];
 
       // assertionSaml not null
       notNullValidate(assertionSaml, "assertionSaml", ARG_EMPTY);
@@ -197,7 +198,7 @@ public class SamlAssertionValidate {
    public final void assertionVerification(JoinPoint joinPoint) {
 
       // récupération des paramétres de la méthode verifierAssertion
-      String assertionSaml = (String) joinPoint.getArgs()[0];
+      Element assertionSaml = (Element) joinPoint.getArgs()[0];
       KeyStore keystore = (KeyStore) joinPoint.getArgs()[1];
       String alias = (String) joinPoint.getArgs()[2];
 

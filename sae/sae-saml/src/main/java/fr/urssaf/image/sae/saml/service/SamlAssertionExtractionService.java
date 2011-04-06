@@ -2,12 +2,10 @@ package fr.urssaf.image.sae.saml.service;
 
 import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.opensaml.SamlAssertionService;
 import fr.urssaf.image.sae.saml.opensaml.service.SamlXML;
-import fr.urssaf.image.sae.saml.util.XMLUtils;
 
 /**
  * Extraction des données d'une assertion SAML 2.0<br>
@@ -39,19 +37,11 @@ public class SamlAssertionExtractionService {
     * @return Les données du vecteur d'identification présentes dans l'assertion
     *         SAML
     */
-   public final SamlAssertionData extraitDonnees(String assertionSaml) {
+   public final SamlAssertionData extraitDonnees(Element assertionSaml) {
 
-      try {
+      Assertion assertion = (Assertion) SamlXML.unmarshaller(assertionSaml);
 
-         Element element = XMLUtils.parse(assertionSaml);
-
-         Assertion assertion = (Assertion) SamlXML.unmarshaller(element);
-
-         return assertionService.load(assertion);
-
-      } catch (SAXException e) {
-         throw new IllegalStateException(e);
-      }
+      return assertionService.load(assertion);
 
    }
 

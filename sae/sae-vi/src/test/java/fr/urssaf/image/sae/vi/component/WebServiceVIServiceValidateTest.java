@@ -13,24 +13,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
-import fr.urssaf.image.sae.vi.exception.VIAppliClientException;
-import fr.urssaf.image.sae.vi.exception.VIFormatTechniqueException;
-import fr.urssaf.image.sae.vi.exception.VIInvalideException;
-import fr.urssaf.image.sae.vi.exception.VINivAuthException;
-import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
-import fr.urssaf.image.sae.vi.exception.VIServiceIncorrectException;
-import fr.urssaf.image.sae.vi.exception.VISignatureException;
+import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.vi.service.CRLFactory;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
 
 public class WebServiceVIServiceValidateTest {
-   
+
    private static final String FAIL_MESSAGE = "le test doit échouer";
 
    private static final String ISSUER = "issuer";
@@ -39,7 +39,7 @@ public class WebServiceVIServiceValidateTest {
 
    private static final String ID_APPLI = "id_appli";
 
-   private static final String IDENTIFICATION = "identification";
+   private static Element identification;
 
    private static final String ALIAS = "alias";
 
@@ -53,9 +53,15 @@ public class WebServiceVIServiceValidateTest {
    private static WebServiceVIService service;
 
    @BeforeClass
-   public static void beforeClass() {
+   public static void beforeClass() throws ParserConfigurationException {
 
       service = EasyMock.createMock(WebServiceVIService.class);
+
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document document = builder.newDocument();
+      identification = document.createElement("test");
 
       try {
          crl.add(CRLFactory
@@ -110,8 +116,8 @@ public class WebServiceVIServiceValidateTest {
    @Test
    public void creerVIpourServiceWebFailure_keystore() {
 
-      assertCreerVIpourServiceWebFailure("keystore", pagm, ISSUER, ID_UTILISATEUR,
-            null, ALIAS, PASSWORD);
+      assertCreerVIpourServiceWebFailure("keystore", pagm, ISSUER,
+            ID_UTILISATEUR, null, ALIAS, PASSWORD);
 
    }
 
@@ -126,14 +132,14 @@ public class WebServiceVIServiceValidateTest {
    @Test
    public void creerVIpourServiceWebFailure_password() {
 
-      assertCreerVIpourServiceWebFailure("password", pagm, ISSUER, ID_UTILISATEUR,
-            keystore, ALIAS, null);
+      assertCreerVIpourServiceWebFailure("password", pagm, ISSUER,
+            ID_UTILISATEUR, keystore, ALIAS, null);
 
    }
 
-   private void assertCreerVIpourServiceWebFailure(String param, List<String> pagm,
-         String issuer, String idUtilisateur, KeyStore keystore, String alias,
-         String password) {
+   private void assertCreerVIpourServiceWebFailure(String param,
+         List<String> pagm, String issuer, String idUtilisateur,
+         KeyStore keystore, String alias, String password) {
 
       try {
          service.creerVIpourServiceWeb(pagm, issuer, idUtilisateur, keystore,
@@ -150,76 +156,62 @@ public class WebServiceVIServiceValidateTest {
 
    @Test
    public void verifierVIdeServiceWebFailure_identification()
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("identification", null, SERVICE_VISE, ID_APPLI,
-            keystore, ALIAS, PASSWORD, crl);
+      assertVerifierVIdeServiceWeb("identification", null, SERVICE_VISE,
+            ID_APPLI, keystore, ALIAS, PASSWORD, crl);
 
    }
 
    @Test
    public void verifierVIdeServiceWebFailure_serviceVise()
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("serviceVise", IDENTIFICATION, null, ID_APPLI,
-            keystore, ALIAS, PASSWORD, crl);
+      assertVerifierVIdeServiceWeb("serviceVise", identification, null,
+            ID_APPLI, keystore, ALIAS, PASSWORD, crl);
 
    }
 
    @Test
    public void verifierVIdeServiceWebFailure_application()
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("idAppliClient", IDENTIFICATION, SERVICE_VISE,
-            null, keystore, ALIAS, PASSWORD, crl);
+      assertVerifierVIdeServiceWeb("idAppliClient", identification,
+            SERVICE_VISE, null, keystore, ALIAS, PASSWORD, crl);
 
    }
 
    @Test
    public void verifierVIdeServiceWebFailure_keystore()
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("keystore", IDENTIFICATION, SERVICE_VISE,
+      assertVerifierVIdeServiceWeb("keystore", identification, SERVICE_VISE,
             ID_APPLI, null, ALIAS, PASSWORD, crl);
 
    }
 
    @Test
    public void verifierVIdeServiceWebFailure_alias()
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("alias", IDENTIFICATION, SERVICE_VISE, ID_APPLI,
-            keystore, null, PASSWORD, crl);
+      assertVerifierVIdeServiceWeb("alias", identification, SERVICE_VISE,
+            ID_APPLI, keystore, null, PASSWORD, crl);
 
    }
 
    @Test
    public void verifierVIdeServiceWebFailure_password()
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("password", IDENTIFICATION, SERVICE_VISE,
+      assertVerifierVIdeServiceWeb("password", identification, SERVICE_VISE,
             ID_APPLI, keystore, ALIAS, null, crl);
 
    }
 
-   private void assertVerifierVIdeServiceWeb(String param, String identification,
-         URI serviceVise, String idAppliClient, KeyStore keystore,
-         String alias, String password, List<X509CRL> crl)
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+   private void assertVerifierVIdeServiceWeb(String param,
+         Element identification, URI serviceVise, String idAppliClient,
+         KeyStore keystore, String alias, String password, List<X509CRL> crl)
+         throws VIVerificationException {
 
       try {
          service.verifierVIdeServiceWeb(identification, serviceVise,
@@ -236,7 +228,7 @@ public class WebServiceVIServiceValidateTest {
 
    @Test
    public void verifierVIdeServiceWebFailure_crl()
-         throws VIFormatTechniqueException, VISignatureException, VIInvalideException, VIAppliClientException, VINivAuthException, VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
       assertVerifierVIdeServiceWebFailure_crl(null);
       List<X509CRL> crl = new ArrayList<X509CRL>();
@@ -248,11 +240,11 @@ public class WebServiceVIServiceValidateTest {
    }
 
    private void assertVerifierVIdeServiceWebFailure_crl(List<X509CRL> crl)
-         throws VIFormatTechniqueException, VISignatureException, VIInvalideException, VIAppliClientException, VINivAuthException, VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
       try {
-         service.verifierVIdeServiceWeb(IDENTIFICATION, SERVICE_VISE,
-               ID_APPLI, keystore, ALIAS, PASSWORD, crl);
+         service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ID_APPLI,
+               keystore, ALIAS, PASSWORD, crl);
          fail(FAIL_MESSAGE);
       } catch (IllegalArgumentException e) {
 

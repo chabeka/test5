@@ -19,9 +19,7 @@ import org.apache.axis2.handlers.AbstractHandler;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ws.security.WSConstants;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
-import fr.urssaf.image.sae.saml.util.XMLUtils;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
@@ -55,7 +53,7 @@ public class SamlTokenHandler extends AbstractHandler {
 
    private static String password;
 
-   private static final String ISSUER = "TEST_SERVICES_WEB_SAE";
+   private static final String ISSUER = "urn:ISSUER_NON_RENSEIGNE";
 
    static {
       password = "hiUnk6O3QnRN";
@@ -107,7 +105,7 @@ public class SamlTokenHandler extends AbstractHandler {
 
       if (CollectionUtils.isNotEmpty(roles)) {
 
-         String token = this.viService.creerVIpourServiceWeb(roles, ISSUER,
+         Element token = this.viService.creerVIpourServiceWeb(roles, ISSUER,
                null, keystore, alias, password);
 
          SOAPHeader header = msgCtx.getEnvelope().getHeader();
@@ -116,12 +114,10 @@ public class SamlTokenHandler extends AbstractHandler {
                WSConstants.WSSE_NS, "Security"));
 
          try {
-            Element element = XMLUtils.parse(token);
+            //Element element = XMLUtils.parse(token);
 
-            security.addChild(org.apache.axis2.util.XMLUtils.toOM(element));
+            security.addChild(org.apache.axis2.util.XMLUtils.toOM(token));
 
-         } catch (SAXException e) {
-            throw new IllegalStateException(e);
          } catch (Exception e) {
             throw new IllegalStateException(e);
          }

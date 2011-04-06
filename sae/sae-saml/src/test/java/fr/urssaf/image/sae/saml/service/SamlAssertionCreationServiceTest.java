@@ -54,7 +54,7 @@ public class SamlAssertionCreationServiceTest {
 
    private SamlAssertionParams params;
 
-   private String assertion;
+   private Element assertion;
 
    @Before
    public void before() throws URISyntaxException, KeyStoreException,
@@ -93,17 +93,17 @@ public class SamlAssertionCreationServiceTest {
    public void after() throws SAXException, SamlFormatException,
          SamlSignatureException {
 
-      LOG.debug("\n" + assertion);
+      // LOG.debug("\n" + assertion);
 
       validationService.verifierAssertion(assertion, keystore, alias, null);
 
-      Element element = XMLUtils.parse(assertion);
+      // Element element = XMLUtils.parse(assertion);
       Transformer transformer = XMLUtils.initTransformer();
       transformer.setOutputProperty(OutputKeys.INDENT, "yes");
       transformer.setOutputProperty(
             "{http://xml.apache.org/xslt}indent-amount", "4");
 
-      LOG.debug("\n" + XMLUtils.print(element, "UTF-8", transformer));
+      LOG.debug("\n" + XMLUtils.print(assertion, "UTF-8", transformer));
    }
 
    /**
@@ -139,5 +139,5 @@ public class SamlAssertionCreationServiceTest {
       assertion = service.genererAssertion(params, keystore, alias, PASSWORD);
 
    }
-  
+
 }

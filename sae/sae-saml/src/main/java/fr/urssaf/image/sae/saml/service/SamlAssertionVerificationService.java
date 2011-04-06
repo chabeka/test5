@@ -8,14 +8,12 @@ import java.util.List;
 
 import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
 import fr.urssaf.image.sae.saml.opensaml.SamlAssertionService;
 import fr.urssaf.image.sae.saml.opensaml.service.SamlXML;
 import fr.urssaf.image.sae.saml.util.SecurityUtil;
-import fr.urssaf.image.sae.saml.util.XMLUtils;
 
 /**
  * Vérification technique d'une assertion SAML 2.0 signée électroniquement<br>
@@ -64,15 +62,13 @@ public class SamlAssertionVerificationService {
     *            Lorsque la signature électronique de l'assertion n'est pas
     *            valide
     */
-   public final void verifierAssertion(String assertionSaml, KeyStore keystore,
-         String alias, List<X509CRL> crl) throws SamlFormatException,
-         SamlSignatureException {
+   public final void verifierAssertion(Element assertionSaml,
+         KeyStore keystore, String alias, List<X509CRL> crl)
+         throws SamlFormatException, SamlSignatureException {
 
       try {
 
-         Element element = XMLUtils.parse(assertionSaml);
-
-         Assertion assertion = (Assertion) SamlXML.unmarshaller(element);
+         Assertion assertion = (Assertion) SamlXML.unmarshaller(assertionSaml);
 
          assertionService.validate(assertion);
 
@@ -81,8 +77,6 @@ public class SamlAssertionVerificationService {
 
          assertionService.validate(assertion, x509Certificate);
 
-      } catch (SAXException e) {
-         throw new SamlFormatException(e);
       } catch (KeyStoreException e) {
          throw new SamlSignatureException(e);
       }

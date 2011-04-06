@@ -121,12 +121,21 @@
 
    <dependencies>
 
-      <!--  SAE SAML -->
+      <!--  SAE VI -->
 
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-saml</artifactId>
+         <artifactId>sae-vi</artifactId>
          <version>0.0.1-SNAPSHOT</version>
+         <exclusions>
+
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-log4j12</artifactId>
+            </exclusion>
+
+         </exclusions>
+
       </dependency>
 
       <!--  AXIS 2 -->
@@ -186,12 +195,11 @@
          <exclusions>
 
             <exclusion>
-               <groupId>org.slf4j</groupId>
-               <artifactId>slf4j-api</artifactId>
+               <groupId>commons-lang</groupId>
+               <artifactId>commons-lang</artifactId>
             </exclusion>
 
          </exclusions>
-
       </dependency>
 
 

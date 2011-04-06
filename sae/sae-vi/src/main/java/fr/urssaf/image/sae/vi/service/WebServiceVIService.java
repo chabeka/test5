@@ -4,32 +4,19 @@ import java.net.URI;
 import java.security.KeyStore;
 import java.security.cert.X509CRL;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrSubstitutor;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
-import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
-import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
-import fr.urssaf.image.sae.vi.exception.VIAppliClientException;
-import fr.urssaf.image.sae.vi.exception.VIFormatTechniqueException;
-import fr.urssaf.image.sae.vi.exception.VIInvalideException;
-import fr.urssaf.image.sae.vi.exception.VINivAuthException;
-import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
-import fr.urssaf.image.sae.vi.exception.VIServiceIncorrectException;
-import fr.urssaf.image.sae.vi.exception.VISignatureException;
+import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
 
 /**
@@ -43,7 +30,6 @@ import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
  * <ul>
  * <li>{@link SamlAssertionCreationService}</li>
  * <li>{@link SamlAssertionExtractionService}</li>
- * <li>{@link SamlAssertionVerificationService}</li>
  * </ul>
  * <br>
  * <br>
@@ -55,23 +41,21 @@ public class WebServiceVIService {
 
    private final SamlAssertionCreationService createService;
    private final SamlAssertionExtractionService extractService;
-   private final SamlAssertionVerificationService checkService;
-
-   private static final String DATE_PATTERN = "dd/MM/yyyy HH:mm:ss";
-
-   private static final URI METHOD_AUTH2 = ConverterUtils
-         .uri("urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified");
+   
+   private final WebServiceVIValidateService validateService;
 
    /**
     * instanciation de {@link SamlAssertionCreationService}<br>
     * instanciation de {@link SamlAssertionExtractionService}<br>
-    * instanciation de {@link SamlAssertionVerificationService}<br>
+    * instanciation de {@link WebServiceVIValidateService}<br>
     * 
     */
    public WebServiceVIService() {
       createService = new SamlAssertionCreationService();
       extractService = new SamlAssertionExtractionService();
-      checkService = new SamlAssertionVerificationService();
+      
+      validateService = new WebServiceVIValidateService();
+
    }
 
    /**
@@ -105,7 +89,7 @@ public class WebServiceVIService {
     *           mot du de la clé privée
     * @return Le Vecteur d'Identification
     */
-   public final String creerVIpourServiceWeb(List<String> pagm, String issuer,
+   public final Element creerVIpourServiceWeb(List<String> pagm, String issuer,
          String idUtilisateur, KeyStore keystore, String alias, String password) {
 
       Date systemDate = new Date();
@@ -126,7 +110,7 @@ public class WebServiceVIService {
       assertionParams.setSubjectId2(subjectId2);
       assertionParams.setSubjectFormat2(ConverterUtils
             .uri("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"));
-      assertionParams.setMethodAuthn2(METHOD_AUTH2);
+      assertionParams.setMethodAuthn2(VIConfiguration.METHOD_AUTH2);
       assertionParams.setRecipient(ConverterUtils.uri("urn:URSSAF"));
 
       return createService.genererAssertion(assertionParams, keystore, alias,
@@ -138,19 +122,13 @@ public class WebServiceVIService {
     * Vérification d'un Vecteur d'Identification (VI) généré pour s'authentifier
     * auprès d'un service web du SAE<br>
     * <br>
-    * Les vérification sont :
+    * Les vérification sont faites dans
     * <ul>
-    * <li>vérification de la structure XML de l'assertion et de sa signature
-    * électronique</li>
-    * <li>vérification des valeurs transmises dans l'assertion :
-    * <ul>
-    * <li>date systeme postérieure à notOnBefore</li>
-    * <li>date systeme strictement antérieure à notOnOrAfte</li>
-    * <li>serviceVise identique à audience</li>
-    * <li>idAppliClient identique à issuer</li>
-    * <li>methodAuthn2</li>
-    * <li>PAGM</li>
-    * </ul>
+    * <li>
+    * {@link WebServiceVIValidateService#validate(SamlAssertionData, URI, String, Date)}
+    * </li>
+    * <li>
+    * {@link WebServiceVIValidateService#validate(Element, KeyStore, String, String, List)}
     * </li>
     * </ul>
     * 
@@ -174,45 +152,22 @@ public class WebServiceVIService {
     * @return Des valeurs extraits du VI qui peuvent être exploités pour mettre
     *         en place un contexte de sécurité basé sur l’authentification,
     *         et/ou pour de la traçabilité
-    * @throws VIFormatTechniqueException
-    *            Une erreur technique sur le format du VI a été détectée
-    * @throws VISignatureException
-    *            La signature électronique du VI est incorrecte
-    * @throws VIInvalideException
-    *            Le VI est invalide
-    * @throws VIAppliClientException
-    *            Le service visé ne correspond pas au service indiqué dans
-    *            l'assertion
-    * @throws VINivAuthException
-    *            Le niveau d'authentification initial n'est pas conforme au
-    *            contrat d'interopérabilité
-    * @throws VIPagmIncorrectException
-    *            Le ou les PAGM présents dans le VI sont invalides
-    * @throws VIServiceIncorrectException
-    *            Le service visé ne correspond pas au service indiqué dans
-    *            l'assertion
+    * @throws VIVerificationException
+    *            Les informations extraites du VI sont invalides
     */
-   public final VIContenuExtrait verifierVIdeServiceWeb(String identification,
+   public final VIContenuExtrait verifierVIdeServiceWeb(Element identification,
          URI serviceVise, String idAppliClient, KeyStore keystore,
          String alias, String password, List<X509CRL> crl)
-         throws VIFormatTechniqueException, VISignatureException,
-         VIInvalideException, VIAppliClientException, VINivAuthException,
-         VIPagmIncorrectException, VIServiceIncorrectException {
+         throws VIVerificationException {
 
       // vérification du jeton SAML
-      try {
-         checkService.verifierAssertion(identification, keystore, alias, crl);
-      } catch (SamlFormatException e) {
-         throw new VIFormatTechniqueException(e);
-      } catch (SamlSignatureException e) {
-         throw new VISignatureException(e);
-      }
+      validateService.validate(identification, keystore, alias, password, crl);
 
       // extraction du jeton SAML
       SamlAssertionData data = extractService.extraitDonnees(identification);
 
       // vérification supplémentaires sur le jeton SAML
-      this.validate(data, serviceVise, idAppliClient, new Date());
+      validateService.validate(data, serviceVise, idAppliClient, new Date());
 
       // instanciation de la valeur retour
       VIContenuExtrait extrait = new VIContenuExtrait();
@@ -223,72 +178,4 @@ public class WebServiceVIService {
       return extrait;
    }
 
-   protected final void validate(SamlAssertionData data, URI serviceVise,
-         String idAppliClient, Date systemDate) throws VIInvalideException,
-         VIAppliClientException, VINivAuthException, VIPagmIncorrectException,
-         VIServiceIncorrectException {
-
-      // la date systeme doit être postérieure à NotOnBefore
-      Date notOnBefore = data.getAssertionParams().getCommonsParams()
-            .getNotOnBefore();
-
-      if (systemDate.compareTo(notOnBefore) < 0) {
-
-         Map<String, String> args = new HashMap<String, String>();
-         args.put("0", DateFormatUtils.format(notOnBefore, DATE_PATTERN));
-         args.put("1", DateFormatUtils.format(systemDate, DATE_PATTERN));
-
-         String message = "L'assertion n'est pas encore valable: elle ne sera active qu'à partir de ${0} alors que nous sommes le ${1}";
-
-         throw new VIInvalideException(StrSubstitutor.replace(message, args));
-      }
-
-      // la date systeme doit être strictement antérieure à NotOnOrAfter
-      Date notOnOrAfter = data.getAssertionParams().getCommonsParams()
-            .getNotOnOrAfter();
-      if (systemDate.compareTo(notOnOrAfter) >= 0) {
-
-         Map<String, String> args = new HashMap<String, String>();
-         args.put("0", DateFormatUtils.format(notOnOrAfter, DATE_PATTERN));
-         args.put("1", DateFormatUtils.format(systemDate, DATE_PATTERN));
-
-         String message = "L'assertion a expirée : elle n'était valable que jusqu’au ${0}, hors nous sommes le ${1}";
-
-         throw new VIInvalideException(StrSubstitutor.replace(message, args));
-
-      }
-
-      // serviceVise doit être égal à Audience
-
-      if (!serviceVise.equals(data.getAssertionParams().getCommonsParams()
-            .getAudience())) {
-
-         throw new VIServiceIncorrectException(serviceVise, data
-               .getAssertionParams().getCommonsParams().getAudience());
-      }
-
-      // idAppliClient doit être égal à Issuer
-      if (!idAppliClient.equals(data.getAssertionParams().getCommonsParams()
-            .getIssuer())) {
-
-         throw new VIAppliClientException(data.getAssertionParams()
-               .getCommonsParams().getIssuer());
-      }
-
-      // MethodAuth2 doit être égal à
-      // 'urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified'
-      if (!METHOD_AUTH2.equals(data.getAssertionParams().getMethodAuthn2())) {
-
-         throw new VINivAuthException(data.getAssertionParams()
-               .getMethodAuthn2());
-      }
-
-      // les PAGMS doivent exister
-      // TODO vérification des PAGM
-      if (CollectionUtils.isEmpty(data.getAssertionParams().getCommonsParams()
-            .getPagm())) {
-
-         throw new VIPagmIncorrectException();
-      }
-   }
 }

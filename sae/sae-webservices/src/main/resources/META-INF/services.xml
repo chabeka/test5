@@ -44,8 +44,8 @@
          <parameter name="InflowSecurity">
             <action>
                <items>UsernameToken</items>
-               <passwordCallbackClass>fr.urssaf.image.sae.webservices.security.PasswordCallbackHandler
-            </passwordCallbackClass>
+               <passwordCallbackClass>fr.urssaf.image.sae.webservices.security.ws.PasswordCallbackHandler
+               </passwordCallbackClass>
             </action>
          </parameter>
       </operation>

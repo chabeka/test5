@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.webservices.security;
+package fr.urssaf.image.sae.webservices.security.ws;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,8 +7,8 @@ import java.util.Map;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
+
 import org.apache.ws.security.WSPasswordCallback;
-import org.springframework.stereotype.Component;
 
 /**
  * Paramétrage du UsernameToken de WS-security<br>
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
  * </pre>
  * 
  */
-@Component
 public class PasswordCallbackHandler implements CallbackHandler {
 
    private final Map<String, String> passwords = new HashMap<String, String>();

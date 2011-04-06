@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Vector;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -14,16 +13,12 @@ import org.apache.axiom.om.util.StAXUtils;
 import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
-import org.apache.ws.security.WSSecurityEngineResult;
-import org.apache.ws.security.WSUsernameTokenPrincipal;
-import org.apache.ws.security.handler.WSHandlerConstants;
-import org.apache.ws.security.handler.WSHandlerResult;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,17 +44,17 @@ public class SaeServiceSkeletonTest {
       ctx = new MessageContext();
       MessageContext.setCurrentMessageContext(ctx);
 
-      Vector<Object> values = new Vector<Object>();
-      Vector<Object> wsResults = new Vector<Object>();
-      WSUsernameTokenPrincipal principal = new WSUsernameTokenPrincipal(
-            "name_test", false);
-      principal.setPassword("password_test");
-      WSSecurityEngineResult engineResult = new WSSecurityEngineResult(0,
-            principal, null, null, null);
-      wsResults.add(engineResult);
-      WSHandlerResult handlerResult = new WSHandlerResult(null, wsResults);
-      values.add(handlerResult);
-      ctx.setProperty(WSHandlerConstants.RECV_RESULTS, values);
+      // Vector<Object> values = new Vector<Object>();
+      // Vector<Object> wsResults = new Vector<Object>();
+      // WSUsernameTokenPrincipal principal = new WSUsernameTokenPrincipal(
+      // "name_test", false);
+      // principal.setPassword("password_test");
+      // WSSecurityEngineResult engineResult = new WSSecurityEngineResult(0,
+      // principal, null, null, null);
+      // wsResults.add(engineResult);
+      // WSHandlerResult handlerResult = new WSHandlerResult(null, wsResults);
+      // values.add(handlerResult);
+      // ctx.setProperty(WSHandlerConstants.RECV_RESULTS, values);
 
    }
 
@@ -97,9 +92,9 @@ public class SaeServiceSkeletonTest {
             response.getPingString());
    }
 
-   @Test(expected = AuthenticationCredentialsNotFoundException.class)
-   public void pingSecure_failure() throws AxisFault, FileNotFoundException,
-         OMException, XMLStreamException {
+   @Test(expected = AccessDeniedException.class)
+   public void pingSecure_failure_accessDenied() throws AxisFault,
+         FileNotFoundException, OMException, XMLStreamException {
 
       this.init("src/test/resources/request/pingsecure_failure.xml");
 

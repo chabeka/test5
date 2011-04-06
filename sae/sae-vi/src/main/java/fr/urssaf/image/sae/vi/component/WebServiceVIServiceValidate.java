@@ -13,6 +13,7 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.util.ListUtils;
 import fr.urssaf.image.sae.vi.util.FilterUtils;
@@ -109,7 +110,7 @@ public class WebServiceVIServiceValidate {
    public final void verifierVIdeServiceWeb(JoinPoint joinPoint) {
 
       // récupération des paramétres
-      String identification = (String) joinPoint.getArgs()[0];
+      Element identification = (Element) joinPoint.getArgs()[0];
       URI serviceVise = (URI) joinPoint.getArgs()[1];
       String idAppliClient = (String) joinPoint.getArgs()[2];
       KeyStore keystore = (KeyStore) joinPoint.getArgs()[INDEX_3];

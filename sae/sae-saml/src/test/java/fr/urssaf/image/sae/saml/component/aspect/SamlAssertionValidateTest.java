@@ -13,9 +13,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
@@ -25,11 +31,9 @@ import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 
-@SuppressWarnings({
-   "PMD.MethodNamingConventions",
-   "PMD.JUnitAssertionsShouldIncludeMessage",
-   "PMD.TooManyMethods" +
-   "PMD.AvoidDuplicateLiterals"})
+@SuppressWarnings( { "PMD.MethodNamingConventions",
+      "PMD.JUnitAssertionsShouldIncludeMessage",
+      "PMD.TooManyMethods" + "PMD.AvoidDuplicateLiterals" })
 public class SamlAssertionValidateTest {
 
    private static SamlAssertionCreationService service;
@@ -42,13 +46,20 @@ public class SamlAssertionValidateTest {
 
    private static final String PASSWORD = "passowrd";
 
-   private static final String SAML = "saml";
-   
+   private static Element saml;
+
    @BeforeClass
-   public static void beforeClass() {
+   public static void beforeClass() throws ParserConfigurationException {
       service = createMock(SamlAssertionCreationService.class);
       readService = createMock(SamlAssertionExtractionService.class);
       checkService = createMock(SamlAssertionVerificationService.class);
+
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document document = builder.newDocument();
+      saml = document.createElement("test");
+
    }
 
    private SamlAssertionParams assertionParams;
@@ -288,7 +299,7 @@ public class SamlAssertionValidateTest {
    public void extraitDonneesFailure_assertionSaml() {
 
       try {
-         readService.extraitDonnees(" ");
+         readService.extraitDonnees(null);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
 
@@ -313,7 +324,7 @@ public class SamlAssertionValidateTest {
          SamlSignatureException {
 
       try {
-         checkService.verifierAssertion(SAML, null, ALIAS, null);
+         checkService.verifierAssertion(saml, null, ALIAS, null);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
          assertEquals(getEmptyMessage("keystore"), e.getMessage());
@@ -325,7 +336,7 @@ public class SamlAssertionValidateTest {
          SamlSignatureException {
 
       try {
-         checkService.verifierAssertion(SAML, keystore, null, null);
+         checkService.verifierAssertion(saml, keystore, null, null);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
          assertEquals(getEmptyMessage("alias"), e.getMessage());

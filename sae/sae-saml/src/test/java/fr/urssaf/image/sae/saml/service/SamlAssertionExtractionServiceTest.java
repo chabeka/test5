@@ -14,13 +14,16 @@ import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xml.sax.SAXParseException;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
+import fr.urssaf.image.sae.saml.util.XMLUtils;
 
-@SuppressWarnings({"PMD.MethodNamingConventions","PMD.JUnitAssertionsShouldIncludeMessage"})
+@SuppressWarnings( { "PMD.MethodNamingConventions",
+      "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class SamlAssertionExtractionServiceTest {
 
    private static SamlAssertionExtractionService service;
@@ -33,10 +36,9 @@ public class SamlAssertionExtractionServiceTest {
    }
 
    @Test
-   public void extraitDonnees_success() throws IOException {
+   public void extraitDonnees_success() throws IOException, SAXException {
 
-      File file = new File("src/test/resources/saml/saml_success.xml");
-      String assertionSaml = FileUtils.readFileToString(file, "UTF-8");
+      Element assertionSaml = parse("src/test/resources/saml/saml_success.xml");
 
       SamlAssertionData data = service.extraitDonnees(assertionSaml);
 
@@ -65,18 +67,18 @@ public class SamlAssertionExtractionServiceTest {
             ","));
 
    }
-   
-   @Test
-   public void extraitDonnees_success_issuer_empty() throws IOException {
 
-      File file = new File("src/test/resources/saml/saml_extraction.xml");
-      String assertionSaml = FileUtils.readFileToString(file, "UTF-8");
+   @Test
+   public void extraitDonnees_success_issuer_empty() throws IOException,
+         SAXException {
+
+      Element assertionSaml = parse("src/test/resources/saml/saml_extraction.xml");
 
       SamlAssertionData data = service.extraitDonnees(assertionSaml);
 
       SamlAssertionParams params = data.getAssertionParams();
       SamlCommonsParams commons = params.getCommonsParams();
-     
+
       assertNull("urn:interops:73282932000074:idp:test:version", commons
             .getIssuer());
       assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(commons.getPagm(),
@@ -85,23 +87,10 @@ public class SamlAssertionExtractionServiceTest {
    }
 
    @Test
-   public void extraitDonnees_failure_SAXException() {
+   public void extraitDonnees_failure_ID() throws IOException, SAXException {
 
-      try {
-         service.extraitDonnees("aaa");
-         fail(FAIL_MESSAGE);
-      } catch (IllegalStateException e) {
-
-         assertEquals(SAXParseException.class, e.getCause().getClass());
-      }
-
-   }
-
-   @Test
-   public void extraitDonnees_failure_ID() throws IOException {
-
-      File file = new File("src/test/resources/saml/saml_failure_ID.xml");
-      String assertionSaml = FileUtils.readFileToString(file, "UTF-8");
+      Element assertionSaml = parse("src/test/resources/saml/saml_failure_ID.xml");
+    
       try {
          service.extraitDonnees(assertionSaml);
          fail(FAIL_MESSAGE);
@@ -109,6 +98,13 @@ public class SamlAssertionExtractionServiceTest {
 
          assertEquals("Invalid UUID string: bad id", e.getMessage());
       }
+
+   }
+
+   private Element parse(String xml) throws SAXException, IOException {
+
+      File file = new File(xml);
+      return XMLUtils.parse(FileUtils.readFileToString(file, "UTF-8"));
 
    }
 

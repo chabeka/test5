@@ -9,8 +9,6 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.xml.transform.Transformer;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.opensaml.saml2.core.Assertion;
@@ -21,7 +19,6 @@ import fr.urssaf.image.sae.saml.opensaml.SamlAssertionService;
 import fr.urssaf.image.sae.saml.opensaml.service.SamlXML;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.util.SecurityUtil;
-import fr.urssaf.image.sae.saml.util.XMLUtils;
 
 /**
  * Génération d'une assertion SAML 2.0 signée électroniquement<br>
@@ -93,7 +90,7 @@ public class SamlAssertionCreationService {
     *           mot du de la clé privée
     * @return L'assertion SAML 2.0 signée électroniquement
     */
-   public final String genererAssertion(SamlAssertionParams assertionParams,
+   public final Element genererAssertion(SamlAssertionParams assertionParams,
          KeyStore keyStore, String alias, String password) {
 
       // GENERATION DU JETON SAML
@@ -108,9 +105,7 @@ public class SamlAssertionCreationService {
       // IMPRESSION DU JETON
       Element element = SamlXML.marshaller(assertion);
 
-      // inutile de out.close() car la méthode ne fait rien pour
-
-      return print(element);
+      return element;
 
    }
 
@@ -162,19 +157,5 @@ public class SamlAssertionCreationService {
       }
    }
 
-   private String print(Element element) {
-
-      Transformer transformer = XMLUtils.initTransformer();
-      // transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
-      // "no");
-      // transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-      // transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      // transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-      // transformer.setOutputProperty(
-      // "{http://xml.apache.org/xslt}indent-amount", "4");
-
-      return XMLUtils.print(element, "UTF-8", transformer);
-
-   }
 
 }

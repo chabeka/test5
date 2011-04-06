@@ -22,7 +22,7 @@ public class SaeServiceImpl implements SaeService {
 
    /**
     * roles autorisés: 'ROLE_TOUS'<br>
-    * 
+    * {@inheritDoc}
     */
    @RolesAllowed("ROLE_TOUS")
    @Override
