@@ -159,7 +159,7 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("identification", null, SERVICE_VISE,
-            ID_APPLI, keystore, ALIAS, PASSWORD, crl);
+            ID_APPLI, keystore, crl);
 
    }
 
@@ -168,7 +168,7 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("serviceVise", identification, null,
-            ID_APPLI, keystore, ALIAS, PASSWORD, crl);
+            ID_APPLI, keystore, crl);
 
    }
 
@@ -177,7 +177,7 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("idAppliClient", identification,
-            SERVICE_VISE, null, keystore, ALIAS, PASSWORD, crl);
+            SERVICE_VISE, null, keystore, crl);
 
    }
 
@@ -186,36 +186,23 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("keystore", identification, SERVICE_VISE,
-            ID_APPLI, null, ALIAS, PASSWORD, crl);
+            ID_APPLI, null, crl);
 
    }
 
-   @Test
-   public void verifierVIdeServiceWebFailure_alias()
-         throws VIVerificationException {
-
-      assertVerifierVIdeServiceWeb("alias", identification, SERVICE_VISE,
-            ID_APPLI, keystore, null, PASSWORD, crl);
-
-   }
-
-   @Test
-   public void verifierVIdeServiceWebFailure_password()
-         throws VIVerificationException {
-
-      assertVerifierVIdeServiceWeb("password", identification, SERVICE_VISE,
-            ID_APPLI, keystore, ALIAS, null, crl);
-
-   }
-
-   private void assertVerifierVIdeServiceWeb(String param,
-         Element identification, URI serviceVise, String idAppliClient,
-         KeyStore keystore, String alias, String password, List<X509CRL> crl)
-         throws VIVerificationException {
+   private void assertVerifierVIdeServiceWeb(
+         String param,
+         Element identification, 
+         URI serviceVise, 
+         String idAppliClient,
+         KeyStore keystore, 
+         List<X509CRL> crl)
+      throws 
+         VIVerificationException {
 
       try {
          service.verifierVIdeServiceWeb(identification, serviceVise,
-               idAppliClient, keystore, alias, password, crl);
+               idAppliClient, keystore, crl);
          fail(FAIL_MESSAGE);
       } catch (IllegalArgumentException e) {
 
@@ -244,7 +231,7 @@ public class WebServiceVIServiceValidateTest {
 
       try {
          service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ID_APPLI,
-               keystore, ALIAS, PASSWORD, crl);
+               keystore, crl);
          fail(FAIL_MESSAGE);
       } catch (IllegalArgumentException e) {
 

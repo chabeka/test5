@@ -11,9 +11,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -23,10 +20,11 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
+import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
-import fr.urssaf.image.sae.saml.util.XMLUtils;
+import fr.urssaf.image.sae.saml.testutils.KeyStoreFactory;
+import fr.urssaf.image.sae.saml.testutils.TuUtils;
 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SamlAssertionCreationServiceTest {
@@ -93,17 +91,10 @@ public class SamlAssertionCreationServiceTest {
    public void after() throws SAXException, SamlFormatException,
          SamlSignatureException {
 
-      // LOG.debug("\n" + assertion);
+      validationService.verifierAssertion(assertion, keystore, null);
 
-      validationService.verifierAssertion(assertion, keystore, alias, null);
-
-      // Element element = XMLUtils.parse(assertion);
-      Transformer transformer = XMLUtils.initTransformer();
-      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-      transformer.setOutputProperty(
-            "{http://xml.apache.org/xslt}indent-amount", "4");
-
-      LOG.debug("\n" + XMLUtils.print(assertion, "UTF-8", transformer));
+      TuUtils.debugAssertion(LOG, assertion);
+      
    }
 
    /**

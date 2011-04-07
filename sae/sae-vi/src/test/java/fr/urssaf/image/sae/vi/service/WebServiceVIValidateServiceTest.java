@@ -78,17 +78,12 @@ public class WebServiceVIValidateServiceTest {
 
    private KeyStore keystore;
 
-   private String alias;
-
-   private String password;
-
    @Before
    public void before() throws KeyStoreException, NoSuchAlgorithmException,
          CertificateException, IOException {
 
       keystore = KeyStoreFactory.createKeystore();
-      alias = keystore.aliases().nextElement();
-      password = "hiUnk6O3QnRN";
+
    }
 
    private void assertVIVerificationException(String faultCode,
@@ -245,7 +240,7 @@ public class WebServiceVIValidateServiceTest {
 
       Element identification = XMLUtils.parse("src/test/resources/webservice/vi_success.xml");
 
-      service.validate(identification, keystore, alias, password, crl);
+      service.validate(identification, keystore, crl);
 
    }
 
@@ -256,7 +251,7 @@ public class WebServiceVIValidateServiceTest {
       Element identification = XMLUtils.parse("src/test/resources/webservice/vi_failure_format.xml");
 
       try {
-         service.validate(identification, keystore, alias, password, crl);
+         service.validate(identification, keystore, crl);
          fail(FAIL_MESSAGE);
       } catch (VIFormatTechniqueException e) {
 
@@ -273,7 +268,7 @@ public class WebServiceVIValidateServiceTest {
       Element identification = XMLUtils.parse("src/test/resources/webservice/vi_failure_sign.xml");
 
       try {
-         service.validate(identification, keystore, alias, password, crl);
+         service.validate(identification, keystore, crl);
          fail(FAIL_MESSAGE);
       } catch (VISignatureException exception) {
 

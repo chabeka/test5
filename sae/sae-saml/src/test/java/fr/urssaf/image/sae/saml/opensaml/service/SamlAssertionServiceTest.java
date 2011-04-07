@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.saml.opensaml;
+package fr.urssaf.image.sae.saml.opensaml.service;
 
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
@@ -7,7 +7,7 @@ import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Issuer;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlCoreService;
+
 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SamlAssertionServiceTest {

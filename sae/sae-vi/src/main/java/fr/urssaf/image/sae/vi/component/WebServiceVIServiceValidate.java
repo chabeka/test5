@@ -43,8 +43,6 @@ public class WebServiceVIServiceValidate {
 
    private static final int INDEX_5 = 5;
 
-   private static final int INDEX_6 = 6;
-
    /**
     * Vérification des paramètres d'entrée de la méthode
     * {@link fr.urssaf.image.sae.vi.service.WebServiceVIService#creerVIpourServiceWeb}
@@ -114,10 +112,8 @@ public class WebServiceVIServiceValidate {
       URI serviceVise = (URI) joinPoint.getArgs()[1];
       String idAppliClient = (String) joinPoint.getArgs()[2];
       KeyStore keystore = (KeyStore) joinPoint.getArgs()[INDEX_3];
-      String alias = (String) joinPoint.getArgs()[INDEX_4];
-      String password = (String) joinPoint.getArgs()[INDEX_5];
       @SuppressWarnings("unchecked")
-      List<X509CRL> crl = (List<X509CRL>) joinPoint.getArgs()[INDEX_6];
+      List<X509CRL> crl = (List<X509CRL>) joinPoint.getArgs()[INDEX_4];
 
       // identification not null
       notNullValidate(identification, "identification");
@@ -130,12 +126,6 @@ public class WebServiceVIServiceValidate {
 
       // keystore not null
       notNullValidate(keystore, "keystore");
-
-      // alias
-      notNullValidate(alias, "alias");
-
-      // password
-      notNullValidate(password, "password");
 
       // au moins un crl doit exister
       if (CollectionUtils.isEmpty(FilterUtils.filter(crl))) {

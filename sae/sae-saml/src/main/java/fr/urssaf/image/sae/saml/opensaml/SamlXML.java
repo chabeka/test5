@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.saml.opensaml.service;
+package fr.urssaf.image.sae.saml.opensaml;
 
 import javax.xml.namespace.QName;
 

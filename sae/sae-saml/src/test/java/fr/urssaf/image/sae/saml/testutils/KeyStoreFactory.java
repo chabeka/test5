@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.saml.service;
+package fr.urssaf.image.sae.saml.testutils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,13 +17,16 @@ public final class KeyStoreFactory {
 
    }
    
-   protected static KeyStore createKeystore() throws KeyStoreException,
+   
+   // CHECKSTYLE:OFF
+   public static KeyStore createKeystore() throws KeyStoreException,
          NoSuchAlgorithmException, CertificateException, IOException {
 
       return createKeystore("src/test/resources/Portail_Image.p12",
             "hiUnk6O3QnRN");
 
    }
+   // CHECKSTYLE:ON
 
    protected static KeyStore createKeystore(String file, String password)
          throws KeyStoreException, NoSuchAlgorithmException,

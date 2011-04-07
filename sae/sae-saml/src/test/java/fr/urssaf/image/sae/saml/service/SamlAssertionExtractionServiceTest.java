@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
+import javax.security.auth.x500.X500Principal;
+
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.junit.BeforeClass;
@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
-import fr.urssaf.image.sae.saml.util.XMLUtils;
+import fr.urssaf.image.sae.saml.testutils.TuUtils;
 
 @SuppressWarnings( { "PMD.MethodNamingConventions",
       "PMD.JUnitAssertionsShouldIncludeMessage" })
@@ -36,9 +36,13 @@ public class SamlAssertionExtractionServiceTest {
    }
 
    @Test
-   public void extraitDonnees_success() throws IOException, SAXException {
+   public void extraitDonnees_success()
+      throws 
+         IOException, 
+         SAXException {
 
-      Element assertionSaml = parse("src/test/resources/saml/saml_success.xml");
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_success.xml");
 
       SamlAssertionData data = service.extraitDonnees(assertionSaml);
 
@@ -65,14 +69,26 @@ public class SamlAssertionExtractionServiceTest {
       assertDate("2010-03-21T12:50:01.152Z", commons.getNotOnOrAfter());
       assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(commons.getPagm(),
             ","));
+      
+      assertEquals(
+            "La clé publique récupérée est incorrecte : Le SubjectDN ne correspond pas",
+            "CN=Portail Image,OU=Applications,O=ACOSS,L=Paris,ST=France,C=FR",
+            data.getClePublique().getSubjectX500Principal().getName(X500Principal.RFC2253));
+      assertEquals(
+            "La clé publique récupérée est incorrecte : Le IssuerDN ne correspond pas",
+            "CN=AC Applications,O=ACOSS,L=Paris,ST=France,C=FR",
+            data.getClePublique().getIssuerX500Principal().getName(X500Principal.RFC2253));
 
    }
 
    @Test
-   public void extraitDonnees_success_issuer_empty() throws IOException,
+   public void extraitDonnees_success_issuer_empty()
+      throws
+         IOException,
          SAXException {
 
-      Element assertionSaml = parse("src/test/resources/saml/saml_extraction.xml");
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_extraction.xml");
 
       SamlAssertionData data = service.extraitDonnees(assertionSaml);
 
@@ -87,9 +103,13 @@ public class SamlAssertionExtractionServiceTest {
    }
 
    @Test
-   public void extraitDonnees_failure_ID() throws IOException, SAXException {
+   public void extraitDonnees_failure_ID()
+      throws 
+         IOException, 
+         SAXException {
 
-      Element assertionSaml = parse("src/test/resources/saml/saml_failure_ID.xml");
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_failure_ID.xml");
     
       try {
          service.extraitDonnees(assertionSaml);
@@ -98,13 +118,6 @@ public class SamlAssertionExtractionServiceTest {
 
          assertEquals("Invalid UUID string: bad id", e.getMessage());
       }
-
-   }
-
-   private Element parse(String xml) throws SAXException, IOException {
-
-      File file = new File(xml);
-      return XMLUtils.parse(FileUtils.readFileToString(file, "UTF-8"));
 
    }
 

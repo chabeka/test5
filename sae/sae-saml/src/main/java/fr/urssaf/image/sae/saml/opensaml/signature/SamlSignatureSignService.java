@@ -1,7 +1,6 @@
-package fr.urssaf.image.sae.saml.opensaml.service;
+package fr.urssaf.image.sae.saml.opensaml.signature;
 
 import org.opensaml.saml2.core.Assertion;
-import org.opensaml.security.SAMLSignatureProfileValidator;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.io.MarshallingException;
 import org.opensaml.xml.security.SecurityConfiguration;
@@ -15,20 +14,22 @@ import org.opensaml.xml.signature.KeyInfo;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.opensaml.xml.signature.SignatureException;
-import org.opensaml.xml.signature.SignatureValidator;
 import org.opensaml.xml.signature.Signer;
-import org.opensaml.xml.validation.ValidationException;
+
+import fr.urssaf.image.sae.saml.opensaml.SamlXML;
+
 
 /**
- * Classe de service pour la signature des jetons SAM 2.0L<br>
+ * Classe de service pour la signature des assertions SAML 2.0<br>
  * <br>
  * Le recours à cette classe nécessite une instanciation au préalable de
  * {@link SamlConfiguration}
  * 
  * 
  */
-public class SamlSignatureService {
+public class SamlSignatureSignService {
 
+   
    /**
     * Signature du jeton SAML<br>
     * <br>
@@ -42,17 +43,6 @@ public class SamlSignatureService {
     * tutorial pour l'implémentation d'une signature dans un jeton SAML <a href="https://spaces.internet2.edu/display/OpenSAML/OSTwoUserManJavaDSIG#OSTwoUserManJavaDSIG-SigningExamples"
     * />exemple de code</a><br>
     * <br>
-    * 
-    * <pre>
-    * exemple d'utilisation de cette méthode:
-    * 
-    * BasicX509Credential x509Credential = new BasicX509Credential();
-    * x509Credential.setEntityCertificate(x509Certificate);
-    * x509Credential.setPrivateKey(privatekey);
-    * x509Credential.setEntityCertificateChain(certs);
-    * 
-    * this.sign(assertion, x509Credential);
-    * </pre>
     * 
     * @param assertion
     *           jeton SAML à signer
@@ -115,48 +105,6 @@ public class SamlSignatureService {
       KeyInfo keyInfo = keyInfoGenerator.generate(credential);
       
       return keyInfo;
-   }
-
-   /**
-    * méthode de validation de la signature d'un jeton SAML<br>
-    * <br>
-    * tutorial pour la validation d'une signature <a href="https://spaces.internet2.edu/display/OpenSAML/OSTwoUserManJavaDSIG#OSTwoUserManJavaDSIG-VerifyingaSignaturewithaCredential"
-    * />tutorial</a>
-    * 
-    * <pre>
-    * exemple d'utilisation : 
-    * 
-    * //parsing d'un jeton SAML à partir d'une chaine de caractères
-    * Element element = XMLUtils.parse(assertionSaml);
-    * 
-    * //récupération d'un objet Assertion
-    * Assertion assertion = (Assertion) SamlXML.unmarshaller(element);
-    * 
-    * //récupération de l'objet x509Certificate pour de validation 
-    * //à partir d'un keystore par exemple
-    * X509Certificate x509Certificate = SecurityUtil.loadX509Certificate(
-    *                keystore, alias);
-    * //vérification de la signature
-    * this.validate(assertion, x509Certificate);
-    * </pre>
-    * 
-    * @param signature
-    *           signature du jeton SAML
-    * @param credential
-    *           contient les différents certificats nécessaire à la validation
-    *           de cette signature
-    * @throws ValidationException
-    *            la signature n'est pas valide
-    */
-   public final void validate(Signature signature, X509Credential credential)
-         throws ValidationException {
-
-      SignatureValidator validator = new SignatureValidator(credential);
-      SAMLSignatureProfileValidator profilvalidator = new SAMLSignatureProfileValidator();
-
-      profilvalidator.validate(signature);
-      validator.validate(signature);
-
    }
 
 }

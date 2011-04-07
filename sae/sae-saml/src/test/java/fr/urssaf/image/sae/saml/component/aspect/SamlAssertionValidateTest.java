@@ -24,16 +24,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
+import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 
-@SuppressWarnings( { "PMD.MethodNamingConventions",
-      "PMD.JUnitAssertionsShouldIncludeMessage",
-      "PMD.TooManyMethods" + "PMD.AvoidDuplicateLiterals" })
+@SuppressWarnings({
+   "PMD.MethodNamingConventions",
+   "PMD.JUnitAssertionsShouldIncludeMessage",
+   "PMD.TooManyMethods",
+   "PMD.AvoidDuplicateLiterals"})
 public class SamlAssertionValidateTest {
 
    private static SamlAssertionCreationService service;
@@ -198,12 +200,14 @@ public class SamlAssertionValidateTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void genererAssertionFailure_PAGM_null() throws URISyntaxException {
 
       genererAssertionFailure_PAGM(null);
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void genererAssertionFailure_PAGM_empty() throws URISyntaxException {
 
       List<String> pagm = Collections.emptyList();
@@ -212,6 +216,7 @@ public class SamlAssertionValidateTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void genererAssertionFailure_PAGM_blank() throws URISyntaxException {
 
       List<String> pagm = Arrays.asList(null, " ", "");
@@ -312,7 +317,7 @@ public class SamlAssertionValidateTest {
          throws SamlFormatException, SamlSignatureException {
 
       try {
-         checkService.verifierAssertion(null, keystore, ALIAS, null);
+         checkService.verifierAssertion(null, keystore, null);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
          assertEquals(getEmptyMessage("assertionSaml"), e.getMessage());
@@ -324,22 +329,10 @@ public class SamlAssertionValidateTest {
          SamlSignatureException {
 
       try {
-         checkService.verifierAssertion(saml, null, ALIAS, null);
+         checkService.verifierAssertion(saml, null, null);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
          assertEquals(getEmptyMessage("keystore"), e.getMessage());
-      }
-   }
-
-   @Test
-   public void verificaionSamlFailure_alias() throws SamlFormatException,
-         SamlSignatureException {
-
-      try {
-         checkService.verifierAssertion(saml, keystore, null, null);
-         fail("IllegalArgumentException attendue");
-      } catch (IllegalArgumentException e) {
-         assertEquals(getEmptyMessage("alias"), e.getMessage());
       }
    }
 

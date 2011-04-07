@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.vi.exception;
 
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
+import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
+
 
 /**
  * La signature électronique du VI est incorrecte

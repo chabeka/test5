@@ -7,7 +7,9 @@ package fr.urssaf.image.sae.saml.exception;
  */
 public class SamlFormatException extends SamlVerificationException {
 
-   private static final long serialVersionUID = 1L;
+   
+
+   private static final long serialVersionUID = 761219107158800805L;
 
    /**
     * 

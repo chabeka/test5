@@ -143,10 +143,6 @@ public class WebServiceVIService {
     *           Les certificats des autorités de certification qui sont
     *           reconnues pour être autorisées à délivrer des certificats de
     *           signature de VI, ainsi que leur chaîne de certification
-    * @param alias
-    *           L'alias de la clé privée du KeyStore
-    * @param password
-    *           mot du de la clé privée
     * @param crl
     *           Les CRL
     * @return Des valeurs extraits du VI qui peuvent être exploités pour mettre
@@ -155,13 +151,17 @@ public class WebServiceVIService {
     * @throws VIVerificationException
     *            Les informations extraites du VI sont invalides
     */
-   public final VIContenuExtrait verifierVIdeServiceWeb(Element identification,
-         URI serviceVise, String idAppliClient, KeyStore keystore,
-         String alias, String password, List<X509CRL> crl)
-         throws VIVerificationException {
+   public final VIContenuExtrait verifierVIdeServiceWeb(
+         Element identification,
+         URI serviceVise, 
+         String idAppliClient, 
+         KeyStore keystore,
+         List<X509CRL> crl)
+      throws 
+         VIVerificationException {
 
       // vérification du jeton SAML
-      validateService.validate(identification, keystore, alias, password, crl);
+      validateService.validate(identification, keystore, crl);
 
       // extraction du jeton SAML
       SamlAssertionData data = extractService.extraitDonnees(identification);

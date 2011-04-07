@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.cert.X509CRL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +33,6 @@ public class SecurityService {
    private final WebServiceVIService service;
 
    private final String password;
-
-   private final String alias;
 
    private final KeyStore keystore;
 
@@ -75,12 +72,6 @@ public class SecurityService {
       this.password = "hiUnk6O3QnRN";
 
       this.keystore = initKeystore(keystore, password);
-
-      try {
-         this.alias = this.keystore.aliases().nextElement();
-      } catch (KeyStoreException e) {
-         throw new IllegalStateException(e);
-      }
 
       try {
          this.serviceVise = new URI("http://sae.urssaf.fr");
@@ -144,7 +135,7 @@ public class SecurityService {
       VIContenuExtrait viExtrait;
 
       viExtrait = this.service.verifierVIdeServiceWeb(identification,
-            serviceVise, idAppliClient, keystore, alias, password, x509CRLs);
+            serviceVise, idAppliClient, keystore, x509CRLs);
 
       List<GrantedAuthority> authorities = AuthorityUtils
             .createAuthorityList(StringUtils.toStringArray(viExtrait.getPagm()));

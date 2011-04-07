@@ -1,8 +1,7 @@
-package fr.urssaf.image.sae.saml.opensaml;
+package fr.urssaf.image.sae.saml.opensaml.service;
 
 import java.net.URI;
 import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -17,16 +16,16 @@ import org.opensaml.saml2.core.Conditions;
 import org.opensaml.saml2.core.Issuer;
 import org.opensaml.saml2.core.Subject;
 import org.opensaml.xml.security.x509.BasicX509Credential;
-import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.ValidatorSuite;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlCoreService;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlSignatureService;
+import fr.urssaf.image.sae.saml.exception.SamlExtractionException;
+import fr.urssaf.image.sae.saml.exception.signature.keyinfo.SamlKeyInfoException;
+import fr.urssaf.image.sae.saml.opensaml.SamlConfiguration;
+import fr.urssaf.image.sae.saml.opensaml.signature.SamlSignatureSignService;
+import fr.urssaf.image.sae.saml.opensaml.signature.SamlSignatureUtils;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
@@ -35,26 +34,26 @@ import fr.urssaf.image.sae.saml.util.ConverterUtils;
  * Classe de service du jeton SAML 2.0 dans l'application<br>
  * <br>
  * Le recours à cette classe nécessite une instanciation au préalable de
- * {@link fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration}
+ * {@link fr.urssaf.image.sae.saml.opensaml.SamlConfiguration}
  * 
  */
 public class SamlAssertionService {
 
    private final SamlCoreService coreService;
 
-   private final SamlSignatureService signatureService;
+   private final SamlSignatureSignService signatureService;
 
    /**
     * instanciation de :
     * <ul>
     * <li>{@link SamlCoreService}: lecture/écriture du jeton SAML</li>
-    * <li>{@link SamlSignatureService} : écriture/vérification de la signature</li>
+    * <li>{@link SamlSignatureSignService} : écriture/vérification de la signature</li>
     * </ul>
     */
    public SamlAssertionService() {
       new SamlConfiguration();
       coreService = new SamlCoreService();
-      signatureService = new SamlSignatureService();
+      signatureService = new SamlSignatureSignService();
    }
 
    /**
@@ -212,11 +211,20 @@ public class SamlAssertionService {
       List<String> pagm = coreService.loadPagm(assertion);
       commonsParams.setPagm(pagm);
 
-      // initialisation de la clé publique
-      X509Certificate publicKey = coreService.loadPublicKey(assertion);
-      data.setClePublique(publicKey);
-
+      // Récupération de la clé publique
+      if (assertion.getSignature()==null) {
+         throw new SamlExtractionException("La signature est absente de l'assertion SAML");
+      }
+      java.security.cert.X509Certificate publicKeyNatif;
+      try {
+         publicKeyNatif = SamlSignatureUtils.getPublicKeyNatif(assertion.getSignature());
+         data.setClePublique(publicKeyNatif);
+      } catch (SamlKeyInfoException e) {
+         throw new SamlExtractionException(e);
+      }
+      
       return data;
+      
    }
 
    /**
@@ -273,8 +281,11 @@ public class SamlAssertionService {
     * @param certs
     *           chaines des certificats pour la signature du jeton
     */
-   public final void sign(Assertion assertion, X509Certificate x509Certificate,
-         PrivateKey privatekey, Collection<X509Certificate> certs) {
+   public final void sign(
+         Assertion assertion, 
+         java.security.cert.X509Certificate x509Certificate,
+         PrivateKey privatekey, 
+         Collection<java.security.cert.X509Certificate> certs) {
 
       BasicX509Credential x509Credential = new BasicX509Credential();
       x509Credential.setEntityCertificate(x509Certificate);
@@ -282,33 +293,6 @@ public class SamlAssertionService {
       x509Credential.setEntityCertificateChain(certs);
 
       signatureService.sign(assertion, x509Credential);
-   }
-
-   /**
-    * 
-    * Méthode pour la vérification d'un jeton SAML
-    * 
-    * @param assertion
-    *           jeton SAML contenant la signature à vérifier
-    * @param x509Certificate
-    *           certificat de vérification
-    * @throws SamlSignatureException
-    *            le signatures est invalide
-    */
-   public final void validate(Assertion assertion,
-         X509Certificate x509Certificate) throws SamlSignatureException {
-
-      Signature signature = assertion.getSignature();
-
-      BasicX509Credential x509Credential = new BasicX509Credential();
-      x509Credential.setEntityCertificate(x509Certificate);
-
-      try {
-         signatureService.validate(signature, x509Credential);
-      } catch (ValidationException e) {
-         throw new SamlSignatureException(e);
-      }
-
    }
 
 }

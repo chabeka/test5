@@ -1,6 +1,8 @@
 package fr.urssaf.image.sae.saml.service;
 
-import java.io.File;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -10,7 +12,6 @@ import java.security.cert.X509CRL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,8 +19,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
-import fr.urssaf.image.sae.saml.util.XMLUtils;
+import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
+import fr.urssaf.image.sae.saml.testutils.KeyStoreFactory;
+import fr.urssaf.image.sae.saml.testutils.TuUtils;
 
 @SuppressWarnings( { "PMD.MethodNamingConventions",
       "PMD.JUnitAssertionsShouldIncludeMessage" })
@@ -28,8 +30,6 @@ public class SamlAssertionVerificationServiceTest {
    private static SamlAssertionVerificationService service;
 
    private KeyStore keystore;
-
-   private String alias;
 
    @BeforeClass
    public static void beforeClass() {
@@ -43,18 +43,22 @@ public class SamlAssertionVerificationServiceTest {
          CertificateException, IOException {
 
       keystore = KeyStoreFactory.createKeystore();
-      alias = keystore.aliases().nextElement();
+      
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void verifierAssertion_success() throws SamlFormatException,
          IOException, SamlSignatureException, SAXException {
 
-      Element assertionSaml = parse("src/test/resources/saml/saml_sign_success.xml");
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_sign_success.xml");
 
       List<X509CRL> crl = new ArrayList<X509CRL>();
 
-      service.verifierAssertion(assertionSaml, keystore, alias, crl);
+      service.verifierAssertion(assertionSaml, keystore, crl);
+      
+      // Résultat attendu : aucune exception levée
 
    }
 
@@ -63,27 +67,33 @@ public class SamlAssertionVerificationServiceTest {
          throws SamlFormatException, SamlSignatureException, SAXException,
          IOException {
 
-      Element assertionSaml = parse("src/test/resources/saml/saml_extraction.xml");
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_extraction.xml");
 
-      service.verifierAssertion(assertionSaml, keystore, alias, null);
+      service.verifierAssertion(assertionSaml, keystore, null);
 
    }
 
-   @Test(expected = SamlSignatureException.class)
+   @Test
    public void verifierAssertion_failure_signature_exception()
          throws SamlFormatException, SamlSignatureException, IOException,
          SAXException {
 
-      Element assertionSaml = parse("src/test/resources/saml/saml_sign_failure.xml");
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_sign_failure.xml");
+      
+      try {
+         service.verifierAssertion(assertionSaml, keystore, null);
+      } catch (SamlSignatureException e) {
+         assertEquals(
+               "L'exception levée n'est pas celle attendue : les messages ne correspondent pas",
+               "La signature n'est pas cryptographiquement correcte",
+               e.getMessage());
+         return ;
+      }
 
-      service.verifierAssertion(assertionSaml, keystore, alias, null);
+      fail("L'exception attendue (SamlSignatureException) n'a pas été levée");
 
    }
 
-   private Element parse(String xml) throws SAXException, IOException {
-
-      File file = new File(xml);
-      return XMLUtils.parse(FileUtils.readFileToString(file, "UTF-8"));
-
-   }
 }

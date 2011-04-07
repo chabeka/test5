@@ -71,7 +71,6 @@ public class WebServiceVIServiceTest {
 
    private String alias;
 
-   private String password;
 
    @Before
    public void before() throws KeyStoreException, NoSuchAlgorithmException,
@@ -79,7 +78,6 @@ public class WebServiceVIServiceTest {
 
       keystore = KeyStoreFactory.createKeystore();
       alias = keystore.aliases().nextElement();
-      password = "hiUnk6O3QnRN";
    }
 
    @Test
@@ -143,7 +141,7 @@ public class WebServiceVIServiceTest {
             .parse("src/test/resources/webservice/vi_success.xml");
 
       VIContenuExtrait extrait = service.verifierVIdeServiceWeb(identification,
-            SERVICE_VISE, ISSUER, keystore, alias, password, crl);
+            SERVICE_VISE, ISSUER, keystore, crl);
 
       assertEquals(ID_UTILISATEUR, extrait.getIdUtilisateur());
       assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(extrait.getPagm(),
@@ -159,7 +157,7 @@ public class WebServiceVIServiceTest {
             .parse("src/test/resources/webservice/vi_failure_format.xml");
 
       service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ISSUER,
-            keystore, alias, password, crl);
+            keystore, crl);
 
    }
 
@@ -171,7 +169,7 @@ public class WebServiceVIServiceTest {
             .parse("src/test/resources/webservice/vi_failure_sign.xml");
 
       service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ISSUER,
-            keystore, alias, password, crl);
+            keystore, crl);
 
    }
 

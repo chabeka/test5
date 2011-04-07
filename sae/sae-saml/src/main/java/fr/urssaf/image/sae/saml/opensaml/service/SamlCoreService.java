@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.saml.opensaml.service;
 
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +25,7 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.XMLObjectBuilder;
 import org.opensaml.xml.schema.XSAny;
 
+import fr.urssaf.image.sae.saml.opensaml.SamlXML;
 import fr.urssaf.image.sae.saml.util.ListUtils;
 
 /**
@@ -512,20 +512,6 @@ public class SamlCoreService {
       }
 
       return subjectId;
-   }
-
-   /**
-    * 
-    * @param assertion
-    *           jeton SAML
-    * @return La clé publique qui a signé l'assertion
-    */
-   public final X509Certificate loadPublicKey(Assertion assertion) {
-
-      // TODO Auto-generated method stub
-
-      return null;
-
    }
 
 }

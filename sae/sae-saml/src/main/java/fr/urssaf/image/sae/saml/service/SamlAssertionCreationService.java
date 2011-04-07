@@ -15,8 +15,8 @@ import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.opensaml.SamlAssertionService;
-import fr.urssaf.image.sae.saml.opensaml.service.SamlXML;
+import fr.urssaf.image.sae.saml.opensaml.SamlXML;
+import fr.urssaf.image.sae.saml.opensaml.service.SamlAssertionService;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.util.SecurityUtil;
 
@@ -27,7 +27,7 @@ import fr.urssaf.image.sae.saml.util.SecurityUtil;
  * href="https://spaces.internet2.edu/display/OpenSAML/Home" />OpenSAML</a><br>
  * <br>
  * Le recours à cette classe nécessite une instanciation au préalable de
- * {@link fr.urssaf.image.sae.saml.opensaml.service.SamlConfiguration}
+ * {@link fr.urssaf.image.sae.saml.opensaml.SamlConfiguration}
  * 
  * <pre>
  * exemple pour instancier un keystore à partir d'un P12

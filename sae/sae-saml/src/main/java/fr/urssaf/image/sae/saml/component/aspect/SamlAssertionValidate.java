@@ -200,14 +200,12 @@ public class SamlAssertionValidate {
       // récupération des paramétres de la méthode verifierAssertion
       Element assertionSaml = (Element) joinPoint.getArgs()[0];
       KeyStore keystore = (KeyStore) joinPoint.getArgs()[1];
-      String alias = (String) joinPoint.getArgs()[2];
 
       // assertionSaml not null
       notNullValidate(assertionSaml, "assertionSaml", ARG_EMPTY);
       // keystore not null
       notNullValidate(keystore, "keystore", ARG_EMPTY);
-      // alias not null
-      notNullValidate(alias, "alias", ARG_EMPTY);
+
    }
 
    private void notNullValidate(Object obj, String name, String message) {

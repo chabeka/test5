@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
-import fr.urssaf.image.sae.saml.exception.SamlSignatureException;
+import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
 import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 import fr.urssaf.image.sae.vi.exception.VIAppliClientException;
 import fr.urssaf.image.sae.vi.exception.VIFormatTechniqueException;
@@ -55,10 +55,6 @@ public class WebServiceVIValidateService {
     *           certificats des autorités de certification qui sont reconnues
     *           pour être autorisées à délivrer des certificats de signature de
     *           VI, ainsi que leur chaîne de certification
-    * @param alias
-    *           alias de la clé publique
-    * @param password
-    *           mot de passe de la clé privée
     * @param crl
     *           les CRL
     * @throws VIFormatTechniqueException
@@ -66,12 +62,16 @@ public class WebServiceVIValidateService {
     * @throws VISignatureException
     *            La signature électronique du VI est incorrecte
     */
-   public final void validate(Element identification, KeyStore keystore,
-         String alias, String password, List<X509CRL> crl)
-         throws VIFormatTechniqueException, VISignatureException {
+   public final void validate(
+      Element identification, 
+      KeyStore keystore,
+      List<X509CRL> crl)
+   throws 
+      VIFormatTechniqueException, 
+      VISignatureException {
 
       try {
-         checkService.verifierAssertion(identification, keystore, alias, crl);
+         checkService.verifierAssertion(identification, keystore, crl);
       } catch (SamlFormatException e) {
          throw new VIFormatTechniqueException(e);
       } catch (SamlSignatureException e) {
