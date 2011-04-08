@@ -12,12 +12,17 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.handlers.AbstractHandler;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.rampart.util.Axis2Util;
 import org.apache.ws.security.WSConstants;
+import org.apache.ws.security.WSSecurityException;
+import org.apache.ws.security.message.WSSecHeader;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
@@ -90,6 +95,7 @@ public class SamlTokenHandler extends AbstractHandler {
    }
 
    /**
+    * crée une balise wss security dans le header du SOAP<br>
     * crée un jeton SAML 2.0 en appelant la méthode
     * {@link WebServiceVIService#creerVIpourServiceWeb}<br>
     * Le jeton SAML est ajouté dans la partie WS-Security situé dans l'entête du
@@ -99,10 +105,26 @@ public class SamlTokenHandler extends AbstractHandler {
     * 
     */
    @Override
-   public final InvocationResponse invoke(MessageContext msgCtx) throws AxisFault {
+   public final InvocationResponse invoke(MessageContext msgCtx)
+         throws AxisFault {
+
+      // création de WS-Security
+      try {
+         Document doc = Axis2Util.getDocumentFromSOAPEnvelope(msgCtx
+               .getEnvelope(), true);
+
+         WSSecHeader secHeader = new WSSecHeader(null, false);
+         secHeader.insertSecurityHeader(doc);
+
+         msgCtx.setEnvelope((SOAPEnvelope) doc.getDocumentElement());
+
+      } catch (WSSecurityException e) {
+         throw new IllegalStateException(e);
+      }
 
       List<String> roles = AuthenticateUtils.getRoles();
 
+      // création du jeton SAML 2.0
       if (CollectionUtils.isNotEmpty(roles)) {
 
          Element token = this.viService.creerVIpourServiceWeb(roles, ISSUER,
@@ -114,7 +136,6 @@ public class SamlTokenHandler extends AbstractHandler {
                WSConstants.WSSE_NS, "Security"));
 
          try {
-            //Element element = XMLUtils.parse(token);
 
             security.addChild(org.apache.axis2.util.XMLUtils.toOM(token));
 

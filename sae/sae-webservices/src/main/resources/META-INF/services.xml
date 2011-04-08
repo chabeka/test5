@@ -18,8 +18,6 @@
       </operation>
    </service>
 
-   <module ref="rampart" />
-
    <service name="SaeService">
       <messageReceivers>
          <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
@@ -40,17 +38,7 @@
          namespace="http://www.cirtil.fr/saeService">
          <actionMapping>PingSecure</actionMapping>
          <outputActionMapping>PingSecure</outputActionMapping>
-
-         <parameter name="InflowSecurity">
-            <action>
-               <items>UsernameToken</items>
-               <passwordCallbackClass>fr.urssaf.image.sae.webservices.security.ws.PasswordCallbackHandler
-               </passwordCallbackClass>
-            </action>
-         </parameter>
       </operation>
    </service>
-
-
 
 </serviceGroup>

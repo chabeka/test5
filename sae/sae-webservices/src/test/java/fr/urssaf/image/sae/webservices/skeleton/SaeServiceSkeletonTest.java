@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,8 +65,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
-   public void ping() throws AxisFault, FileNotFoundException, OMException,
-         XMLStreamException {
+   public void ping() {
 
       this.init("src/test/resources/request/ping.xml");
 
@@ -78,8 +78,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
-   public void pingSecure_success() throws AxisFault, FileNotFoundException,
-         OMException, XMLStreamException {
+   public void pingSecure_success() {
 
       this.init("src/test/resources/request/pingsecure_success.xml");
 
@@ -93,26 +92,78 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test(expected = AccessDeniedException.class)
-   public void pingSecure_failure_accessDenied() throws AxisFault,
-         FileNotFoundException, OMException, XMLStreamException {
+   public void pingSecure_failure_accessDenied() throws AxisFault {
 
-      this.init("src/test/resources/request/pingsecure_failure.xml");
+      this
+            .pingSecure_failure("src/test/resources/request/pingsecure_failure_accessDenied.xml");
+
+   }
+
+   @Test
+   public void pingSecure_failure_noVI() {
+
+      try {
+         this
+               .pingSecure_failure("src/test/resources/request/pingsecure_failure_noVI.xml");
+
+         fail("le test doit échouer");
+      } catch (AxisFault e) {
+
+         assertEquals("La référence au jeton de sécurité est introuvable", e
+               .getMessage());
+         assertEquals("SecurityTokenUnavailable", e.getFaultCode()
+               .getLocalPart());
+         assertEquals("wsse", e.getFaultCode().getPrefix());
+
+      }
+
+   }
+
+   @Test
+   public void pingSecure_failure_sign() {
+
+      try {
+         this
+               .pingSecure_failure("src/test/resources/request/pingsecure_failure_sign.xml");
+
+         fail("le test doit échouer");
+      } catch (AxisFault e) {
+         assertEquals("La signature ou le chiffrement n'est pas valide", e
+               .getMessage());
+         assertEquals("FailedCheck", e.getFaultCode().getLocalPart());
+         assertEquals("wsse", e.getFaultCode().getPrefix());
+
+      }
+
+   }
+
+   private void pingSecure_failure(String soap) throws AxisFault {
+
+      this.init(soap);
 
       PingSecureRequest request = new PingSecureRequest();
 
       skeleton.pingSecure(request);
-
    }
 
-   private void init(String xml) throws FileNotFoundException,
-         XMLStreamException, AxisFault, OMException {
+   private void init(String xml) {
 
-      InputStream input = new FileInputStream(xml);
+      try {
+         InputStream input = new FileInputStream(xml);
 
-      StAXSOAPModelBuilder stax = new StAXSOAPModelBuilder(StAXUtils
-            .createXMLStreamReader(input));
+         StAXSOAPModelBuilder stax = new StAXSOAPModelBuilder(StAXUtils
+               .createXMLStreamReader(input));
 
-      ctx.setEnvelope(stax.getSOAPEnvelope());
+         ctx.setEnvelope(stax.getSOAPEnvelope());
+      } catch (FileNotFoundException e) {
+         throw new IllegalStateException(e);
+      } catch (XMLStreamException e) {
+         throw new IllegalStateException(e);
+      } catch (AxisFault e) {
+         throw new IllegalStateException(e);
+      } catch (OMException e) {
+         throw new IllegalStateException(e);
+      }
 
    }
 }

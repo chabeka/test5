@@ -1,5 +1,9 @@
 package fr.urssaf.image.sae.vi.exception;
 
+import javax.xml.namespace.QName;
+
+import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
+
 /**
  * Le VI est invalide
  * 
@@ -23,9 +27,9 @@ public class VIInvalideException extends VIVerificationException {
     * @return "vi:InvalidVI"
     */
    @Override
-   public final String getSoapFaultCode() {
+   public final QName getSoapFaultCode() {
 
-      return "vi:InvalidVI";
+      return SoapFaultCodeFactory.createVISoapFaultCode("InvalidVI");
    }
 
    /**

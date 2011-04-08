@@ -1,5 +1,9 @@
 package fr.urssaf.image.sae.vi.exception;
 
+import javax.xml.namespace.QName;
+
+import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
+
 /**
  * Le ou les PAGM présents dans le VI sont invalides
  * 
@@ -22,9 +26,9 @@ public class VIPagmIncorrectException extends VIVerificationException {
     * @return "vi:InvalidPagm"
     */
    @Override
-   public final String getSoapFaultCode() {
+   public final QName getSoapFaultCode() {
 
-      return "vi:InvalidPagm";
+      return SoapFaultCodeFactory.createVISoapFaultCode("InvalidPagm");
    }
 
    /**

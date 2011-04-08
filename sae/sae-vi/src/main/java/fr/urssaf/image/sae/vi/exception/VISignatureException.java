@@ -1,7 +1,9 @@
 package fr.urssaf.image.sae.vi.exception;
 
-import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
+import javax.xml.namespace.QName;
 
+import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
+import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
 
 /**
  * La signature électronique du VI est incorrecte
@@ -26,9 +28,9 @@ public class VISignatureException extends VIVerificationException {
     * @return "wsse:FailedCheck"
     */
    @Override
-   public final String getSoapFaultCode() {
+   public final QName getSoapFaultCode() {
 
-      return "wsse:FailedCheck";
+      return SoapFaultCodeFactory.createWsseSoapFaultCode("FailedCheck");
    }
 
    /**

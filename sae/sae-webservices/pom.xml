@@ -185,23 +185,13 @@
          </exclusions>
       </dependency>
 
-      <!-- RAMPART -->
-
+     <!-- WSS4J -->
+      
       <dependency>
-         <groupId>org.apache.rampart</groupId>
-         <artifactId>rampart</artifactId>
-         <version>1.5.1</version>
-
-         <exclusions>
-
-            <exclusion>
-               <groupId>commons-lang</groupId>
-               <artifactId>commons-lang</artifactId>
-            </exclusion>
-
-         </exclusions>
+         <groupId>org.apache.ws.security</groupId>
+         <artifactId>wss4j</artifactId>
+         <version>1.5.11</version>
       </dependency>
-
 
       <!--  AXIOM  -->
 

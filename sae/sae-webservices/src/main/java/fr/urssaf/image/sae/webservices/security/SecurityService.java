@@ -32,8 +32,6 @@ public class SecurityService {
 
    private final WebServiceVIService service;
 
-   private final String password;
-
    private final KeyStore keystore;
 
    private final URI serviceVise;
@@ -63,13 +61,13 @@ public class SecurityService {
     *           fichiers des CRLs au moins 1
     */
    public SecurityService(Resource keystore, Resource... crls) {
-
+      // TODO vérifier les arguments en entrée
       Assert.notNull(keystore, "'keystore' is required");
       Assert.notEmpty(crls, "'crls' is required and not empty");
 
       this.service = new WebServiceVIService();
 
-      this.password = "hiUnk6O3QnRN";
+      String password = "hiUnk6O3QnRN";
 
       this.keystore = initKeystore(keystore, password);
 

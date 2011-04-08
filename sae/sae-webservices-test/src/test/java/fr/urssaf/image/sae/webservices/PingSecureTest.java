@@ -12,8 +12,10 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureRequest;
@@ -31,13 +33,20 @@ public class PingSecureTest {
    @Before
    public void before() throws AxisFault, ConfigurationException {
 
-      Configuration config = new PropertiesConfiguration("sae-webservices-test.properties");
+      Configuration config = new PropertiesConfiguration(
+            "sae-webservices-test.properties");
 
       ConfigurationContext ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,
                   SECURITY_PATH + "/axis2.xml");
 
       service = new SaeServiceStub(ctx, config.getString("urlServiceWeb"));
+   }
+
+   @After
+   public void after() {
+
+      SecurityContextHolder.getContext().setAuthentication(null);
    }
 
    @Test
@@ -81,7 +90,9 @@ public class PingSecureTest {
          service.pingSecure(request);
          fail("le test doit échouer");
       } catch (AxisFault fault) {
-         assertEquals("Access is denied", fault.getMessage());
+         assertEquals("La référence au jeton de sécurité est introuvable",
+               fault.getMessage());
+
       }
    }
 }

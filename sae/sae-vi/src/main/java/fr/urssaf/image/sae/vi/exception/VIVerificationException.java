@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.vi.exception;
 
+import javax.xml.namespace.QName;
+
 /**
  * Une erreur a été détectée lors de la vérification du VI
  * 
@@ -22,7 +24,7 @@ public abstract class VIVerificationException extends Exception {
     * 
     * @return code du SoapFault
     */
-   public abstract String getSoapFaultCode();
+   public abstract QName getSoapFaultCode();
 
    /**
     * 

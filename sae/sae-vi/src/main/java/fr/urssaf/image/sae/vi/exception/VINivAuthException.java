@@ -4,7 +4,11 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.text.StrSubstitutor;
+
+import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
 
 /**
  * Le niveau d'authentification initial n'est pas conforme au contrat
@@ -42,9 +46,9 @@ public class VINivAuthException extends VIVerificationException {
     * @return "vi:InvalidAuthLevel"
     */
    @Override
-   public final String getSoapFaultCode() {
+   public final QName getSoapFaultCode() {
 
-      return "vi:InvalidAuthLevel";
+      return SoapFaultCodeFactory.createVISoapFaultCode("InvalidAuthLevel");
    }
 
    /**

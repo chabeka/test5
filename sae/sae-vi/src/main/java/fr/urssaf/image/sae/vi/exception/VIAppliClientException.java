@@ -3,7 +3,11 @@ package fr.urssaf.image.sae.vi.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.text.StrSubstitutor;
+
+import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
 
 /**
  * L'identifiant de l'organisme client présent dans le VI est invalide ou
@@ -41,9 +45,9 @@ public class VIAppliClientException extends VIVerificationException {
     * @return "vi:InvalidIssuer"
     */
    @Override
-   public final String getSoapFaultCode() {
+   public final QName getSoapFaultCode() {
 
-      return "vi:InvalidIssuer";
+      return SoapFaultCodeFactory.createVISoapFaultCode("InvalidIssuer");
    }
 
    /**

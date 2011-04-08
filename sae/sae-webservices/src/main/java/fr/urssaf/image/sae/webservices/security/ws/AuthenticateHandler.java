@@ -4,6 +4,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAPHeader;
+import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.ws.security.WSConstants;
@@ -14,11 +15,14 @@ import org.w3c.dom.Element;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.webservices.component.SpringConfiguration;
 import fr.urssaf.image.sae.webservices.security.SecurityService;
+import fr.urssaf.image.sae.webservices.security.exception.VIEmptyAxisFault;
+import fr.urssaf.image.sae.webservices.security.exception.VIVerificationAxisFault;
 
 /**
  * Classe aspect d'authentification des web services<br>
  * L'aspect sur les méthodes du skeleton du web services
- * {@link fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton}<br>
+ * {@link fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton} finissant
+ * par Secure<br>
  * <br>
  * L'authentification s'appuie sur WS-Security et le jeton SAML 2.0 contenu
  * dedans
@@ -39,11 +43,17 @@ public class AuthenticateHandler {
     */
    public AuthenticateHandler() {
 
-      securityService = SpringConfiguration.getService(SecurityService.class);
+      this(SpringConfiguration.getService(SecurityService.class));
 
    }
 
-   /**
+   protected AuthenticateHandler(SecurityService securityService) {
+
+      this.securityService = securityService;
+
+   }
+
+/**
     * instanciation d'un contexte de sécurité à partir des informations
     * contenues dans le header du message SOAP<br>
     * <br>
@@ -51,11 +61,11 @@ public class AuthenticateHandler {
     * <code>&lt;PAGM></code> <br>
     * Appel de {@link SecurityService#authentification(Element)) pour créer d'un
     * contexte de sécurity *
+    * @throws AxisFault le VI comporte une erreur ou est absent
     */
    @Before(METHODE)
-   public final void authenticate() {
+   public final void authenticate() throws AxisFault {
       MessageContext msgCtx = MessageContext.getCurrentMessageContext();
-      
 
       // @SuppressWarnings( { "unchecked", "PMD.ReplaceVectorWithList" })
       // Vector results = (Vector) msgCtx
@@ -79,28 +89,31 @@ public class AuthenticateHandler {
       // }
       // }
 
+      //TODO test sur l'absence de header ou de wsse-security
       SOAPHeader header = msgCtx.getEnvelope().getHeader();
-      if (header != null) {
-         OMElement security = header.getFirstChildWithName(new QName(
-               WSConstants.WSSE_NS, "Security"));
 
-         OMElement saml = security.getFirstChildWithName(new QName(
-               "urn:oasis:names:tc:SAML:2.0:assertion", "Assertion"));
+      OMElement security = header.getFirstChildWithName(new QName(
+            WSConstants.WSSE_NS, WSConstants.WSSE_LN));
 
-         Element identification = null;
-         if (saml != null) {
-            try {
-               identification = XMLUtils.toDOM(saml);
-            } catch (Exception e) {
-               throw new IllegalStateException(e);
-            }
+      OMElement saml = security.getFirstChildWithName(new QName(
+            "urn:oasis:names:tc:SAML:2.0:assertion", WSConstants.ASSERTION_LN));
 
-            try {
-               securityService.authentification(identification);
-            } catch (VIVerificationException e) {
-               throw new IllegalStateException(e);
-            }
+      Element identification = null;
+      if (saml == null) {
+         throw new VIEmptyAxisFault();
 
+      } else {
+         try {
+            identification = XMLUtils.toDOM(saml);
+         } catch (Exception e) {
+            throw new IllegalStateException();
+         }
+
+         try {
+            securityService.authentification(identification);
+         } catch (VIVerificationException e) {
+
+            throw new VIVerificationAxisFault(e);
          }
 
       }

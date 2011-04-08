@@ -4,7 +4,11 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.text.StrSubstitutor;
+
+import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
 
 /**
  * Le service visé ne correspond pas au service indiqué dans l'assertion
@@ -44,9 +48,9 @@ public class VIServiceIncorrectException extends VIVerificationException {
     * @return "vi:InvalidService"
     */
    @Override
-   public final String getSoapFaultCode() {
+   public final QName getSoapFaultCode() {
 
-      return "vi:InvalidService";
+      return SoapFaultCodeFactory.createVISoapFaultCode("InvalidService");
    }
 
    /**
