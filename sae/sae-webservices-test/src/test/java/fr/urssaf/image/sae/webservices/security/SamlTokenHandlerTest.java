@@ -14,8 +14,10 @@ import org.apache.axiom.soap.impl.builder.StAXSOAPModelBuilder;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.engine.Handler.InvocationResponse;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
@@ -28,10 +30,26 @@ public class SamlTokenHandlerTest {
       handler = new SamlTokenHandler();
    }
 
+   @After
+   public void after() {
+
+      SecurityContextHolder.createEmptyContext();
+      SecurityContextHolder.getContext().setAuthentication(null);
+   }
+
    @Test
    public void invoke_success() throws AxisFault {
 
       AuthenticateUtils.authenticate("ROLE_TEST");
+
+      MessageContext msgCtx = new MessageContext();
+      this.init(msgCtx, "src/test/resources/soap/soap_success.xml");
+
+      assertEquals(InvocationResponse.CONTINUE, handler.invoke(msgCtx));
+   }
+
+   @Test
+   public void invoke_success_emptyRole() throws AxisFault {
 
       MessageContext msgCtx = new MessageContext();
       this.init(msgCtx, "src/test/resources/soap/soap_success.xml");
