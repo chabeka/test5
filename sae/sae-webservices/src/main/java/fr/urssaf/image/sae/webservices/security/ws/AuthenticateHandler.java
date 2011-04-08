@@ -89,11 +89,18 @@ public class AuthenticateHandler {
       // }
       // }
 
-      //TODO test sur l'absence de header ou de wsse-security
       SOAPHeader header = msgCtx.getEnvelope().getHeader();
+      
+      if(header == null){
+         throw new VIEmptyAxisFault();
+      }
 
       OMElement security = header.getFirstChildWithName(new QName(
             WSConstants.WSSE_NS, WSConstants.WSSE_LN));
+      
+      if(security == null){
+         throw new VIEmptyAxisFault();
+      }
 
       OMElement saml = security.getFirstChildWithName(new QName(
             "urn:oasis:names:tc:SAML:2.0:assertion", WSConstants.ASSERTION_LN));

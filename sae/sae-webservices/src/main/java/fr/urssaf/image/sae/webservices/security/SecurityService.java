@@ -61,7 +61,7 @@ public class SecurityService {
     *           fichiers des CRLs au moins 1
     */
    public SecurityService(Resource keystore, Resource... crls) {
-      // TODO vérifier les arguments en entrée
+    
       Assert.notNull(keystore, "'keystore' is required");
       Assert.notEmpty(crls, "'crls' is required and not empty");
 
@@ -129,6 +129,11 @@ public class SecurityService {
     */
    public final void authentification(Element identification)
          throws VIVerificationException {
+
+      Assert
+            .notNull(
+                  identification,
+                  "Le paramètre 'identification' n'est pas renseigné alors qu'il est obligatoire ");
 
       VIContenuExtrait viExtrait;
 

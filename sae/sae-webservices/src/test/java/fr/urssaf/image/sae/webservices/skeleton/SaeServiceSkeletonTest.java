@@ -100,11 +100,30 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   public void pingSecure_failure_noHeader() {
+
+      pingSecure_failure_noVI("src/test/resources/request/pingsecure_failure_noHeader.xml");
+
+   }
+
+   @Test
+   public void pingSecure_failure_noWSsecurity() {
+
+      pingSecure_failure_noVI("src/test/resources/request/pingsecure_failure_noWSsecurity.xml");
+
+   }
+
+   @Test
    public void pingSecure_failure_noVI() {
 
+      pingSecure_failure_noVI("src/test/resources/request/pingsecure_failure_noVI.xml");
+
+   }
+
+   private void pingSecure_failure_noVI(String soap) {
+
       try {
-         this
-               .pingSecure_failure("src/test/resources/request/pingsecure_failure_noVI.xml");
+         this.pingSecure_failure(soap);
 
          fail("le test doit échouer");
       } catch (AxisFault e) {
