@@ -2,12 +2,16 @@ package fr.urssaf.image.sae.vi.service;
 
 import java.net.URI;
 import java.security.KeyStore;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509CRL;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.bouncycastle.asn1.x509.X509Name;
+import org.bouncycastle.jce.PrincipalUtil;
+import org.bouncycastle.jce.X509Principal;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
@@ -41,7 +45,7 @@ public class WebServiceVIService {
 
    private final SamlAssertionCreationService createService;
    private final SamlAssertionExtractionService extractService;
-   
+
    private final WebServiceVIValidateService validateService;
 
    /**
@@ -53,7 +57,7 @@ public class WebServiceVIService {
    public WebServiceVIService() {
       createService = new SamlAssertionCreationService();
       extractService = new SamlAssertionExtractionService();
-      
+
       validateService = new WebServiceVIValidateService();
 
    }
@@ -151,14 +155,9 @@ public class WebServiceVIService {
     * @throws VIVerificationException
     *            Les informations extraites du VI sont invalides
     */
-   public final VIContenuExtrait verifierVIdeServiceWeb(
-         Element identification,
-         URI serviceVise, 
-         String idAppliClient, 
-         KeyStore keystore,
-         List<X509CRL> crl)
-      throws 
-         VIVerificationException {
+   public final VIContenuExtrait verifierVIdeServiceWeb(Element identification,
+         URI serviceVise, String idAppliClient, KeyStore keystore,
+         List<X509CRL> crl) throws VIVerificationException {
 
       // vérification du jeton SAML
       validateService.validate(identification, keystore, crl);
@@ -173,7 +172,16 @@ public class WebServiceVIService {
       VIContenuExtrait extrait = new VIContenuExtrait();
       extrait.setPagm(data.getAssertionParams().getCommonsParams().getPagm());
       extrait.setIdUtilisateur(data.getAssertionParams().getSubjectId2());
-      // TODO extrait le code de l'application du certificat de signature
+
+      // l'extraction du CN vient du code
+      // http://stackoverflow.com/questions/2914521/how-to-extract-cn-from-x509certificate-in-java
+      try {
+         X509Principal principal = PrincipalUtil.getSubjectX509Principal(data
+               .getClePublique());
+         extrait.setCodeAppli((String) principal.getValues(X509Name.CN).get(0));
+      } catch (CertificateEncodingException e) {
+         throw new IllegalStateException(e);
+      }
 
       return extrait;
    }

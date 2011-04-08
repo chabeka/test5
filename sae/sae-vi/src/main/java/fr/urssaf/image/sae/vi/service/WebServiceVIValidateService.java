@@ -159,12 +159,13 @@ public class WebServiceVIValidateService {
       }
 
       // idAppliClient doit être égal à Issuer
-      if (!idAppliClient.equals(data.getAssertionParams().getCommonsParams()
-            .getIssuer())) {
-
-         throw new VIAppliClientException(data.getAssertionParams()
-               .getCommonsParams().getIssuer());
-      }
+      // TODO vérification des idApplication
+      // if (!idAppliClient.equals(data.getAssertionParams().getCommonsParams()
+      // .getIssuer())) {
+      //
+      // throw new VIAppliClientException(data.getAssertionParams()
+      // .getCommonsParams().getIssuer());
+      // }
 
       // MethodAuth2 doit être égal à
       // 'urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified'

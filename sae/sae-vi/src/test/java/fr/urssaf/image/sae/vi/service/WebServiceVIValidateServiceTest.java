@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -189,6 +190,7 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @Ignore
    public void verifierVIdeServiceWeb_failure_idapplication()
          throws VINivAuthException, VIPagmIncorrectException, IOException,
          VIInvalideException, VIServiceIncorrectException, SAXException {

@@ -146,6 +146,7 @@ public class WebServiceVIServiceTest {
       assertEquals(ID_UTILISATEUR, extrait.getIdUtilisateur());
       assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(extrait.getPagm(),
             ","));
+      assertEquals("Portail Image", extrait.getCodeAppli());
 
    }
 

@@ -58,7 +58,7 @@ public class SamlTokenHandler extends AbstractHandler {
 
    private static String password;
 
-   private static final String ISSUER = "urn:ISSUER_NON_RENSEIGNE";
+   private static final String ISSUER = "TEST_SERVICES_WEB_SAE";
 
    static {
       password = "hiUnk6O3QnRN";
