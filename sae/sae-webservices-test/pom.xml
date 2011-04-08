@@ -90,7 +90,9 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.5</version>
             <configuration>
-               <skipTests>true</skipTests>
+               <includes>
+                  <include>fr/urssaf/image/sae/webservices/security/SamlTokenHandlerTest.java</include>
+               </includes>
             </configuration>
          </plugin>
       </plugins>
@@ -161,7 +163,7 @@
          <groupId>org.apache.rampart</groupId>
          <artifactId>rampart-core</artifactId>
          <version>1.5.1</version>
-          <exclusions>
+         <exclusions>
 
             <exclusion>
                <groupId>commons-lang</groupId>
@@ -170,8 +172,8 @@
 
          </exclusions>
       </dependency>
-      
-       <!-- SPRING  SECURITY-->
+
+      <!-- SPRING  SECURITY-->
 
       <dependency>
          <groupId>org.springframework.security</groupId>
