@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.vi.component;
 
 import java.net.URI;
 import java.security.KeyStore;
-import java.security.cert.X509CRL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ import org.aspectj.lang.annotation.Before;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.util.ListUtils;
-import fr.urssaf.image.sae.vi.util.FilterUtils;
+import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
 /**
  * La classe implémenté en AOP permet de vérifier les arguments des méthodes
@@ -111,10 +110,8 @@ public class WebServiceVIServiceValidate {
       Element identification = (Element) joinPoint.getArgs()[0];
       URI serviceVise = (URI) joinPoint.getArgs()[1];
       String idAppliClient = (String) joinPoint.getArgs()[2];
-      KeyStore keystore = (KeyStore) joinPoint.getArgs()[INDEX_3];
-      @SuppressWarnings("unchecked")
-      List<X509CRL> crl = (List<X509CRL>) joinPoint.getArgs()[INDEX_4];
-
+      VISignVerifParams signVerifParams = (VISignVerifParams) joinPoint.getArgs()[INDEX_3];
+      
       // identification not null
       notNullValidate(identification, "identification");
 
@@ -124,14 +121,8 @@ public class WebServiceVIServiceValidate {
       // idAppliClient not null
       notNullValidate(idAppliClient, "idAppliClient");
 
-      // keystore not null
-      notNullValidate(keystore, "keystore");
-
-      // au moins un crl doit exister
-      if (CollectionUtils.isEmpty(FilterUtils.filter(crl))) {
-
-         throw new IllegalArgumentException("Il faut spécifier au moins un CRL");
-      }
+      // signVerifParams not null
+      notNullValidate(signVerifParams, "signVerifParams");
 
    }
 

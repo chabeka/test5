@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.vi.service;
 import java.net.URI;
 import java.security.KeyStore;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509CRL;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
+import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
 /**
  * Classe de lecture et d'écriture du VI pour les web services<br>
@@ -143,24 +143,23 @@ public class WebServiceVIService {
     * @param idAppliClient
     *           Identifiant de l'application consommatrice du service, récupéré
     *           à partir du certificat client SSL (ignoré pour l'instant)
-    * @param keystore
-    *           Les certificats des autorités de certification qui sont
-    *           reconnues pour être autorisées à délivrer des certificats de
-    *           signature de VI, ainsi que leur chaîne de certification
-    * @param crl
-    *           Les CRL
+    * @param signVerifParams
+    *           Les éléments permettant de vérifier la signature électronique du VI
     * @return Des valeurs extraits du VI qui peuvent être exploités pour mettre
     *         en place un contexte de sécurité basé sur l’authentification,
     *         et/ou pour de la traçabilité
     * @throws VIVerificationException
     *            Les informations extraites du VI sont invalides
     */
-   public final VIContenuExtrait verifierVIdeServiceWeb(Element identification,
-         URI serviceVise, String idAppliClient, KeyStore keystore,
-         List<X509CRL> crl) throws VIVerificationException {
+   public final VIContenuExtrait verifierVIdeServiceWeb(
+         Element identification,
+         URI serviceVise, 
+         String idAppliClient, 
+         VISignVerifParams signVerifParams)
+      throws VIVerificationException {
 
       // vérification du jeton SAML
-      validateService.validate(identification, keystore, crl);
+      validateService.validate(identification, signVerifParams);
 
       // extraction du jeton SAML
       SamlAssertionData data = extractService.extraitDonnees(identification);

@@ -1,9 +1,5 @@
 package fr.urssaf.image.sae.saml.service;
 
-import java.security.KeyStore;
-import java.security.cert.X509CRL;
-import java.util.List;
-
 import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Element;
 
@@ -12,6 +8,7 @@ import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
 import fr.urssaf.image.sae.saml.opensaml.SamlXML;
 import fr.urssaf.image.sae.saml.opensaml.service.SamlAssertionService;
 import fr.urssaf.image.sae.saml.opensaml.signature.SamlSignatureValidateService;
+import fr.urssaf.image.sae.saml.params.SamlSignatureVerifParams;
 
 /**
  * Vérification technique d'une assertion SAML 2.0 signée électroniquement<br>
@@ -47,12 +44,8 @@ public class SamlAssertionVerificationService {
     * 
     * @param assertionSaml
     *           L'assertion SAML à vérifier
-    * @param keystore
-    *           Les certificats des autorités de certification qui sont
-    *           reconnues pour être autorisées à délivrer des certificats de
-    *           signature de VI, ainsi que leur chaîne de certification
-    * @param crl
-    *           Les CRL
+    * @param signVerifParams
+    *           Les éléments nécessaires à la vérification de la signature de l'assertion
     * @throws SamlFormatException
     *            Lorsque le format de l’assertion est incorrecte par rapport
     *            au(x) schéma(s) XSD
@@ -62,8 +55,7 @@ public class SamlAssertionVerificationService {
     */
    public final void verifierAssertion(
          Element assertionSaml,
-         KeyStore keystore, 
-         List<X509CRL> crl)
+         SamlSignatureVerifParams signVerifParams)
       throws 
          SamlFormatException, 
          SamlSignatureException {
@@ -77,7 +69,7 @@ public class SamlAssertionVerificationService {
       assertionService.validate(assertion);
       
       // Vérification de la signature
-      signValService.verifierSignature(assertion,keystore,crl);
+      signValService.verifierSignature(assertion,signVerifParams);
 
    }
 

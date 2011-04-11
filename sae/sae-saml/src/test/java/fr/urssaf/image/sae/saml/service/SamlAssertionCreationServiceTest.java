@@ -91,7 +91,7 @@ public class SamlAssertionCreationServiceTest {
    public void after() throws SAXException, SamlFormatException,
          SamlSignatureException {
 
-      validationService.verifierAssertion(assertion, keystore, null);
+      validationService.verifierAssertion(assertion, TuUtils.buildSignVerifParamsStd());
 
       TuUtils.debugAssertion(LOG, assertion);
       

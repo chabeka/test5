@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import fr.urssaf.image.sae.saml.util.ListUtils;
 
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class FilterUtilsTest {
 
    @Test
@@ -20,11 +21,13 @@ public class FilterUtilsTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void filter_null() {
 
       assertNull(ListUtils.filter(null));
    }
 
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    private void assertFilter(String expected, Collection<String> actual) {
 
       Collection<String> filter = FilterUtils.filter(actual);

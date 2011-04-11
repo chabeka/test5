@@ -1,11 +1,8 @@
 package fr.urssaf.image.sae.vi.service;
 
 import java.net.URI;
-import java.security.KeyStore;
-import java.security.cert.X509CRL;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -16,6 +13,7 @@ import org.w3c.dom.Element;
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
+import fr.urssaf.image.sae.saml.params.SamlSignatureVerifParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
 import fr.urssaf.image.sae.vi.exception.VIAppliClientException;
 import fr.urssaf.image.sae.vi.exception.VIFormatTechniqueException;
@@ -24,6 +22,7 @@ import fr.urssaf.image.sae.vi.exception.VINivAuthException;
 import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VIServiceIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VISignatureException;
+import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
 /**
  * Classe de validation d'une assertion SAML 2.0
@@ -51,12 +50,8 @@ public class WebServiceVIValidateService {
     * 
     * @param identification
     *           jeton SAML
-    * @param keystore Les
-    *           certificats des autorités de certification qui sont reconnues
-    *           pour être autorisées à délivrer des certificats de signature de
-    *           VI, ainsi que leur chaîne de certification
-    * @param crl
-    *           les CRL
+    * @param signVerifParams 
+    *           les informations permettant de vérifier la signature du VI
     * @throws VIFormatTechniqueException
     *            Une erreur technique sur le format du VI a été détectée
     * @throws VISignatureException
@@ -64,14 +59,19 @@ public class WebServiceVIValidateService {
     */
    public final void validate(
       Element identification, 
-      KeyStore keystore,
-      List<X509CRL> crl)
+      VISignVerifParams signVerifParams)
    throws 
       VIFormatTechniqueException, 
       VISignatureException {
 
       try {
-         checkService.verifierAssertion(identification, keystore, crl);
+         
+         SamlSignatureVerifParams samlVerifSignPrms = new SamlSignatureVerifParams();
+         samlVerifSignPrms.setCertifsACRacine(signVerifParams.getCertifsACRacine());
+         samlVerifSignPrms.setCrls(signVerifParams.getCrls());
+         
+         checkService.verifierAssertion(identification, samlVerifSignPrms);
+         
       } catch (SamlFormatException e) {
          throw new VIFormatTechniqueException(e);
       } catch (SamlSignatureException e) {

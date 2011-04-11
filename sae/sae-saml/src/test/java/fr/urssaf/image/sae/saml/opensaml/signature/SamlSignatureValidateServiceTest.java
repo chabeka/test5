@@ -28,6 +28,7 @@ import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureValida
 import fr.urssaf.image.sae.saml.opensaml.SamlConfiguration;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
+import fr.urssaf.image.sae.saml.params.SamlSignatureVerifParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.testutils.TuUtils;
 
@@ -409,7 +410,7 @@ public class SamlSignatureValidateServiceTest {
       
       // Appel de la vérification de la signature
       signatureValidateService.verifierSignature(
-            assertion, null, null);
+            assertion, new SamlSignatureVerifParams());
       
    }
    
@@ -428,7 +429,8 @@ public class SamlSignatureValidateServiceTest {
             "src/test/resources/verif_signature/cas02/assertion_cas02.xml");
       
       // Appel de la vérification de la signature
-      signatureValidateService.verifierSignature(assertion, null, null);
+      signatureValidateService.verifierSignature(
+            assertion, new SamlSignatureVerifParams());
       
    }
    
@@ -445,7 +447,8 @@ public class SamlSignatureValidateServiceTest {
             "src/test/resources/verif_signature/cas03/assertion_cas03.xml");
       
       // Appel de la vérification de la signature
-      signatureValidateService.verifierSignature(assertion, null, null);
+      signatureValidateService.verifierSignature(
+            assertion, new SamlSignatureVerifParams());
       
    }
 
@@ -463,7 +466,8 @@ public class SamlSignatureValidateServiceTest {
             "src/test/resources/verif_signature/cas04/assertion_cas04.xml");
       
       // Appel de la vérification de la signature
-      signatureValidateService.verifierSignature(assertion, null, null);
+      signatureValidateService.verifierSignature(
+            assertion, new SamlSignatureVerifParams());
       
    }
    
@@ -481,14 +485,25 @@ public class SamlSignatureValidateServiceTest {
       Assertion assertion = TuUtils.getAssertion(
             "src/test/resources/verif_signature/cas05/assertion_cas05.xml");
       
+      // Création de l'objet contenant les éléments permettant de vérifier 
+      // la signature
+      SamlSignatureVerifParams signVerifParams = new SamlSignatureVerifParams();
+      TuUtils.signVerifParamsSetCertifsAC(
+            signVerifParams,
+            Arrays.asList("src/test/resources/verif_signature/cas05/certificats/AC/X509/AC-01_IGC_A.crt"));
+      TuUtils.signVerifParamsSetCRL(
+            signVerifParams,
+            Arrays.asList(
+                  "src/test/resources/verif_signature/cas05/certificats/AC/CRL/CRL_AC-01_Pseudo_IGC_A.crl",
+                  "src/test/resources/verif_signature/cas05/certificats/AC/CRL/CRL_AC-02_Pseudo_ACOSS.crl",
+                  "src/test/resources/verif_signature/cas05/certificats/AC/CRL/CRL_AC-03_Pseudo_Appli.crl"));
+      
       // Appel de la vérification de la signature
-      signatureValidateService.verifierSignature(assertion, null, null);
+      signatureValidateService.verifierSignature(assertion, signVerifParams);
       
       // Résultat attendu : pas d'exception levée
       
    }
-   
-   
    
    
    

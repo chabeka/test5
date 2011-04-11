@@ -11,10 +11,12 @@
    <logger name="org.apache">
       <level value="warn" />
    </logger>
-
+   
+   <!--
    <logger name="org.opensaml">
       <level value="warn" />
    </logger>
+   -->
 
    <root>
       <priority value="debug" />

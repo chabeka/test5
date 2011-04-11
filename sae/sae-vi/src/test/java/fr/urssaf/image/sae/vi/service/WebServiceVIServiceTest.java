@@ -8,10 +8,7 @@ import java.net.URI;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509CRL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,8 +27,11 @@ import fr.urssaf.image.sae.vi.exception.VIFormatTechniqueException;
 import fr.urssaf.image.sae.vi.exception.VISignatureException;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
+import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
+import fr.urssaf.image.sae.vi.testutils.TuUtils;
 import fr.urssaf.image.sae.vi.util.XMLUtils;
 
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class WebServiceVIServiceTest {
 
    private static final Logger LOG = Logger
@@ -48,22 +48,11 @@ public class WebServiceVIServiceTest {
    private static final URI SERVICE_VISE = ConverterUtils
          .uri("http://sae.urssaf.fr");
 
-   private static List<X509CRL> crl = new ArrayList<X509CRL>();
-
    @BeforeClass
    public static void beforeClass() {
 
       service = new WebServiceVIService();
       extraction = new SamlAssertionExtractionService();
-
-      try {
-         crl.add(CRLFactory
-               .createCRL("src/test/resources/CRL/Pseudo_ACOSS.crl"));
-      } catch (CRLException e) {
-         throw new IllegalStateException(e);
-      } catch (IOException e) {
-         throw new IllegalStateException(e);
-      }
 
    }
 
@@ -93,6 +82,7 @@ public class WebServiceVIServiceTest {
 
    }
 
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    private void assertCreerVIpourServiceWeb(String idExpected, String idActual)
          throws SAXException {
 
@@ -134,6 +124,7 @@ public class WebServiceVIServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_success() throws IOException,
          SAXException, VIVerificationException {
 
@@ -141,7 +132,7 @@ public class WebServiceVIServiceTest {
             .parse("src/test/resources/webservice/vi_success.xml");
 
       VIContenuExtrait extrait = service.verifierVIdeServiceWeb(identification,
-            SERVICE_VISE, ISSUER, keystore, crl);
+            SERVICE_VISE, ISSUER, TuUtils.buildSignVerifParamsOK());
 
       assertEquals(ID_UTILISATEUR, extrait.getIdUtilisateur());
       assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(extrait.getPagm(),
@@ -158,7 +149,7 @@ public class WebServiceVIServiceTest {
             .parse("src/test/resources/webservice/vi_failure_format.xml");
 
       service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ISSUER,
-            keystore, crl);
+            new VISignVerifParams());
 
    }
 
@@ -170,7 +161,7 @@ public class WebServiceVIServiceTest {
             .parse("src/test/resources/webservice/vi_failure_sign.xml");
 
       service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ISSUER,
-            keystore, crl);
+            new VISignVerifParams());
 
    }
 

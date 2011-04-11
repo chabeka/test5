@@ -1,11 +1,12 @@
 package fr.urssaf.image.sae.saml.opensaml.signature;
 
-import java.security.KeyStore;
-import java.security.cert.X509CRL;
+import java.security.cert.CertificateException;
 import java.util.List;
 
+import org.apache.commons.lang.NullArgumentException;
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.security.SAMLSignatureProfileValidator;
+import org.opensaml.xml.security.keyinfo.KeyInfoHelper;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 import org.opensaml.xml.signature.Signature;
 import org.opensaml.xml.signature.SignatureValidator;
@@ -20,6 +21,8 @@ import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureKeyInf
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureNonConformeAuProfilException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureNotFoundException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureValidateException;
+import fr.urssaf.image.sae.saml.params.SamlSignatureVerifParams;
+import fr.urssaf.image.sae.saml.signature.SamlSignatureConfianceService;
 
 
 /**
@@ -35,21 +38,24 @@ public class SamlSignatureValidateService {
     * 
     * @param assertion
     *           assertion SAML contenant la signature à vérifier
-    * @param keystore
-    *           Les certificats des autorités de certification qui sont
-    *           reconnues pour être autorisées à délivrer des certificats de
-    *           signature de VI, ainsi que leur chaîne de certification
-    * @param crl
-    *           Les CRL
+    * @param signVerifParams
+    *           Les éléments nécessaires à la vérification de la signature de l'assertion
     * @throws SamlSignatureValidateException
     *            la signature est invalide
     */
    public final void verifierSignature(
          Assertion assertion,
-         KeyStore keystore,
-         List<X509CRL> crl)
+         SamlSignatureVerifParams signVerifParams)
       throws SamlSignatureValidateException {
 
+      // Vérifications des paramètres d'entrée
+      if (assertion==null) {
+         throw new NullArgumentException("assertion");
+      }
+      if (signVerifParams==null) {
+         throw new NullArgumentException("signatureVerifParams");
+      }
+      
       // Récupération de la signature de l'assertion
       Signature signature = assertion.getSignature();
       if (signature==null) {
@@ -82,7 +88,7 @@ public class SamlSignatureValidateService {
       verifierCryptographie(signature,publicKeyNatif);
       
       // Vérifications de la confiance dans le certificat de signature
-      verifierConfiance();
+      verifierConfiance(signature,signVerifParams);
       
    }
    
@@ -98,8 +104,6 @@ public class SamlSignatureValidateService {
       if (certificat.getSubjectDN().equals(certificat.getIssuerDN())) {
          throw new SamlAutoSignedCertificateException();
       }
-      
-      // TODO : Vérifier la période de validité
       
    }
    
@@ -130,8 +134,32 @@ public class SamlSignatureValidateService {
    }
    
    
-   private void verifierConfiance() {
-      // TODO : Implémenter la confiance 
+   private void verifierConfiance(
+         Signature signature,
+         SamlSignatureVerifParams signVerifParams)
+      throws 
+         SamlSignatureValidateException {
+
+      // Vérifications des paramètres d'entrée
+      if (signature==null) {
+         throw new NullArgumentException("signature");
+      }
+      if (signVerifParams==null) {
+         throw new NullArgumentException("signatureVerifParams");
+      }
+      
+      // Extraction du certificat de signature et sa chaîne de certification
+      // de la partie <KeyInfo> de la signature
+      List<java.security.cert.X509Certificate> chaineCertif;
+      try {
+         chaineCertif = KeyInfoHelper.getCertificates(signature.getKeyInfo());
+      } catch (CertificateException e) {
+         throw new SamlSignatureValidateException(e);
+      }
+      
+      // Appel du service de vérification, qui utilise les API natives de Java
+      SamlSignatureConfianceService.verifierConfiance(signVerifParams,chaineCertif);
+      
    }
    
 }

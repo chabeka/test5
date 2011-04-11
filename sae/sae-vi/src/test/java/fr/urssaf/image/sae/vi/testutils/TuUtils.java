@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.webservices.security;
+package fr.urssaf.image.sae.vi.testutils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,20 +8,50 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
+
 /**
- * Classe utilitaires pour la mise en place du contexte de sécurité
+ * Méthodes utilitaires pour les tests unitaires
  */
-public final class SecurityUtils {
-
+@SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+public final class TuUtils {
    
-   private SecurityUtils() {
-
+   
+   private TuUtils() {
+      
    }
 
+   
+   /**
+    * Renvoie un objet VISignVerifParams qui contient tous les éléments nécessaires
+    * pour vérifier un VI signé avec Portail_Image.p12
+    * 
+    * @return l'objet VISignVerifParams
+    */
+   public static VISignVerifParams buildSignVerifParamsOK() {
+      
+      
+      VISignVerifParams signVerifParams = new VISignVerifParams();
+      
+      signVerifParamsSetCertifsAC(
+            signVerifParams, 
+            Arrays.asList("src/test/resources/AC/AC-01_IGC_A.crt"));
+      
+      signVerifParamsSetCRL(
+            signVerifParams, 
+            Arrays.asList(
+                  "src/test/resources/CRL/CRL_AC-01_Pseudo_IGC_A.crl",
+                  "src/test/resources/CRL/CRL_AC-02_Pseudo_ACOSS.crl",
+                  "src/test/resources/CRL/CRL_AC-03_Pseudo_Appli.crl"));
+      
+      return signVerifParams;
+      
+   }
+   
    
    /**
     * Chargement d'un certificat X509 depuis un fichier de ressource
@@ -30,7 +60,6 @@ public final class SecurityUtils {
     * 
     * @return l'objet certificat X509
     */
-   @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
    public static X509Certificate loadCertificat(
          String fichierRessource) {
       
@@ -58,7 +87,6 @@ public final class SecurityUtils {
     * 
     * @return l'objet CRL
     */
-   @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
    public static X509CRL loadCRL(
          String fichierRessource) {
       
@@ -94,7 +122,7 @@ public final class SecurityUtils {
       List<X509Certificate> lstCertifACRacine = new ArrayList<X509Certificate>();
       
       for(String fichierRessource:ficRessources) {
-         lstCertifACRacine.add(loadCertificat(fichierRessource));
+         lstCertifACRacine.add(TuUtils.loadCertificat(fichierRessource));
       }
       
       signVerifParams.setCertifsACRacine(lstCertifACRacine);
@@ -116,12 +144,11 @@ public final class SecurityUtils {
       List<X509CRL> crls = new ArrayList<X509CRL>();
       
       for(String fichierRessource:ficRessources) {
-         crls.add(loadCRL(fichierRessource));
+         crls.add(TuUtils.loadCRL(fichierRessource));
       }
       
       signVerifParams.setCrls(crls);
       
    }
    
-
 }

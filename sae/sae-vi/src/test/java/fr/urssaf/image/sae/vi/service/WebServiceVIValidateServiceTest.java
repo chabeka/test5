@@ -5,19 +5,10 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.URI;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CRLException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509CRL;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -35,8 +26,16 @@ import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VIServiceIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VISignatureException;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
+import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
+import fr.urssaf.image.sae.vi.testutils.TuUtils;
 import fr.urssaf.image.sae.vi.util.XMLUtils;
 
+@SuppressWarnings({
+   "PMD.TooManyMethods",
+   "PMD.MethodNamingConventions",
+   "PMD.VariableNamingConventions",
+   "PMD.AvoidDuplicateLiterals"
+   })
 public class WebServiceVIValidateServiceTest {
 
    private static WebServiceVIValidateService service;
@@ -50,8 +49,6 @@ public class WebServiceVIValidateServiceTest {
    private static final URI SERVICE_VISE = ConverterUtils
          .uri("http://sae.urssaf.fr");
 
-   private static List<X509CRL> crl = new ArrayList<X509CRL>();
-
    private static Date system_date;
 
    @BeforeClass
@@ -61,30 +58,11 @@ public class WebServiceVIValidateServiceTest {
       extraction = new SamlAssertionExtractionService();
 
       try {
-         crl.add(CRLFactory
-               .createCRL("src/test/resources/CRL/Pseudo_ACOSS.crl"));
-      } catch (CRLException e) {
-         throw new IllegalStateException(e);
-      } catch (IOException e) {
-         throw new IllegalStateException(e);
-      }
-
-      try {
          system_date = DateUtils.parseDate("12/12/1999 01:00:00",
                new String[] { "dd/MM/yyyy HH:mm:ss" });
       } catch (ParseException e) {
          throw new IllegalStateException(e);
       }
-   }
-
-   private KeyStore keystore;
-
-   @Before
-   public void before() throws KeyStoreException, NoSuchAlgorithmException,
-         CertificateException, IOException {
-
-      keystore = KeyStoreFactory.createKeystore();
-
    }
 
    private void assertVIVerificationException_wsse(String faultCode,
@@ -104,6 +82,7 @@ public class WebServiceVIValidateServiceTest {
 
    }
 
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    private void assertVIVerificationException(String prefix, String namespace,
          String faultCode, String faultMessage,
          VIVerificationException exception) {
@@ -115,6 +94,7 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_failure_datebefore()
          throws VIAppliClientException, VINivAuthException,
          VIPagmIncorrectException, IOException, VIServiceIncorrectException,
@@ -139,6 +119,7 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_failure_dateafter()
          throws VIAppliClientException, VINivAuthException,
          VIPagmIncorrectException, IOException, VIServiceIncorrectException,
@@ -163,6 +144,7 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_failure_serviceVise()
          throws VIAppliClientException, VINivAuthException,
          VIPagmIncorrectException, IOException, VIInvalideException,
@@ -191,6 +173,7 @@ public class WebServiceVIValidateServiceTest {
 
    @Test
    @Ignore
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_failure_idapplication()
          throws VINivAuthException, VIPagmIncorrectException, IOException,
          VIInvalideException, VIServiceIncorrectException, SAXException {
@@ -216,6 +199,7 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_failure_methodauth()
          throws VIPagmIncorrectException, IOException, VIInvalideException,
          VIAppliClientException, VIServiceIncorrectException, SAXException {
@@ -241,6 +225,7 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void verifierVIdeServiceWeb_failure_pagm() throws IOException,
          VIInvalideException, VIAppliClientException, VINivAuthException,
          VIServiceIncorrectException, SAXException {
@@ -263,13 +248,16 @@ public class WebServiceVIValidateServiceTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void verifierVIdeServiceWeb_success() throws IOException,
          SAXException, VIFormatTechniqueException, VISignatureException {
 
       Element identification = XMLUtils
             .parse("src/test/resources/webservice/vi_success.xml");
 
-      service.validate(identification, keystore, crl);
+      service.validate(identification, TuUtils.buildSignVerifParamsOK());
+      
+      // Résultat attendu : aucune exception levée
 
    }
 
@@ -281,7 +269,7 @@ public class WebServiceVIValidateServiceTest {
             .parse("src/test/resources/webservice/vi_failure_format.xml");
 
       try {
-         service.validate(identification, keystore, crl);
+         service.validate(identification, new VISignVerifParams());
          fail(FAIL_MESSAGE);
       } catch (VIFormatTechniqueException e) {
 
@@ -299,7 +287,7 @@ public class WebServiceVIValidateServiceTest {
             .parse("src/test/resources/webservice/vi_failure_sign.xml");
 
       try {
-         service.validate(identification, keystore, crl);
+         service.validate(identification, new VISignVerifParams());
          fail(FAIL_MESSAGE);
       } catch (VISignatureException exception) {
 

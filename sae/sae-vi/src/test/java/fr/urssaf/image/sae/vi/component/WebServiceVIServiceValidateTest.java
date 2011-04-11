@@ -3,13 +3,9 @@ package fr.urssaf.image.sae.vi.component;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.net.URI;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.cert.CRLException;
-import java.security.cert.X509CRL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,9 +22,12 @@ import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
-import fr.urssaf.image.sae.vi.service.CRLFactory;
+import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
 
+@SuppressWarnings({
+   "PMD.TooManyMethods",
+   "PMD.MethodNamingConventions"})
 public class WebServiceVIServiceValidateTest {
 
    private static final String FAIL_MESSAGE = "le test doit échouer";
@@ -48,8 +47,6 @@ public class WebServiceVIServiceValidateTest {
    private static final URI SERVICE_VISE = ConverterUtils
          .uri("http://sae.urssaf.fr");
 
-   private static List<X509CRL> crl = new ArrayList<X509CRL>();
-
    private static WebServiceVIService service;
 
    @BeforeClass
@@ -63,14 +60,6 @@ public class WebServiceVIServiceValidateTest {
       Document document = builder.newDocument();
       identification = document.createElement("test");
 
-      try {
-         crl.add(CRLFactory
-               .createCRL("src/test/resources/CRL/Pseudo_ACOSS.crl"));
-      } catch (CRLException e) {
-         throw new IllegalStateException(e);
-      } catch (IOException e) {
-         throw new IllegalStateException(e);
-      }
    }
 
    private KeyStore keystore;
@@ -100,7 +89,10 @@ public class WebServiceVIServiceValidateTest {
          fail(FAIL_MESSAGE);
       } catch (IllegalArgumentException e) {
 
-         assertEquals("Il faut spécifier au moins un PAGM", e.getMessage());
+         assertEquals(
+               "Vérification de la levée d'exception si aucun PAGM n'est spécifié",
+               "Il faut spécifier au moins un PAGM", 
+               e.getMessage());
       }
 
    }
@@ -147,9 +139,10 @@ public class WebServiceVIServiceValidateTest {
          fail(FAIL_MESSAGE);
       } catch (IllegalArgumentException e) {
 
-         assertEquals("Le paramètre [" + param
-               + "] n'est pas renseigné alors qu'il est obligatoire", e
-               .getMessage());
+         assertEquals(
+               "Vérification de la levée d'une exception IllegalArgumentException avec le bon message",
+               "Le paramètre [" + param + "] n'est pas renseigné alors qu'il est obligatoire", 
+               e.getMessage());
       }
 
    }
@@ -159,7 +152,7 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("identification", null, SERVICE_VISE,
-            ID_APPLI, keystore, crl);
+            ID_APPLI, new VISignVerifParams());
 
    }
 
@@ -168,7 +161,7 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("serviceVise", identification, null,
-            ID_APPLI, keystore, crl);
+            ID_APPLI, new VISignVerifParams());
 
    }
 
@@ -177,16 +170,20 @@ public class WebServiceVIServiceValidateTest {
          throws VIVerificationException {
 
       assertVerifierVIdeServiceWeb("idAppliClient", identification,
-            SERVICE_VISE, null, keystore, crl);
+            SERVICE_VISE, null, new VISignVerifParams());
 
    }
 
    @Test
-   public void verifierVIdeServiceWebFailure_keystore()
+   public void verifierVIdeServiceWebFailure_signVerifParams()
          throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("keystore", identification, SERVICE_VISE,
-            ID_APPLI, null, crl);
+      assertVerifierVIdeServiceWeb(
+            "signVerifParams", 
+            identification, 
+            SERVICE_VISE,
+            ID_APPLI, 
+            null);
 
    }
 
@@ -195,47 +192,26 @@ public class WebServiceVIServiceValidateTest {
          Element identification, 
          URI serviceVise, 
          String idAppliClient,
-         KeyStore keystore, 
-         List<X509CRL> crl)
+         VISignVerifParams signVerifParams)
       throws 
          VIVerificationException {
 
       try {
-         service.verifierVIdeServiceWeb(identification, serviceVise,
-               idAppliClient, keystore, crl);
+         
+         service.verifierVIdeServiceWeb(
+               identification, 
+               serviceVise,
+               idAppliClient, 
+               signVerifParams);
+         
          fail(FAIL_MESSAGE);
+         
       } catch (IllegalArgumentException e) {
 
-         assertEquals("Le paramètre [" + param
-               + "] n'est pas renseigné alors qu'il est obligatoire", e
-               .getMessage());
-      }
-
-   }
-
-   @Test
-   public void verifierVIdeServiceWebFailure_crl()
-         throws VIVerificationException {
-
-      assertVerifierVIdeServiceWebFailure_crl(null);
-      List<X509CRL> crl = new ArrayList<X509CRL>();
-      crl.add(null);
-      crl.add(null);
-      assertVerifierVIdeServiceWebFailure_crl(crl);
-      assertVerifierVIdeServiceWebFailure_crl(new ArrayList<X509CRL>());
-
-   }
-
-   private void assertVerifierVIdeServiceWebFailure_crl(List<X509CRL> crl)
-         throws VIVerificationException {
-
-      try {
-         service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ID_APPLI,
-               keystore, crl);
-         fail(FAIL_MESSAGE);
-      } catch (IllegalArgumentException e) {
-
-         assertEquals("Il faut spécifier au moins un CRL", e.getMessage());
+         assertEquals(
+               "Vérification de la levée d'une exception IllegalArgumentException avec le bon message",
+               "Le paramètre [" + param + "] n'est pas renseigné alors qu'il est obligatoire", 
+               e.getMessage());
       }
 
    }

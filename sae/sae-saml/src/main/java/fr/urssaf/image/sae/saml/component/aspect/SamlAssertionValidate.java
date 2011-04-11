@@ -14,6 +14,7 @@ import org.aspectj.lang.annotation.Before;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
+import fr.urssaf.image.sae.saml.params.SamlSignatureVerifParams;
 import fr.urssaf.image.sae.saml.util.ListUtils;
 
 /**
@@ -199,12 +200,12 @@ public class SamlAssertionValidate {
 
       // récupération des paramétres de la méthode verifierAssertion
       Element assertionSaml = (Element) joinPoint.getArgs()[0];
-      KeyStore keystore = (KeyStore) joinPoint.getArgs()[1];
+      SamlSignatureVerifParams signVerifParams = (SamlSignatureVerifParams) joinPoint.getArgs()[1];
 
       // assertionSaml not null
       notNullValidate(assertionSaml, "assertionSaml", ARG_EMPTY);
       // keystore not null
-      notNullValidate(keystore, "keystore", ARG_EMPTY);
+      notNullValidate(signVerifParams, "signVerifParams", ARG_EMPTY);
 
    }
 

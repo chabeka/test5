@@ -32,6 +32,9 @@ import fr.cirtil.www.saeservice.PingSecureResponse;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service.xml",
       "/applicationContext-security.xml" })
+@SuppressWarnings({
+   "PMD.TooManyMethods",
+   "PMD.MethodNamingConventions"})
 public class SaeServiceSkeletonTest {
 
    @Autowired
@@ -100,6 +103,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void pingSecure_failure_noHeader() {
 
       pingSecure_failure_noVI("src/test/resources/request/pingsecure_failure_noHeader.xml");
@@ -107,6 +111,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void pingSecure_failure_noWSsecurity() {
 
       pingSecure_failure_noVI("src/test/resources/request/pingsecure_failure_noWSsecurity.xml");
@@ -114,12 +119,14 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void pingSecure_failure_noVI() {
 
       pingSecure_failure_noVI("src/test/resources/request/pingsecure_failure_noVI.xml");
 
    }
 
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    private void pingSecure_failure_noVI(String soap) {
 
       try {
@@ -139,6 +146,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void pingSecure_failure_sign() {
 
       try {

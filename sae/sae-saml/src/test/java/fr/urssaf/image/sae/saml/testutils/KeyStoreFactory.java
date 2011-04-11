@@ -22,7 +22,7 @@ public final class KeyStoreFactory {
    public static KeyStore createKeystore() throws KeyStoreException,
          NoSuchAlgorithmException, CertificateException, IOException {
 
-      return createKeystore("src/test/resources/Portail_Image.p12",
+      return createKeystore("src/test/resources/certif_test_std/Portail_Image.p12",
             "hiUnk6O3QnRN");
 
    }

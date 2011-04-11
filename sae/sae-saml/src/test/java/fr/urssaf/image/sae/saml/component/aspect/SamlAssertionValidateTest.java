@@ -27,6 +27,7 @@ import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.signature.SamlSignatureException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
+import fr.urssaf.image.sae.saml.params.SamlSignatureVerifParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionVerificationService;
@@ -317,7 +318,8 @@ public class SamlAssertionValidateTest {
          throws SamlFormatException, SamlSignatureException {
 
       try {
-         checkService.verifierAssertion(null, keystore, null);
+         SamlSignatureVerifParams signVerifParams = new SamlSignatureVerifParams(); 
+         checkService.verifierAssertion(null, signVerifParams);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
          assertEquals(getEmptyMessage("assertionSaml"), e.getMessage());
@@ -329,10 +331,10 @@ public class SamlAssertionValidateTest {
          SamlSignatureException {
 
       try {
-         checkService.verifierAssertion(saml, null, null);
+         checkService.verifierAssertion(saml, null);
          fail("IllegalArgumentException attendue");
       } catch (IllegalArgumentException e) {
-         assertEquals(getEmptyMessage("keystore"), e.getMessage());
+         assertEquals(getEmptyMessage("signVerifParams"), e.getMessage());
       }
    }
 

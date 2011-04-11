@@ -10,18 +10,6 @@
    <context:component-scan base-package="fr.urssaf.image.sae.webservices" />
 
    <bean id="securityService"
-      class="fr.urssaf.image.sae.webservices.security.SecurityService">
-
-      <constructor-arg name="keystore">
-         <value>security/Portail_Image.p12</value>
-      </constructor-arg>
-      <constructor-arg name="crls">
-         <array>
-            <value>security/CRL/Pseudo_ACOSS.crl</value>
-            <value>security/CRL/Pseudo_Appli.crl</value>
-            <value>security/CRL/Pseudo_IGC_A.crl</value>
-         </array>
-      </constructor-arg>
-   </bean>
+      class="fr.urssaf.image.sae.webservices.security.SecurityService" />
 
 </beans>
