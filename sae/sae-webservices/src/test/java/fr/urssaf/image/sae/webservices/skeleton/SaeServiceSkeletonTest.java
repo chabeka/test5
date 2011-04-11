@@ -30,8 +30,7 @@ import fr.cirtil.www.saeservice.PingSecureRequest;
 import fr.cirtil.www.saeservice.PingSecureResponse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service.xml",
-      "/applicationContext-security.xml" })
+@ContextConfiguration(locations = {"/applicationContext.xml"})
 @SuppressWarnings({
    "PMD.TooManyMethods",
    "PMD.MethodNamingConventions"})

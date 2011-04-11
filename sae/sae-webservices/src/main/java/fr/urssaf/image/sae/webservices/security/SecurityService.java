@@ -2,9 +2,11 @@ package fr.urssaf.image.sae.webservices.security;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -34,8 +36,6 @@ public class SecurityService {
    
    private final VISignVerifParams signVerifParams;
 
-
-   
    /**
     * Constructeur
     */
@@ -71,16 +71,37 @@ public class SecurityService {
    
    private void chargeCertificatsEtCRLPourLesTests() {
       
+      
+      // DefaultResourceLoader defaultResLoad = new DefaultResourceLoader ();
+      
+      // ----------------------------
+      // Chargement des AC
+      // ----------------------------
+      
+      
+      List<Resource> listeAC = new ArrayList<Resource>();
+      listeAC.add(ApplicationContextHolder.getContext().getResource(
+            "classpath:security/AC/AC-01_IGC_A.crt"));
+      
       SecurityUtils.signVerifParamsSetCertifsAC(
             signVerifParams, 
-            Arrays.asList("src/main/resources/security/AC/AC-01_IGC_A.crt"));
+            listeAC);
+      
+      // ----------------------------
+      // Chargement des CRL
+      // ----------------------------
+      
+      List<Resource> listeCRL = new ArrayList<Resource>();
+      listeCRL.add(ApplicationContextHolder.getContext().getResource(
+            "classpath:security/CRL/CRL_AC-01_Pseudo_IGC_A.crl"));
+      listeCRL.add(ApplicationContextHolder.getContext().getResource(
+            "classpath:security/CRL/CRL_AC-02_Pseudo_ACOSS.crl"));
+      listeCRL.add(ApplicationContextHolder.getContext().getResource(
+            "classpath:security/CRL/CRL_AC-03_Pseudo_Appli.crl"));
       
       SecurityUtils.signVerifParamsSetCRL(
             signVerifParams, 
-            Arrays.asList(
-                  "src/main/resources/security/CRL/CRL_AC-01_Pseudo_IGC_A.crl",
-                  "src/main/resources/security/CRL/CRL_AC-02_Pseudo_ACOSS.crl",
-                  "src/main/resources/security/CRL/CRL_AC-03_Pseudo_Appli.crl"));
+            listeCRL);
       
    }
    

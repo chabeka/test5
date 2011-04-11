@@ -1,7 +1,7 @@
 package fr.urssaf.image.sae.webservices.security;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -9,6 +9,8 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.core.io.Resource;
 
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
@@ -26,75 +28,73 @@ public final class SecurityUtils {
    /**
     * Chargement d'un certificat X509 depuis un fichier de ressource
     *
-    * @param fichierRessource le chemin du fichier de ressource (ex. : "src/test/resources/toto.crt")
+    * @param inputStream le stream représentant le certificat X509
     * 
     * @return l'objet certificat X509
     */
-   @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
    public static X509Certificate loadCertificat(
-         String fichierRessource) {
+         InputStream inputStream) {
       
       try {
          
          CertificateFactory certifFactory = CertificateFactory.getInstance("X.509");
          
          X509Certificate cert = (X509Certificate) certifFactory.generateCertificate(
-               new FileInputStream(fichierRessource));
+               inputStream);
          return cert;
       
       } catch (CertificateException e) {
-         throw new RuntimeException(e);
-      } catch (FileNotFoundException e) {
-         throw new RuntimeException(e);
+         throw new SecurityException(e);
       }
-      
    }
    
    
    /**
     * Chargement d'une CRL depuis un fichier de ressource
     *
-    * @param fichierRessource le chemin du fichier de ressource (ex. : "src/test/resources/toto.crl")
+    * @param inputStream le stream représentant la CRL
     * 
     * @return l'objet CRL
     */
-   @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
    public static X509CRL loadCRL(
-         String fichierRessource) {
+         InputStream inputStream) {
       
       try {
          
          CertificateFactory certifFactory = CertificateFactory.getInstance("X.509");
          
          X509CRL crl = (X509CRL) certifFactory.generateCRL(
-               new FileInputStream(fichierRessource));
+               inputStream);
          return crl;
       
       } catch (CertificateException e) {
-         throw new RuntimeException(e);
-      } catch (FileNotFoundException e) {
-         throw new RuntimeException(e);
+         throw new SecurityException(e);
       } catch (CRLException e) {
-         throw new RuntimeException(e);
+         throw new SecurityException(e);
       }
       
    }
+  
    
    /**
     * Définit les certificats des AC racine d'un objet VISignVerifParams
     * en les chargeant depuis les fichiers de ressources indiqués en paramètre
     * 
     * @param signVerifParams l'objet à remplir
-    * @param ficRessources les fichiers de ressources à charger
+    * @param resources les Resources représentant les certificats de AC
     */
    public static void signVerifParamsSetCertifsAC(
          VISignVerifParams signVerifParams,
-         List<String> ficRessources) {
+         List<Resource> resources) {
       
       List<X509Certificate> lstCertifACRacine = new ArrayList<X509Certificate>();
       
-      for(String fichierRessource:ficRessources) {
-         lstCertifACRacine.add(loadCertificat(fichierRessource));
+      for(Resource resource:resources) {
+         try {
+            lstCertifACRacine.add(loadCertificat(resource.getInputStream()));
+         } catch (IOException e) {
+            throw new SecurityException(e);
+         }
       }
       
       signVerifParams.setCertifsACRacine(lstCertifACRacine);
@@ -107,16 +107,20 @@ public final class SecurityUtils {
     * en les chargeant depuis les fichiers de ressources indiqués en paramètre
     * 
     * @param signVerifParams l'objet à remplir
-    * @param ficRessources les fichiers de ressources à charger
+    * @param resources les Resources représentant les CRL
     */
    public static void signVerifParamsSetCRL(
          VISignVerifParams signVerifParams,
-         List<String> ficRessources) {
+         List<Resource> resources) {
       
       List<X509CRL> crls = new ArrayList<X509CRL>();
       
-      for(String fichierRessource:ficRessources) {
-         crls.add(loadCRL(fichierRessource));
+      for(Resource resource:resources) {
+         try {
+            crls.add(loadCRL(resource.getInputStream()));
+         } catch (IOException e) {
+            throw new SecurityException(e);
+         }
       }
       
       signVerifParams.setCrls(crls);
