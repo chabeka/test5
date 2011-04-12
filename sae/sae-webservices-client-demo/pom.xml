@@ -42,7 +42,33 @@
             </configuration>
          </plugin>
 
+         <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <configuration>
+               <finalName>${project.name}</finalName>
+               <archive>
+                  <manifest>
+                     <mainClass>fr.urssaf.image.sae.webservice.client.demo.Client</mainClass>
+                  </manifest>
+               </archive>
+               <descriptors>
+                  <descriptor>src/assembly/jar-executable.xml</descriptor>
+               </descriptors>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>make-assembly</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>single</goal>
+                  </goals>
+               </execution>
+            </executions>
+
+         </plugin>
+
       </plugins>
+
 
    </build>
 
