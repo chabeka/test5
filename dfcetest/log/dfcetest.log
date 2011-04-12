@@ -1,0 +1,18 @@
+[      main] 13:59:23,032 [GedUserSession.<init>] START auth request for user: _ADMIN 
+[      main] 13:59:23,047 [GedUserSession.<init>] END auth request for user: _ADMIN 
+[      main] 13:59:24,047 [UserSession.disconnect] UserSession <1050765153> disconnect 
+[      main] 13:59:24,063 [UserSession.disconnect] UserSession <1050765153>, deleting temp folder <C:\DOCUME~1\CER690~2\LOCALS~1\Temp\_ADMIN\amf7420852055802596558.tmp> 
+[      main] 13:59:24,297 [GedUserSession.<init>] START auth request for user: _ADMIN 
+[      main] 13:59:24,297 [GedUserSession.<init>] END auth request for user: _ADMIN 
+[      main] 13:59:24,703 [UserSession.disconnect] UserSession <324790677> disconnect 
+[      main] 13:59:24,719 [UserSession.disconnect] UserSession <324790677>, deleting temp folder <C:\DOCUME~1\CER690~2\LOCALS~1\Temp\_ADMIN\amf5378794961959294686.tmp> 
+[      main] 13:59:24,891 [GedUserSession.<init>] START auth request for user: _ADMIN 
+[      main] 13:59:24,891 [GedUserSession.<init>] END auth request for user: _ADMIN 
+[      main] 13:59:25,703 [UserSession.disconnect] UserSession <413605332> disconnect 
+[      main] 13:59:25,719 [UserSession.disconnect] UserSession <413605332>, deleting temp folder <C:\DOCUME~1\CER690~2\LOCALS~1\Temp\_ADMIN\amf7885561221870793613.tmp> 
+[      main] 13:59:25,891 [GedUserSession.<init>] START auth request for user: _ADMIN 
+[      main] 13:59:25,891 [GedUserSession.<init>] END auth request for user: _ADMIN 
+[      main] 13:59:26,297 [UserSession.disconnect] UserSession <1799392156> disconnect 
+[      main] 13:59:26,297 [UserSession.disconnect] UserSession <1799392156>, deleting temp folder <C:\DOCUME~1\CER690~2\LOCALS~1\Temp\_ADMIN\amf7464627362990573449.tmp> 
+[      main] 13:59:27,000 [GedUserSession.<init>] START auth request for user: _ADMIN 
+[      main] 13:59:27,000 [GedUserSession.<init>] END auth request for user: _ADMIN 
