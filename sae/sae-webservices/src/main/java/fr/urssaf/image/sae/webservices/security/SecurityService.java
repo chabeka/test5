@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder;
+import org.apache.log4j.Logger;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +29,8 @@ import fr.urssaf.image.sae.webservices.security.spring.AuthenticationFactory;
  */
 public class SecurityService {
 
+   private static final Logger LOG = Logger.getLogger(SecurityService.class);
+   
    private final WebServiceVIService service;
 
    private final URI serviceVise;
@@ -134,6 +137,8 @@ public class SecurityService {
       viExtrait = this.service.verifierVIdeServiceWeb(identification,
             serviceVise, idAppliClient, signVerifParams);
 
+      logVI(viExtrait);
+      
       List<GrantedAuthority> authorities = AuthorityUtils
             .createAuthorityList(StringUtils.toStringArray(viExtrait.getPagm()));
 
@@ -142,6 +147,37 @@ public class SecurityService {
                   authorities);
 
       SecurityContextHolder.getContext().setAuthentication(authentication);
+   }
+   
+   
+   private void logVI(VIContenuExtrait viExtrait) {
+      
+      String prefixeLog = "Informations extraites du VI : ";
+      
+      // LOG des PAGM
+      if ((viExtrait!=null) && (viExtrait.getPagm()!=null)) {
+         StringBuffer sBufferMsgLog = new StringBuffer();
+         sBufferMsgLog.append(prefixeLog);
+         sBufferMsgLog.append("PAGM(s) : ");
+         for(String pagm:viExtrait.getPagm()) {
+            sBufferMsgLog.append(pagm);
+            sBufferMsgLog.append(' ');
+         }
+         LOG.info(sBufferMsgLog.toString());
+      }
+      
+      // LOG du code application
+      LOG.info(
+            prefixeLog + 
+            "Code application : " + 
+            viExtrait.getCodeAppli());
+      
+      // LOG de l'identifiant utilisateur
+      LOG.info(
+            prefixeLog +
+            "Identifiant utilisateur : " +
+            viExtrait.getIdUtilisateur());
+            
    }
 
 }

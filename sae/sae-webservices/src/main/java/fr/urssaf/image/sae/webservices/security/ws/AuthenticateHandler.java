@@ -7,6 +7,7 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.util.XMLUtils;
+import org.apache.log4j.Logger;
 import org.apache.ws.security.WSConstants;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -32,6 +33,8 @@ import fr.urssaf.image.sae.webservices.security.exception.VIVerificationAxisFaul
 @Aspect
 public class AuthenticateHandler {
 
+   private static final Logger LOG = Logger.getLogger(AuthenticateHandler.class);
+   
    private static final String SKELETON = "fr.urssaf.image.sae.webservices.skeleton.*Skeleton.*Secure(..)";
 
    private static final String METHODE = "execution(public * " + SKELETON + ")";
@@ -65,6 +68,13 @@ public class AuthenticateHandler {
     */
    @Before(METHODE)
    public final void authenticate() throws AxisFault {
+      
+      String prefixeLog = "Demande de consommation d'un service web sécurisé - ";
+      
+      LOG.info(
+            prefixeLog + 
+            "Mise en place du contexte de sécurité");
+      
       MessageContext msgCtx = MessageContext.getCurrentMessageContext();
 
       // @SuppressWarnings( { "unchecked", "PMD.ReplaceVectorWithList" })
@@ -92,6 +102,9 @@ public class AuthenticateHandler {
       SOAPHeader header = msgCtx.getEnvelope().getHeader();
       
       if(header == null){
+         LOG.error(
+               prefixeLog + 
+               "Erreur : pas d'en-tête SOAP dans le message SOAP");
          throw new VIEmptyAxisFault();
       }
 
@@ -99,6 +112,9 @@ public class AuthenticateHandler {
             WSConstants.WSSE_NS, WSConstants.WSSE_LN));
       
       if(security == null){
+         LOG.error(
+               prefixeLog + 
+               "Erreur : pas de WS-Security dans l'en-tête SOAP");
          throw new VIEmptyAxisFault();
       }
 
@@ -107,23 +123,35 @@ public class AuthenticateHandler {
 
       Element identification = null;
       if (saml == null) {
+         LOG.error(
+               prefixeLog + 
+               "Erreur : pas d'assertion SAML dans la partie WS-Security du message SOAP");
          throw new VIEmptyAxisFault();
 
       } else {
          try {
             identification = XMLUtils.toDOM(saml);
          } catch (Exception e) {
+            LOG.error(
+                  prefixeLog + 
+                  "Erreur lors de la mise en place de l'authentification : " + 
+                  e.toString());
             throw new IllegalStateException();
          }
 
          try {
             securityService.authentification(identification);
          } catch (VIVerificationException e) {
-
+            LOG.error(
+                  prefixeLog + 
+                  "Erreur lors de la mise en place de l'authentification : " + 
+                  e.toString());
             throw new VIVerificationAxisFault(e);
          }
 
       }
+      
+      LOG.info(prefixeLog + "Le contexte de sécurité est en place");
 
    }
 
