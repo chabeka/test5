@@ -18,7 +18,6 @@ import net.docubase.rheatoolkit.base.DataType;
 import net.docubase.rheatoolkit.base.DocumentCreateDateState;
 import net.docubase.rheatoolkit.base.DocumentOverlayFormState;
 import net.docubase.rheatoolkit.base.DocumentOwnerType;
-import net.docubase.rheatoolkit.base.StorageType;
 import net.docubase.rheatoolkit.domain.DomainFactory;
 import net.docubase.rheatoolkit.reference.CategoryReferenceDescription;
 import net.docubase.rheatoolkit.reference.CategoryReferenceFactory;
@@ -73,10 +72,6 @@ public class CreateNcotiTest extends AbstractNcotiTest {
    public void create() throws Exception {
       Base base = createBase();
       assertEquals("Base des cotisants", base.getDescription().getDescription());
-      
-      /*for (StorageType sp: adminSession.getBaseManager().getBase(DomainFactory.getDomain(domainId), BASEID).getBaseDefinition().getProfile().getStorageList()) {
-         LOGGER.info(sp.toString());  //.getDefaultStorageSpaceName());
-      }   */
    }
 
    @Test
