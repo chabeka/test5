@@ -27,7 +27,7 @@ public abstract class AbstractNcotiTest {
    protected Logger LOGGER = LoggerFactory.getLogger(getClass());
 
    /** Nom de la base GED pour ce test */
-   protected static final String BASEID = "NCOTI12";
+   protected static final String BASEID = "NCOTI";
 
    /** Login utilis� pour tout les tests */
    protected static final String ADM_LOGIN = "_ADMIN";
