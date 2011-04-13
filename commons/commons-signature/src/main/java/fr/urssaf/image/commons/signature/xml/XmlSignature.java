@@ -9,6 +9,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.KeyStore.PrivateKeyEntry;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,11 +120,13 @@ public final class XmlSignature {
       // Récupération de la clé privée
       PrivateKeyEntry privateKeyEntry = signeXmlGetPrivateKey(keyStore,aliasClePrivee,passwordClePrivee);
       
-      // Récupération de la clé publique correspondante
-      X509Certificate cert = signeXmlGetPublicKey(privateKeyEntry);
-
       // Create the KeyInfo containing the X509Data.
-      KeyInfo keyInfo = signeXmlCreateKeyInfo(fac,cert);
+      KeyInfo keyInfo;
+      try {
+         keyInfo = signeXmlCreateKeyInfo(fac,keyStore,aliasClePrivee);
+      } catch (KeyStoreException e) {
+         throw new XmlSignatureException(e);
+      }
 
       // Instantiate the document to be signed.
       Document doc = signeXmlInstantiateDoc(xmlAsigner);
@@ -224,21 +227,22 @@ public final class XmlSignature {
       
    }
    
-   
-   private static X509Certificate signeXmlGetPublicKey(PrivateKeyEntry privateKeyEntry) {
-      return (X509Certificate) privateKeyEntry.getCertificate();
-   }
-   
-   
    private static KeyInfo signeXmlCreateKeyInfo(
          XMLSignatureFactory fac,
-         X509Certificate certClePublique) {
+         KeyStore keyStore,
+         String aliasClePrivee) throws KeyStoreException {
+      
+      // Récupération de la chaîne de certification
+      Certificate[] chaineCertif = keyStore.getCertificateChain(aliasClePrivee);
       
       // Create the KeyInfo containing the X509Data.
       KeyInfoFactory keyInfoFac = fac.getKeyInfoFactory();
       List<X509Certificate> x509Content = new ArrayList<X509Certificate>();
-      x509Content.add(certClePublique);
+      for (Certificate certif: chaineCertif) {
+         x509Content.add((X509Certificate)certif);
+      }
       X509Data x509data = keyInfoFac.newX509Data(x509Content);
+      
       return keyInfoFac.newKeyInfo(Collections.singletonList(x509data));
       
    }
