@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.webservice.client.demo;
 
 import org.apache.commons.lang.ArrayUtils;
 
+import fr.urssaf.image.sae.webservice.client.demo.service.PingSecureService;
 import fr.urssaf.image.sae.webservice.client.demo.service.PingService;
 
 /**
@@ -24,6 +25,7 @@ public final class Client {
     * <li>arg[0]: action
     * <ul>
     * <li>ping</li>
+    * <li>ping_secure</li>
     * </ul>
     * </li>
     * </ul>
@@ -43,6 +45,10 @@ public final class Client {
       if ("ping".equals(args[0])) {
 
          PingService.main(newArgs);
+
+      } else if ("ping_secure".equals(args[0])) {
+
+         PingSecureService.main(newArgs);
 
       } else {
          throw new IllegalArgumentException("Unknown action defined: "

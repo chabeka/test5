@@ -69,17 +69,32 @@ public class ServiceClient {
 
          IOUtils.copy(soapMsg, output);
 
-         InputStream input = connection.getInputStream();
+         InputStream input;
          try {
+            input = connection.getInputStream();
 
-            return XMLUtils.print(input);
-         } finally {
-            input.close();
+         } catch (IOException e) {
+            input = connection.getErrorStream();
          }
-         
+
+         return XMLUtils.print(input);
+
       } catch (IOException e) {
          throw new IllegalStateException(e);
       }
 
    }
+
+   /**
+    * envoie un message SOAP
+    * 
+    * @param soapMsg
+    *           contenu de la requête
+    * @return réponse de la requête
+    */
+   public final String sendReceive(String soapMsg) {
+
+      return sendReceive(IOUtils.toInputStream(soapMsg));
+   }
+
 }

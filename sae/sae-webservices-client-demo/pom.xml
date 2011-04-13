@@ -97,6 +97,14 @@
          <version>2.0.1</version>
       </dependency>
 
+      <!-- JODA TIME -->
+
+      <dependency>
+         <groupId>joda-time</groupId>
+         <artifactId>joda-time</artifactId>
+         <version>1.6.2</version>
+      </dependency>
+
       <!--  TEST -->
 
       <dependency>

@@ -3,14 +3,43 @@ package fr.urssaf.image.sae.webservice.client.demo;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 public class ClientTest {
 
+   private static final Logger LOG = Logger.getLogger(ClientTest.class);
+
    @Test
    public void ping_success() {
 
+      LOG.debug("ping");
       Client.main(new String[] { "ping" });
+   }
+
+   @Test
+   public void pingSecure_success() {
+
+      LOG.debug("ping secure avec ROLE TOUS");
+      Client.main(new String[] { "ping_secure", "ROLE_TOUS" });
+   }
+
+   @Test
+   public void pingSecure_failure() {
+
+      LOG.debug("ping secure avec ROLE OTHER");
+      Client.main(new String[] { "ping_secure", "ROLE_OTHER" });
+   }
+
+   @Test
+   public void pingSecure_role_required() {
+
+      try {
+         Client.main(new String[] { "ping_secure" });
+      } catch (IllegalArgumentException e) {
+
+         assertEquals("role is required", e.getMessage());
+      }
    }
 
    @Test
