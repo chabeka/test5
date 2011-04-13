@@ -30,12 +30,8 @@ import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 import fr.urssaf.image.sae.vi.testutils.TuUtils;
 import fr.urssaf.image.sae.vi.util.XMLUtils;
 
-@SuppressWarnings({
-   "PMD.TooManyMethods",
-   "PMD.MethodNamingConventions",
-   "PMD.VariableNamingConventions",
-   "PMD.AvoidDuplicateLiterals"
-   })
+@SuppressWarnings( { "PMD.TooManyMethods", "PMD.MethodNamingConventions",
+      "PMD.VariableNamingConventions", "PMD.AvoidDuplicateLiterals" })
 public class WebServiceVIValidateServiceTest {
 
    private static WebServiceVIValidateService service;
@@ -112,7 +108,9 @@ public class WebServiceVIValidateServiceTest {
                "L'assertion n'est pas encore valable: elle ne sera active qu'à partir de 31/12/1999 02:00:00 alors que nous sommes le 12/12/1999 01:00:00",
                exception.getMessage());
 
-         assertVIVerificationException_vi("InvalidVI", "Le VI est invalide",
+         assertVIVerificationException_vi(
+               "InvalidVI",
+               "L'assertion n'est pas encore valable: elle ne sera active qu'à partir de 31/12/1999 02:00:00 alors que nous sommes le 12/12/1999 01:00:00",
                exception);
       }
 
@@ -137,7 +135,9 @@ public class WebServiceVIValidateServiceTest {
                "L'assertion a expirée : elle n'était valable que jusqu’au 01/12/1999 02:00:00, hors nous sommes le 12/12/1999 01:00:00",
                exception.getMessage());
 
-         assertVIVerificationException_vi("InvalidVI", "Le VI est invalide",
+         assertVIVerificationException_vi(
+               "InvalidVI",
+               "L'assertion a expirée : elle n'était valable que jusqu’au 01/12/1999 02:00:00, hors nous sommes le 12/12/1999 01:00:00",
                exception);
       }
 
@@ -256,7 +256,7 @@ public class WebServiceVIValidateServiceTest {
             .parse("src/test/resources/webservice/vi_success.xml");
 
       service.validate(identification, TuUtils.buildSignVerifParamsOK());
-      
+
       // Résultat attendu : aucune exception levée
 
    }
