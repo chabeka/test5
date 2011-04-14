@@ -66,9 +66,8 @@ public class WebServiceVIValidateService {
 
       try {
          
-         SamlSignatureVerifParams samlVerifSignPrms = new SamlSignatureVerifParams();
-         samlVerifSignPrms.setCertifsACRacine(signVerifParams.getCertifsACRacine());
-         samlVerifSignPrms.setCrls(signVerifParams.getCrls());
+         SamlSignatureVerifParams samlVerifSignPrms = 
+            convertSignParams(signVerifParams);
          
          checkService.verifierAssertion(identification, samlVerifSignPrms);
          
@@ -78,6 +77,20 @@ public class WebServiceVIValidateService {
          throw new VISignatureException(e);
       }
 
+   }
+   
+   
+   protected final SamlSignatureVerifParams convertSignParams(
+         VISignVerifParams viSignParams) {
+      
+      SamlSignatureVerifParams samlSignParams = new SamlSignatureVerifParams();
+      
+      samlSignParams.setCertifsACRacine(viSignParams.getCertifsACRacine());
+      samlSignParams.setCrls(viSignParams.getCrls());
+      samlSignParams.setPatternsIssuer(viSignParams.getPatternsIssuer());
+      
+      return samlSignParams;
+      
    }
 
    /**
