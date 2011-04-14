@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class SamlTokenHandlerTest {
 
    private SamlTokenHandler handler;
@@ -38,6 +39,7 @@ public class SamlTokenHandlerTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void invoke_success() throws AxisFault {
 
       AuthenticateUtils.authenticate("ROLE_TEST");
@@ -49,6 +51,7 @@ public class SamlTokenHandlerTest {
    }
 
    @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
    public void invoke_success_emptyRole() throws AxisFault {
 
       MessageContext msgCtx = new MessageContext();

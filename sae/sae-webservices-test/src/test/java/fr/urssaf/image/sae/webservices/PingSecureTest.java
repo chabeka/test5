@@ -22,6 +22,7 @@ import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureRequest;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureResponse;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class PingSecureTest {
 
    private SaeServiceStub service;
@@ -49,20 +50,45 @@ public class PingSecureTest {
       SecurityContextHolder.getContext().setAuthentication(null);
    }
 
+   
+   private String getSoapFaultInfos(AxisFault fault) {
+      StringBuilder messageFailure = new StringBuilder();
+      messageFailure.append("SoapFault :");
+      messageFailure.append(
+            "\r\n" + 
+            "FaultCode = " + 
+            fault.getFaultCode().getPrefix() + 
+            ":" + 
+            fault.getFaultCode().getLocalPart());
+      messageFailure.append(
+            "\r\n" + 
+            "FaultString = " + 
+            fault.getMessage());
+      return messageFailure.toString();
+   }
+   
+   
    @Test
    public void pingSecureAvecViOk_success() throws RemoteException {
 
-      AuthenticateUtils.authenticate("ROLE_TOUS");
-
-      PingSecureRequest request = new PingSecureRequest();
-
-      PingSecureResponse response = service.pingSecure(request);
-
-      LOG.debug(response.getPingString());
-
-      assertEquals("Test du ping securisé",
-            "Les services du SAE sécurisés par authentification sont en ligne",
-            response.getPingString());
+      try {
+         
+         AuthenticateUtils.authenticate("ROLE_TOUS");
+   
+         PingSecureRequest request = new PingSecureRequest();
+   
+         PingSecureResponse response = service.pingSecure(request);
+   
+         LOG.debug(response.getPingString());
+   
+         assertEquals("Test du ping securisé",
+               "Les services du SAE sécurisés par authentification sont en ligne",
+               response.getPingString());
+      
+      } catch(AxisFault fault) {
+         fail(getSoapFaultInfos(fault));
+      }
+      
    }
 
    @Test
@@ -76,7 +102,11 @@ public class PingSecureTest {
          service.pingSecure(request);
          fail("le test doit échouer");
       } catch (AxisFault fault) {
-         assertEquals("Access is denied", fault.getMessage());
+         LOG.debug(getSoapFaultInfos(fault));
+         assertEquals(
+               "Le message de la SoapFault n'est pas celui attendu",
+               "Access is denied", 
+               fault.getMessage());
       }
 
    }
@@ -90,7 +120,10 @@ public class PingSecureTest {
          service.pingSecure(request);
          fail("le test doit échouer");
       } catch (AxisFault fault) {
-         assertEquals("La référence au jeton de sécurité est introuvable",
+         LOG.debug(getSoapFaultInfos(fault));
+         assertEquals(
+               "Le message de la SoapFault n'est pas celui attendu",
+               "La référence au jeton de sécurité est introuvable",
                fault.getMessage());
 
       }
