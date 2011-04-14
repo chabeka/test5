@@ -50,45 +50,38 @@ public class PingSecureTest {
       SecurityContextHolder.getContext().setAuthentication(null);
    }
 
-   
    private String getSoapFaultInfos(AxisFault fault) {
       StringBuilder messageFailure = new StringBuilder();
       messageFailure.append("SoapFault :");
-      messageFailure.append(
-            "\r\n" + 
-            "FaultCode = " + 
-            fault.getFaultCode().getPrefix() + 
-            ":" + 
-            fault.getFaultCode().getLocalPart());
-      messageFailure.append(
-            "\r\n" + 
-            "FaultString = " + 
-            fault.getMessage());
+      messageFailure.append("\r\n" + "FaultCode = "
+            + fault.getFaultCode().getPrefix() + ":"
+            + fault.getFaultCode().getLocalPart());
+      messageFailure.append("\r\n" + "FaultString = " + fault.getMessage());
       return messageFailure.toString();
    }
-   
-   
+
    @Test
    public void pingSecureAvecViOk_success() throws RemoteException {
 
       try {
-         
+
          AuthenticateUtils.authenticate("ROLE_TOUS");
-   
+
          PingSecureRequest request = new PingSecureRequest();
-   
+
          PingSecureResponse response = service.pingSecure(request);
-   
+
          LOG.debug(response.getPingString());
-   
-         assertEquals("Test du ping securisé",
+
+         assertEquals(
+               "Test du ping securisé",
                "Les services du SAE sécurisés par authentification sont en ligne",
                response.getPingString());
-      
-      } catch(AxisFault fault) {
+
+      } catch (AxisFault fault) {
          fail(getSoapFaultInfos(fault));
       }
-      
+
    }
 
    @Test
@@ -105,7 +98,7 @@ public class PingSecureTest {
          LOG.debug(getSoapFaultInfos(fault));
          assertEquals(
                "Le message de la SoapFault n'est pas celui attendu",
-               "Access is denied", 
+               "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
                fault.getMessage());
       }
 
@@ -121,10 +114,9 @@ public class PingSecureTest {
          fail("le test doit échouer");
       } catch (AxisFault fault) {
          LOG.debug(getSoapFaultInfos(fault));
-         assertEquals(
-               "Le message de la SoapFault n'est pas celui attendu",
-               "La référence au jeton de sécurité est introuvable",
-               fault.getMessage());
+         assertEquals("Le message de la SoapFault n'est pas celui attendu",
+               "La référence au jeton de sécurité est introuvable", fault
+                     .getMessage());
 
       }
    }

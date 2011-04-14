@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -30,12 +29,12 @@ import fr.cirtil.www.saeservice.PingSecureRequest;
 import fr.cirtil.www.saeservice.PingSecureResponse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/applicationContext.xml"})
-@SuppressWarnings({
-   "PMD.TooManyMethods",
-   "PMD.MethodNamingConventions"})
+@ContextConfiguration(locations = { "/applicationContext.xml" })
+@SuppressWarnings( { "PMD.TooManyMethods", "PMD.MethodNamingConventions" })
 public class SaeServiceSkeletonTest {
 
+   private static final String FAIL_MSG = "le test doit échouer";
+   
    @Autowired
    private SaeServiceSkeleton skeleton;
 
@@ -93,11 +92,22 @@ public class SaeServiceSkeletonTest {
             response.getPingString());
    }
 
-   @Test(expected = AccessDeniedException.class)
+   @Test
    public void pingSecure_failure_accessDenied() throws AxisFault {
 
-      this
-            .pingSecure_failure("src/test/resources/request/pingsecure_failure_accessDenied.xml");
+      try {
+         this
+               .pingSecure_failure("src/test/resources/request/pingsecure_failure_accessDenied.xml");
+         fail(FAIL_MSG);
+      } catch (AxisFault e) {
+
+         assertEquals(
+               "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
+               e.getMessage());
+         assertEquals("DroitsInsuffisants", e.getFaultCode().getLocalPart());
+         assertEquals("sae", e.getFaultCode().getPrefix());
+         assertEquals("urn:sae:faultcodes", e.getFaultCode().getNamespaceURI());
+      }
 
    }
 
@@ -131,7 +141,7 @@ public class SaeServiceSkeletonTest {
       try {
          this.pingSecure_failure(soap);
 
-         fail("le test doit échouer");
+         fail(FAIL_MSG);
       } catch (AxisFault e) {
 
          assertEquals("La référence au jeton de sécurité est introuvable", e
@@ -152,7 +162,7 @@ public class SaeServiceSkeletonTest {
          this
                .pingSecure_failure("src/test/resources/request/pingsecure_failure_sign.xml");
 
-         fail("le test doit échouer");
+         fail(FAIL_MSG);
       } catch (AxisFault e) {
          assertEquals("La signature ou le chiffrement n'est pas valide", e
                .getMessage());

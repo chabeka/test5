@@ -39,8 +39,10 @@ public class PingSecureServiceTest {
 
       LOG.debug(response);
 
-      AssertXML.assertElementContent("Access is denied", "", "faultstring",
-            response);
+      AssertXML
+            .assertElementContent(
+                  "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
+                  "", "faultstring", response);
    }
 
 }
