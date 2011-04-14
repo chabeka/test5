@@ -2,6 +2,10 @@ package fr.urssaf.image.sae.saml.opensaml.signature;
 
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.security.auth.x500.X500Principal;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.opensaml.saml2.core.Assertion;
@@ -16,6 +20,8 @@ import org.opensaml.xml.validation.ValidationException;
 import fr.urssaf.image.sae.saml.exception.signature.keyinfo.SamlKeyInfoException;
 import fr.urssaf.image.sae.saml.exception.signature.keyinfo.SamlX509ConvertException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlAutoSignedCertificateException;
+import fr.urssaf.image.sae.saml.exception.signature.validate.SamlIssuerPatternException;
+import fr.urssaf.image.sae.saml.exception.signature.validate.SamlNotAutoSignedCertificateException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureCryptoException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureKeyInfoException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureNonConformeAuProfilException;
@@ -56,6 +62,10 @@ public class SamlSignatureValidateService {
          throw new NullArgumentException("signatureVerifParams");
       }
       
+      // Vérifie que les certificats racines transmis dans signVerifParams
+      // sont bien des certificats auto-signés
+      verifierCertifRacinesAutoSignes(signVerifParams.getCertifsACRacine());
+      
       // Récupération de la signature de l'assertion
       Signature signature = assertion.getSignature();
       if (signature==null) {
@@ -73,7 +83,7 @@ public class SamlSignatureValidateService {
          throw new SamlSignatureKeyInfoException(e);
       }
       
-      // Vérifications sur le certificat lui-même
+      // Conversion de l'objet certificat X509 en un type natif de l'API Java 
       java.security.cert.X509Certificate publicKeyNatif;
       try {
          publicKeyNatif = SamlSignatureUtils.convertX509(publicKeyOpenSaml);
@@ -82,7 +92,7 @@ public class SamlSignatureValidateService {
       }
     
       // Vérifications sur le certificat lui-même
-      verifierCertificatClePublique(publicKeyNatif);
+      verifierCertificatClePublique(publicKeyNatif,signVerifParams);
       
       // Vérifications de la partie cryptographie de la signature
       verifierCryptographie(signature,publicKeyNatif);
@@ -95,6 +105,22 @@ public class SamlSignatureValidateService {
    
    
    private void verifierCertificatClePublique(
+         java.security.cert.X509Certificate certificat,
+         SamlSignatureVerifParams signVerifParams) 
+      throws 
+         SamlSignatureValidateException {
+      
+      // Vérifie que le certificat ne soit pas auto-signé
+      verifierCertificatClePubliqueAutoSigne(certificat);
+      
+      // Vérifie que l'issuer du certificat réponde à un pattern
+      verifierCertificatClePubliqueIssuerPattern(signVerifParams,certificat);
+      
+      
+   }
+   
+   
+   private void verifierCertificatClePubliqueAutoSigne(
          java.security.cert.X509Certificate certificat) 
       throws 
          SamlSignatureValidateException {
@@ -103,6 +129,55 @@ public class SamlSignatureValidateService {
       // Si oui, on lève une exception, car ils ne sont pas autorisés
       if (certificat.getSubjectDN().equals(certificat.getIssuerDN())) {
          throw new SamlAutoSignedCertificateException();
+      }
+      
+   }
+   
+   
+   protected final void verifierCertificatClePubliqueIssuerPattern(
+         SamlSignatureVerifParams signVerifParams,
+         java.security.cert.X509Certificate certifClePubSign) 
+      throws 
+         SamlIssuerPatternException {
+      
+      // On ne traite que s'il y a au moins 1 pattern
+      if ((signVerifParams.getPatternsIssuer()!=null) && 
+          (signVerifParams.getPatternsIssuer().size()>0)) {
+         
+         // Récupération de l'Issuer au format décrit dans le RFC 2253 
+         String issuer = certifClePubSign.getIssuerX500Principal().getName(
+               X500Principal.RFC2253);
+         
+         // Appel de la méthode de vérification
+         verifierCertificatClePubliqueIssuerPattern(issuer,signVerifParams.getPatternsIssuer());
+         
+      }
+      
+   }
+   
+   
+   protected final void verifierCertificatClePubliqueIssuerPattern(
+         String issuer,
+         List<String> patterns) 
+      throws 
+         SamlIssuerPatternException {
+      
+      Boolean unMatch = false;
+      if (patterns!=null) {
+         Pattern pattern;
+         Matcher matcher;
+         for (String regex:patterns) {
+            pattern = Pattern.compile(regex);
+            matcher = pattern.matcher(issuer);
+            if (matcher.find()) {
+               unMatch = true;
+               break;
+            }
+         }
+      }
+      
+      if (!unMatch) {
+         throw new SamlIssuerPatternException(issuer,patterns);
       }
       
    }
@@ -159,6 +234,30 @@ public class SamlSignatureValidateService {
       
       // Appel du service de vérification, qui utilise les API natives de Java
       SamlSignatureConfianceService.verifierConfiance(signVerifParams,chaineCertif);
+      
+   }
+   
+   
+   /**
+    * Vérifie que les certificats des AC racines transmises dans les paramètres
+    * de vérification de la signature soient bien des certificats auto-signés 
+    * 
+    * @param certifRacines la liste des certificats de AC racine
+    * @throws SamlNotAutoSignedCertificateException si un des certificats n'est pas auto-signés
+    */
+   protected final void verifierCertifRacinesAutoSignes(
+         List<java.security.cert.X509Certificate> certifRacines)
+   throws SamlNotAutoSignedCertificateException {
+      
+      if ((certifRacines!=null) && (!certifRacines.isEmpty())) {
+         for(java.security.cert.X509Certificate cert : certifRacines) {
+            if (!cert.getSubjectX500Principal().equals(cert.getIssuerX500Principal())) {
+               String subject = cert.getSubjectX500Principal().getName(X500Principal.RFC2253);
+               String issuer = cert.getIssuerX500Principal().getName(X500Principal.RFC2253);
+               throw new SamlNotAutoSignedCertificateException(subject, issuer);
+            }
+         }
+      }
       
    }
    

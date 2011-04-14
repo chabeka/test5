@@ -1,14 +1,20 @@
 package fr.urssaf.image.sae.saml.opensaml.signature;
 
+import static org.junit.Assert.fail;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +27,8 @@ import org.opensaml.saml2.core.Assertion;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlAutoSignedCertificateException;
+import fr.urssaf.image.sae.saml.exception.signature.validate.SamlIssuerPatternException;
+import fr.urssaf.image.sae.saml.exception.signature.validate.SamlNotAutoSignedCertificateException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureCryptoException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureKeyInfoException;
 import fr.urssaf.image.sae.saml.exception.signature.validate.SamlSignatureNotFoundException;
@@ -54,9 +62,13 @@ import fr.urssaf.image.sae.saml.testutils.TuUtils;
 @SuppressWarnings({
    "PMD.AvoidDuplicateLiterals",
    "PMD.TooManyMethods",
-   "PMD.LongVariable"})
+   "PMD.LongVariable",
+   "PMD.ExcessiveImports",
+   "PMD.MethodNamingConventions"})
 public class SamlSignatureValidateServiceTest {
 
+   
+   private static final Logger LOG = Logger.getLogger(SamlSignatureValidateServiceTest.class);
    
    /**
     * Classe de génération des fichiers de tests 
@@ -64,7 +76,7 @@ public class SamlSignatureValidateServiceTest {
    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
    static class GenerateurDesAssertionsDeTest {
       
-      private static final Logger LOG = Logger.getLogger(SamlSignatureValidateServiceTest.class);
+      private static final Logger LOG = Logger.getLogger(GenerateurDesAssertionsDeTest.class);
       
       
       private GenerateurDesAssertionsDeTest() {
@@ -506,5 +518,234 @@ public class SamlSignatureValidateServiceTest {
    }
    
    
+   /**
+    * Renvoie un certificat X509 stockés dans les ressources<br>
+    * 
+    * @return le certificat
+    */
+   @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+   private X509Certificate getX509fromResources(String cheminRessource) {
+      
+      try {
+         CertificateFactory certFact = CertificateFactory.getInstance("X.509");
+         X509Certificate certTest;
+         InputStream inStream = this.getClass().getResourceAsStream(cheminRessource);
+         try {
+            certTest = (X509Certificate)certFact.generateCertificate(inStream);
+         }
+         finally {
+            inStream.close();
+         }
+         return certTest;
+         
+      } catch (CertificateException ex) {
+         throw new RuntimeException(ex);
+      } catch (IOException ex) {
+         throw new RuntimeException(ex);
+      }
+      
+   }
+   
+   
+   /**
+    * Cas de test :<br> 
+    *  - la liste des patterns est null<br>
+    *  - la liste des patterns est vide<br>
+    * <br>
+    * Résultat attendu : pas de levée d'exception 
+    *  
+    * @throws SamlIssuerPatternException
+    */
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   public void verifierCertificatClePubliqueIssuerPattern_Test1() 
+      throws SamlIssuerPatternException {
+      
+      // Récupére un certificat de test
+      X509Certificate certTest = getX509fromResources(
+            "/certif_test_std/X509/AC-03_Applications.crt");
+      
+      // Initialisation
+      SamlSignatureVerifParams signVerifParams = new SamlSignatureVerifParams(); 
+      
+      // Liste de patterns null
+      // Résultat attendu : pas d'exception
+      signVerifParams.setPatternsIssuer(null);
+      signatureValidateService.verifierCertificatClePubliqueIssuerPattern(
+            signVerifParams,certTest);
+      
+      // Liste de patterns vide
+      // Résultat attendu : pas d'exception
+      ArrayList<String> patterns = new ArrayList<String>(); 
+      signVerifParams.setPatternsIssuer(patterns);
+      signatureValidateService.verifierCertificatClePubliqueIssuerPattern(
+            signVerifParams,certTest);
+      
+   }
+   
+   
+   /**
+    * Cas de test : La liste des patterns contient un seul pattern, qui ne matche pas<br>
+    * <br>
+    * Résultat attendu : Levée d'une exception SamlIssuerPatternException
+
+    * 
+    * @throws SamlIssuerPatternException
+    */
+   @Test
+   public void verifierCertificatClePubliqueIssuerPattern_Test2() 
+      throws SamlIssuerPatternException {
+      
+      // Récupére un certificat de test
+      // Son IssuerDN au format RFC2253 est : "CN=AC Recouvrement Racine,O=ACOSS,L=Paris,ST=France,C=FR"
+      X509Certificate certTest = getX509fromResources(
+            "/certif_test_std/X509/AC-03_Applications.crt");
+      
+      // Initialisation
+      SamlSignatureVerifParams signVerifParams = new SamlSignatureVerifParams(); 
+      
+      // Un seul pattern, qui ne va pas matcher
+      ArrayList<String> patterns = new ArrayList<String>();
+      patterns.add("CN=AC Dieu");
+      
+      // Exécute la méthode à tester
+      // On ne met pas de @Test(expected=...) car dans le catch on log le message
+      // de l'exception, afin de pouvoir visualiser ce message
+      signVerifParams.setPatternsIssuer(patterns);
+      try {
+         signatureValidateService.verifierCertificatClePubliqueIssuerPattern(
+               signVerifParams,certTest);
+      } catch (SamlIssuerPatternException ex) {
+         LOG.debug(ex.toString());
+         return;
+      }
+      
+      // Si on arrive jusque là, le test est un échec
+      fail("Une exception SamlIssuerPatternException aurait dû être levée");
+      
+   }
+   
+   
+   /**
+    * Test unitaires de la méthode {@link SamlSignatureValidateService#verifierCertificatClePubliqueIssuerPattern(SamlSignatureVerifParams, X509Certificate)}<br>
+    * <br>
+    * Cas de test : La liste des patterns contient un seul pattern, qui matche<br>
+    * <br>
+    * Résultat attendu : Pas de levée d'exception
+    * 
+    * @throws SamlIssuerPatternException
+    */
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   public void verifierCertificatClePubliqueIssuerPattern_Test3() 
+      throws SamlIssuerPatternException {
+      
+      // Récupére un certificat de test
+      // Son IssuerDN au format RFC2253 est : "CN=AC Recouvrement Racine,O=ACOSS,L=Paris,ST=France,C=FR"
+      X509Certificate certTest = getX509fromResources(
+            "/certif_test_std/X509/AC-03_Applications.crt");
+      
+      // Initialisation
+      SamlSignatureVerifParams signVerifParams = new SamlSignatureVerifParams(); 
+      
+      // Un seul pattern, qui ne va pas matcher
+      ArrayList<String> patterns = new ArrayList<String>();
+      patterns.add("CN=AC Recouvrement Racine");
+      
+      // Exécute la méthode à tester
+      signVerifParams.setPatternsIssuer(patterns);
+      signatureValidateService.verifierCertificatClePubliqueIssuerPattern(
+            signVerifParams,certTest);
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link SamlSignatureValidateService#verifierCertifRacinesAutoSignes(java.util.List)}<br>
+    * <br>
+    * Cas de tests :<br>
+    *  - La liste des certificats des AC racine est <code>null</code><br>
+    *  - La liste des certificats des AC racine est vide<br>
+    * <br>
+    * Résultat attendu : pas de levée d'exception
+    *
+    * @throws SamlNotAutoSignedCertificateException
+    */
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   public void verifierCertifRacinesAutoSignes_test1() throws SamlNotAutoSignedCertificateException {
+      
+      // La liste de certificat d'AC racine est null
+      // Résultat attendu : pas d'exception
+      signatureValidateService.verifierCertifRacinesAutoSignes(null);
+      
+      // La liste de certificat d'AC racine est vide
+      // Résultat attendu : pas d'exception
+      ArrayList<X509Certificate> certifs = new ArrayList<X509Certificate>(); 
+      signatureValidateService.verifierCertifRacinesAutoSignes(certifs);
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link SamlSignatureValidateService#verifierCertifRacinesAutoSignes(java.util.List)}<br>
+    * <br>
+    * Cas de tests : un certificat d'AC racine n'est pas auto-signé<br>
+    * Résultat attendu : levée d'une exception
+    */
+   @Test
+   public void verifierCertifRacinesAutoSignes_test2() {
+      
+      
+      // Récupére un certificat de test qui n'est pas auto-signé
+      X509Certificate certTest = getX509fromResources(
+            "/certif_test_std/X509/AC-03_Applications.crt");
+      
+      // Construction du paramètre de la méthode à tester
+      ArrayList<X509Certificate> certifs = new ArrayList<X509Certificate>();
+      certifs.add(certTest);
+
+      // Exécute la méthode à tester
+      // On ne met pas de @Test(expected=...) car dans le catch on log le message
+      // de l'exception, afin de pouvoir visualiser ce message
+      try {
+         signatureValidateService.verifierCertifRacinesAutoSignes(certifs);
+      }
+      catch (SamlNotAutoSignedCertificateException ex) {
+         LOG.debug(ex.toString());
+         return;
+      }
+      
+      fail("Une exception SamlNotAutoSignedCertificateException aurait dû être levée");
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link SamlSignatureValidateService#verifierCertifRacinesAutoSignes(java.util.List)}<br>
+    * <br>
+    * Cas de tests : un certificat d'AC racine est auto-signé<br>
+    * Résultat attendu : pas de levée d'une exception
+    * 
+    * @throws SamlNotAutoSignedCertificateException 
+    */
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   public void verifierCertifRacinesAutoSignes_test3()
+   throws SamlNotAutoSignedCertificateException {
+      
+      
+      // Récupére un certificat de test qui n'est pas auto-signé
+      X509Certificate certTest = getX509fromResources(
+            "/certif_test_std/X509/AC-01_IGC_A.crt");
+      
+      // Construction du paramètre de la méthode à tester
+      ArrayList<X509Certificate> certifs = new ArrayList<X509Certificate>();
+      certifs.add(certTest);
+
+      // Exécute la méthode à tester
+      signatureValidateService.verifierCertifRacinesAutoSignes(certifs);
+      
+   }
    
 }

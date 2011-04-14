@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.saml.exception.signature.validate;
 
+import java.util.Collections;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
@@ -16,6 +18,12 @@ public class ExceptionPourCodeCoverageTest {
       new SamlAutoSignedCertificateException(StringUtils.EMPTY,new IllegalArgumentException());
       new SamlAutoSignedCertificateException(new IllegalArgumentException());
       new SamlAutoSignedCertificateException().getMessage();
+      
+      // SamlIssuerPatternException
+      new SamlIssuerPatternException("issuer", Collections.singletonList("pattern"));
+      
+      // SamlNotAutoSignedCertificateException
+      new SamlNotAutoSignedCertificateException("subject","issuer");
       
       // SamlSignatureCryptoException
       new SamlSignatureCryptoException();

@@ -14,6 +14,9 @@ public class SamlSignatureVerifParams {
    private List<X509Certificate> certifsACRacine;
    
    private List<X509CRL> crls;
+   
+   private List<String> patternsIssuer;
+   
 
    /**
     * Les certificats des AC racine
@@ -27,7 +30,7 @@ public class SamlSignatureVerifParams {
    /**
     * Les certificats des AC racine
     * 
-    * @param lstCertifACRacine Les certificats des AC racine
+    * @param certifsACRacine Les certificats des AC racine
     */
    public final void setCertifsACRacine(List<X509Certificate> certifsACRacine) {
       this.certifsACRacine = certifsACRacine;
@@ -54,6 +57,28 @@ public class SamlSignatureVerifParams {
     */
    public final void setCrls(List<X509CRL> crls) {
       this.crls = crls;
+   }
+
+   /**
+    * Les patterns de vérification de l'IssuerDN du certificat contenant la clé publique
+    * associée à la clé privée de la signature de l'assertion SAML.<br>
+    * Ce sont des expressions régulières.
+    * 
+    * @return les patterns
+    */
+   public final List<String> getPatternsIssuer() {
+      return patternsIssuer;
+   }
+
+   /**
+    * Les patterns de vérification de l'IssuerDN du certificat contenant la clé publique
+    * associée à la clé privée de la signature de l'assertion SAML.<br>
+    * Ce sont des expressions régulières.
+    * 
+    * @param patternsIssuer les patterns
+    */
+   public final void setPatternsIssuer(List<String> patternsIssuer) {
+      this.patternsIssuer = patternsIssuer;
    }
 
 }

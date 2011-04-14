@@ -23,6 +23,11 @@ public class ExceptionPourCodeCoverageTest {
       new SamlVerificationException(StringUtils.EMPTY,new IllegalArgumentException());
       new SamlVerificationException(new IllegalArgumentException());
       
+      // SamlExtractionException
+      new SamlExtractionException(StringUtils.EMPTY);
+      new SamlExtractionException(StringUtils.EMPTY,new IllegalArgumentException());
+      new SamlExtractionException(new IllegalArgumentException());
+      
    }
    
    
