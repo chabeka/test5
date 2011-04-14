@@ -65,17 +65,19 @@ public class SecurityService {
    private void chargeElementsVerifSignature() {
       
       // TODO : mécanisme de chargement des éléments permettant de vérifier la signature
-
+      
       // En attendant, on se base sur des éléments de test 
       chargeCertificatsEtCRLPourLesTests();
+      
+      // Chargement des patterns de vérification de l'issuer du certificat de 
+      // la clé publique de signature du VI
+      List<String> issuerPatterns = SecurityUtils.loadIssuerPatterns();
+      signVerifParams.setPatternsIssuer(issuerPatterns);
       
    }
    
    
    private void chargeCertificatsEtCRLPourLesTests() {
-      
-      
-      // DefaultResourceLoader defaultResLoad = new DefaultResourceLoader ();
       
       // ----------------------------
       // Chargement des AC

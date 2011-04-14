@@ -10,6 +10,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.CharEncoding;
 import org.springframework.core.io.Resource;
 
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
@@ -124,6 +127,40 @@ public final class SecurityUtils {
       }
       
       signVerifParams.setCrls(crls);
+      
+   }
+   
+   
+   /**
+    * Chargement des patterns d'issuer pour la vérification de la signature
+    * électronique du VI, depuis le fichier de ressource /security/pattern_issuer.txt
+    * 
+    * @return les patterns d'issuer
+    */
+   @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
+   public static List<String> loadIssuerPatterns() {
+      
+      Resource resource = ApplicationContextHolder.getContext().getResource(
+         "classpath:security/pattern_issuer.txt");
+      try {
+
+         InputStream inStream = resource.getInputStream();
+         try {
+            
+            List<String> patterns = IOUtils.readLines(inStream, CharEncoding.UTF_8);
+            
+            return patterns;
+            
+         }
+         finally {
+            if (inStream!=null) {
+               inStream.close();
+            }
+         }
+      
+      } catch(IOException ex) {
+         throw new RuntimeException(ex);
+      }
       
    }
    
