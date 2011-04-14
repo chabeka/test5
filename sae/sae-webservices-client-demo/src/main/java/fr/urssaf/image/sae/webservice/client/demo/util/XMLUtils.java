@@ -24,11 +24,12 @@ public final class XMLUtils {
    }
 
    /**
-    * Affichage du fichier xml indenté
+    * Affichage d'un contenu XML<br>
+    * L'affichage est indenté
     * 
     * @param input
-    *           fichier xml
-    * @return chaine de caractère du contenu du fichier xml
+    *           contenu XML
+    * @return chaine de caractère du contenu du fichier XML
     */
    public static String print(InputStream input) {
 

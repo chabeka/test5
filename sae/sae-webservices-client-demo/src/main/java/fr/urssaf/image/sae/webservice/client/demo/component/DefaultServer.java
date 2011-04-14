@@ -16,8 +16,8 @@ import fr.urssaf.image.sae.webservice.client.demo.util.ResourceUtils;
  * <ul>
  * <li><code>server.url</code>: url du serveur</li>
  * </ul>
- * 
- * 
+  * Cette classe est un singleton<br>
+ * l'unique instance est accessible avec la méthode {@link #getInstance()}
  */
 public final class DefaultServer {
 
@@ -29,11 +29,18 @@ public final class DefaultServer {
 
    private DefaultServer() {
 
+      this(PARAM_PROPERTIES);
+
+   }
+
+   protected DefaultServer(String paramProperties) {
+
       Properties properties = PropertiesUtils.load(ResourceUtils.loadResource(
-            this, PARAM_PROPERTIES));
+            this, paramProperties));
+
       if (!properties.containsKey(SERVER_URL)) {
          throw new IllegalArgumentException("'server.url' is required in "
-               + PARAM_PROPERTIES);
+               + paramProperties);
       }
 
       try {

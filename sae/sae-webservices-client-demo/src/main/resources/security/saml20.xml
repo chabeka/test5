@@ -1,7 +1,6 @@
 <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-   ID="e9cd9e97-4358-4476-9820-9f7ae94229a7" IssueInstant="2011-04-12T11:58:13.861Z"
-   Version="2.0">
-   <saml:Issuer>TEST_SERVICES_WEB_SAE</saml:Issuer>
+   ID="[AssertionID]" IssueInstant="[AuthnInstant]" Version="2.0">
+   <saml:Issuer>PNR</saml:Issuer>
    <saml:Subject>
       <saml:NameID
          Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">NON_RENSEIGNE</saml:NameID>
@@ -16,8 +15,8 @@
          <saml:Audience>http://sae.urssaf.fr</saml:Audience>
       </saml:AudienceRestriction>
    </saml:Conditions>
-   <saml:AuthnStatement AuthnInstant="2011-04-12T11:58:13.861Z"
-      SessionIndex="e9cd9e97-4358-4476-9820-9f7ae94229a7">
+   <saml:AuthnStatement AuthnInstant="[AuthnInstant]"
+      SessionIndex="[AssertionID]">
       <saml:AuthnContext>
          <saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:unspecified
          </saml:AuthnContextClassRef>

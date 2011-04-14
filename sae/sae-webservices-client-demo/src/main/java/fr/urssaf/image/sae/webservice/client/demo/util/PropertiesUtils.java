@@ -16,7 +16,10 @@ public final class PropertiesUtils {
    }
 
    /**
-    * instancie un objet {@link Properties} à partir d'un fichier de propriétés
+    * instancie un objet {@link Properties} à partir d'un fichier de propriétés<br>
+    * <br>
+    * Cette méthode permet de récupérer des valeurs dans des
+    * fichiers de paramètres de type .properties
     * 
     * @param input
     *           fichier de propriétés

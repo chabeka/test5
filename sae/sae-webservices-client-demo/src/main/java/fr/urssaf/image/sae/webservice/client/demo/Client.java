@@ -17,22 +17,23 @@ public final class Client {
    }
 
    /**
-    * Méthode executable<br>
-    * Redirection vers les autres méthodes executables de client demo<br>
+    * Méthode principale de l'exécutable<br>
+    * Redirection vers les autres méthodes exécutables de client demo<br>
     * <br>
-    * paramètres ordonnés:
+    * paramètres ordonnés:<br>
+    * <br>
+    * arg[0]: action
     * <ul>
-    * <li>arg[0]: action
+    * <li>ping: appel du ping (voir {@link PingService})</li>
+    * <li>ping_secure: appel du ping sécurisé (voir {@link PingSecureService})
     * <ul>
-    * <li>ping</li>
-    * <li>ping_secure</li>
+    * <li>arg[1]: role</li>
     * </ul>
     * </li>
     * </ul>
     * 
-    * 
     * @param args
-    *           arguments obligatoires
+    *           arguments
     */
    public static void main(String[] args) {
 

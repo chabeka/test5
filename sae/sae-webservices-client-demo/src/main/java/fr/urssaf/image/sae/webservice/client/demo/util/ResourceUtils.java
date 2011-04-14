@@ -14,10 +14,15 @@ public final class ResourceUtils {
    }
 
    /**
-    * retourne un fichier contenu dans le classpath
+    * retourne un fichier contenu dans le classpath<br>
+    * Cette méthode permet de récupérer des fichiers dans le classpath<br>
+    * <br>
+    * ex : <code>loadResource("temp\fichier.xml")</code> permet de récuperer le
+    * fichier dans le répertoire <code>temp</code> situé à la racine du
+    * répertoire de compilation
     * 
     * @param object
-    *           instance d'une classe du classpth
+    *           instance d'une classe du classpath
     * @param path
     *           chemin du fichier
     * @return fichier correspondant au path

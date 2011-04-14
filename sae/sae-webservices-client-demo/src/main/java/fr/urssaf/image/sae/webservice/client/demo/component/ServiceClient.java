@@ -12,7 +12,29 @@ import org.apache.commons.lang.StringUtils;
 import fr.urssaf.image.sae.webservice.client.demo.util.XMLUtils;
 
 /**
- * Classe pour envoyer des messages SOAP au serveur de web service
+ * Classe pour envoyer des messages SOAP au serveur de web service<br>
+ * 
+ * <pre>
+ * exemple avec un ping
+ * 
+ * <u>message soap envoyé</u>:
+ * &lt;?xml version='1.0' encoding='UTF-8'?>
+ *  &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">   
+ *     &lt;soapenv:Body>      
+ *        &lt;ns1:PingRequest xmlns:ns1="http://www.cirtil.fr/saeService" />   
+ *     &lt;/soapenv:Body>
+ * &lt;/soapenv:Envelope>
+ * 
+ * <u>message soap reçu</u>:
+ * &lt;?xml version='1.0' encoding='UTF-8'?>
+ *    &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+ *       &lt;soapenv:Body>
+ *          &lt;ns1:PingResponse xmlns:ns1="http://www.cirtil.fr/saeService">
+ *            &lt;ns1:pingString>Les services SAE sont en ligne&lt;/ns1:pingString>
+ *          &lt;/ns1:PingResponse>
+ *     &lt;/soapenv:Body>
+ * &lt;/soapenv:Envelope>
+ * </pre>
  * 
  * 
  */
@@ -26,9 +48,9 @@ public class ServiceClient {
     * initialise les paramètres du message SOAP
     * 
     * @param soapAction
-    *           action du message SOAP
+    *           action du message SOAP : doit être renseigné
     * @param server
-    *           URL du serveur
+    *           URL du serveur des web services : doit être renseigné
     */
    public ServiceClient(String soapAction, URL server) {
 
@@ -70,6 +92,9 @@ public class ServiceClient {
          IOUtils.copy(soapMsg, output);
 
          InputStream input;
+         // on récupère ici la réponse du web service
+         // au cas où la réponse renvoie des soapFault la réponse est récupérée
+         // dans le catch(IOException)
          try {
             input = connection.getInputStream();
 

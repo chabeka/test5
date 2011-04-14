@@ -3,11 +3,9 @@ package fr.urssaf.image.sae.webservice.client.demo.security.signature;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.security.InvalidAlgorithmParameterException;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableEntryException;
 import java.security.KeyStore.PrivateKeyEntry;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -36,7 +34,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -161,11 +158,9 @@ public final class XmlSignature {
                .newDigestMethod(DigestMethod.SHA1, null), Collections
                .singletonList(fac.newTransform(Transform.ENVELOPED,
                      (TransformParameterSpec) null)), null, null);
-      } catch (NoSuchAlgorithmException ex) {
+      } catch (GeneralSecurityException ex) {
          throw new XmlSignatureException(ex);
-      } catch (InvalidAlgorithmParameterException ex) {
-         throw new XmlSignatureException(ex);
-      }
+      } 
 
       return ref;
 
@@ -181,9 +176,7 @@ public final class XmlSignature {
                .newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
                      (C14NMethodParameterSpec) null), fac.newSignatureMethod(
                SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
-      } catch (NoSuchAlgorithmException ex) {
-         throw new XmlSignatureException(ex);
-      } catch (InvalidAlgorithmParameterException ex) {
+      }  catch (GeneralSecurityException ex) {
          throw new XmlSignatureException(ex);
       }
 
@@ -202,11 +195,7 @@ public final class XmlSignature {
                      passwordClePrivee.toCharArray()));
          return privateKeyEntry;
 
-      } catch (NoSuchAlgorithmException ex) {
-         throw new XmlSignatureException(ex);
-      } catch (UnrecoverableEntryException ex) {
-         throw new XmlSignatureException(ex);
-      } catch (KeyStoreException ex) {
+      }  catch (GeneralSecurityException ex) {
          throw new XmlSignatureException(ex);
       }
 
@@ -289,8 +278,6 @@ public final class XmlSignature {
          // Renvoie du résultat
          return stringWriter.toString();
 
-      } catch (TransformerConfigurationException ex) {
-         throw new XmlSignatureException(ex);
       } catch (TransformerException ex) {
          throw new XmlSignatureException(ex);
       }

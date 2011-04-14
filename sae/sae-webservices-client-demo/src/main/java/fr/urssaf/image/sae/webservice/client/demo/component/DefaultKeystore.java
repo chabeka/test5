@@ -1,24 +1,22 @@
 package fr.urssaf.image.sae.webservice.client.demo.component;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 
 import fr.urssaf.image.sae.webservice.client.demo.util.ResourceUtils;
 
 /**
- * Configuration d'un keyStore par défaut à partir d'un .p12<br>
+ * Configuration d'un {@link keyStore} par défaut à partir d'un .p12<br>
  * <br>
  * <ul>
  * <li><b>p12</b>: Portail_Image.p12</li>
  * <li><b>password</b>: hiUnk6O3QnRN</li>
  * </ul>
  * 
- * 
+ * Cette classe est un singleton<br>
+ * l'unique instance est accessible avec la méthode {@link #getInstance()}
  */
 public final class DefaultKeystore {
 
@@ -45,13 +43,7 @@ public final class DefaultKeystore {
 
          alias = keystore.aliases().nextElement();
 
-      } catch (KeyStoreException e) {
-         throw new IllegalStateException(e);
-      } catch (FileNotFoundException e) {
-         throw new IllegalStateException(e);
-      } catch (NoSuchAlgorithmException e) {
-         throw new IllegalStateException(e);
-      } catch (CertificateException e) {
+      } catch (GeneralSecurityException e) {
          throw new IllegalStateException(e);
       } catch (IOException e) {
          throw new IllegalStateException(e);
