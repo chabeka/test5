@@ -1,19 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+      
       <wsse:Security
          xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
-         soapenv:mustUnderstand="1">
-         <wsse:UsernameToken
-            xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
-            wsu:Id="UsernameToken-1">
-            <wsse:Username>myuser</wsse:Username>
-            <wsse:Password
-               Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">aKdSns/igkXzklDOCKJ6VM5EG9o=</wsse:Password>
-            <wsse:Nonce
-               EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">7XiATnfc+Tk9QShvowwlgg==</wsse:Nonce>
-            <wsu:Created>2011-04-06T10:24:51.338Z</wsu:Created>
-         </wsse:UsernameToken>
+         xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+         
          <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
             ID="b197a814-dd5c-449e-8b27-57cf25969d8a" IssueInstant="2011-04-06T10:24:51.525Z"
             Version="2.0">
@@ -168,12 +160,17 @@
                </saml:Attribute>
             </saml:AttributeStatement>
          </saml:Assertion>
+      
+         <wsse:SecurityTokenReference wsu:Id="token1" wsse:TokenType="http://docs.oasis-open.org/wss/oasis-wss-saml-tokenprofile-1.1#SAMLV2.0">
+            <wsse:KeyIdentifier wsu:Id="token1" ValueType="http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLID">
+               b197a814-dd5c-449e-8b27-57cf25969d8a
+            </wsse:KeyIdentifier>
+         </wsse:SecurityTokenReference>
+      
       </wsse:Security>
-      <wsa:To>http://localhost:8082/axis2/services/SaeService/</wsa:To>
-      <wsa:MessageID>urn:uuid:CF6AFC534843D9FB771302085491045
-      </wsa:MessageID>
-      <wsa:Action>PingSecure</wsa:Action>
+      
    </soapenv:Header>
+      
    <soapenv:Body>
       <ns1:PingSecureRequest xmlns:ns1="http://www.cirtil.fr/saeService" />
    </soapenv:Body>

@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.vi.service;
 import java.net.URI;
 import java.security.KeyStore;
 import java.security.cert.CertificateEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,9 @@ import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
+import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
+import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
@@ -167,22 +170,75 @@ public class WebServiceVIService {
       // vérification supplémentaires sur le jeton SAML
       validateService.validate(data, serviceVise, idAppliClient, new Date());
 
-      // instanciation de la valeur retour
-      VIContenuExtrait extrait = new VIContenuExtrait();
-      extrait.setPagm(data.getAssertionParams().getCommonsParams().getPagm());
-      extrait.setIdUtilisateur(data.getAssertionParams().getSubjectId2());
-
+      // Extraction de l'identifiant de l'application cliente depuis le certificat
+      // de la clé publique de signature du VI
       // l'extraction du CN vient du code
       // http://stackoverflow.com/questions/2914521/how-to-extract-cn-from-x509certificate-in-java
+      String idAppliCliente;
       try {
          X509Principal principal = PrincipalUtil.getSubjectX509Principal(data
                .getClePublique());
-         extrait.setCodeAppli((String) principal.getValues(X509Name.CN).get(0));
+         idAppliCliente = (String) principal.getValues(X509Name.CN).get(0);
       } catch (CertificateEncodingException e) {
          throw new IllegalStateException(e);
       }
-
+      
+      // Extraction des PAGM du VI
+      List<VIPagm> pagms = extraitPagm(data.getAssertionParams().getCommonsParams().getPagm());
+      
+      // Vérification des PAGM par rapport au "contrat de service"
+      validateService.validate(pagms, idAppliCliente);
+      
+      // instanciation de la valeur retour
+      VIContenuExtrait extrait = new VIContenuExtrait();
+      extrait.setPagm(pagms);
+      extrait.setIdUtilisateur(data.getAssertionParams().getSubjectId2());
+      extrait.setCodeAppli(idAppliCliente);
+      
+      // Renvoie du résultat
       return extrait;
+      
    }
+   
+   
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   protected final List<VIPagm> extraitPagm(List<String> pagms)
+      throws VIPagmIncorrectException {
+      
+      // On transforme cette liste de String en liste de Pagm
+      // L'encodage des PAGM doit être sous la forme DroitApplicatif;PerimetreDonnees
+      List<VIPagm> pagmOk = new ArrayList<VIPagm>();
+      for (String sPagm: pagms) {
+         
+         // On vérifie que le pagm ne soit pas vide
+         sPagm = sPagm.trim();
+         if (sPagm.isEmpty()) {
+            throw new VIPagmIncorrectException("Un des PAGM transmis est vide (chaîne vide)");
+         }
+         
+         // On éclate le pagm sur le caractère séparateur point-virgule
+         sPagm = sPagm.trim();
+         String[] parts = sPagm.split(";");
+         
+         // On vérifie qu'il y ait bien deux parties
+         if (parts.length<2) {
+            throw new VIPagmIncorrectException(
+                  "Le périmètre de données est obligatoire, mais il n'a pas été spécifié dans le PAGM suivant : \"" + sPagm + "\"");
+         }
+         if (parts.length>2) {
+            throw new VIPagmIncorrectException(
+                  "Le PAGM suivant est mal formé : \"" + sPagm + "\"");
+         }
+         
+         // On construit l'objet PAGM
+         pagmOk.add(new VIPagm(parts[0],parts[1]));
+         
+      }
+      
+      // Renvoie du résultat
+      return pagmOk;
+      
+   }
+   
 
 }

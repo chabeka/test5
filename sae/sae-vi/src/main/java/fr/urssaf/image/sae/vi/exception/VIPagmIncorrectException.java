@@ -5,20 +5,19 @@ import javax.xml.namespace.QName;
 import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
 
 /**
- * Le ou les PAGM présents dans le VI sont invalides
- * 
- * 
+ * Problème sur les PAGM
  */
 public class VIPagmIncorrectException extends VIVerificationException {
 
    private static final long serialVersionUID = 1L;
 
    /**
-    * instancie le message d'exception 'Le ou les PAGM présents dans le VI sont
-    * invalides'
+    * Constructeur
+    * 
+    * @param message Le message de l'exception
     */
-   public VIPagmIncorrectException() {
-      super("Le ou les PAGM présents dans le VI sont invalides");
+   public VIPagmIncorrectException(String message) {
+      super(message);
    }
 
    /**

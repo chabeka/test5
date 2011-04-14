@@ -2,17 +2,17 @@ package fr.urssaf.image.sae.vi.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.net.URI;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -22,16 +22,22 @@ import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
-import fr.urssaf.image.sae.saml.util.ConverterUtils;
 import fr.urssaf.image.sae.vi.exception.VIFormatTechniqueException;
+import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VISignatureException;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
+import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
+import fr.urssaf.image.sae.vi.testutils.TuGenererVi;
 import fr.urssaf.image.sae.vi.testutils.TuUtils;
 import fr.urssaf.image.sae.vi.util.XMLUtils;
 
-@SuppressWarnings("PMD.MethodNamingConventions")
+@SuppressWarnings({
+   "PMD.MethodNamingConventions",
+   "PMD.TooManyMethods",
+   "PMD.ExcessiveImports"
+   })
 public class WebServiceVIServiceTest {
 
    private static final Logger LOG = Logger
@@ -40,13 +46,6 @@ public class WebServiceVIServiceTest {
    private static WebServiceVIService service;
 
    private static SamlAssertionExtractionService extraction;
-
-   private static final String ID_UTILISATEUR = "idUtilisateur_test";
-
-   private static final String ISSUER = "issuer_test";
-
-   private static final URI SERVICE_VISE = ConverterUtils
-         .uri("http://sae.urssaf.fr");
 
    @BeforeClass
    public static void beforeClass() {
@@ -72,7 +71,7 @@ public class WebServiceVIServiceTest {
    @Test
    public void creerVIpourServiceWeb_success_idNotEmpty() throws SAXException {
 
-      assertCreerVIpourServiceWeb(ID_UTILISATEUR, ID_UTILISATEUR);
+      assertCreerVIpourServiceWeb(TuGenererVi.ID_UTILISATEUR, TuGenererVi.ID_UTILISATEUR);
    }
 
    @Test
@@ -90,7 +89,7 @@ public class WebServiceVIServiceTest {
 
       String password = "hiUnk6O3QnRN";
 
-      Element assertion = service.creerVIpourServiceWeb(pagm, ISSUER, idActual,
+      Element assertion = service.creerVIpourServiceWeb(pagm, TuGenererVi.ISSUER, idActual,
             keystore, alias, password);
 
       LOG.debug("\n" + XMLUtils.print(assertion));
@@ -100,7 +99,7 @@ public class WebServiceVIServiceTest {
       assertNotNull(data.getAssertionParams().getCommonsParams().getId());
       assertNotNull(data.getAssertionParams().getCommonsParams()
             .getIssueInstant());
-      assertEquals(ISSUER, data.getAssertionParams().getCommonsParams()
+      assertEquals(TuGenererVi.ISSUER, data.getAssertionParams().getCommonsParams()
             .getIssuer());
 
       long diff = data.getAssertionParams().getCommonsParams()
@@ -131,12 +130,20 @@ public class WebServiceVIServiceTest {
       Element identification = XMLUtils
             .parse("src/test/resources/webservice/vi_success.xml");
 
-      VIContenuExtrait extrait = service.verifierVIdeServiceWeb(identification,
-            SERVICE_VISE, ISSUER, TuUtils.buildSignVerifParamsOK());
+      VIContenuExtrait extrait = service.verifierVIdeServiceWeb(
+            identification,
+            TuGenererVi.SERVICE_VISE, 
+            TuGenererVi.ISSUER, 
+            TuUtils.buildSignVerifParamsOK());
 
-      assertEquals(ID_UTILISATEUR, extrait.getIdUtilisateur());
-      assertEquals("ROLE_USER,ROLE_ADMIN", StringUtils.join(extrait.getPagm(),
-            ","));
+      assertEquals(TuGenererVi.ID_UTILISATEUR, extrait.getIdUtilisateur());
+      
+      assertEquals(2,extrait.getPagm().size());
+      assertEquals("DROIT_APPLICATIF_1",extrait.getPagm().get(0).getDroitApplicatif());
+      assertEquals("PERIMETRE_DONNEES_1",extrait.getPagm().get(0).getPerimetreDonnees());
+      assertEquals("DROIT_APPLICATIF_2",extrait.getPagm().get(1).getDroitApplicatif());
+      assertEquals("PERIMETRE_DONNEES_2",extrait.getPagm().get(1).getPerimetreDonnees());
+      
       assertEquals("Portail Image", extrait.getCodeAppli());
 
    }
@@ -148,7 +155,10 @@ public class WebServiceVIServiceTest {
       Element identification = XMLUtils
             .parse("src/test/resources/webservice/vi_failure_format.xml");
 
-      service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ISSUER,
+      service.verifierVIdeServiceWeb(
+            identification, 
+            TuGenererVi.SERVICE_VISE, 
+            TuGenererVi.ISSUER,
             new VISignVerifParams());
 
    }
@@ -160,9 +170,112 @@ public class WebServiceVIServiceTest {
       Element identification = XMLUtils
             .parse("src/test/resources/webservice/vi_failure_sign.xml");
 
-      service.verifierVIdeServiceWeb(identification, SERVICE_VISE, ISSUER,
+      service.verifierVIdeServiceWeb(
+            identification, 
+            TuGenererVi.SERVICE_VISE,
+            TuGenererVi.ISSUER,
             new VISignVerifParams());
 
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link WebServiceVIService#extraitPagm(List)}<br>
+    * <br>
+    * Cas de test : Un seul PAGM bien formé<br>
+    * <br>
+    * Résultat attendu : le PAGM est correctement parsé, et pas de levée d'exception
+    * 
+    * @throws VIPagmIncorrectException 
+    */
+   @Test
+   @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+   public void extraitPagm_TestOk() throws VIPagmIncorrectException {
+      List<String> pagmStr = new ArrayList<String>(); 
+      pagmStr.add("DROIT_APPLICATIF1;PERIMETRE_DE_DONNEES_1");
+      List<VIPagm> pagm = service.extraitPagm(pagmStr);
+      assertNotNull(pagm);
+      assertEquals(1,pagm.size());
+      assertEquals("DROIT_APPLICATIF1",pagm.get(0).getDroitApplicatif());
+      assertEquals("PERIMETRE_DE_DONNEES_1",pagm.get(0).getPerimetreDonnees());
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link WebServiceVIService#extraitPagm(List)}<br>
+    * <br>
+    * Cas de test : Un seul PAGM vide<br>
+    * <br>
+    * Résultat attendu : levée d'exception
+    */
+   @Test
+   public void extraitPagm_TestKo_Vide() {
+      
+      List<String> pagmStr = new ArrayList<String>(); 
+      pagmStr.add("   ");
+      
+      // NB : On n'utilise pas @Test(expected) pour pouvoir visualiser le message de l'exception
+      try {
+         service.extraitPagm(pagmStr);
+      } catch (VIPagmIncorrectException ex) {
+         LOG.debug(ex);
+         return;
+      }
+      
+      fail("Une exception du type VIPagmIncorrectException aurait dû être levée");
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link WebServiceVIService#extraitPagm(List)}<br>
+    * <br>
+    * Cas de test : Un seul PAGM, pas de périmètre de données<br>
+    * <br>
+    * Résultat attendu : levée d'exception
+    */
+   @Test
+   public void extraitPagm_TestKo_SansPerimetre() {
+      
+      List<String> pagmStr = new ArrayList<String>(); 
+      pagmStr.add("DROIT_APP");
+      
+      // NB : On n'utilise pas @Test(expected) pour pouvoir visualiser le message de l'exception
+      try {
+         service.extraitPagm(pagmStr);
+      } catch (VIPagmIncorrectException ex) {
+         LOG.debug(ex);
+         return;
+      }
+      
+      fail("Une exception du type VIPagmIncorrectException aurait dû être levée");
+      
+   }
+   
+   
+   /**
+    * Tests unitaires de la méthode {@link WebServiceVIService#extraitPagm(List)}<br>
+    * <br>
+    * Cas de test : Un seul PAGM, mal formé<br>
+    * <br>
+    * Résultat attendu : levée d'exception
+    */
+   @Test
+   public void extraitPagm_TestKo_MalForme() {
+      
+      List<String> pagmStr = new ArrayList<String>(); 
+      pagmStr.add("DROIT_APP;PERIMETRE_DONNEES;AUTRE_INFO");
+      
+      // NB : On n'utilise pas @Test(expected) pour pouvoir visualiser le message de l'exception
+      try {
+         service.extraitPagm(pagmStr);
+      } catch (VIPagmIncorrectException ex) {
+         LOG.debug(ex);
+         return;
+      }
+      
+      fail("Une exception du type VIPagmIncorrectException aurait dû être levée");
+      
    }
 
 }

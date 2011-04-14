@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.vi.service;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -22,6 +23,7 @@ import fr.urssaf.image.sae.vi.exception.VINivAuthException;
 import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VIServiceIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VISignatureException;
+import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 
 /**
@@ -189,12 +191,25 @@ public class WebServiceVIValidateService {
                .getMethodAuthn2());
       }
 
-      // les PAGMS doivent exister
-      // TODO vérification des PAGM
+      // Au moins 1 PAGM
       if (CollectionUtils.isEmpty(data.getAssertionParams().getCommonsParams()
             .getPagm())) {
-
-         throw new VIPagmIncorrectException();
+         throw new VIPagmIncorrectException("Aucun PAGM n'est spécifié dans le VI, or il est obligatoire d'en spécifier au moins un");
       }
+      
    }
+   
+   
+   /**
+    * Vérification des PAGM par rapport au contrat de service
+    * 
+    * @param pagms les PAGM
+    * @param idAppliCliente l'identifiant de l'application client
+    */
+   public void validate(List<VIPagm> pagms,String idAppliCliente) {
+   
+      // TODO : implémenter la vérification des PAGM par rapport au contrat de service
+      
+   }
+   
 }

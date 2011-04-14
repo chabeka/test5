@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class VIContenuExtrait {
 
-   private List<String> pagm;
+   private List<VIPagm> pagm;
 
    private String codeAppli;
 
@@ -22,7 +22,7 @@ public class VIContenuExtrait {
     * 
     * @return La liste des PAGM
     */
-   public final List<String> getPagm() {
+   public final List<VIPagm> getPagm() {
       return pagm;
    }
 
@@ -31,7 +31,7 @@ public class VIContenuExtrait {
     * @param pagm
     *           La liste des PAGM
     */
-   public final void setPagm(List<String> pagm) {
+   public final void setPagm(List<VIPagm> pagm) {
       this.pagm = pagm;
    }
 

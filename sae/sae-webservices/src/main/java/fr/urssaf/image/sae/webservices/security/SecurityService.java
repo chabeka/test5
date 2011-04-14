@@ -13,10 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
+import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
@@ -141,8 +141,10 @@ public class SecurityService {
 
       logVI(viExtrait);
       
+      String[] roles = getDroitsApplicatifs(viExtrait.getPagm());
       List<GrantedAuthority> authorities = AuthorityUtils
-            .createAuthorityList(StringUtils.toStringArray(viExtrait.getPagm()));
+            .createAuthorityList(roles);
+      // TODO : stockage des périmètres de données
 
       Authentication authentication = AuthenticationFactory
             .createAuthentication(viExtrait.getIdUtilisateur(), "nc",
@@ -161,8 +163,10 @@ public class SecurityService {
          StringBuffer sBufferMsgLog = new StringBuffer();
          sBufferMsgLog.append(prefixeLog);
          sBufferMsgLog.append("PAGM(s) : ");
-         for(String pagm:viExtrait.getPagm()) {
-            sBufferMsgLog.append(pagm);
+         for(VIPagm pagm:viExtrait.getPagm()) {
+            sBufferMsgLog.append(pagm.getDroitApplicatif());
+            sBufferMsgLog.append(';');
+            sBufferMsgLog.append(pagm.getPerimetreDonnees());
             sBufferMsgLog.append(' ');
          }
          LOG.info(sBufferMsgLog.toString());
@@ -180,6 +184,15 @@ public class SecurityService {
             "Identifiant utilisateur : " +
             viExtrait.getIdUtilisateur());
             
+   }
+   
+   
+   private String[] getDroitsApplicatifs(List<VIPagm> pagms) {
+      String[] roles = new String[pagms.size()];
+      for (int i=0;i<pagms.size();i++) {
+         roles[i] = pagms.get(i).getDroitApplicatif();
+      }
+      return roles;
    }
 
 }

@@ -20,10 +20,10 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import fr.urssaf.image.sae.saml.util.ConverterUtils;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
+import fr.urssaf.image.sae.vi.testutils.TuGenererVi;
 
 @SuppressWarnings({
    "PMD.TooManyMethods",
@@ -43,9 +43,6 @@ public class WebServiceVIServiceValidateTest {
    private static final String ALIAS = "alias";
 
    private static final String PASSWORD = "password";
-
-   private static final URI SERVICE_VISE = ConverterUtils
-         .uri("http://sae.urssaf.fr");
 
    private static WebServiceVIService service;
 
@@ -151,8 +148,12 @@ public class WebServiceVIServiceValidateTest {
    public void verifierVIdeServiceWebFailure_identification()
          throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("identification", null, SERVICE_VISE,
-            ID_APPLI, new VISignVerifParams());
+      assertVerifierVIdeServiceWeb(
+            "identification", 
+            null, 
+            TuGenererVi.SERVICE_VISE,
+            ID_APPLI, 
+            new VISignVerifParams());
 
    }
 
@@ -169,8 +170,12 @@ public class WebServiceVIServiceValidateTest {
    public void verifierVIdeServiceWebFailure_application()
          throws VIVerificationException {
 
-      assertVerifierVIdeServiceWeb("idAppliClient", identification,
-            SERVICE_VISE, null, new VISignVerifParams());
+      assertVerifierVIdeServiceWeb(
+            "idAppliClient", 
+            identification,
+            TuGenererVi.SERVICE_VISE, 
+            null, 
+            new VISignVerifParams());
 
    }
 
@@ -181,7 +186,7 @@ public class WebServiceVIServiceValidateTest {
       assertVerifierVIdeServiceWeb(
             "signVerifParams", 
             identification, 
-            SERVICE_VISE,
+            TuGenererVi.SERVICE_VISE,
             ID_APPLI, 
             null);
 

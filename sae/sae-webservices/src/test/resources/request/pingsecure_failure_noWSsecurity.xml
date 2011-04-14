@@ -1,9 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
       <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
-         <wsa:To>http://localhost:8082/axis2/services/SaeService/</wsa:To>
-         <wsa:MessageID>urn:uuid:BCC6B519DE3BD39A761302101270238</wsa:MessageID>
-         <wsa:Action>PingSecure</wsa:Action>
+         
       </soapenv:Header>
       <soapenv:Body>
          <ns1:PingSecureRequest xmlns:ns1="http://www.cirtil.fr/saeService" />

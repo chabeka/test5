@@ -123,6 +123,13 @@ public class SamlTokenHandler extends AbstractHandler {
       }
 
       List<String> roles = AuthenticateUtils.getRoles();
+      
+      // TODO : améliorer le test pour les périmètres de données
+      if (roles!=null) {
+         for (int i=0;i<roles.size();i++) {
+            roles.set(i, roles.get(i) + ";FULL");
+         }
+      }
 
       // création du jeton SAML 2.0
       if (CollectionUtils.isNotEmpty(roles)) {
