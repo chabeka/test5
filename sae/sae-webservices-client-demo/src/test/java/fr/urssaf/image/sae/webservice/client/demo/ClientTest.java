@@ -21,7 +21,7 @@ public class ClientTest {
    public void pingSecure_success() {
 
       LOG.debug("ping secure avec ROLE TOUS");
-      Client.main(new String[] { "ping_secure", "ROLE_TOUS" });
+      Client.main(new String[] { "ping_secure", "ROLE_TOUS;FULL" });
    }
 
    @Test

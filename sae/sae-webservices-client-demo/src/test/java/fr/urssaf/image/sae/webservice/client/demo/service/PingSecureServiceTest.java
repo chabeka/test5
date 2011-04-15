@@ -23,7 +23,7 @@ public class PingSecureServiceTest {
    @Test
    public void pingSecure_success() {
 
-      String response = service.pingSecure("ROLE_TOUS");
+      String response = service.pingSecure("ROLE_TOUS;FULL");
 
       LOG.debug(response);
 
@@ -35,7 +35,7 @@ public class PingSecureServiceTest {
    @Test
    public void pingSecure_failure() {
 
-      String response = service.pingSecure("ROLE_OTHER");
+      String response = service.pingSecure("ROLE_OTHER;FULL");
 
       LOG.debug(response);
 

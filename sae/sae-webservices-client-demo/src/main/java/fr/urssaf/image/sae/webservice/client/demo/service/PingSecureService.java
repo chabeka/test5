@@ -81,7 +81,7 @@ public class PingSecureService {
     * <br>
     * 
     * @param role
-    *           role du pagm
+    *           role du pagm au format :  <i>&lt;droit applicatif>;&lt;périmètre de données><i>
     * @return message du ping sécurisé
     */
    public final String pingSecure(String role) {
