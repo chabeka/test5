@@ -22,7 +22,9 @@ import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureRequest;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.PingSecureResponse;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
-@SuppressWarnings("PMD.MethodNamingConventions")
+@SuppressWarnings({
+   "PMD.MethodNamingConventions",
+   "PMD.LongVariable"})
 public class PingSecureTest {
 
    private SaeServiceStub service;
@@ -84,6 +86,42 @@ public class PingSecureTest {
 
    }
 
+   
+   
+   private void verificationSoapFault(
+         AxisFault fault,
+         String faultCodeAttendu,
+         String faultStringAttendu) {
+      
+      // Résultats obtenus
+      String faultCodeObtenu = 
+         fault.getFaultCode().getPrefix() + 
+         ":" + 
+         fault.getFaultCode().getLocalPart();
+      String faultStringObtenu = fault.getMessage();
+      
+      // Assertions
+      assertEquals("Le FaultCode n'est pas bon",faultCodeAttendu,faultCodeObtenu);
+      assertEquals("La FaultString n'est pas bonne",faultStringAttendu,faultStringObtenu);
+      
+   }
+   
+   
+   
+   /**
+    * Test unitaire de la SoapFault sae:DroitsInsuffisants<br>
+    * <br>
+    * Cas de test : On consomme le service pingSecure avec un droit applicatif
+    * qui n'est pas suffisant<br>
+    * <br>
+    * Résultat attendu : levée d'une SoapFault avec les données suivantes :<br>
+    * <ul>
+    *    <li>FaultCode   : sae:DroitsInsuffisants</li>
+    *    <li>FaultString : Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée</li>
+    * </ul>
+    * 
+    * @throws RemoteException
+    */
    @Test
    public void pingSecureAvecViOk_failure() throws RemoteException {
 
@@ -95,15 +133,35 @@ public class PingSecureTest {
          service.pingSecure(request);
          fail("le test doit échouer");
       } catch (AxisFault fault) {
+         
+         // On trace
          LOG.debug(getSoapFaultInfos(fault));
-         assertEquals(
-               "Le message de la SoapFault n'est pas celui attendu",
-               "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
-               fault.getMessage());
+         
+         // Résultats attendus
+         String faultCodeAttendu = "sae:DroitsInsuffisants";
+         String faultStringAttendu = "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée";
+         
+         // La vérification de la SoapFault est dans une autre méthode partagée
+         verificationSoapFault(fault,faultCodeAttendu,faultStringAttendu);
+         
       }
 
    }
 
+   
+   /**
+    * Test unitaire de la SoapFault wsse:SecurityTokenUnavailable<br>
+    * <br>
+    * Cas de test : On consomme le service pingSecure sans mettre de VI dans le message SOAP<br>
+    * <br>
+    * Résultat attendu : levée d'une SoapFault avec les données suivantes :<br>
+    * <ul>
+    *    <li>FaultCode   : wsse:SecurityTokenUnavailable</li>
+    *    <li>FaultString : La référence au jeton de sécurité est introuvable</li>
+    * </ul>
+    * 
+    * @throws RemoteException
+    */
    @Test
    public void pingSecureSansVI() throws RemoteException {
 
@@ -113,10 +171,16 @@ public class PingSecureTest {
          service.pingSecure(request);
          fail("le test doit échouer");
       } catch (AxisFault fault) {
+         
+         // On trace
          LOG.debug(getSoapFaultInfos(fault));
-         assertEquals("Le message de la SoapFault n'est pas celui attendu",
-               "La référence au jeton de sécurité est introuvable", fault
-                     .getMessage());
+         
+         // Résultats attendus
+         String faultCodeAttendu = "wsse:SecurityTokenUnavailable";
+         String faultStringAttendu = "La référence au jeton de sécurité est introuvable";
+         
+         // La vérification de la SoapFault est dans une autre méthode partagée
+         verificationSoapFault(fault,faultCodeAttendu,faultStringAttendu);
 
       }
    }
