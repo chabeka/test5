@@ -15,7 +15,5 @@
       </wsse:SecurityTokenReference>
 
    </wsse:Security>
-   <wsa:To>[url]</wsa:To>
-   <wsa:MessageID>urn:uuid:[messageID]</wsa:MessageID>
-   <wsa:Action>[action]</wsa:Action>
+   
 </soapenv:Header>
