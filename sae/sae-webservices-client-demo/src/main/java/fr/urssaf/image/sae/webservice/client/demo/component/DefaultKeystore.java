@@ -11,8 +11,8 @@ import fr.urssaf.image.sae.webservice.client.demo.util.ResourceUtils;
  * Configuration d'un {@link keyStore} par défaut à partir d'un .p12<br>
  * <br>
  * <ul>
- * <li><b>p12</b>: Portail_Image.p12</li>
- * <li><b>password</b>: hiUnk6O3QnRN</li>
+ * <li><b>p12</b>: PNR_Application_Test.p12</li>
+ * <li><b>password</b>: QEtDiGuGuEnZ</li>
  * </ul>
  * 
  * Cette classe est un singleton<br>
@@ -20,7 +20,7 @@ import fr.urssaf.image.sae.webservice.client.demo.util.ResourceUtils;
  */
 public final class DefaultKeystore {
 
-   private static final String P12 = "Portail_Image.p12";
+   private static final String P12 = "PNR_Application_Test.p12";
 
    private final KeyStore keystore;
 
@@ -30,7 +30,7 @@ public final class DefaultKeystore {
 
    private DefaultKeystore() {
 
-      password = "hiUnk6O3QnRN";
+      password = "QEtDiGuGuEnZ";
       try {
          keystore = KeyStore.getInstance("PKCS12");
          InputStream inputStream = ResourceUtils.loadResource(this, P12);
