@@ -28,7 +28,7 @@
       <parameter name="SpringBeanName" locked="false">saeServiceSkeleton
       </parameter>
       <parameter name="useOriginalwsdl">true</parameter>
-      <parameter name="modifyUserWSDLPortAddress">false</parameter>
+      <parameter name="modifyUserWSDLPortAddress">true</parameter>
       <operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out"
          namespace="http://www.cirtil.fr/saeService">
          <actionMapping>Ping</actionMapping>
