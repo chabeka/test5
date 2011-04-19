@@ -2,25 +2,23 @@ package fr.urssaf.image.sae.webservices.security;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder;
 import org.apache.log4j.Logger;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
-import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
+import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
+import fr.urssaf.image.sae.webservices.security.spring.AuthenticationContext;
 import fr.urssaf.image.sae.webservices.security.spring.AuthenticationFactory;
+import fr.urssaf.image.sae.webservices.security.spring.AuthenticationToken;
+import fr.urssaf.image.sae.webservices.util.ResourceUtils;
 
 /**
  * Service de sécurisation du service web par authentification
@@ -30,20 +28,26 @@ import fr.urssaf.image.sae.webservices.security.spring.AuthenticationFactory;
 public class SecurityService {
 
    private static final Logger LOG = Logger.getLogger(SecurityService.class);
-   
+
    private final WebServiceVIService service;
 
    private final URI serviceVise;
 
    private final String idAppliClient;
-   
+
    private final VISignVerifParams signVerifParams;
 
    /**
-    * Constructeur
+    * Instanciation de {@link WebServiceVIService}
+    * 
+    * @param acResource
+    *           répertoire des AC racines
+    * @param crlResource
+    *           répertoire des CRLs
     */
-   public SecurityService() {
-    
+   public SecurityService(FileSystemResource acResource,
+         FileSystemResource crlResource) {
+
       this.service = new WebServiceVIService();
 
       try {
@@ -55,61 +59,31 @@ public class SecurityService {
       this.idAppliClient = "urn:ISSUER_NON_RENSEIGNE";
 
       signVerifParams = new VISignVerifParams();
-      
-      chargeElementsVerifSignature();
 
-   }
-   
-   
-   
-   private void chargeElementsVerifSignature() {
-      
-      // TODO : mécanisme de chargement des éléments permettant de vérifier la signature
-      
-      // En attendant, on se base sur des éléments de test 
-      chargeCertificatsEtCRLPourLesTests();
-      
-      // Chargement des patterns de vérification de l'issuer du certificat de 
-      // la clé publique de signature du VI
-      List<String> issuerPatterns = SecurityUtils.loadIssuerPatterns();
-      signVerifParams.setPatternsIssuer(issuerPatterns);
-      
-   }
-   
-   
-   private void chargeCertificatsEtCRLPourLesTests() {
-      
       // ----------------------------
       // Chargement des AC
       // ----------------------------
-      
-      
-      List<Resource> listeAC = new ArrayList<Resource>();
-      listeAC.add(ApplicationContextHolder.getContext().getResource(
-            "classpath:security/AC/AC-01_IGC_A.crt"));
-      
-      SecurityUtils.signVerifParamsSetCertifsAC(
-            signVerifParams, 
-            listeAC);
-      
+      loadACResources(acResource);
+
       // ----------------------------
       // Chargement des CRL
       // ----------------------------
-      
-      List<Resource> listeCRL = new ArrayList<Resource>();
-      listeCRL.add(ApplicationContextHolder.getContext().getResource(
-            "classpath:security/CRL/CRL_AC-01_Pseudo_IGC_A.crl"));
-      listeCRL.add(ApplicationContextHolder.getContext().getResource(
-            "classpath:security/CRL/CRL_AC-02_Pseudo_ACOSS.crl"));
-      listeCRL.add(ApplicationContextHolder.getContext().getResource(
-            "classpath:security/CRL/CRL_AC-03_Pseudo_Appli.crl"));
-      
-      SecurityUtils.signVerifParamsSetCRL(
-            signVerifParams, 
-            listeCRL);
-      
+      loadCRLResources(crlResource);
    }
-   
+
+   private void loadACResources(FileSystemResource acResource) {
+
+      List<Resource> listeAC = ResourceUtils.loadResources(acResource, "crt");
+      SecurityUtils.signVerifParamsSetCertifsAC(signVerifParams, listeAC);
+
+   }
+
+   private void loadCRLResources(FileSystemResource crlResource) {
+
+      List<Resource> listeCRL = ResourceUtils.loadResources(crlResource, "crl");
+      SecurityUtils.signVerifParamsSetCRL(signVerifParams, listeCRL);
+
+   }
 
    /**
     * Création d'un contexte de sécurité par partir du Vecteur d'indentifcation<br>
@@ -140,30 +114,26 @@ public class SecurityService {
             serviceVise, idAppliClient, signVerifParams);
 
       logVI(viExtrait);
-      
-      String[] roles = getDroitsApplicatifs(viExtrait.getPagm());
-      List<GrantedAuthority> authorities = AuthorityUtils
-            .createAuthorityList(roles);
-      // TODO : stockage des périmètres de données
 
-      Authentication authentication = AuthenticationFactory
-            .createAuthentication(viExtrait.getIdUtilisateur(), "nc",
-                  authorities);
+      String[] roles = loadDroitsApplicatifs(viExtrait.getPagm());
 
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+      AuthenticationToken authentication = AuthenticationFactory
+            .createAuthentication(viExtrait.getIdUtilisateur(), "nc", roles,
+                  loadActionsUnitaires(viExtrait.getPagm()));
+
+      AuthenticationContext.setAuthenticationToken(authentication);
    }
-   
-   
+
    private void logVI(VIContenuExtrait viExtrait) {
-      
+
       String prefixeLog = "Informations extraites du VI : ";
-      
+
       // LOG des PAGM
-      if ((viExtrait!=null) && (viExtrait.getPagm()!=null)) {
+      if ((viExtrait != null) && (viExtrait.getPagm() != null)) {
          StringBuffer sBufferMsgLog = new StringBuffer();
          sBufferMsgLog.append(prefixeLog);
          sBufferMsgLog.append("PAGM(s) : ");
-         for(VIPagm pagm:viExtrait.getPagm()) {
+         for (VIPagm pagm : viExtrait.getPagm()) {
             sBufferMsgLog.append(pagm.getDroitApplicatif());
             sBufferMsgLog.append(';');
             sBufferMsgLog.append(pagm.getPerimetreDonnees());
@@ -171,28 +141,34 @@ public class SecurityService {
          }
          LOG.info(sBufferMsgLog.toString());
       }
-      
+
       // LOG du code application
-      LOG.info(
-            prefixeLog + 
-            "Code application : " + 
-            viExtrait.getCodeAppli());
-      
+      LOG.info(prefixeLog + "Code application : " + viExtrait.getCodeAppli());
+
       // LOG de l'identifiant utilisateur
-      LOG.info(
-            prefixeLog +
-            "Identifiant utilisateur : " +
-            viExtrait.getIdUtilisateur());
-            
+      LOG.info(prefixeLog + "Identifiant utilisateur : "
+            + viExtrait.getIdUtilisateur());
+
    }
-   
-   
-   private String[] getDroitsApplicatifs(List<VIPagm> pagms) {
+
+   private String[] loadDroitsApplicatifs(List<VIPagm> pagms) {
       String[] roles = new String[pagms.size()];
-      for (int i=0;i<pagms.size();i++) {
+      for (int i = 0; i < pagms.size(); i++) {
          roles[i] = pagms.get(i).getDroitApplicatif();
       }
       return roles;
+   }
+
+   private ActionsUnitaires loadActionsUnitaires(List<VIPagm> pagms) {
+
+      ActionsUnitaires actionsUnitaires = new ActionsUnitaires();
+
+      for (VIPagm viPagm : pagms) {
+
+         actionsUnitaires.addAction(viPagm.getDroitApplicatif(), viPagm
+               .getPerimetreDonnees());
+      }
+      return actionsUnitaires;
    }
 
 }

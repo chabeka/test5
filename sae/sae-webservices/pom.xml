@@ -114,6 +114,9 @@
             <artifactId>axis2-aar-maven-plugin</artifactId>
             <version>${axis2.version}</version>
             <extensions>true</extensions>
+            <configuration>
+               <aarName>${project.name}</aarName>
+            </configuration>
          </plugin>
       </plugins>
 
@@ -185,8 +188,8 @@
          </exclusions>
       </dependency>
 
-     <!-- WSS4J -->
-      
+      <!-- WSS4J -->
+
       <dependency>
          <groupId>org.apache.ws.security</groupId>
          <artifactId>wss4j</artifactId>

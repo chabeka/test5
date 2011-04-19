@@ -6,7 +6,9 @@ import static org.junit.Assert.fail;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
+import javax.naming.NamingException;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.axiom.om.OMException;
@@ -16,9 +18,11 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,6 +31,9 @@ import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
 import fr.cirtil.www.saeservice.PingSecureRequest;
 import fr.cirtil.www.saeservice.PingSecureResponse;
+import fr.urssaf.image.sae.webservices.security.ActionsUnitaires;
+import fr.urssaf.image.sae.webservices.security.spring.AuthenticationContext;
+import fr.urssaf.image.sae.webservices.security.spring.AuthenticationToken;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext.xml" })
@@ -34,11 +41,25 @@ import fr.cirtil.www.saeservice.PingSecureResponse;
 public class SaeServiceSkeletonTest {
 
    private static final String FAIL_MSG = "le test doit échouer";
-   
+
    @Autowired
    private SaeServiceSkeleton skeleton;
 
    private MessageContext ctx;
+
+   @BeforeClass
+   public static void beforeClass() throws NamingException {
+
+      SimpleNamingContextBuilder builder = SimpleNamingContextBuilder
+            .emptyActivatedContextBuilder();
+
+      builder.bind("java:comp/env/SAE_Repertoire_Certificats_ACRacine",
+            "src/test/resources/security/AC/AC-01_IGC_A.crt");
+      builder.bind("java:comp/env/SAE_Repertoire_Certificats_CRL",
+            "src/test/resources/security/CRL");
+
+      builder.activate();
+   }
 
    @Before
    public void before() {
@@ -90,6 +111,23 @@ public class SaeServiceSkeletonTest {
       assertEquals("Test du ping",
             "Les services du SAE sécurisés par authentification sont en ligne",
             response.getPingString());
+
+      AuthenticationToken authentification = AuthenticationContext
+            .getAuthenticationToken();
+
+      ActionsUnitaires actionUnitaires = authentification.getDetails();
+      List<String> actions = actionUnitaires.getListeActionsUniquement();
+
+      assertEquals("le nombre d'actions unitaires est incorrect", 1, actions
+            .size());
+      assertEquals("ROLE_TOUS", actions.get(0));
+
+      List<String> perimetres = actionUnitaires
+            .getPerimetresDonnees("ROLE_TOUS");
+      assertEquals("le nombre de perimetre de données est incorrect", 1,
+            perimetres.size());
+      assertEquals("FULL", perimetres.get(0));
+
    }
 
    @Test
