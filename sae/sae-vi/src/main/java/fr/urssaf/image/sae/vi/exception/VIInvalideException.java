@@ -39,7 +39,7 @@ public class VIInvalideException extends VIVerificationException {
    @Override
    public final String getSoapFaultMessage() {
 
-      return this.getMessage();
+      return "Le VI est invalide";
    }
 
 }

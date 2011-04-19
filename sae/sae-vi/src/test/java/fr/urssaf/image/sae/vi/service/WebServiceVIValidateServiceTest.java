@@ -110,7 +110,7 @@ public class WebServiceVIValidateServiceTest {
 
          assertVIVerificationException_vi(
                "InvalidVI",
-               "L'assertion n'est pas encore valable: elle ne sera active qu'à partir de 31/12/1999 02:00:00 alors que nous sommes le 12/12/1999 01:00:00",
+               "Le VI est invalide",
                exception);
       }
 
@@ -144,7 +144,7 @@ public class WebServiceVIValidateServiceTest {
 
          assertVIVerificationException_vi(
                "InvalidVI",
-               "L'assertion a expirée : elle n'était valable que jusqu’au 01/12/1999 02:00:00, hors nous sommes le 12/12/1999 01:00:00",
+               "Le VI est invalide",
                exception);
       }
 
