@@ -10,29 +10,54 @@ public class ClientTest {
 
    private static final Logger LOG = Logger.getLogger(ClientTest.class);
 
+   
+   /**
+    * Test unitaire de {@link fr.urssaf.image.sae.webservice.client.demo.Client#main(String[])}<br>
+    * <br>
+    * Cas de test : on fournit tous les arguments nécessaires pour la consommation
+    * du service ping<br>
+    * <br>
+    * Résultat attendu : aucune exception levée<br>
+    * <br>
+    * NB : ce test <b>ne vérifie pas</b> que la consommation du ping renvoie le bon résultat.
+    * 
+    */
    @Test
-   public void ping_success() {
+   public void main_ping_arguments_ok() {
 
       LOG.debug("ping");
       Client.main(new String[] { "ping" });
    }
 
+   
+   /**
+    * Test unitaire de {@link fr.urssaf.image.sae.webservice.client.demo.Client#main(String[])}<br>
+    * <br>
+    * Cas de test : on fournit tous les arguments nécessaires pour la consommation
+    * du service pingSecure<br>
+    * <br>
+    * Résultat attendu : aucune exception levée<br>
+    * <br>
+    * NB : ce test <b>ne vérifie pas</b> que la consommation du pingSecure renvoie le bon résultat.
+    * 
+    */
    @Test
-   public void pingSecure_success() {
+   public void main_pingSecure_arguments_ok() {
 
       LOG.debug("ping secure avec ROLE TOUS");
       Client.main(new String[] { "ping_secure", "ROLE_TOUS;FULL" });
    }
 
-   @Test
-   public void pingSecure_failure() {
 
-      LOG.debug("ping secure avec ROLE OTHER");
-      Client.main(new String[] { "ping_secure", "ROLE_OTHER" });
-   }
-
+   /**
+    * Test unitaire de {@link fr.urssaf.image.sae.webservice.client.demo.Client#main(String[])}<br>
+    * <br>
+    * Cas de test : on demande la consommation du pingSecure sans fournir le droit SAE<br>
+    * <br>
+    * Résultat attendu : levée d'une exception de type {@link java.lang.IllegalArgumentException} 
+    */
    @Test
-   public void pingSecure_role_required() {
+   public void main_droit_requis_pour_pingSecure() {
 
       try {
          Client.main(new String[] { "ping_secure" });
@@ -42,8 +67,17 @@ public class ClientTest {
       }
    }
 
+   
+   /**
+    * Test unitaire de {@link fr.urssaf.image.sae.webservice.client.demo.Client#main(String[])}<br>
+    * <br>
+    * Cas de test : on demande la consommation d'un service web qui n'est pas prévu par ce
+    * programme de démonstration<br>
+    * <br>
+    * Résultat attendu : levée d'une exception de type {@link java.lang.IllegalArgumentException} 
+    */
    @Test
-   public void action_unknown() {
+   public void main_action_unknown() {
 
       String action = "unknown";
 
@@ -55,8 +89,16 @@ public class ClientTest {
       }
    }
 
+   
+   /**
+    * Test unitaire de {@link fr.urssaf.image.sae.webservice.client.demo.Client#main(String[])}<br>
+    * <br>
+    * Cas de test : on appelle le main sans fournir d'argument à la ligne de commande<br>
+    * <br>
+    * Résultat attendu : levée d'une exception de type {@link java.lang.IllegalArgumentException} 
+    */
    @Test
-   public void args_empty() {
+   public void main_args_empty() {
 
       args_empty(null);
       args_empty(ArrayUtils.EMPTY_STRING_ARRAY);
