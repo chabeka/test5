@@ -12,7 +12,7 @@
    <version>0.0.1-SNAPSHOT</version>
 
    <properties>
-      <axiom.version>1.2.9</axiom.version>
+      <axiom.version>1.2.11</axiom.version>
       <axis2.version>1.5.4</axis2.version>
    </properties>
 
@@ -90,9 +90,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>2.5</version>
             <configuration>
-               <includes>
-                  <include>fr/urssaf/image/sae/webservices/security/SamlTokenHandlerTest.java</include>
-               </includes>
+               <skipTests>false</skipTests>
             </configuration>
          </plugin>
       </plugins>
@@ -147,7 +145,7 @@
 
       <dependency>
          <groupId>org.apache.ws.commons.axiom</groupId>
-         <artifactId>axiom-api</artifactId>
+         <artifactId>axiom-dom</artifactId>
          <version>${axiom.version}</version>
       </dependency>
 
