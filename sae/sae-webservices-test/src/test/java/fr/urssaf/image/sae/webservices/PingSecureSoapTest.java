@@ -199,7 +199,7 @@ public class PingSecureSoapTest {
       try {
 
          this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_vi_invalidVI.xml");
+               .execute("src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidVI.xml");
 
          fail(FAIL_MSG);
       } catch (AxisFault fault) {
