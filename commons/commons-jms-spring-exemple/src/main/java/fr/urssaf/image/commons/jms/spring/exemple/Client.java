@@ -47,7 +47,7 @@ public final class Client {
    public static void main(String[] args) {
 
       ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[] {
-            "applicationContext-consumer.xml", "applicationContext-jms.xml" });
+            "applicationContext-client.xml", "applicationContext-jms.xml" });
       AccountService service = (AccountService) ctx.getBean("accountService");
 
       if ("read".equals(args[0])) {

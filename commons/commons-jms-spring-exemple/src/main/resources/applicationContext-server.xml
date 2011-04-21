@@ -8,18 +8,18 @@
    <bean
       class="org.springframework.jms.listener.SimpleMessageListenerContainer">
       <property name="connectionFactory" ref="connectionFactory" />
-      <property name="destination" ref="queue" />
+      <property name="destination" ref="topic" />
       <property name="concurrentConsumers" value="3" />
-      <property name="messageListener" ref="checkingAccountService" />
+      <property name="messageListener" ref="accountService" />
    </bean>
 
-   <bean id="checkingAccountService"
+   <bean id="accountService"
       class="org.springframework.jms.remoting.JmsInvokerServiceExporter">
       <property name="serviceInterface"
          value="fr.urssaf.image.commons.jms.spring.exemple.service.AccountService" />
       <property name="service">
          <bean
-            class="fr.urssaf.image.commons.jms.spring.exemple.producer.AccountServiceImpl" />
+            class="fr.urssaf.image.commons.jms.spring.exemple.service.impl.AccountServiceImpl" />
       </property>
    </bean>
 

@@ -21,7 +21,7 @@ public final class Server {
     */
    public static void main(String[] args) {
       new ClassPathXmlApplicationContext(new String[] {
-            "applicationContext-producer.xml", "applicationContext-jms.xml" });
+            "applicationContext-server.xml", "applicationContext-jms.xml" });
 
    }
 

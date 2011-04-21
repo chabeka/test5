@@ -1,9 +1,10 @@
-package fr.urssaf.image.commons.jms.spring.exemple.producer;
+package fr.urssaf.image.commons.jms.spring.exemple.service.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.commons.jms.spring.exemple.modele.Account;
 import fr.urssaf.image.commons.jms.spring.exemple.service.AccountService;
@@ -13,6 +14,7 @@ import fr.urssaf.image.commons.jms.spring.exemple.service.AccountService;
  * 
  * 
  */
+@Service
 public class AccountServiceImpl implements AccountService {
 
    private static final Logger LOG = Logger.getLogger(AccountServiceImpl.class);
