@@ -43,6 +43,7 @@
       <module>../commons-webservice-spring-ws</module>
       <module>../commons-webservice-axis</module>
       <module>../commons-webservice-axis-client</module>
+      <module>../commons-jms-spring-exemple</module>
    </modules>
 
    <build>
