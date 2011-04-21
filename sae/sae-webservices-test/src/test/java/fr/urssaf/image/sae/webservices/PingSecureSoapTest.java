@@ -17,6 +17,7 @@ import org.apache.xml.security.Init;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -105,17 +106,41 @@ public class PingSecureSoapTest {
 
    }
 
-   private void assertAxisFault(AxisFault fault, String message,
-         String localPart, String namespaceURI, String prefix) {
+   private void assertAxisFault(
+         AxisFault fault, 
+         String message,
+         String localPart, 
+         String namespaceURI, 
+         String prefix) {
 
-      assertEquals("le message du soapFault est incorrect", message, fault
-            .getMessage());
+      // Vérification du code de la SoapFault
+      
+      String faultCodeAttendu = prefix + ":" + localPart;
+      
+      String faultCodeObtenu = 
+         fault.getFaultCode().getPrefix() + 
+         ":" + 
+         fault.getFaultCode().getLocalPart();
+      
+      assertEquals(
+            "Le code de la SoapFault est incorrect",
+            faultCodeAttendu,
+            faultCodeObtenu);
+      
+      // Vérification du message de la SoapFault
+      assertEquals(
+            "le message du soapFault est incorrect",
+            message, 
+            fault.getMessage());
+      
+      // Vérifications supplémentaires
+      assertEquals("le prefix du soapFault", prefix, fault.getFaultCode()
+            .getPrefix());
       assertEquals("le code du soapFault est incorrect", localPart, fault
             .getFaultCode().getLocalPart());
       assertEquals("le namespaceURI du soapFault", namespaceURI, fault
             .getFaultCode().getNamespaceURI());
-      assertEquals("le prefix du soapFault", prefix, fault.getFaultCode()
-            .getPrefix());
+      
    }
 
    @Test
@@ -158,8 +183,11 @@ public class PingSecureSoapTest {
    }
 
    @Test
+   @Ignore("Ce test ne peut pas fonctionner actuellement car le référentiel des droits n'est pas encore développé")
    public void pingSecure_failure_vi_invalidPagm() {
 
+      // TODO : Retirer le Ignore du test de la SoapFault vi:InvalidPagm dès que le référentiel des droits sera réalisé
+      
       try {
 
          this
@@ -171,8 +199,10 @@ public class PingSecureSoapTest {
          this
                .assertAxisFault(
                      fault,
-                     "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
-                     "DroitsInsuffisants", SAE_NAMESPACE, SAE_PREFIX);
+                     "Le ou les PAGM présents dans le VI sont invalides",
+                     "InvalidPagm", 
+                     VI_NAMESPACE, 
+                     VI_PREFIX);
       }
    }
 
