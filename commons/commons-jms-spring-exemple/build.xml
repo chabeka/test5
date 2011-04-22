@@ -17,11 +17,19 @@
 	<!-- ====================================================================== -->
 
 	<target name="send">
-		<run.producer/>
+		<run.producer mode="queue" />
+	</target>
+
+	<target name="publish">
+		<run.producer mode="topic" />
 	</target>
 
 	<target name="receive">
 		<run.consumer mode="asynchrone" />
+	</target>
+
+	<target name="subscribe">
+		<run.consumer mode="topic" />
 	</target>
 
 	<target name="receiveS">
@@ -29,12 +37,14 @@
 	</target>
 
 	<macrodef name="run.producer">
+		<attribute name="mode" />
 		<sequential>
 			<java classname="fr.urssaf.image.commons.jms.spring.Producer">
 				<classpath>
 					<path refid="build.classpath" />
 					<pathelement location="${maven.build.outputDir}" />
 				</classpath>
+				<arg value="@{mode}" />
 				<arg line="${args}" />
 			</java>
 		</sequential>
@@ -49,7 +59,7 @@
 					<pathelement location="${maven.build.outputDir}" />
 				</classpath>
 				<arg value="@{mode}" />
-				<arg line="${args}" />
+				<arg line="${args}"/>
 			</java>
 		</sequential>
 	</macrodef>

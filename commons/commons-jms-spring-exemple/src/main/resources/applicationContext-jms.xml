@@ -21,7 +21,7 @@
    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
       <constructor-arg value="account-test" />
    </bean>
-   
+
    <bean id="topic" class="org.apache.activemq.command.ActiveMQTopic">
       <constructor-arg value="account-test" />
    </bean>

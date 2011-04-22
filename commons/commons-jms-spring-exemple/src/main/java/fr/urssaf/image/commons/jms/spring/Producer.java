@@ -20,6 +20,7 @@ public final class Producer {
    /**
     * arguments
     * <ul>
+    * <li>mode : queue/topic</li>
     * <li>prénom</li>
     * <li>nom</li>
     * </ul>
@@ -34,7 +35,14 @@ public final class Producer {
       AccountProducer producer = (AccountProducer) ctx
             .getBean("accountProducer");
 
-      producer.sendAccount(AccountFactory.createAccount(args[0], args[1]));
+      if ("queue".equals(args[0])) {
+
+         producer.sendAccount(AccountFactory.createAccount(args[1], args[2]));
+      } else if ("topic".equals(args[0])) {
+
+         producer
+               .publishAccount(AccountFactory.createAccount(args[1], args[2]));
+      }
 
    }
 

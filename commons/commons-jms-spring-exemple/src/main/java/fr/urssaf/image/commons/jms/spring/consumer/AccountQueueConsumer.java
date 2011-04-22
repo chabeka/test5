@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.MapMessage;
 import javax.jms.Message;
 
 import org.apache.log4j.Logger;
@@ -14,17 +13,19 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.urssaf.image.commons.jms.spring.consumer.message.AccountMessage;
 import fr.urssaf.image.commons.jms.spring.modele.Account;
+import fr.urssaf.image.commons.jms.spring.modele.AccountFactory;
 
 /**
- * Classe de consommation d'un message jms
+ * Classe de consommation d'un message jms point à point
  * 
  * 
  */
 @Component
-public class AccountConsumer {
+public class AccountQueueConsumer {
 
-   private static final Logger LOG = Logger.getLogger(AccountConsumer.class);
+   private static final Logger LOG = Logger.getLogger(AccountQueueConsumer.class);
 
    @Autowired
    private JmsTemplate jmsTemplate;
@@ -47,23 +48,9 @@ public class AccountConsumer {
     */
    @Transactional
    public final void receiveAccount() throws JMSException {
+      
       Message message = this.jmsTemplate.receive(this.destinataire);
-      if (message instanceof MapMessage) {
-
-         MapMessage mapMessage = (MapMessage) message;
-         String firstname = mapMessage.getString("firstname");
-         String lastname = mapMessage.getString("lastname");
-         long idAccount = mapMessage.getLong("idAccount");
-
-         Account account = createAccount(idAccount, firstname, lastname);
-
-         LOG.info("receiving account: " + account.toString());
-
-      }
-
-      else {
-         LOG.info("no message received");
-      }
+      LOG.info("receiving account: "+AccountMessage.loadAccount(message));
    }
 
    /**
@@ -78,8 +65,10 @@ public class AccountConsumer {
     * </pre>
     * 
     * 
-    * @param message message JMS
-    * @throws JMSException exception levée par jms
+    * @param message
+    *           message JMS
+    * @throws JMSException
+    *            exception levée par jms
     */
    @Transactional
    public final void receiveAccount(Map<String, Object> message)
@@ -89,20 +78,11 @@ public class AccountConsumer {
       String lastname = (String) message.get("lastname");
       long idAccount = (Long) message.get("idAccount");
 
-      Account account = createAccount(idAccount, firstname, lastname);
+      Account account = AccountFactory.createAccount(idAccount, firstname, lastname);
 
       LOG.info("receiving account: " + account.toString());
    }
 
-   private Account createAccount(long idAccount, String firstname,
-         String lastname) {
-
-      Account account = new Account();
-      account.setIdAccount(idAccount);
-      account.setFirstname(firstname);
-      account.setLastname(lastname);
-
-      return account;
-   }
+  
 
 }

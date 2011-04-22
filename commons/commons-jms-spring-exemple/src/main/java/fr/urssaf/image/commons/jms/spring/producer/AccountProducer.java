@@ -31,10 +31,14 @@ public class AccountProducer {
 
    @Autowired
    @Qualifier("queue")
-   private Destination destination;
+   private Destination queue;
+
+   @Autowired
+   @Qualifier("topic")
+   private Destination topic;
 
    /**
-    * envoie le contenu d'un {@link Account}<br>
+    * envoie le contenu d'un {@link Account} dans un mode point à point<br>
     * paramètres:
     * <ul>
     * <li>idAccount : {@link Account#getIdAccount()}</li>
@@ -45,12 +49,33 @@ public class AccountProducer {
     * @param account
     *           information du compte à envoyer
     */
-   @Transactional
    public final void sendAccount(final Account account) {
+
+      this.sendAccount(account, queue);
+   }
+   /**
+    * envoie le contenu d'un {@link Account} dans un mode publication/souscription<br>
+    * paramètres:
+    * <ul>
+    * <li>idAccount : {@link Account#getIdAccount()}</li>
+    * <li>firstname : {@link Account#getFirstname()}</li>
+    * <li>lastname : {@link Account#getLastname()}</li>
+    * </ul>
+    * 
+    * @param account
+    *           information du compte à envoyer
+    */
+   public final void publishAccount(final Account account) {
+
+      this.sendAccount(account, topic);
+   }
+
+   @Transactional
+   private void sendAccount(final Account account, final Destination destination) {
       this.jmsTemplate.send(destination, new MessageCreator() {
          @Override
          public Message createMessage(Session session) throws JMSException {
-            LOG.info("Sending account: " + account.toString());
+            LOG.info("Sending account: " + account.toString()+" to destination "+destination.toString());
             MapMessage mapMessage = session.createMapMessage();
             mapMessage.setLong("idAccount", account.getIdAccount());
             mapMessage.setString("firstname", account.getFirstname());
@@ -60,6 +85,8 @@ public class AccountProducer {
 
          }
       });
+      
+      
    }
 
 }
