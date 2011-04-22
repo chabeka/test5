@@ -9,8 +9,17 @@
       <property name="brokerURL" value="tcp://CER69-TEC16771:61616" />
    </bean>
 
+   <bean id="transactionManager"
+      class="org.springframework.jms.connection.JmsTransactionManager">
+      <constructor-arg ref="connectionFactory" />
+   </bean>
+
+   <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+      <constructor-arg ref="connectionFactory" />
+   </bean>
+
    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
-      <constructor-arg value="test" />
+      <constructor-arg value="account-test" />
    </bean>
 
 </beans>

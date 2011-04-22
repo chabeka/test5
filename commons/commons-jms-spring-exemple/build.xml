@@ -16,29 +16,35 @@
 	<!-- Action                                                         -->
 	<!-- ====================================================================== -->
 
-	<target name="read" description="client read">
-		<run.client action="read" />
+	<target name="send">
+		<run.producer />
 	</target>
 
-	<target name="cancel" description="client cancel">
-		<run.client action="cancel" />
+	<target name="receive">
+		<run.consumer />
 	</target>
 
-	<target name="save" description="client save">
-		<run.client action="save" />
-	</target>
-
-	<macrodef name="run.client">
-		<attribute name="action" />
+	<macrodef name="run.producer">
 		<sequential>
 			<!-- Run client -->
-			<java classname="fr.urssaf.image.commons.jms.spring.exemple.Client">
+			<java classname="fr.urssaf.image.commons.jms.spring.Producer">
 				<classpath>
 					<path refid="build.classpath" />
 					<pathelement location="${maven.build.outputDir}" />
 				</classpath>
-				<arg value="@{action}" />
 				<arg line="${args}" />
+			</java>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="run.consumer">
+		<sequential>
+			<!-- Run client -->
+			<java classname="fr.urssaf.image.commons.jms.spring.Consumer">
+				<classpath>
+					<path refid="build.classpath" />
+					<pathelement location="${maven.build.outputDir}" />
+				</classpath>
 			</java>
 		</sequential>
 	</macrodef>

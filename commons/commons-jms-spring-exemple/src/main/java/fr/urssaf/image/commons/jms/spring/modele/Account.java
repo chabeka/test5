@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.jms.spring.exemple.modele;
+package fr.urssaf.image.commons.jms.spring.modele;
 
 import java.io.Serializable;
 
