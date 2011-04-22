@@ -17,16 +17,19 @@
 	<!-- ====================================================================== -->
 
 	<target name="send">
-		<run.producer />
+		<run.producer/>
 	</target>
 
 	<target name="receive">
-		<run.consumer />
+		<run.consumer mode="asynchrone" />
+	</target>
+
+	<target name="receiveS">
+		<run.consumer mode="synchrone" />
 	</target>
 
 	<macrodef name="run.producer">
 		<sequential>
-			<!-- Run client -->
 			<java classname="fr.urssaf.image.commons.jms.spring.Producer">
 				<classpath>
 					<path refid="build.classpath" />
@@ -38,13 +41,15 @@
 	</macrodef>
 
 	<macrodef name="run.consumer">
+		<attribute name="mode" />
 		<sequential>
-			<!-- Run client -->
 			<java classname="fr.urssaf.image.commons.jms.spring.Consumer">
 				<classpath>
 					<path refid="build.classpath" />
 					<pathelement location="${maven.build.outputDir}" />
 				</classpath>
+				<arg value="@{mode}" />
+				<arg line="${args}" />
 			</java>
 		</sequential>
 	</macrodef>

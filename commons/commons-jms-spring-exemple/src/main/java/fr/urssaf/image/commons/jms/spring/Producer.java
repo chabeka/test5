@@ -9,7 +9,7 @@ import fr.urssaf.image.commons.jms.spring.producer.AccountProducer;
 /**
  * Classe exécutable d'envoi des messages
  * 
- *
+ * 
  */
 public final class Producer {
 
@@ -18,8 +18,14 @@ public final class Producer {
    }
 
    /**
-    * la méthode appelle {@link AccountProducer#sendAccount}
-    * @param args aucun argument prise en compte
+    * arguments
+    * <ul>
+    * <li>prénom</li>
+    * <li>nom</li>
+    * </ul>
+    * 
+    * @param args
+    *           arguments de l'expéditeur du message
     */
    public static void main(String[] args) {
       ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[] {

@@ -5,5 +5,7 @@
 	
 - ouvrir un invite de commande à la racine du projet
 - actions possibles
-	- receive : ant receive
+	- receive : 
+		- ant receive <temps d'attente> : en mode asynchrone le prg s'arrête au bout du temps d'attente indiqué si 
+		- ant receiveS en mode synchrone : le prg s'arrête quand le message est consommé
 	- send : ant send -Dargs="<prénom> <nom>"
