@@ -44,6 +44,7 @@
       <module>../commons-webservice-axis</module>
       <module>../commons-webservice-axis-client</module>
       <module>../commons-jms-spring-exemple</module>
+      <module>../commons-jms-spring-remoting-exemple</module>
    </modules>
 
    <build>
