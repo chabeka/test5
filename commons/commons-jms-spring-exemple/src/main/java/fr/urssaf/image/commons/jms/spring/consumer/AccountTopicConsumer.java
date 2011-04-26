@@ -6,7 +6,6 @@ import javax.jms.MessageListener;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import fr.urssaf.image.commons.jms.spring.consumer.message.AccountMessage;
 
@@ -31,8 +30,7 @@ public class AccountTopicConsumer implements MessageListener {
       }
 
    }
-
-   @Transactional
+   
    private void receiveAccount(Message message) throws JMSException {
 
       LOG.info("receiving account: " + AccountMessage.loadAccount(message));

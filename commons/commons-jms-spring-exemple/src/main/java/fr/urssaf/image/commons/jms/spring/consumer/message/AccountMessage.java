@@ -39,8 +39,8 @@ public final class AccountMessage {
          return AccountFactory.createAccount(idAccount, firstname, lastname);
 
       } else {
-         throw new IllegalArgumentException(
-               "Message must be of type MapMessage");
+         throw new IllegalArgumentException("Message must not be of type "
+               + message.getClass());
       }
    }
 

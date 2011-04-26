@@ -11,3 +11,8 @@
 		- ant receiveS en mode synchrone : le prg s'arrête quand le message est consommé
 	- send : ant send -Dargs="<prénom> <nom>"
 	- publish : ant publish -Dargs="<prénom> <nom>"
+	
+- rappel pour l'installation de ant
+    - téléchargement du binaire http://ant.apache.org/bindownload.cgi
+    - ajouter le path du bin dans "path" des variables pour d'environnement
+    - tester que la commande ant est bien comprise telle quelle dans un invite de commandes  

@@ -70,7 +70,6 @@ public class AccountQueueConsumer {
     * @throws JMSException
     *            exception levée par jms
     */
-   @Transactional
    public final void receiveAccount(Map<String, Object> message)
          throws JMSException {
 
