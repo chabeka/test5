@@ -281,6 +281,7 @@ public class WebServiceVIValidateServiceTest {
 
    @Test
    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   @Ignore("Désactivation du test dans l'attente d'un processus de mise à jour des CRL")
    public void verifierVIdeServiceWeb_success() throws IOException,
          SAXException, VIFormatTechniqueException, VISignatureException {
 

@@ -16,6 +16,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -124,6 +125,7 @@ public class WebServiceVIServiceTest {
 
    @Test
    @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
+   @Ignore("Désactivation du test dans l'attente d'un processus de mise à jour des CRL")
    public void verifierVIdeServiceWeb_success() throws IOException,
          SAXException, VIVerificationException {
 

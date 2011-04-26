@@ -491,6 +491,7 @@ public class SamlSignatureValidateServiceTest {
     */
    @Test
    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   @Ignore("Désactivation du test dans l'attente d'un processus de mise à jour des CRL")
    public void cas05() throws SamlSignatureValidateException {
       
       // Chargement de l'assertion de test dans un objet Assertion

@@ -19,6 +19,7 @@ import org.apache.axis2.context.MessageContext;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   @Ignore("Désactivation du test dans l'attente d'un processus de mise à jour des CRL")
    public void pingSecure_success() {
 
       this.init("src/test/resources/request/pingsecure_success.xml");
@@ -131,6 +133,7 @@ public class SaeServiceSkeletonTest {
    }
 
    @Test
+   @Ignore("Désactivation du test dans l'attente d'un processus de mise à jour des CRL")
    public void pingSecure_failure_accessDenied() throws AxisFault {
 
       try {
