@@ -4,7 +4,7 @@
    <groupId>fr.cirtil.test</groupId>
    <artifactId>dfcetest</artifactId>
    <version>0.9.1</version>
-   <name>Tests unitaires réalisé par le CIRTIL pour tester Docubase DFCE</name>
+   <name>Tests unitaires réalisés par le CIRTIL pour tester Docubase DFCE</name>
 
    <build>
       <plugins>
