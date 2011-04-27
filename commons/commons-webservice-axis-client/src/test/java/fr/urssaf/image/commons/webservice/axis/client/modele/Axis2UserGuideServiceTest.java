@@ -42,7 +42,7 @@ public class Axis2UserGuideServiceTest {
                   SECURITY_PATH + "/axis2.xml");
 
       service = new Axis2UserGuideServiceStub(ctx,
-            "http://localhost:8080/axis2/services/Axis2UserGuideService/");
+            "http://localhost:8082/axis2/services/Axis2UserGuideService/");
 
    }
 

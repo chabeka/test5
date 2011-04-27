@@ -10,6 +10,7 @@
    <artifactId>commons-webservice-axis</artifactId>
    <name>commons-webservice-axis</name>
    <version>0.0.1-SNAPSHOT</version>
+   <packaging>aar</packaging>
 
    <properties>
       <axis.version>1.5.4</axis.version>
@@ -37,24 +38,21 @@
                            <wsdlFile>src/test/resources/Axis2UserGuide.wsdl</wsdlFile>
                            <wsdlVersion>1.1</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
-                           <generateServicesXml>false</generateServicesXml>
+                           <generateServicesXml>true</generateServicesXml>
                            <generateServerSide>true</generateServerSide>
                            <skipBuildXML>true</skipBuildXML>
                            <skipWSDL>false</skipWSDL>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
                            <targetResourcesFolderLocation>main/resources/META-INF</targetResourcesFolderLocation>
-                           <overWrite>true</overWrite>
                         </configuration>
                      </execution>
                   </executions>
                </plugin>
 
                <plugin>
-                  <groupId>com.google.code.maven-replacer-plugin
-                  </groupId>
+                  <groupId>com.google.code.maven-replacer-plugin</groupId>
                   <artifactId>maven-replacer-plugin</artifactId>
                   <version>1.3.6</version>
-
                   <executions>
                      <execution>
                         <phase>generate-sources</phase>
@@ -97,6 +95,9 @@
             <artifactId>axis2-aar-maven-plugin</artifactId>
             <version>${axis.version}</version>
             <extensions>true</extensions>
+            <configuration>
+               <aarName>${project.name}</aarName>
+            </configuration>
          </plugin>
       </plugins>
 
