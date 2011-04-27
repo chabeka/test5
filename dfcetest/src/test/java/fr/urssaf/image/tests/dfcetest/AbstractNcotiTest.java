@@ -20,9 +20,11 @@ public abstract class AbstractNcotiTest {
 
    /** 
     * Nom de la base GED pour ce test. 
-    * Tronqué à 8 caractères dans Docubase.
+    * Tronqué à 8 caractères dans Docubase. 
+    * On laisse une valeur en dur pour éviter de créer trop de base car
+    * il semblerait que la version 0.9.1 n'apprécie pas. 
     */
-   protected static final String BASE_ID = "NCOTI_T"; // + System.nanoTime();
+   protected static final String BASE_ID = "NCOTI_99";// + System.nanoTime();
    protected static ToolkitFactory toolkit;
    protected static final String ADM_LOGIN = "_ADMIN";
    protected static final String ADM_PASSWORD = "DOCUBASE";

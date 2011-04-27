@@ -29,10 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
 public class StressNcotiTest extends AbstractNcotiTest {
 
    private static final int NB_DOCS = 10;
@@ -372,5 +369,10 @@ public class StressNcotiTest extends AbstractNcotiTest {
       };
       
       t.start();
+   }
+   
+   @Test
+   public void dummy() {
+      // Permet de tester les before/after
    }
 }

@@ -1,7 +1,5 @@
 package fr.urssaf.image.tests.dfcetest;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -487,8 +485,6 @@ public final class DocubaseHelper {
       }
    }
 
-   // public class BaseNotFoundException()
-
    public static Base getBase(String baseId) {
       Base base = ServiceProvider.getBaseAdministrationService().getBase(baseId);
 
@@ -502,6 +498,11 @@ public final class DocubaseHelper {
     * @param baseId
     */
    public static void dropBase(String baseId) {
-      dropBase(getBase(baseId));
+      try {
+         Base base = getBase(baseId);
+         dropBase(base);
+      } catch (Exception e) {
+         LOGGER.error("Impossible de supprimer la base " + baseId, e);
+      }
    }
 }
