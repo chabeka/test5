@@ -26,6 +26,11 @@ import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2User
 import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse;
 
 public class Axis2UserGuideServiceTest {
+   
+   private final static String HTTP = "http://localhost:8082/axis2/services/Axis2UserGuideService/";
+
+   private final static String JMS = "jms:/Axis2UserGuideService?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory";
+
 
    private Axis2UserGuideServiceStub service;
 
@@ -33,22 +38,36 @@ public class Axis2UserGuideServiceTest {
          .getLogger(Axis2UserGuideServiceTest.class);
 
    private static final String SECURITY_PATH = "src/main/resources/META-INF";
+   
+   private ConfigurationContext ctx;
 
    @Before
    public void before() throws Exception {
 
-      ConfigurationContext ctx = ConfigurationContextFactory
+      ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,
                   SECURITY_PATH + "/axis2-security.xml");
 
-      service = new Axis2UserGuideServiceStub(ctx,
-            "http://localhost:8082/axis2/services/Axis2UserGuideService/");
+     
 
    }
 
    @Test
-   public void doInOnly() throws RemoteException {
-
+   public void doInOnly_http() throws RemoteException {
+      
+      service = new Axis2UserGuideServiceStub(ctx,HTTP);
+      doInOnly(service);
+   }
+   
+   @Test
+   public void doInOnly_jms() throws RemoteException {
+      
+      service = new Axis2UserGuideServiceStub(ctx,JMS);
+      doInOnly(service);
+   }
+   
+   private void doInOnly(Axis2UserGuideServiceStub service) throws RemoteException {
+      
       DoInOnlyRequest request = new DoInOnlyRequest();
       request.setMessageString("message");
 
@@ -56,7 +75,20 @@ public class Axis2UserGuideServiceTest {
    }
 
    @Test
-   public void twoWayOneParameterEcho() throws RemoteException {
+   public void twoWayOneParameterEcho_http() throws RemoteException {
+
+      service = new Axis2UserGuideServiceStub(ctx,HTTP);
+      twoWayOneParameterEcho(service);
+   }
+   
+   @Test
+   public void twoWayOneParameterEcho_jms() throws RemoteException {
+
+      service = new Axis2UserGuideServiceStub(ctx,JMS);
+      twoWayOneParameterEcho(service);
+   }
+   
+   private void twoWayOneParameterEcho(Axis2UserGuideServiceStub service) throws RemoteException {
 
       String echo = "echo";
 
@@ -71,16 +103,43 @@ public class Axis2UserGuideServiceTest {
    }
 
    @Test
-   public void noParameters() throws RemoteException {
+   public void noParameters_http() throws RemoteException {
+      service = new Axis2UserGuideServiceStub(ctx,HTTP);
+      noParameters(service);
+   }
+   
+   @Test
+   public void noParameters_jms() throws RemoteException {
+
+      service = new Axis2UserGuideServiceStub(ctx,JMS);
+      noParameters(service);
+      
+   }
+  
+   private void noParameters(Axis2UserGuideServiceStub service) throws RemoteException {
 
       NoParametersRequest request = new NoParametersRequest();
-
       assertNotNull(service.noParameters(request));
 
    }
 
    @Test
-   public void ets() throws RemoteException {
+   public void multipleParametersAddItem_http() throws RemoteException {
+
+      service = new Axis2UserGuideServiceStub(ctx,HTTP);
+      multipleParametersAddItem(service);
+
+   }
+   
+   @Test
+   public void multipleParametersAddItem_jms() throws RemoteException {
+
+      service = new Axis2UserGuideServiceStub(ctx,JMS);
+      multipleParametersAddItem(service);
+
+   }
+   
+   private void multipleParametersAddItem(Axis2UserGuideServiceStub service) throws RemoteException {
 
       int id = 1;
 

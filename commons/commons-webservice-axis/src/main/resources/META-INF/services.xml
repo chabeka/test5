@@ -28,7 +28,7 @@
       </parameter>
       <parameter name="SpringBeanName" locked="false">axis2UserGuideServiceSkeleton
       </parameter>
-      <parameter name="useOriginalwsdl">false</parameter>
+      <parameter name="useOriginalwsdl">true</parameter>
       <parameter name="modifyUserWSDLPortAddress">false</parameter>
       <operation name="DoInOnly" mep="http://www.w3.org/ns/wsdl/in-only"
          namespace="http://apache.org/axis2/Axis2UserGuide">

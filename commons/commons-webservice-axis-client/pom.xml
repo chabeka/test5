@@ -34,8 +34,8 @@
                            <goal>wsdl2code</goal>
                         </goals>
                         <configuration>
-                           <wsdlFile>http://localhost:8080/axis2/services/sample02?wsdl</wsdlFile>
-                           <packageName>fr.urssaf.image.commons.webservice.axis.client.modele.rampart</packageName>
+                           <wsdlFile>http://localhost:8080/axis2/services/Axis2UserGuideService?wsdl</wsdlFile>
+                           <packageName>fr.urssaf.image.commons.webservice.axis.client.modele.userguide</packageName>
                            <wsdlVersion>1.1</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
                            <databindingName>adb</databindingName>
@@ -63,7 +63,7 @@
                   <configuration>
                      <basedir>src/main/java</basedir>
                      <includes>
-                        <include>**/modele/rampart/*.java</include>
+                        <include>**/modele/userguide/*.java</include>
                      </includes>
                      <replacements>
                         <replacement>
