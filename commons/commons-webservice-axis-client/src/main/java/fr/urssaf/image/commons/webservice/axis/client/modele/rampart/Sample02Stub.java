@@ -108,7 +108,7 @@ public class Sample02Stub extends org.apache.axis2.client.Stub
      */
     public Sample02Stub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://localhost:8082/axis2/services/sample02.sample02HttpSoap12Endpoint/" );
+                    this(configurationContext,"jms:/sample02?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" );
                 
     }
 
@@ -117,7 +117,7 @@ public class Sample02Stub extends org.apache.axis2.client.Stub
      */
     public Sample02Stub() throws org.apache.axis2.AxisFault {
         
-                    this("http://localhost:8082/axis2/services/sample02.sample02HttpSoap12Endpoint/" );
+                    this("jms:/sample02?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" );
                 
     }
 
@@ -427,7 +427,7 @@ public class Sample02Stub extends org.apache.axis2.client.Stub
         }
         return false;
     }
-     //http://localhost:8082/axis2/services/sample02.sample02HttpSoap12Endpoint/
+     //jms:/sample02?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory
         public static class Echo
         implements org.apache.axis2.databinding.ADBBean{
         

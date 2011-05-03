@@ -7,7 +7,6 @@ import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class VersionTest {
@@ -34,7 +33,6 @@ public class VersionTest {
    }
 
    @Test
-   @Ignore
    public void getVersion_jms() throws RemoteException, ExceptionException {
 
       service = new VersionStub(ctx, JMS);

@@ -1,6 +1,6 @@
 package fr.urssaf.image.commons.webservice.axis.client.modele.rampart;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.rmi.RemoteException;
 
@@ -15,30 +15,44 @@ public class Sample02Test {
 
    private static final String SECURITY_PATH = "src/main/resources/META-INF";
 
+   private final static String HTTP = "http://localhost:8082/axis2/services/sample02.sample02HttpSoap12Endpoint/";
+
+   private final static String JMS = "jms:/sample02?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory";
+
+   private static ConfigurationContext ctx;
+
    private Sample02Stub service;
-   
+
    @Before
    public void before() throws Exception {
 
-      ConfigurationContext ctx = ConfigurationContextFactory
+      ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,
                   SECURITY_PATH + "/axis2-rampart.xml");
 
-      service = new Sample02Stub(ctx,
-            "http://localhost:8082/axis2/services/sample02/");
-      
-     
-
    }
-   
+
    @Test
-   public void echo() throws RemoteException{
-      
+   public void echo_jms() throws RemoteException {
+
+      service = new Sample02Stub(ctx, JMS);
+      assertEcho(service);
+   }
+
+   @Test
+   public void echo_http() throws RemoteException {
+
+      service = new Sample02Stub(ctx, HTTP);
+      assertEcho(service);
+   }
+
+   private void assertEcho(Sample02Stub service) throws RemoteException {
+
       String msg = "test pour echo";
-      
+
       Echo echo = new Echo();
       echo.setArgs0(msg);
-      assertEquals(msg,service.echo(echo).get_return());
+      assertEquals(msg, service.echo(echo).get_return());
    }
 
 }

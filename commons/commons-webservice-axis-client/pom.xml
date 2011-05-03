@@ -14,6 +14,7 @@
    <properties>
       <axis.version>1.5.4</axis.version>
       <axiom.version>1.2.9</axiom.version>
+      <activemq.version>5.4.2</activemq.version>
    </properties>
 
 
@@ -33,8 +34,8 @@
                            <goal>wsdl2code</goal>
                         </goals>
                         <configuration>
-                           <wsdlFile>http://localhost:8080/axis2/services/Axis2UserGuideService?wsdl</wsdlFile>
-                           <packageName>fr.urssaf.image.commons.webservice.axis.client.modele.userguide</packageName>
+                           <wsdlFile>http://localhost:8080/axis2/services/sample02?wsdl</wsdlFile>
+                           <packageName>fr.urssaf.image.commons.webservice.axis.client.modele.rampart</packageName>
                            <wsdlVersion>1.1</wsdlVersion>
                            <outputDirectory>src</outputDirectory>
                            <databindingName>adb</databindingName>
@@ -62,7 +63,7 @@
                   <configuration>
                      <basedir>src/main/java</basedir>
                      <includes>
-                        <include>**/modele/userguide/*.java</include>
+                        <include>**/modele/rampart/*.java</include>
                      </includes>
                      <replacements>
                         <replacement>
@@ -124,12 +125,27 @@
          <version>${axis.version}</version>
       </dependency>
 
+      <dependency>
+         <groupId>org.apache.axis2</groupId>
+         <artifactId>axis2-transport-jms</artifactId>
+         <version>1.0.0</version>
+      </dependency>
+
+
       <!-- APACHE RAMPART -->
 
       <dependency>
          <groupId>org.apache.rampart</groupId>
          <artifactId>rampart-core</artifactId>
          <version>1.5.1</version>
+      </dependency>
+
+      <!-- APACHE ACTIVEMQ -->
+
+      <dependency>
+         <groupId>org.apache.activemq</groupId>
+         <artifactId>activemq-core</artifactId>
+         <version>${activemq.version}</version>
       </dependency>
 
 
