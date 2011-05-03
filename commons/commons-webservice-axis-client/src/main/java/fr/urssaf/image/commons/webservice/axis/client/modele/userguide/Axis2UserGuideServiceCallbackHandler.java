@@ -6,7 +6,7 @@
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET)
  */
 
-    package fr.urssaf.image.commons.webservice.axis.client.modele;
+    package fr.urssaf.image.commons.webservice.axis.client.modele.userguide;
 
     /**
      *  Axis2UserGuideServiceCallbackHandler Callback class, Users can extend this class and implement
@@ -53,7 +53,7 @@ public class Axis2UserGuideServiceCallbackHandler{
             * override this method for handling normal response from twoWayOneParameterEcho operation
             */
            public void receiveResulttwoWayOneParameterEcho(
-                    fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse result
+                    fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse result
                         ) {
            }
 
@@ -69,7 +69,7 @@ public class Axis2UserGuideServiceCallbackHandler{
             * override this method for handling normal response from noParameters operation
             */
            public void receiveResultnoParameters(
-                    fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse result
+                    fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse result
                         ) {
            }
 
@@ -85,7 +85,7 @@ public class Axis2UserGuideServiceCallbackHandler{
             * override this method for handling normal response from multipleParametersAddItem operation
             */
            public void receiveResultmultipleParametersAddItem(
-                    fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse result
+                    fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse result
                         ) {
            }
 

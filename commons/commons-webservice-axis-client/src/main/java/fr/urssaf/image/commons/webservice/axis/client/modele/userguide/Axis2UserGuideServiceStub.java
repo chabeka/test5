@@ -5,7 +5,7 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET)
  */
-        package fr.urssaf.image.commons.webservice.axis.client.modele;
+        package fr.urssaf.image.commons.webservice.axis.client.modele.userguide;
 
         
 
@@ -170,7 +170,7 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                   * 
                   */
                 public void  doInOnly(
-                 fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest doInOnlyRequest0
+                 fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest doInOnlyRequest0
 
                 ) throws java.rmi.RemoteException
                 
@@ -220,16 +220,16 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                     /**
                      * Auto generated method signature
                      * 
-                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideService#twoWayOneParameterEcho
+                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideService#twoWayOneParameterEcho
                      * @param twoWayOneParameterEchoRequest1
                     
                      */
 
                     
 
-                            public  fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse twoWayOneParameterEcho(
+                            public  fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse twoWayOneParameterEcho(
 
-                            fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest1)
+                            fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest1)
                         
 
                     throws java.rmi.RemoteException
@@ -279,11 +279,11 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.class,
+                                             fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse)object;
+                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -339,15 +339,15 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                 /**
                 * Auto generated method signature for Asynchronous Invocations
                 * 
-                * @see fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideService#starttwoWayOneParameterEcho
+                * @see fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideService#starttwoWayOneParameterEcho
                     * @param twoWayOneParameterEchoRequest1
                 
                 */
                 public  void starttwoWayOneParameterEcho(
 
-                 fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest1,
+                 fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest twoWayOneParameterEchoRequest1,
 
-                  final fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceCallbackHandler callback)
+                  final fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceCallbackHandler callback)
 
                 throws java.rmi.RemoteException{
 
@@ -390,10 +390,10 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                                 org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
                                 
                                         java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.class,
+                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.class,
                                                                          getEnvelopeNamespaces(resultEnv));
                                         callback.receiveResulttwoWayOneParameterEcho(
-                                        (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse)object);
+                                        (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse)object);
                                         
                             } catch (org.apache.axis2.AxisFault e) {
                                 callback.receiveErrortwoWayOneParameterEcho(e);
@@ -485,16 +485,16 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                     /**
                      * Auto generated method signature
                      * 
-                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideService#noParameters
+                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideService#noParameters
                      * @param noParametersRequest3
                     
                      */
 
                     
 
-                            public  fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse noParameters(
+                            public  fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse noParameters(
 
-                            fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest noParametersRequest3)
+                            fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest noParametersRequest3)
                         
 
                     throws java.rmi.RemoteException
@@ -544,11 +544,11 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse.class,
+                                             fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse)object;
+                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -604,15 +604,15 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                 /**
                 * Auto generated method signature for Asynchronous Invocations
                 * 
-                * @see fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideService#startnoParameters
+                * @see fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideService#startnoParameters
                     * @param noParametersRequest3
                 
                 */
                 public  void startnoParameters(
 
-                 fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest noParametersRequest3,
+                 fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest noParametersRequest3,
 
-                  final fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceCallbackHandler callback)
+                  final fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceCallbackHandler callback)
 
                 throws java.rmi.RemoteException{
 
@@ -655,10 +655,10 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                                 org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
                                 
                                         java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse.class,
+                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse.class,
                                                                          getEnvelopeNamespaces(resultEnv));
                                         callback.receiveResultnoParameters(
-                                        (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse)object);
+                                        (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse)object);
                                         
                             } catch (org.apache.axis2.AxisFault e) {
                                 callback.receiveErrornoParameters(e);
@@ -750,16 +750,16 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                     /**
                      * Auto generated method signature
                      * 
-                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideService#multipleParametersAddItem
+                     * @see fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideService#multipleParametersAddItem
                      * @param multipleParametersAddItemRequest5
                     
                      */
 
                     
 
-                            public  fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse multipleParametersAddItem(
+                            public  fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse multipleParametersAddItem(
 
-                            fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest multipleParametersAddItemRequest5)
+                            fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest multipleParametersAddItemRequest5)
                         
 
                     throws java.rmi.RemoteException
@@ -809,11 +809,11 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.class,
+                                             fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse)object;
+                                        return (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -869,15 +869,15 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                 /**
                 * Auto generated method signature for Asynchronous Invocations
                 * 
-                * @see fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideService#startmultipleParametersAddItem
+                * @see fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideService#startmultipleParametersAddItem
                     * @param multipleParametersAddItemRequest5
                 
                 */
                 public  void startmultipleParametersAddItem(
 
-                 fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest multipleParametersAddItemRequest5,
+                 fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest multipleParametersAddItemRequest5,
 
-                  final fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceCallbackHandler callback)
+                  final fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceCallbackHandler callback)
 
                 throws java.rmi.RemoteException{
 
@@ -920,10 +920,10 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
                                 org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
                                 
                                         java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.class,
+                                                                         fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.class,
                                                                          getEnvelopeNamespaces(resultEnv));
                                         callback.receiveResultmultipleParametersAddItem(
-                                        (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse)object);
+                                        (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse)object);
                                         
                             } catch (org.apache.axis2.AxisFault e) {
                                 callback.receiveErrormultipleParametersAddItem(e);
@@ -4477,12 +4477,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
         }
            
           
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4491,12 +4491,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4505,12 +4505,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4519,12 +4519,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4533,12 +4533,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4547,12 +4547,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4561,12 +4561,12 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.MY_QNAME,
+                             return param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4576,14 +4576,14 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
             }
         
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest param, boolean optimizeContent)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest param, boolean optimizeContent)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4597,14 +4597,14 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
                              
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest param, boolean optimizeContent)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest param, boolean optimizeContent)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4618,14 +4618,14 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
                              
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest param, boolean optimizeContent)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest param, boolean optimizeContent)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4639,14 +4639,14 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
                              
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest param, boolean optimizeContent)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest param, boolean optimizeContent)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -4676,51 +4676,51 @@ public class Axis2UserGuideServiceStub extends org.apache.axis2.client.Stub
 
         try {
         
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.class.equals(type)){
+                if (fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.class.equals(type)){
                 
-                           return fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }

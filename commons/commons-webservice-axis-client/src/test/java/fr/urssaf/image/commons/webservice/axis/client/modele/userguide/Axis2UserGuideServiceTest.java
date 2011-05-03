@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.webservice.axis.client.modele;
+package fr.urssaf.image.commons.webservice.axis.client.modele.userguide;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,12 +18,12 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.DoInOnlyRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse;
-import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.NoParametersRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest;
-import fr.urssaf.image.commons.webservice.axis.client.modele.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse;
 
 public class Axis2UserGuideServiceTest {
 
@@ -39,7 +39,7 @@ public class Axis2UserGuideServiceTest {
 
       ConfigurationContext ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,
-                  SECURITY_PATH + "/axis2.xml");
+                  SECURITY_PATH + "/axis2-security.xml");
 
       service = new Axis2UserGuideServiceStub(ctx,
             "http://localhost:8082/axis2/services/Axis2UserGuideService/");

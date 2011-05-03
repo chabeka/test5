@@ -16,6 +16,7 @@ public class PasswordCallbackHandler implements CallbackHandler {
 
    public PasswordCallbackHandler() {
       passwords.put("myuser", "mypassword");
+      passwords.put("bob", "bobPW");
 
    }
 
