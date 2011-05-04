@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@SuppressWarnings( { "PMD.MethodNamingConventions",
+      "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class VersionTest {
 
    private static final Logger LOG = Logger.getLogger(VersionTest.class);

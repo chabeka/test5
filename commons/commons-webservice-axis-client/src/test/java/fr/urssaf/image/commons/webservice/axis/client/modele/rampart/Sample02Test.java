@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.rmi.RemoteException;
 
+import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.junit.Before;
@@ -11,6 +12,8 @@ import org.junit.Test;
 
 import fr.urssaf.image.commons.webservice.axis.client.modele.rampart.Sample02Stub.Echo;
 
+@SuppressWarnings( { "PMD.MethodNamingConventions",
+      "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class Sample02Test {
 
    private static final String SECURITY_PATH = "src/main/resources/META-INF";
@@ -24,7 +27,7 @@ public class Sample02Test {
    private Sample02Stub service;
 
    @Before
-   public void before() throws Exception {
+   public void before() throws AxisFault  {
 
       ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,

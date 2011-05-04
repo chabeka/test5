@@ -2,26 +2,28 @@ package fr.urssaf.image.commons.webservice.axis.client.modele.userguide;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.rmi.RemoteException;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.DoInOnlyRequest;
 import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemRequest;
 import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.MultipleParametersAddItemResponse;
 import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersRequest;
+import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.NoParametersResponse;
 import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoRequest;
 import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2UserGuideServiceStub.TwoWayOneParameterEchoResponse;
 
 @SuppressWarnings( { "PMD.MethodNamingConventions",
       "PMD.JUnitAssertionsShouldIncludeMessage" })
-public class Axis2UserGuideServiceTest {
+public class Axis2UserGuideServiceAsynchroneTest {
 
    private final static String HTTP = "http://localhost:8082/axis2/services/Axis2UserGuideService/";
 
@@ -30,14 +32,16 @@ public class Axis2UserGuideServiceTest {
    private Axis2UserGuideServiceStub service;
 
    private static final Logger LOG = Logger
-         .getLogger(Axis2UserGuideServiceTest.class);
+         .getLogger(Axis2UserGuideServiceAsynchroneTest.class);
 
    private static final String SECURITY_PATH = "src/main/resources/META-INF";
+
+   private static final long SLEEP_TIME = 2000;
 
    private ConfigurationContext ctx;
 
    @Before
-   public void before() throws AxisFault  {
+   public void before() throws AxisFault {
 
       ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,
@@ -45,27 +49,20 @@ public class Axis2UserGuideServiceTest {
 
    }
 
-   @Test
-   public void doInOnly_http() throws RemoteException {
+   private static void sleep() {
 
-      service = new Axis2UserGuideServiceStub(ctx, HTTP);
-      assertDoInOnly(service);
+      try {
+         Thread.sleep(SLEEP_TIME);
+      } catch (InterruptedException e) {
+         throw new IllegalStateException(e);
+      }
    }
 
-   @Test
-   public void doInOnly_jms() throws RemoteException {
+   private static void assertReceive(
+         Axis2UserGuideServiceCallbackHandler callback) {
 
-      service = new Axis2UserGuideServiceStub(ctx, JMS);
-      assertDoInOnly(service);
-   }
-
-   private static void assertDoInOnly(Axis2UserGuideServiceStub service)
-         throws RemoteException {
-
-      DoInOnlyRequest request = new DoInOnlyRequest();
-      request.setMessageString("message");
-
-      service.doInOnly(request);
+      assertTrue("message non reçu", BooleanUtils.isTrue((Boolean) callback
+            .getClientData()));
    }
 
    @Test
@@ -82,19 +79,33 @@ public class Axis2UserGuideServiceTest {
       assertTwoWayOneParameterEcho(service);
    }
 
-   private static void assertTwoWayOneParameterEcho(Axis2UserGuideServiceStub service)
+   private void assertTwoWayOneParameterEcho(Axis2UserGuideServiceStub service)
          throws RemoteException {
 
-      String echo = "echo";
-
       TwoWayOneParameterEchoRequest request = new TwoWayOneParameterEchoRequest();
-      request.setEchoString(echo);
+      request.setEchoString("echo");
 
-      TwoWayOneParameterEchoResponse response = service
-            .twoWayOneParameterEcho(request);
+      Axis2UserGuideServiceCallbackHandler callback = new Axis2UserGuideServiceCallbackHandler() {
 
-      LOG.debug(response.getEchoString());
-      assertEquals(echo, response.getEchoString());
+         String echo = "echo";
+
+         @Override
+         public void receiveResulttwoWayOneParameterEcho(
+               TwoWayOneParameterEchoResponse result) {
+
+            clientData = true;
+
+            LOG.debug(result.getEchoString());
+            assertEquals(echo, result.getEchoString());
+
+         }
+      };
+      service.starttwoWayOneParameterEcho(request, callback);
+
+      sleep();
+
+      assertReceive(callback);
+
    }
 
    @Test
@@ -115,7 +126,23 @@ public class Axis2UserGuideServiceTest {
          throws RemoteException {
 
       NoParametersRequest request = new NoParametersRequest();
-      assertNotNull(service.noParameters(request));
+
+      Axis2UserGuideServiceCallbackHandler callback = new Axis2UserGuideServiceCallbackHandler() {
+
+         @Override
+         public void receiveResultnoParameters(NoParametersResponse result) {
+
+            clientData = true;
+
+            assertNotNull(result);
+
+         }
+      };
+      service.startnoParameters(request, callback);
+
+      sleep();
+
+      assertReceive(callback);
 
    }
 
@@ -135,10 +162,8 @@ public class Axis2UserGuideServiceTest {
 
    }
 
-   private static void assertMultipleParametersAddItem(Axis2UserGuideServiceStub service)
-         throws RemoteException {
-
-      int itemId = 1;
+   private void assertMultipleParametersAddItem(
+         Axis2UserGuideServiceStub service) throws RemoteException {
 
       MultipleParametersAddItemRequest request = new MultipleParametersAddItemRequest();
       request.setDescription("description");
@@ -146,14 +171,29 @@ public class Axis2UserGuideServiceTest {
       request.setItemName("name");
       request.setPrice(new Float(24.2));
 
-      MultipleParametersAddItemResponse response = service
-            .multipleParametersAddItem(request);
+      Axis2UserGuideServiceCallbackHandler callback = new Axis2UserGuideServiceCallbackHandler() {
 
-      LOG.debug(response.getItemId());
-      LOG.debug(response.getSuccessfulAdd());
+         int itemId = 1;
 
-      assertEquals(itemId, response.getItemId());
-      assertEquals(true, response.getSuccessfulAdd());
+         @Override
+         public void receiveResultmultipleParametersAddItem(
+               MultipleParametersAddItemResponse result) {
+
+            clientData = true;
+
+            LOG.debug(result.getItemId());
+            LOG.debug(result.getSuccessfulAdd());
+
+            assertEquals(itemId, result.getItemId());
+            assertEquals(true, result.getSuccessfulAdd());
+
+         }
+      };
+      service.startmultipleParametersAddItem(request, callback);
+
+      sleep();
+
+      assertReceive(callback);
 
    }
 
