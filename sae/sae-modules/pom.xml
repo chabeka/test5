@@ -26,6 +26,8 @@
       <module>../sae-webservices-test</module>
       <module>../sae-saml</module>
       <module>../sae-webservices-client-demo</module>
+      <module>../sae-igc</module>
+      <module>../sae-igcmaj</module>
    </modules>
 
 </project>
