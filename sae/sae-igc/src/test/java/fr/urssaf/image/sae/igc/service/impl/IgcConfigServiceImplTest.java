@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.ConversionException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,7 +26,8 @@ public class IgcConfigServiceImplTest {
 
    private static IgcConfigServiceImpl service;
 
-   private static final String BASE_IGC_CONFIG = "src/test/resources/igcConfig/";
+   private static final String BASE_IGC_CONFIG = FilenameUtils
+         .getFullPath("src/test/resources/igcConfig/");
 
    private static final String FAIL_MESSAGE = "le test doit échouer";
 
