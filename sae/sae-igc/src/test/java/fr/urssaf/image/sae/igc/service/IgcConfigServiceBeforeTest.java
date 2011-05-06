@@ -1,8 +1,9 @@
 package fr.urssaf.image.sae.igc.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+
+import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,38 +13,32 @@ import fr.urssaf.image.sae.igc.exception.IgcConfigException;
 import fr.urssaf.image.sae.igc.modele.IgcConfig;
 import fr.urssaf.image.sae.igc.util.TextUtils;
 
+/**
+ * Test sur les arguments entrée de {@link IgcConfigService}
+ * 
+ * 
+ */
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
-public class IgcConfigServiceTest {
+public class IgcConfigServiceBeforeTest {
 
    private static final String FAIL_MESSAGE = "le test doit échouer";
 
    private IgcConfigService service;
 
-   private IgcConfig igcConfig;
-
    @Before
-   public void before() {
+   public void before() throws MalformedURLException {
 
-      igcConfig = new IgcConfig();
       service = new IgcConfigService() {
 
          @Override
          public IgcConfig loadConfig(String pathConfigFile)
                throws IgcConfigException {
 
+            IgcConfig igcConfig = new IgcConfig();
+
             return igcConfig;
          }
       };
-
-   }
-
-   @Test
-   public void loadConfig_success() throws IgcConfigException {
-
-      String pathConfig = "src/test/resources/igcConfig/igcConfig_success.xml";
-
-      assertNotNull("les arguments doivent être valide", service
-            .loadConfig(pathConfig));
 
    }
 
@@ -80,6 +75,6 @@ public class IgcConfigServiceTest {
                IgcConfigServiceValidate.IGC_CONFIG_NOTEXIST, pathConfig), e
                .getMessage());
       }
-
    }
+
 }

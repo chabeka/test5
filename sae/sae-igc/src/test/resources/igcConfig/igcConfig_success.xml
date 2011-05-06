@@ -9,7 +9,7 @@
       /appl/sae/certificats/ACRacine
    -->
    <repertoireACRacines>
-      src\test\resources\certificats\ACRacine
+      src/test/resources/certificats/ACRacine
    </repertoireACRacines>
 
 
@@ -19,7 +19,7 @@
       valeurs : c:\sae\certificats\CRL /appl/sae/certificats/CRL
    -->
    <repertoireCRL>
-       src\test\resources\certificats\CRL\
+       src/test/resources/certificats/CRL/
    </repertoireCRL>
 
 

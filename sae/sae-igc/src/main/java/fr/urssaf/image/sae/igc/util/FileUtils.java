@@ -36,4 +36,16 @@ public final class FileUtils {
       File file = new File(path);
       return file.isFile();
    }
+
+   /**
+    * 
+    * @param path
+    *           chemin du fichier
+    * @return true si c'est le chemin est absolu false sinon
+    */
+   public static boolean isAbsolute(String path) {
+
+      File file = new File(path);
+      return file.isAbsolute();
+   }
 }

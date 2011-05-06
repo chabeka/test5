@@ -2,11 +2,11 @@
 <IgcConfig>
 
    <repertoireACRacines>
-      src\test\resources\certificats\ACRacine
+      src/test/resources/certificats/ACRacine
    </repertoireACRacines>
 
    <repertoireCRL>
-      \notExist\certificats\CRL\
+      notExist/certificats/CRL/
    </repertoireCRL>
 
    <URLTelechargementCRL>

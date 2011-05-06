@@ -2,7 +2,7 @@
 <IgcConfig>
 
    <repertoireACRacines>
-      src\test\resources\certificats\ACRacine
+      src/test/resources/certificats/ACRacine
    </repertoireACRacines>
 
    <URLTelechargementCRL>
