@@ -9,12 +9,16 @@ public class IgcDownloadException extends Exception {
 
    private static final long serialVersionUID = 1L;
 
+   public static final String MESSAGE = "Une erreur s'est produite lors du téléchargement des éléments de l'IGC";
+
    /**
-    * implémentation d'un message d'exception spécifique
+    * implémentation du message par défaut {@value #MESSAGE}
+    * 
+    * @param cause
+    *           raison de l'exception levée
     */
-   public IgcDownloadException() {
-      super(
-            "Une erreur s'est produite lors du téléchargement des éléments de l'IGC");
+   public IgcDownloadException(Throwable cause) {
+      super(MESSAGE, cause);
 
    }
 }
