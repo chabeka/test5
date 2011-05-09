@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class WebServiceVIServiceValidateTest {
    @BeforeClass
    public static void beforeClass() throws ParserConfigurationException {
 
-      service = EasyMock.createMock(WebServiceVIService.class);
+      service = new WebServiceVIService();
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 

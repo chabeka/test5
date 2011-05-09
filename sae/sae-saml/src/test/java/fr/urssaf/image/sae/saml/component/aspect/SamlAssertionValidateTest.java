@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.saml.component.aspect;
 
-import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -53,9 +52,9 @@ public class SamlAssertionValidateTest {
 
    @BeforeClass
    public static void beforeClass() throws ParserConfigurationException {
-      service = createMock(SamlAssertionCreationService.class);
-      readService = createMock(SamlAssertionExtractionService.class);
-      checkService = createMock(SamlAssertionVerificationService.class);
+      service = new SamlAssertionCreationService();
+      readService = new SamlAssertionExtractionService();
+      checkService = new SamlAssertionVerificationService();
 
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
