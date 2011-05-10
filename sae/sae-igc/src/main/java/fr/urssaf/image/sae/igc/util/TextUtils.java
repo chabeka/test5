@@ -32,7 +32,7 @@ public final class TextUtils {
     *           message paramétrable
     * @param args
     *           valeurs ordonnées des paramètres
-    * @return instance du message paramatré
+    * @return instance du message paramétré
     */
    public static String getMessage(String source, String... args) {
 
@@ -45,5 +45,19 @@ public final class TextUtils {
       }
 
       return StrSubstitutor.replace(source, values);
+   }
+
+   public static final String ARG_EMPTY = "Le paramètre [${0}] n'est pas renseigné alors qu'il est obligatoire";
+
+
+   /**
+    * Création d'un message à partir de {@value #ARG_EMPTY}
+    * 
+    * @param arg nom de l'argument non renseigné
+    * @return instance du message paramétré
+    */
+   public static String getArgEmpty(String arg) {
+
+      return TextUtils.getMessage(ARG_EMPTY, arg);
    }
 }

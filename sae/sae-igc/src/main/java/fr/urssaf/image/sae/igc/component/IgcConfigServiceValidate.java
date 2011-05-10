@@ -27,8 +27,6 @@ public class IgcConfigServiceValidate {
 
    private static final String METHODE = "execution(* fr.urssaf.image.sae.igc.service.IgcConfigService.loadConfig(..))";
 
-   public static final String ARG_EMPTY = "Le paramètre [${0}] n'est pas renseigné alors qu'il est obligatoire";
-
    /**
     * Vérification de la validité des arguments entrée de la méthode
     * {@link IgcConfigService#loadConfig}
@@ -51,8 +49,8 @@ public class IgcConfigServiceValidate {
 
       if (!StringUtils.isNotBlank(pathConfig)) {
 
-         throw new IllegalArgumentException(TextUtils.getMessage(ARG_EMPTY,
-               "pathConfigFile"));
+         throw new IllegalArgumentException(TextUtils
+               .getArgEmpty("pathConfigFile"));
       }
 
       if (!FileUtils.isFile(pathConfig)) {

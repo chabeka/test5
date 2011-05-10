@@ -54,8 +54,7 @@ public class IgcConfigServiceBeforeTest {
       } catch (IllegalArgumentException e) {
 
          assertEquals("erreur la cause de l'exception", TextUtils.getMessage(
-               IgcConfigServiceValidate.ARG_EMPTY, "pathConfigFile"), e
-               .getMessage());
+               TextUtils.ARG_EMPTY, "pathConfigFile"), e.getMessage());
       }
 
    }
