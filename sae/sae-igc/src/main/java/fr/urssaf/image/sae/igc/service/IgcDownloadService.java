@@ -21,5 +21,5 @@ public interface IgcDownloadService {
     *            Une erreur s'est produite lors du téléchargement des éléments
     *            de l'IGC
     */
-   Integer telechargeCRLs(IgcConfig igcConfig) throws IgcDownloadException;
+   int telechargeCRLs(IgcConfig igcConfig) throws IgcDownloadException;
 }

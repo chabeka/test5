@@ -26,7 +26,7 @@ public class IgcDownloadServiceTest {
       service = new IgcDownloadService() {
 
          @Override
-         public Integer telechargeCRLs(IgcConfig igcConfig)
+         public int telechargeCRLs(IgcConfig igcConfig)
                throws IgcDownloadException {
 
             return 0;

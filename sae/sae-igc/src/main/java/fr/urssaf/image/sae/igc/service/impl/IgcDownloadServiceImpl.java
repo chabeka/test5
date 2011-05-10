@@ -26,7 +26,7 @@ public class IgcDownloadServiceImpl implements IgcDownloadService {
          .getLogger(IgcDownloadServiceImpl.class);
 
    @Override
-   public final Integer telechargeCRLs(IgcConfig igcConfig)
+   public final int telechargeCRLs(IgcConfig igcConfig)
          throws IgcDownloadException {
 
       int downloads = 0;
