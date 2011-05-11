@@ -85,7 +85,7 @@ public class IgcDownloadServiceImpl implements IgcDownloadService {
 
       if (FileFilterUtils.suffixFileFilter(extension).accept(destination)) {
 
-         LOG.info("downloading from " + url.toString());
+         LOG.debug("downloading from " + url.toString());
 
          FileUtils.copyURLToFile(url, destination);
 
