@@ -61,6 +61,15 @@ Le programme peut par exemple être exécuté sous forme de tâche planifiée, a
          <artifactId>sae-igc</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      
+      
+      <!-- Log4j extras pour avoir le RollingFileAppender -->
+      
+      <dependency>
+         <groupId>log4j</groupId>
+         <artifactId>apache-log4j-extras</artifactId>
+         <version>1.1</version>
+      </dependency>
 
    </dependencies>
 
