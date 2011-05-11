@@ -25,7 +25,7 @@ public final class IgcMain {
 
    private static final Logger LOG = Logger.getLogger(IgcMain.class);
 
-   private static final String MESSAGE = "Mise à jour des CRL : ${0} CRL téléchargées";
+   private static final String MESSAGE = "Mise a jour des CRL : ${0} CRL telechargees";
 
    public static final String IGC_CONFIG_EMPTY = "Il faut préciser, dans la ligne de commande, le chemin complet du fichier de configuration de l'IGC";
 
