@@ -6,6 +6,7 @@ import net.docubase.toolkit.model.base.Base;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import fr.urssaf.image.tests.dfcetest.helpers.DocubaseHelper;
 import fr.urssaf.image.tests.dfcetest.helpers.NcotiHelper;
 
 /**

@@ -6,16 +6,16 @@ package fr.urssaf.image.tests.dfcetest.helpers;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.urssaf.image.tests.dfcetest.Categories;
-import fr.urssaf.image.tests.dfcetest.DocubaseHelper;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
+import net.docubase.toolkit.model.base.Base.DocumentCreationDateConfiguration;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
-import net.docubase.toolkit.model.base.Base.DocumentCreationDateConfiguration;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.administration.StorageAdministrationService;
+import fr.urssaf.image.tests.dfcetest.Categories;
+import fr.urssaf.image.tests.dfcetest.NcotiCategories;
 
 /**
  * 
@@ -66,119 +66,194 @@ public class NcotiHelper {
       ServiceProvider.getBaseAdministrationService().createBase(base);
       return base;
    }
-
+   
    private static List<BaseCategory> createCategories() {
+      List<BaseCategory> categories = new ArrayList<BaseCategory>();
+
+      StorageAdministrationService storageAdministrationService = ServiceProvider
+            .getStorageAdministrationService();
+      
+      Category TYPE_DOC_REF = storageAdministrationService.findOrCreateCategory(
+            NcotiCategories.TYPE_DOC.toString(), CategoryDataType.STRING);       
+      Category APPLI_SOURCE_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.APPLI_SOURCE.toString(), CategoryDataType.STRING);     
+      Category TITRE_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.TITRE.toString(), CategoryDataType.STRING);
+      Category DATE_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.DATE.toString(), CategoryDataType.DATE);   
+      Category DATETIME_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.DATETIME.toString(), CategoryDataType.DATETIME);  
+      Category DECIMAL_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.DECIMAL.toString(), CategoryDataType.DECIMAL);
+      Category INTEGER_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.INTEGER.toString(), CategoryDataType.INTEGER); 
+      Category BOOLEAN_REF = storageAdministrationService.findOrCreateCategory(
+            Categories.BOOLEAN.toString(), CategoryDataType.BOOLEAN);  
+      
+      BaseCategory cx;
+      
+      // Catégories obligatoires
+      //
+      cx = toolkit.createBaseCategory(TYPE_DOC_REF, true);
+      cx.setMinimumValues((short) 1);
+      cx.setMaximumValues((short) 1);
+      //cx.setEnableDictionary(true);
+      categories.add(cx);     
+      
+      cx = toolkit.createBaseCategory(TITRE_REF, true);
+      cx.setMinimumValues((short) 1);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);
+
+      cx = toolkit.createBaseCategory(DATETIME_REF, true);
+      cx.setMinimumValues((short) 1);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);         
+      
+      // Catégories facultatives
+      //
+      cx = toolkit.createBaseCategory(APPLI_SOURCE_REF, true);
+      cx.setMinimumValues((short) 0);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);
+
+      
+      cx = toolkit.createBaseCategory(DATE_REF, true);
+      cx.setMinimumValues((short) 0);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);
+   
+      cx = toolkit.createBaseCategory(DECIMAL_REF, true);
+      cx.setMinimumValues((short) 0);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);
+      
+      cx = toolkit.createBaseCategory(INTEGER_REF, true);
+      cx.setMinimumValues((short) 0);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);
+      
+      cx = toolkit.createBaseCategory(BOOLEAN_REF, true);
+      cx.setMinimumValues((short) 0);
+      cx.setMaximumValues((short) 1);
+      categories.add(cx);      
+      
+      return categories;
+
+   }
+
+   private static List<BaseCategory> createNcotiCategories() {
       List<BaseCategory> categories = new ArrayList<BaseCategory>();
 
       StorageAdministrationService storageAdministrationService = ServiceProvider
             .getStorageAdministrationService();
 
       Category TYPE_DOC_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.TYPE_DOC.toString(), CategoryDataType.STRING);
+            NcotiCategories.TYPE_DOC.toString(), CategoryDataType.STRING);
       Category TYPE_DOC_LIBELLE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.TYPE_DOC_LIBELLE.toString(), CategoryDataType.STRING);
+            NcotiCategories.TYPE_DOC_LIBELLE.toString(), CategoryDataType.STRING);
       Category NUM_CPT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_CPT.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_CPT.toString(), CategoryDataType.STRING);
       Category SIRET_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.SIRET.toString(), CategoryDataType.STRING);
+            NcotiCategories.SIRET.toString(), CategoryDataType.STRING);
       Category NNI_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NNI.toString(), CategoryDataType.STRING);
+            NcotiCategories.NNI.toString(), CategoryDataType.STRING);
       Category PERIODE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.PERIODE.toString(), CategoryDataType.STRING);
+            NcotiCategories.PERIODE.toString(), CategoryDataType.STRING);
       Category CODE_ORGA_CPT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_ORGA_CPT.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_ORGA_CPT.toString(), CategoryDataType.STRING);
       Category CODE_UR_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_UR.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_UR.toString(), CategoryDataType.STRING);
       Category NUM_PERS_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_PERS.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_PERS.toString(), CategoryDataType.STRING);
       Category NUM_AFFAIRE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_AFFAIRE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_AFFAIRE.toString(), CategoryDataType.STRING);
       Category DENOM_CPT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DENOM_CPT.toString(), CategoryDataType.STRING);
+            NcotiCategories.DENOM_CPT.toString(), CategoryDataType.STRING);
       Category NUM_PIECE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_PIECE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_PIECE.toString(), CategoryDataType.STRING);
       Category APPLI_SOURCE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.APPLI_SOURCE.toString(), CategoryDataType.STRING);
+            NcotiCategories.APPLI_SOURCE.toString(), CategoryDataType.STRING);
       Category NUM_LOT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_LOT.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_LOT.toString(), CategoryDataType.STRING);
       Category CODE_COMMUNE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_COMMUNE.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_COMMUNE.toString(), CategoryDataType.STRING);
       Category CATEGORIE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CATEGORIE.toString(), CategoryDataType.STRING);
+            NcotiCategories.CATEGORIE.toString(), CategoryDataType.STRING);
       Category NUM_GROUPE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_GROUPE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_GROUPE.toString(), CategoryDataType.STRING);
       Category DATE_ORIGINE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_ORIGINE.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_ORIGINE.toString(), CategoryDataType.STRING);
       Category DATE_TRAITEMENT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_TRAITEMENT.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_TRAITEMENT.toString(), CategoryDataType.STRING);
       Category DATE_EFFET_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_EFFET.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_EFFET.toString(), CategoryDataType.STRING);
       Category JOURNEE_COMPTABLE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.JOURNEE_COMPTABLE.toString(), CategoryDataType.STRING);
+            NcotiCategories.JOURNEE_COMPTABLE.toString(), CategoryDataType.STRING);
       Category NUM_STRUCT_CTX_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_STRUCT_CTX.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_STRUCT_CTX.toString(), CategoryDataType.STRING);
       Category NUM_PARTENAIRE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_PARTENAIRE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_PARTENAIRE.toString(), CategoryDataType.STRING);
       Category NUM_INTER_CTX_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_INTER_CTX.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_INTER_CTX.toString(), CategoryDataType.STRING);
       Category NUM_ALLOCATAIRE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_ALLOCATAIRE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_ALLOCATAIRE.toString(), CategoryDataType.STRING);
       Category CODE_USER_INDEX_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_USER_INDEX.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_USER_INDEX.toString(), CategoryDataType.STRING);
       Category CODE_USER_STOCK_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_USER_STOCK.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_USER_STOCK.toString(), CategoryDataType.STRING);
       Category NUM_DOSSIER_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_DOSSIER.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_DOSSIER.toString(), CategoryDataType.STRING);
       Category DATE_VERIF_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_VERIF.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_VERIF.toString(), CategoryDataType.STRING);
       Category AGENT_VERIF_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.AGENT_VERIF.toString(), CategoryDataType.STRING);
+            NcotiCategories.AGENT_VERIF.toString(), CategoryDataType.STRING);
       Category CODE_VERIF_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_VERIF.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_VERIF.toString(), CategoryDataType.STRING);
       Category DATE_CLASSEMENT_GED_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_CLASSEMENT_GED.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_CLASSEMENT_GED.toString(), CategoryDataType.STRING);
       Category NUM_CPT_INT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_CPT_INT.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_CPT_INT.toString(), CategoryDataType.STRING);
       Category NUM_CPT_ANCIEN_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_CPT_ANCIEN.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_CPT_ANCIEN.toString(), CategoryDataType.STRING);
       Category TYPE_DOC_ARCHIVAGE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.TYPE_DOC_ARCHIVAGE.toString(), CategoryDataType.STRING);
+            NcotiCategories.TYPE_DOC_ARCHIVAGE.toString(), CategoryDataType.STRING);
       Category NUM_ID_ARCHIVAGE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_ID_ARCHIVAGE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_ID_ARCHIVAGE.toString(), CategoryDataType.STRING);
       Category CERTIFICAT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CERTIFICAT.toString(), CategoryDataType.STRING);
+            NcotiCategories.CERTIFICAT.toString(), CategoryDataType.STRING);
       Category CODE_ORGA_MUTUALISE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_ORGA_MUTUALISE.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_ORGA_MUTUALISE.toString(), CategoryDataType.STRING);
       Category NOM_NAISS_SALARIE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NOM_NAISS_SALARIE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NOM_NAISS_SALARIE.toString(), CategoryDataType.STRING);
       Category NOM_MARITAL_SALARIE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NOM_MARITAL_SALARIE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NOM_MARITAL_SALARIE.toString(), CategoryDataType.STRING);
       Category PRENOM_SALARIE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.PRENOM_SALARIE.toString(), CategoryDataType.STRING);
+            NcotiCategories.PRENOM_SALARIE.toString(), CategoryDataType.STRING);
       Category CODE_INT_SALARIE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.CODE_INT_SALARIE.toString(), CategoryDataType.STRING);
+            NcotiCategories.CODE_INT_SALARIE.toString(), CategoryDataType.STRING);
       Category NATURE_EMPLOI_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NATURE_EMPLOI.toString(), CategoryDataType.STRING);
+            NcotiCategories.NATURE_EMPLOI.toString(), CategoryDataType.STRING);
       Category DATE_NAISS_SALARIE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_NAISS_SALARIE.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_NAISS_SALARIE.toString(), CategoryDataType.STRING);
       Category NUM_COMPOSTAGE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_COMPOSTAGE.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_COMPOSTAGE.toString(), CategoryDataType.STRING);
       Category DATE_VERSEMENT_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DATE_VERSEMENT.toString(), CategoryDataType.STRING);
+            NcotiCategories.DATE_VERSEMENT.toString(), CategoryDataType.STRING);
       Category NUM_VOLET_SOCIAL_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_VOLET_SOCIAL.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_VOLET_SOCIAL.toString(), CategoryDataType.STRING);
       Category RFP_FONCTION_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.RFP_FONCTION.toString(), CategoryDataType.STRING);
+            NcotiCategories.RFP_FONCTION.toString(), CategoryDataType.STRING);
       Category RFP_ACTIVITE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.RFP_ACTIVITE.toString(), CategoryDataType.STRING);
+            NcotiCategories.RFP_ACTIVITE.toString(), CategoryDataType.STRING);
       Category NOM_PERS_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NOM_PERS.toString(), CategoryDataType.STRING);
+            NcotiCategories.NOM_PERS.toString(), CategoryDataType.STRING);
       Category ID_COMPLEMENTAIRE_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.ID_COMPLEMENTAIRE.toString(), CategoryDataType.STRING);
+            NcotiCategories.ID_COMPLEMENTAIRE.toString(), CategoryDataType.STRING);
       Category NNI_EMPLOYEUR_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NNI_EMPLOYEUR.toString(), CategoryDataType.STRING);
+            NcotiCategories.NNI_EMPLOYEUR.toString(), CategoryDataType.STRING);
       Category NUM_RECOURS_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.NUM_RECOURS.toString(), CategoryDataType.STRING);
+            NcotiCategories.NUM_RECOURS.toString(), CategoryDataType.STRING);
 
       BaseCategory cx;
 

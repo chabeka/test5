@@ -27,6 +27,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.linkedin.util.concurrent.ThreadPerTaskExecutor;
 
+import fr.urssaf.image.tests.dfcetest.helpers.DocubaseHelper;
+
 /**
  * Teste l'extraction d'un document en contexte mono et multi thread.
  * 
@@ -59,7 +61,7 @@ public class ExtractionTest extends AbstractNcotiTest {
    public void monoSearchExtraction() throws Exception {
       final String appliSource = "test_multiExtraction" + System.nanoTime();
       Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
-      DocubaseHelper.storeDocWithRandomCategories(base, appliSource);
+      DocubaseHelper.storeOneDocWithRandomCategories(base, appliSource);
       
       BaseCategory cat = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
       String fname = cat.getFormattedName();
@@ -89,7 +91,7 @@ public class ExtractionTest extends AbstractNcotiTest {
    public void multiSearchExtraction() throws Exception {
       final String appliSource = "test_multiExtraction" + System.nanoTime();
       final Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
-      DocubaseHelper.storeDocWithRandomCategories(base, appliSource);
+      DocubaseHelper.storeOneDocWithRandomCategories(base, appliSource);
       
       List<Future<File>> futures = new ArrayList<Future<File>>();
       Set<String> files = new HashSet<String>();

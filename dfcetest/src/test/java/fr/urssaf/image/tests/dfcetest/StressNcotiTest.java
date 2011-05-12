@@ -30,6 +30,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import fr.urssaf.image.tests.dfcetest.helpers.DocubaseHelper;
+
 public class StressNcotiTest extends AbstractNcotiTest {
 
    private static final int NB_DOCS = 10;
@@ -357,7 +359,6 @@ public class StressNcotiTest extends AbstractNcotiTest {
    
    @Test
    public void getBaseMultiThread() {
-      
       Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
       System.out.println(base  + " " + Thread.currentThread().getName());
       
@@ -367,7 +368,22 @@ public class StressNcotiTest extends AbstractNcotiTest {
             Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
          };
       };
+      t.start();
+   }
+   
+   @Test
+   public void getBaseMultiThreadWithAuth() {
+      Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      System.out.println(base  + " " + Thread.currentThread().getName());
       
+      Thread t = new Thread() {
+         public void run() {
+            Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_HOST, AMF_PORT, DOMAIN_ID);
+            System.out.println(Thread.currentThread().getName());
+            Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+            Authentication.closeSession();
+         };
+      };
       t.start();
    }
    
