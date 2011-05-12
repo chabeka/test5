@@ -6,13 +6,13 @@ import fr.urssaf.image.sae.igc.service.impl.IgcConfigServiceImpl;
 import fr.urssaf.image.sae.igc.service.impl.IgcDownloadServiceImpl;
 
 /**
- * Factory de création d'objets pour l'utilisation du composant sae-igc
+ * Factory d'instaciation des services du module sae-igc
  * 
  * 
  */
-public final class IgcFactory {
+public final class IgcServiceFactory {
 
-   private IgcFactory() {
+   private IgcServiceFactory() {
 
    }
 

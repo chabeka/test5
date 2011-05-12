@@ -7,13 +7,13 @@ import org.junit.Test;
 import fr.urssaf.image.sae.igc.service.impl.IgcConfigServiceImpl;
 import fr.urssaf.image.sae.igc.service.impl.IgcDownloadServiceImpl;
 
-public class IgcFactoryTest {
+public class IgcServiceFactoryTest {
 
    @Test
    public void createIgcConfigService() {
 
       assertEquals("ne renvoie pas la bonne implémentation",
-            IgcConfigServiceImpl.class, IgcFactory.createIgcConfigService()
+            IgcConfigServiceImpl.class, IgcServiceFactory.createIgcConfigService()
                   .getClass());
    }
 
@@ -21,7 +21,7 @@ public class IgcFactoryTest {
    public void createIgcDownloadService() {
 
       assertEquals("ne renvoie pas la bonne implémentation",
-            IgcDownloadServiceImpl.class, IgcFactory.createIgcDownloadService()
+            IgcDownloadServiceImpl.class, IgcServiceFactory.createIgcDownloadService()
                   .getClass());
    }
 }
