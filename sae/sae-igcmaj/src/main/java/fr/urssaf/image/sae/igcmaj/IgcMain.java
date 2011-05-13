@@ -4,7 +4,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import fr.urssaf.image.sae.igc.IgcFactory;
+import fr.urssaf.image.sae.igc.IgcServiceFactory;
 import fr.urssaf.image.sae.igc.exception.IgcConfigException;
 import fr.urssaf.image.sae.igc.exception.IgcDownloadException;
 import fr.urssaf.image.sae.igc.modele.IgcConfig;
@@ -51,10 +51,10 @@ public final class IgcMain {
       String pathConfigFile = args[0];
 
       try {
-         IgcConfig igcConfig = IgcFactory.createIgcConfigService().loadConfig(
+         IgcConfig igcConfig = IgcServiceFactory.createIgcConfigService().loadConfig(
                pathConfigFile);
 
-         LOG.info(TextUtils.getMessage(MESSAGE, String.valueOf(IgcFactory
+         LOG.info(TextUtils.getMessage(MESSAGE, String.valueOf(IgcServiceFactory
                .createIgcDownloadService().telechargeCRLs(igcConfig))));
 
       } catch (IgcConfigException e) {
