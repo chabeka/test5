@@ -3,10 +3,7 @@
 
    <!-- completer le chemin des variables jndi -->
    
-   <Environment name="SAE_Repertoire_Certificats_ACRacine"
-      type="java.lang.String" value="" />
-
-   <Environment name="SAE_Repertoire_Certificats_CRL" type="java.lang.String"
+    <Environment name="SAE_Fichier_Configuration_IGC" type="java.lang.String"
       value="" />
 
 </Context>

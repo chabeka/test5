@@ -20,7 +20,6 @@ import javax.xml.transform.Transformer;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
@@ -56,7 +55,7 @@ public class TuGenererVi {
    
    
    @Test
-   @Ignore
+   //@Ignore
    public void vi_success()
       throws 
          KeyStoreException, 
@@ -96,7 +95,7 @@ public class TuGenererVi {
    
    
    @Test
-   @Ignore
+   //@Ignore
    public void vi_failure_accessDenied()
       throws 
          KeyStoreException, 

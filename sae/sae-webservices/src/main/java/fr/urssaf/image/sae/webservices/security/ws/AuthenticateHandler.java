@@ -19,8 +19,10 @@ import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.webservices.component.SpringConfiguration;
 import fr.urssaf.image.sae.webservices.security.SecurityService;
 import fr.urssaf.image.sae.webservices.security.exception.SaeAccessDeniedAxisFault;
+import fr.urssaf.image.sae.webservices.security.exception.SaeCertificateAxisFault;
 import fr.urssaf.image.sae.webservices.security.exception.VIEmptyAxisFault;
 import fr.urssaf.image.sae.webservices.security.exception.VIVerificationAxisFault;
+import fr.urssaf.image.sae.webservices.security.igc.exception.LoadCertifsAndCrlException;
 
 /**
  * Classe aspect d'authentification des web services<br>
@@ -170,6 +172,12 @@ public class AuthenticateHandler {
                   + "Erreur lors de la mise en place de l'authentification : "
                   + e.toString());
             throw new VIVerificationAxisFault(e);
+         } catch (LoadCertifsAndCrlException e) {
+            LOG.error(prefixeLog
+                  + "Erreur lors de la mise en place de l'authentification : "
+                  + e.toString());
+
+            throw new SaeCertificateAxisFault(e);
          }
 
       }

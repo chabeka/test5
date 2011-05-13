@@ -24,18 +24,19 @@ public final class ResourceUtils {
     * {@link FileSystemResource}<br>
     * <ul>
     * <li>si la resource est un répertoire alors on renvoie l'ensemble des
-    * fichiers contenus dans ce répertoire</li>
+    * fichiers contenus dans ce répertoire et ses sous répertoires</li>
     * <li>sinon on renvoie le fichier lui même</li>
     * </ul>
     * 
     * @param resource
     *           ressource
     * @param extensions
-    *           extensions de filtrage
+    *           extensions de filtrage, liste d'extension {ex : .java,.xml} si
+    *           vide alors tous les fichiers sont renvoyés, si null aucun
     * @return liste de ressources
     */
    public static List<Resource> loadResources(FileSystemResource resource,
-         String... extensions) {
+         String[] extensions) {
 
       List<Resource> resources = new ArrayList<Resource>();
 

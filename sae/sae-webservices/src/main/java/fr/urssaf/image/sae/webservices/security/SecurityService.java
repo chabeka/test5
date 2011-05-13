@@ -5,8 +5,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.w3c.dom.Element;
 
@@ -15,16 +15,19 @@ import fr.urssaf.image.sae.vi.modele.VIContenuExtrait;
 import fr.urssaf.image.sae.vi.modele.VIPagm;
 import fr.urssaf.image.sae.vi.modele.VISignVerifParams;
 import fr.urssaf.image.sae.vi.service.WebServiceVIService;
+import fr.urssaf.image.sae.webservices.security.igc.IgcService;
+import fr.urssaf.image.sae.webservices.security.igc.exception.LoadCertifsAndCrlException;
+import fr.urssaf.image.sae.webservices.security.igc.modele.CertifsAndCrl;
 import fr.urssaf.image.sae.webservices.security.spring.AuthenticationContext;
 import fr.urssaf.image.sae.webservices.security.spring.AuthenticationFactory;
 import fr.urssaf.image.sae.webservices.security.spring.AuthenticationToken;
-import fr.urssaf.image.sae.webservices.util.ResourceUtils;
 
 /**
  * Service de sécurisation du service web par authentification
  * 
  * 
  */
+@Service
 public class SecurityService {
 
    private static final Logger LOG = Logger.getLogger(SecurityService.class);
@@ -35,20 +38,25 @@ public class SecurityService {
 
    private final String idAppliClient;
 
-   private final VISignVerifParams signVerifParams;
+   private final IgcService igcService;
+
+   private final List<String> patterns;
+
+   // private final VISignVerifParams signVerifParams;
 
    /**
     * Instanciation de {@link WebServiceVIService}
     * 
-    * @param acResource
-    *           répertoire des AC racines
-    * @param crlResource
-    *           répertoire des CRLs
+    * @param igcService
+    *           instance IgcService
     */
-   public SecurityService(FileSystemResource acResource,
-         FileSystemResource crlResource) {
+   @Autowired
+   public SecurityService(IgcService igcService) {
+
+      Assert.notNull(igcService);
 
       this.service = new WebServiceVIService();
+      this.igcService = igcService;
 
       try {
          this.serviceVise = new URI("http://sae.urssaf.fr");
@@ -57,38 +65,15 @@ public class SecurityService {
       }
 
       this.idAppliClient = "urn:ISSUER_NON_RENSEIGNE";
-
-      signVerifParams = new VISignVerifParams();
-
-      // ----------------------------
-      // Chargement des AC
-      // ----------------------------
-      loadACResources(acResource);
-
-      // ----------------------------
-      // Chargement des CRL
-      // ----------------------------
-      loadCRLResources(crlResource);
-   }
-
-   private void loadACResources(FileSystemResource acResource) {
-
-      List<Resource> listeAC = ResourceUtils.loadResources(acResource, "crt");
-      SecurityUtils.signVerifParamsSetCertifsAC(signVerifParams, listeAC);
-
-   }
-
-   private void loadCRLResources(FileSystemResource crlResource) {
-
-      List<Resource> listeCRL = ResourceUtils.loadResources(crlResource, "crl");
-      SecurityUtils.signVerifParamsSetCRL(signVerifParams, listeCRL);
+      this.patterns = SecurityUtils.loadIssuerPatterns();
 
    }
 
    /**
     * Création d'un contexte de sécurité par partir du Vecteur d'indentifcation<br>
     * <br>
-    * Paramètres du {@link Authentication} de ttype Anonymous
+    * Paramètres du {@link org.springframework.security.core.Authentication} de
+    * type Anonymous
     * <ul>
     * <li>Credentials : empty</li>
     * <li>Principal : {@link VIContenuExtrait#getIdUtilisateur()}</li>
@@ -99,9 +84,11 @@ public class SecurityService {
     *           Vecteur d'identification
     * @throws VIVerificationException
     *            exception levée par le VI
+    * @throws LoadCertifsAndCrlException
+    *            exception levée lors du chargement des crls
     */
    public final void authentification(Element identification)
-         throws VIVerificationException {
+         throws VIVerificationException, LoadCertifsAndCrlException {
 
       Assert
             .notNull(
@@ -109,6 +96,13 @@ public class SecurityService {
                   "Le paramètre 'identification' n'est pas renseigné alors qu'il est obligatoire ");
 
       VIContenuExtrait viExtrait;
+
+      VISignVerifParams signVerifParams = new VISignVerifParams();
+      signVerifParams.setPatternsIssuer(this.patterns);
+
+      CertifsAndCrl certifsAndCrl = this.igcService.getInstanceCertifsAndCrl();
+      signVerifParams.setCertifsACRacine(certifsAndCrl.getCertsAcRacine());
+      signVerifParams.setCrls(certifsAndCrl.getCrl());
 
       viExtrait = this.service.verifierVIdeServiceWeb(identification,
             serviceVise, idAppliClient, signVerifParams);
