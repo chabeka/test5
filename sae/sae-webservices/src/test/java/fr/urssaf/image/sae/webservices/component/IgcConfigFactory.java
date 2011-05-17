@@ -1,15 +1,16 @@
 package fr.urssaf.image.sae.webservices.component;
 
-import java.io.IOException;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
 
-import org.springframework.core.io.FileSystemResource;
-
+import fr.urssaf.image.sae.igc.exception.IgcDownloadException;
 import fr.urssaf.image.sae.igc.modele.IgcConfig;
-import fr.urssaf.image.sae.webservices.security.igc.IgcFactory;
-import fr.urssaf.image.sae.webservices.security.igc.util.IgcUtils;
+import fr.urssaf.image.sae.igc.service.IgcDownloadService;
+import fr.urssaf.image.sae.igc.service.impl.IgcDownloadServiceImpl;
 
 /**
- * Classe d'instance pour IGC
+ * Classe d'instance de {@link IgcConfig}
  * 
  * 
  */
@@ -21,54 +22,62 @@ public final class IgcConfigFactory {
 
    }
 
-   /**
-    * création d'un fichier igcConfig.xml dépose dans le répertoire temporaire
-    * 
-    * @param configFileName
-    *           nom du fichier de configuration
-    */
-   public static void createIgcConfigXML(String configFileName) {
+   public static final File DIRECTORY;
 
-      createIgcConfigXML(configFileName,
-            new String[] { DOWNLOAD_URL + "*.crl" });
+   public static final File CRL;
 
-   }
+   public static final File AC_RACINE;
 
-   /**
-    * création d'un fichier igcConfig.xml dépose dans le répertoire temporaire
-    * 
-    * @param configFileName
-    *           nom du fichier de configuration
-    * @param urls
-    *           urls de téléchargement
-    */
-   public static void createIgcConfigXML(String configFileName, String... urls) {
+   public static final URL CRL_DOWNLOAD;
 
-      // création du fichier igcConfig.xml dépose dans le répertoire temporaire
-      try {
-         IgcUtils.loadConfig(TempDirectoryFactory.DIRECTORY + "/"
-               + configFileName, TempDirectoryFactory.AC_RACINE
-               .getCanonicalPath(),
-               TempDirectoryFactory.CRL.getCanonicalPath(), urls);
-      } catch (IOException e) {
-         throw new IllegalArgumentException(e);
-      }
+   public static final URL CERTIFICAT;
+
+   static {
+
+      DIRECTORY = IgcConfigUtils.createTempRepertory("sae_webservices");
+
+      CRL = new File(DIRECTORY + "/CRL/");
+      AC_RACINE = new File(DIRECTORY + "/ACRacine/");
+
+      IgcConfigUtils.createRepertory(DIRECTORY);
+      IgcConfigUtils.createRepertory(CRL);
+      IgcConfigUtils.createRepertory(AC_RACINE);
+
+      CRL_DOWNLOAD = IgcConfigUtils
+            .createURL("http://cer69idxpkival1.cer69.recouv/*.crl");
+
+      CERTIFICAT = IgcConfigUtils
+            .createURL("http://cer69idxpkival1.cer69.recouv/pseudo_IGCA.crt");
 
    }
 
    /**
-    * création d'un objet igcConfig
     * 
-    * @param igcConfig
-    *           nom du fichier igcConfig
-    * @return instance de IgcConfig
+    * 
+    * 
+    * @return instance de {@link IgcConfig}
+    * @throws IgcDownloadException
+    *            exception lors du téléchargement des crl
     */
-   public static IgcConfig createIgcConfig(String igcConfig) {
+   public static IgcConfig createIgcConfig() throws IgcDownloadException {
 
-      createIgcConfigXML(igcConfig);
+      IgcConfig igcConfig = new IgcConfig();
 
-      FileSystemResource igcConfigResource = new FileSystemResource(
-            TempDirectoryFactory.DIRECTORY + "/" + igcConfig);
-      return IgcFactory.createIgcConfig(igcConfigResource);
+      igcConfig.setRepertoireACRacines(AC_RACINE.getAbsolutePath());
+      igcConfig.setRepertoireCRLs(CRL.getAbsolutePath());
+
+      igcConfig.setUrlsTelechargementCRLs(new ArrayList<URL>());
+      igcConfig.getUrlsTelechargementCRLs().add(CRL_DOWNLOAD);
+
+      // téléchargement d'une AC racine
+      IgcConfigUtils.download(CERTIFICAT, new File(AC_RACINE.getAbsolutePath()
+            + "/" + CERTIFICAT.getFile()));
+
+      // téléchargement des CRL
+      IgcDownloadService downaloadService = new IgcDownloadServiceImpl();
+      downaloadService.telechargeCRLs(igcConfig);
+
+      return igcConfig;
+
    }
 }

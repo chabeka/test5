@@ -50,13 +50,14 @@ public class AuthenticateHandler {
     * instanciation de {@link SecurityService}
     */
    public AuthenticateHandler() {
-
+      
       this(SpringConfiguration.getService(SecurityService.class));
+      
 
    }
 
    protected AuthenticateHandler(SecurityService securityService) {
-
+      
       this.securityService = securityService;
 
    }
@@ -161,8 +162,8 @@ public class AuthenticateHandler {
          } catch (Exception e) {
             LOG.error(prefixeLog
                   + "Erreur lors de la mise en place de l'authentification : "
-                  + e.toString());
-            throw new IllegalStateException();
+                  + e.toString(),e);
+            throw new IllegalStateException(e);
          }
 
          try {
@@ -170,12 +171,12 @@ public class AuthenticateHandler {
          } catch (VIVerificationException e) {
             LOG.error(prefixeLog
                   + "Erreur lors de la mise en place de l'authentification : "
-                  + e.toString());
+                  + e.toString(),e);
             throw new VIVerificationAxisFault(e);
          } catch (LoadCertifsAndCrlException e) {
             LOG.error(prefixeLog
                   + "Erreur lors de la mise en place de l'authentification : "
-                  + e.toString());
+                  + e.toString(),e);
 
             throw new SaeCertificateAxisFault(e);
          }

@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -29,12 +30,14 @@ import fr.urssaf.image.sae.webservices.util.ResourceUtils;
  * Service qui charge et renvoie les certificats des AC racines de confiance et
  * les CRL<br>
  * les AC racines ne sont chargés qu'une seule fois tandis que les CRL le sont
- * une fois par jour
+ * une fois par jour<br>
+ * <br>
+ * 
  * 
  * 
  */
 @Service
-public class IgcService {
+public class IgcService implements InitializingBean {
 
    private static final Logger LOG = Logger.getLogger(IgcService.class);
 
@@ -46,11 +49,25 @@ public class IgcService {
 
    private static final int VALIDATE_TIME = 24;
 
-   private static final String CRL_ERROR = "Une erreur s'est produite lors du chargement des CRL";
+   public static final String CRL_ERROR = "Une erreur s'est produite lors du chargement des CRL";
 
-   private static final String AC_RACINE_ERROR = "Une erreur s'est produite lors du chargement des certificats des AC racine de confiance";
+   public static final String AC_RACINE_ERROR = "Une erreur s'est produite lors du chargement des certificats des AC racine de confiance";
 
    public static final String AC_RACINE_EMPTY = "Aucun certificat d'AC racine de confiance trouvé dans le répertoire ${0}";
+
+   /**
+    * Instanciation de {@link IgcService}
+    * 
+    * @param igcConfig
+    *           configuration de l'IGC
+    */
+   @Autowired
+   public IgcService(IgcConfig igcConfig) {
+
+      this.igcConfig = igcConfig;
+      this.certsAcRacine = new ArrayList<X509Certificate>();
+
+   }
 
    /**
     * 
@@ -67,20 +84,15 @@ public class IgcService {
     * est levé où ${0} est le nom du répertoire des AC racine
     * 
     * 
-    * @param igcConfig
-    *           configuration de l'IGC
     */
-   @Autowired
-   public IgcService(IgcConfig igcConfig) {
-
-      this.igcConfig = igcConfig;
+   @Override
+   public final void afterPropertiesSet() {
 
       FileSystemResource repACRacine = new FileSystemResource(igcConfig
             .getRepertoireACRacines());
 
       List<Resource> resources = ResourceUtils.loadResources(repACRacine,
             new String[] { "crt" });
-      certsAcRacine = new ArrayList<X509Certificate>();
 
       for (Resource crt : resources) {
 
@@ -112,6 +124,7 @@ public class IgcService {
          throw new IllegalArgumentException(TextUtils.getMessage(
                AC_RACINE_EMPTY, repACRacine.getPath()));
       }
+
    }
 
    /**
@@ -143,21 +156,6 @@ public class IgcService {
       return certifsAndCrl;
    }
 
-   /**
-    * l'instance de {@link CertifsAndCrl} est mise à null ce quiveut dire qu'au
-    * prochain appel de {@link #getInstanceCertifsAndCrl()} une nouvelle
-    * instance de {@link CertifsAndCrl} sera mise à disposition
-    * 
-    */
-   public final void initCertifsAndCrl() {
-
-      synchronized (IgcService.class) {
-
-         this.setCertifsAndCrl(null);
-
-      }
-   }
-
    private void createCertifsAndCrl() throws LoadCertifsAndCrlException {
 
       DateTime systemDate = new DateTime();
@@ -167,14 +165,15 @@ public class IgcService {
             || DateTimeUtils.diffHours(certifsAndCrl.getDateMajCrl(),
                   systemDate) > VALIDATE_TIME) {
 
+         List<X509CRL> crls = loadCRLResources(igcConfig.getRepertoireCRLs());
+
          CertifsAndCrl instance = new CertifsAndCrl();
 
          instance.setDateMajCrl(systemDate);
          instance.setCertsAcRacine(certsAcRacine);
+         instance.setCrl(crls);
 
          this.setCertifsAndCrl(instance);
-
-         this.loadCRLResources();
 
       }
    }
@@ -184,10 +183,10 @@ public class IgcService {
       this.certifsAndCrl = certifsAndCrl;
    }
 
-   private void loadCRLResources() throws LoadCertifsAndCrlException {
+   private static List<X509CRL> loadCRLResources(String repertoireCRLs)
+         throws LoadCertifsAndCrlException {
 
-      FileSystemResource repCRLs = new FileSystemResource(igcConfig
-            .getRepertoireCRLs());
+      FileSystemResource repCRLs = new FileSystemResource(repertoireCRLs);
       List<Resource> resources = ResourceUtils.loadResources(repCRLs, null);
       List<X509CRL> crls = new ArrayList<X509CRL>();
 
@@ -200,7 +199,7 @@ public class IgcService {
             try {
                crls.add(SecurityUtils.loadCRL(input));
             } catch (GeneralSecurityException e) {
-               LOG.error("error loading CRL: " + crl.getFilename());
+               LOG.error("error loading CRL: " + crl.getURI(), e);
                throw new LoadCertifsAndCrlException(CRL_ERROR, e);
             } finally {
 
@@ -208,13 +207,14 @@ public class IgcService {
             }
          } catch (IOException e) {
 
-            LOG.error("error loading CRL: " + crl.getFilename());
+            LOG.error("error loading CRL: " + crl.getFilename(), e);
             throw new LoadCertifsAndCrlException(CRL_ERROR, e);
          }
 
       }
 
-      certifsAndCrl.setCrl(crls);
+      return crls;
 
    }
+
 }

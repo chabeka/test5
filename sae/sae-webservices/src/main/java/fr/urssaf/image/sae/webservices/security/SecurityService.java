@@ -87,7 +87,7 @@ public class SecurityService {
     * @throws LoadCertifsAndCrlException
     *            exception levée lors du chargement des crls
     */
-   public final void authentification(Element identification)
+   public void authentification(Element identification)
          throws VIVerificationException, LoadCertifsAndCrlException {
 
       Assert

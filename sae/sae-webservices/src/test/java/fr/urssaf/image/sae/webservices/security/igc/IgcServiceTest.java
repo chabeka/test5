@@ -4,7 +4,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 
@@ -13,10 +15,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.urssaf.image.sae.igc.exception.IgcDownloadException;
 import fr.urssaf.image.sae.igc.modele.IgcConfig;
-import fr.urssaf.image.sae.webservices.component.IgcConfigFactory;
-import fr.urssaf.image.sae.webservices.component.SecurityFactory;
-import fr.urssaf.image.sae.webservices.component.TempDirectoryFactory;
+import fr.urssaf.image.sae.webservices.component.IgcConfigUtils;
 import fr.urssaf.image.sae.webservices.security.igc.exception.LoadCertifsAndCrlException;
 
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
@@ -24,54 +25,82 @@ public class IgcServiceTest {
 
    private static final String FAIL_MSG = "le test doit échouer";
 
-   private static final String CERTIFICAT = "pseudo_IGCA.crt";
+   private static final URL CERTIFICAT;
 
    private static final Logger LOG = Logger.getLogger(IgcServiceTest.class);
+
+   private static final File CRL;
+
+   private static final File AC_RACINE;
+
+   static {
+
+      File repertory = IgcConfigUtils
+            .createTempRepertory("sae_webservices_igcservice");
+
+      CRL = new File(repertory.getAbsolutePath() + "/CRL/");
+      AC_RACINE = new File(repertory.getAbsolutePath() + "/ACRacine/");
+
+      IgcConfigUtils.createRepertory(CRL);
+      IgcConfigUtils.createRepertory(AC_RACINE);
+
+      CERTIFICAT = IgcConfigUtils
+            .createURL("http://cer69idxpkival1.cer69.recouv/pseudo_appli.crt");
+
+   }
+
+   private IgcConfig igcConfig;
 
    @Before
    public void before() {
 
-      // création des répertoires pour le dépot des CRL et du
-      // fichier de configuration
+      igcConfig = new IgcConfig();
 
-      TempDirectoryFactory.createDirectory();
-      TempDirectoryFactory.createACDirectory();
-      TempDirectoryFactory.createCRLDirectory();
+      igcConfig.setRepertoireACRacines(AC_RACINE.getAbsolutePath());
+      igcConfig.setRepertoireCRLs(CRL.getAbsolutePath());
 
+   }
+
+   private IgcService createIgcService() {
+
+      IgcService igcService = new IgcService(igcConfig);
+      igcService.afterPropertiesSet();
+
+      return igcService;
    }
 
    @After
    public void after() {
 
-      TempDirectoryFactory.cleanDirectory();
+      IgcConfigUtils.cleanDirectory(AC_RACINE);
+      IgcConfigUtils.cleanDirectory(CRL);
    }
 
    @Test
-   public void IgcService_success() {
+   public void IgcService_success() throws IgcDownloadException {
 
-      // téléchargement d'un certificat dans le répertoires temporaire
-      SecurityFactory.downloadCertificat(CERTIFICAT);
+      // téléchargement d'une AC racine
+      IgcConfigUtils.download(CERTIFICAT, new File(AC_RACINE.getAbsolutePath()
+            + "/" + CERTIFICAT.getFile()));
 
-      IgcConfig igcConfig = IgcConfigFactory
-            .createIgcConfig("igcConfig_success.xml");
-
-      assertNotNull("exception dans le constructeur", new IgcService(igcConfig));
+      assertNotNull("exception dans le constructeur", createIgcService());
 
    }
 
    @Test
-   public void IgcService_failure_certificateException() {
+   public void IgcService_failure_certificateException()
+         throws IgcDownloadException {
 
-      SecurityFactory.downloadCertificat("Pseudo_IGC_A.pem", CERTIFICAT);
+      URL pem = IgcConfigUtils
+            .createURL("http://cer69idxpkival1.cer69.recouv/Pseudo_ACOSS.pem");
 
-      IgcConfig igcConfig = IgcConfigFactory
-            .createIgcConfig("igcConfig_failure_certificateException.xml");
+      IgcConfigUtils.download(pem, new File(AC_RACINE.getAbsolutePath() + "/"
+            + "certificat.crt"));
 
       try {
-         new IgcService(igcConfig);
+         createIgcService();
          fail(FAIL_MSG);
       } catch (IllegalArgumentException e) {
-
          LOG.debug(e.getCause().getMessage());
          assertTrue(
                "Exception non attendue de type " + e.getCause().getClass(),
@@ -81,13 +110,11 @@ public class IgcServiceTest {
    }
 
    @Test
-   public void IgcService_failure_ac_racine_empty() throws IOException {
-
-      IgcConfig igcConfig = IgcConfigFactory
-            .createIgcConfig("igcConfig_failure_ac_racine_empty.xml");
+   public void IgcService_failure_ac_racine_empty() throws IOException,
+         IgcDownloadException {
 
       try {
-         new IgcService(igcConfig);
+         createIgcService();
          fail(FAIL_MSG);
       } catch (IllegalArgumentException e) {
 
@@ -103,35 +130,36 @@ public class IgcServiceTest {
 
    @Test
    public void getInstanceCertifsAndCrl_success()
-         throws LoadCertifsAndCrlException {
+         throws LoadCertifsAndCrlException, IgcDownloadException {
 
-      // téléchargement d'un certificat dans le répertoires temporaire
-      SecurityFactory.downloadCertificat(CERTIFICAT);
+      // téléchargement d'une AC racine
+      IgcConfigUtils.download(CERTIFICAT, new File(AC_RACINE.getAbsolutePath()
+            + "/" + CERTIFICAT.getFile()));
 
-      IgcConfig igcConfig = IgcConfigFactory
-            .createIgcConfig("igcConfig_success.xml");
+      // téléchargement d'une CRL
+      URL crl = IgcConfigUtils
+            .createURL("http://cer69idxpkival1.cer69.recouv/Pseudo_ACOSS.crl");
+      IgcConfigUtils.download(crl, new File(CRL.getAbsolutePath() + "/"
+            + crl.getFile()));
 
-      SecurityFactory.downloadCRLs(igcConfig);
-
-      IgcService igcService = new IgcService(igcConfig);
-
+      IgcService igcService = createIgcService();
       assertNotNull("une instance de CertifsAndCrl est attendue", igcService
             .getInstanceCertifsAndCrl());
    }
 
    @Test
-   public void getInstanceCertifsAndCrl_failure() {
+   public void getInstanceCertifsAndCrl_failure() throws IgcDownloadException {
 
-      // téléchargement d'un certificat dans le répertoires temporaire
-      SecurityFactory.downloadCertificat(CERTIFICAT);
+      // téléchargement d'une AC racine
+      IgcConfigUtils.download(CERTIFICAT, new File(AC_RACINE.getAbsolutePath()
+            + "/" + CERTIFICAT.getFile()));
 
-      IgcConfig igcConfig = IgcConfigFactory
-            .createIgcConfig("igcConfig_failure.xml");
+      // téléchargement d'une CRL
+      URL crl = CERTIFICAT;
+      IgcConfigUtils.download(crl, new File(CRL.getAbsolutePath() + "/"
+            + crl.getFile()));
 
-      SecurityFactory.downloadCRLs(igcConfig);
-      SecurityFactory.downloadCRL(CERTIFICAT);
-
-      IgcService igcService = new IgcService(igcConfig);
+      IgcService igcService = createIgcService();
 
       try {
          igcService.getInstanceCertifsAndCrl();
