@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.commons.springsecurity.service.modele.Modele;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml",
+@ContextConfiguration(locations = { "/applicationContext-service.xml",
       "/applicationContext-security.xml" })
 public class SimpleServiceImplTest {
 

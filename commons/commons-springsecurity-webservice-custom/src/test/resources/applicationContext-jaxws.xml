@@ -11,7 +11,7 @@
 
    <jaxws:client id="simpleWebService"
       serviceClass="fr.urssaf.image.commons.springsecurity.webservice.custom.modele.SimpleWebService"
-      address="http://localhost:8080/commons-springsecurity-webservice/service/SimpleService">
+      address="http://localhost:8082/commons-springsecurity-webservice/service/SimpleService">
 
       <jaxws:outInterceptors>
          <bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
