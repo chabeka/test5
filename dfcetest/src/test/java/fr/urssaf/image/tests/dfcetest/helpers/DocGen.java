@@ -21,7 +21,7 @@ public class DocGen {
    public Map<String, Object> metadata;
    private String title;
    private Base base;
-   
+
    {
       storedDocuments = new ArrayList<Document>();
    }
@@ -53,6 +53,11 @@ public class DocGen {
       metadata.put(category.toString(), value);
    }
    
+   /**
+    * Insère un document dans Docubase avec des metadonnées aléatoires sauf
+    * celles spécifiées via {@link DocGen#put(Categories, Object)}
+    * @return
+    */
    public Document store() {
       Map<String, Object> randomMetadata = DocubaseHelper.getCategoriesRandomValues(title);
       randomMetadata.putAll(metadata);
@@ -60,4 +65,19 @@ public class DocGen {
       storedDocuments.add(doc);
       return doc;      
    }
+   
+   /**
+    * Insère plusieurs documents. Les documents ont le même titre. 
+    * @param nbDocs Nombre de documents à insérer
+    * @return Liste des documents insérés dans Docubase
+    */
+   public List<Document> storeMany(int nbDocs) {
+      List<Document> docs = new ArrayList<Document>(); 
+      
+      for (int i = 0; i < nbDocs; i++) {
+         Document doc = store();
+         docs.add(doc);
+      }            
+      return docs;
+   }   
 }

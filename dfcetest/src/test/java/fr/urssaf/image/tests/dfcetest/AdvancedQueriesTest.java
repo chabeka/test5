@@ -41,7 +41,11 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    
    @Before
    public void createContext() {
+      docs = new ArrayList<Document>();
+      
       base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      docGen = new DocGen(base);      
+      
       appliSourceCategory = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
       appliSourceFName = appliSourceCategory.getFormattedName();
       
@@ -51,24 +55,12 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       boolCategory = base.getBaseCategory(Categories.BOOLEAN.toString());
       boolFName = boolCategory.getFormattedName(); 
    }
-
-   @Before
-   public void setup() {
-      docs = new ArrayList<Document>();
-      docGen = new DocGen(base);
-   }
    
    @After
    public void teardown() {
       for (Document doc : DocGen.storedDocuments) {
          ServiceProvider.getStoreService().deleteDocument(doc);
       }
-   }
-   
-   public Document retainDoc(Map<String, Object>  metadata) {
-      Document doc = DocubaseHelper.storeOneDoc(base, metadata);
-      docs.add(doc);
-      return doc;
    }
    
    /**
@@ -94,14 +86,16 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
 
       // SUT
       //lucene = String.format("%s:%s AND %s:%s", intergerFName, 10, appliSourceFName, titleA);
+      // TODO : enlever la clause OR lorsque Docubase aura corrigé CRTL-45
       lucene = String.format("%s:%s AND %s:%s OR 1:1", intergerFName, 10, appliSourceFName, titleA);
-      System.out.println(lucene);
       result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
       assertDocumentEquals(docA, result.getDocuments().get(0));      
    }
    
-
+   /**
+    * Requête de type (c1=x OR c2=y) AND (c3 = z)
+    */
    @Test
    public void AQ2() {
       // Document A
@@ -143,6 +137,9 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    }
    
 
+   /**
+    * Requête de type (c1=x OR c2=y) AND (c3 = z)
+    */
    @Test @Ignore("TODO")
    public void AQ3() {
       
@@ -154,7 +151,8 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     */
    @Test
    public void AQ4() {
-      Document injectedDoc = docGen.setRandomTitle("AQ6").store();      
+      String firstPartTitle = DocubaseHelper.randomAlphaNum(10); 
+      Document injectedDoc = docGen.setRandomTitle(firstPartTitle).store();      
       log.debug("AQ4, Doc inséré -> " + injectedDoc.getUUID().toString());
       
       Document docbyUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(injectedDoc.getUUID());
@@ -166,7 +164,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       assertDocumentEquals(injectedDoc, result.getDocuments().get(0));
       
       // SUT
-      lucene = appliSourceFName + ":AQ6*";
+      lucene = String.format("%s:%s*", appliSourceFName, firstPartTitle);
       result = ServiceProvider.getSearchService().search(lucene, 100, base);
       assertEquals(1, result.getDocuments().size());
       
@@ -182,15 +180,15 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     */
    @Test
    public void AQ5() {
-      String appliSourceA = "AQ5A" + System.nanoTime();
-      int nbDocsA = 100;      
-      List<Document> docsA = DocubaseHelper.insertManyDocs(nbDocsA, base, appliSourceA); 
-      
-      String appliSourceB = "AQ5B" + System.nanoTime();
-      int nbDocsB = 100;      
-      List<Document> docsB = DocubaseHelper.insertManyDocs(nbDocsB, base, appliSourceB); 
-      
-      String lucene = String.format("%s:%s AND %s:%s", 
+      int nbDocsA = 17;
+      String appliSourceA = docGen.setRandomTitle("AQ5A").getTitle();
+      docGen.storeMany(nbDocsA);
+
+      int nbDocsB = 13;
+      String appliSourceB = docGen.setRandomTitle("AQ5B").getTitle();
+      docGen.storeMany(nbDocsB);
+      // TODO : enlever la clause OR lorsque Docubase aura corrigé CRTL-45      
+      String lucene = String.format("%s:%s AND %s:%s OR 1:1", 
             appliSourceFName, appliSourceA, appliSourceFName, appliSourceB);
       // On fixe une limite de recherche plus grande pour voir si on ne ramène pas plus de
       // résultats que prévu
