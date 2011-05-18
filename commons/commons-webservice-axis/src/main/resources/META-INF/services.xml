@@ -18,6 +18,10 @@
       </operation>
    </service>
    <service name="Axis2UserGuideService">
+      <transports>
+         <transport>jms</transport>
+         <transport>http</transport>
+      </transports>
       <messageReceivers>
          <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
             class="fr.urssaf.image.commons.webservice.axis.skeleton.Axis2UserGuideServiceMessageReceiverInOut" />
@@ -29,7 +33,14 @@
       <parameter name="SpringBeanName" locked="false">axis2UserGuideServiceSkeleton
       </parameter>
       <parameter name="useOriginalwsdl">true</parameter>
-      <parameter name="modifyUserWSDLPortAddress">false</parameter>
+      <parameter name="modifyUserWSDLPortAddress">true</parameter>
+      <parameter name="transport.jms.ConnectionFactory"
+         locked="true">myTopicConnectionFactory</parameter>
+      <parameter name="transport.jms.ConnectionFactoryType">topic</parameter>
+      <parameter name="transport.jms.DestinationType">topic</parameter>
+      <parameter name="transport.jms.Destination" locked="true">userGuide.request</parameter>
+      <parameter name="transport.jms.ReplyDestination" locked="true">userGuide.response</parameter>
+      <parameter name="transport.jms.ReplyDestinationType" locked="true">topic</parameter>
       <operation name="DoInOnly" mep="http://www.w3.org/ns/wsdl/in-only"
          namespace="http://apache.org/axis2/Axis2UserGuide">
          <actionMapping>DoInOnly</actionMapping>
@@ -52,7 +63,7 @@
          <outputActionMapping>http://apache.org/axis2/Axis2UserGuide/Axis2UserGuidePortType/MultipleParametersAddItemResponseMessage
          </outputActionMapping>
       </operation>
-      <module ref="rampart"/>
+      <module ref="rampart" />
       <parameter name="InflowSecurity">
          <action>
             <items>UsernameToken</items>

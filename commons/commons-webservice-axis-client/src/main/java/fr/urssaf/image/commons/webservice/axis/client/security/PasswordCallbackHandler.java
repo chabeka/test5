@@ -10,10 +10,18 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.apache.ws.security.WSPasswordCallback;
 
+/**
+ * Security pour WS Security
+ * 
+ * 
+ */
 public class PasswordCallbackHandler implements CallbackHandler {
 
    private final Map<String, String> passwords = new HashMap<String, String>();
 
+   /**
+    * Implementation des login/password
+    */
    public PasswordCallbackHandler() {
       passwords.put("myuser", "mypassword");
       passwords.put("bob", "bobPW");

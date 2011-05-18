@@ -112,7 +112,7 @@ public class VersionStub extends org.apache.axis2.client.Stub
      */
     public VersionStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"jms:/Version?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" );
+                    this(configurationContext,"jms:/version/request?transport.jms.DestinationType=topic&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=TopicConnectionFactory" );
                 
     }
 
@@ -121,7 +121,7 @@ public class VersionStub extends org.apache.axis2.client.Stub
      */
     public VersionStub() throws org.apache.axis2.AxisFault {
         
-                    this("jms:/Version?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" );
+                    this("jms:/version/request?transport.jms.DestinationType=topic&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=TopicConnectionFactory" );
                 
     }
 
@@ -434,7 +434,7 @@ public class VersionStub extends org.apache.axis2.client.Stub
         }
         return false;
     }
-     //jms:/Version?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory
+     //jms:/version/request?transport.jms.DestinationType=topic&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=TopicConnectionFactory
         public static class ExceptionE
         implements org.apache.axis2.databinding.ADBBean{
         

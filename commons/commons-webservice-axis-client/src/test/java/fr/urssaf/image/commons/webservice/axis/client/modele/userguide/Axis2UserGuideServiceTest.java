@@ -25,7 +25,32 @@ public class Axis2UserGuideServiceTest {
 
    private final static String HTTP = "http://localhost:8082/axis2/services/Axis2UserGuideService/";
 
-   private final static String JMS = "jms:/Axis2UserGuideService?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory";
+   public final static String JMS;
+
+   private final static String JMS_REQ = "jms:/userGuide.request";
+
+   private final static String JMS_INITIAL = "java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory";
+
+   static {
+
+      String JMS_REQ_TYPE = "transport.jms.DestinationType=topic";
+
+      String JMS_JDNI = "transport.jms.ConnectionFactoryJNDIName=TopicConnectionFactory";
+
+      String JMS_PROVIDER = "java.naming.provider.url=tcp://localhost:61616";
+
+      String JMS_FAC_TYPE = "transport.jms.ConnectionFactoryType=topic";
+
+      JMS = JMS_REQ + "?" + JMS_INITIAL + "&" + JMS_REQ_TYPE + "&" + JMS_JDNI
+            + "&" + JMS_PROVIDER + "&" + JMS_FAC_TYPE;
+
+      // String JMS_FACTORY =
+      // "transport.jms.ConnectionFactory=myTopicConnectionFactory";
+      //
+      // JMS = JMS_REQ + "?" + JMS_INITIAL + "&" +
+      // JMS_FACTORY+"&"+JMS_REQ_TYPE;
+
+   }
 
    private Axis2UserGuideServiceStub service;
 
@@ -37,7 +62,7 @@ public class Axis2UserGuideServiceTest {
    private ConfigurationContext ctx;
 
    @Before
-   public void before() throws AxisFault  {
+   public void before() throws AxisFault {
 
       ctx = ConfigurationContextFactory
             .createConfigurationContextFromFileSystem(SECURITY_PATH,
@@ -82,8 +107,8 @@ public class Axis2UserGuideServiceTest {
       assertTwoWayOneParameterEcho(service);
    }
 
-   private static void assertTwoWayOneParameterEcho(Axis2UserGuideServiceStub service)
-         throws RemoteException {
+   private static void assertTwoWayOneParameterEcho(
+         Axis2UserGuideServiceStub service) throws RemoteException {
 
       String echo = "echo";
 
@@ -135,8 +160,8 @@ public class Axis2UserGuideServiceTest {
 
    }
 
-   private static void assertMultipleParametersAddItem(Axis2UserGuideServiceStub service)
-         throws RemoteException {
+   private static void assertMultipleParametersAddItem(
+         Axis2UserGuideServiceStub service) throws RemoteException {
 
       int itemId = 1;
 

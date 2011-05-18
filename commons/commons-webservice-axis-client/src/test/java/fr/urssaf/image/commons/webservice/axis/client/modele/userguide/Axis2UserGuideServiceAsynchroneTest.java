@@ -27,7 +27,7 @@ public class Axis2UserGuideServiceAsynchroneTest {
 
    private final static String HTTP = "http://localhost:8082/axis2/services/Axis2UserGuideService/";
 
-   private final static String JMS = "jms:/Axis2UserGuideService?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory";
+   private final static String JMS = Axis2UserGuideServiceTest.JMS;
 
    private Axis2UserGuideServiceStub service;
 
