@@ -5,8 +5,7 @@ package fr.urssaf.image.tests.dfcetest;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +15,12 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import fr.urssaf.image.tests.dfcetest.helpers.DocGen;
 import fr.urssaf.image.tests.dfcetest.helpers.DocubaseHelper;
 
 /**
@@ -31,9 +32,12 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    private Base base;
    private BaseCategory appliSourceCategory;
    private String appliSourceFName;
-   private Object intergerFName;
+   private String intergerFName;
+   private String boolFName;
    private BaseCategory integerCategory;
-
+   private BaseCategory boolCategory;
+   private DocGen docGen;
+   private List<Document> docs;
    
    @Before
    public void createContext() {
@@ -42,11 +46,29 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       appliSourceFName = appliSourceCategory.getFormattedName();
       
       integerCategory = base.getBaseCategory(Categories.INTEGER.toString());
-      intergerFName = integerCategory.getFormattedName();      
+      intergerFName = integerCategory.getFormattedName(); 
+      
+      boolCategory = base.getBaseCategory(Categories.BOOLEAN.toString());
+      boolFName = boolCategory.getFormattedName(); 
    }
 
    @Before
    public void setup() {
+      docs = new ArrayList<Document>();
+      docGen = new DocGen(base);
+   }
+   
+   @After
+   public void teardown() {
+      for (Document doc : DocGen.storedDocuments) {
+         ServiceProvider.getStoreService().deleteDocument(doc);
+      }
+   }
+   
+   public Document retainDoc(Map<String, Object>  metadata) {
+      Document doc = DocubaseHelper.storeOneDoc(base, metadata);
+      docs.add(doc);
+      return doc;
    }
    
    /**
@@ -54,47 +76,70 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     */
    @Test
    public void AQ1() {
-      // Metadonnées du doc A
-      Map<String, Object> metadataA = new HashMap<String, Object>();
-      // Catégories obligatoires
-      String titleA = "AQ1A" + System.nanoTime();
-      metadataA.put(Categories.TITRE.toString(), titleA);
-      metadataA.put(Categories.TYPE_DOC.toString(), Math.random() > 0.5 ? ".pdf" : ".doc");
-      metadataA.put(Categories.DATETIME.toString(), new Date());
-      metadataA.put(Categories.APPLI_SOURCE.toString(), titleA);
-      // Catégories facultatives
-      metadataA.put(Categories.DATE.toString(), new Date());
-      metadataA.put(Categories.INTEGER.toString(), 10);
-      metadataA.put(Categories.BOOLEAN.toString(), true);
+      // Document A
+      String titleA = docGen.setRandomTitle("AQ1A").getTitle();
+      docGen.put(Categories.INTEGER, 10);
+      Document docA = docGen.store();
       
-      Document docA = DocubaseHelper.storeOneDoc(base, metadataA);
+      // Document B
+      docGen.setRandomTitle("AQ1B").store();
       
-      // Metadonnées du doc B
-      Map<String, Object> metadataB = new HashMap<String, Object>();
-      // Catégories obligatoires
-      String titleB = "AQ1B" + System.nanoTime();
-      metadataB.put(Categories.TITRE.toString(), titleB);
-      metadataB.put(Categories.TYPE_DOC.toString(), Math.random() > 0.5 ? ".pdf" : ".doc");
-      metadataB.put(Categories.DATETIME.toString(), new Date());
-      metadataB.put(Categories.APPLI_SOURCE.toString(), titleB);
-      // Catégories facultatives
-      metadataB.put(Categories.DATE.toString(), new Date());
-      metadataB.put(Categories.INTEGER.toString(), 10);
-      metadataB.put(Categories.BOOLEAN.toString(), true);
+      String lucene = String.format("%s:%s", intergerFName, 10);
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(2, result.getDocuments().size());
       
-      DocubaseHelper.storeOneDoc(base, metadataB);      
-      
-      String lucene = String.format("%s:%s AND %s:%s", intergerFName, 10, appliSourceFName, titleA);
+      lucene = String.format("%s:%s", appliSourceFName, titleA);
+      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(1, result.getDocuments().size());
 
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      //lucene = String.format("%s:%s AND %s:%s", intergerFName, 10, appliSourceFName, titleA);
+      lucene = String.format("%s:%s AND %s:%s OR 1:1", intergerFName, 10, appliSourceFName, titleA);
+      System.out.println(lucene);
+      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
+      assertDocumentEquals(docA, result.getDocuments().get(0));      
    }
    
 
-   @Test @Ignore("TODO")
+   @Test
    public void AQ2() {
+      // Document A
+      String titleA = docGen.setRandomTitle("AQ2A").getTitle();
+      docGen.put(Categories.INTEGER, 10);
+      docGen.put(Categories.BOOLEAN, false);
+      Document docA = docGen.store();
       
+      // Document B
+      docGen.setRandomTitle("AQ2B");
+      docGen.put(Categories.BOOLEAN, true);
+      Document docB = docGen.store();                
+      
+      String lucene = String.format("%s:%s", intergerFName, 10);
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(2, result.getDocuments().size());
+      
+      lucene = String.format("%s:%s", appliSourceFName, titleA);
+      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(1, result.getDocuments().size());      
+
+      lucene = String.format("%s:%s OR %s:%s", intergerFName, 10, appliSourceFName, titleA);
+      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(2, result.getDocuments().size()); 
+      
+      // SUT
+      lucene = String.format("(%s:%s OR %s:%s) AND %s:%s", 
+            intergerFName, 10, appliSourceFName, titleA, boolFName, true);
+      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(1, result.getDocuments().size()); 
+      assertDocumentEquals(docB, result.getDocuments().get(0));
+      
+      // SUT
+      lucene = String.format("(%s:%s OR %s:%s) AND %s:%s", 
+            intergerFName, 10, appliSourceFName, titleA, boolFName, false);
+      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(1, result.getDocuments().size());
+      assertDocumentEquals(docA, result.getDocuments().get(0));
    }
    
 
@@ -102,7 +147,6 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    public void AQ3() {
       
    }
-   
 
    /**
     * Requête contenant un joker * avec une valeur de catégorie contenant un underscore. 
@@ -110,22 +154,24 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     */
    @Test
    public void AQ4() {
-      String appliSource = "AQ4" + System.nanoTime();
-      int nbDocs = 100;      
-      List<Document> docs = DocubaseHelper.insertManyDocs(nbDocs, base, appliSource);
+      Document injectedDoc = docGen.setRandomTitle("AQ6").store();      
+      log.debug("AQ4, Doc inséré -> " + injectedDoc.getUUID().toString());
       
-      // READ : on cherche par un index commun i.e. l'application source
-      String lucene = appliSourceFName + ":AQ4*";
-      // On fixe une limite de recherche plus grande pour voir si on ne ramène pas plus de
-      // résultats que prévu
-      int searchLimit = nbDocs * 2;
+      Document docbyUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(injectedDoc.getUUID());
+      assertDocumentEquals(injectedDoc, docbyUUID);
+      
+      String lucene = appliSourceFName + ":" + docGen.getTitle();
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base);
+      assertEquals(1, result.getDocuments().size());
+      assertDocumentEquals(injectedDoc, result.getDocuments().get(0));
+      
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, searchLimit, base);
-      
-      assertEquals(nbDocs, result.getDocuments().size());
+      lucene = appliSourceFName + ":AQ6*";
+      result = ServiceProvider.getSearchService().search(lucene, 100, base);
+      assertEquals(1, result.getDocuments().size());
       
       // On obtient le bon nombre de documents mais est-ce ceux que l'on a inséré ?
-      assertDocumentsEquals(docs, result.getDocuments());
+      assertDocumentEquals(injectedDoc, result.getDocuments().get(0));
    }
    
    

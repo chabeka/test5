@@ -135,6 +135,31 @@ public class CrudTest extends AbstractNcotiTest {
       assertEquals("La catégorie a été mal alimentée", newAppliSource, applisSourcesFound
             .iterator().next());
    }
+   
+   @Test
+   public void documentFileByUUID() throws Exception {
+      String appliSource = "documentFileByUUID" + System.nanoTime();
+
+      Document doc = DocubaseHelper.insertOneDoc(base, appliSource);
+      UUID uuid = doc.getUUID();
+      Document emptyDoc = toolkit.createDocumentTag(base);
+      emptyDoc.setUUID(uuid);
+      
+      File docFile = ServiceProvider.getStoreService().getDocumentFile(emptyDoc);
+      assertNotNull(docFile);
+   }
+   
+   @Test
+   public void deleteByUUID() throws Exception {
+      String appliSource = "deleteByUUID" + System.nanoTime();
+
+      Document doc = DocubaseHelper.insertOneDoc(base, appliSource);
+      UUID uuid = doc.getUUID();
+      Document emptyDoc = toolkit.createDocumentTag(base);
+      emptyDoc.setUUID(uuid);
+      
+      ServiceProvider.getStoreService().deleteDocument(emptyDoc);
+   }
 
    @Test
    public void UUID_inMemoryModification() throws Exception {

@@ -70,8 +70,8 @@ public abstract class AbstractNcotiTest {
             expectedDoc.getUUID(), actualDoc.getUUID());
       assertEquals("Les hash des fichiers sont différents", 
             expectedDoc.getVersionDigest(), actualDoc.getVersionDigest());
-      /*assertEquals("Les titres des fichiers sont différents", 
-            expectedDoc.getDocTitle(), actualDoc.getDocTitle());   */   
+      assertEquals("Les titres des documents sont différents", 
+            expectedDoc.getDocTitle(), actualDoc.getDocTitle());   
    }
    
 
