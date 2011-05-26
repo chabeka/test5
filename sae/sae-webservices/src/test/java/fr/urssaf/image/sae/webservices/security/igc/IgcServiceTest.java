@@ -10,6 +10,7 @@ import java.net.URL;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -147,6 +148,7 @@ public class IgcServiceTest {
             .getInstanceCertifsAndCrl());
    }
 
+   
    @Test
    public void getInstanceCertifsAndCrl_failure() throws IgcDownloadException {
 
@@ -154,10 +156,20 @@ public class IgcServiceTest {
       IgcConfigUtils.download(CERTIFICAT, new File(AC_RACINE.getAbsolutePath()
             + "/" + CERTIFICAT.getFile()));
 
-      // téléchargement d'une CRL
+      // Téléchargement d'un certificat X509 dans le répertoire des CRL, 
+      // pour ensuite faire planter le chargement des CRL
       URL crl = CERTIFICAT;
-      IgcConfigUtils.download(crl, new File(CRL.getAbsolutePath() + "/"
-            + crl.getFile()));
+      File destinationCrt = new File(CRL.getAbsolutePath() + "/" + crl.getFile());
+      IgcConfigUtils.download(crl, destinationCrt);
+      
+      // Renommage du fichier .crt en fichier .crl pour faire planter
+      // le chargement des CRL
+      File destinationCrl = new File(
+            CRL.getAbsolutePath() + 
+            "/" + 
+            FilenameUtils.getBaseName(crl.getFile()) + 
+            ".crl");
+      destinationCrt.renameTo(destinationCrl);
 
       IgcService igcService = createIgcService();
 

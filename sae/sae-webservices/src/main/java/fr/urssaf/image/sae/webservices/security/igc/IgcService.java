@@ -12,6 +12,8 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -48,13 +50,24 @@ public class IgcService implements InitializingBean {
    private final List<X509Certificate> certsAcRacine;
 
    private static final int VALIDATE_TIME = 24;
-
+   
    public static final String CRL_ERROR = "Une erreur s'est produite lors du chargement des CRL";
 
    public static final String AC_RACINE_ERROR = "Une erreur s'est produite lors du chargement des certificats des AC racine de confiance";
 
    public static final String AC_RACINE_EMPTY = "Aucun certificat d'AC racine de confiance trouvé dans le répertoire ${0}";
 
+   public static final String CRL_FIRST_LOAD = "Chargement des CRL en mémoire depuis les fichiers .crl pour la première fois";
+   
+   public static final String CRL_RELOAD = "Rechargement des CRL en mémoire depuis les fichiers .crl car les informations en mémoire sont périmées (date du chargement en mémoire précédent : ${0})";
+   
+   public static final String CRL_COUNT = "${0} CRL chargée(s) en mémoire";
+   
+   public static final String AC_RACINE_LOAD = "Chargement en mémoire des certificats des AC racine depuis les fichiers .crt";
+   
+   public static final String AC_RACINE_COUNT = "${0} certificat(s) d'AC racine de confiance chargé(s) en mémoire";
+
+   
    /**
     * Instanciation de {@link IgcService}
     * 
@@ -88,6 +101,8 @@ public class IgcService implements InitializingBean {
    @Override
    public final void afterPropertiesSet() {
 
+      LOG.info(AC_RACINE_LOAD);
+      
       FileSystemResource repACRacine = new FileSystemResource(igcConfig
             .getRepertoireACRacines());
 
@@ -124,6 +139,11 @@ public class IgcService implements InitializingBean {
          throw new IllegalArgumentException(TextUtils.getMessage(
                AC_RACINE_EMPTY, repACRacine.getPath()));
       }
+      
+      LOG.info(
+            TextUtils.getMessage(
+                  AC_RACINE_COUNT, 
+                  String.valueOf(this.certsAcRacine.size())));
 
    }
 
@@ -160,13 +180,44 @@ public class IgcService implements InitializingBean {
 
       DateTime systemDate = new DateTime();
 
-      if (certifsAndCrl == null
-            || certifsAndCrl.getDateMajCrl() == null
-            || DateTimeUtils.diffHours(certifsAndCrl.getDateMajCrl(),
-                  systemDate) > VALIDATE_TIME) {
-
+      // Détermine s'il faut charger ou recharger les CRL en mémoire
+      // depuis les fichiers .CRL
+      boolean mustLoad = false;
+      boolean isFirstLoad = false; // utile pour le log un peu plus bas
+      boolean isReload = false; // utile pour le log un peu plus bas
+      if ((certifsAndCrl == null) || (certifsAndCrl.getDateMajCrl() == null)) {
+         mustLoad = true;
+         isFirstLoad = true;
+      }
+      else if (DateTimeUtils.diffHours(certifsAndCrl.getDateMajCrl(),systemDate) > VALIDATE_TIME) {
+         mustLoad = true;
+         isReload = true;
+      }
+      
+      // Recharge les CRL si nécessaires
+      if (mustLoad) {
+      
+         // Ajout d'un log pour indiquer que l'on recharge les CRL
+         if (isFirstLoad) {
+            LOG.info(CRL_FIRST_LOAD);
+         } else if (isReload) {
+            
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("dd/MM/yyyy HH'h'mm");
+            
+            String dateFormatee = certifsAndCrl.getDateMajCrl().toString(fmt); 
+            
+            LOG.info(
+                  TextUtils.getMessage(
+                        CRL_RELOAD, 
+                        dateFormatee));
+         }
+         
+         
+         // Chargement des fichiers .crl dans des objets X509CRL
          List<X509CRL> crls = loadCRLResources(igcConfig.getRepertoireCRLs());
 
+         
+         // Construction de l'objet contenant les CRL
          CertifsAndCrl instance = new CertifsAndCrl();
 
          instance.setDateMajCrl(systemDate);
@@ -174,7 +225,13 @@ public class IgcService implements InitializingBean {
          instance.setCrl(crls);
 
          this.setCertifsAndCrl(instance);
-
+         
+         // Ajout d'un log pour indiquer le nombre de CRL chargée en mémoire
+         LOG.info(
+               TextUtils.getMessage(
+                     CRL_COUNT, 
+                     String.valueOf(this.certifsAndCrl.getCrl().size())));
+         
       }
    }
 
@@ -187,7 +244,9 @@ public class IgcService implements InitializingBean {
          throws LoadCertifsAndCrlException {
 
       FileSystemResource repCRLs = new FileSystemResource(repertoireCRLs);
-      List<Resource> resources = ResourceUtils.loadResources(repCRLs, null);
+      List<Resource> resources = ResourceUtils.loadResources(repCRLs, 
+            new String[] { "crl","Crl","cRl","crL","CRl","CrL","cRL","CRL" });
+      
       List<X509CRL> crls = new ArrayList<X509CRL>();
 
       for (Resource crl : resources) {
