@@ -1,5 +1,6 @@
 package fr.urssaf.image.commons.webservice.axis.client.modele.userguide;
 
+import static fr.urssaf.image.commons.webservice.axis.client.configuration.ConnectionConfiguration.WS_HTTP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -23,32 +24,28 @@ import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2User
       "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class Axis2UserGuideServiceTest {
 
-   private final static String HTTP = "http://localhost:8082/axis2/services/Axis2UserGuideService/";
+   public final static String HTTP = WS_HTTP + "Axis2UserGuideService/";
 
    public final static String JMS;
 
-   private final static String JMS_REQ = "jms:/userGuide.request";
+   private final static String JMS_REQ = "jms:/dynamicTopics/userGuide.request";
 
    private final static String JMS_INITIAL = "java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory";
 
    static {
 
-      String JMS_REQ_TYPE = "transport.jms.DestinationType=topic";
+      String JMS_DEST_TYPE = "transport.jms.DestinationType=topic";
+
+      String JMS_REPLY = "transport.jms.ReplyDestination=dynamicQueues/userGuide.response";
+
+      String JMS_REPLY_TYPE = "transport.jms.ReplyDestinationType=queue";
 
       String JMS_JDNI = "transport.jms.ConnectionFactoryJNDIName=TopicConnectionFactory";
 
       String JMS_PROVIDER = "java.naming.provider.url=tcp://localhost:61616";
 
-      String JMS_FAC_TYPE = "transport.jms.ConnectionFactoryType=topic";
-
-      JMS = JMS_REQ + "?" + JMS_INITIAL + "&" + JMS_REQ_TYPE + "&" + JMS_JDNI
-            + "&" + JMS_PROVIDER + "&" + JMS_FAC_TYPE;
-
-      // String JMS_FACTORY =
-      // "transport.jms.ConnectionFactory=myTopicConnectionFactory";
-      //
-      // JMS = JMS_REQ + "?" + JMS_INITIAL + "&" +
-      // JMS_FACTORY+"&"+JMS_REQ_TYPE;
+      JMS = JMS_REQ + "?" + JMS_INITIAL + "&" + JMS_JDNI + "&" + JMS_PROVIDER
+            + "&" + JMS_DEST_TYPE + "&" + JMS_REPLY + "&" + JMS_REPLY_TYPE;
 
    }
 

@@ -39,6 +39,7 @@ public class UserGuideConsumer implements MessageListener {
 
    private void receiveMessage(Message message) throws JMSException {
 
+      LOG.debug("\nnew message");
       LOG.debug("JMSDestination: " + message.getJMSDestination());
       LOG.debug("JMSReplyTo: " + message.getJMSReplyTo());
       LOG.debug("JMSMessageID: " + message.getJMSMessageID());
@@ -75,15 +76,7 @@ public class UserGuideConsumer implements MessageListener {
 
    }
 
-   private static final long SLEEP_TIME = 10000000;
-
-   /**
-    * Ecouteur sur un topic
-    * 
-    * @param args
-    *           aucun paramètre prise en compte
-    */
-   public static void main(String[] args) {
+   protected static void topicConsumer() {
 
       LOG.debug("waiting publisher UserGuide ...");
 
@@ -94,10 +87,24 @@ public class UserGuideConsumer implements MessageListener {
       try {
          Thread.sleep(SLEEP_TIME);
       } catch (InterruptedException e) {
-         throw new IllegalStateException(e);
+         throw new IllegalArgumentException(e);
       }
 
       LOG.debug("ending publisher UserGuide ...");
+
+   }
+
+   private static final long SLEEP_TIME = 10000000;
+
+   /**
+    * Ecouteur sur un topic
+    * 
+    * @param args
+    *           aucun paramètre prise en compte
+    */
+   public static void main(String[] args) {
+
+      topicConsumer();
 
    }
 

@@ -1,5 +1,7 @@
 package fr.urssaf.image.commons.webservice.axis.client.modele.version;
 
+import static fr.urssaf.image.commons.webservice.axis.client.configuration.ConnectionConfiguration.WS_HTTP;
+
 import java.rmi.RemoteException;
 
 import org.apache.axis2.AxisFault;
@@ -15,7 +17,8 @@ public class VersionTest {
 
    private static final Logger LOG = Logger.getLogger(VersionTest.class);
 
-   private final static String HTTP = "http://localhost:8082/axis2/services/Version.VersionHttpSoap12Endpoint/";
+   private final static String HTTP = WS_HTTP
+         + "Version.VersionHttpSoap12Endpoint/";
 
    private final static String JMS = "jms:/Version?transport.jms.DestinationType=queue&transport.jms.ContentTypeProperty=Content-Type&java.naming.provider.url=tcp://localhost:61616&java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory";
 

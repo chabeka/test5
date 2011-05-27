@@ -22,10 +22,59 @@
       <action>
          <items>UsernameToken</items>
          <user>myuser</user>
-         <passwordCallbackClass>fr.urssaf.image.commons.webservice.axis.client.security.PasswordCallbackHandler</passwordCallbackClass>
+         <passwordCallbackClass>fr.urssaf.image.commons.webservice.axis.client.security.PasswordCallbackHandler
+         </passwordCallbackClass>
 
       </action>
    </parameter>
+
+   <transportReceiver name="jms"
+      class="org.apache.axis2.transport.jms.JMSListener">
+      <parameter name="myTopicConnectionFactory">
+         <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+         <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+         <parameter name="transport.jms.ConnectionFactoryJNDIName">TopicConnectionFactory</parameter>
+         
+      </parameter>
+
+      <parameter name="myQueueConnectionFactory">
+         <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+         <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+         <parameter name="transport.jms.ConnectionFactoryJNDIName">QueueConnectionFactory</parameter>
+         
+      </parameter>
+
+      <parameter name="default">
+         <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+         <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+         <parameter name="transport.jms.ConnectionFactoryJNDIName">ConnectionFactory</parameter>
+      </parameter>
+   </transportReceiver>
+
+   <transportSender name="jms"
+      class="org.apache.axis2.transport.jms.JMSSender">
+      
+      <parameter name="myTopicConnectionFactory">
+         <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+         <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+         <parameter name="transport.jms.ConnectionFactoryJNDIName">TopicConnectionFactory</parameter>
+         
+      </parameter>
+
+      <parameter name="myQueueConnectionFactory">
+         <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+         <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+         <parameter name="transport.jms.ConnectionFactoryJNDIName">QueueConnectionFactory</parameter>
+         
+      </parameter>
+
+      <parameter name="default">
+         <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+         <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+         <parameter name="transport.jms.ConnectionFactoryJNDIName">ConnectionFactory</parameter>
+      </parameter>
+   
+   </transportSender>
 
 
    <!-- ================================================= -->
@@ -322,18 +371,13 @@
    <transportReceiver name="http"
       class="org.apache.axis2.transport.http.AxisServletListener" />
 
-   <transportReceiver name="jms"
-      class="org.apache.axis2.transport.jms.JMSListener">
-      
-   </transportReceiver>
-
    <!--Uncomment if you want to have TCP transport support-->
    <!--
       transportReceiver name="tcp"
       class="org.apache.axis2.transport.tcp.TCPServer"> <parameter
       name="port">6060</parameter
    -->
-   
+
    <!--If you want to give your own host address for EPR generation-->
    <!--uncomment the following paramter , and set it as you required.-->
    <!--<parameter name="hostname">tcp://myApp.com/ws</parameter>-->
@@ -367,31 +411,6 @@
       <parameter name="PROTOCOL">HTTP/1.1</parameter>
       <parameter name="Transfer-Encoding">chunked</parameter>
    </transportSender>
-   
-   <transportSender name="jms"
-      class="org.apache.axis2.transport.jms.JMSSender">
-      <parameter name="myTopicConnectionFactory" locked="false">                      
-         <parameter name="java.naming.factory.initial" locked="false">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
-         <parameter name="java.naming.provider.url" locked="false">tcp://localhost:61616</parameter>         
-         <parameter name="transport.jms.ConnectionFactoryJNDIName" locked="false">TopicConnectionFactory</parameter>
-         <parameter name="transport.jms.ConnectionFactoryType" locked="false">topic</parameter>
-      </parameter>
-      <parameter name="myQueueConnectionFactory" locked="false">
-         <parameter name="java.naming.factory.initial" locked="false">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
-         <parameter name="java.naming.provider.url" locked="false">tcp://localhost:61616</parameter>         
-         <parameter name="transport.jms.ConnectionFactoryJNDIName" locked="false">QueueConnectionFactory</parameter>
-         <parameter name="transport.jms.ConnectionFactoryType" locked="false">topic</parameter>
-      </parameter>
-      <parameter name="default" locked="false">                       
-         <parameter name="java.naming.factory.initial" locked="false">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
-         <parameter name="java.naming.provider.url" locked="false">tcp://localhost:61616</parameter>         
-         <parameter name="transport.jms.ConnectionFactoryJNDIName" locked="false">QueueConnectionFactory</parameter>
-         <parameter name="transport.jms.ConnectionFactoryType" locked="false">topic</parameter>
-      </parameter>
-      
-   </transportSender>
-
-
 
    <!-- Please enable this if you need the java transport -->
    <!--

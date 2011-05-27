@@ -9,13 +9,17 @@
    </appender>
 
    <logger name="org.apache">
-      <level value="warn" />
+      <level value="info" />
    </logger>
-   
+
+   <logger name="org.apache.axis2">
+      <level value="info" />
+   </logger>
+
    <logger name="httpclient">
       <level value="warn" />
    </logger>
-   
+
    <root>
       <priority value="debug" />
       <appender-ref ref="console" />

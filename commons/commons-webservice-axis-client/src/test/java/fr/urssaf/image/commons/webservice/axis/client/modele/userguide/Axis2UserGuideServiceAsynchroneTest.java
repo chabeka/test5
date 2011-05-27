@@ -25,7 +25,7 @@ import fr.urssaf.image.commons.webservice.axis.client.modele.userguide.Axis2User
       "PMD.JUnitAssertionsShouldIncludeMessage" })
 public class Axis2UserGuideServiceAsynchroneTest {
 
-   private final static String HTTP = "http://localhost:8082/axis2/services/Axis2UserGuideService/";
+   private final static String HTTP = Axis2UserGuideServiceTest.HTTP;
 
    private final static String JMS = Axis2UserGuideServiceTest.JMS;
 
