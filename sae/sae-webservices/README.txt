@@ -4,9 +4,7 @@ Les commandes
  
 Configuration JNDI pour l'intégration
  - copier le fichier src/conf/axis2.xml dans le répertoire ${CATALINA_HOME}/conf/Catalina/localhost
- - compléter les valeurs pour indiquer les bons chemins pour les deux variables
-        - SAE_Repertoire_Certificats_ACRacine
-        - SAE_Repertoire_Certificats_CRL
+ - compléter les valeurs
  - redémarrer tomcat
         
 Configuration JNDI avec Eclipse

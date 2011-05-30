@@ -4,6 +4,7 @@ package fr.urssaf.image.sae.webservices.xsd;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,6 +25,10 @@ import fr.urssaf.image.sae.webservices.xsd.XSDValidator.SAXParseExceptionType;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service.xml" })
+@SuppressWarnings({
+   "PMD.TooManyMethods",
+   "PMD.JUnitTestsShouldIncludeAssert",
+   "PMD.JUnit4TestShouldUseTestAnnotation"})
 public class XsdTest {
    /**
     * Adresse du fichier xsd de référence du WSDL
@@ -77,8 +82,7 @@ public class XsdTest {
          erreurs = XSDValidator.validXMLWithDOM(getFileName("cas" + numero),
                getFullPathXSD());
       } catch (Exception ex) {
-         assertTrue("Exception innattendue dans csTest" + numero + " : "
-               + ex.getMessage(), false);
+         fail("Exception innattendue dans csTest" + numero + " : " + ex.getMessage());
       }
       if ( ! erreurs.isEmpty() ) {
          LOGGER.debug("=");
@@ -97,8 +101,8 @@ public class XsdTest {
          erreurs = XSDValidator.validXMLWithDOM(getFileName("cas" + numero),
                getFullPathXSD());
       } catch (Exception ex) {
-         assertTrue("Exception innattendue dans casTest" + numero + " : "
-               + ex.getMessage(), false);
+         fail("Exception innattendue dans casTest" + numero + " : "
+               + ex.getMessage());
       }
       if (! erreurs.isEmpty()) {
          LOGGER.debug("=");

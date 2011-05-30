@@ -22,6 +22,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Classe de validation d'un document XML par un schéma XSD
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class XSDValidator {
 
    private XSDValidator() {

@@ -3,6 +3,9 @@
    <!--
       by the Apache Axis2 version: 1.5.4 Built on : Dec 19, 2010
       (08:18:42 CET)
+      
+      Le fichier est ensuite mis à jour MANUELLEMENT pour l'ajout de nouvelles opérations
+      
    -->
 <serviceGroup>
    <service name="SpringInit"
@@ -32,12 +35,32 @@
       <operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out"
          namespace="http://www.cirtil.fr/saeService">
          <actionMapping>Ping</actionMapping>
-         <outputActionMapping>Ping</outputActionMapping>
+         <outputActionMapping>http://www.cirtil.fr/saeService/SaeServicePortType/PingResponse</outputActionMapping>
       </operation>
       <operation name="PingSecure" mep="http://www.w3.org/ns/wsdl/in-out"
          namespace="http://www.cirtil.fr/saeService">
          <actionMapping>PingSecure</actionMapping>
-         <outputActionMapping>PingSecure</outputActionMapping>
+         <outputActionMapping>http://www.cirtil.fr/saeService/SaeServicePortType/PingSecureResponse</outputActionMapping>
+      </operation>
+      <operation name="archivageUnitaire" mep="http://www.w3.org/ns/wsdl/in-out"
+         namespace="http://www.cirtil.fr/saeService">
+         <actionMapping>archivageUnitaire</actionMapping>
+         <outputActionMapping>http://www.cirtil.fr/saeService/SaeServicePortType/archivageUnitaireResponse</outputActionMapping>
+      </operation>
+      <operation name="archivageMasse" mep="http://www.w3.org/ns/wsdl/in-out"
+         namespace="http://www.cirtil.fr/saeService">
+         <actionMapping>archivageMasse</actionMapping>
+         <outputActionMapping>http://www.cirtil.fr/saeService/SaeServicePortType/archivageMasseResponse</outputActionMapping>
+      </operation>
+      <operation name="recherche" mep="http://www.w3.org/ns/wsdl/in-out"
+         namespace="http://www.cirtil.fr/saeService">
+         <actionMapping>recherche</actionMapping>
+         <outputActionMapping>http://www.cirtil.fr/saeService/SaeServicePortType/rechercheResponse</outputActionMapping>
+      </operation>
+      <operation name="consultation" mep="http://www.w3.org/ns/wsdl/in-out"
+         namespace="http://www.cirtil.fr/saeService">
+         <actionMapping>consultation</actionMapping>
+         <outputActionMapping>http://www.cirtil.fr/saeService/SaeServicePortType/consultationResponse</outputActionMapping>
       </operation>
    </service>
 
