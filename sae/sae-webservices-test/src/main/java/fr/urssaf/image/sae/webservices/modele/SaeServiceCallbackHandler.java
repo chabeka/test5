@@ -47,6 +47,22 @@ public class SaeServiceCallbackHandler{
 
         
            /**
+            * auto generated Axis2 call back method for recherche method
+            * override this method for handling normal response from recherche operation
+            */
+           public void receiveResultrecherche(
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RechercheResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from recherche operation
+           */
+            public void receiveErrorrecherche(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for ping method
             * override this method for handling normal response from ping operation
             */
@@ -63,6 +79,22 @@ public class SaeServiceCallbackHandler{
             }
                 
            /**
+            * auto generated Axis2 call back method for archivageUnitaire method
+            * override this method for handling normal response from archivageUnitaire operation
+            */
+           public void receiveResultarchivageUnitaire(
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaireResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from archivageUnitaire operation
+           */
+            public void receiveErrorarchivageUnitaire(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for pingSecure method
             * override this method for handling normal response from pingSecure operation
             */
@@ -76,6 +108,38 @@ public class SaeServiceCallbackHandler{
            * override this method for handling error response from pingSecure operation
            */
             public void receiveErrorpingSecure(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for consultation method
+            * override this method for handling normal response from consultation operation
+            */
+           public void receiveResultconsultation(
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from consultation operation
+           */
+            public void receiveErrorconsultation(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for archivageMasse method
+            * override this method for handling normal response from archivageMasse operation
+            */
+           public void receiveResultarchivageMasse(
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageMasseResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from archivageMasse operation
+           */
+            public void receiveErrorarchivageMasse(java.lang.Exception e) {
             }
                 
 

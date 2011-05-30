@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.webservices;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.OperationClient;
@@ -22,6 +21,7 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 
 import fr.urssaf.image.sae.webservices.util.AxiomUtils;
+import fr.urssaf.image.sae.webservices.util.SoapTestUtils;
 
 /**
  * Classe tests unitaires pour tester les différents SoapFault<br>
@@ -33,34 +33,22 @@ import fr.urssaf.image.sae.webservices.util.AxiomUtils;
 @SuppressWarnings( { "PMD.MethodNamingConventions", "PMD.TooManyMethods" })
 public class PingSecureSoapTest {
 
-   private static final String FAIL_MSG = "le test doit échouer";
-
-   private static final String VI_PREFIX = "vi";
-
-   private static final String VI_NAMESPACE = "urn:iops:vi:faultcodes";
-
-   private static final String SAE_PREFIX = "sae";
-
-   private static final String SAE_NAMESPACE = "urn:sae:faultcodes";
-
-   private static final String WSSE_PREFIX = "wsse";
-
-   private static final String WSSE_NAMESPACE = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
-
+   
    private static Configuration config;
-
-   @BeforeClass
-   public static void beforeClass() throws ConfigurationException, AxisFault {
-
-      config = new PropertiesConfiguration("sae-webservices-test.properties");
-      Init.init();
-   }
-
+   
    private MessageContext msgctx;
 
    private OperationClient opClient;
 
    private ServiceClient client;
+   
+
+   @BeforeClass
+   public static void beforeClass() throws ConfigurationException, AxisFault {
+      config = new PropertiesConfiguration("sae-webservices-test.properties");
+      Init.init();
+   }
+
 
    @Before
    public void before() throws AxisFault {
@@ -79,23 +67,17 @@ public class PingSecureSoapTest {
 
    @After
    public void after() throws AxisFault {
-
       client.cleanupTransport();
    }
 
-   private void execute(String soapFile) throws AxisFault {
-
-      SOAPEnvelope soapEnvelope = AxiomUtils.parse(soapFile);
-
-      msgctx.setEnvelope(soapEnvelope);
-      opClient.execute(true);
-
-   }
-
+   
    @Test
    public void pingSecure_success() throws AxisFault {
 
-      this.execute("src/test/resources/soap/request/pingSecure_ok.xml");
+      SoapTestUtils.execute(
+            "src/test/resources/soap/request/pingSecure_ok.xml",
+            msgctx,
+            opClient);
 
       Document response = AxiomUtils.loadDocumentResponse(client);
 
@@ -106,59 +88,27 @@ public class PingSecureSoapTest {
 
    }
 
-   private void assertAxisFault(
-         AxisFault fault, 
-         String message,
-         String localPart, 
-         String namespaceURI, 
-         String prefix) {
-
-      // Vérification du code de la SoapFault
-      
-      String faultCodeAttendu = prefix + ":" + localPart;
-      
-      String faultCodeObtenu = 
-         fault.getFaultCode().getPrefix() + 
-         ":" + 
-         fault.getFaultCode().getLocalPart();
-      
-      assertEquals(
-            "Le code de la SoapFault est incorrect",
-            faultCodeAttendu,
-            faultCodeObtenu);
-      
-      // Vérification du message de la SoapFault
-      assertEquals(
-            "le message du soapFault est incorrect",
-            message, 
-            fault.getMessage());
-      
-      // Vérifications supplémentaires
-      assertEquals("le prefix du soapFault", prefix, fault.getFaultCode()
-            .getPrefix());
-      assertEquals("le code du soapFault est incorrect", localPart, fault
-            .getFaultCode().getLocalPart());
-      assertEquals("le namespaceURI du soapFault", namespaceURI, fault
-            .getFaultCode().getNamespaceURI());
-      
-   }
-
+   
    @Test
    public void pingSecure_failure_sae_droitsInsuffisants() {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_sae_DroitsInsuffisants.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_sae_DroitsInsuffisants.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this
-               .assertAxisFault(
-                     fault,
-                     "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
-                     "DroitsInsuffisants", SAE_NAMESPACE, SAE_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "Les droits présents dans le vecteur d'identification sont insuffisants pour effectuer l'action demandée",
+            "DroitsInsuffisants", 
+            SoapTestUtils.SAE_NAMESPACE, 
+            SoapTestUtils.SAE_PREFIX);
 
       }
    }
@@ -168,17 +118,22 @@ public class PingSecureSoapTest {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidAuthLevel.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidAuthLevel.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this
-               .assertAxisFault(
-                     fault,
-                     "Le niveau d'authentification initial n'est pas conforme au contrat d'interopérabilité",
-                     "InvalidAuthLevel", VI_NAMESPACE, VI_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "Le niveau d'authentification initial n'est pas conforme au contrat d'interopérabilité",
+            "InvalidAuthLevel",
+            SoapTestUtils.VI_NAMESPACE,
+            SoapTestUtils.VI_PREFIX);
+         
       }
    }
 
@@ -190,19 +145,22 @@ public class PingSecureSoapTest {
       
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidPagm.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidPagm.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this
-               .assertAxisFault(
-                     fault,
-                     "Le ou les PAGM présents dans le VI sont invalides",
-                     "InvalidPagm", 
-                     VI_NAMESPACE, 
-                     VI_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "Le ou les PAGM présents dans le VI sont invalides",
+            "InvalidPagm", 
+            SoapTestUtils.VI_NAMESPACE, 
+            SoapTestUtils.VI_PREFIX);
+         
       }
    }
 
@@ -211,15 +169,22 @@ public class PingSecureSoapTest {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidService.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidService.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this.assertAxisFault(fault,
-               "Le service visé par le VI n'existe pas ou est invalide",
-               "InvalidService", VI_NAMESPACE, VI_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "Le service visé par le VI n'existe pas ou est invalide",
+            "InvalidService", 
+            SoapTestUtils.VI_NAMESPACE, 
+            SoapTestUtils.VI_PREFIX);
+         
       }
    }
 
@@ -228,14 +193,22 @@ public class PingSecureSoapTest {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidVI.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_vi_InvalidVI.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this.assertAxisFault(fault, "Le VI est invalide", "InvalidVI",
-               VI_NAMESPACE, VI_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault, 
+            "Le VI est invalide", 
+            "InvalidVI",
+            SoapTestUtils.VI_NAMESPACE,
+            SoapTestUtils.VI_PREFIX);
+         
       }
    }
 
@@ -244,15 +217,22 @@ public class PingSecureSoapTest {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_wsse_FailedCheck.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_wsse_FailedCheck.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this.assertAxisFault(fault,
-               "La signature ou le chiffrement n'est pas valide",
-               "FailedCheck", WSSE_NAMESPACE, WSSE_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "La signature ou le chiffrement n'est pas valide",
+            "FailedCheck", 
+            SoapTestUtils.WSSE_NAMESPACE, 
+            SoapTestUtils.WSSE_PREFIX);
+         
       }
    }
 
@@ -261,15 +241,22 @@ public class PingSecureSoapTest {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_wsse_InvalidSecurityToken.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_wsse_InvalidSecurityToken.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this.assertAxisFault(fault,
-               "Le jeton de sécurité fourni est invalide",
-               "InvalidSecurityToken", WSSE_NAMESPACE, WSSE_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "Le jeton de sécurité fourni est invalide",
+            "InvalidSecurityToken", 
+            SoapTestUtils.WSSE_NAMESPACE,
+            SoapTestUtils.WSSE_PREFIX);
+         
       }
    }
 
@@ -278,15 +265,22 @@ public class PingSecureSoapTest {
 
       try {
 
-         this
-               .execute("src/test/resources/soap/request/pingSecure_SoapFault_wsse_SecurityTokenUnavailable.xml");
+         SoapTestUtils.execute(
+               "src/test/resources/soap/request/pingSecure_SoapFault_wsse_SecurityTokenUnavailable.xml",
+               msgctx,
+               opClient);
 
-         fail(FAIL_MSG);
+         fail(SoapTestUtils.FAIL_MSG);
+         
       } catch (AxisFault fault) {
 
-         this.assertAxisFault(fault,
-               "La référence au jeton de sécurité est introuvable",
-               "SecurityTokenUnavailable", WSSE_NAMESPACE, WSSE_PREFIX);
+         SoapTestUtils.assertAxisFault(
+            fault,
+            "La référence au jeton de sécurité est introuvable",
+            "SecurityTokenUnavailable", 
+            SoapTestUtils.WSSE_NAMESPACE,
+            SoapTestUtils.WSSE_PREFIX);
+         
       }
    }
 
