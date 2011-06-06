@@ -2,10 +2,10 @@ package fr.urssaf.image.sae.igc.component;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 
 import fr.urssaf.image.sae.igc.exception.IgcConfigException;
 import fr.urssaf.image.sae.igc.modele.IgcConfig;
@@ -25,7 +25,13 @@ public class IgcConfigServiceValidate {
    @SuppressWarnings("PMD.LongVariable")
    public static final String IGC_CONFIG_NOTEXIST = "Le fichier de configuration IGC est introuvable (${0})";
 
-   private static final String METHODE = "execution(* fr.urssaf.image.sae.igc.service.IgcConfigService.loadConfig(..))";
+   private static final String METHODE = "execution(* fr.urssaf.image.sae.igc.service.IgcConfigService.loadConfig(*)) && args(pathConfigFile)";
+
+   @Pointcut(METHODE)
+   protected void loadConfig(String pathConfigFile) {
+      // pas d'implémentation
+      // sert uniquement à factoriser les advices de l'AOP
+   }
 
    /**
     * Vérification de la validité des arguments entrée de la méthode
@@ -36,16 +42,17 @@ public class IgcConfigServiceValidate {
     * </ul>
     * 
     * 
-    * @param joinPoint
-    *           jointure de la méthode {@link IgcConfigService#loadConfig}
+    * @param pathConfig
+    *           chemin de configuration
+    *           {@link IgcConfigService#loadConfig(String)}
     * @throws IgcConfigException
     *            une exception est levée sur les arguments en entrée
     */
-   @Before(METHODE)
-   public final void loadConfigBefore(JoinPoint joinPoint)
+   @Before("loadConfig(pathConfig)")
+   public final void loadConfigBefore(String pathConfig)
          throws IgcConfigException {
 
-      String pathConfig = (String) joinPoint.getArgs()[0];
+      // String pathConfig = (String) joinPoint.getArgs()[0];
 
       if (!StringUtils.isNotBlank(pathConfig)) {
 
@@ -76,19 +83,20 @@ public class IgcConfigServiceValidate {
     * 
     * </ul>
     * 
-    * @param joinPoint
-    *           jointure de la méthode {@link IgcConfigService#loadConfig}
+    * @param pathConfig
+    *            chemin de configuration
+    *           {@link IgcConfigService#loadConfig(String)}
     * @param igcConfig
     *           instance de de {@link IgcConfig} en sortie de la méthode
     * @throws IgcConfigException
     *            une exception est levée sur l'instance de {@link IgcConfig} en
     *            sortie
     */
-   @AfterReturning(pointcut = "execution(* fr.urssaf.image.sae.igc.service.IgcConfigService.loadConfig(..))", returning = "igcConfig")
-   public final void loadConfigAfter(JoinPoint joinPoint, IgcConfig igcConfig)
+   @AfterReturning(pointcut = "loadConfig(pathConfig)", returning = "igcConfig")
+   public final void loadConfigAfter(String pathConfig, IgcConfig igcConfig)
          throws IgcConfigException {
 
-      String pathConfig = (String) joinPoint.getArgs()[0];
+      // String pathConfig = (String) joinPoint.getArgs()[0];
 
       if (!StringUtils.isNotBlank(igcConfig.getRepertoireACRacines())) {
 
