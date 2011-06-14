@@ -10,8 +10,9 @@ public interface StorageConnectionService {
    /**
     * Permet d'ouvrir une connexion
     * 
-    * @throws ConnectionServiceRtEx Exception runtime typée
+    * @throws ConnectionServiceRtEx Exception liée à la connection
     */
+ //CHECKSTYLE:OFF
    void openConnection() throws ConnectionServiceRtEx;
    
    /**

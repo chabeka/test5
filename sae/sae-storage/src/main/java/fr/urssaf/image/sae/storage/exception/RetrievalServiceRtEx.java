@@ -24,8 +24,8 @@ public class RetrievalServiceRtEx extends StorageRuntimeException {
    /**
     * Constructeur
     * 
-    * @param message Le message d'erreur
-    * @param cause La cause de l'erreur
+    * @param message : Le message d'erreur
+    * @param cause : La cause de l'erreur
     */
    public RetrievalServiceRtEx(final String message, final Throwable cause) {
       super(message, cause);
@@ -34,9 +34,9 @@ public class RetrievalServiceRtEx extends StorageRuntimeException {
    /**
     * Constructeur
     * 
-    * @param message Le message d'erreur
+    * @param message : Le message d'erreur
     */
-   public RetrievalServiceRtEx(String message) {
+   public RetrievalServiceRtEx(final String message) {
       super(message);
     }
 

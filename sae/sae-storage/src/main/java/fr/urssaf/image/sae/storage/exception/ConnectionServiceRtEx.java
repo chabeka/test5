@@ -24,7 +24,7 @@ public class ConnectionServiceRtEx extends StorageRuntimeException {
    /**
     * Constructeur
     * 
-    * @param message
+    * @param message : 
     *           Le message d'erreur
     */
    public ConnectionServiceRtEx(final String message) {
@@ -34,9 +34,9 @@ public class ConnectionServiceRtEx extends StorageRuntimeException {
    /**
     * Constructeur
     * 
-    * @param message
+    * @param message : 
     *           Le message d'erreur
-    * @param cause
+    * @param cause : 
     *           La cause de l'erreur
     */
    public ConnectionServiceRtEx(final String message, final Throwable cause) {

@@ -25,7 +25,7 @@ public class StorageDocumentOnError extends AbstractStorageDocument {
    /**
     * Initialise le code erreur
     * 
-    * @param codeError
+    * @param codeError :
     *           Le code erreur
     */
    public final void setCodeError(final String codeError) {
@@ -35,17 +35,17 @@ public class StorageDocumentOnError extends AbstractStorageDocument {
    /**
     * Constructeur
     * 
-    * @param metadatas
+    * @param metadatas :
     *           Les metadatas du document
-    * @param content
+    * @param content :
     *           Le contenu du document
-    * @param filePath
+    * @param filePath :
     *           Le chemin du document
-    * @param codeError
+    * @param codeError :
     *           Le code Erreur
     */
    public StorageDocumentOnError(final List<StorageMetadata> metadatas,
-         final Byte[] content, final File filePath, final String codeError) {
+         final byte[] content, final File filePath, final String codeError) {
       super(metadatas, content, filePath);
       this.codeError = codeError;
    }

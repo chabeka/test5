@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class StorageDocuments {
 
-   private List<StorageDocument> storageDocuments;
+   private List<StorageDocument> storageDocuments; //NOPMD
 
    /**
     * Retourne la liste des documents
@@ -24,10 +24,10 @@ public class StorageDocuments {
    /**
     * Initialise la liste des documents
     * 
-    * @param storageDocuments
+    * @param storageDocuments :
     *           La liste des documents
     */
-   public final void setStorageDocuments(List<StorageDocument> storageDocuments) {
+   public final void setStorageDocuments(final List<StorageDocument> storageDocuments) {
       this.storageDocuments = storageDocuments;
    }
 

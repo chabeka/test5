@@ -27,27 +27,27 @@ public class StorageDocument extends AbstractStorageDocument {
    /**
     * Initialise l’identifiant unique universel.
     * 
-    * @param uuid
+    * @param uuid :
     *           L'identifiant universel unique
     */
-   public final void setUuid(UUID uuid) {
+   public final void setUuid(final UUID uuid) {
       this.uuid = uuid;
    }
 
    /**
     * Constructeur
     * 
-    * @param metadatas
+    * @param metadatas :
     *           Les metadatas du document
-    * @param content
+    * @param content :
     *           Le contenu du document
-    * @param filePath
+    * @param filePath :
     *           Le chemin du document
-    * @param uuid
+    * @param uuid : 
     *           L'identifiant universel unique
     */
    public StorageDocument(final List<StorageMetadata> metadatas,
-         final Byte[] content, final File filePath, final UUID uuid) {
+         final byte[] content, final File filePath, final UUID uuid) {
       super(metadatas, content, filePath);
       this.uuid = uuid;
    }

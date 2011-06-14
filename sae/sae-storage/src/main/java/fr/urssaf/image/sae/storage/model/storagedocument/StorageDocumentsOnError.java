@@ -10,8 +10,8 @@ import java.util.List;
  * erreur d'archivage</li>
  */
 public class StorageDocumentsOnError {
-
-   private List<StorageDocumentOnError> storageDocumentsOnError;
+   
+   private List<StorageDocumentOnError> storageDocumentsOnError;//NOPMD
 
    /**
     * Retourne la liste des documents en erreur
@@ -25,11 +25,12 @@ public class StorageDocumentsOnError {
    /**
     * Initialise la liste des documents en erreur
     * 
-    * @param storageDocumentsOnError
+    * @param storageDocumentsOnError :
     *           La liste des documents en erreur
     */
+   @SuppressWarnings("PMD.LongVariable")
    public final void setStorageDocuments(
-         List<StorageDocumentOnError> storageDocumentsOnError) {
+       final  List<StorageDocumentOnError> storageDocumentsOnError) {
       this.storageDocumentsOnError = storageDocumentsOnError;
    }
 

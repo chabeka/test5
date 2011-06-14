@@ -24,19 +24,19 @@ public class InsertionServiceRtEx extends StorageRuntimeException {
    /**
     * Constructeur
     * 
-    * @param message Le message d'erreur
-    * @param cause La cause de l'erreur
+    * @param message : Le message d'erreur
+    * @param cause : La cause de l'erreur
     */
-   public InsertionServiceRtEx(String message, Throwable cause) {
+   public InsertionServiceRtEx(final String message,final Throwable cause) {
       super(message, cause);
     }
 
    /**
     * Constructeur
     * 
-    * @param message Le message de l'erreur
+    * @param message : Le message de l'erreur
     */
-   public InsertionServiceRtEx(String message) {
+   public InsertionServiceRtEx(final String message) {
       super(message);
      }
 

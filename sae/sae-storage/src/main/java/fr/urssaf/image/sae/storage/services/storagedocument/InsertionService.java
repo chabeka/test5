@@ -12,12 +12,12 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
  * 
  */
 public interface InsertionService {
-
+   // CHECKSTYLE:OFF
    /**
     * Permet d'insérer un document unique
     * 
     * @param strorageDocument
-    *           Le document à stocker
+    *           : Le document à stocker
     * 
     * @return L'identifiant unique du document
     * 
@@ -31,10 +31,10 @@ public interface InsertionService {
     * Permet de réaliser une insertion en masse de documents
     * 
     * @param storageDocuments
-    *           Les documents à stocker
+    *           : Les documents à stocker
     * @return Le resultat des insertions réussies et échouées
     */
    BulkInsertionResults bulkInsertStorageDocument(
          List<StorageDocument> storageDocuments);
-
+   
 }

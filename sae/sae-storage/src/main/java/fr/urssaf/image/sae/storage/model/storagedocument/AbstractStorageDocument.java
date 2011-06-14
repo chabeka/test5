@@ -12,11 +12,12 @@ import java.util.List;
  * Attribut content : Le contenu du document</li> <li>
  * Attribut filePath : Le chemin du document</li>
  */
+@SuppressWarnings("PMD")
 public abstract class AbstractStorageDocument {
 
    private List<StorageMetadata> metadatas;
 
-   private Byte[] content;
+   private byte[] content;
 
    private File filePath;
 
@@ -32,10 +33,10 @@ public abstract class AbstractStorageDocument {
    /**
     * Initialise la liste des métadonnées.
     * 
-    * @param metadatas
+    * @param metadatas :
     *           La liste des métadonnées
     */
-   public final void setMetadatas(List<StorageMetadata> metadatas) {
+   public final void setMetadatas(final List<StorageMetadata> metadatas) {
       this.metadatas = metadatas;
    }
 
@@ -44,17 +45,17 @@ public abstract class AbstractStorageDocument {
     * 
     * @return Le contenu du document
     */
-   public final Byte[] getContent() {
+   public final byte[] getContent() {
       return content;
    }
 
    /**
     * Initialise le contenu du document
     * 
-    * @param content
+    * @param content :
     *           Le contenu du document
     */
-   public final void setContent(Byte[] content) {
+   public final void setContent(final byte[] content) {
       this.content = content;
    }
 
@@ -70,26 +71,25 @@ public abstract class AbstractStorageDocument {
    /**
     * Initialise le chemin du fichier
     * 
-    * @param filePath
+    * @param filePath :
     *           Le chemin du document
     */
-   public final void setFilePath(File filePath) {
+   public final void setFilePath(final File filePath) {
       this.filePath = filePath;
    }
 
    /**
     * Constructeur
     * 
-    * @param metadatas
+    * @param metadatas : 
     *           Les metadatas du document
-    * @param content
+    * @param content : 
     *           Le contenu du document
-    * @param filePath
+    * @param filePath :
     *           Le chemin du fichier
     */
    public AbstractStorageDocument(final List<StorageMetadata> metadatas,
-         final Byte[] content, final File filePath) {
-
+         final byte[] content, final File filePath) {
       this.metadatas = metadatas;
       this.content = content;
       this.filePath = filePath;

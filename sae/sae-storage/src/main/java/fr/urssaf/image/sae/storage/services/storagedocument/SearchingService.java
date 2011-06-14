@@ -14,7 +14,7 @@ public interface SearchingService {
    /**
     * Permet de faire une recherche par une requête lucene
     * 
-    * @param luceneCriteria
+    * @param luceneCriteria :
     *           La requête Lucene
     * 
     * @return Les résultats de la recherche
@@ -22,20 +22,22 @@ public interface SearchingService {
     * @throws SearchingServiceRtEx
     *            Une exception runtime
     */
-   StorageDocuments searchStorageDocumentByLuceneCriteria(
+  //CHECKSTYLE:OFF
+   StorageDocuments searchStorageDocumentByLuceneCriteria(final
          LuceneCriteria luceneCriteria) throws SearchingServiceRtEx;
 
    /**
     * Permet de faire une recherche par UUID de document
     * 
-    * @param uuidCriteria
+    * @param uuidCriteria :
     *           L'UUID du document à rechercher
     * 
     * @return Le resultat de la recherche
     * 
     * @throws SearchingServiceRtEx
-    *            Une esception runtime
+    *            Une exception runtime
     */
-   StorageDocument searchStorageDocumentByUUIDCriteria(UUIDCriteria uuidCriteria)
+   StorageDocument searchStorageDocumentByUUIDCriteria(final UUIDCriteria uuidCriteria)
          throws SearchingServiceRtEx;
+ //CHECKSTYLE:ON
 }

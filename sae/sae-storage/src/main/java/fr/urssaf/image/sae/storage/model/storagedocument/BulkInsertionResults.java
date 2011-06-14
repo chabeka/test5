@@ -7,15 +7,16 @@ import java.util.UUID;
 /**
  * Classe concrète représentant le résultat de l’insertion en masse<BR>
  * 
- *<li>
+ * <li>
  * Attribut storageDocuments : la liste des documents archivés</li> <li>
  * Attribut storageDocumentsOnError : la liste des documents en erreur</li> <li>
  * Attribut uuids : La liste des uuids des documents archivés</li>
  */
+
 public class BulkInsertionResults {
 
    private StorageDocuments storageDocuments;
-
+   @SuppressWarnings("PMD.LongVariable")
    private StorageDocumentsOnError storageDocumentsOnError;
 
    private List<UUID> uuids;
@@ -33,9 +34,9 @@ public class BulkInsertionResults {
     * Retourne la liste des documents en erreur
     * 
     * @param storageDocuments
-    *           Liste des documents en erreur
+    *           : Liste des documents en erreur
     */
-   public final void setStorageDocuments(StorageDocuments storageDocuments) {
+   public final void setStorageDocuments(final StorageDocuments storageDocuments) {
       this.storageDocuments = storageDocuments;
    }
 
@@ -52,10 +53,11 @@ public class BulkInsertionResults {
     * Initialise la liste des documents en erreur
     * 
     * @param storageDocumentsOnError
-    *           Liste des documents en erreur
+    *           : Liste des documents en erreur
     */
+   @SuppressWarnings("PMD.LongVariable")
    public final void setStorageDocumentsOnError(
-         StorageDocumentsOnError storageDocumentsOnError) {
+         final StorageDocumentsOnError storageDocumentsOnError) {
       this.storageDocumentsOnError = storageDocumentsOnError;
    }
 
@@ -66,8 +68,13 @@ public class BulkInsertionResults {
     * @return liste des UUIDs
     */
    public final List<UUID> getUuids() {
-      if (uuids == null) {
-         return new ArrayList<UUID>();
+      List<UUID> listUuids = new ArrayList<UUID>();
+      if (storageDocuments != null
+            && (storageDocuments.getStorageDocuments() != null)) {
+         // Ici on parcour tous les documents pour récuperer les uuids
+         for (StorageDocument document : storageDocuments.getStorageDocuments()) {
+            listUuids.add(document.getUuid());
+         }
       }
       return uuids;
    }
@@ -77,9 +84,9 @@ public class BulkInsertionResults {
     * bien déroulée
     * 
     * @param uuids
-    *           La liste des UUIDS
+    *           : La liste des UUIDS
     */
-   public final void setUuids(List<UUID> uuids) {
+   public final void setUuids(final List<UUID> uuids) {
       this.uuids = uuids;
    }
 
@@ -87,12 +94,13 @@ public class BulkInsertionResults {
     * Constructeur
     * 
     * @param storageDocuments
-    *           Les documents archivés
+    *           : Les documents archivés
     * @param storageDocumentsOnError
-    *           Les documents en erreur
+    *           : Les documents en erreur
     * @param uuids
-    *           Les UUIDs des documents archivés
+    *           : Les UUIDs des documents archivés
     */
+   @SuppressWarnings("PMD.LongVariable")
    public BulkInsertionResults(final StorageDocuments storageDocuments,
          final StorageDocumentsOnError storageDocumentsOnError,
          final List<UUID> uuids) {

@@ -17,7 +17,7 @@ public interface RetrivalService {
     * Permet de récupérer le contenu d’un document à partir du critère «
     * UUIDCriteria ».
     * 
-    * @param uuidCriteria
+    * @param uuidCriteria :
     *           L'identifiant unique du document
     * 
     * @return Le contenu du document
@@ -25,14 +25,15 @@ public interface RetrivalService {
     * @throws RetrievalServiceRtEx
     *            Runtime exception
     */
-   Byte[] retrieveStorageDocumentContentByUUID(UUIDCriteria uuidCriteria)
+ //CHECKSTYLE:OFF
+   byte[] retrieveStorageDocumentContentByUUID(final UUIDCriteria uuidCriteria)
          throws RetrievalServiceRtEx;
 
    /**
     * Permet de récupérer les métadonnées d’un document à partir du critère «
     * UUIDCriteria »
     * 
-    * @param uuidCriteria
+    * @param uuidCriteria :
     *           L'identifiant unique du document
     * 
     * @return Une liste de metadonnées
@@ -41,12 +42,12 @@ public interface RetrivalService {
     *            Runtime exception
     */
    List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
-         UUIDCriteria uuidCriteria) throws RetrievalServiceRtEx;
+        final UUIDCriteria uuidCriteria) throws RetrievalServiceRtEx;
 
    /**
     * Permet de récupérer un document à partir du critère « UUIDCriteria »
     * 
-    * @param uuidCriteria
+    * @param uuidCriteria :
     *           L'identifiant universel unique du document
     * 
     * @return Le document et ses métas données
@@ -56,5 +57,5 @@ public interface RetrivalService {
     */
    StorageDocument retrieveStorageDoculentsByUUID(
          UUIDCriteria uuidCriteria) throws RetrievalServiceRtEx;
-
+ 
 }

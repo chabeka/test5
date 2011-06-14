@@ -27,21 +27,22 @@ public class UUIDCriteria extends AbstractCriteria {
    /**
     * Initialise l’identifiant unique universel
     * 
-    * @param uuid
+    * @param uuid :
     *           L'identifiant
     */
-   public final void setUuid(UUID uuid) {
+   public final void setUuid(final UUID uuid) {
       this.uuid = uuid;
    }
 
    /**
     * Constructeur
     * 
-    * @param uuid
+    * @param uuid :
     *           L'identifiant unique universel
-    * @param desiredStorageMetadatas
+    * @param desiredStorageMetadatas :
     *           Les métadonnées de la recherche
     */
+   @SuppressWarnings("PMD.LongVariable")
    public UUIDCriteria(final UUID uuid,
          final List<StorageMetadata> desiredStorageMetadatas) {
       super(desiredStorageMetadatas);

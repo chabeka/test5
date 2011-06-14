@@ -13,8 +13,9 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
  * souhaitées dans le cadre d’une recherche ou d’une récupération d’un document.
  * </li>
  */
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractCriteria {
-
+   @SuppressWarnings("PMD.LongVariable")
    private List<StorageMetadata> desiredStorageMetadatas;
 
    /**
@@ -29,10 +30,11 @@ public abstract class AbstractCriteria {
    /**
     * Initialise la liste des métadonnées
     * 
-    * @param desiredStorageMetadatas
+    * @param desiredStorageMetadatas : 
     *           La liste des métadonnées
     */
-   public final void setDesiredStorageMetadatas(
+   @SuppressWarnings("PMD.LongVariable")
+   public final void setDesiredStorageMetadatas(final
          List<StorageMetadata> desiredStorageMetadatas) {
       this.desiredStorageMetadatas = desiredStorageMetadatas;
    }
@@ -40,11 +42,12 @@ public abstract class AbstractCriteria {
    /**
     * Constructeur
     * 
-    * @param desiredStorageMetadatas
+    * @param desiredStorageMetadatas :
     *           La liste des métadonnées souhaitée pour la recherche ou la
     *           récupération d'un document
     */
-   public AbstractCriteria(List<StorageMetadata> desiredStorageMetadatas) {
+   @SuppressWarnings("PMD.LongVariable")
+   public AbstractCriteria(final List<StorageMetadata> desiredStorageMetadatas) {
       this.desiredStorageMetadatas = desiredStorageMetadatas;
    }
 }

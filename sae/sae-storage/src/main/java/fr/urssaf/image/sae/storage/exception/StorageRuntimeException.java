@@ -4,7 +4,7 @@ package fr.urssaf.image.sae.storage.exception;
  * Classe de base des exceptions de stockage supportant les exceptions
  * imbriquées
  * 
- *<li>
+ * <li>
  * Attribut serialVersionUID Caractérise l'erreur</li>
  */
 public class StorageRuntimeException extends RuntimeException {
@@ -18,7 +18,7 @@ public class StorageRuntimeException extends RuntimeException {
     * Constructeur basique
     */
    public StorageRuntimeException() {
-
+      super();
    }
 
    /**
@@ -34,9 +34,9 @@ public class StorageRuntimeException extends RuntimeException {
    /**
     * Constructeur
     * 
-    * @param message
+    * @param message :
     *           Le message d'erreur
-    * @param cause
+    * @param cause :
     *           La cause de l'erreur
     */
    public StorageRuntimeException(final String message, final Throwable cause) {

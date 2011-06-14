@@ -23,7 +23,7 @@ public class StorageHost {
    /**
     * Retourne l’adresse IP de la machine où se trouve la base de stockage
     * 
-    * @return Adresse IP
+    * @return L'adresse IP
     */
    public final String getHostIp() {
       return hostIp;
@@ -32,10 +32,10 @@ public class StorageHost {
    /**
     * Initialise l'adresse IP de l'hote
     * 
-    * @param hostIp
+    * @param hostIp : 
     *           L'adresse IP de l'hote
     */
-   public final void setHostIp(String hostIp) {
+   public final void setHostIp(final String hostIp) {
       this.hostIp = hostIp;
    }
 
@@ -51,7 +51,7 @@ public class StorageHost {
    /**
     * Initalise le nom de la machine de stockage
     * 
-    * @param hostName
+    * @param hostName : 
     *           Le nom du serveur de stockage
     */
    public final void setHostName(final String hostName) {
@@ -70,10 +70,10 @@ public class StorageHost {
    /**
     * Initialise le port de la machine où se trouve la base de stockage
     * 
-    * @param hostPort
+    * @param hostPort : 
     *           Le port de la machine de stockage
     */
-   public final void setHostPort(int hostPort) {
+   public final void setHostPort(final int hostPort) {
       this.hostPort = hostPort;
    }
 
@@ -89,23 +89,23 @@ public class StorageHost {
    /**
     * Initialise l’identifant du domaine où se trouve la base de stockage
     * 
-    * @param hostDomain
+    * @param hostDomain :
     *           L'identifiant du domaine
     */
-   public final void setHostDomain(int hostDomain) {
+   public final void setHostDomain(final int hostDomain) {
       this.hostDomain = hostDomain;
    }
 
    /**
     * Constructeur
     * 
-    * @param hostName
+    * @param hostName : 
     *           Le nom de la machine de stockage
-    * @param hostIp
+    * @param hostIp : 
     *           L'adresse IP de la machine de stockage
-    * @param hostPort
+    * @param hostPort : 
     *           Le port de la machine de stockage
-    * @param hostDomain
+    * @param hostDomain : 
     *           L'identifiant du domaine de la machine de stockage
     */
    public StorageHost(final String hostName, final String hostIp,

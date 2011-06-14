@@ -25,7 +25,7 @@ public class StorageMetadata {
    /**
     * Initialise le code de la métadonnée
     * 
-    * @param code
+    * @param code :
     *           Le code de la métadonnée
     */
    public final void setCode(final String code) {
@@ -44,7 +44,7 @@ public class StorageMetadata {
    /**
     * Initialise la valeur de la métadonnée
     * 
-    * @param value
+    * @param value :
     *           La valeur de la métadonnée
     */
    public final void setValue(final Object value) {
@@ -54,9 +54,9 @@ public class StorageMetadata {
    /**
     * Constructeur
     * 
-    * @param code
+    * @param code :
     *           Le code de la Métadonnée
-    * @param value
+    * @param value :
     *           La valeur de la Métadonnée
     */
    public StorageMetadata(final String code, final Object value) {

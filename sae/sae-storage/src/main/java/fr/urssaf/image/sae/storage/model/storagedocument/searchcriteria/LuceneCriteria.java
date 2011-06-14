@@ -29,10 +29,10 @@ public class LuceneCriteria extends AbstractCriteria {
    /**
     * Initialise la requête lucene
     * 
-    * @param luceneQuery
+    * @param luceneQuery :
     *           Reaquête Lucene
     */
-   public final void setLuceneQuery(String luceneQuery) {
+   public final void setLuceneQuery(final String luceneQuery) {
       this.luceneQuery = luceneQuery;
    }
 
@@ -50,10 +50,10 @@ public class LuceneCriteria extends AbstractCriteria {
     * Initialise la valeur limite du nombre limite de document à retourner dans
     * le cadre d’une recherche
     * 
-    * @param limit
+    * @param limit : 
     *           Le nombre maximum de documents à retourner dans une recherche
     */
-   public final void setLimit(int limit) {
+   public final void setLimit(final int limit) {
       this.limit = limit;
    }
 
@@ -67,8 +67,9 @@ public class LuceneCriteria extends AbstractCriteria {
     * @param desiredStorageMetadatas
     *           Les métadonnées désirées
     */
+   @SuppressWarnings("PMD.LongVariable")
    public LuceneCriteria(final String luceneQuery, final int limit,
-         List<StorageMetadata> desiredStorageMetadatas) {
+        final List<StorageMetadata> desiredStorageMetadatas) {
       super(desiredStorageMetadatas);
 
       this.luceneQuery = luceneQuery;

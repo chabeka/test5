@@ -5,11 +5,11 @@ package fr.urssaf.image.sae.storage.model.connection;
  * disposition pour se connecter à la base de stockage. <BR />
  * 
  * <li>
- * Attribut storageBase Représente les paramètres de la base de stockage</li>
+ * Attribut storageBase : Représente les paramètres de la base de stockage</li>
  * <li>
- * Attribut storageHost Représente les paramètres de la machine où est localise
+ * Attribut storageHost : Représente les paramètres de la machine où est localise
  * la base</li> <li>
- * Attribut storageUser Représente les paramètres de l’utilisateur de connexion</li>
+ * Attribut storageUser : Représente les paramètres de l’utilisateur de connexion</li>
  */
 public class StorageConnectionParameter {
 
@@ -31,7 +31,7 @@ public class StorageConnectionParameter {
    /**
     * Initialise la base de stockage
     * 
-    * @param storageBase
+    * @param storageBase : 
     *           La base de stockage
     */
    public final void setStorageBase(final StorageBase storageBase) {
@@ -50,7 +50,7 @@ public class StorageConnectionParameter {
    /**
     * Initialise les paramètres d'accès à la base de stockage
     * 
-    * @param storageHost
+    * @param storageHost : 
     *           Les paramètres d'accès à la base de stockage
     */
    public final void setStorageHost(final StorageHost storageHost) {
@@ -69,7 +69,7 @@ public class StorageConnectionParameter {
    /**
     * Initialise les paramètres de login à la base de stockage
     * 
-    * @param storageUser
+    * @param storageUser : 
     *           L'utilisateur de login en base de stockage
     */
    public final void setStorageUser(final StorageUser storageUser) {
@@ -79,16 +79,15 @@ public class StorageConnectionParameter {
    /**
     * Constructeur
     * 
-    * @param storageBase
+    * @param storageBase : 
     *           Le nom de la base de donnée de stockage
-    * @param storageHost
+    * @param storageHost : 
     *           Les paramètres de connexion à la base de stockage
-    * @param storageUser
+    * @param storageUser : 
     *           Les paramètres de login à la base de stockage
     */
    public StorageConnectionParameter(final StorageBase storageBase,
          final StorageHost storageHost, final StorageUser storageUser) {
-      super();
       this.storageBase = storageBase;
       this.storageHost = storageHost;
       this.storageUser = storageUser;

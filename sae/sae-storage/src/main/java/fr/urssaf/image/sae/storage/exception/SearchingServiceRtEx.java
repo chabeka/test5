@@ -22,19 +22,19 @@ public class SearchingServiceRtEx extends StorageRuntimeException {
 
    /**
     * Constructeur
-    * @param message Message de l'erreur
-    * @param cause Cause de l'erreur
+    * @param message : Message de l'erreur
+    * @param cause : Cause de l'erreur
     */
-   public SearchingServiceRtEx(String message, Throwable cause) {
+   public SearchingServiceRtEx(final String message,final Throwable cause) {
       super(message, cause);
    }
 
    /**
     * Constructeur
     * 
-    * @param message Le message de l'erreur
+    * @param message : Le message de l'erreur
     */
-   public SearchingServiceRtEx(String message) {
+   public SearchingServiceRtEx(final String message) {
       super(message);
     }
 

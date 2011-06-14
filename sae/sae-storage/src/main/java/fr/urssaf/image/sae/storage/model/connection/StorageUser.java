@@ -28,10 +28,10 @@ public class StorageUser {
    /**
     * Initialise le login de l’utilisateur
     * 
-    * @param login
+    * @param login : 
     *           Le login de l'utilisateur
     */
-   public final void setLogin(String login) {
+   public final void setLogin(final String login) {
       this.login = login;
    }
 
@@ -47,19 +47,19 @@ public class StorageUser {
    /**
     * Initialise le mot de passe de l’utilisateur
     * 
-    * @param password
+    * @param password : 
     *           Le mot de passe de l'utilisateur
     */
-   public final void setPassword(String password) {
+   public final void setPassword(final String password) {
       this.password = password;
    }
 
    /**
     * Constructeur
     * 
-    * @param login
+    * @param login : 
     *           Le login de l'utilisateur
-    * @param password
+    * @param password : 
     *           Le mot de passe de l'utilisateur
     */
    public StorageUser(final String login, final String password) {
