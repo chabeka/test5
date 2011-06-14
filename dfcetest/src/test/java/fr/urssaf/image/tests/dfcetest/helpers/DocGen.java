@@ -77,7 +77,7 @@ public class DocGen {
       for (int i = 0; i < nbDocs; i++) {
          Document doc = store();
          docs.add(doc);
-      }            
+      }
       return docs;
    }   
 }

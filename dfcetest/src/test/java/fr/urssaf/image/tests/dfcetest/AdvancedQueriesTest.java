@@ -196,5 +196,34 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       // SUT
       SearchResult result = ServiceProvider.getSearchService().search(lucene, searchLimit, base, null);
       assertEquals(0, result.getDocuments().size());
+   }
+   
+   /**
+    * Teste qu'une valeur peut contenir des espaces.
+    */
+   @Test
+   public void spaces() {
+      String appliSourceB = docGen.setRandomTitle("un titre ").getTitle();
+      docGen.store();
+      String lucene = String.format("%s:\"%s\"", appliSourceFName, appliSourceB);
+      System.out.println(lucene);
+      // SUT
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
+      assertEquals(1, result.getDocuments().size());
+   }
+   
+   /**
+    * Teste le caractère joker mono caractère : "?"
+    */
+   @Test
+   public void wildcard_mono() {
+      docGen.setTitle("azerty");
+      docGen.store();
+      //String lucene = String.format("%s:az?rty", appliSourceFName);
+      String lucene = String.format("%s:?????", appliSourceFName);
+      // SUT
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
+      assertEquals(1, result.getDocuments().size());
+      assertEquals(docGen.getTitle(), result.getDocuments().get(0).getFirstCriterion(appliSourceCategory).getWord());
    }   
 }

@@ -360,12 +360,13 @@ public class StressNcotiTest extends AbstractNcotiTest {
    @Test
    public void getBaseMultiThread() {
       Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
-      System.out.println(base  + " " + Thread.currentThread().getName());
+      System.out.println("getBaseMultiThread: " + base  + " " + Thread.currentThread().getName());
       
       Thread t = new Thread() {
          public void run() {
             System.out.println(Thread.currentThread().getName());
             Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+            System.out.println("getBaseMultiThread: " + base  + " " + Thread.currentThread().getName());
          };
       };
       t.start();
@@ -374,13 +375,14 @@ public class StressNcotiTest extends AbstractNcotiTest {
    @Test
    public void getBaseMultiThreadWithAuth() {
       Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
-      System.out.println(base  + " " + Thread.currentThread().getName());
+      System.out.println("getBaseMultiThreadWithAuth: " + base  + " " + Thread.currentThread().getName());
       
       Thread t = new Thread() {
          public void run() {
             Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_HOST, AMF_PORT, DOMAIN_ID);
             System.out.println(Thread.currentThread().getName());
             Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+            System.out.println("getBaseMultiThreadWithAuth: " + base  + " " + Thread.currentThread().getName());
             Authentication.closeSession();
          };
       };
