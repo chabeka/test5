@@ -38,22 +38,22 @@
 
    <dependencies>
       <!-- <dependency> -->
-      <!-- <groupId>com.docubase</groupId> -->
+      <!-- <groupId>net.docubase</groupId> -->
       <!-- <artifactId>dfce-serialization</artifactId> -->
       <!-- <version>0.9.2</version> -->
       <!-- </dependency> -->
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-client</artifactId>
          <version>0.9.2</version>
       </dependency>
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-pojo</artifactId>
          <version>0.9.2</version>
       </dependency>
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-service</artifactId>
          <version>0.9.2</version>
       </dependency>
