@@ -28,6 +28,7 @@
       <module>../sae-webservices-client-demo</module>
       <module>../sae-igc</module>
       <module>../sae-igcmaj</module>
+      <module>../sae-storage</module>
    </modules>
 
 </project>
