@@ -5,39 +5,22 @@ package fr.urssaf.image.sae.storage.model.connection;
  * base de stockage<BR />
  * 
  * <li>
- * Attribut hostIp : Représente l’adresse ip de la machine</li> <li>
+ * Attribut contextRoot : Représente le chemin d'accès à l'application web</li>
+ * <li>
  * Attribut hostName : Représente le nom de la machine</li> <li>
  * Attribut hostPort : Représente le port de la machine</li> <li>
- * Attribut hostDomain : Represente l'identifiant de Domaine de la machine</li>
+ * Attribut secure : Booléen permettant d'indiquer s'il faut utiliser http ou
+ * https</li>
  */
 public class StorageHost {
 
-   private String hostIp;
+   private String contextRoot;
 
    private String hostName;
 
    private int hostPort;
 
-   private int hostDomain;
-
-   /**
-    * Retourne l’adresse IP de la machine où se trouve la base de stockage
-    * 
-    * @return L'adresse IP
-    */
-   public final String getHostIp() {
-      return hostIp;
-   }
-
-   /**
-    * Initialise l'adresse IP de l'hote
-    * 
-    * @param hostIp : 
-    *           L'adresse IP de l'hote
-    */
-   public final void setHostIp(final String hostIp) {
-      this.hostIp = hostIp;
-   }
+   private boolean secure;
 
    /**
     * Retourne le nom de la machine où se trouve la base de stockage
@@ -51,8 +34,8 @@ public class StorageHost {
    /**
     * Initalise le nom de la machine de stockage
     * 
-    * @param hostName : 
-    *           Le nom du serveur de stockage
+    * @param hostName
+    *           : Le nom du serveur de stockage
     */
    public final void setHostName(final String hostName) {
       this.hostName = hostName;
@@ -70,49 +53,70 @@ public class StorageHost {
    /**
     * Initialise le port de la machine où se trouve la base de stockage
     * 
-    * @param hostPort : 
-    *           Le port de la machine de stockage
+    * @param hostPort
+    *           : Le port de la machine de stockage
     */
    public final void setHostPort(final int hostPort) {
       this.hostPort = hostPort;
    }
 
    /**
-    * Retourne l’identifant du domaine où se trouve la base de stockage
+    * Retourne le contexte root de l'application web
     * 
-    * @return L'identifiant du domaine
+    * @return Le contexte root de l'application web
     */
-   public final int getHostDomain() {
-      return hostDomain;
+   public final String getContextRoot() {
+      return contextRoot;
    }
 
    /**
-    * Initialise l’identifant du domaine où se trouve la base de stockage
+    * Initialise le context root de l'application web
     * 
-    * @param hostDomain :
-    *           L'identifiant du domaine
+    * @param contextRoot
+    *           : Le contexte root de l'application web
     */
-   public final void setHostDomain(final int hostDomain) {
-      this.hostDomain = hostDomain;
+   public final void setContextRoot(String contextRoot) {
+      this.contextRoot = contextRoot;
    }
+
+   /**
+    * Retourne le fait que la connexion utilise https ou non
+    * 
+    * @return Vrai si https faux si http
+    */
+   public final boolean isSecure() {
+      return secure;
+   }
+
+   /**
+    * Initialise le fait que la connexion soit sécurisée ou non
+    * 
+    * @param secure
+    *           : Vrai si https, faux si http
+    */
+   public final void setSecure(boolean secure) {
+      this.secure = secure;
+   }
+
 
    /**
     * Constructeur
     * 
-    * @param hostName : 
-    *           Le nom de la machine de stockage
-    * @param hostIp : 
-    *           L'adresse IP de la machine de stockage
-    * @param hostPort : 
-    *           Le port de la machine de stockage
-    * @param hostDomain : 
-    *           L'identifiant du domaine de la machine de stockage
+    * @param hostName
+    *           : Le nom de la machine de stockage
+    * @param hostPort
+    *           : Le port de la machine de stockage
+    * @param contextRoot
+    *           : Le context root de l'application web
+    * @param isSecure
+    *           : Vrai si https, faux si http
+    * 
     */
-   public StorageHost(final String hostName, final String hostIp,
-         final int hostPort, final int hostDomain) {
+   public StorageHost(final String hostName, final int hostPort,
+         final String contextRoot, final boolean isSecure) {
       this.hostName = hostName;
-      this.hostIp = hostIp;
       this.hostPort = hostPort;
-      this.hostDomain = hostDomain;
+      this.contextRoot = contextRoot;
+      secure = isSecure;
    }
 }

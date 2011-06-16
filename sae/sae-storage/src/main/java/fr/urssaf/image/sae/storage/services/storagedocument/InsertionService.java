@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.storage.services.storagedocument;
 import java.util.List;
 import java.util.UUID;
 
-import fr.urssaf.image.sae.storage.exception.InsertionServiceRtEx;
+import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
@@ -21,11 +21,11 @@ public interface InsertionService {
     * 
     * @return L'identifiant unique du document
     * 
-    * @throws InsertionServiceRtEx
+    * @throws InsertionServiceEx
     *            Runtime exception typée
     */
    UUID insertStorageDocument(StorageDocument strorageDocument)
-         throws InsertionServiceRtEx;
+         throws InsertionServiceEx;
 
    /**
     * Permet de réaliser une insertion en masse de documents

@@ -2,7 +2,7 @@ package fr.urssaf.image.sae.storage.services.storagedocument;
 
 import java.util.List;
 
-import fr.urssaf.image.sae.storage.exception.RetrievalServiceRtEx;
+import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
@@ -22,12 +22,12 @@ public interface RetrivalService {
     * 
     * @return Le contenu du document
     * 
-    * @throws RetrievalServiceRtEx
+    * @throws RetrievalServiceEx
     *            Runtime exception
     */
  //CHECKSTYLE:OFF
    byte[] retrieveStorageDocumentContentByUUID(final UUIDCriteria uuidCriteria)
-         throws RetrievalServiceRtEx;
+         throws RetrievalServiceEx;
 
    /**
     * Permet de récupérer les métadonnées d’un document à partir du critère «
@@ -38,11 +38,11 @@ public interface RetrivalService {
     * 
     * @return Une liste de metadonnées
     * 
-    * @throws RetrievalServiceRtEx
+    * @throws RetrievalServiceEx
     *            Runtime exception
     */
    List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
-        final UUIDCriteria uuidCriteria) throws RetrievalServiceRtEx;
+        final UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
 
    /**
     * Permet de récupérer un document à partir du critère « UUIDCriteria »
@@ -52,10 +52,10 @@ public interface RetrivalService {
     * 
     * @return Le document et ses métas données
     * 
-    * @throws RetrievalServiceRtEx
+    * @throws RetrievalServiceEx
     *            Runtime exception
     */
    StorageDocument retrieveStorageDoculentsByUUID(
-         UUIDCriteria uuidCriteria) throws RetrievalServiceRtEx;
+         UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
  
 }
