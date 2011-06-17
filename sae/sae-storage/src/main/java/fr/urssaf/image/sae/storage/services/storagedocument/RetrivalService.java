@@ -55,7 +55,7 @@ public interface RetrivalService {
     * @throws RetrievalServiceEx
     *            Runtime exception
     */
-   StorageDocument retrieveStorageDoculentsByUUID(
+   StorageDocument retrieveStorageDocumentByUUID(
          UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
  
 }
