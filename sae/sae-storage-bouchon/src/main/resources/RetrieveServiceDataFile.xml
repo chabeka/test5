@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Ce fichier contient les donnés pour les services de récupération  -->
+<retrieveServiceData>
+	<retrieveDoc>
+		<document>
+			<entry>
+				<string>Path</string>
+				<string>src/main/resources/doc.pdf</string>
+			</entry>
+		</document>
+	</retrieveDoc>
+	<retrieveMetaData>
+		<document>
+			<entry>
+				<string>UUID</string>
+				<string>48758200-A29B-18C4-B616-455677840120</string>
+			</entry>
+			<entry>
+				<string>CodeRND</string>
+				<string>1.2.3.3.1 </string>
+			</entry>
+			<entry>
+				<string>NumeroCotisant</string>
+				<string>719900</string>
+			</entry>
+			<entry>
+				<string>Siret</string>
+				<string>07412723410007</string>
+			</entry>
+			<entry>
+				<string>DenominationCompte</string>
+				<string>COUTURIER GINETTE</string>
+			</entry>
+			<entry>
+				<string>CodeOrganisme</string>
+				<string>UR030</string>
+			</entry>
+			<!-- <entry> <string>DateOrigine</string> <string>2011-06-03</string> 
+				</entry> -->
+		</document>
+	</retrieveMetaData>
+	<retrieveDocMetaData>
+		<document>
+			<entry>
+				<string>Path</string>
+				<string>src/main/resources/doc.pdf</string>
+			</entry>
+			<entry>
+				<string>UUID</string>
+				<string>48758200-A29B-18C4-B616-455677840120</string>
+			</entry>
+			<entry>
+				<string>CodeRND</string>
+				<string>1.2.3.3.1 </string>
+			</entry>
+			<entry>
+				<string>NumeroCotisant</string>
+				<string>719900</string>
+			</entry>
+			<entry>
+				<string>Siret</string>
+				<string>07412723410007</string>
+			</entry>
+			<entry>
+				<string>DenominationCompte</string>
+				<string>COUTURIER GINETTE</string>
+			</entry>
+			<entry>
+				<string>CodeOrganisme</string>
+				<string>UR030</string>
+			</entry>
+			<!-- <entry> <string>DateOrigine</string> <string>2011-06-03</string> 
+				</entry> -->
+		</document>
+	</retrieveDocMetaData>
+</retrieveServiceData>

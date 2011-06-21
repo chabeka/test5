@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Ce fichier contient les donnés pour les services de recherche  -->
+<searchServiceData>
+	<searchByLuceneData>
+		<document>
+			<entry>
+				<string>UUID</string>
+				<string>110E8400-E29B-11D4-A716-446655440000</string>
+			</entry>
+			<entry>
+				<string>CodeRND</string>
+				<string>3.1.3.1.1</string>
+			</entry>
+			<entry>
+				<string>NumeroCotisant</string>
+				<string>704815</string>
+			</entry>
+			<entry>
+				<string>Siret</string>
+				<string>49980055500017</string>
+			</entry>
+			<entry>
+				<string>DenominationCompte</string>
+				<string>SPOHN ERWAN MARIE MAX </string>
+			</entry>
+			<entry>
+				<string>CodeOrganisme</string>
+				<string>UR030</string>
+			</entry>
+			<!-- <entry> <string>DateOrigine</string> <string>2011-06-03</string> 
+				</entry> -->
+		</document>
+	</searchByLuceneData>
+	<searchByLuceneData>
+		<document>
+			<entry>
+				<string>UUID</string>
+				<string>510E8200-E29B-18C4-A716-446677440120</string>
+			</entry>
+			<entry>
+				<string>CodeRND</string>
+				<string>1.A.X.X.X</string>
+			</entry>
+			<entry>
+				<string>NumeroCotisant</string>
+				<string>723804</string>
+			</entry>
+			<entry>
+				<string>Siret</string>
+				<string>07413151710009</string>
+			</entry>
+			<entry>
+				<string>DenominationCompte</string>
+				<string>CHEVENIER ANDRE</string>
+			</entry>
+			<entry>
+				<string>CodeOrganisme</string>
+				<string>UR030</string>
+			</entry>
+		<!-- 	<entry>
+				<string>DateOrigine</string>
+				<string>2011-06-03</string>
+			</entry>  -->
+		</document>
+	</searchByLuceneData>
+	<searchByLuceneData>
+		<document>
+			<entry>
+				<string>UUID</string>
+				<string>48758200-A29B-18C4-B616-455677840120</string>
+			</entry>
+			<entry>
+				<string>CodeRND</string>
+				<string>1.2.3.3.1 </string>
+			</entry>
+			<entry>
+				<string>NumeroCotisant</string>
+				<string>719900</string>
+			</entry>
+			<entry>
+				<string>Siret</string>
+				<string>07412723410007</string>
+			</entry>
+			<entry>
+				<string>DenominationCompte</string>
+				<string>COUTURIER GINETTE</string>
+			</entry>
+			<entry>
+				<string>CodeOrganisme</string>
+				<string>UR030</string>
+			</entry>
+		<!--  	<entry>
+				<string>DateOrigine</string>
+				<string>2011-06-03</string>
+			</entry>-->
+		</document>
+	</searchByLuceneData>
+	<searchByUUIDData>
+		<document>
+			<entry>
+				<string>UUID</string>
+				<string>48758200-A29B-18C4-B616-455677840120</string>
+			</entry>
+			<entry>
+				<string>CodeRND</string>
+				<string>1.2.3.3.1 </string>
+			</entry>
+			<entry>
+				<string>NumeroCotisant</string>
+				<string>719900</string>
+			</entry>
+			<entry>
+				<string>Siret</string>
+				<string>07412723410007</string>
+			</entry>
+			<entry>
+				<string>DenominationCompte</string>
+				<string>COUTURIER GINETTE</string>
+			</entry>
+			<entry>
+				<string>CodeOrganisme</string>
+				<string>UR030</string>
+			</entry>
+			<!--  <entry>
+				<string>DateOrigine</string>
+				<string>2011-06-03</string>
+			</entry>-->
+		</document>
+	</searchByUUIDData>
+</searchServiceData>
