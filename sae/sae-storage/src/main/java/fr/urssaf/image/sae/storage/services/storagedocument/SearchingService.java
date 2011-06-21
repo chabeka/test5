@@ -22,7 +22,7 @@ public interface SearchingService {
     * @throws SearchingServiceEx
     *            Une exception runtime
     */
-  //CHECKSTYLE:OFF
+  
    StorageDocuments searchStorageDocumentByLuceneCriteria(final
          LuceneCriteria luceneCriteria) throws SearchingServiceEx;
 
@@ -39,5 +39,5 @@ public interface SearchingService {
     */
    StorageDocument searchStorageDocumentByUUIDCriteria(final UUIDCriteria uuidCriteria)
          throws SearchingServiceEx;
- //CHECKSTYLE:ON
+ 
 }

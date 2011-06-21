@@ -25,7 +25,7 @@ public interface RetrievalService {
     * @throws RetrievalServiceEx
     *            Runtime exception
     */
- //CHECKSTYLE:OFF
+
    byte[] retrieveStorageDocumentContentByUUID(final UUIDCriteria uuidCriteria)
          throws RetrievalServiceEx;
 
@@ -55,7 +55,7 @@ public interface RetrievalService {
     * @throws RetrievalServiceEx
     *            Runtime exception
     */
-   StorageDocument retrieveStorageDocumentByUUID(
+   StorageDocument retrieveStorageDocumentByUUID(final
          UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
  
 }
