@@ -26,8 +26,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
  */
 public final class SearchDataProvider {
 	@SuppressWarnings("PMD.LongVariable")
-	private static final File SEARCH_SERVICE_DATA = new File(
-			"src/main/resources/SearchServiceDataFile.xml");
+	private static final File SEARCH_SERVICE_DATA = Utils.getFileFromClassPath("SearchServiceDataFile.xml");
 	private static final Logger LOGGER = Logger
 			.getLogger(SearchDataProvider.class);
 	private static SearchServiceData searchServiceData;

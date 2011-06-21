@@ -26,8 +26,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
  */
 public final class RetrieveDataProvider {
 	  @SuppressWarnings("PMD.LongVariable")
-	private static final File RETRIEVE_SERVICE_DATA = new File(
-			"src/main/resources/RetrieveServiceDataFile.xml");
+	private static final File RETRIEVE_SERVICE_DATA = Utils.getFileFromClassPath("RetrieveServiceDataFile.xml");
 	  /** Le composant pour les traces */
 		private static final Logger LOGGER = Logger.getLogger(RetrieveDataProvider.class);
 	  @SuppressWarnings("PMD.LongVariable")

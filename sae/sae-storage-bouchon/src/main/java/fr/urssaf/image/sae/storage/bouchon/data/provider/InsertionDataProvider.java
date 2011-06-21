@@ -25,8 +25,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
  */
 public final class InsertionDataProvider {
 	  @SuppressWarnings("PMD.LongVariable")
-	private static final File INSERTION_SERVICE_DATA_FILE = new File(
-			"src/main/resources/InsertionServiceDataFile.xml");
+	private static final File INSERTION_SERVICE_DATA_FILE = Utils.getFileFromClassPath("InsertionServiceDataFile.xml");
 	  @SuppressWarnings("PMD.LongVariable")
 	private static InsertionServiceData insertionServiceData;
 	  /** Le composant pour les traces */

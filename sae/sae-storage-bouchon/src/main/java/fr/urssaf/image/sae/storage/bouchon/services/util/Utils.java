@@ -101,6 +101,10 @@ public final class Utils {
 
 	}
 
+	public static File getFileFromClassPath(final String filePath) {
+		return new File(ClassLoader.getSystemResource(filePath).getFile());
+	}
+
 	/** Cette classe n'est pas faite pour être instanciée. */
 	private Utils() {
 		assert false;
