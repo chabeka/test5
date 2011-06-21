@@ -5,14 +5,14 @@ import java.util.List;
 
 /**
  * Classe abstraite contenant les attributs communs des différents types de
- * documetns destinés au stockage</BR>
+ * documents destinés au stockage</BR>
  * 
  * <li>
  * Attribut metadatas : Liste des métadatas</li> <li>
  * Attribut content : Le contenu du document</li> <li>
  * Attribut filePath : Le chemin du document</li>
  */
-@SuppressWarnings("PMD")
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractStorageDocument {
 
    private List<StorageMetadata> metadatas;

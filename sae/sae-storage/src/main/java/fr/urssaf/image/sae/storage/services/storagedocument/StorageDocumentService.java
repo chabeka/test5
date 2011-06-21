@@ -5,6 +5,6 @@ package fr.urssaf.image.sae.storage.services.storagedocument;
  * 
  */
 public interface StorageDocumentService extends InsertionService,
-      SearchingService, RetrivalService {
+      SearchingService, RetrievalService {
 
 }

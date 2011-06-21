@@ -9,8 +9,7 @@ import java.util.UUID;
  * 
  * <li>
  * Attribut storageDocuments : la liste des documents archivés</li> <li>
- * Attribut storageDocumentsOnError : la liste des documents en erreur</li> <li>
- * Attribut uuids : La liste des uuids des documents archivés</li>
+ * Attribut storageDocumentsOnError : la liste des documents en erreur</li> 
  */
 
 public class BulkInsertionResults {
@@ -19,7 +18,7 @@ public class BulkInsertionResults {
    @SuppressWarnings("PMD.LongVariable")
    private StorageDocumentsOnError storageDocumentsOnError;
 
-   private List<UUID> uuids;
+  
 
    /**
     * Retourne la liste des documents archivés
@@ -68,27 +67,17 @@ public class BulkInsertionResults {
     * @return liste des UUIDs
     */
    public final List<UUID> getUuids() {
-      List<UUID> listUuids = new ArrayList<UUID>();
+    final  List<UUID> listUuids = new ArrayList<UUID>();
       if (storageDocuments != null
-            && (storageDocuments.getStorageDocuments() != null)) {
+            && (storageDocuments.getListOfStorageDocument() != null)) {
          // Ici on parcour tous les documents pour récuperer les uuids
-         for (StorageDocument document : storageDocuments.getStorageDocuments()) {
+         for (StorageDocument document : storageDocuments.getListOfStorageDocument()) {
             listUuids.add(document.getUuid());
          }
       }
-      return uuids;
+      return listUuids;
    }
 
-   /**
-    * Initialise la liste des UUID des documents dont l’insertion en masse s’est
-    * bien déroulée
-    * 
-    * @param uuids
-    *           : La liste des UUIDS
-    */
-   public final void setUuids(final List<UUID> uuids) {
-      this.uuids = uuids;
-   }
 
    /**
     * Constructeur
@@ -97,16 +86,14 @@ public class BulkInsertionResults {
     *           : Les documents archivés
     * @param storageDocumentsOnError
     *           : Les documents en erreur
-    * @param uuids
-    *           : Les UUIDs des documents archivés
+    * 
     */
    @SuppressWarnings("PMD.LongVariable")
    public BulkInsertionResults(final StorageDocuments storageDocuments,
-         final StorageDocumentsOnError storageDocumentsOnError,
-         final List<UUID> uuids) {
+         final StorageDocumentsOnError storageDocumentsOnError) {
       this.storageDocuments = storageDocuments;
       this.storageDocumentsOnError = storageDocumentsOnError;
-      this.uuids = uuids;
+     
    }
 
 }

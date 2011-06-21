@@ -75,7 +75,7 @@ public class StorageHost {
     * @param contextRoot
     *           : Le contexte root de l'application web
     */
-   public final void setContextRoot(String contextRoot) {
+   public final void setContextRoot(final String contextRoot) {
       this.contextRoot = contextRoot;
    }
 
@@ -94,7 +94,7 @@ public class StorageHost {
     * @param secure
     *           : Vrai si https, faux si http
     */
-   public final void setSecure(boolean secure) {
+   public final void setSecure(final boolean secure) {
       this.secure = secure;
    }
 

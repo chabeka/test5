@@ -15,7 +15,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractCriteria {
-   @SuppressWarnings("PMD.LongVariable")
+	@SuppressWarnings("PMD.LongVariable")
    private List<StorageMetadata> desiredStorageMetadatas;
 
    /**

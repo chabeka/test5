@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.storage.services.connection;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 
 /**
- * Fournit les services de connexion à la base de stockage
+ * Fournit le service de connexion à la base de stockage
  */
 public interface StorageConnectionService {
 

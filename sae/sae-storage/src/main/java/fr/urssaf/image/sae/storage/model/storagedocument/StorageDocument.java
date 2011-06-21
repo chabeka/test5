@@ -43,12 +43,29 @@ public class StorageDocument extends AbstractStorageDocument {
     *           Le contenu du document
     * @param filePath :
     *           Le chemin du document
-    * @param uuid : 
-    *           L'identifiant universel unique
+    * 
     */
    public StorageDocument(final List<StorageMetadata> metadatas,
-         final byte[] content, final File filePath, final UUID uuid) {
+         final byte[] content, final File filePath) {
       super(metadatas, content, filePath);
-      this.uuid = uuid;
+     
    }
+   /**
+    * Constructeur
+    * 
+    * @param metadatas :
+    *           Les metadatas du document
+    * @param content :
+    *           Le contenu du document
+    * @param filePath :
+    *           Le chemin du document
+    * @param uuid : l'uuid
+    * 
+    */
+   public StorageDocument(final List<StorageMetadata> metadatas,
+	         final byte[] content, final File filePath ,final UUID uuid) {
+	      super(metadatas, content, filePath);
+	      this.uuid = uuid;
+	   }
+   
 }

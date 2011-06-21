@@ -11,7 +11,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCrit
  * Fournit les services de récupération des éléments d’un document ou d’un
  * document
  */
-public interface RetrivalService {
+public interface RetrievalService {
 
    /**
     * Permet de récupérer le contenu d’un document à partir du critère «
