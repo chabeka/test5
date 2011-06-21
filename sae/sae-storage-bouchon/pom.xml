@@ -9,9 +9,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.urssaf.image.sae</groupId>
 	<artifactId>sae-storage-bouchon</artifactId>
+	<name>sae-storage-bouchon</name>
 	<version>0.0.1-SNAPSHOT</version>
-
-<!-- Ajout des dependances -->
+	<description>Archive bouchon</description>
+	<developers>
+		<developer>
+			<name> Ahmed  Kénoré </name>
+		</developer>
+	</developers>
+	<!-- Ajout des dependances -->
 	<dependencies>
 		<dependency>
 			<groupId> fr.urssaf.image.sae </groupId>
@@ -54,7 +60,7 @@
 			<artifactId>guava</artifactId>
 			<version>r09</version>
 		</dependency>
-		
+
 		<!-- Dépendance au framework de tests unitaires JUnit, utilisé dans tous 
 			les composants -->
 		<dependency>
