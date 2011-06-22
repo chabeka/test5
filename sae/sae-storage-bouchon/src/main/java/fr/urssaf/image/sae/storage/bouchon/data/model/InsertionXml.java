@@ -5,13 +5,13 @@ package fr.urssaf.image.sae.storage.bouchon.data.model;
  *
  */
 @SuppressWarnings("PMD")
-public class InsertionXml {
+public final class InsertionXml {
 /**
  * permettant de construie le flux xml pour les servies de d'insertion
  * @return Le flux xml pour les servies d'insertion
  */
 
-	public static final String buildXmlfile() {
+	public static String buildXmlfile() {
 		final StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		stringBuilder.append("<insertionServiceData>");

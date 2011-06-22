@@ -18,13 +18,13 @@
 	</appender>
 	
 	<category name="fr.urssaf.image.sae.storage.bouchon.data.provider">
-		<priority value="info" />
-		<appender-ref ref="rolling-file" />
+		<priority value="debug" />
+		<appender-ref ref="console" />
 	</category>
 
 	<root>
 		<priority value="debug" />
 		<appender-ref ref="console" />
-		<appender-ref ref="rolling-file" />
+	<!--  <appender-ref ref="rolling-file" />-->
 	</root>
 </log4j:configuration>

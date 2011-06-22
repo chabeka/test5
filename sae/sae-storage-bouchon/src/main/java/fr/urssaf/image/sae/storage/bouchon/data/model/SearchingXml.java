@@ -5,12 +5,12 @@ package fr.urssaf.image.sae.storage.bouchon.data.model;
  *
  */
 @SuppressWarnings("PMD")
-public class SearchingXml {
+public final class SearchingXml {
 /**
  * permettant de construie le flux xml pour les servies de recherche
  * @return Le flux xml pour les servies de recherche
  */
-	public static final String buildXmlfile() {
+	public static String buildXmlfile() {
 		final StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		stringBuilder.append("<searchServiceData>");
@@ -71,10 +71,6 @@ public class SearchingXml {
 		stringBuilder.append("<string>CodeOrganisme</string>");
 		stringBuilder.append("<string>UR030</string>");
 		stringBuilder.append("</entry>");
-		stringBuilder.append("<entry>");
-		stringBuilder.append("<string>DateOrigine</string>");
-		stringBuilder.append("<string>2011-06-03</string>");
-		stringBuilder.append("</entry>");
 		stringBuilder.append("</document>");
 		stringBuilder.append("</searchByLuceneData>");
 		stringBuilder.append("<searchByLuceneData>");
@@ -103,10 +99,6 @@ public class SearchingXml {
 		stringBuilder.append("<entry>");
 		stringBuilder.append("<string>CodeOrganisme</string>");
 		stringBuilder.append("<string>UR030</string>");
-		stringBuilder.append("</entry>");
-		stringBuilder.append("<entry>");
-		stringBuilder.append("<string>DateOrigine</string>");
-		stringBuilder.append("<string>2011-06-03</string>");
 		stringBuilder.append("</entry>");
 		stringBuilder.append("</document>");
 		stringBuilder.append("</searchByLuceneData>");
@@ -137,10 +129,6 @@ public class SearchingXml {
 		stringBuilder.append("<entry>");
 		stringBuilder.append("<string>CodeOrganisme</string>");
 		stringBuilder.append("<string>UR030</string>");
-		stringBuilder.append("</entry>");
-		stringBuilder.append("<entry>");
-		stringBuilder.append("<string>DateOrigine</string>");
-		stringBuilder.append("<string>2011-06-03</string>");
 		stringBuilder.append("</entry>");
 		stringBuilder.append("</document>");
 		stringBuilder.append("</searchByUUIDData>");

@@ -60,7 +60,11 @@
 			<artifactId>guava</artifactId>
 			<version>r09</version>
 		</dependency>
-
+		<dependency>
+    <groupId>commons-codec</groupId>
+    <artifactId>commons-codec</artifactId>
+    <version>1.5</version>
+</dependency>
 		<!-- Dépendance au framework de tests unitaires JUnit, utilisé dans tous 
 			les composants -->
 		<dependency>

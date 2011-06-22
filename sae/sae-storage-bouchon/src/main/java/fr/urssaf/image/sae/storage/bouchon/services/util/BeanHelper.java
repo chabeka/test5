@@ -10,23 +10,25 @@ import org.apache.commons.lang.StringUtils;
 
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
+
 /**
  * 
  * @author akenore
- *
+ * 
  */
 public final class BeanHelper {
 	@SuppressWarnings("PMD.LongVariable")
-	private static final  String UUID_CODE_METADATA = "UUID";
+	private static final String UUID_CODE_METADATA = "UUID";
 	@SuppressWarnings("PMD.LongVariable")
-	private static final  String PATH_CODE_METADATA = "Path";
+	private static final String PATH_CODE_METADATA = "Path";
 
 	/**
 	 * Construit un StorageDocument à partir d'une liste de métadonnées
 	 * 
 	 * @param providedMetaData
 	 *            : liste de métadonnées fournie
-	 *            @param withoutUUID : boolean permet de prendre en compte L'UIID
+	 * @param withoutUUID
+	 *            : boolean permet de prendre en compte L'UIID
 	 * @return un StorageMetaData
 	 */
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
@@ -42,7 +44,7 @@ public final class BeanHelper {
 		}
 		if (StringUtils.isNotEmpty(path)) {
 
-			content = Utils.fileContent(path);
+			content = Utils.fileContent();
 		}
 		return new StorageDocument(storageMetadataFromData(providedMetaData,
 				withoutUUID), content, null, uuid);

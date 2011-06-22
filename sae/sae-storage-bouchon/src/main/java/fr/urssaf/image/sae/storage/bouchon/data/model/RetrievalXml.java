@@ -7,14 +7,14 @@ package fr.urssaf.image.sae.storage.bouchon.data.model;
  * 
  */
 @SuppressWarnings("PMD")
-public class RetrievalXml {
+public final class RetrievalXml {
 	/**
 	 * Méthode permettant de construire le flux xml pour les servies de
 	 * récupération
 	 * 
 	 * @return Le flux xml pour les servies de récupération
 	 */
-	public static final String buildXmlfile() {
+	public static String buildXmlfile() {
 		final StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		stringBuilder.append("<retrieveServiceData>");

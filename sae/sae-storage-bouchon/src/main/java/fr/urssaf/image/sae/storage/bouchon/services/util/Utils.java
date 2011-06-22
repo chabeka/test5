@@ -1,17 +1,14 @@
 package fr.urssaf.image.sae.storage.bouchon.services.util;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.codec.binary.Base64;
 
-import com.google.common.io.Files;
+import fr.urssaf.image.sae.storage.bouchon.data.model.DocPdf;
 
 /**
  * Cette classe contient des méthodes utilitaires
@@ -20,8 +17,7 @@ import com.google.common.io.Files;
  * 
  */
 public final class Utils {
-	/** Le composant pour les traces */
-	private static final Logger LOGGER = Logger.getLogger(Utils.class);
+
 
 	/**
 	 * Simplifie l'écriture des boucles foreach quand l'argument peut être
@@ -65,25 +61,15 @@ public final class Utils {
 	/**
 	 * Retourne le contenu d'un fichier
 	 * 
-	 * @param path
-	 *            : Le chemin du fichier
+	 * 
+	 *        
 	 * @return le contenu d'un fichier
 	 */
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public static byte[] fileContent(final String path) {
-		byte[] content = null;
-		try {
-			final File file = new File(path);
-			content = Files.toByteArray(file);
-		} catch (FileNotFoundException e) {
-			LOGGER.error("Erreur le n'existe pas " + path + " : "
-					+ e.getMessage());
-		} catch (IOException ioe) {
-			LOGGER.error("Erreur d'E/S lors de la lecture de " + path + " : "
-					+ ioe.getMessage());
+	public static byte[] fileContent() {
+		return Base64.decodeBase64(DocPdf.getDoc().getBytes(
+				Charset.forName("UTF-8")));
 		}
-		return content;
-	}
 
 	/**
 	 * 
@@ -103,9 +89,14 @@ public final class Utils {
 		return stringBuilder.append("]").toString();
 
 	}
-/**
- * 
- */
+
+	/**
+	 * Retourne un strean en lieu et place d'une chaîne de caractère
+	 * 
+	 * @param xlmlFlux
+	 *            : la chaîne
+	 * @return un strean en lieu et place d'une chaîne de caractère
+	 */
 	public static InputStreamReader getFileFromClassPath(final String xlmlFlux) {
 		final byte[] bytes = xlmlFlux.getBytes(Charset.forName("UTF-8"));
 		final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
