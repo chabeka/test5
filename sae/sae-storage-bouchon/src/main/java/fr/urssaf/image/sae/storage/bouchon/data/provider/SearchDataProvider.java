@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.storage.bouchon.data.provider;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.apache.log4j.Logger;
 import fr.urssaf.image.sae.storage.bouchon.data.model.SearchByLuceneData;
 import fr.urssaf.image.sae.storage.bouchon.data.model.SearchByUUIDData;
 import fr.urssaf.image.sae.storage.bouchon.data.model.SearchServiceData;
+import fr.urssaf.image.sae.storage.bouchon.data.model.SearchingXml;
 import fr.urssaf.image.sae.storage.bouchon.services.messages.Message;
 import fr.urssaf.image.sae.storage.bouchon.services.util.BeanHelper;
 import fr.urssaf.image.sae.storage.bouchon.services.util.Utils;
@@ -25,8 +25,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
  * 
  */
 public final class SearchDataProvider {
-	@SuppressWarnings("PMD.LongVariable")
-	private static final File SEARCH_SERVICE_DATA = Utils.getFileFromClassPath("SearchServiceDataFile.xml");
+	
 	private static final Logger LOGGER = Logger
 			.getLogger(SearchDataProvider.class);
 	private static SearchServiceData searchServiceData;
@@ -37,7 +36,7 @@ public final class SearchDataProvider {
 	 * @return les données du bouchon
 	 */
 	private static SearchServiceData searchDataLoader() {
-		return XstreamHelper.loadDataProcess(SEARCH_SERVICE_DATA,
+		return XstreamHelper.loadDataProcess(Utils.getFileFromClassPath(SearchingXml.buildXmlfile()),
 				SearchServiceData.class, Message.DATA_FILE_LOADER.getMessage());
 	}
 

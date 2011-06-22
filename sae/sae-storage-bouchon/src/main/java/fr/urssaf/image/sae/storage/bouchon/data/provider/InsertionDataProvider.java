@@ -1,14 +1,16 @@
 package fr.urssaf.image.sae.storage.bouchon.data.provider;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
 import fr.urssaf.image.sae.storage.bouchon.data.model.BulkInsertionData;
 import fr.urssaf.image.sae.storage.bouchon.data.model.InsertionServiceData;
+import fr.urssaf.image.sae.storage.bouchon.data.model.InsertionXml;
 import fr.urssaf.image.sae.storage.bouchon.services.messages.Message;
 import fr.urssaf.image.sae.storage.bouchon.services.util.BeanHelper;
 import fr.urssaf.image.sae.storage.bouchon.services.util.Utils;
@@ -24,8 +26,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
  * 
  */
 public final class InsertionDataProvider {
-	  @SuppressWarnings("PMD.LongVariable")
-	private static final File INSERTION_SERVICE_DATA_FILE = Utils.getFileFromClassPath("InsertionServiceDataFile.xml");
+	
 	  @SuppressWarnings("PMD.LongVariable")
 	private static InsertionServiceData insertionServiceData;
 	  /** Le composant pour les traces */
@@ -36,7 +37,7 @@ public final class InsertionDataProvider {
 	 * @return les données du bouchon
 	 */
 	private static InsertionServiceData insertionDataLoader() {
-		return XstreamHelper.loadDataProcess(INSERTION_SERVICE_DATA_FILE,
+		return XstreamHelper.loadDataProcess(Utils.getFileFromClassPath(InsertionXml.buildXmlfile()),
 				InsertionServiceData.class,
 				Message.DATA_FILE_LOADER.getMessage());
 	}

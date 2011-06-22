@@ -1,8 +1,11 @@
 package fr.urssaf.image.sae.storage.bouchon.services.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 
@@ -100,9 +103,13 @@ public final class Utils {
 		return stringBuilder.append("]").toString();
 
 	}
-
-	public static File getFileFromClassPath(final String filePath) {
-		return new File(ClassLoader.getSystemResource(filePath).getFile());
+/**
+ * 
+ */
+	public static InputStreamReader getFileFromClassPath(final String xlmlFlux) {
+		final byte[] bytes = xlmlFlux.getBytes(Charset.forName("UTF-8"));
+		final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+		return new InputStreamReader(bais);
 	}
 
 	/** Cette classe n'est pas faite pour être instanciée. */

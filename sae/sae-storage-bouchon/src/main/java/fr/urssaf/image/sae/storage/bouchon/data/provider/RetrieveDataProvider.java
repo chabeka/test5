@@ -1,12 +1,12 @@
 package fr.urssaf.image.sae.storage.bouchon.data.provider;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
+import fr.urssaf.image.sae.storage.bouchon.data.model.RetrievalXml;
 import fr.urssaf.image.sae.storage.bouchon.data.model.RetrieveDoc;
 import fr.urssaf.image.sae.storage.bouchon.data.model.RetrieveDocMetaData;
 import fr.urssaf.image.sae.storage.bouchon.data.model.RetrieveMetaData;
@@ -25,8 +25,6 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
  * 
  */
 public final class RetrieveDataProvider {
-	  @SuppressWarnings("PMD.LongVariable")
-	private static final File RETRIEVE_SERVICE_DATA = Utils.getFileFromClassPath("RetrieveServiceDataFile.xml");
 	  /** Le composant pour les traces */
 		private static final Logger LOGGER = Logger.getLogger(RetrieveDataProvider.class);
 	  @SuppressWarnings("PMD.LongVariable")
@@ -38,7 +36,7 @@ public final class RetrieveDataProvider {
 	 * @return les données du bouchon
 	 */
 	private static RetrieveServiceData retrieveDataLoader() {
-		return XstreamHelper.loadDataProcess(RETRIEVE_SERVICE_DATA,
+		return XstreamHelper.loadDataProcess(Utils.getFileFromClassPath(RetrievalXml.buildXmlfile()),
 				RetrieveServiceData.class,
 				Message.DATA_FILE_LOADER.getMessage());
 	}
