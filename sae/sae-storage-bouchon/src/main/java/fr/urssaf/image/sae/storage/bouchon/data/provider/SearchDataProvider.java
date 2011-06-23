@@ -54,7 +54,7 @@ public final class SearchDataProvider {
 		for (SearchByLuceneData searchByLuceneData : Utils
 				.nullSafeIterable(searchServiceData.getSearchByLuceneData())) {
 			storageDocuments.add(BeanHelper.storageDocumentFromData(
-					searchByLuceneData.getDocument(), false));
+					searchByLuceneData.getDocument(), true));
 			LOGGER.info("Données chargées : "
 					+ Utils.mapToString(searchByLuceneData.getDocument()));
 		}
@@ -80,7 +80,7 @@ public final class SearchDataProvider {
 		for (SearchByUUIDData searchByUUIDData : Utils
 				.nullSafeIterable(searchServiceData.getSearchByUUIDData())) {
 			storageDocuments.add(BeanHelper.storageDocumentFromData(
-					searchByUUIDData.getDocument(), false));
+					searchByUUIDData.getDocument(), true));
 			LOGGER.info("Données chargées : "
 					+ Utils.mapToString(searchByUUIDData.getDocument()));
 		}

@@ -29,11 +29,6 @@ public final class RetrievalXml {
 		stringBuilder.append("<retrieveMetaData>");
 		stringBuilder.append("<document>");
 		stringBuilder.append("<entry>");
-		stringBuilder.append("<string>UUID</string>");
-		stringBuilder
-				.append("<string>48758200-A29B-18C4-B616-455677840120</string>");
-		stringBuilder.append("</entry>");
-		stringBuilder.append("<entry>");
 		stringBuilder.append("<string>CodeRND</string>");
 		stringBuilder.append("<string>1.2.3.3.1</string>");
 		stringBuilder.append("</entry>");
