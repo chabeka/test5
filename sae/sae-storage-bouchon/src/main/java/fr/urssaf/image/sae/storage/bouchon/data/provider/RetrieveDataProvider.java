@@ -59,7 +59,7 @@ public final class RetrieveDataProvider {
 				.nullSafeIterable(retrieveServiceData.getRetrieveDocMetaData())) {
 			storageDocuments
 					.add(BeanHelper.storageDocumentFromData(retrieveDocMetaData
-							.getDocument(),false));
+							.getDocument(),true));
 			LOGGER.info("Données chargées : " + Utils.mapToString(retrieveDocMetaData.getDocument()));
 		}
 		return storageDocuments.get(0);

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="0.031" errors="0" skipped="0" tests="2" name="fr.urssaf.image.sae.storage.bouchon.services.SearchServiceTest">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\sts-tools-2.6.0\Jdk6\jre\bin"/>
+    <property name="java.vm.version" value="14.2-b01"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="FR"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 3"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="R:\akenore\eclipse_workspace\sae\sae-storage-bouchon"/>
+    <property name="java.runtime.version" value="1.6.0_16-b01"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="basedir" value="R:\akenore\eclipse_workspace\sae\sae-storage-bouchon"/>
+    <property name="java.endorsed.dirs" value="C:\sts-tools-2.6.0\Jdk6\jre\lib\endorsed"/>
+    <property name="os.arch" value="x86"/>
+    <property name="surefire.real.class.path" value="C:\DOCUME~1\CER699~1\LOCALS~1\Temp\surefirebooter4057210820155165376.jar"/>
+    <property name="java.io.tmpdir" value="C:\DOCUME~1\CER699~1\LOCALS~1\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows XP"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\sts-tools-2.6.0\Jdk6\jre\bin;.;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\OpenMaster Agents\bin;C:\OpenMaster Agents\shared_lib;C:\OpenMaster Agents\shared_lib\KERBEROS;C:\OpenMaster Agents\AKL5034\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\notes\prog;C:\Program Files\TortoiseSVN\bin;C:\OpenMaster Agents\bin;C:\OpenMaster Agents\shared_lib;C:\OpenMaster Agents\shared_lib\KERBEROS;C:\OpenMaster Agents\AKL5034\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;c:\notes\prog;C:\Program Files\TortoiseSVN\bin"/>
+    <property name="surefire.test.class.path" value="R:\akenore\eclipse_workspace\sae\sae-storage-bouchon\target\test-classes;R:\akenore\eclipse_workspace\sae\sae-storage-bouchon\target\classes;c:\m2repository\fr\urssaf\image\sae\sae-storage\0.0.1-SNAPSHOT\sae-storage-0.0.1-SNAPSHOT.jar;c:\m2repository\log4j\log4j\1.2.16\log4j-1.2.16.jar;c:\m2repository\org\aspectj\aspectjrt\1.6.7\aspectjrt-1.6.7.jar;c:\m2repository\commons-lang\commons-lang\2.6\commons-lang-2.6.jar;c:\m2repository\org\springframework\spring-core\3.0.5.RELEASE\spring-core-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-asm\3.0.5.RELEASE\spring-asm-3.0.5.RELEASE.jar;c:\m2repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar;c:\m2repository\org\springframework\spring-context\3.0.5.RELEASE\spring-context-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-aop\3.0.5.RELEASE\spring-aop-3.0.5.RELEASE.jar;c:\m2repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar;c:\m2repository\org\springframework\spring-beans\3.0.5.RELEASE\spring-beans-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-expression\3.0.5.RELEASE\spring-expression-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-test\3.0.5.RELEASE\spring-test-3.0.5.RELEASE.jar;c:\m2repository\com\thoughtworks\xstream\xstream\1.3.1\xstream-1.3.1.jar;c:\m2repository\xpp3\xpp3_min\1.1.4c\xpp3_min-1.1.4c.jar;c:\m2repository\com\google\guava\guava\r09\guava-r09.jar;c:\m2repository\commons-codec\commons-codec\1.5\commons-codec-1.5.jar;c:\m2repository\junit\junit\4.8.2\junit-4.8.2.jar;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
+    <property name="os.version" value="5.1"/>
+    <property name="user.home" value="C:\Documents and Settings\CER6990533"/>
+    <property name="user.timezone" value="Europe/Paris"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="akenore"/>
+    <property name="java.class.path" value="R:\akenore\eclipse_workspace\sae\sae-storage-bouchon\target\test-classes;R:\akenore\eclipse_workspace\sae\sae-storage-bouchon\target\classes;c:\m2repository\fr\urssaf\image\sae\sae-storage\0.0.1-SNAPSHOT\sae-storage-0.0.1-SNAPSHOT.jar;c:\m2repository\log4j\log4j\1.2.16\log4j-1.2.16.jar;c:\m2repository\org\aspectj\aspectjrt\1.6.7\aspectjrt-1.6.7.jar;c:\m2repository\commons-lang\commons-lang\2.6\commons-lang-2.6.jar;c:\m2repository\org\springframework\spring-core\3.0.5.RELEASE\spring-core-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-asm\3.0.5.RELEASE\spring-asm-3.0.5.RELEASE.jar;c:\m2repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar;c:\m2repository\org\springframework\spring-context\3.0.5.RELEASE\spring-context-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-aop\3.0.5.RELEASE\spring-aop-3.0.5.RELEASE.jar;c:\m2repository\aopalliance\aopalliance\1.0\aopalliance-1.0.jar;c:\m2repository\org\springframework\spring-beans\3.0.5.RELEASE\spring-beans-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-expression\3.0.5.RELEASE\spring-expression-3.0.5.RELEASE.jar;c:\m2repository\org\springframework\spring-test\3.0.5.RELEASE\spring-test-3.0.5.RELEASE.jar;c:\m2repository\com\thoughtworks\xstream\xstream\1.3.1\xstream-1.3.1.jar;c:\m2repository\xpp3\xpp3_min\1.1.4c\xpp3_min-1.1.4c.jar;c:\m2repository\com\google\guava\guava\r09\guava-r09.jar;c:\m2repository\commons-codec\commons-codec\1.5\commons-codec-1.5.jar;c:\m2repository\junit\junit\4.8.2\junit-4.8.2.jar;"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="C:\sts-tools-2.6.0\Jdk6\jre"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="fr"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_16"/>
+    <property name="java.ext.dirs" value="C:\sts-tools-2.6.0\Jdk6\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\sts-tools-2.6.0\Jdk6\jre\lib\resources.jar;C:\sts-tools-2.6.0\Jdk6\jre\lib\rt.jar;C:\sts-tools-2.6.0\Jdk6\jre\lib\sunrsasign.jar;C:\sts-tools-2.6.0\Jdk6\jre\lib\jsse.jar;C:\sts-tools-2.6.0\Jdk6\jre\lib\jce.jar;C:\sts-tools-2.6.0\Jdk6\jre\lib\charsets.jar;C:\sts-tools-2.6.0\Jdk6\jre\classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="localRepository" value="c:\m2repository"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"/>
+  </properties>
+  <testcase time="0.031" classname="fr.urssaf.image.sae.storage.bouchon.services.SearchServiceTest" name="searchStorageDocumentByLuceneCriteria"/>
+  <testcase time="0" classname="fr.urssaf.image.sae.storage.bouchon.services.SearchServiceTest" name="searchStorageDocumentByUUIDCriteria"/>
+</testsuite>
