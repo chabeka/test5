@@ -11,11 +11,11 @@ import org.junit.Test;
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
 public class SearchClientTest extends AbstractDFCEToolkitClientTest {
-   private SearchService searchService = ServiceProvider.getSearchService();
+    private SearchService searchService = ServiceProvider.getSearchService();
 
-   @Test
-   public void testFormatDate() {
-      searchService.formatDate(new Date(), DateFormat.DATE);
-   }
+    @Test
+    public void testFormatDate() {
+	searchService.formatDate(new Date(), DateFormat.DATE);
+    }
 
 }

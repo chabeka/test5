@@ -33,268 +33,290 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class MultiDomainTest extends AbstractBaseTestCase {
-   private static final Map<String, String> catValues = new HashMap<String, String>();
+    private static final Map<String, String> catValues = new HashMap<String, String>();
 
-   private static final Logger LOGGER = Logger.getLogger(MultiDomainTest.class);
+    private static final Logger LOGGER = Logger
+	    .getLogger(MultiDomainTest.class);
 
-   private static final String URL = "http://cer69-ds4int:8080/dfce-webapp/toolkit/";
-   private static final String URL2 = "http://cer69imageint9:8080/dfce-webapp/toolkit/";
-   // private static final String URL2 =
-   // "http://localhost:8080/dfce-webapp/toolkit/";
+    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
+    private static final String URL2 = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
+    // private static final String URL2 =
+    // "http://localhost:8080/dfce-webapp/toolkit/";
 
-   private static final String CATA = "MBCode Fournisseur";
-   private static final String CATB = "MBNo Serie";
-   private static final String CATC = "Prix Vente";
-   private static final String CATD = "Facultatif";
+    private static final String CATA = "MBCode Fournisseur";
+    private static final String CATB = "MBNo Serie";
+    private static final String CATC = "Prix Vente";
+    private static final String CATD = "Facultatif";
 
-   private static final String BASE2 = "BASE 2";
-   private static final String BASE3 = "BASE 3";
+    private static final String BASE2 = "BASE 2";
+    private static final String BASE3 = "BASE 3";
 
-   /** Pour pouvoir les effacer plus rapidement */
-   private static List<Document> storedDocs;
+    /** Pour pouvoir les effacer plus rapidement */
+    private static List<Document> storedDocs;
 
-   static {
-      catValues.put(CATA, "DifferentDomains");
-      catValues.put(CATB, "EE74");
-      catValues.put(CATC, "50000Euros");
-   }
+    static {
+	catValues.put(CATA, "DifferentDomains");
+	catValues.put(CATB, "EE74");
+	catValues.put(CATC, "50000Euros");
+    }
 
-   @BeforeClass
-   public static void setUp() {
+    @BeforeClass
+    public static void setUp() {
 
-      storedDocs = new ArrayList<Document>();
+	storedDocs = new ArrayList<Document>();
 
-      /*
-       * base1 et 2 ont les 2 CATA, CATB et CATC mais pas dans le m�me ordre (on
-       * verra que cel� n'a pas d'importance) base2 est la seule � avoir CATD.
-       */
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-      createBase(BASE2, "Base no 1 - dom1", new String[] { CATA, CATC, CATB });
-      Authentication.closeSession();
+	/*
+	 * base1 et 2 ont les 2 CATA, CATB et CATC mais pas dans le m�me ordre
+	 * (on verra que cel� n'a pas d'importance) base2 est la seule � avoir
+	 * CATD.
+	 */
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	createBase(BASE2, "Base no 1 - dom1", new String[] { CATA, CATC, CATB });
+	Authentication.closeSession();
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-      createBase(BASE3, "Base no 2 - dom1", new String[] { CATA, CATB, CATC, CATD });
-      Authentication.closeSession();
-   }
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
+	createBase(BASE3, "Base no 2 - dom1", new String[] { CATA, CATB, CATC,
+		CATD });
+	Authentication.closeSession();
+    }
 
-   /**
-    * @see TestCase#tearDown()
-    */
-   @AfterClass
-   public static void tearDown() {
-      try {
-         if (Authentication.isSessionActive()) {
-            Authentication.closeSession();
-         }
-         Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-         for (Document document : storedDocs) {
-            ServiceProvider.getStoreService().deleteDocument(document.getUuid());
-         }
-         Base base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-         Base base3 = ServiceProvider.getBaseAdministrationService().getBase(BASE3);
-         deleteBase(base2);
-         deleteBase(base3);
-      } catch (Exception e) {
-         LOGGER.error(e);
-      } finally {
-         if (Authentication.isSessionActive()) {
-            Authentication.closeSession();
-         }
-      }
+    /**
+     * @see TestCase#tearDown()
+     */
+    @AfterClass
+    public static void tearDown() {
+	try {
+	    if (Authentication.isSessionActive()) {
+		Authentication.closeSession();
+	    }
+	    Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	    for (Document document : storedDocs) {
+		ServiceProvider.getStoreService().deleteDocument(
+			document.getUuid());
+	    }
+	    Base base2 = ServiceProvider.getBaseAdministrationService()
+		    .getBase(BASE2);
+	    Base base3 = ServiceProvider.getBaseAdministrationService()
+		    .getBase(BASE3);
+	    deleteBase(base2);
+	    deleteBase(base3);
+	} catch (Exception e) {
+	    LOGGER.error(e);
+	} finally {
+	    if (Authentication.isSessionActive()) {
+		Authentication.closeSession();
+	    }
+	}
 
-   }
+    }
 
-   protected static Base createBase(String baseId, String description, String[] catNames) {
+    protected static Base createBase(String baseId, String description,
+	    String[] catNames) {
 
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(baseId);
+	Base base = ServiceProvider.getBaseAdministrationService().getBase(
+		baseId);
 
-      if (base != null) {
-         deleteBase(base);
-      }
-      base = ToolkitFactory.getInstance().createBase(baseId);
+	if (base != null) {
+	    deleteBase(base);
+	}
+	base = ToolkitFactory.getInstance().createBase(baseId);
 
-      // D�clare une date de cr�ation disponible mais optionnell
-      base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
-      // Pas de fond de page
-      base.setDocumentOverlayFormConfiguration(DocumentOverlayFormConfiguration.NONE);
-      // Pas de groupe de document
-      base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-      // Le propri�taire d'un document n'est pas modifiable � post�riori de
-      // son injection
-      base.setDocumentOwnerModify(false);
+	// D�clare une date de cr�ation disponible mais optionnell
+	base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
+	// Pas de fond de page
+	base.setDocumentOverlayFormConfiguration(DocumentOverlayFormConfiguration.NONE);
+	// Pas de groupe de document
+	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
+	// Le propri�taire d'un document n'est pas modifiable � post�riori de
+	// son injection
+	base.setDocumentOwnerModify(false);
 
-      for (int i = 0; i < catNames.length; i++) {
-         Category category = ServiceProvider.getStorageAdministrationService()
-               .findOrCreateCategory(catNames[i], CategoryDataType.STRING);
+	for (int i = 0; i < catNames.length; i++) {
+	    Category category = ServiceProvider
+		    .getStorageAdministrationService().findOrCreateCategory(
+			    catNames[i], CategoryDataType.STRING);
 
-         BaseCategory baseCategory = ToolkitFactory.getInstance()
-               .createBaseCategory(category, true);
-         baseCategory.setMaximumValues((short) 10);
-         baseCategory.setEnableDictionary(false);
+	    BaseCategory baseCategory = ToolkitFactory.getInstance()
+		    .createBaseCategory(category, true);
+	    baseCategory.setMaximumValues((short) 10);
+	    baseCategory.setEnableDictionary(false);
 
-         base.addBaseCategory(baseCategory);
-      }
+	    base.addBaseCategory(baseCategory);
+	}
 
-      try {
-         ServiceProvider.getBaseAdministrationService().createBase(base);
-      } catch (ObjectAlreadyExistsException e) {
-         e.printStackTrace();
-         fail("base : " + base.getBaseId() + " already exists");
-      }
-      ServiceProvider.getBaseAdministrationService().startBase(base);
+	try {
+	    ServiceProvider.getBaseAdministrationService().createBase(base);
+	} catch (ObjectAlreadyExistsException e) {
+	    e.printStackTrace();
+	    fail("base : " + base.getBaseId() + " already exists");
+	}
+	ServiceProvider.getBaseAdministrationService().startBase(base);
 
-      return base;
-   }
+	return base;
+    }
 
-   @Test
-   public void testDifferentDomains() throws Exception {
+    @Test
+    public void testDifferentDomains() throws Exception {
 
-      Map<String, String> catValues = new HashMap<String, String>();
-      catValues.put(CATA, "DifferentDomains");
-      catValues.put(CATB, "EE74");
-      catValues.put(CATC, "50000Euros");
+	Map<String, String> catValues = new HashMap<String, String>();
+	catValues.put(CATA, "DifferentDomains");
+	catValues.put(CATB, "EE74");
+	catValues.put(CATC, "50000Euros");
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-      Base base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-      storeDoc(base2, "docA", catValues);
-      Authentication.closeSession();
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Base base2 = ServiceProvider.getBaseAdministrationService().getBase(
+		BASE2);
+	storeDoc(base2, "docA", catValues);
+	Authentication.closeSession();
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-      Base base3 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-      storeDoc(base3, "docB", catValues);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
+	Base base3 = ServiceProvider.getBaseAdministrationService().getBase(
+		BASE2);
+	storeDoc(base3, "docB", catValues);
 
-      List<Document> docs = null;
-      docs = searchMulti(base3,
-            base3.getBaseCategory(CATA).getFormattedName() + ":" + catValues.get(CATA), 1000, null);
+	List<Document> docs = null;
+	docs = searchMulti(base3, base3.getBaseCategory(CATA)
+		.getFormattedName() + ":" + catValues.get(CATA), 1000, null);
 
-      assertNotNull(docs);
-      assertEquals(2, docs.size());
+	assertNotNull(docs);
+	assertEquals(2, docs.size());
 
-      /*
-       * On extrait les fichiers de mani�re "classique"
-       */
-      for (Document doc : docs) {
-         System.out.println("Extraction du document " + doc.getTitle());
+	/*
+	 * On extrait les fichiers de mani�re "classique"
+	 */
+	for (Document doc : docs) {
+	    System.out.println("Extraction du document " + doc.getTitle());
 
-         // On r�ussit bien � extraire le fichier
-         InputStream documentFile = ServiceProvider.getStoreService().getDocumentFile(doc);
-         assertNotNull(documentFile);
-         documentFile.close();
-      }
-      Authentication.closeSession();
+	    // On r�ussit bien � extraire le fichier
+	    InputStream documentFile = ServiceProvider.getStoreService()
+		    .getDocumentFile(doc);
+	    assertNotNull(documentFile);
+	    documentFile.close();
+	}
+	Authentication.closeSession();
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-      base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-      /*
-       * On recherche � nouveau
-       */
-      docs = searchMulti(base2,
-            base2.getBaseCategory(CATA).getFormattedName() + ":" + catValues.get(CATA), 1000, null);
-      assertNotNull(docs);
-      assertEquals(2, docs.size());
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
+	/*
+	 * On recherche � nouveau
+	 */
+	docs = searchMulti(base2, base2.getBaseCategory(CATA)
+		.getFormattedName() + ":" + catValues.get(CATA), 1000, null);
+	assertNotNull(docs);
+	assertEquals(2, docs.size());
 
-      for (Document doc : docs) {
-         System.out.println("Extraction du document " + doc.getTitle());
+	for (Document doc : docs) {
+	    System.out.println("Extraction du document " + doc.getTitle());
 
-         // On r�ussit bien � extraire le fichier
-         InputStream documentFile = ServiceProvider.getStoreService().getDocumentFile(doc);
-         assertNotNull(documentFile);
-         documentFile.close();
-      }
-      Authentication.closeSession();
-   }
+	    // On r�ussit bien � extraire le fichier
+	    InputStream documentFile = ServiceProvider.getStoreService()
+		    .getDocumentFile(doc);
+	    assertNotNull(documentFile);
+	    documentFile.close();
+	}
+	Authentication.closeSession();
+    }
 
-   @Test
-   public void testDocumentByUUIDDifferentDomains() {
-      Map<String, String> catValues = new HashMap<String, String>();
-      catValues.put(CATA, "DifferentDomains");
-      catValues.put(CATB, "EE74");
-      catValues.put(CATC, "50000Euros");
+    @Test
+    public void testDocumentByUUIDDifferentDomains() {
+	Map<String, String> catValues = new HashMap<String, String>();
+	catValues.put(CATA, "DifferentDomains");
+	catValues.put(CATB, "EE74");
+	catValues.put(CATC, "50000Euros");
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-      Base base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-      Document storeDoc = storeDoc(base2, "docA", catValues);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Base base2 = ServiceProvider.getBaseAdministrationService().getBase(
+		BASE2);
+	Document storeDoc = storeDoc(base2, "docA", catValues);
 
-      UUID uuid = storeDoc.getUuid();
-      Document documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(base2, uuid);
-      assertNotNull(documentByUUID);
-      assertEquals(uuid, documentByUUID.getUuid());
-      Authentication.closeSession();
+	UUID uuid = storeDoc.getUuid();
+	Document documentByUUID = ServiceProvider.getSearchService()
+		.getDocumentByUUID(base2, uuid);
+	assertNotNull(documentByUUID);
+	assertEquals(uuid, documentByUUID.getUuid());
+	Authentication.closeSession();
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-      base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-      documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(base2, uuid);
-      assertNotNull(documentByUUID);
-      assertEquals(uuid, documentByUUID.getUuid());
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
+	base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
+	documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(
+		base2, uuid);
+	assertNotNull(documentByUUID);
+	assertEquals(uuid, documentByUUID.getUuid());
 
-      Authentication.closeSession();
-   }
+	Authentication.closeSession();
+    }
 
-   @Test
-   public void testDocumentByUUIDDifferentDomainsMultibase() {
-      Map<String, String> catValues = new HashMap<String, String>();
-      catValues.put(CATA, "DifferentDomains");
-      catValues.put(CATB, "EE74");
-      catValues.put(CATC, "50000Euros");
+    @Test
+    public void testDocumentByUUIDDifferentDomainsMultibase() {
+	Map<String, String> catValues = new HashMap<String, String>();
+	catValues.put(CATA, "DifferentDomains");
+	catValues.put(CATB, "EE74");
+	catValues.put(CATC, "50000Euros");
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-      Base base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-      Document storeDoc = storeDoc(base2, "docA", catValues);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Base base2 = ServiceProvider.getBaseAdministrationService().getBase(
+		BASE2);
+	Document storeDoc = storeDoc(base2, "docA", catValues);
 
-      UUID uuid = storeDoc.getUuid();
-      Document documentByUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(uuid);
-      assertNotNull(documentByUUID);
-      assertEquals(uuid, documentByUUID.getUuid());
-      Authentication.closeSession();
+	UUID uuid = storeDoc.getUuid();
+	Document documentByUUID = ServiceProvider.getSearchService()
+		.getDocumentByUUIDMultiBase(uuid);
+	assertNotNull(documentByUUID);
+	assertEquals(uuid, documentByUUID.getUuid());
+	Authentication.closeSession();
 
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-      documentByUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(uuid);
-      assertNotNull(documentByUUID);
-      assertEquals(uuid, documentByUUID.getUuid());
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
+	documentByUUID = ServiceProvider.getSearchService()
+		.getDocumentByUUIDMultiBase(uuid);
+	assertNotNull(documentByUUID);
+	assertEquals(uuid, documentByUUID.getUuid());
 
-      Authentication.closeSession();
-   }
+	Authentication.closeSession();
+    }
 
-   private static Document storeDoc(Base target, String title, Map<String, String> catValues) {
-      Document document = ToolkitFactory.getInstance().createDocumentTag(target);
+    private static Document storeDoc(Base target, String title,
+	    Map<String, String> catValues) {
+	Document document = ToolkitFactory.getInstance().createDocumentTag(
+		target);
 
-      document.setTitle(title);
-      document.setType("PDF");
+	document.setTitle(title);
+	document.setType("PDF");
 
-      Set<BaseCategory> baseCategories = target.getBaseCategories();
-      for (BaseCategory baseCategory : baseCategories) {
-         System.out.println("baseCategory : " + baseCategory.getName());
-      }
+	Set<BaseCategory> baseCategories = target.getBaseCategories();
+	for (BaseCategory baseCategory : baseCategories) {
+	    System.out.println("baseCategory : " + baseCategory.getName());
+	}
 
-      for (Map.Entry<String, String> ent : catValues.entrySet()) {
-         System.out.println(ent.getKey());
-         BaseCategory baseCategory = target.getBaseCategory(ent.getKey());
-         document.addCriterion(baseCategory, ent.getValue());
-      }
+	for (Map.Entry<String, String> ent : catValues.entrySet()) {
+	    System.out.println(ent.getKey());
+	    BaseCategory baseCategory = target.getBaseCategory(ent.getKey());
+	    document.addCriterion(baseCategory, ent.getValue());
+	}
 
-      File newDoc = getFile("doc1.pdf", AbstractBaseTestCase.class); // le
+	File newDoc = getFile("doc1.pdf", AbstractBaseTestCase.class); // le
 
-      Document storeDoc = storeDoc(document, newDoc, true);
-      if (document != null) {
-         storedDocs.add(storeDoc);
-      }
-      return storeDoc;
-   }
+	Document storeDoc = storeDoc(document, newDoc, true);
+	if (document != null) {
+	    storedDocs.add(storeDoc);
+	}
+	return storeDoc;
+    }
 
-   private static List<Document> searchMulti(Base target, String queryTxt, int limit,
-         Integer nbExpectedResults) throws ExceededSearchLimitException {
-      return searchMulti(target, queryTxt, limit, nbExpectedResults, null);
-   }
+    private static List<Document> searchMulti(Base target, String queryTxt,
+	    int limit, Integer nbExpectedResults)
+	    throws ExceededSearchLimitException {
+	return searchMulti(target, queryTxt, limit, nbExpectedResults, null);
+    }
 
-   private static List<Document> searchMulti(Base target, String queryTxt, int limit,
-         Integer nbExpectedResults, ChainedFilter chainedFilter)
-         throws ExceededSearchLimitException {
-      SearchResult searchResult = ServiceProvider.getSearchService().multiBaseSearch(queryTxt,
-            limit, chainedFilter);
-      if (nbExpectedResults != null) {
-         assertEquals((int) nbExpectedResults, searchResult.getTotalHits());
-      }
-      return searchResult.getDocuments();
-   }
+    private static List<Document> searchMulti(Base target, String queryTxt,
+	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
+	    throws ExceededSearchLimitException {
+	SearchResult searchResult = ServiceProvider.getSearchService()
+		.multiBaseSearch(queryTxt, limit, chainedFilter);
+	if (nbExpectedResults != null) {
+	    assertEquals((int) nbExpectedResults, searchResult.getTotalHits());
+	}
+	return searchResult.getDocuments();
+    }
 
 }

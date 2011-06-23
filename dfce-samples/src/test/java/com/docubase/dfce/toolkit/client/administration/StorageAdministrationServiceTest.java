@@ -7,12 +7,13 @@ import org.junit.Test;
 
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
-public class StorageAdministrationServiceTest extends AbstractDFCEToolkitClientTest {
-   private StorageAdministrationService storageAdministrationService = ServiceProvider
-         .getStorageAdministrationService();
+public class StorageAdministrationServiceTest extends
+	AbstractDFCEToolkitClientTest {
+    private StorageAdministrationService storageAdministrationService = ServiceProvider
+	    .getStorageAdministrationService();
 
-   @Test
-   public void testGetAllCategories() {
-      storageAdministrationService.getAllCategories();
-   }
+    @Test
+    public void testGetAllCategories() {
+	storageAdministrationService.getAllCategories();
+    }
 }

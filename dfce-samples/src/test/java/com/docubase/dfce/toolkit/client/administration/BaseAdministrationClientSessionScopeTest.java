@@ -7,16 +7,17 @@ import org.junit.Test;
 
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
-public class BaseAdministrationClientSessionScopeTest extends AbstractDFCEToolkitClientTest {
+public class BaseAdministrationClientSessionScopeTest extends
+	AbstractDFCEToolkitClientTest {
 
-   @Test
-   public void testCreateBase() {
-      for (int i = 0; i < 4; i++) {
-         ServiceProvider.getBaseAdministrationService().getAllBases();
-      }
-      Authentication.refreshSession();
-      for (int i = 0; i < 4; i++) {
-         ServiceProvider.getBaseAdministrationService().getAllBases();
-      }
-   }
+    @Test
+    public void testCreateBase() {
+	for (int i = 0; i < 4; i++) {
+	    ServiceProvider.getBaseAdministrationService().getAllBases();
+	}
+	Authentication.refreshSession();
+	for (int i = 0; i < 4; i++) {
+	    ServiceProvider.getBaseAdministrationService().getAllBases();
+	}
+    }
 }

@@ -12,21 +12,21 @@ import org.junit.Test;
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
 public class BaseAdministrationClientTest extends AbstractDFCEToolkitClientTest {
-   private BaseAdministrationService baseAdministrationService = ServiceProvider
-         .getBaseAdministrationService();
+    private BaseAdministrationService baseAdministrationService = ServiceProvider
+	    .getBaseAdministrationService();
 
-   @Test
-   public void testCreateBase() {
-      Base base = baseAdministrationService.getBase("base");
-      if (base != null) {
-         baseAdministrationService.deleteBase(base);
-      }
-      base = ToolkitFactory.getInstance().createBase("base");
-      try {
-         baseAdministrationService.createBase(base);
-      } catch (ObjectAlreadyExistsException e) {
-         e.printStackTrace();
-         fail("base : " + base.getBaseId() + " already exists");
-      }
-   }
+    @Test
+    public void testCreateBase() {
+	Base base = baseAdministrationService.getBase("base");
+	if (base != null) {
+	    baseAdministrationService.deleteBase(base);
+	}
+	base = ToolkitFactory.getInstance().createBase("base");
+	try {
+	    baseAdministrationService.createBase(base);
+	} catch (ObjectAlreadyExistsException e) {
+	    e.printStackTrace();
+	    fail("base : " + base.getBaseId() + " already exists");
+	}
+    }
 }

@@ -5,12 +5,12 @@ import net.docubase.toolkit.service.Authentication;
 import org.junit.BeforeClass;
 
 public abstract class AbstractDFCEToolkitClientTest {
-   protected static final String URL = "http://cer69-ds4int:8080/dfce-webapp/toolkit/";
-   protected static final String USER = "_ADMIN";
-   protected static final String PASSWORD = "DOCUBASE";
+    protected static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
+    protected static final String USER = "_ADMIN";
+    protected static final String PASSWORD = "DOCUBASE";
 
-   @BeforeClass
-   public static void beforeClass() {
-      Authentication.openSession(USER, PASSWORD, URL);
-   }
+    @BeforeClass
+    public static void beforeClass() {
+	Authentication.openSession(USER, PASSWORD, URL);
+    }
 }

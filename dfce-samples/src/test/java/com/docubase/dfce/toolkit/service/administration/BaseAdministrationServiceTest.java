@@ -21,51 +21,54 @@ import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
 
 public class BaseAdministrationServiceTest extends AbstractBaseTestCase {
 
-   private static final String URL = "http://cer69-ds4int:8080/dfce-webapp/toolkit/";
+    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
 
-   @BeforeClass
-   public static void setUp() {
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-   }
+    @BeforeClass
+    public static void setUp() {
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+    }
 
-   @AfterClass
-   public static void afterClass() {
-      Authentication.closeSession();
-   }
+    @AfterClass
+    public static void afterClass() {
+	Authentication.closeSession();
+    }
 
-   @Test
-   public void testGetAllBases() {
-      Base newBase = ServiceProvider.getBaseAdministrationService().getBase("newBase");
-      if (newBase != null) {
-         ServiceProvider.getBaseAdministrationService().stopBase(newBase);
-         ServiceProvider.getBaseAdministrationService().deleteBase(newBase);
-      }
+    @Test
+    public void testGetAllBases() {
+	Base newBase = ServiceProvider.getBaseAdministrationService().getBase(
+		"newBase");
+	if (newBase != null) {
+	    ServiceProvider.getBaseAdministrationService().stopBase(newBase);
+	    ServiceProvider.getBaseAdministrationService().deleteBase(newBase);
+	}
 
-      List<Base> allBases = ServiceProvider.getBaseAdministrationService().getAllBases();
-      int allBasesSize = allBases.size();
+	List<Base> allBases = ServiceProvider.getBaseAdministrationService()
+		.getAllBases();
+	int allBasesSize = allBases.size();
 
-      newBase = ToolkitFactory.getInstance().createBase("newBase");
+	newBase = ToolkitFactory.getInstance().createBase("newBase");
 
-      Category category = ServiceProvider.getStorageAdministrationService().findOrCreateCategory(
-            "newCategory", CategoryDataType.STRING);
+	Category category = ServiceProvider.getStorageAdministrationService()
+		.findOrCreateCategory("newCategory", CategoryDataType.STRING);
 
-      BaseCategory baseCategory = ToolkitFactory.getInstance().createBaseCategory(category, true);
+	BaseCategory baseCategory = ToolkitFactory.getInstance()
+		.createBaseCategory(category, true);
 
-      newBase.addBaseCategory(baseCategory);
+	newBase.addBaseCategory(baseCategory);
 
-      try {
-         ServiceProvider.getBaseAdministrationService().createBase(newBase);
-      } catch (ObjectAlreadyExistsException e) {
-         e.printStackTrace();
-         fail("base : " + base.getBaseId() + " already exists");
-      }
+	try {
+	    ServiceProvider.getBaseAdministrationService().createBase(newBase);
+	} catch (ObjectAlreadyExistsException e) {
+	    e.printStackTrace();
+	    fail("base : " + base.getBaseId() + " already exists");
+	}
 
-      List<Base> allBasesAfterNewBase = ServiceProvider.getBaseAdministrationService()
-            .getAllBases();
-      int allBasesAfterNewBaseSize = allBasesAfterNewBase.size();
+	List<Base> allBasesAfterNewBase = ServiceProvider
+		.getBaseAdministrationService().getAllBases();
+	int allBasesAfterNewBaseSize = allBasesAfterNewBase.size();
 
-      assertEquals(allBasesSize + 1, allBasesAfterNewBaseSize);
+	assertEquals(allBasesSize + 1, allBasesAfterNewBaseSize);
 
-      ServiceProvider.getBaseAdministrationService().deleteBase(newBase);
-   }
+	ServiceProvider.getBaseAdministrationService().deleteBase(newBase);
+    }
 }

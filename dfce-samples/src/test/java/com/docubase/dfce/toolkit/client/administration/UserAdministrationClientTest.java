@@ -9,6 +9,6 @@ import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
 @Ignore
 public class UserAdministrationClientTest extends AbstractDFCEToolkitClientTest {
-   private UserAdministrationService userAdministrationService = ServiceProvider
-         .getUserAdministrationService();
+    private UserAdministrationService userAdministrationService = ServiceProvider
+	    .getUserAdministrationService();
 }

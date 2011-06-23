@@ -14,226 +14,232 @@ import org.junit.Test;
 
 public class RecordManagerClientTest extends AbstractEventTest {
 
-   private RecordManagerService recordManagerService = ServiceProvider.getRecordManagerService();
+    private RecordManagerService recordManagerService = ServiceProvider
+	    .getRecordManagerService();
 
-   /**
-    * Ce teste permet de vï¿½rifier l'enregistrement d'un seul ï¿½vï¿½nement comme
-    * dï¿½crit ci-dessous :
-    * 
-    * <ol>
-    * <li>On enregistre un ï¿½vï¿½nement.</li>
-    * <li>On retourne une liste d'ï¿½vï¿½nements, en filtrant sur une date de debut
-    * et une date de fin</li>
-    * <li>On cherche dans cette liste, l'ï¿½vï¿½nement enregistrï¿½ et on atteste
-    * qu'il est bien enregistrï¿½</li>
-    * <li>Pour finir, on supprime tous les ï¿½vï¿½nements entre une date de debut et
-    * une date de fin.</li>
-    * </ol>
-    */
-   @Test
-   public void testAddEventLog() {
-      // Ajouter un ï¿½vï¿½nement
-      recordManagerService.addEventLog(buildEventLogList().get(0));
+    /**
+     * Ce teste permet de vérifier l'enregistrement d'un seul évènement comme
+     * décrit ci-dessous :
+     * 
+     * <ol>
+     * <li>On enregistre un évènement.</li>
+     * <li>On retourne une liste d'évènements, en filtrant sur une date de debut
+     * et une date de fin</li>
+     * <li>On cherche dans cette liste, l'évènement enregistré et on atteste
+     * qu'il est bien enregistré</li>
+     * <li>Pour finir, on supprime tous les évènements entre une date de debut
+     * et une date de fin.</li>
+     * </ol>
+     */
+    @Test
+    public void testAddEventLog() {
+	// Ajouter un évènement
+	recordManagerService.addEventLog(buildEventLogList().get(0));
 
-      // retourner la liste d'ï¿½vï¿½nements filtrï¿½s
-      List<RMClientEvent> events = recordManagerService.getEventLogList(buildFilter());
+	// retourner la liste d'évènements filtrés
+	List<RMClientEvent> events = recordManagerService
+		.getEventLogList(buildFilter());
 
-      // Trouver l'ï¿½vï¿½nement enregistrï¿½ dans la liste retournï¿½e
-      boolean found = false;
-      for (RMClientEvent evt : events) {
-         if ("Stockage".equals(evt.getEventTypeName()))
-            found = true;
-      }
+	// Trouver l'évènement enregistré dans la liste retournée
+	boolean found = false;
+	for (RMClientEvent evt : events) {
+	    if ("Stockage".equals(evt.getEventTypeName()))
+		found = true;
+	}
 
-      // Attester que l'ï¿½vï¿½nement est bien enregistrï¿½
-      assertTrue("L'ï¿½vï¿½nement n'est pas enregistrï¿½", found);
+	// Attester que l'évènement est bien enregistré
+	assertTrue("L'évènement n'est pas enregistré", found);
 
-      // Nettoyer les ï¿½vï¿½nements
-      recordManagerService.deleteEventsLog(buildFilter());
-   }
+	// Nettoyer les évènements
+	recordManagerService.deleteEventsLog(buildFilter());
+    }
 
-   /**
-    * Ce teste permet de vï¿½rifier l'enregistrement de plusieurs ï¿½vï¿½nements comme
-    * dï¿½crit ci-dessous :
-    * 
-    * <ol>
-    * <li>On enregistre une liste d'ï¿½vï¿½nements.</li>
-    * <li>On retourne une liste d'ï¿½vï¿½nements, en filtrant sur une date de debut
-    * et une date de fin</li>
-    * <li>On cherche dans cette liste, les ï¿½vï¿½nements enregistrï¿½s et on atteste
-    * qu'ils sont bien enregistrï¿½s</li>
-    * <li>Pour finir, on supprime tous les ï¿½vï¿½nements entre une date de debut et
-    * une date de fin.</li>
-    * </ol>
-    */
-   @Test
-   public void testAddEventLogList() {
-      // Ajouter un ï¿½vï¿½nement
-      recordManagerService.addEventsLog(buildEventLogList());
+    /**
+     * Ce teste permet de vérifier l'enregistrement de plusieurs évènements
+     * comme décrit ci-dessous :
+     * 
+     * <ol>
+     * <li>On enregistre une liste d'évènements.</li>
+     * <li>On retourne une liste d'évènements, en filtrant sur une date de debut
+     * et une date de fin</li>
+     * <li>On cherche dans cette liste, les évènements enregistrés et on atteste
+     * qu'ils sont bien enregistrés</li>
+     * <li>Pour finir, on supprime tous les évènements entre une date de debut
+     * et une date de fin.</li>
+     * </ol>
+     */
+    @Test
+    public void testAddEventLogList() {
+	// Ajouter un évènement
+	recordManagerService.addEventsLog(buildEventLogList());
 
-      // retourner la liste d'ï¿½vï¿½nements filtrï¿½s
-      List<RMClientEvent> events = recordManagerService.getEventLogList(buildFilter());
+	// retourner la liste d'évènements filtrés
+	List<RMClientEvent> events = recordManagerService
+		.getEventLogList(buildFilter());
 
-      // Trouver l'ï¿½vï¿½nement enregistrï¿½ dans la liste retournï¿½e
-      boolean foundA = false;
-      boolean foundB = false;
-      for (RMClientEvent evt : events) {
-         if ("Stockage".equals(evt.getEventTypeName()))
-            foundA = true;
+	// Trouver l'évènement enregistré dans la liste retournée
+	boolean foundA = false;
+	boolean foundB = false;
+	for (RMClientEvent evt : events) {
+	    if ("Stockage".equals(evt.getEventTypeName()))
+		foundA = true;
 
-         if ("Consultation".equals(evt.getEventTypeName()))
-            foundB = true;
-      }
+	    if ("Consultation".equals(evt.getEventTypeName()))
+		foundB = true;
+	}
 
-      // Attester que l'ï¿½vï¿½nement de Stockage est bien enregistrï¿½
-      assertTrue("L'ï¿½vï¿½nement de Stockage n'est pas enregistrï¿½", foundA);
+	// Attester que l'évènement de Stockage est bien enregistré
+	assertTrue("L'évènement de Stockage n'est pas enregistré", foundA);
 
-      // Attester que l'ï¿½vï¿½nement de Stockage est bien enregistrï¿½
-      assertTrue("L'ï¿½vï¿½nement de Consultation n'est pas enregistrï¿½", foundB);
+	// Attester que l'évènement de Stockage est bien enregistré
+	assertTrue("L'évènement de Consultation n'est pas enregistré", foundB);
 
-      // Nettoyer les ï¿½vï¿½nements
-      recordManagerService.deleteEventsLog(buildFilter());
-   }
+	// Nettoyer les évènements
+	recordManagerService.deleteEventsLog(buildFilter());
+    }
 
-   /**
-    * Ce teste permet de vï¿½rifier la recherche d'ï¿½vï¿½nements comme dï¿½crit
-    * ci-dessous :
-    * 
-    * <ol>
-    * <li>On enregistre une liste de 2 ï¿½vï¿½nements.</li>
-    * <li>On cherche une liste d'ï¿½vï¿½nements, en filtrant sur une date de debut
-    * et une date de fin</li>
-    * <li>On atteste que la liste remontï¿½e est non vide</li>
-    * <li>On affiche les ï¿½vï¿½nements trouvï¿½s</li>
-    * </ol>
-    */
-   @Test
-   public void testGetEventLogList() {
+    /**
+     * Ce teste permet de vérifier la recherche d'évènements comme décrit
+     * ci-dessous :
+     * 
+     * <ol>
+     * <li>On enregistre une liste de 2 évènements.</li>
+     * <li>On cherche une liste d'évènements, en filtrant sur une date de debut
+     * et une date de fin</li>
+     * <li>On atteste que la liste remontée est non vide</li>
+     * <li>On affiche les évènements trouvés</li>
+     * </ol>
+     */
+    @Test
+    public void testGetEventLogList() {
 
-      // Ajouter un ï¿½vï¿½nement
-      recordManagerService.addEventsLog(buildEventLogList());
+	// Ajouter un évènement
+	recordManagerService.addEventsLog(buildEventLogList());
 
-      // retourner la liste d'ï¿½vï¿½nements filtrï¿½s
-      List<RMClientEvent> events = recordManagerService.getEventLogList(buildFilter());
+	// retourner la liste d'évènements filtrés
+	List<RMClientEvent> events = recordManagerService
+		.getEventLogList(buildFilter());
 
-      // Attester que cette liste est non vide
-      assertTrue("La liste des ï¿½vï¿½nements ne doit pas ï¿½tre vide",
-            (!events.isEmpty() && events.size() > 1));
+	// Attester que cette liste est non vide
+	assertTrue("La liste des évènements ne doit pas être vide",
+		(!events.isEmpty() && events.size() > 1));
 
-      // Nettoyer les ï¿½vï¿½nements
-      recordManagerService.deleteEventsLog(buildFilter());
-   }
+	// Nettoyer les évènements
+	recordManagerService.deleteEventsLog(buildFilter());
+    }
 
-   /**
-    * Ce teste permet de vï¿½rifier la pagination aprï¿½s la recherche d'ï¿½vï¿½nements,
-    * comme dï¿½crit ci-dessous :
-    * 
-    * <ol>
-    * <li>On enregistre une liste d'ï¿½vï¿½nements.</li>
-    * <li>On crï¿½e un filtre avec une date de debut, une date de fin et un nombre
-    * d'items ï¿½ retourner</li>
-    * <li>On remonte la prï¿½miï¿½re page d'ï¿½vï¿½nements ï¿½ partir du filtre crï¿½ï¿½, et
-    * on recupï¿½re la date d'ï¿½vï¿½nement</li>
-    * du dernier ï¿½lï¿½ment de la liste de la page.</li>
-    * <li>On remplace par cette date, la date de debut de la recherche dans le
-    * filtre (EventStartDate).</li>
-    * <li>On remonte alors la seconde page.</li>
-    * </ol>
-    * 
-    * NB: Ainsi, on peut remonter toutes les pages en repï¿½tant la mï¿½me demarche.
-    */
-   @Test
-   public void testPagination() {
-      PAGE = 1;
+    /**
+     * Ce teste permet de vérifier la pagination après la recherche
+     * d'évènements, comme décrit ci-dessous :
+     * 
+     * <ol>
+     * <li>On enregistre une liste d'évènements.</li>
+     * <li>On crée un filtre avec une date de debut, une date de fin et un
+     * nombre d'items à retourner</li>
+     * <li>On remonte la prémière page d'évènements à partir du filtre créé, et
+     * on recupère la date d'évènement</li>
+     * du dernier élément de la liste de la page.</li>
+     * <li>On remplace par cette date, la date de debut de la recherche dans le
+     * filtre (EventStartDate).</li>
+     * <li>On remonte alors la seconde page.</li>
+     * </ol>
+     * 
+     * NB: Ainsi, on peut remonter toutes les pages en repétant la même
+     * demarche.
+     */
+    @Test
+    public void testPagination() {
+	PAGE = 1;
 
-      // Ajouter un ï¿½vï¿½nement
-      recordManagerService.addEventsLog(buildEventLogList());
+	// Ajouter un évènement
+	recordManagerService.addEventsLog(buildEventLogList());
 
-      // Crï¿½er un filtre avec une date de debut, une date de fin et on un
-      // nombre d'items ï¿½ retourner par page
-      EventReadFilter readFilter = buildFilter();
-      readFilter.setNbItems(5);
+	// Créer un filtre avec une date de debut, une date de fin et on un
+	// nombre d'items à retourner par page
+	EventReadFilter readFilter = buildFilter();
+	readFilter.setNbItems(5);
 
-      // Remonter la 1ere page et on recupï¿½re la date d'ï¿½vï¿½nement du
-      // dernier ï¿½lï¿½ment de la liste de la page.
-      Date lastEventLog = findEventLog(readFilter);
+	// Remonter la 1ere page et on recupère la date d'évènement du
+	// dernier élément de la liste de la page.
+	Date lastEventLog = findEventLog(readFilter);
 
-      // Modifier la date de debut du filtre par la date recupï¿½rï¿½e
-      readFilter.setEventStartDate(lastEventLog);
-      // Remonter la 2eme page et on recupï¿½re la date d'ï¿½vï¿½nement du
-      // dernier ï¿½lï¿½ment de la liste de la page.
-      lastEventLog = findEventLog(readFilter);
+	// Modifier la date de debut du filtre par la date recupérée
+	readFilter.setEventStartDate(lastEventLog);
+	// Remonter la 2eme page et on recupère la date d'évènement du
+	// dernier élément de la liste de la page.
+	lastEventLog = findEventLog(readFilter);
 
-      // Nettoyer les ï¿½vï¿½nements
-      recordManagerService.deleteEventsLog(buildFilter());
-   }
+	// Nettoyer les évènements
+	recordManagerService.deleteEventsLog(buildFilter());
+    }
 
-   /**
-    * Ce teste permet de vï¿½rifier la traï¿½abilitï¿½ d'ï¿½vï¿½nements liï¿½s ï¿½ un document
-    * :
-    * 
-    * <ol>
-    * <li>On crï¿½e un document dans la base GED, mais nous admettons que le
-    * document existe</li>
-    * <li>On enregistre ï¿½vï¿½nement pour ce document.</li>
-    * <li>On recherche les ï¿½vï¿½nements liï¿½s ï¿½ cet document, ï¿½ partir de son
-    * identifiant UUID.</li>
-    * <li>On atteste que tous les ï¿½vï¿½nements sont liï¿½s ï¿½ ce document.</li>
-    * </ol>
-    */
-   @Test
-   public void testGetEventLogsByKeyDoc() {
-      // Ajouter un ï¿½vï¿½nement de stockage de document
-      RMClientEvent event = buildEventLogList().get(0);
-      event.setDocumentUuid(KEY_DOC);
-      recordManagerService.addEventLog(event);
+    /**
+     * Ce teste permet de vérifier la traçabilité d'évènements liés à un
+     * document :
+     * 
+     * <ol>
+     * <li>On crée un document dans la base GED, mais nous admettons que le
+     * document existe</li>
+     * <li>On enregistre évènement pour ce document.</li>
+     * <li>On recherche les évènements liés à cet document, à partir de son
+     * identifiant UUID.</li>
+     * <li>On atteste que tous les évènements sont liés à ce document.</li>
+     * </ol>
+     */
+    @Test
+    public void testGetEventLogsByKeyDoc() {
+	// Ajouter un évènement de stockage de document
+	RMClientEvent event = buildEventLogList().get(0);
+	event.setDocumentUuid(KEY_DOC);
+	recordManagerService.addEventLog(event);
 
-      List<RMClientEvent> events = ServiceProvider.getRecordManagerService()
-            .getEventLogListByKeyDoc(KEY_DOC, 100);
+	List<RMClientEvent> events = ServiceProvider.getRecordManagerService()
+		.getEventLogListByKeyDoc(KEY_DOC, 100);
 
-      boolean found = false;
-      for (RMClientEvent evt : events) {
-         found = true;
-         if (!KEY_DOC.equals(evt.getDocumentUuid())) {
-            found = false;
-            break;
-         }
-      }
+	boolean found = false;
+	for (RMClientEvent evt : events) {
+	    found = true;
+	    if (!KEY_DOC.equals(evt.getDocumentUuid())) {
+		found = false;
+		break;
+	    }
+	}
 
-      // Attester que l'ï¿½vï¿½nement est bien enregistrï¿½
-      assertTrue("L'ï¿½vï¿½nement n'est pas enregistrï¿½", found);
+	// Attester que l'évènement est bien enregistré
+	assertTrue("L'évènement n'est pas enregistré", found);
 
-      // Nettoyer les ï¿½vï¿½nements
-      recordManagerService.deleteEventsLog(buildFilter());
-   }
+	// Nettoyer les évènements
+	recordManagerService.deleteEventsLog(buildFilter());
+    }
 
-   /**
-    * Ce teste permet de vï¿½rifier la suppression d'ï¿½vï¿½nements filtrï¿½s par dates
-    * :
-    * 
-    * <ol>
-    * <li>On enregistre une liste d'ï¿½vï¿½nements.</li>
-    * <li>On crï¿½e un filtre avec une date de debut et une date de fin</li>
-    * <li>On supprime les ï¿½vï¿½nements sur la base de ce filtre.</li>
-    * <li>On recherche les ï¿½vï¿½nements sur la base de ce mï¿½me filtre.</li>
-    * <li>On atteste que tous les ï¿½vï¿½nements sont supprimï¿½s ï¿½ part celui de la
-    * suppression.</li>
-    * </ol>
-    */
-   @Test
-   public void testDeleteEventLog() {
+    /**
+     * Ce teste permet de vérifier la suppression d'évènements filtrés par dates
+     * :
+     * 
+     * <ol>
+     * <li>On enregistre une liste d'évènements.</li>
+     * <li>On crée un filtre avec une date de debut et une date de fin</li>
+     * <li>On supprime les évènements sur la base de ce filtre.</li>
+     * <li>On recherche les évènements sur la base de ce même filtre.</li>
+     * <li>On atteste que tous les évènements sont supprimés à part celui de la
+     * suppression.</li>
+     * </ol>
+     */
+    @Test
+    public void testDeleteEventLog() {
 
-      // Ajouter un ï¿½vï¿½nement
-      recordManagerService.addEventsLog(buildEventLogList());
+	// Ajouter un évènement
+	recordManagerService.addEventsLog(buildEventLogList());
 
-      recordManagerService.deleteEventsLog(buildFilter());
+	recordManagerService.deleteEventsLog(buildFilter());
 
-      // Rechercher les ï¿½vï¿½nements sur la base de ce mï¿½me filtre.
-      List<RMClientEvent> events = ServiceProvider.getRecordManagerService().getEventLogList(
-            buildFilter());
+	// Rechercher les évènements sur la base de ce même filtre.
+	List<RMClientEvent> events = ServiceProvider.getRecordManagerService()
+		.getEventLogList(buildFilter());
 
-      // Attester que Le nombre d'ï¿½vï¿½nement trouvï¿½ est bien 1, c-a-d celui
-      // de l'ï¿½vï¿½nement de la suppressiona
-      assertEquals("La liste des ï¿½vï¿½nements ne doit pas ï¿½tre vide", 2, events.size());
-   }
+	// Attester que Le nombre d'évènement trouvé est bien 1, c-a-d celui
+	// de l'évènement de la suppressiona
+	assertEquals("La liste des évènements ne doit pas être vide", 2,
+		events.size());
+    }
 }
