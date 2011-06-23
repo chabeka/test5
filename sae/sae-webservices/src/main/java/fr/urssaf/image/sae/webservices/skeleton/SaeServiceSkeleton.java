@@ -9,11 +9,9 @@
  */
 package fr.urssaf.image.sae.webservices.skeleton;
 
-import javax.xml.namespace.QName;
-
-import org.apache.axis2.AxisFault;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
@@ -28,6 +26,7 @@ import fr.cirtil.www.saeservice.PingSecureResponse;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.webservices.SaeService;
+import fr.urssaf.image.sae.webservices.SaeStorageService;
 
 /**
  * Skeleton du web service coté serveur<br>
@@ -71,15 +70,25 @@ public class SaeServiceSkeleton {
 
    private final SaeService service;
 
+   private final SaeStorageService storageService;
+
    /**
     * Instanciation du service {@link SaeService}
     * 
     * @param service
     *           implémentation des services web
+    * @param storageService
+    *           implémentation de {@link SaeStorageService}
     */
    @Autowired
-   public SaeServiceSkeleton(SaeService service) {
+   public SaeServiceSkeleton(SaeService service,
+         SaeStorageService storageService) {
+
+      Assert.notNull(service, "service is required");
+      Assert.notNull(storageService, "storageService is required");
+
       this.service = service;
+      this.storageService = storageService;
    }
 
    /**
@@ -97,7 +106,7 @@ public class SaeServiceSkeleton {
 
       return response;
    }
-   
+
    /**
     * endpoint du ping sécurisé
     * 
@@ -113,84 +122,59 @@ public class SaeServiceSkeleton {
 
       return response;
    }
-   
-   
 
    /**
     * endpoint de la capture unitaire
     * 
-    * @param request 
+    * @param request
+    *           requete du web service
     * @return reponse du web service
-    * @throws AxisFault 
     */
    public final ArchivageUnitaireResponse archivageUnitaireSecure(
-         ArchivageUnitaire request) throws AxisFault {
-      throw new AxisFault(
-         buildServiceNonImplementeSoapFaultCode(),
-         "Le service d'archivage unitaire n'est pas encore disponible",
-         null,
-         null,
-         null);
+         ArchivageUnitaire request) {
+
+      return this.storageService.capture(request);
+
    }
-   
-   
+
    /**
     * endpoint de la capture de masse
     * 
-    * @param request request du web service
+    * @param request
+    *           request du web service
     * @return reponse du web service
-    * @throws AxisFault 
     */
    public final ArchivageMasseResponse archivageMasseSecure(
-         ArchivageMasse request) throws AxisFault {
-      throw new AxisFault(
-         buildServiceNonImplementeSoapFaultCode(),
-         "Le service d'archivage de masse n'est pas encore disponible",
-         null,
-         null,
-         null);
+         ArchivageMasse request) {
+
+      return this.storageService.bulkCapture(request);
+
    }
-   
-   
+
    /**
     * endpoint de recherche
     * 
-    * @param request request du web service
+    * @param request
+    *           request du web service
     * @return reponse du web service
-    * @throws AxisFault 
     */
-   public final RechercheResponse rechercheSecure(
-         Recherche request) throws AxisFault {
-      throw new AxisFault(
-         buildServiceNonImplementeSoapFaultCode(),
-         "Le service de recherche n'est pas encore disponible",
-         null,
-         null,
-         null);
+   public final RechercheResponse rechercheSecure(Recherche request) {
+
+      return this.storageService.search(request);
+
    }
-   
-   
+
    /**
     * endpoint de consultation
     * 
-    * @param request request du web service
+    * @param request
+    *           request du web service
     * @return reponse du web service
-    * @throws AxisFault 
     */
-   public final ConsultationResponse consultationSecure(
-         Consultation request) throws AxisFault {
-      throw new AxisFault(
-         buildServiceNonImplementeSoapFaultCode(),
-         "Le service de consultation n'est pas encore disponible",
-         null,
-         null,
-         null);
+   public final ConsultationResponse consultationSecure(Consultation request) {
+
+      return this.storageService.consultation(request);
+
    }
-   
-   
-   private QName buildServiceNonImplementeSoapFaultCode() {
-      return new QName("urn:sae:faultcodes","ServiceNonImplemente","sae");
-   }
-   
 
 }

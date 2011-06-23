@@ -139,9 +139,21 @@
          <artifactId>sae-igc</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      
+       <!-- SAE STORAGE -->
 
-     
-            
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-storage</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      
+       <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-storage-bouchon</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+    
       <!--  AXIS 2 -->
 
       <dependency>
