@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.webservices;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import org.apache.axis2.AxisFault;
@@ -15,31 +16,29 @@ import org.apache.xml.security.Init;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.w3c.dom.Document;
 
+import fr.urssaf.image.sae.webservices.util.AxiomUtils;
 import fr.urssaf.image.sae.webservices.util.SoapTestUtils;
 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class ArchivageMasseSoapTest {
 
-
    private static Configuration config;
-   
+
    private MessageContext msgctx;
-   
+
    private OperationClient opClient;
-   
+
    private ServiceClient client;
-   
-   
+
    @BeforeClass
    public static void beforeClass() throws ConfigurationException, AxisFault {
       config = new PropertiesConfiguration("sae-webservices-test.properties");
       Init.init();
    }
-   
-   
+
    @Before
    public void before() throws AxisFault {
 
@@ -54,61 +53,49 @@ public class ArchivageMasseSoapTest {
       opClient.addMessageContext(msgctx);
 
    }
-   
+
    @After
    public void after() throws AxisFault {
       client.cleanupTransport();
    }
-   
-   
+
    @Test
    public void archivageMasse_failure_wsse_securityTokenUnavailable() {
 
       try {
 
-         SoapTestUtils.execute(
-               "src/test/resources/soap/request/archivageMasse_SoapFault_wsse_SecurityTokenUnavailable.xml",
-               msgctx,
-               opClient);
+         SoapTestUtils
+               .execute(
+                     "src/test/resources/soap/request/archivageMasse_SoapFault_wsse_SecurityTokenUnavailable.xml",
+                     msgctx, opClient);
 
          fail(SoapTestUtils.FAIL_MSG);
-         
+
       } catch (AxisFault fault) {
 
-         SoapTestUtils.assertAxisFault(
-            fault,
-            "La référence au jeton de sécurité est introuvable",
-            SoapTestUtils.FAULT_CODE_STU,
-            SoapTestUtils.WSSE_NAMESPACE, 
-            SoapTestUtils.WSSE_PREFIX);
-         
+         SoapTestUtils.assertAxisFault(fault,
+               "La référence au jeton de sécurité est introuvable",
+               SoapTestUtils.FAULT_CODE_STU, SoapTestUtils.WSSE_NAMESPACE,
+               SoapTestUtils.WSSE_PREFIX);
+
       }
    }
-   
-   
+
+   private static final String NAMESPACE_URI = "http://www.cirtil.fr/saeService";
+
    @Test
-   @Ignore("Test temporaire")
-   public void archivageMasse_failure_sae_ServiceNonImplemente() {
+   public void archivageMasse_success() throws AxisFault {
 
-      try {
+      SoapTestUtils
+            .execute(
+                  "src/test/resources/soap/request/archivageMasse_SoapFault_sae_ServiceNonImplemente.xml",
+                  msgctx, opClient);
 
-         SoapTestUtils.execute(
-               "src/test/resources/soap/request/archivageMasse_SoapFault_sae_ServiceNonImplemente.xml",
-               msgctx,
-               opClient);
+      Document response = AxiomUtils.loadDocumentResponse(client);
 
-         fail(SoapTestUtils.FAIL_MSG);
-         
-      } catch (AxisFault fault) {
+      assertNotNull("Test de l'archivage masse", response
+            .getElementsByTagNameNS(NAMESPACE_URI, "archivageMasseResponse"));
 
-         SoapTestUtils.assertAxisFault(
-            fault,
-            "Le service d'archivage de masse n'est pas encore disponible",
-            SoapTestUtils.FAULT_CODE_SNI, 
-            SoapTestUtils.SAE_NAMESPACE, 
-            SoapTestUtils.SAE_PREFIX);
-         
-      }
    }
-   
+
 }
