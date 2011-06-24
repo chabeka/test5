@@ -86,15 +86,14 @@ public class ArchivageUnitaireSoapTest {
    @Test
    public void archivageUnitaire_success() throws AxisFault {
 
-      SoapTestUtils
-            .execute(
-                  "src/test/resources/soap/request/archivageUnitaire_SoapFault_sae_ServiceNonImplemente.xml",
-                  msgctx, opClient);
+      SoapTestUtils.execute(
+            "src/test/resources/soap/request/archivageUnitaire_success.xml",
+            msgctx, opClient);
 
       Document response = AxiomUtils.loadDocumentResponse(client);
 
       assertEquals("le contenu n'est pas attendu en base64",
-            "110e8400-e29b-11d4-a716-446655440000", response
+            "110E8400-E29B-11D4-A716-446655440000", response
                   .getElementsByTagNameNS(NAMESPACE_URI, "idArchive").item(0)
                   .getTextContent());
 

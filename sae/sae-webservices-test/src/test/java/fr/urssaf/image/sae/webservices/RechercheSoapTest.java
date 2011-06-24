@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
@@ -93,7 +92,7 @@ public class RechercheSoapTest {
 
    private static final String NAMESPACE_URI = "http://www.cirtil.fr/saeService";
 
-   private static final String UUID_META = "UUID";
+   // private static final String UUID_META = "UUID";
 
    private static final String CODE_RND_META = "CodeRND";
 
@@ -108,10 +107,9 @@ public class RechercheSoapTest {
    @Test
    public void recherche_success() throws AxisFault {
 
-      SoapTestUtils
-            .execute(
-                  "src/test/resources/soap/request/recherche_SoapFault_sae_ServiceNonImplemente.xml",
-                  msgctx, opClient);
+      SoapTestUtils.execute(
+            "src/test/resources/soap/request/recherche_success.xml", msgctx,
+            opClient);
 
       Document response = AxiomUtils.loadDocumentResponse(client);
 
@@ -121,18 +119,18 @@ public class RechercheSoapTest {
       assertEquals("nombre de resultats inattendu", 3, resultats.getLength());
 
       Map<String, String> metas1 = new HashMap<String, String>();
-      metas1.put(UUID_META, "110E8400-E29B-11D4-A716-446655440000");
+      // metas1.put(UUID_META, "110E8400-E29B-11D4-A716-446655440000");
       metas1.put(CODE_RND_META, "3.1.3.1.1");
       metas1.put(COTISANT_META, "704815");
       metas1.put(SIRET_META, "49980055500017");
-      metas1.put(COMPTE_META, "SPOHN ERWAN MARIE MAX ");
+      metas1.put(COMPTE_META, "SPOHN ERWAN MARIE MAX");
       metas1.put(ORGANISME_META, "UR030");
 
       assertResultat((NodeList) resultats.item(0),
-            "110e8400-e29b-11d4-a716-446655440000", metas1);
+            "110E8400-E29B-11D4-A716-446655440000", metas1);
 
       Map<String, String> metas2 = new HashMap<String, String>();
-      metas2.put(UUID_META, "510E8200-E29B-18C4-A716-446677440120");
+      // metas2.put(UUID_META, "510E8200-E29B-18C4-A716-446677440120");
       metas2.put(CODE_RND_META, "1.A.X.X.X");
       metas2.put(COTISANT_META, "723804");
       metas2.put(SIRET_META, "07413151710009");
@@ -140,10 +138,10 @@ public class RechercheSoapTest {
       metas2.put(ORGANISME_META, "UR030");
 
       assertResultat((NodeList) resultats.item(1),
-            "510e8200-e29b-18c4-a716-446677440120", metas2);
+            "510E8200-E29B-18C4-A716-446677440120", metas2);
 
       Map<String, String> metas3 = new HashMap<String, String>();
-      metas3.put(UUID_META, "48758200-A29B-18C4-B616-455677840120");
+      // metas3.put(UUID_META, "48758200-A29B-18C4-B616-455677840120");
       metas3.put(CODE_RND_META, "1.2.3.3.1");
       metas3.put(COTISANT_META, "719900");
       metas3.put(SIRET_META, "07412723410007");
@@ -151,7 +149,7 @@ public class RechercheSoapTest {
       metas3.put(ORGANISME_META, "UR030");
 
       assertResultat((NodeList) resultats.item(2),
-            "48758200-a29b-18c4-b616-455677840120", metas3);
+            "48758200-A29B-18C4-B616-455677840120", metas3);
 
    }
 
@@ -160,8 +158,8 @@ public class RechercheSoapTest {
 
       assertUniciteCodeMetadonnee(resultat, metadonnees.size(), uuid);
 
-      assertEquals("nombre de resultats inattendu", UUID.fromString(uuid)
-            .toString(), resultat.item(0).getTextContent());
+      assertEquals("nombre de resultats inattendu", uuid, resultat.item(0)
+            .getTextContent());
 
       NodeList metas = (NodeList) resultat.item(1);
 

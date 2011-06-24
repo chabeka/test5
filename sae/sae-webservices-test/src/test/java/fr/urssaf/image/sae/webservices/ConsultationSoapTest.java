@@ -94,10 +94,9 @@ public class ConsultationSoapTest {
    @Test
    public void consultation_success() throws DOMException, IOException {
 
-      SoapTestUtils
-            .execute(
-                  "src/test/resources/soap/request/consultation_SoapFault_sae_ServiceNonImplemente.xml",
-                  msgctx, opClient);
+      SoapTestUtils.execute(
+            "src/test/resources/soap/request/consultation_success.xml", msgctx,
+            opClient);
 
       Document response = AxiomUtils.loadDocumentResponse(client);
 
@@ -116,16 +115,16 @@ public class ConsultationSoapTest {
       NodeList metadonnees = (NodeList) response.getElementsByTagNameNS(
             NAMESPACE_URI, "metadonnees").item(0);
 
-      assertEquals("nombre de metadonnees inattendu", 6, metadonnees
+      assertEquals("nombre de metadonnees inattendu", 5, metadonnees
             .getLength());
 
       assertMetadonnee(metadonnees.item(0), "NumeroCotisant", "719900");
       assertMetadonnee(metadonnees.item(1), "CodeRND", "1.2.3.3.1");
-      assertMetadonnee(metadonnees.item(2), "UUID",
-            "48758200-A29B-18C4-B616-455677840120");
-      assertMetadonnee(metadonnees.item(3), "Siret", "07412723410007");
-      assertMetadonnee(metadonnees.item(4), "CodeOrganisme", "UR030");
-      assertMetadonnee(metadonnees.item(5), "DenominationCompte",
+      // assertMetadonnee(metadonnees.item(2), "UUID",
+      // "48758200-A29B-18C4-B616-455677840120");
+      assertMetadonnee(metadonnees.item(2), "Siret", "07412723410007");
+      assertMetadonnee(metadonnees.item(3), "CodeOrganisme", "UR030");
+      assertMetadonnee(metadonnees.item(4), "DenominationCompte",
             "COUTURIER GINETTE");
 
    }

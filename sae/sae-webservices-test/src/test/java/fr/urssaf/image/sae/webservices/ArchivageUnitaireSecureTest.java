@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
@@ -57,12 +56,12 @@ public class ArchivageUnitaireSecureTest {
       ArchivageUnitaireResponseType response = service.archivageUnitaire(
             request).getArchivageUnitaireResponse();
 
-      //String xml = ADBBeanUtils.print(response);
-      //LOG.debug(xml);
+      // String xml = ADBBeanUtils.print(response);
+      // LOG.debug(xml);
 
-      assertEquals("Test de l'archivage unitaire", UUID.fromString(
-            "110E8400-E29B-11D4-A716-446655440000").toString(), response
-            .getIdArchive().getUuidType());
+      assertEquals("Test de l'archivage unitaire",
+            "110E8400-E29B-11D4-A716-446655440000", response.getIdArchive()
+                  .getUuidType());
 
    }
 
@@ -83,12 +82,12 @@ public class ArchivageUnitaireSecureTest {
       ArchivageUnitaireResponseType response = service.archivageUnitaire(
             request).getArchivageUnitaireResponse();
 
-      //String xml = ADBBeanUtils.print(response);
-      //LOG.debug(xml);
+      // String xml = ADBBeanUtils.print(response);
+      // LOG.debug(xml);
 
-      assertEquals("Test de l'archivage unitaire", UUID.fromString(
-            "110E8400-E29B-11D4-A716-446655440000").toString(), response
-            .getIdArchive().getUuidType());
+      assertEquals("Test de l'archivage unitaire",
+            "110E8400-E29B-11D4-A716-446655440000", response.getIdArchive()
+                  .getUuidType());
 
    }
 

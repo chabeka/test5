@@ -86,10 +86,9 @@ public class ArchivageMasseSoapTest {
    @Test
    public void archivageMasse_success() throws AxisFault {
 
-      SoapTestUtils
-            .execute(
-                  "src/test/resources/soap/request/archivageMasse_SoapFault_sae_ServiceNonImplemente.xml",
-                  msgctx, opClient);
+      SoapTestUtils.execute(
+            "src/test/resources/soap/request/archivageMasse_success.xml",
+            msgctx, opClient);
 
       Document response = AxiomUtils.loadDocumentResponse(client);
 
