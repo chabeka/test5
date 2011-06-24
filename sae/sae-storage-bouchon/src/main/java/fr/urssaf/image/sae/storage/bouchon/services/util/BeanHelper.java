@@ -74,11 +74,11 @@ public final class BeanHelper {
 					if (!metadata.getKey().trim()
 							.equalsIgnoreCase(UUID_CODE_METADATA)) {
 						storageMetadatas.add(new StorageMetadata(metadata
-								.getKey(), metadata.getValue()));
+								.getKey().trim(), metadata.getValue().trim()));
 					}
 				} else {
-					storageMetadatas.add(new StorageMetadata(metadata.getKey(),
-							metadata.getValue()));
+					storageMetadatas.add(new StorageMetadata(metadata.getKey().trim(),
+							metadata.getValue().trim()));
 				}
 			}
 

@@ -36,7 +36,7 @@ public final class SearchingXml {
 		stringBuilder.append("</entry>");
 		stringBuilder.append("<entry>");
 		stringBuilder.append("<string>DenominationCompte</string>");
-		stringBuilder.append("<string>SPOHN ERWAN MARIE MAX </string>");
+		stringBuilder.append("<string>SPOHN ERWAN MARIE MAX</string>");
 		stringBuilder.append("</entry>");
 		stringBuilder.append("<entry>");
 		stringBuilder.append("<string>CodeOrganisme</string>");
