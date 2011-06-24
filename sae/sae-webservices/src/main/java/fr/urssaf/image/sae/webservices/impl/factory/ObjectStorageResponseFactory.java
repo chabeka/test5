@@ -15,7 +15,7 @@ import fr.cirtil.www.saeservice.ConsultationResponseType;
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.ListeResultatRechercheType;
 import fr.cirtil.www.saeservice.MetadonneeType;
-import fr.cirtil.www.saeservice.ObjetNumeriqueType;
+import fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.cirtil.www.saeservice.RechercheResponseType;
 import fr.cirtil.www.saeservice.ResultatRechercheType;
@@ -68,8 +68,8 @@ public final class ObjectStorageResponseFactory {
       ConsultationResponseType responseType = response
             .getConsultationResponse();
 
-      ObjetNumeriqueType objetNumerique = ObjectTypeFactory
-            .createObjetNumeriqueType(content);
+      ObjetNumeriqueConsultationType objetNumerique = ObjectTypeFactory
+            .createObjetNumeriqueConsultationType(content);
 
       responseType.setObjetNumerique(objetNumerique);
 

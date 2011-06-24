@@ -1,6 +1,6 @@
 
 /**
- * ConsultationResponseType.java
+ * UrlConsultationDirecteType.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
@@ -10,18 +10,19 @@
             
 
             /**
-            *  ConsultationResponseType bean class
+            *  UrlConsultationDirecteType bean class
             */
         
 // CHECKSTYLE:OFF
 @SuppressWarnings("all")
-public class ConsultationResponseType
+public class UrlConsultationDirecteType
         implements org.apache.axis2.databinding.ADBBean{
-        /* This type was generated from the piece of schema that had
-                name = consultationResponseType
-                Namespace URI = http://www.cirtil.fr/saeService
-                Namespace Prefix = ns1
-                */
+        
+                public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
+                "http://www.cirtil.fr/saeService",
+                "urlConsultationDirecteType",
+                "ns1");
+
             
 
         private static java.lang.String generatePrefix(java.lang.String namespace) {
@@ -34,64 +35,41 @@ public class ConsultationResponseType
         
 
                         /**
-                        * field for ObjetNumerique
+                        * field for UrlConsultationDirecteType
                         */
 
                         
-                                    protected fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType localObjetNumerique ;
+                                    protected org.apache.axis2.databinding.types.URI localUrlConsultationDirecteType ;
                                 
 
                            /**
                            * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType
+                           * @return org.apache.axis2.databinding.types.URI
                            */
-                           public  fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType getObjetNumerique(){
-                               return localObjetNumerique;
+                           public  org.apache.axis2.databinding.types.URI getUrlConsultationDirecteType(){
+                               return localUrlConsultationDirecteType;
                            }
 
                            
                         
                             /**
                                * Auto generated setter method
-                               * @param param ObjetNumerique
+                               * @param param UrlConsultationDirecteType
                                */
-                               public void setObjetNumerique(fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType param){
+                               public void setUrlConsultationDirecteType(org.apache.axis2.databinding.types.URI param){
                             
-                                            this.localObjetNumerique=param;
-                                    
+                                             this.localUrlConsultationDirecteType=param;
+                                        
 
                                }
                             
 
-                        /**
-                        * field for Metadonnees
-                        */
-
-                        
-                                    protected fr.cirtil.www.saeservice.ListeMetadonneeType localMetadonnees ;
+                            public java.lang.String toString(){
                                 
-
-                           /**
-                           * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.ListeMetadonneeType
-                           */
-                           public  fr.cirtil.www.saeservice.ListeMetadonneeType getMetadonnees(){
-                               return localMetadonnees;
-                           }
-
-                           
-                        
-                            /**
-                               * Auto generated setter method
-                               * @param param Metadonnees
-                               */
-                               public void setMetadonnees(fr.cirtil.www.saeservice.ListeMetadonneeType param){
-                            
-                                            this.localMetadonnees=param;
+                                        return localUrlConsultationDirecteType.toString();
                                     
-
-                               }
-                            
+                            }
+                        
 
      /**
      * isReaderMTOMAware
@@ -121,15 +99,15 @@ public class ConsultationResponseType
 
 
         
-               org.apache.axiom.om.OMDataSource dataSource =
-                       new org.apache.axis2.databinding.ADBDataSource(this,parentQName){
+                org.apache.axiom.om.OMDataSource dataSource =
+                       new org.apache.axis2.databinding.ADBDataSource(this,MY_QNAME){
 
                  public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       ConsultationResponseType.this.serialize(parentQName,factory,xmlWriter);
+                       UrlConsultationDirecteType.this.serialize(MY_QNAME,factory,xmlWriter);
                  }
                };
                return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
-               parentQName,factory,dataSource);
+               MY_QNAME,factory,dataSource);
             
        }
 
@@ -147,63 +125,56 @@ public class ConsultationResponseType
             throws javax.xml.stream.XMLStreamException, org.apache.axis2.databinding.ADBException{
             
                 
-
-
-                java.lang.String prefix = null;
-                java.lang.String namespace = null;
+                //We can safely assume an element has only one type associated with it
                 
+                            java.lang.String namespace = parentQName.getNamespaceURI();
+                            java.lang.String localName = parentQName.getLocalPart();
+                        
+                            if (! namespace.equals("")) {
+                                java.lang.String prefix = xmlWriter.getPrefix(namespace);
 
-                    prefix = parentQName.getPrefix();
-                    namespace = parentQName.getNamespaceURI();
+                                if (prefix == null) {
+                                    prefix = generatePrefix(namespace);
 
-                    if ((namespace != null) && (namespace.trim().length() > 0)) {
-                        java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
-                        if (writerPrefix != null) {
-                            xmlWriter.writeStartElement(namespace, parentQName.getLocalPart());
-                        } else {
-                            if (prefix == null) {
-                                prefix = generatePrefix(namespace);
+                                    xmlWriter.writeStartElement(prefix, localName, namespace);
+                                    xmlWriter.writeNamespace(prefix, namespace);
+                                    xmlWriter.setPrefix(prefix, namespace);
+
+                                } else {
+                                    xmlWriter.writeStartElement(namespace, localName);
+                                }
+
+                            } else {
+                                xmlWriter.writeStartElement(localName);
                             }
 
-                            xmlWriter.writeStartElement(prefix, parentQName.getLocalPart(), namespace);
-                            xmlWriter.writeNamespace(prefix, namespace);
-                            xmlWriter.setPrefix(prefix, namespace);
-                        }
-                    } else {
-                        xmlWriter.writeStartElement(parentQName.getLocalPart());
-                    }
-                
-                  if (serializeType){
-               
-
-                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
-                   if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
-                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           namespacePrefix+":consultationResponseType",
-                           xmlWriter);
-                   } else {
-                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           "consultationResponseType",
-                           xmlWriter);
-                   }
-
-               
-                   }
-               
-                                            if (localObjetNumerique==null){
-                                                 throw new org.apache.axis2.databinding.ADBException("objetNumerique cannot be null!!");
-                                            }
-                                           localObjetNumerique.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","objetNumerique"),
-                                               factory,xmlWriter);
+                            // add the type details if this is used in a simple type
+                               if (serializeType){
+                                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
+                                   if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
+                                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
+                                           namespacePrefix+":urlConsultationDirecteType",
+                                           xmlWriter);
+                                   } else {
+                                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
+                                           "urlConsultationDirecteType",
+                                           xmlWriter);
+                                   }
+                               }
+                            
+                                          if (localUrlConsultationDirecteType==null){
+                                            
+                                                     throw new org.apache.axis2.databinding.ADBException("Value cannot be null !!");
+                                                
+                                         }else{
                                         
-                                            if (localMetadonnees==null){
-                                                 throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
-                                            }
-                                           localMetadonnees.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonnees"),
-                                               factory,xmlWriter);
-                                        
-                    xmlWriter.writeEndElement();
-               
+                                                       xmlWriter.writeCharacters(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localUrlConsultationDirecteType));
+                                            
+                                         }
+                                    
+                            xmlWriter.writeEndElement();
+
+                    
 
         }
 
@@ -360,32 +331,14 @@ public class ConsultationResponseType
 
 
         
-                 java.util.ArrayList elementList = new java.util.ArrayList();
-                 java.util.ArrayList attribList = new java.util.ArrayList();
-
                 
-                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "objetNumerique"));
-                            
-                            
-                                    if (localObjetNumerique==null){
-                                         throw new org.apache.axis2.databinding.ADBException("objetNumerique cannot be null!!");
-                                    }
-                                    elementList.add(localObjetNumerique);
-                                
-                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "metadonnees"));
-                            
-                            
-                                    if (localMetadonnees==null){
-                                         throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
-                                    }
-                                    elementList.add(localMetadonnees);
-                                
-
-                return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(qName, elementList.toArray(), attribList.toArray());
-            
-            
+                //We can safely assume an element has only one type associated with it
+                 return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(MY_QNAME,
+                            new java.lang.Object[]{
+                            org.apache.axis2.databinding.utils.reader.ADBXMLStreamReader.ELEMENT_TEXT,
+                            org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localUrlConsultationDirecteType)
+                            },
+                            null);
 
         }
 
@@ -398,6 +351,29 @@ public class ConsultationResponseType
 
         
         
+                public static UrlConsultationDirecteType fromString(java.lang.String value,
+                                                    java.lang.String namespaceURI){
+                    UrlConsultationDirecteType returnValue = new  UrlConsultationDirecteType();
+                    
+                            returnValue.setUrlConsultationDirecteType(
+                                org.apache.axis2.databinding.utils.ConverterUtil.convertToAnyURI(value));
+                        
+
+                    return returnValue;
+                }
+
+                public static UrlConsultationDirecteType fromString(javax.xml.stream.XMLStreamReader xmlStreamReader,
+                                                                    java.lang.String content) {
+                    if (content.indexOf(":") > -1){
+                        java.lang.String prefix = content.substring(0,content.indexOf(":"));
+                        java.lang.String namespaceUri = xmlStreamReader.getNamespaceContext().getNamespaceURI(prefix);
+                        return UrlConsultationDirecteType.Factory.fromString(content,namespaceUri);
+                    } else {
+                       return UrlConsultationDirecteType.Factory.fromString(content,"");
+                    }
+                }
+
+            
 
         /**
         * static method to create the object
@@ -406,9 +382,9 @@ public class ConsultationResponseType
         * Postcondition: If this object is an element, the reader is positioned at its end element
         *                If this object is a complex type, the reader is positioned at the end element of its outer element
         */
-        public static ConsultationResponseType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
-            ConsultationResponseType object =
-                new ConsultationResponseType();
+        public static UrlConsultationDirecteType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
+            UrlConsultationDirecteType object =
+                new UrlConsultationDirecteType();
 
             int event;
             java.lang.String nillableValue = null;
@@ -420,32 +396,6 @@ public class ConsultationResponseType
                     reader.next();
 
                 
-                if (reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","type")!=null){
-                  java.lang.String fullTypeName = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
-                        "type");
-                  if (fullTypeName!=null){
-                    java.lang.String nsPrefix = null;
-                    if (fullTypeName.indexOf(":") > -1){
-                        nsPrefix = fullTypeName.substring(0,fullTypeName.indexOf(":"));
-                    }
-                    nsPrefix = nsPrefix==null?"":nsPrefix;
-
-                    java.lang.String type = fullTypeName.substring(fullTypeName.indexOf(":")+1);
-                    
-                            if (!"consultationResponseType".equals(type)){
-                                //find namespace for the prefix
-                                java.lang.String nsUri = reader.getNamespaceContext().getNamespaceURI(nsPrefix);
-                                return (ConsultationResponseType)fr.cirtil.www.saeservice.ExtensionMapper.getTypeObject(
-                                     nsUri,type,reader);
-                              }
-                        
-
-                  }
-                
-
-                }
-
-                
 
                 
                 // Note all attributes that were handled. Used to differ normal attributes
@@ -453,49 +403,29 @@ public class ConsultationResponseType
                 java.util.Vector handledAttributes = new java.util.Vector();
                 
 
-                 
                     
-                    reader.next();
+                while(!reader.isEndElement()) {
+                    if (reader.isStartElement()  || reader.hasText()){
                 
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
+                                    if (reader.isStartElement()  || reader.hasText()){
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","objetNumerique").equals(reader.getName())){
-                                
-                                                object.setObjetNumerique(fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType.Factory.parse(reader));
-                                              
-                                        reader.next();
+                                    java.lang.String content = reader.getElementText();
                                     
+                                              object.setUrlConsultationDirecteType(
+                                                    org.apache.axis2.databinding.utils.ConverterUtil.convertToAnyURI(content));
+                                            
                               }  // End of if for expected property start element
                                 
-                                else{
-                                    // A start element we are not expecting indicates an invalid parameter was passed
-                                    throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                                }
-                            
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
-                                
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonnees").equals(reader.getName())){
-                                
-                                                object.setMetadonnees(fr.cirtil.www.saeservice.ListeMetadonneeType.Factory.parse(reader));
-                                              
-                                        reader.next();
-                                    
-                              }  // End of if for expected property start element
-                                
-                                else{
-                                    // A start element we are not expecting indicates an invalid parameter was passed
-                                    throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                                }
-                              
-                            while (!reader.isStartElement() && !reader.isEndElement())
+                             else{
+                                        // A start element we are not expecting indicates an invalid parameter was passed
+                                        throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
+                             }
+                          
+                             } else {
                                 reader.next();
-                            
-                                if (reader.isStartElement())
-                                // A start element we are not expecting indicates a trailing invalid property
-                                throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                            
+                             }  
+                           }  // end of while loop
+                        
 
 
 

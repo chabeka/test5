@@ -253,7 +253,7 @@
 			<xsd:annotation>
 				<xsd:documentation>Valeur de retour de l'opération 'consultation'</xsd:documentation>
 			</xsd:annotation>
-			<xsd:element name="objetNumerique" type="sae:objetNumeriqueType">
+			<xsd:element name="objetNumerique" type="sae:objetNumeriqueConsultationType">
 				<xsd:annotation>
 					<xsd:documentation>L'objet numérique,  soit directement sous forme d'un flux binaire en base 64, soit sous forme d'une URL de consultation directe. </xsd:documentation>
 				</xsd:annotation>
@@ -265,6 +265,23 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
+   <xsd:simpleType name="urlConsultationDirecteType">
+      <xsd:annotation>
+         <xsd:documentation>Une URL de consultation directe</xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:anyURI" />
+   </xsd:simpleType>
+   <xsd:complexType name="objetNumeriqueConsultationType">
+      <xsd:annotation>
+         <xsd:documentation>Un objet numérique représenté soit un flux binaire encodé en base 64, soit par une URL de consultation directe</xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:choice>
+            <xsd:element name="url" type="sae:urlConsultationDirecteType"/>
+            <xsd:element name="contenu" type="xsd:base64Binary"/>
+         </xsd:choice>
+      </xsd:sequence>
+   </xsd:complexType>
 	<xsd:element name="archivageUnitaire" type="sae:archivageUnitaireRequestType"/>
 	<xsd:element name="archivageUnitaireResponse" type="sae:archivageUnitaireResponseType"/>
 	<xsd:element name="archivageMasse" type="sae:archivageMasseRequestType"/>

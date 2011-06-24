@@ -10,14 +10,14 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.util.Assert;
 
-import fr.cirtil.www.saeservice.EcdeUrlType;
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.MetadonneeCodeType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.cirtil.www.saeservice.MetadonneeValeurType;
-import fr.cirtil.www.saeservice.ObjetNumeriqueType;
-import fr.cirtil.www.saeservice.ObjetNumeriqueTypeChoice_type0;
+import fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType;
+import fr.cirtil.www.saeservice.ObjetNumeriqueConsultationTypeChoice_type0;
 import fr.cirtil.www.saeservice.ResultatRechercheType;
+import fr.cirtil.www.saeservice.UrlConsultationDirecteType;
 import fr.cirtil.www.saeservice.UuidType;
 
 /**
@@ -75,16 +75,16 @@ public final class ObjectTypeFactory {
 
    /**
     * 
-    * instanciation de la classe {@link ObjetNumeriqueType}<br>
+    * instanciation de la classe {@link ObjetNumeriqueConsultationType}<br>
     * le paramètre est <code>content</code> est transformé en une chaine de
     * caractères en base64
     * 
     * <pre>
-    * &lt;xsd:complexType name="objetNumeriqueType">
+    * &lt;xsd:complexType name="objetNumeriqueConsultationType">
     *      ...
     *    &lt;xsd:sequence>
     *       &lt;xsd:choice>
-    *          &lt;xsd:element name="url" type="sae:ecdeUrlType"/>
+    *          &lt;xsd:element name="url" type="sae:urlConsultationDirecteType"/>
     *          &lt;xsd:element name="contenu" type="xsd:base64Binary"/>
     *       &lt;xsd:choice>
     *    &lt;xsd:sequence>
@@ -94,15 +94,16 @@ public final class ObjectTypeFactory {
     * 
     * @param content
     *           valeur de <code>contenu</code> doit être non null
-    * @return instance de {@link ObjetNumeriqueType}
+    * @return instance de {@link ObjetNumeriqueConsultationType}
     */
-   public static ObjetNumeriqueType createObjetNumeriqueType(byte[] content) {
+   public static ObjetNumeriqueConsultationType createObjetNumeriqueConsultationType(
+         byte[] content) {
 
       Assert.notNull(content, "content is required");
 
-      ObjetNumeriqueType objetNumerique = new ObjetNumeriqueType();
-      ObjetNumeriqueTypeChoice_type0 choice = new ObjetNumeriqueTypeChoice_type0();
-      objetNumerique.setObjetNumeriqueTypeChoice_type0(choice);
+      ObjetNumeriqueConsultationType objetNumerique = new ObjetNumeriqueConsultationType();
+      ObjetNumeriqueConsultationTypeChoice_type0 choice = new ObjetNumeriqueConsultationTypeChoice_type0();
+      objetNumerique.setObjetNumeriqueConsultationTypeChoice_type0(choice);
 
       DataHandler contenu = ConverterUtil.convertToDataHandler(StringUtils
             .newStringUtf8(Base64.encodeBase64(content, false)));
@@ -113,14 +114,14 @@ public final class ObjectTypeFactory {
    }
 
    /**
-    * instanciation de la classe {@link ObjetNumeriqueType}
+    * instanciation de la classe {@link ObjetNumeriqueConsultationType}
     * 
     * <pre>
-    * &lt;xsd:complexType name="objetNumeriqueType">
+    * &lt;xsd:complexType name="objetNumeriqueConsultationType">
     *      ...
     *    &lt;xsd:sequence>
     *       &lt;xsd:choice>
-    *          &lt;xsd:element name="url" type="sae:ecdeUrlType"/>
+    *          &lt;xsd:element name="url" type="sae:urlConsultationDirecteType"/>
     *          &lt;xsd:element name="contenu" type="xsd:base64Binary"/>
     *       &lt;xsd:choice>
     *    &lt;xsd:sequence>
@@ -129,22 +130,23 @@ public final class ObjectTypeFactory {
     * </pre>
     * 
     * @param url
-    *           valeur de <code>ecdeUrlType</code> doit être non null
-    * @return instance de {@link ObjetNumeriqueType}
+    *           valeur de <code>url</code> doit être non null
+    * @return instance de {@link ObjetNumeriqueConsultationType}
     */
-   public static ObjetNumeriqueType createObjetNumeriqueType(URI url) {
+   public static ObjetNumeriqueConsultationType createObjetNumeriqueConsultationType(
+         URI url) {
 
       Assert.notNull(url, "url is required");
 
-      ObjetNumeriqueType objetNumerique = new ObjetNumeriqueType();
-      ObjetNumeriqueTypeChoice_type0 choice = new ObjetNumeriqueTypeChoice_type0();
-      objetNumerique.setObjetNumeriqueTypeChoice_type0(choice);
+      ObjetNumeriqueConsultationType objetNumerique = new ObjetNumeriqueConsultationType();
+      ObjetNumeriqueConsultationTypeChoice_type0 choice = new ObjetNumeriqueConsultationTypeChoice_type0();
+      objetNumerique.setObjetNumeriqueConsultationTypeChoice_type0(choice);
 
-      EcdeUrlType ecdeURL = new EcdeUrlType();
-      org.apache.axis2.databinding.types.URI uri = ConverterUtil
-            .convertToAnyURI(url.toASCIIString());
+      UrlConsultationDirecteType urlConsultation = new UrlConsultationDirecteType();
+      choice.setUrl(urlConsultation);
 
-      ecdeURL.setEcdeUrlType(uri);
+      urlConsultation.setUrlConsultationDirecteType(ConverterUtil
+            .convertToAnyURI(url.toASCIIString()));
 
       return objetNumerique;
    }
@@ -171,7 +173,8 @@ public final class ObjectTypeFactory {
       Assert.notNull(uuid, "uuid is required");
 
       UuidType uuidType = new UuidType();
-      uuidType.setUuidType(uuid.toString());
+      uuidType.setUuidType(org.apache.commons.lang.StringUtils.upperCase(uuid
+            .toString()));
 
       return uuidType;
    }

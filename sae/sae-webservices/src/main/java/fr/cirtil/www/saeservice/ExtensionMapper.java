@@ -104,6 +104,16 @@ public class ExtensionMapper{
               
                   if (
                   "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
+                  "urlConsultationDirecteType".equals(typeName)){
+                   
+                            return  fr.cirtil.www.saeservice.UrlConsultationDirecteType.Factory.parse(reader);
+                        
+
+                  }
+
+              
+                  if (
+                  "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
                   "resultatRechercheType".equals(typeName)){
                    
                             return  fr.cirtil.www.saeservice.ResultatRechercheType.Factory.parse(reader);
@@ -117,6 +127,16 @@ public class ExtensionMapper{
                   "listeMetadonneeType".equals(typeName)){
                    
                             return  fr.cirtil.www.saeservice.ListeMetadonneeType.Factory.parse(reader);
+                        
+
+                  }
+
+              
+                  if (
+                  "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
+                  "objetNumeriqueConsultationType".equals(typeName)){
+                   
+                            return  fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType.Factory.parse(reader);
                         
 
                   }

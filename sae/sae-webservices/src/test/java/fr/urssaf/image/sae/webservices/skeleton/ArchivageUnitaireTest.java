@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.UUID;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -56,9 +55,9 @@ public class ArchivageUnitaireTest {
       ArchivageUnitaireResponseType response = skeleton
             .archivageUnitaireSecure(request).getArchivageUnitaireResponse();
 
-      assertEquals("Test de l'archivage unitaire", UUID.fromString(
-            "110E8400-E29B-11D4-A716-446655440000").toString(), response
-            .getIdArchive().getUuidType());
+      assertEquals("Test de l'archivage unitaire",
+            "110E8400-E29B-11D4-A716-446655440000", response.getIdArchive()
+                  .getUuidType());
    }
 
    public static String print(InputStream input) {

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
@@ -41,7 +40,7 @@ public class RechercheTest {
 
    }
 
-   private static final String UUID_META = "UUID";
+   // private static final String UUID_META = "UUID";
 
    private static final String CODE_RND_META = "CodeRND";
 
@@ -69,11 +68,11 @@ public class RechercheTest {
       assertEquals("nombre de resultats inattendu", 3, resultats.length);
 
       Map<String, String> metas1 = new HashMap<String, String>();
-      metas1.put(UUID_META, "110E8400-E29B-11D4-A716-446655440000");
+      // metas1.put(UUID_META, "110E8400-E29B-11D4-A716-446655440000");
       metas1.put(CODE_RND_META, "3.1.3.1.1");
       metas1.put(COTISANT_META, "704815");
       metas1.put(SIRET_META, "49980055500017");
-      metas1.put(COMPTE_META, "SPOHN ERWAN MARIE MAX ");
+      metas1.put(COMPTE_META, "SPOHN ERWAN MARIE MAX");
       metas1.put(ORGANISME_META, "UR030");
       // metas1.put("DateOrigine", "2011-06-03");
 
@@ -81,7 +80,7 @@ public class RechercheTest {
             "110E8400-E29B-11D4-A716-446655440000", metas1);
 
       Map<String, String> metas2 = new HashMap<String, String>();
-      metas2.put(UUID_META, "510E8200-E29B-18C4-A716-446677440120");
+      // metas2.put(UUID_META, "510E8200-E29B-18C4-A716-446677440120");
       metas2.put(CODE_RND_META, "1.A.X.X.X");
       metas2.put(COTISANT_META, "723804");
       metas2.put(SIRET_META, "07413151710009");
@@ -92,7 +91,7 @@ public class RechercheTest {
             "510E8200-E29B-18C4-A716-446677440120", metas2);
 
       Map<String, String> metas3 = new HashMap<String, String>();
-      metas3.put(UUID_META, "48758200-A29B-18C4-B616-455677840120");
+      // metas3.put(UUID_META, "48758200-A29B-18C4-B616-455677840120");
       metas3.put(CODE_RND_META, "1.2.3.3.1");
       metas3.put(COTISANT_META, "719900");
       metas3.put(SIRET_META, "07412723410007");
@@ -108,8 +107,8 @@ public class RechercheTest {
          ResultatRechercheType resultat, String uuid,
          Map<String, String> metadonnees) {
 
-      assertEquals("nombre de resultats inattendu", UUID.fromString(uuid)
-            .toString(), resultat.getIdArchive().getUuidType());
+      assertEquals("nombre de resultats inattendu", uuid, resultat
+            .getIdArchive().getUuidType());
 
       MetadonneeType[] metas = resultat.getMetadonnees().getMetadonnee();
 
