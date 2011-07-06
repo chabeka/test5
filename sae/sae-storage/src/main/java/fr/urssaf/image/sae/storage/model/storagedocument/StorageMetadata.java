@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.storage.model.storagedocument;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Classe concrète représentant la métadonnée</BR>
  * 
@@ -63,4 +65,11 @@ public class StorageMetadata {
       this.code = code;
       this.value = value;
    }
+   @Override
+	public final String toString() {
+		return new ToStringBuilder(this)
+				.append("code", code)
+				.append("value", value)
+				.toString();
+	}
 }

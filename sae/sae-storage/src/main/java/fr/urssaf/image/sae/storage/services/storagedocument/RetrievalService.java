@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.storage.services.storagedocument;
 import java.util.List;
 
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
+import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
@@ -58,4 +59,13 @@ public interface RetrievalService {
    StorageDocument retrieveStorageDocumentByUUID(final
          UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
  
+   /**
+    * Permet d'initialiser les paramètres dont le service aura besoin
+    * 
+    * @param storageConnectionParameter
+	 *            : Les paramètres de connexion à la base de stockage
+    */
+   @SuppressWarnings("PMD.LongVariable")
+   void setRetrievalServiceParameter(final StorageConnectionParameter storageConnectionParameter);
+   
 }

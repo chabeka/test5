@@ -9,11 +9,18 @@
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-storage</artifactId>
    <name>sae-storage</name>
-   <version>0.0.1-SNAPSHOT</version>
+   <version>0.0.2-SNAPSHOT</version>
    <description>Archive contenant les interfaces et modèles de stockage et récupération des documents</description>
    <developers>
       <developer>
          <name> Robert Legrand </name>
       </developer>
    </developers>
+   <dependencies>
+      <dependency>
+         <groupId>commons-lang</groupId>
+         <artifactId>commons-lang</artifactId>
+         <version>2.6</version>
+      </dependency>
+   </dependencies>
 </project>

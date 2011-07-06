@@ -45,6 +45,7 @@ public abstract class AbstractStorageDocument {
     * 
     * @return Le contenu du document
     */
+   @SuppressWarnings("PMD.MethodReturnsInternalArray")
    public final byte[] getContent() {
       return content;
    }
@@ -55,6 +56,7 @@ public abstract class AbstractStorageDocument {
     * @param content :
     *           Le contenu du document
     */
+   @SuppressWarnings("PMD.ArrayIsStoredDirectly")
    public final void setContent(final byte[] content) {
       this.content = content;
    }
@@ -88,6 +90,7 @@ public abstract class AbstractStorageDocument {
     * @param filePath :
     *           Le chemin du fichier
     */
+   @SuppressWarnings("PMD.ArrayIsStoredDirectly")
    public AbstractStorageDocument(final List<StorageMetadata> metadatas,
          final byte[] content, final File filePath) {
       this.metadatas = metadatas;

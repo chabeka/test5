@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.storage.services.storagedocument;
 import java.util.UUID;
 
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -39,4 +40,14 @@ public interface InsertionService {
 	BulkInsertionResults bulkInsertStorageDocument(
 			StorageDocuments storageDocuments,final boolean allOrNothing);
 
+	
+	
+	/**
+	    * Permet d'initialiser les paramètres dont le service aura besoin
+	    * 
+	    * @param storageConnectionParameter
+		 *            : Les paramètres de connexion à la base de stockage
+	    */
+	@SuppressWarnings("PMD.LongVariable")
+	   void setInsertionServiceParameter(final StorageConnectionParameter storageConnectionParameter);
 }

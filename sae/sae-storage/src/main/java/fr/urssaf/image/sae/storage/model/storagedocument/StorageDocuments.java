@@ -2,6 +2,8 @@ package fr.urssaf.image.sae.storage.model.storagedocument;
 
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Classe concrète représentant la liste des documents
  * 
@@ -50,5 +52,18 @@ public class StorageDocuments {
 	 */
 	public StorageDocuments() {
 		// ici on ne fait rien
+	}
+
+	@Override
+	public final String toString() {
+		@SuppressWarnings("PMD.LongVariable")
+		final StringBuffer stringBuffer = new StringBuffer();
+		if (listOfStorageDocument != null) {
+			for (StorageDocument storageDocument : listOfStorageDocument) {
+				stringBuffer.append(storageDocument.toString());
+			}
+		}
+		return new ToStringBuilder(this).append("storageDocuments",
+				stringBuffer.toString()).toString();
 	}
 }
