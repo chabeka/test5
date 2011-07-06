@@ -27,10 +27,12 @@
       <module>../sae-saml</module>
       <module>../sae-webservices-client-demo</module>
       <module>../sae-igc</module>
-      <module>../sae-igcmaj</module>
+      <module>../sae-igcmaj</module>      
       <module>../sae-storage</module>
-      <module>../sae-storage-bouchon</module>
+      <module>../sae-storage-dfce</module>
+      <module>../sae-storage-bouchon</module>      
       <module>../sae-ecde</module>
+      
    </modules>
 
 </project>
