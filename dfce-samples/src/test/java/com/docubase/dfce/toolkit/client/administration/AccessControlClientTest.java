@@ -6,13 +6,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
 public class AccessControlClientTest extends AbstractDFCEToolkitClientTest {
     @Before
     public void before() {
 	if (!Authentication.isServerUp()) {
-	    Authentication.openSession(USER, PASSWORD, URL);
+	    Authentication.openSession(AbstractBaseTestCase.ADM_LOGIN,
+		    AbstractBaseTestCase.ADM_PASSWORD,
+		    AbstractBaseTestCase.SERVICE_URL);
 	}
     }
 

@@ -21,11 +21,9 @@ import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
 
 public class BaseAdministrationServiceTest extends AbstractBaseTestCase {
 
-    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
-
     @BeforeClass
     public static void setUp() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
     }
 
     @AfterClass

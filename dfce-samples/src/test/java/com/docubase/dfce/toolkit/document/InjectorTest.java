@@ -13,6 +13,7 @@ import java.util.List;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.docubase.dfce.toolkit.recordmanager.AbstractEventTest;
@@ -22,26 +23,19 @@ public class InjectorTest extends AbstractEventTest {
     /**
      * Test d'injection en masse de documents
      * 
+     * @throws IOException
+     * 
      */
+    @Ignore
     @Test
-    public void testInjectBatch() {
-	File file = null;
-	try {
-	    file = createFile();
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+    public void testInjectBatch() throws IOException {
+	File file = createFile();
+
 	// File file = getFile(XML_BATCH, this.getClass());
 	List<Document> documens = null;
-	try {
-	    String absolutePath = file.getAbsolutePath();
-	    documens = ServiceProvider.getStoreService().injectDocuments(
-		    absolutePath);
-	} catch (Exception e1) {
-	    // TODO Auto-generated catch block
-	    e1.printStackTrace();
-	}
+	String absolutePath = file.getAbsolutePath();
+	documens = ServiceProvider.getStoreService().injectDocuments(
+		absolutePath);
 
 	assertEquals("Tous les documents n'ont pas été injectés.", 3,
 		documens.size());

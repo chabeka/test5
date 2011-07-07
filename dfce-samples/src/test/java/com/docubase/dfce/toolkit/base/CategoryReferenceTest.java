@@ -23,11 +23,10 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
 	    + UUID.randomUUID();
     private static final String CATEGORY_CODE4 = "CATEGORY_CODE4"
 	    + UUID.randomUUID();
-    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
 
     @BeforeClass
     public static void beforeAll() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
     }
 
     @AfterClass
@@ -36,7 +35,7 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
     }
 
     /**
-     * Ajout d'une nouvelle catï¿½gorie au systï¿½me
+     * Ajout d'une nouvelle catégorie au système
      * 
      * @throws ObjectAlreadyExistsException
      * 
@@ -50,7 +49,7 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
     }
 
     /**
-     * Ajout d'une catï¿½gorie en double
+     * Ajout d'une catégorie en double
      * 
      * @throws ObjectAlreadyExistsException
      * 
@@ -68,7 +67,7 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
     }
 
     /**
-     * Test sur l'ensemble des catï¿½gories du systï¿½me
+     * Test sur l'ensemble des catégories du système
      * 
      * @throws ObjectAlreadyExistsException
      * 
@@ -92,7 +91,7 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
     }
 
     /**
-     * Test de recherche d'une catï¿½gorie par son code
+     * Test de recherche d'une catégorie par son code
      * 
      * @throws ObjectAlreadyExistsException
      * 

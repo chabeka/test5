@@ -1,23 +1,24 @@
 package com.docubase.dfce.toolkit.recordmanager;
 
-import static junit.framework.Assert.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.UUID;
 
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.model.recordmanager.EventReadFilter;
-import net.docubase.toolkit.model.recordmanager.RMClientEvent;
+import net.docubase.toolkit.model.recordmanager.DocEventLogType;
+import net.docubase.toolkit.model.recordmanager.RMDocEvent;
+import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
 import net.docubase.toolkit.service.ServiceProvider;
+
+import org.junit.Before;
 
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
@@ -28,22 +29,19 @@ public abstract class AbstractEventTest extends
     protected static int PAGE = 1;
 
     /** Valeur fictive de keyDoc */
-    protected static final String KEY_DOC = "1630f480-8e14-48a3-b845-2be35d069df6";
+    protected static final UUID KEY_DOC = UUID.randomUUID();
 
-    /**
-     * Build the log's search filter
-     * 
-     * @return the logs
-     */
-    protected EventReadFilter buildFilter() {
-	Calendar startDate = GregorianCalendar.getInstance();
-	startDate.set(Calendar.HOUR_OF_DAY, 9);
-	Calendar endDate = GregorianCalendar.getInstance();
-	endDate.set(Calendar.HOUR_OF_DAY, 19);
+    protected Date beginDate;
 
-	EventReadFilter eventReadFilter = ToolkitFactory.getInstance()
-		.createEventReadFilter(startDate.getTime(), endDate.getTime());
-	return eventReadFilter;
+    protected Date endDate;
+
+    @Before
+    public void beforeEach() {
+	Calendar calendar = GregorianCalendar.getInstance();
+	endDate = new Date();
+	calendar.setTime(endDate);
+	calendar.add(Calendar.MINUTE, -5);
+	beginDate = calendar.getTime();
     }
 
     /**
@@ -51,28 +49,18 @@ public abstract class AbstractEventTest extends
      * 
      * @return Liste d'évènements construits
      */
-    protected List<RMClientEvent> buildEventLogList() {
+    protected List<RMSystemEvent> buildSystemEventsLogList() {
 
-	List<RMClientEvent> events = new ArrayList<RMClientEvent>();
-	RMClientEvent evtLog = ToolkitFactory.getInstance()
-		.createRMClientEvent();
-	evtLog.setActorLogin("_ADMIN");
-	evtLog.setContextName("test");
-	evtLog.setEventDate(Calendar.getInstance().getTime());
-	evtLog.setSystemDate(Calendar.getInstance().getTime());
-	evtLog.setEventTypeName("Stockage");
-	evtLog.setObjectId("0@JUNIT.1");
-	evtLog.setObjectType("TESTSTORE");
+	List<RMSystemEvent> events = new ArrayList<RMSystemEvent>();
+	RMSystemEvent evtLog = ToolkitFactory.getInstance()
+		.createRMSystemEvent();
+	evtLog.setUsername("_ADMIN");
+	evtLog.setEventDescription("EVENT1");
 	events.add(evtLog);
 
-	evtLog = ToolkitFactory.getInstance().createRMClientEvent();
-	evtLog.setActorLogin("_ADMIN");
-	evtLog.setContextName("test");
-	evtLog.setEventDate(Calendar.getInstance().getTime());
-	evtLog.setSystemDate(Calendar.getInstance().getTime());
-	evtLog.setEventTypeName("Consultation");
-	evtLog.setObjectId("0@JUNIT.1");
-	evtLog.setObjectType("TESTSTORE");
+	evtLog = ToolkitFactory.getInstance().createRMSystemEvent();
+	evtLog.setUsername("_ADMIN");
+	evtLog.setEventDescription("EVENT2");
 	events.add(evtLog);
 
 	return events;
@@ -83,18 +71,12 @@ public abstract class AbstractEventTest extends
      * 
      * @return Liste d'évènements construits
      */
-    protected RMClientEvent buildDocEventLog() {
+    protected RMDocEvent buildDocEventLog() {
 
-	RMClientEvent evtLog = ToolkitFactory.getInstance()
-		.createRMClientEvent();
-	evtLog.setDocumentUuid(KEY_DOC);
-	evtLog.setActorLogin("_ADMIN");
-	evtLog.setContextName("test");
-	evtLog.setEventDate(Calendar.getInstance().getTime());
-	evtLog.setSystemDate(Calendar.getInstance().getTime());
-	evtLog.setEventTypeName("Stockage");
-	evtLog.setObjectId("0@JUNIT.1");
-	evtLog.setObjectType("TESTSTORE");
+	RMDocEvent evtLog = ToolkitFactory.getInstance().createRMDocEvent();
+	evtLog.setDocUUID(KEY_DOC);
+	evtLog.setUsername("_ADMIN");
+	evtLog.setEventType(DocEventLogType.CREATE_DOCUMENT);
 	return evtLog;
     }
 
@@ -120,59 +102,6 @@ public abstract class AbstractEventTest extends
 		document, new FileInputStream(file));
 
 	return stored;
-    }
-
-    /**
-     * Retourner la date d'évènement du dernier de la liste d'évènements,
-     * recherché sur la base d'un filtre donné
-     * 
-     * @param filter
-     *            de recherche d'évènements
-     * @throws Exception
-     *             en cas d'erreur
-     */
-    protected Date findEventLog(EventReadFilter filter) {
-
-	final ArrayDeque<RMClientEvent> events = new ArrayDeque<RMClientEvent>();
-	List<RMClientEvent> result = ServiceProvider.getRecordManagerService()
-		.getEventLogList(filter);
-
-	if (!result.isEmpty()) {
-	    events.addAll(result);
-	    System.out.format("\n*** PAGE N° %d \n", PAGE++);
-	}
-	assertTrue("La liste des évènements ne doit pas être vide",
-		events.size() > 0);
-
-	for (RMClientEvent event : events) {
-	    print(event);
-	}
-
-	return result.isEmpty() ? null : ServiceProvider
-		.getRecordManagerService().peekLast(events).getEventDate();
-    }
-
-    /**
-     * Afficher les données d'un évènement
-     * 
-     * @param event
-     *            évènement à afficher
-     */
-    protected void print(RMClientEvent event) {
-	System.out.println("\n");
-	format("EventDate", event.getEventDateFormatUTC());
-	format("ActorLogin", event.getActorLogin());
-	format("EventTypeName", event.getEventTypeName());
-	format("ContextName", event.getContextName());
-	format("ObjectId", event.getObjectId());
-	format("ObjectType", event.getObjectType());
-	format("SystemDate", event.getSystemDateFormatUTC());
-	format("Arg1", event.getArg1());
-	format("Arg2", event.getArg2());
-	format("Digest", event.getDigest());
-	format("DigestAlgorithm", event.getDigestAlgorithm());
-	format("DocumentUuid", event.getDocumentUuid());
-	format("ArchiveUuid", event.getArchiveId());
     }
 
     /**

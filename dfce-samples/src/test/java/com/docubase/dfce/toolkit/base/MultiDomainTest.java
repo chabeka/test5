@@ -38,10 +38,8 @@ public class MultiDomainTest extends AbstractBaseTestCase {
     private static final Logger LOGGER = Logger
 	    .getLogger(MultiDomainTest.class);
 
-    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
-    private static final String URL2 = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
-    // private static final String URL2 =
-    // "http://localhost:8080/dfce-webapp/toolkit/";
+    private static final String URL = AbstractBaseTestCase.SERVICE_URL;
+    private static final String URL2 = AbstractBaseTestCase.SERVICE_URL;
 
     private static final String CATA = "MBCode Fournisseur";
     private static final String CATB = "MBNo Serie";
@@ -66,8 +64,8 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	storedDocs = new ArrayList<Document>();
 
 	/*
-	 * base1 et 2 ont les 2 CATA, CATB et CATC mais pas dans le mï¿½me ordre
-	 * (on verra que celï¿½ n'a pas d'importance) base2 est la seule ï¿½ avoir
+	 * base1 et 2 ont les 2 CATA, CATB et CATC mais pas dans le même ordre
+	 * (on verra que celà n'a pas d'importance) base2 est la seule à avoir
 	 * CATD.
 	 */
 	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
@@ -121,13 +119,13 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	}
 	base = ToolkitFactory.getInstance().createBase(baseId);
 
-	// Dï¿½clare une date de crï¿½ation disponible mais optionnell
+	// Déclare une date de création disponible mais optionnell
 	base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
 	// Pas de fond de page
 	base.setDocumentOverlayFormConfiguration(DocumentOverlayFormConfiguration.NONE);
 	// Pas de groupe de document
 	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-	// Le propriï¿½taire d'un document n'est pas modifiable ï¿½ postï¿½riori de
+	// Le propriétaire d'un document n'est pas modifiable à postériori de
 	// son injection
 	base.setDocumentOwnerModify(false);
 
@@ -182,12 +180,12 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	assertEquals(2, docs.size());
 
 	/*
-	 * On extrait les fichiers de maniï¿½re "classique"
+	 * On extrait les fichiers de manière "classique"
 	 */
 	for (Document doc : docs) {
 	    System.out.println("Extraction du document " + doc.getTitle());
 
-	    // On rï¿½ussit bien ï¿½ extraire le fichier
+	    // On réussit bien à extraire le fichier
 	    InputStream documentFile = ServiceProvider.getStoreService()
 		    .getDocumentFile(doc);
 	    assertNotNull(documentFile);
@@ -198,7 +196,7 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
 	base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
 	/*
-	 * On recherche ï¿½ nouveau
+	 * On recherche à nouveau
 	 */
 	docs = searchMulti(base2, base2.getBaseCategory(CATA)
 		.getFormattedName() + ":" + catValues.get(CATA), 1000, null);
@@ -208,7 +206,7 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	for (Document doc : docs) {
 	    System.out.println("Extraction du document " + doc.getTitle());
 
-	    // On rï¿½ussit bien ï¿½ extraire le fichier
+	    // On réussit bien à extraire le fichier
 	    InputStream documentFile = ServiceProvider.getStoreService()
 		    .getDocumentFile(doc);
 	    assertNotNull(documentFile);

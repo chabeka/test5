@@ -27,13 +27,6 @@ public class SecurityTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testWrongPassword() {
-	Authentication.openSession(AbstractBaseTestCase.ADM_LOGIN,
-		AbstractBaseTestCase.ADM_PASSWORD + "wrongPassword",
-		AbstractBaseTestCase.SERVICE_URL);
-    }
-
-    @Test(expected = RuntimeException.class)
     public void testMalformedURL() {
 	Authentication.openSession(AbstractBaseTestCase.ADM_LOGIN,
 		AbstractBaseTestCase.ADM_PASSWORD, "malformed"

@@ -34,8 +34,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class MultibaseTest extends AbstractBaseTestCase {
-    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
-
     private static final String CATA = "MBCode Fournisseur";
     private static final String CATB = "MBNo Serie";
     private static final String CATC = "Prix Vente";
@@ -51,7 +49,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
 
     @BeforeClass
     public static void setUp() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
 	storedDocs = new ArrayList<Document>();
 
 	/*

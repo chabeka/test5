@@ -2,14 +2,16 @@ package com.docubase.dfce.toolkit.recordmanager;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.docubase.toolkit.model.recordmanager.EventReadFilter;
-import net.docubase.toolkit.model.recordmanager.RMClientEvent;
+import net.docubase.toolkit.model.recordmanager.RMDocEvent;
+import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
 import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.ged.RecordManagerService;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 public class RecordManagerClientTest extends AbstractEventTest {
@@ -34,24 +36,29 @@ public class RecordManagerClientTest extends AbstractEventTest {
     @Test
     public void testAddEventLog() {
 	// Ajouter un évènement
-	recordManagerService.addEventLog(buildEventLogList().get(0));
+
+	RMSystemEvent createdEvent = recordManagerService
+		.createCustomSystemEventLog((buildSystemEventsLogList().get(0)));
 
 	// retourner la liste d'évènements filtrés
-	List<RMClientEvent> events = recordManagerService
-		.getEventLogList(buildFilter());
+	List<RMSystemEvent> events = recordManagerService
+		.getSystemEventLogsByDates(
+			new DateTime(createdEvent.getEventDate())
+				.minusMillis(1).toDate(), new DateTime(
+				createdEvent.getEventDate()).plusMillis(1)
+				.toDate());
 
 	// Trouver l'évènement enregistré dans la liste retournée
 	boolean found = false;
-	for (RMClientEvent evt : events) {
-	    if ("Stockage".equals(evt.getEventTypeName()))
+	for (RMSystemEvent evt : events) {
+	    System.out.println("evt.getKey() = " + evt.getKey());
+	    if ("EVENT1".equals(evt.getEventDescription())) {
 		found = true;
+	    }
 	}
 
 	// Attester que l'évènement est bien enregistré
 	assertTrue("L'évènement n'est pas enregistré", found);
-
-	// Nettoyer les évènements
-	recordManagerService.deleteEventsLog(buildFilter());
     }
 
     /**
@@ -71,31 +78,38 @@ public class RecordManagerClientTest extends AbstractEventTest {
     @Test
     public void testAddEventLogList() {
 	// Ajouter un évènement
-	recordManagerService.addEventsLog(buildEventLogList());
+	List<RMSystemEvent> systemEventsLogList = buildSystemEventsLogList();
+	assertEquals(2, systemEventsLogList.size());
 
-	// retourner la liste d'évènements filtrés
-	List<RMClientEvent> events = recordManagerService
-		.getEventLogList(buildFilter());
+	RMSystemEvent createdEvent1 = recordManagerService
+		.createCustomSystemEventLog(systemEventsLogList.get(0));
+	RMSystemEvent createdEvent2 = recordManagerService
+		.createCustomSystemEventLog(systemEventsLogList.get(1));
+
+	// retourner la liste d'évènements
+	List<RMSystemEvent> events = recordManagerService
+		.getSystemEventLogsByDates(
+			new DateTime(createdEvent1.getEventDate()).minusMillis(
+				1).toDate(),
+			new DateTime(createdEvent2.getEventDate())
+				.plusMillis(1).toDate());
 
 	// Trouver l'évènement enregistré dans la liste retournée
 	boolean foundA = false;
 	boolean foundB = false;
-	for (RMClientEvent evt : events) {
-	    if ("Stockage".equals(evt.getEventTypeName()))
+	for (RMSystemEvent evt : events) {
+	    if ("EVENT1".equals(evt.getEventDescription()))
 		foundA = true;
 
-	    if ("Consultation".equals(evt.getEventTypeName()))
+	    if ("EVENT2".equals(evt.getEventDescription()))
 		foundB = true;
 	}
 
 	// Attester que l'évènement de Stockage est bien enregistré
-	assertTrue("L'évènement de Stockage n'est pas enregistré", foundA);
+	assertTrue("L'évènement de EVENT1 n'est pas enregistré", foundA);
 
 	// Attester que l'évènement de Stockage est bien enregistré
-	assertTrue("L'évènement de Consultation n'est pas enregistré", foundB);
-
-	// Nettoyer les évènements
-	recordManagerService.deleteEventsLog(buildFilter());
+	assertTrue("L'évènement de EVENT2 n'est pas enregistré", foundB);
     }
 
     /**
@@ -114,63 +128,29 @@ public class RecordManagerClientTest extends AbstractEventTest {
     public void testGetEventLogList() {
 
 	// Ajouter un évènement
-	recordManagerService.addEventsLog(buildEventLogList());
+	List<RMSystemEvent> systemEventsLogList = buildSystemEventsLogList();
+	Date maxEventDate = new Date(0);
+	for (RMSystemEvent rmSystemEvent : systemEventsLogList) {
+	    RMSystemEvent createdEvent = recordManagerService
+		    .createCustomSystemEventLog(rmSystemEvent);
+	    if (maxEventDate.before(createdEvent.getEventDate())) {
+		maxEventDate = createdEvent.getEventDate();
+	    }
+	}
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(maxEventDate);
+	calendar.add(Calendar.MILLISECOND, -1);
+	beginDate = calendar.getTime();
+	calendar.add(Calendar.MILLISECOND, 2);
+	endDate = calendar.getTime();
 
 	// retourner la liste d'évènements filtrés
-	List<RMClientEvent> events = recordManagerService
-		.getEventLogList(buildFilter());
+	List<RMSystemEvent> events = recordManagerService
+		.getSystemEventLogsByDates(beginDate, endDate);
 
 	// Attester que cette liste est non vide
 	assertTrue("La liste des évènements ne doit pas être vide",
 		(!events.isEmpty() && events.size() > 1));
-
-	// Nettoyer les évènements
-	recordManagerService.deleteEventsLog(buildFilter());
-    }
-
-    /**
-     * Ce teste permet de vérifier la pagination après la recherche
-     * d'évènements, comme décrit ci-dessous :
-     * 
-     * <ol>
-     * <li>On enregistre une liste d'évènements.</li>
-     * <li>On crée un filtre avec une date de debut, une date de fin et un
-     * nombre d'items à retourner</li>
-     * <li>On remonte la prémière page d'évènements à partir du filtre créé, et
-     * on recupère la date d'évènement</li>
-     * du dernier élément de la liste de la page.</li>
-     * <li>On remplace par cette date, la date de debut de la recherche dans le
-     * filtre (EventStartDate).</li>
-     * <li>On remonte alors la seconde page.</li>
-     * </ol>
-     * 
-     * NB: Ainsi, on peut remonter toutes les pages en repétant la même
-     * demarche.
-     */
-    @Test
-    public void testPagination() {
-	PAGE = 1;
-
-	// Ajouter un évènement
-	recordManagerService.addEventsLog(buildEventLogList());
-
-	// Créer un filtre avec une date de debut, une date de fin et on un
-	// nombre d'items à retourner par page
-	EventReadFilter readFilter = buildFilter();
-	readFilter.setNbItems(5);
-
-	// Remonter la 1ere page et on recupère la date d'évènement du
-	// dernier élément de la liste de la page.
-	Date lastEventLog = findEventLog(readFilter);
-
-	// Modifier la date de debut du filtre par la date recupérée
-	readFilter.setEventStartDate(lastEventLog);
-	// Remonter la 2eme page et on recupère la date d'évènement du
-	// dernier élément de la liste de la page.
-	lastEventLog = findEventLog(readFilter);
-
-	// Nettoyer les évènements
-	recordManagerService.deleteEventsLog(buildFilter());
     }
 
     /**
@@ -189,17 +169,17 @@ public class RecordManagerClientTest extends AbstractEventTest {
     @Test
     public void testGetEventLogsByKeyDoc() {
 	// Ajouter un évènement de stockage de document
-	RMClientEvent event = buildEventLogList().get(0);
-	event.setDocumentUuid(KEY_DOC);
-	recordManagerService.addEventLog(event);
+	RMDocEvent docEventLog = buildDocEventLog();
 
-	List<RMClientEvent> events = ServiceProvider.getRecordManagerService()
-		.getEventLogListByKeyDoc(KEY_DOC, 100);
+	recordManagerService.createCustomDocumentEventLog(docEventLog);
+
+	List<RMDocEvent> events = ServiceProvider.getRecordManagerService()
+		.getDocumentEventLogsByUUID(KEY_DOC);
 
 	boolean found = false;
-	for (RMClientEvent evt : events) {
+	for (RMDocEvent evt : events) {
 	    found = true;
-	    if (!KEY_DOC.equals(evt.getDocumentUuid())) {
+	    if (!KEY_DOC.toString().equals(evt.getDocUUID().toString())) {
 		found = false;
 		break;
 	    }
@@ -207,39 +187,5 @@ public class RecordManagerClientTest extends AbstractEventTest {
 
 	// Attester que l'évènement est bien enregistré
 	assertTrue("L'évènement n'est pas enregistré", found);
-
-	// Nettoyer les évènements
-	recordManagerService.deleteEventsLog(buildFilter());
-    }
-
-    /**
-     * Ce teste permet de vérifier la suppression d'évènements filtrés par dates
-     * :
-     * 
-     * <ol>
-     * <li>On enregistre une liste d'évènements.</li>
-     * <li>On crée un filtre avec une date de debut et une date de fin</li>
-     * <li>On supprime les évènements sur la base de ce filtre.</li>
-     * <li>On recherche les évènements sur la base de ce même filtre.</li>
-     * <li>On atteste que tous les évènements sont supprimés à part celui de la
-     * suppression.</li>
-     * </ol>
-     */
-    @Test
-    public void testDeleteEventLog() {
-
-	// Ajouter un évènement
-	recordManagerService.addEventsLog(buildEventLogList());
-
-	recordManagerService.deleteEventsLog(buildFilter());
-
-	// Rechercher les évènements sur la base de ce même filtre.
-	List<RMClientEvent> events = ServiceProvider.getRecordManagerService()
-		.getEventLogList(buildFilter());
-
-	// Attester que Le nombre d'évènement trouvé est bien 1, c-a-d celui
-	// de l'évènement de la suppressiona
-	assertEquals("La liste des évènements ne doit pas être vide", 2,
-		events.size());
     }
 }

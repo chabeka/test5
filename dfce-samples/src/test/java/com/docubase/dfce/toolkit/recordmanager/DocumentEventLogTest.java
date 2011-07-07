@@ -14,7 +14,8 @@ import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.model.recordmanager.RMClientEvent;
+import net.docubase.toolkit.model.recordmanager.DocEventLogType;
+import net.docubase.toolkit.model.recordmanager.RMDocEvent;
 import net.docubase.toolkit.service.Authentication;
 import net.docubase.toolkit.service.ServiceProvider;
 
@@ -44,15 +45,15 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 	document = ServiceProvider.getStoreService().storeDocument(document,
 		inputStream);
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService().getEventLogListByKeyDoc(
-			document.getUuid().toString(), Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			document.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(1, nbEvents);
-	assertEquals("storeDocument", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.CREATE_DOCUMENT,
+		eventLogList.get(nbEvents - 1).getEventType());
     }
 
     @Test
@@ -68,17 +69,17 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 	document = ServiceProvider.getStoreService().storeDocument(document,
 		inputStream);
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService().getEventLogListByKeyDoc(
-			document.getUuid().toString(), Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			document.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(1, nbEvents);
-	assertEquals("storeDocument", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.CREATE_DOCUMENT,
+		eventLogList.get(nbEvents - 1).getEventType());
 	assertEquals(SIMPLE_USER_NAME, eventLogList.get(nbEvents - 1)
-		.getActorLogin());
+		.getUsername());
 	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
     }
 
@@ -100,16 +101,15 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 	virtualDocument = ServiceProvider.getStoreService()
 		.storeVirtualDocument(virtualDocument, refDocument, 1, 10);
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService()
-		.getEventLogListByKeyDoc(virtualDocument.getUuid().toString(),
-			Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			virtualDocument.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(1, nbEvents);
-	assertEquals("storeVirtualDocument", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.CREATE_DOCUMENT,
+		eventLogList.get(nbEvents - 1).getEventType());
 
     }
 
@@ -126,15 +126,15 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	document = ServiceProvider.getStoreService().updateDocument(document);
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService().getEventLogListByKeyDoc(
-			document.getUuid().toString(), Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			document.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(2, nbEvents);
-	assertEquals("updateDocument", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.MODIFY_METADATA,
+		eventLogList.get(nbEvents - 1).getEventType());
     }
 
     @Test
@@ -158,16 +158,15 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 	ServiceProvider.getStoreService().updateVirtualDocument(
 		virtualDocument, 1, 2);
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService()
-		.getEventLogListByKeyDoc(virtualDocument.getUuid().toString(),
-			Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			virtualDocument.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(2, nbEvents);
-	assertEquals("updateVirtualDocument", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.MODIFY_METADATA,
+		eventLogList.get(nbEvents - 1).getEventType());
     }
 
     @Test
@@ -183,15 +182,15 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	ServiceProvider.getStoreService().deleteDocument(document.getUuid());
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService().getEventLogListByKeyDoc(
-			document.getUuid().toString(), Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			document.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(2, nbEvents);
-	assertEquals("deleteDocument", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.DELETE_DOCUMENT,
+		eventLogList.get(nbEvents - 1).getEventType());
     }
 
     @Test
@@ -209,14 +208,14 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 		.getDocumentFile(document);
 	documentFile.close();
 
-	List<RMClientEvent> eventLogList = ServiceProvider
-		.getRecordManagerService().getEventLogListByKeyDoc(
-			document.getUuid().toString(), Integer.MAX_VALUE);
+	List<RMDocEvent> eventLogList = ServiceProvider
+		.getRecordManagerService().getDocumentEventLogsByUUID(
+			document.getUuid());
 
 	assertNotNull(eventLogList);
 	int nbEvents = eventLogList.size();
 	assertEquals(2, nbEvents);
-	assertEquals("extract", eventLogList.get(nbEvents - 1)
-		.getEventTypeName());
+	assertEquals(DocEventLogType.RESTITUTE_DOCUMENT,
+		eventLogList.get(nbEvents - 1).getEventType());
     }
 }

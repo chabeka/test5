@@ -181,7 +181,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	document.addCriterion(category0, c0);
 
 	newDoc = getFile("note.txt", this.getClass());
-	document.setType("TXTX");
+	document.setType("WRG");
 	storeDocument(document, newDoc);
     }
 

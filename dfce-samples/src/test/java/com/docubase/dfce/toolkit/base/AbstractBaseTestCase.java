@@ -3,8 +3,10 @@ package com.docubase.dfce.toolkit.base;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import junit.framework.Assert;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
@@ -23,11 +25,27 @@ import org.junit.runners.JUnit4;
 public abstract class AbstractBaseTestCase {
     public static final String ADM_LOGIN = "_ADMIN";
     public static final String ADM_PASSWORD = "DOCUBASE";
-    public static final String SERVICE_URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
+
+    public static final String SERVICE_URL;
+    public static final String SERVICE2_URL;
     public static final String SIMPLE_USER_NAME = "SIMPLE_USER_NAME";
     public static final String SIMPLE_USER_PASSWORD = "SIMPLE_USER_PASSWORD";
-    /* Instance de la base GED. UtilisÃ©e pour dï¿½finir / modifier la base GED */
+    /* Instance de la base GED. Utilisée pour définir / modifier la base GED */
     protected static Base base;
+
+    static {
+	Properties props = new Properties();
+	URL url = ClassLoader.getSystemResource("test.properties");
+
+	try {
+	    props.load(url.openStream());
+	} catch (IOException e) {
+	    throw new RuntimeException(e);
+	}
+
+	SERVICE_URL = props.getProperty("test.server.1.url");
+	SERVICE2_URL = props.getProperty("test.server.2.url");
+    }
 
     protected static Document storeDoc(Document document, File newDoc,
 	    boolean expectStore) {
@@ -82,7 +100,7 @@ public abstract class AbstractBaseTestCase {
     }
 
     /**
-     * Gï¿½nï¿½re une date de crï¿½tation. Date du jour moins 2 heures.
+     * Génére une date de crétation. Date du jour moins 2 heures.
      * 
      * @return the date
      */

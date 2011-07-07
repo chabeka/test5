@@ -1,319 +1,218 @@
 package com.docubase.dfce.toolkit.recordmanager;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import net.docubase.toolkit.model.ToolkitFactory;
+import net.docubase.toolkit.model.base.Base;
+import net.docubase.toolkit.model.document.Criterion;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.model.recordmanager.EventReadFilter;
-import net.docubase.toolkit.model.recordmanager.RMArchive;
-import net.docubase.toolkit.model.recordmanager.RMClientEvent;
+import net.docubase.toolkit.model.recordmanager.DocEventLogType;
+import net.docubase.toolkit.model.recordmanager.RMDocEvent;
+import net.docubase.toolkit.model.recordmanager.RMLogArchiveReport;
+import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
 import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.ged.ArchiveService;
 import net.docubase.toolkit.service.ged.RecordManagerService;
+import net.docubase.toolkit.service.ged.SearchService;
+import net.docubase.toolkit.service.ged.StoreService;
 
-import org.junit.Ignore;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
-public class ArchiveClientTest extends AbstractEventTest {
+import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
+
+public class ArchiveClientTest extends AbstractTestCaseCreateAndPrepareBase {
     private final ArchiveService archiveService = ServiceProvider
 	    .getArchiveService();
     private final RecordManagerService recordManagerService = ServiceProvider
 	    .getRecordManagerService();
 
-    /**
-     * Ce teste permet de vérifier la création d'une archive à partir
-     * d'évènements filtrés sur une date de debut et une date de fin, comme
-     * décrit ci-dessous :
-     * 
-     * <ol>
-     * <li>On archive les évènements filtrés sur une date de debut et de fin.</li>
-     * <li>On atteste par une assertion que l'archive est bien créée grâce à son
-     * identifiant</li>
-     * <li>Pour finir, on supprime l'archive ainsi créée.</li>
-     * </ol>
-     */
+    private final SearchService searchService = ServiceProvider
+	    .getSearchService();
+
+    private final StoreService storeService = ServiceProvider.getStoreService();
+
     @Test
-    public void testAddArchive() {
+    public void runDocumentLogsArchiveJob() throws IOException {
+	assertFalse(archiveService.isDocumentLogsArchiveRunning());
 
-	// Ajouter d'évènements
-	recordManagerService.addEventsLog(buildEventLogList());
-	// créer une archive
-	List<String> archiveIds = archiveService.archive(buildFilter());
-	// Vérifier que l'archive est bien créée
-	assertTrue("Le staockage a échoué", archiveIds.size() > 0);
-	// Nettoyer l'archive créée
-	boolean isOk = archiveService.deleteArchive(archiveIds.get(0));
-	assertTrue("L''archive n''est pas supprimée", isOk);
+	RMDocEvent rmDocEvent = ToolkitFactory.getInstance().createRMDocEvent();
+	UUID randomUUID = UUID.randomUUID();
+	rmDocEvent.setDocUUID(randomUUID);
+	rmDocEvent.setEventDescription("eventDescription");
+	rmDocEvent.setEventType(DocEventLogType.CREATE_DOCUMENT);
+	rmDocEvent.setUsername("username");
+	recordManagerService.createCustomDocumentEventLog(rmDocEvent);
 
-	// Nettoyer les données de test
-	clearEventsAndArchives(archiveIds);
+	Document documentTag = ToolkitFactory.getInstance().createDocumentTag(
+		base);
+	documentTag.addCriterion(baseCategory0, UUID.randomUUID().toString());
+	File file = getFile("doc1.pdf", ArchiveClientTest.class);
+	storeDoc(documentTag, file, true);
+
+	archiveService.createNextDocumentLogsArchive();
+
+	UUID lastDocumentLogsArchiveUUID = archiveService
+		.getLastDocumentLogsArchiveUUID();
+	Base archiveBase = archiveService.getLogsArchiveBase();
+
+	Document archive = searchService.getDocumentByUUID(archiveBase,
+		lastDocumentLogsArchiveUUID);
+
+	InputStream documentFile = storeService.getDocumentFile(archive);
+
+	BufferedReader bufferedReader = new BufferedReader(
+		new InputStreamReader(documentFile));
+	String readLine = bufferedReader.readLine();
+	String eventLine = null;
+	while (readLine != null) {
+	    System.out.println(readLine);
+	    if (readLine.contains(randomUUID.toString())
+		    && readLine
+			    .contains(DocEventLogType.CREATE_DOCUMENT.name())
+		    && readLine.contains("username")) {
+		eventLine = readLine;
+	    }
+	    readLine = bufferedReader.readLine();
+	}
+	assertNotNull(eventLine);
     }
 
-    /**
-     * Ce teste permet de vérifier l'extraction d'une archive par son
-     * identifiant, comme décrit ci-dessous :
-     * 
-     * <ol>
-     * <li>On archive les évènements filtrés sur une date de debut et de fin.</li>
-     * <li>On atteste par une assertion que l'archive est bien créée grâce à son
-     * identifiant</li>
-     * <li>On extrait le contenu de l'archive en question par son identifiant et
-     * on vérifie que le contenu est non vide</li>
-     * <li>Pour finir, on supprime l'archive ainsi créée.</li>
-     * </ol>
-     */
     @Test
-    public void testExtractArchive() {
+    public void runDocumentLogsArchiveJobChaining() throws IOException {
+	assertFalse(archiveService.isDocumentLogsArchiveRunning());
 
-	// Ajouter d'évènements et archiver
-	List<String> archiveIds = createEventsAndArchivedThem();
+	archiveService.createNextDocumentLogsArchive();
+	archiveService.createNextDocumentLogsArchive();
+	UUID archive1UUID = archiveService.getLastDocumentLogsArchiveUUID();
+	archiveService.createNextDocumentLogsArchive();
+	UUID archive2UUID = archiveService.getLastDocumentLogsArchiveUUID();
 
-	InputStream is = null;
+	Base archiveBase = archiveService.getLogsArchiveBase();
+	Document archive1 = searchService.getDocumentByUUID(archiveBase,
+		archive1UUID);
+	Document archive2 = searchService.getDocumentByUUID(archiveBase,
+		archive2UUID);
+
+	InputStream archive1DocFile = storeService.getDocumentFile(archive1);
+	InputStream archive2DocFile = storeService.getDocumentFile(archive2);
+
+	List<String> archive1Lines = extractLines(archive1DocFile);
+	List<String> archive2Lines = extractLines(archive2DocFile);
+
+	Criterion previousUUIDCriterion = archive2
+		.getSingleCriterion(ArchiveService.PREVIOUS_LOG_ARCHIVE_UUID);
+	Object previousUUIDFromDocument = previousUUIDCriterion.getWord();
+
+	Date archive1EndDate = (Date) archive1.getSingleCriterion(
+		ArchiveService.LOG_ARCHIVE_END_DATE).getWord();
+
+	Date archive2BeginDate = (Date) archive2.getSingleCriterion(
+		ArchiveService.LOG_ARCHIVE_BEGIN_DATE).getWord();
+
+	assertEquals(archive1UUID, previousUUIDFromDocument);
+
+	assertEquals(archive1EndDate, archive2BeginDate);
+	// last line of archive2 should contain archive 1 digest
+	assertEquals(archive1.getDigest(),
+		archive2Lines.get(archive2Lines.size() - 1));
+	// last but on line of archive1 should be != then first archive2 line
+	assertNotSame(archive1Lines.get(archive1Lines.size() - 2),
+		archive2Lines.get(0));
+    }
+
+    private List<String> extractLines(InputStream inputStream) {
+	List<String> allLines = new ArrayList<String>();
+	BufferedReader bufferedReader = new BufferedReader(
+		new InputStreamReader(inputStream));
+	String readLine;
 	try {
-	    is = archiveService.extractArchive(archiveIds.get(0));
-	    BufferedReader reader = new BufferedReader(
-		    new InputStreamReader(is));
-
-	    int nbLine = 0;
-	    while (reader.readLine() != null) {
-		nbLine++;
+	    readLine = bufferedReader.readLine();
+	    while (readLine != null) {
+		allLines.add(readLine);
+		readLine = bufferedReader.readLine();
 	    }
-
-	    assertTrue("L''archive n''est pas extraite", nbLine > 0);
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	} finally {
-	    if (is != null) {
-		try {
-		    is.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	    }
+	} catch (IOException e) {
+	    throw new RuntimeException(e);
 	}
+	return allLines;
 
-	// Nettoyer les données de test
-	clearEventsAndArchives(archiveIds);
-    }
-
-    /**
-     * Ce teste permet de rechercher une liste d'archives en filtrant les
-     * évènements, sur une date de debut et de fin, comme décrit ci-dessous :
-     * 
-     * <ol>
-     * <li>On crée une archive dont les évènements sont filtrés sur une date de
-     * debut et de fin</li>
-     * <li>On recherche les archives entre une date de debut et une date de fin.
-     * </li>
-     * <li>On vérifie que le nombre d'archive est au moins 2</li>
-     * <li>Pour finir, on supprime les archives ainsi créées, ainsi que le
-     * document.</li>
-     * </ol>
-     */
-    @Test
-    public void testGetArchives() {
-
-	// Ajouter un évènement lié à un document fictif
-	recordManagerService.addEventsLog(Collections
-		.singletonList(buildDocEventLog()));
-
-	// Ajouter d'autres évènements et archiver
-	List<String> archiveIds = createEventsAndArchivedThem();
-
-	assertEquals("On doit avoir deux archives", 2, archiveIds.size());
-
-	// Retrouver les archives enregistrées
-	List<RMArchive> archives = archiveService.getArchives(buildFilter());
-	assertTrue("La liste d''archive ne doit pas être vide",
-		archives.size() > 1);
-
-	// Extraire la première archive de la liste
-	InputStream is = null;
-	try {
-	    is = archiveService.extractArchive(archives.get(0).getArchiveId());
-	    assertNotNull(
-		    "Le contenu de cette archive ne devrait pas être vide", is);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	} finally {
-	    if (is != null) {
-		try {
-		    is.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	    }
-	}
-
-	// Nettoyer les données de test
-	clearEventsAndArchives(archiveIds);
     }
 
     @Test
-    public void testGetEventsFromArchive() {
-	List<String> archiveIds = null;
-	try {
-	    // Ajouter d'évènements et archiver
-	    archiveIds = createEventsAndArchivedThem();
+    public void runSystemLogsArchiveJob() throws IOException {
+	assertFalse(archiveService.isDocumentLogsArchiveRunning());
 
-	    // Extraire une archive
-	    InputStream is = archiveService.extractArchive(archiveIds.get(0));
+	RMSystemEvent rmSystemEvent = ToolkitFactory.getInstance()
+		.createRMSystemEvent();
+	rmSystemEvent.setEventDescription("eventDescription");
+	rmSystemEvent.setUsername("username");
+	recordManagerService.createCustomSystemEventLog(rmSystemEvent);
 
-	    // Convertir les lignes de l'archive en évènements
-	    List<RMClientEvent> events = archiveService
-		    .getEventsFromArchive(is);
-	    assertTrue("Au moins deux évènements devraient êtré remontés",
-		    events.size() > 0);
+	archiveService.createNextSystemLogsArchive();
 
-	} catch (Exception e) {
-	    e.printStackTrace();
-	} finally {
+	UUID lastDocumentLogsArchiveUUID = archiveService
+		.getLastSystemLogsArchiveUUID();
+	Base archiveBase = archiveService.getLogsArchiveBase();
 
-	    // Nettoyer les données de test
-	    if (archiveIds != null)
-		clearEventsAndArchives(archiveIds);
-	}
-    }
+	Document archive = searchService.getDocumentByUUID(archiveBase,
+		lastDocumentLogsArchiveUUID);
 
-    /**
-     * Ce teste permet de supprimer une archive à partir de son identifiant
-     * donnée, comme décrit ci-dessous :
-     * 
-     * <ol>
-     * <li>On crée une archive dont les évènements sont filtrés entre une date
-     * de debut et de fin</li>
-     * <li>On supprime l'archive ainsi créées par son identifiant.</li>
-     * <li>On atteste par une assertion que l'archive est bien supprimer</li>
-     * <li>Pour finir, on supprime l'archive ainsi créées, ainsi que le
-     * document.</li>
-     * </ol>
-     */
-    @Test
-    public void testDeleteArchive() {
+	InputStream documentFile = storeService.getDocumentFile(archive);
 
-	// Ajouter d'évènements et archiver
-	List<String> archiveIds = createEventsAndArchivedThem();
-
-	boolean exists = archiveService.archiveExists(archiveIds.get(0));
-
-	assertNotNull("Le staockage a échoué", exists);
-
-	// Supprimer l'archive créée
-	boolean isDeleted = archiveService.deleteArchive(archiveIds.get(0));
-	assertNotNull("La suppression a échoué", isDeleted);
-
-	// Nettoyer les évènements créé
-	recordManagerService.deleteEventsLog(buildFilter());
-    }
-
-    /**
-     * Ce teste permet de vérifier qu'une archive est bien celle d'un document
-     * donnée, comme décrit ci-dessous :
-     * 
-     * <ol>
-     * <li>On insert un document dans la base, afin de générer un évènement de
-     * type stockage lié au document</li>
-     * <li>On crée une archive dont les évènements sont liés à cet document.</li>
-     * <li>On recherche l'archive ainsi créées par l'identifiant du document.</li>
-     * <li>L'archive étant au format json, on recherche l'emprunte du document
-     * dans l'archive trouvée</li>
-     * <li>On atteste par une assertion que l'emprunte du document est identique
-     * à celui qui se trouve dans l'archive</li>
-     * <li>Pour finir, on supprime l'archive ainsi créées, ainsi que le
-     * document.</li>
-     * </ol>
-     */
-    @Ignore
-    @Test
-    public void testCheckIntegrityOfArchiveAndDocument() {
-
-	Document document = null;
-	List<String> archiveIds = null;
-	try {
-	    // créer un document pour générer un évènement de stockage
-	    document = storeDocument(BASEID, "doc1.pdf");
-	    UUID keyDoc = document.getUuid();
-	    assertNotNull("Le staockage a échoué", keyDoc);
-
-	    // Ajouter une archive filtrée sur l'uuid du document créé
-	    EventReadFilter filter = buildFilter();
-	    filter.setDocumentUUID(keyDoc.toString());
-	    archiveIds = archiveService.archive(filter);
-	    assertNotNull("Le stockage a échoué", archiveIds);
-
-	    // Trouver le disgest du document
-	    String docDigest = document.getDigest();
-	    assertNotNull("Le document n'a pas de disgest", docDigest);
-
-	    // Trouver le disgest du document dans l'archive
-	    InputStream is = archiveService
-		    .extractArchiveByDocumentUuid(keyDoc);
-	    String archiveDocDigest = archiveService
-		    .findDocumentDigestFromArchive(keyDoc.toString(), is);
-	    assertNotNull("L'archive n'a de digest pour ce document",
-		    archiveDocDigest);
-
-	    assertEquals("Archive non conforme ", docDigest, archiveDocDigest);
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    assertFalse(false);
-	} finally {
-	    // Nettoyer l'archive créée
-	    if (archiveIds != null && !archiveIds.isEmpty()) {
-		boolean isOk = ServiceProvider.getArchiveService()
-			.deleteArchive(archiveIds.get(0));
-		assertTrue("L''archive n''est pas supprimée", isOk);
+	BufferedReader bufferedReader = new BufferedReader(
+		new InputStreamReader(documentFile));
+	String eventLine = null;
+	String readLine = bufferedReader.readLine();
+	while (readLine != null) {
+	    if (readLine.contains("eventDescription")
+		    && readLine.contains("username")) {
+		eventLine = readLine;
 	    }
+	    readLine = bufferedReader.readLine();
+	}
+	assertNotNull(eventLine);
+    }
 
-	    // supprimer le document créé
-	    if (document != null) {
-		ServiceProvider.getStoreService().deleteDocument(
-			document.getUuid());
-	    }
+    @Test
+    public void runArchiveLogChainingReport() {
+	Date lastSucessfullRunDate = archiveService
+		.getLastSucessfulDocumentLogsArchiveRunDate();
+	if (lastSucessfullRunDate == null) {
+	    archiveService.createNextDocumentLogsArchive();
+	    lastSucessfullRunDate = archiveService
+		    .getLastSucessfulDocumentLogsArchiveRunDate();
+	}
 
-	    // Nettoyer les évènements créé
-	    recordManagerService.deleteEventsLog(buildFilter());
+	Date beginDate = lastSucessfullRunDate;
+
+	archiveService.createNextDocumentLogsArchive();
+	archiveService.createNextDocumentLogsArchive();
+	archiveService.createNextDocumentLogsArchive();
+	archiveService.createNextDocumentLogsArchive();
+
+	Date endDate = new DateTime(
+		archiveService.getLastSucessfulDocumentLogsArchiveRunDate())
+		.plusMinutes(1).toDate();
+
+	List<RMLogArchiveReport> chainingReport = archiveService
+		.createDocumentLogArchiveChainingReport(beginDate, endDate);
+
+	assertEquals(5, chainingReport.size());
+	for (RMLogArchiveReport rmLogArchiveReport : chainingReport) {
+	    assertEquals(rmLogArchiveReport.getReComputedDigest(),
+		    rmLogArchiveReport.getDigest());
 	}
 
     }
-
-    /**
-     * Ajouter des évènements et créer une archive
-     * 
-     * @return List d'archives créées
-     */
-    private List<String> createEventsAndArchivedThem() {
-	// Ajouter d'évènements
-	recordManagerService.addEventsLog(buildEventLogList());
-	// Ajouter une archive
-	List<String> archiveIds = archiveService.archive(buildFilter());
-	assertTrue("Le staockage a échoué", archiveIds.size() > 0);
-	return archiveIds;
-    }
-
-    /**
-     * Nettoyer les données de test
-     * 
-     * @param archiveIds
-     */
-    private void clearEventsAndArchives(List<String> archiveIds) {
-	// Supprimer l'archive créée
-	for (String archiveId : archiveIds) {
-	    boolean isDeleted = archiveService.deleteArchive(archiveId);
-	    assertNotNull("La suppression a échoué", isDeleted);
-	}
-
-	// Nettoyer les évènements créé
-	recordManagerService.deleteEventsLog(buildFilter());
-    }
-
 }

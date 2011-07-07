@@ -49,19 +49,17 @@ public class RichGedTest extends AbstractBaseTestCase {
     /* Nom de la base GED pour ce test */
     private static final String BASEID = "RICHGED";
 
-    private static final String URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
-
     public final static Double pi = Double.valueOf("3.1415926535");
 
-    private static final String[] catNames = { "Catï¿½gorie zï¿½ro",
-	    "Catï¿½gorie un", "Catï¿½gorie deux", "Cat boolï¿½enne", "Cat entiï¿½re",
-	    "Cat dï¿½cimale", "Cat date", "Cat date et heure" };
+    private static final String[] catNames = { "Catégorie zéro",
+	    "Catégorie un", "Catégorie deux", "Cat booléenne", "Cat entière",
+	    "Cat décimale", "Cat date", "Cat date et heure" };
 
     private static ToolkitFactory toolkitFactory;
 
     @BeforeClass
     public static void before() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
 	base = deleteAndCreateBaseThenStarts();
 	toolkitFactory = ToolkitFactory.getInstance();
     }
@@ -99,24 +97,24 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	base.setDescription("My-Ged-Is-Rich");
 
-	// Dï¿½clare une date de crï¿½ation disponible mais optionnell
+	// Déclare une date de création disponible mais optionnell
 	base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
 	// Pas de fond de page
 	base.setDocumentOverlayFormConfiguration(Base.DocumentOverlayFormConfiguration.NONE);
 	// Pas de groupe de document
 	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-	// Le propriï¿½taire d'un document n'est pas modifiable ï¿½ postï¿½riori de
+	// Le propriétaire d'un document n'est pas modifiable à postériori de
 	// son injection
 	base.setDocumentOwnerModify(false);
 	/*
-	 * Masque de titre. C'est encore maintenu en DS4, mï¿½me si maintenant on
-	 * peut remonter les valeurs de catï¿½gorie dans les listes de solution
+	 * Masque de titre. C'est encore maintenu en DS4, même si maintenant on
+	 * peut remonter les valeurs de catégorie dans les listes de solution
 	 * sans avoir besoin de cet artifice.
 	 */
 	base.setDocumentTitleMask("C0+\" < \"+C1");
 	// taille maximum d'un titre
 	base.setDocumentTitleMaxSize(255);
-	// Impossible de modifier un titre ï¿½ postï¿½riori
+	// Impossible de modifier un titre à postériori
 	base.setDocumentTitleModify(false);
 	base.setDocumentTitleSeparator(">");
 
@@ -185,7 +183,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	/*
 	 * On va, alors qu'il n'y a aucun document, modifier la base pour y
-	 * ajouter la derniï¿½re catï¿½gorie
+	 * ajouter la dernière catégorie
 	 */
 	Category categoryDateHeure = storageAdministrationService
 		.findOrCreateCategory(catNames[7], CategoryDataType.DATETIME);
@@ -203,16 +201,16 @@ public class RichGedTest extends AbstractBaseTestCase {
 
     private void control(Document doc, File newDoc, String c0)
 	    throws IOException {
-	// L'instance de doc ï¿½ ce stade contient le documentInformation
+	// L'instance de doc à ce stade contient le documentInformation
 	assertNotNull(doc);
 
-	// getCriterionList renvoie la liste des catï¿½gories C0, C1, etc...
+	// getCriterionList renvoie la liste des catégories C0, C1, etc...
 	List<Criterion> criterionList = doc.getCriteria(base
 		.getBaseCategory(catNames[0]));
 	assertEquals(1, criterionList.size());
 	assertEquals(c0, criterionList.get(0).getWord());
 
-	// Une autre vï¿½rification sur le tag : les 3 valeurs dï¿½cimales sur C5
+	// Une autre vérification sur le tag : les 3 valeurs décimales sur C5
 	// On va juste chercher si l'une d'entre elle est Pi.
 	List<Criterion> c5s = doc
 		.getCriteria(base.getBaseCategory(catNames[5]));
@@ -223,11 +221,11 @@ public class RichGedTest extends AbstractBaseTestCase {
 	}
 	assertTrue(foundPi);
 
-	// Cet appel, la 1ï¿½re fois (lazy loading) va extraire le document.
+	// Cet appel, la 1ère fois (lazy loading) va extraire le document.
 	InputStream documentFile = ServiceProvider.getStoreService()
 		.getDocumentFile(doc);
-	// le document extrait (dans une zone temporaire) doit avoir la mï¿½me
-	// taille que le document utilisï¿½ avant injection.
+	// le document extrait (dans une zone temporaire) doit avoir la même
+	// taille que le document utilisé avant injection.
 
 	assertEquals(DigestUtils.shaHex(new FileInputStream(newDoc)),
 		DigestUtils.shaHex(documentFile));
@@ -235,8 +233,8 @@ public class RichGedTest extends AbstractBaseTestCase {
     }
 
     /**
-     * On va retrouver les documents stockï¿½s avec des requï¿½tes GRC portant sur
-     * les catï¿½gories typï¿½es. Puis avec les requï¿½tes Lucene
+     * On va retrouver les documents stockés avec des requêtes GRC portant sur
+     * les catégories typées. Puis avec les requêtes Lucene
      * 
      * @throws ExceededSearchLimitException
      * 
@@ -256,8 +254,8 @@ public class RichGedTest extends AbstractBaseTestCase {
 	storeDoc(document, getFile("doc1.pdf"), true);
 
 	/*
-	 * On injecte le nom du champs filtrï¿½ par formatFieldName dans la
-	 * requï¿½te
+	 * On injecte le nom du champs filtré par formatFieldName dans la
+	 * requête
 	 */
 	String c3FormattedName = cBoolean.getFormattedName();
 	assertEquals(1, searchLucene(c3FormattedName + ":true", 5));
@@ -312,7 +310,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	storeDoc(document, getFile("doc1.pdf"), true);
 
 	/*
-	 * Requï¿½tes un peu plus compliquï¿½es
+	 * Requêtes un peu plus compliquées
 	 */
 	String lucene = null;
 
@@ -335,15 +333,15 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertEquals(5, searchLucene(lucene, 10));
 
 	/*
-	 * Nouveautï¿½ ici : on recherche "Cat 7 - DateHeure" qui doit ï¿½tre ï¿½gale
-	 * ï¿½ par exemple "1975-01-01 08-32". Le nom de la catï¿½gorie doit tjs
-	 * ï¿½tre protï¿½gï¿½. Mais on doit aussi mettre des "" autour du terme
-	 * recherchï¿½. Pour obtenir des requï¿½tes du type
-	 * catï¿½7ï¿½-ï¿½dateheure:"1975-01-01 08-32"
+	 * Nouveauté ici : on recherche "Cat 7 - DateHeure" qui doit être égale
+	 * à par exemple "1975-01-01 08-32". Le nom de la catégorie doit tjs
+	 * être protégé. Mais on doit aussi mettre des "" autour du terme
+	 * recherché. Pour obtenir des requêtes du type
+	 * cat 7 - dateheure:"1975-01-01 08-32"
 	 * 
-	 * Il faut donc protï¿½ger le caractï¿½re "
+	 * Il faut donc protéger le caractère "
 	 * 
-	 * Nouveautï¿½: on peut directement rï¿½cupï¿½rer le nom formattï¿½.
+	 * Nouveauté: on peut directement récupérer le nom formatté.
 	 */
 	String c7Name = dateTimeBaseCategory.getFormattedName();
 	assertEquals(0, searchLucene(c7Name + ":\"1975-01-01 08-32\"", 5));
@@ -351,8 +349,8 @@ public class RichGedTest extends AbstractBaseTestCase {
     }
 
     /**
-     * On stocke un document en prï¿½cisant un UUID, et on vï¿½rifie que l'on le
-     * rï¿½cupï¿½re bien dans la liste de solution (DocumentInformation) et dans le
+     * On stocke un document en précisant un UUID, et on vérifie que l'on le
+     * récupère bien dans la liste de solution (DocumentInformation) et dans le
      * tag.
      * 
      * @throws ExceededSearchLimitException
@@ -375,7 +373,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	storeDoc(document, getFile("doc1.pdf"), true);
 
 	/*
-	 * On recherche le document par sa catï¿½gorie C0:UUIDFourni
+	 * On recherche le document par sa catégorie C0:UUIDFourni
 	 */
 	List<Document> docs = ServiceProvider
 		.getSearchService()
@@ -387,7 +385,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertEquals(uuidFourni.toString(), doc.getUuid().toString());
 
 	/*
-	 * On recherche ï¿½galement par cet UUIDFourni Comme c'est un champs
+	 * On recherche également par cet UUIDFourni Comme c'est un champs
 	 * statique du tag c'est dans LucRef.
 	 */
 	docs = ServiceProvider
@@ -399,8 +397,8 @@ public class RichGedTest extends AbstractBaseTestCase {
     }
 
     /**
-     * On stocke un document sans prï¿½ciser d'UUID et on vï¿½rifie qu'il n'y en a
-     * bien eu un gï¿½nï¿½rï¿½ et qu'il est rï¿½cupï¿½rï¿½ ï¿½ l'identique dans le
+     * On stocke un document sans préciser d'UUID et on vérifie qu'il n'y en a
+     * bien eu un généré et qu'il est récupéré à l'identique dans le
      * DocumentInformation et le Tag
      * 
      * @throws ExceededSearchLimitException
@@ -430,16 +428,16 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertTrue(docs != null && docs.size() == 1);
 	Document doc = docs.get(0);
 	/*
-	 * On vï¿½rifie dans le documentInformation, dans Tag, et on compare
+	 * On vérifie dans le documentInformation, dans Tag, et on compare
 	 */
 	assertNotNull(doc.getUuid());
     }
 
     /**
-     * Ce test montre des requï¿½tes consï¿½cutives en jouant sur l'offsetInIndex de
-     * dï¿½part. Ainsi on peut en plusieurs requï¿½tes successives peut couteuses
+     * Ce test montre des requêtes consécutives en jouant sur l'offsetInIndex de
+     * départ. Ainsi on peut en plusieurs requêtes successives peut couteuses
      * remonter une grosse liste de solution en faisant varier cet offsetInIndex
-     * de dï¿½part.
+     * de départ.
      * 
      * @throws ExceededSearchLimitException
      * 
@@ -451,7 +449,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
 
 	/*
-	 * On va stocker 100 documents, avec C0 qui change ï¿½ chaque fois et C1
+	 * On va stocker 100 documents, avec C0 qui change à chaque fois et C1
 	 * qui contient le nom du test.
 	 */
 	for (int i = 0; i < 100; i++) {
@@ -466,23 +464,23 @@ public class RichGedTest extends AbstractBaseTestCase {
 	}
 
 	/*
-	 * On a donc en thï¿½orie 100 documents avec C1=TestOffset.
+	 * On a donc en théorie 100 documents avec C1=TestOffset.
 	 * 
-	 * Si on demande 100 documents, alors aprï¿½s avoir effectuï¿½ la requï¿½te,
+	 * Si on demande 100 documents, alors après avoir effectué la requête,
 	 * l'AMF va lire sur l'index Lucene 100 tags.
 	 * 
-	 * On peut dï¿½cider d'en demander seulement 10 par exemple (c'est ï¿½ dire
+	 * On peut décider d'en demander seulement 10 par exemple (c'est à dire
 	 * avoir une liste de solution sur les 10 premiers), et de pouvoir en
 	 * demander 10 de plus.
 	 * 
-	 * Ensuite, on dï¿½cide d'extraire ou non selon ce que nous dit notre
+	 * Ensuite, on décide d'extraire ou non selon ce que nous dit notre
 	 * morceaux de liste de solution.
 	 * 
 	 * On souhaite donc dire
-	 * "je veux les 10 premiers ï¿½lï¿½ments de la liste de solution",
+	 * "je veux les 10 premiers éléments de la liste de solution",
 	 * "je veux les 10 suivants", "je veux les 10 suivants".
 	 * 
-	 * A chaque fois, Lucene restituera des "documents Lucene" dans le mï¿½me
+	 * A chaque fois, Lucene restituera des "documents Lucene" dans le même
 	 * ordre. L'AMF choisira de ne lire (depuis l'index Lucene) qu'entre
 	 * offsetInIndex et offsetInIndex + limit.
 	 * 
@@ -494,9 +492,9 @@ public class RichGedTest extends AbstractBaseTestCase {
 	    int offset = i * 10;
 
 	    /*
-	     * L'objet rï¿½sult contient une liste de Solution remontï¿½e (ici ce
-	     * sera 10 maximum) et le nombre thï¿½orique de documents vï¿½rifiant la
-	     * requï¿½te (ici ce sera tjs 100)
+	     * L'objet résult contient une liste de Solution remontée (ici ce
+	     * sera 10 maximum) et le nombre théorique de documents vérifiant la
+	     * requête (ici ce sera tjs 100)
 	     */
 	    SearchResult searchResult = ServiceProvider.getSearchService()
 		    .search(queryText, 10, offset, base, null);
@@ -506,7 +504,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	    for (Document document : searchResult.getDocuments()) {
 		// On se rend compte que l'on ne rencontre chaque document
 		// qu'une seule fois
-		// dans toutes les itï¿½rations de recherche.
+		// dans toutes les itérations de recherche.
 		assertTrue(numDocMet.add(document.getUuid()));
 	    }
 	}
@@ -530,8 +528,8 @@ public class RichGedTest extends AbstractBaseTestCase {
 	BaseCategory baseCategoryAge = base.getBaseCategory(catNames[4]);
 
 	/*
-	 * On va stocker n documents, avec C0 qui change ï¿½ chaque fois, et C1
-	 * qui prend peu de valeurs. On joue aussi avec C2 multivaluï¿½;)
+	 * On va stocker n documents, avec C0 qui change à chaque fois, et C1
+	 * qui prend peu de valeurs. On joue aussi avec C2 multivalué;)
 	 */
 
 	for (int i = 0; i < 50; i++) {
@@ -551,7 +549,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	    }
 	    document.addCriterion(baseCategory1, c1Val);
 
-	    // C2. 2 valeurs, une qui varie trï¿½s peu, une qui est unique.
+	    // C2. 2 valeurs, une qui varie très peu, une qui est unique.
 	    document.addCriterion(baseCategory2, "personne" + i);
 	    document.addCriterion(baseCategory2, i % 2 == 0 ? "masculin"
 		    : "feminin");
@@ -560,17 +558,17 @@ public class RichGedTest extends AbstractBaseTestCase {
 	    storeDoc(document, getFile("doc1.pdf"), true);
 	}
 
-	// Recherche sans filtre pour vï¿½rifier le nombre de documents stockï¿½s
+	// Recherche sans filtre pour vérifier le nombre de documents stockés
 	// assertEquals( 50, searchLucene(c0.getFormattedName()+":testfilter*",
 	// 1000));
 
 	/*
-	 * On veut tout les adultes de sexe masculin. Celï¿½ doit reprï¿½senter 20
+	 * On veut tout les adultes de sexe masculin. Celà doit représenter 20
 	 * personnes.
 	 * 
-	 * On a plusieurs faï¿½ons de chercher. On va considï¿½rer ici qu'il n'y a
-	 * que les documents prï¿½cï¿½demment injectï¿½s (on n'applique plus
-	 * TestFilter* sur C0) On va chercher ï¿½ la fois sur C1 et C2.
+	 * On a plusieurs façons de chercher. On va considérer ici qu'il n'y a
+	 * que les documents précédemment injectés (on n'applique plus
+	 * TestFilter* sur C0) On va chercher à la fois sur C1 et C2.
 	 * 
 	 * 1/ On recherche C1=Adulte ET C2=Masculin sans utiliser les filtres.
 	 * 
@@ -578,7 +576,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	 * 
 	 * 3/ On recherche C2=Masculin et filtre sur C1.
 	 * 
-	 * 4/ On recherche avec filtre C1 et C2 (on doit donc avec une requï¿½te
+	 * 4/ On recherche avec filtre C1 et C2 (on doit donc avec une requête
 	 * lambda : C0:TestFilter* par exemple)
 	 */
 	// 1/
@@ -638,7 +636,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	assertEquals(20, searchLucene(query, 1000, chainedFilter));
 	/*
-	 * On va utiliser la requï¿½te COMPLETE Dans un premier temps pour refaire
+	 * On va utiliser la requête COMPLETE Dans un premier temps pour refaire
 	 * la meme chose qu'en 4/
 	 */
 	SearchResult result = null;
@@ -657,9 +655,9 @@ public class RichGedTest extends AbstractBaseTestCase {
 	// root.addFilterTerm(c2.getFormattedName(), "masculin" );
 
 	/*
-	 * On peut afficher la requï¿½te
+	 * On peut afficher la requête
 	 */
-	System.out.println("requï¿½te \"les adultes de sexe masculin\" :\n"
+	System.out.println("requête \"les adultes de sexe masculin\" :\n"
 		+ query);
 
 	result = ServiceProvider.getSearchService().search(query, 1000, base,
@@ -680,7 +678,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 		ChainedFilterOperator.OR);
 
 	System.out
-		.println("requï¿½te \"les adultes ou les individus de sexe masculin\" :\n"
+		.println("requête \"les adultes ou les individus de sexe masculin\" :\n"
 			+ query);
 
 	result = ServiceProvider.getSearchService().search(query, 1000, base,
@@ -689,7 +687,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertEquals(45, result.getDocuments().size());
 
 	/*
-	 * On va faire une requï¿½te plus complexe
+	 * On va faire une requête plus complexe
 	 * "les femmes et les enfants d'abord" et "la personne 49" et
 	 * "la personne 48".
 	 * 
@@ -714,12 +712,12 @@ public class RichGedTest extends AbstractBaseTestCase {
 		.addTermFilter(baseCategory1.getFormattedName(), "enfant",
 			ChainedFilterOperator.ANDNOT);
 
-	// On doit maintenant conserver les rï¿½fï¿½rences quand on va plus loin que
+	// On doit maintenant conserver les références quand on va plus loin que
 	// le root.
 	// OperatorNode sub = root.addEmptyNode(NodeType.ANDNOT) ;
 	// sub.addFilterTerm(c1.getFormattedName(), "adulte");
 	System.out
-		.println("Requï¿½te \"les femmes et les enfants d'abord ainsi que les passagers 48 et 49 qui sont des VIPs\" :\n "
+		.println("Requête \"les femmes et les enfants d'abord ainsi que les passagers 48 et 49 qui sont des VIPs\" :\n "
 			+ query);
 
 	result = ServiceProvider.getSearchService().search(query, 1000, base,
@@ -730,8 +728,8 @@ public class RichGedTest extends AbstractBaseTestCase {
     }
 
     /**
-     * Ce test montre la rï¿½cupï¿½ration de l'index mï¿½tier sans passer par
-     * l'extraction de tag. On stocke un document, et on rï¿½cupï¿½re les catï¿½gories
+     * Ce test montre la récupération de l'index métier sans passer par
+     * l'extraction de tag. On stocke un document, et on récupère les catégories
      * directement depuis la liste de solution.
      * 
      * @throws ExceededSearchLimitException
@@ -750,7 +748,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	String c0Val = "testGetCategoriesWithoutExtract1";
 	String c1Val = "Bien sur nous sommes d'accord";
-	String c2Val = "Jï¿½rome Kerviel doit prendre cher!";
+	String c2Val = "Jérome Kerviel doit prendre cher!";
 
 	document.addCriterion(baseCategory0, c0Val);
 	document.addCriterion(baseCategory1, c1Val);
@@ -780,8 +778,8 @@ public class RichGedTest extends AbstractBaseTestCase {
     }
 
     /**
-     * Test du stockage d'un document avec note et catï¿½gories mono/multivaluï¿½es
-     * et typï¿½es. Les recherches sont rï¿½alisï¿½es ici ï¿½ la fois dans l'index GRC
+     * Test du stockage d'un document avec note et catégories mono/multivaluées
+     * et typées. Les recherches sont réalisées ici à la fois dans l'index GRC
      * et l'index LUCENE
      * 
      * @throws IOException
@@ -791,20 +789,20 @@ public class RichGedTest extends AbstractBaseTestCase {
     @Test
     public void testStoreAndReturnDoc() throws IOException,
 	    TagControlException, ExceededSearchLimitException {
-	// assertTrue("La base " + BASEID + " n'est pas dï¿½marrï¿½e.",
+	// assertTrue("La base " + BASEID + " n'est pas démarrée.",
 	// base.isStarted());
 
-	// voir l'astuce pour rï¿½cupï¿½rer le classPath au runtime pour localiser
+	// voir l'astuce pour récupérer le classPath au runtime pour localiser
 	// les fichiers
 	File newDoc = getFile("doc1.pdf");
 
 	assertTrue(newDoc.exists());
 
-	// On dï¿½finit le Tag du futur document, liï¿½ ï¿½ la base uBase.
+	// On définit le Tag du futur document, lié à la base uBase.
 	Document document = toolkitFactory.createDocumentTag(base);
 
 	// On dit que l'on veut mettre "Identifier" en valeur d'identifiant de
-	// la 1ï¿½re catï¿½gorie (d'indice 0)
+	// la 1ère catégorie (d'indice 0)
 	String c0 = "Identifier";
 
 	document.addCriterion(base.getBaseCategory(catNames[0]), c0);
@@ -820,35 +818,35 @@ public class RichGedTest extends AbstractBaseTestCase {
 	document.setType("PDF");
 
 	/*
-	 * Valeurs typï¿½es BOOLEAN, INTEGER, DECIMAL, DATE, DATETIME.
+	 * Valeurs typées BOOLEAN, INTEGER, DECIMAL, DATE, DATETIME.
 	 * 
-	 * Les types sont nativement stockï¿½s dans ces formats. Par contre, ce
-	 * sont des reprï¿½sentations chaines qui sont vï¿½hiculï¿½es jusqu'au
+	 * Les types sont nativement stockés dans ces formats. Par contre, ce
+	 * sont des représentations chaines qui sont véhiculées jusqu'au
 	 * serveur.
 	 */
 
 	// booleen "true" ou "false"
 
-	// 2 faï¿½ons, 1 en mettant "true", une en mettant le type primitif
+	// 2 façons, 1 en mettant "true", une en mettant le type primitif
 	if (false)
 	    document.addCriterion(base.getBaseCategory(catNames[3]), "true");
 	// tag.addCriterion(uBase.getBaseDefinition().getIndex().getCategory(catNames[3),
 	// true, true);
 
-	// integer : 2 faï¿½ons
+	// integer : 2 façons
 	if (false)
 	    document.addCriterion(base.getBaseCategory(catNames[4]), "-10");
 	// tag.addCriterion(uBase.getBaseDefinition().getIndex().getCategory(catNames[4),
 	// true, -10);
 
-	// decimal : 30 digits maximums, dont 10 sur la partie dï¿½cimale.
+	// decimal : 30 digits maximums, dont 10 sur la partie décimale.
 
 	if (false)
 	    document.addCriterion(base.getBaseCategory(catNames[5]), "-1.54");
 	document.addCriterion(base.getBaseCategory(catNames[5]), -1.54);
 	document.addCriterion(base.getBaseCategory(catNames[5]), pi); //
 
-	// ce sera 0.0 qui sera stockï¿½.
+	// ce sera 0.0 qui sera stocké.
 	document.addCriterion(base.getBaseCategory(catNames[5]), "0.0");
 
 	Calendar cal = Calendar.getInstance();
@@ -860,7 +858,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	// tag.addCriterion(uBase.getBaseDefinition().getIndex().getCategory(catNames[7),
 	// true, new Date());
 
-	// Date de crï¿½ation du document (ï¿½ priori avant son entrï¿½e dans la GED,
+	// Date de création du document (à priori avant son entrée dans la GED,
 	// on retranche une heure)
 	cal = Calendar.getInstance();
 	cal.setTimeInMillis(System.currentTimeMillis());
@@ -870,7 +868,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	Document stored = ServiceProvider.getStoreService().storeDocument(
 		document, new FileInputStream(newDoc));
 
-	// On vï¿½rifie que le document a passï¿½ le controle.
+	// On vérifie que le document a passé le controle.
 	assertNotNull(stored);
 
 	UUID archiveUUID = stored.getUuid();
@@ -884,13 +882,13 @@ public class RichGedTest extends AbstractBaseTestCase {
 	System.out.println(documentByUUID.getUuid());
 
 	/*
-	 * On recherche maintenant dans Lucene L'approche est diffï¿½rente.
+	 * On recherche maintenant dans Lucene L'approche est différente.
 	 * 
-	 * Tout d'abord on n'exprime plus les requï¿½tes sur les catï¿½gories en
-	 * prï¿½cisant le numï¿½ro de la catï¿½gorie, mais son nom (ce qui facilitera
-	 * pour le futur les requï¿½tes multibase)
+	 * Tout d'abord on n'exprime plus les requêtes sur les catégories en
+	 * précisant le numéro de la catégorie, mais son nom (ce qui facilitera
+	 * pour le futur les requêtes multibase)
 	 * 
-	 * On peut retrouver une catï¿½gorie par son nom, par son id...
+	 * On peut retrouver une catégorie par son nom, par son id...
 	 */
 	String c0Name = base.getBaseCategory(catNames[0]).getName();
 	// On peut comparer...
@@ -898,28 +896,28 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertEquals(c0NameBis, c0Name);
 
 	/*
-	 * Ensuite on construit la requï¿½te
+	 * Ensuite on construit la requête
 	 */
 	String query = c0Name + ":" + c0;
 
 	/*
-	 * Ici on a donc une requï¿½te du genre "Cat 0:Identifier". Cette requete
+	 * Ici on a donc une requête du genre "Cat 0:Identifier". Cette requete
 	 * ne peut pas fonctionner (lucene n'aime pas les espaces dans les noms
-	 * de champs => Erreurs de syntaxe au moment de parser la requï¿½te) En
-	 * fait on stocke les noms de champs en casse basse et en remplaï¿½ant les
-	 * espaces par des char(255). Celï¿½ est fait par la mï¿½thode suivante,
-	 * pour devenir "catï¿½0:Identifier" (vous pouvez vï¿½rifier ce n'est pas un
-	 * espace entre cat et 0 dans le commentaire prï¿½cï¿½dent)
+	 * de champs => Erreurs de syntaxe au moment de parser la requête) En
+	 * fait on stocke les noms de champs en casse basse et en remplaçant les
+	 * espaces par des char(255). Celà est fait par la méthode suivante,
+	 * pour devenir "cat 0:Identifier" (vous pouvez vérifier ce n'est pas un
+	 * espace entre cat et 0 dans le commentaire précédent)
 	 */
 	query = base.getBaseCategory(catNames[0]).getFormattedName() + ":" + c0;
 
-	// Nouveautï¿½ on peut l'ï¿½crire directement
+	// Nouveauté on peut l'écrire directement
 	query = base.getBaseCategory(catNames[0]).getFormattedName() + ":" + c0;
 
 	/*
 	 * 
-	 * Ce qui est fondamental : on doit prï¿½ciser une limite dans le nombre
-	 * de rï¿½sultats ï¿½ remonter. Le serveur interdira les valeurs au delï¿½ de
+	 * Ce qui est fondamental : on doit préciser une limite dans le nombre
+	 * de résultats à remonter. Le serveur interdira les valeurs au delà de
 	 * LuceneUtils.SEARCH_LIMIT (10 000) ;
 	 */
 	SearchResult searchResult = ServiceProvider.getSearchService().search(
@@ -928,7 +926,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertTrue(docs != null && docs.size() == 1);
 	System.out.println(docs.get(0).getUuid());
 	System.out.println(docs.get(0).getDigest());
-	// on fait les contrï¿½les
+	// on fait les contrôles
 	control(docs.get(0), newDoc, c0);
 
 	// On essaye de stocker un autre document avec C0=Identifier, ce qui est
@@ -936,11 +934,11 @@ public class RichGedTest extends AbstractBaseTestCase {
 	document = toolkitFactory.createDocumentTag(base);
 
 	document.addCriterion(base.getBaseCategory(catNames[0]), c0);
-	// Celï¿½ ne doit pas fonctionner (false en dernier paramï¿½tre)
+	// Celà ne doit pas fonctionner (false en dernier paramètre)
 	File file = new File("/unknownFile.pdf");
 	storeDoc(document, file, false);
 
-	// On le vï¿½rifie aussi dans lucene
+	// On le vérifie aussi dans lucene
 	assertEquals(
 		1,
 		searchLucene(base.getBaseCategory(catNames[0])
