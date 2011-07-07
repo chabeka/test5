@@ -5,10 +5,8 @@ import java.io.File;
 import org.apache.log4j.Logger;
 
 /**
- *  Classe ECDESOURCE
- *  
  *  Cette classe permet la configuration d'un ECDE
- *  
+ *  <br>
  *  Elle a comme attribut :
  *  <ul>
  *    <li>Host : DNS de l'ECDE. Son format doit être conforme à la syntaxe du host dans une URL</li>
@@ -19,13 +17,31 @@ import org.apache.log4j.Logger;
  * 
  * */
 
-
 public class EcdeSource {
    
    
    //logger
    public static final Logger LOG = Logger.getLogger(EcdeSource.class);
  
+   /**
+    * Constructeur EcdeSource par defaut
+    *   
+    */
+   public EcdeSource(){ //par defaut
+   }
+   
+   /**
+    * Constructeur
+    * 
+    * @param host de l'uri
+    * @param basePath chemin  
+    */
+   public EcdeSource(String host, File basePath) {
+      
+      this.host = host;
+      this.basePath = basePath;
+   }
+   
    
    // Attributs
    private String host; 
@@ -33,25 +49,25 @@ public class EcdeSource {
    
    
    /**
-    * @return the host
+    * @return l'hote
     */
    public final String getHost() {
       return host;
    }
    /**
-    * @param host the host to set
+    * @param host l'hote à configurer
     */
    public final void setHost(String host) {
       this.host = host;
    }
    /**
-    * @return the basePath
+    * @return le chemin absolu
     */
    public final File getBasePath() {
       return basePath;
    }
    /**
-    * @param basePath the basePath to set
+    * @param basePath le chemin a configurer
     */
    public final void setBasePath(File basePath) {
       this.basePath = basePath;

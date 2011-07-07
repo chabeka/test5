@@ -3,11 +3,10 @@ package fr.urssaf.image.sae.ecde.exception;
 import org.apache.log4j.Logger;
 
 /**
- * Classe EcdeGeneralException
  * 
  * Classe mère des exceptions non runtime levées par sae-ecde
- * Elle hérite de la classe Exceptions
- * 
+ * <br>
+ * {@link Exception}
  * 
  * */
 
@@ -19,12 +18,25 @@ public class EcdeGeneralException extends Exception {
    public static final Logger LOG = Logger.getLogger(EcdeGeneralException.class);
 
    /**
-    * Constructor
+    * implémentation du message par défaut {@value #MESSAGE}
     * 
-    * @param message cause
+    * @param cause
+    *           raison de l'exception levée
     */
-   public EcdeGeneralException(String message) {
-      super(message);
+   public EcdeGeneralException(String cause) {
+      super(cause);
+   }
+   
+   /**
+    * implémentation du message par défaut {@value #MESSAGE}
+    * 
+    * @param message
+    *           message de l'exception levée
+    * @param cause
+    *           cause de l'exception levée
+    */
+   public EcdeGeneralException(String message, Throwable cause) {
+      super(message, cause);
    }
    
 }

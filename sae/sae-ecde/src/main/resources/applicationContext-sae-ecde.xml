@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
    xsi:schemaLocation="
                         http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -9,17 +8,16 @@
                         http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
    <context:component-scan base-package="fr.urssaf.image.sae.ecde" />
-   
+
    <bean id="messageSource"
-         class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-       <property name="basenames">
-            <list>
-               <value>/message/label/labels</value>
-               <value>/message/exeception/execeptions</value>
-               <value>/message/exeception/execeptionsExemple</value>
-            </list>       
-       </property>   
-       <property name="cacheSeconds" value="0" />
+      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+      <property name="basenames">
+         <list>
+            <value>validationMessages_sae_ecde</value>
+            <value>exceptionMessages_sae_ecde</value>
+         </list>
+      </property>
+      <property name="cacheSeconds" value="0" />
    </bean>
 
 </beans>

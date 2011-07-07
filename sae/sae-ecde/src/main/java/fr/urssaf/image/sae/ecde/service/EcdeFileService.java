@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.ecde.service;
 
 import java.io.File;
 import java.net.URI;
-import java.util.List;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeBadFileException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
@@ -10,12 +9,8 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 
 /**
- * 
- * Interface EcdeFileService
- * 
  * Service de manipulation des URL ECDE et des chemins de fichiers.
  * 
- *
  */
 
 
@@ -31,9 +26,9 @@ public interface EcdeFileService {
     *   
     * @throws EcdeBadFileException Mauvais chemin de fichier
     * 
-    * @return une URI de type java.net.URI : URL ECDE
+    * @return URL ECDE
     */
-   URI convertFileToURI (File ecdeFile, List <EcdeSource> sources) throws EcdeBadFileException;
+    URI convertFileToURI (File ecdeFile, EcdeSource... sources) throws EcdeBadFileException;
    
    
    /**
@@ -46,9 +41,9 @@ public interface EcdeFileService {
     * @throws EcdeBadURLException mauvaise url 
     * @throws EcdeBadURLFormatException mauvais format d'url
     * 
-    * @return un File : Chemin du fichier dans ECDE correspondant
+    * @return Chemin du fichier dans ECDE correspondant
     *  
     */
-   File convertURIToFile (URI ecdeURL, List <EcdeSource> sources) throws EcdeBadURLException, EcdeBadURLFormatException;
+    File convertURIToFile (URI ecdeURL, EcdeSource... sources) throws EcdeBadURLException, EcdeBadURLFormatException;
 
 }

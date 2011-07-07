@@ -4,11 +4,10 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Classe EcdeBadFileException
  * 
  * Exception levée lorsqu'un chemin de fichier d'un ECDE n'appartient à aucun ECDE connu
  * 
- * 
+ * @see EcdeGeneralException
  * */
 
 public class EcdeBadFileException extends EcdeGeneralException {
