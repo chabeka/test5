@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.ecde.exception;
 
-import org.apache.log4j.Logger;
 
 /**
  * Encapsulation des exceptions levées non spécifiées
@@ -10,9 +9,6 @@ import org.apache.log4j.Logger;
 public class EcdeRuntimeException extends RuntimeException {
 
    private static final long serialVersionUID = 1L;
-
-   // logger
-   public static final Logger LOG = Logger.getLogger(EcdeRuntimeException.class);
 
    /**
     * implémenation d'un message spécifique

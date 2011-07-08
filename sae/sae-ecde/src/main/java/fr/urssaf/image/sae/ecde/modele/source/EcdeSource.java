@@ -2,8 +2,6 @@ package fr.urssaf.image.sae.ecde.modele.source;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
-
 /**
  *  Cette classe permet la configuration d'un ECDE
  *  <br>
@@ -18,18 +16,7 @@ import org.apache.log4j.Logger;
  * */
 
 public class EcdeSource {
-   
-   
-   //logger
-   public static final Logger LOG = Logger.getLogger(EcdeSource.class);
- 
-   /**
-    * Constructeur EcdeSource par defaut
-    *   
-    */
-   public EcdeSource(){ //par defaut
-   }
-   
+    
    /**
     * Constructeur
     * 

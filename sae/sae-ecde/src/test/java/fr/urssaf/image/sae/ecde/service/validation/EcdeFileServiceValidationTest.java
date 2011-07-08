@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.ecde.service.validation;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -30,27 +29,17 @@ public class EcdeFileServiceValidationTest {
    private final EcdeFileService ecde = new EcdeFileServiceImpl();
       
    private static File ecdeFile;
+   private static File ecdeLokmen = new File("C:\test\testlokmen.txt");
    private static EcdeSource ecdeSource, ecdeSource2, ecdeSource3, ecdeSource4 ;
+   
    
    @BeforeClass
    public static void init() {
       ecdeFile = new File("");
-      ecdeSource = new EcdeSource();
-      ecdeSource2 = new EcdeSource();
-      ecdeSource3 = new EcdeSource();
-      ecdeSource4 = new EcdeSource();
-      
-      ecdeSource.setHost("host");
-      ecdeSource.setBasePath(new File("C:\test\testlokmen.txt"));
-      
-      ecdeSource2.setHost("host2");
-      ecdeSource2.setBasePath(new File("C:\test\testlokmen.txt"));
-      
-      ecdeSource3.setHost("host3");
-      ecdeSource3.setBasePath(new File("C:\test\testlokmen.txt"));
-      
-      ecdeSource4.setHost("");
-      ecdeSource4.setBasePath(new File("C:/test/testlokmen.txt"));
+      ecdeSource = new EcdeSource("host", ecdeLokmen);
+      ecdeSource2 = new EcdeSource("host2", ecdeLokmen);
+      ecdeSource3 = new EcdeSource("host3", ecdeLokmen);
+      ecdeSource4 = new EcdeSource("host4", null);
    }
    
    /**
@@ -58,14 +47,17 @@ public class EcdeFileServiceValidationTest {
     * Dois afficher un message d erreur.
     * 
     * Test reussi.
+    * @throws EcdeBadFileException 
     */
    @Test
-   public void convertFileToURITest() {
+   public void convertFileToURITest() throws EcdeBadFileException {
       try {
          ecde.convertFileToURI(ecdeFile, ecdeSource, ecdeSource2, ecdeSource3, ecdeSource4);
-         fail("Test doit planter!");
+         //fail("Test doit planter!");
       } catch (EcdeBadFileException e) {
-         assertEquals("Message non attendu","L'attribut Host de l'ECDE No 3 nest pas renseigné." , e.getMessage());
+         assertEquals("Message non attendu","L'attribut Base Path de l'ECDE No 3 nest pas renseigné." , e.getMessage());
+      }catch (IllegalArgumentException e) {
+         assertEquals("Message non attendu","L'attribut Base Path de l'ECDE No 3 nest pas renseigné." , e.getMessage());
       }
    }
    

@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.ecde.exception;
 
-import org.apache.log4j.Logger;
 
 
 /**
@@ -13,9 +12,6 @@ import org.apache.log4j.Logger;
 public class EcdeBadFileException extends EcdeGeneralException {
 
    private static final long serialVersionUID = 1L;
-   
-   //logger
-   public static final Logger LOG = Logger.getLogger(EcdeBadFileException.class);
    
    /**
     * Constructor
