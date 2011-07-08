@@ -13,7 +13,6 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
-import fr.urssaf.image.sae.ecde.service.utils.ConstantesECDE;
 
 /**
  * Service de manipulation des URL ECDE et des chemins de fichiers.
@@ -28,9 +27,9 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    /**
     * Recupération des Constantes
     */
-   public static final String ECDE = ConstantesECDE.ECDE;
-   public static final String DOCUMENTS = ConstantesECDE.DOCUMENTS;
-   public static final String EXPR_REG = ConstantesECDE.EXPR_REG;
+   public static final String ECDE = "ecde";
+   public static final String DOCUMENTS = "documents";
+   public static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
    
    
    @Autowired
@@ -76,25 +75,18 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    public final File convertURIToFile(URI ecdeURL, EcdeSource... sources)
          throws EcdeBadURLException, EcdeBadURLFormatException {
 
-
-      //String url = ecdeURL.getScheme() + ecdeURL.getAuthority()+ ecdeURL.getPath();
-      
       // basePath recuperer a partir de ecdeSource
       String basePath = "";
       
       // boolean pour signaler que authority de l'uri bien trouvé dans sources
       boolean trouve = false;
-      
-      //chemin absolu du fichier
-      String cheminAbsolu = "";
 
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
       // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
       if ( ! ecdeURL.toString().matches(EXPR_REG) ||
-           ! (ecdeURL.getPath().lastIndexOf("..") == -1)
+           ! (ecdeURL.getPath().lastIndexOf("..") == -1) // pour verifier qu'il n'y est pas de ../..
          ) {
-         String exception = messageSource.getMessage("ecdeBadUrlFormatException.message", new Object[] { ecdeURL }, Locale.FRENCH);
-         throw new EcdeBadURLFormatException(exception);
+         throw new EcdeBadURLFormatException(recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
       }
       
       // il faut maintenant venir parcourir la liste sources afin de recuperer l'ECDE correspondant
@@ -109,14 +101,17 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
       // levée d'exception car uri non trouve dans sources
       if ( !trouve ){
-         String exception = messageSource.getMessage("ecdeBadUrlException.message", new Object[] { ecdeURL.toString() }, Locale.FRENCH);
-         throw new EcdeBadURLException(exception);
+         throw new EcdeBadURLException(recupererMessage("ecdeBadUrlException.message", ecdeURL));
       }
 
       // Construire le chemin absolu du fichier
-      cheminAbsolu = basePath + ecdeURL.getPath();      
-      return new File(cheminAbsolu);
+      return new File(basePath + ecdeURL.getPath());
       
+   }
+   
+   // recupere les messages d erreur
+   private String recupererMessage(String message, URI ecdeURL) {
+      return messageSource.getMessage(message, new Object[] { ecdeURL }, Locale.FRENCH);
    }
  
 

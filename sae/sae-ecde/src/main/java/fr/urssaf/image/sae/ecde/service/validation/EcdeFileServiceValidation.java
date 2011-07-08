@@ -50,10 +50,10 @@ public class EcdeFileServiceValidation {
       
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
-      if(ecdeFile.isFile() || ecdeFile.exists()) {
+      if(ecdeFile == null) {
          throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFile.IllegalArgumentException"));
       }
-      if(sources == null) {
+      if(sources == null || org.apache.commons.lang.ArrayUtils.isEmpty(sources)) {
          throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFileNotExist.IllegalArgumentException"));
       }
       for(EcdeSource variable : sources){
@@ -77,7 +77,7 @@ public class EcdeFileServiceValidation {
       if(ecdeURL == null) {
          throw new IllegalArgumentException(recupererMessage("java.lang.ecdeUrl.IllegalArgumentException"));
       }
-      if(sources == null) {
+      if(sources == null || org.apache.commons.lang.ArrayUtils.isEmpty(sources)) {
          throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFileNotExist.IllegalArgumentException"));
       }
       
