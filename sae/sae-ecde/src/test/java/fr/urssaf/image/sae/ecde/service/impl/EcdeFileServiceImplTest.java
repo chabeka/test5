@@ -61,7 +61,7 @@ public class EcdeFileServiceImplTest {
       assertEquals(MESSAGE_INNATENDU, messageObtenu, messageAttendu);
    }
    
-// exception levée si l'URI est absente de la liste des ECDESources donnee en param
+   // exception levée si l'URI est absente de la liste des ECDESources donnee en param
    @Test(expected = EcdeBadURLException.class)
    public void convertUrlToFileUriNotExistTest() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException  {
       uri = new URI(ECDE, ECDECER69, ATTESTATION, null);

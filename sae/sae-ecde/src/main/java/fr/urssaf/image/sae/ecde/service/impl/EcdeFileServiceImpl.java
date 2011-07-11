@@ -60,44 +60,35 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    public final URI convertFileToURI(File ecdeFile, EcdeSource... sources)
          throws EcdeBadFileException {
       
-      // debutFichier recuperer a partir de ecdeFile
-      String debutFichier = ""; 
       // boolean pour signaler que le debut du fichier est bien trouvé dans sources
       boolean trouve = false;
-      // curseur afin de determiner le debut du fichier afin de recup ce qui nous interesse
-      int curseur = -1;
-      // fin fichier
-      String finFichier = "";
       // recupération host
       String host = "";
       //valeur retournée
       URI uriRetournee = null;
+      EcdeSource ecdeSource = new EcdeSource("", new File(""));
       
-      // parcours pour recuperer le debut du fichier
-      String str[] = ecdeFile.getPath().split("\\\\");
-      for (String variable : str) {
-         if ( !"".equals(variable) ) {
-            if (curseur <=1) {
-               debutFichier = debutFichier.concat("/").concat(variable);
-            } 
-            else {
-               finFichier = finFichier.concat("/").concat(variable);
-            }
-         } 
-         curseur ++;
-      }
-      debutFichier = debutFichier.concat("/");
-      File debutFichierFile = new File(debutFichier);
-      
-      // Une fois le debut du fichier recuperer on le compare a sources pour recuperer le host correspondant 
-      for (EcdeSource ecdeSource : sources) {
-         if ( debutFichierFile.getPath().equals(ecdeSource.getBasePath().toString()) ) {
-            //concordance entre uri et ecdesource donné en paramètre
-            host = ecdeSource.getHost().toString();
+      String nomFichier = ecdeFile.getPath();
+
+      // parcourir les ECDE Sources
+      // comparer avec le debut du fichier
+      // si retrouver alors remplacer le debut de fichier par ecde://point de montage
+      // ex :
+      // basePath = /mnt/ecde/lyon/
+      // host = ecde.cer69.recouv
+      // /mnt/ecde/lyon/DCL/20110708/1/documents/toto.pdf
+      // donne
+      // ecde://ecde.cer69.recouv/DCL/20110708/1/documents/toto.pdf
+      for (EcdeSource variable : sources) {
+         // copie du bean
+         org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
+         String path = ecdeSource.getBasePath().getPath();
+         if (nomFichier.contains(path)) {
+            nomFichier = nomFichier.replace(path,"");
             trouve = true;
+            host = ecdeSource.getHost();
          }
       }
-      
       // levée d'exception car aucune correspondance
       if ( !trouve ){
          throw new EcdeBadFileException(recupererMessage("ecdeBadFileException.message", ecdeFile));
@@ -105,7 +96,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
       // Construire le chemin absolu du fichier
       try {
-         uriRetournee = new URI("ecde", host, finFichier, null);
+        uriRetournee = new URI(ECDE, host, nomFichier.replace("\\", "/"), null);
       } catch (URISyntaxException e) {
          LOG.debug(e.getMessage());
       }
@@ -136,6 +127,8 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
       // boolean pour signaler que authority de l'uri bien trouvé dans sources
       boolean trouve = false;
+      
+      EcdeSource ecdeSource = new EcdeSource("", new File(""));
 
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
       // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
@@ -145,7 +138,9 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
       // il faut maintenant venir parcourir la liste sources afin de recuperer l'ECDE correspondant
       // Parcours donc de la liste sources
-      for (EcdeSource ecdeSource : sources) {
+      for (EcdeSource variable : sources) {
+         // copie du bean
+         org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
          if ( ecdeURL.getAuthority().equals(ecdeSource.getHost()) ) {
              //concordance entre uri et ecdesource donné en paramètre
             basePath = ecdeSource.getBasePath().toString();

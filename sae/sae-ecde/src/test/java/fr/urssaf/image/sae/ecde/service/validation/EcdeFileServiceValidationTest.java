@@ -86,7 +86,7 @@ public class EcdeFileServiceValidationTest {
    
    
    // ------------------------------ URI TO FILE
- //test avec url null
+   //test avec url null
    @Test(expected = IllegalArgumentException.class)
    public void convertUrlToFileTestUrlNotExist () throws EcdeBadURLException, EcdeBadURLFormatException {
       ecdeFileService.convertURIToFile(null, ecde1, ecde2, ecde3);
@@ -108,8 +108,6 @@ public class EcdeFileServiceValidationTest {
       ecdeFileService.convertURIToFile(uri);
       fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeSource vide");
    }
-   
-   
    
    
 
