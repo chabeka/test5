@@ -2,8 +2,10 @@ package fr.urssaf.image.sae.ecde.service.impl;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,11 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    public static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
    
    
+   /**
+    * LOGGER
+    */
+   public static final Logger LOG = Logger.getLogger(EcdeFileServiceImpl.class);
+   
    @Autowired
    private MessageSource messageSource;
    
@@ -52,8 +59,57 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    @Override
    public final URI convertFileToURI(File ecdeFile, EcdeSource... sources)
          throws EcdeBadFileException {
-      // TODO
-      return null;
+      
+      // debutFichier recuperer a partir de ecdeFile
+      String debutFichier = ""; 
+      // boolean pour signaler que le debut du fichier est bien trouvé dans sources
+      boolean trouve = false;
+      // curseur afin de determiner le debut du fichier afin de recup ce qui nous interesse
+      int curseur = -1;
+      // fin fichier
+      String finFichier = "";
+      // recupération host
+      String host = "";
+      //valeur retournée
+      URI uriRetournee = null;
+      
+      // parcours pour recuperer le debut du fichier
+      String str[] = ecdeFile.getPath().split("\\\\");
+      for (String variable : str) {
+         if ( !"".equals(variable) ) {
+            if (curseur <=1) {
+               debutFichier = debutFichier.concat("/").concat(variable);
+            } 
+            else {
+               finFichier = finFichier.concat("/").concat(variable);
+            }
+         } 
+         curseur ++;
+      }
+      debutFichier = debutFichier.concat("/");
+      File debutFichierFile = new File(debutFichier);
+      
+      // Une fois le debut du fichier recuperer on le compare a sources pour recuperer le host correspondant 
+      for (EcdeSource ecdeSource : sources) {
+         if ( debutFichierFile.getPath().equals(ecdeSource.getBasePath().toString()) ) {
+            //concordance entre uri et ecdesource donné en paramètre
+            host = ecdeSource.getHost().toString();
+            trouve = true;
+         }
+      }
+      
+      // levée d'exception car aucune correspondance
+      if ( !trouve ){
+         throw new EcdeBadFileException(recupererMessage("ecdeBadFileException.message", ecdeFile));
+      }
+      
+      // Construire le chemin absolu du fichier
+      try {
+         uriRetournee = new URI("ecde", host, finFichier, null);
+      } catch (URISyntaxException e) {
+         LOG.debug(e.getMessage());
+      }
+      return uriRetournee;
    }
 
    /**
@@ -83,9 +139,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
 
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
       // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
-      if ( ! ecdeURL.toString().matches(EXPR_REG) ||
-           ! (ecdeURL.getPath().lastIndexOf("..") == -1) // pour verifier qu'il n'y est pas de ../..
-         ) {
+      if ( ! ecdeURL.toString().matches(EXPR_REG) ) {
          throw new EcdeBadURLFormatException(recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
       }
       
@@ -109,9 +163,16 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
    }
    
-   // recupere les messages d erreur
+   // recupere les messages d erreur en affichant aussi l'url en question
    private String recupererMessage(String message, URI ecdeURL) {
-      return messageSource.getMessage(message, new Object[] { ecdeURL }, Locale.FRENCH);
+      Object[] param = new Object[] {ecdeURL};
+      return messageSource.getMessage(message, param, Locale.FRENCH);
+   }
+   
+   // recupere les messages d erreur en affichant aussi le fichier en question
+   private String recupererMessage(String message, File ecdeFile) {
+      Object[] param = new Object[] {ecdeFile};
+      return messageSource.getMessage(message, param, Locale.FRENCH);
    }
  
 

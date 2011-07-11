@@ -1,8 +1,6 @@
 package fr.urssaf.image.sae.ecde.service.validation;
 
 
-
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -12,6 +10,7 @@ import java.net.URISyntaxException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,7 +19,6 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
-import fr.urssaf.image.sae.ecde.service.impl.EcdeFileServiceImpl;
 
 
 /**
@@ -33,73 +31,85 @@ import fr.urssaf.image.sae.ecde.service.impl.EcdeFileServiceImpl;
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
 public class EcdeFileServiceValidationTest {
    
-   private static EcdeFileService ecde;
+   private URI uri;
    
-   private static final String MESSAGE = "Message non attendu";
-   private static final String ATT_NONRENSEIG = "L'attribut Base Path de l'ECDE No 3 nest pas renseigné.";
+   @Autowired
+   private EcdeFileService ecdeFileService;
       
-   private static File ecdeFile;
-   private static File ecdeLokmen = new File("C:\test\testlokmen.txt");
-   private static EcdeSource ecdeSource, ecdeSource2, ecdeSource3, ecdeSource4 ;
-   
-   
    private static final String ECDECER69 = "ecde.cer69.recouv";
    private static final String ECDE = "ecde";
    private static final String ATTESTATION = "/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
    
-   private static URI uri;
+   // utilisation pour la convertion
+   private static EcdeSource ecde1,ecde2,ecde3,ecde4;
    
+   // file attestation
+   private static final File ATTESTATION_FILE = new File("/ecde/ecde_lyon/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf");
    
    @BeforeClass
    public static void init() throws URISyntaxException {
-      ecdeFile = new File("");
-      ecdeSource = new EcdeSource("host", ecdeLokmen);
-      ecdeSource2 = new EcdeSource("host2", ecdeLokmen);
-      ecdeSource3 = new EcdeSource("host3", ecdeLokmen);
-      ecdeSource4 = new EcdeSource("host4", null);
-      ecde = new EcdeFileServiceImpl();
+      ecde1 = new EcdeSource("ecde.hoth.recouv", new File("/ecde/ecde_host/"));
+      ecde2 = new EcdeSource(ECDECER69, new File("/ecde/ecde_lyon/"));
+      ecde3 = new EcdeSource("ecde.tatoine.recouv", new File("/ecde/ecde_tatoine/"));
+      ecde4 = new EcdeSource("host4", null);
+   }
+   
+   
+   //------------------------------------ CONVERT FILE TO URI
+   
+   //----------EcdeFile n'est pas renseigné -------------
+   @Test(expected = IllegalArgumentException.class)
+   public void convertFileToURIEcdeFileNonRenseingeTest() throws EcdeBadFileException {
+      ecdeFileService.convertFileToURI(null, ecde1, ecde3);
       
-      uri = new URI(ECDE, ECDECER69, ATTESTATION, "");
+      fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeFile " +
+           "non renseigne");
+   }
+   
+   //----------Aucun ECDE n'est renseigne -------------
+   @Test(expected = IllegalArgumentException.class)
+   public void convertFileToURIEcdeNonRenseigneTest() throws EcdeBadFileException {
+      ecdeFileService.convertFileToURI(ATTESTATION_FILE);
+      
+      fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeSource " +
+           "Aucun ECDE n'est transmis en paramètre");
+   }
+   
+   //----------L'attribut d'un ECDE n'est pas renseigne -------------
+   @Test(expected = IllegalArgumentException.class)
+   public void convertFileToURIAttributEcdeNonRenseigneTest() throws EcdeBadFileException {
+      ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde2, ecde4);
+      
+      fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeSource " +
+           "L'attribut Base Path de l'ECDE No 2 n'est pas renseigné");
    }
    
    
-   /**
-    * Test pour que JUNIT genere bien une exception suite a la validation des parametres
-    * Dois afficher un message d erreur.
-    *  
-    * @throws EcdeBadFileException 
-    */
-   @Test
-   public void convertFileToURITest() throws EcdeBadFileException {
-      try {
-         ecde.convertFileToURI(ecdeFile, ecdeSource, ecdeSource2, ecdeSource3, ecdeSource4);
-         fail("Test doit planter!");
-      } catch (EcdeBadFileException e) {
-         assertEquals(MESSAGE,ATT_NONRENSEIG , e.getMessage());
-      }catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE,ATT_NONRENSEIG , e.getMessage());
-      }
+   // ------------------------------ URI TO FILE
+ //test avec url null
+   @Test(expected = IllegalArgumentException.class)
+   public void convertUrlToFileTestUrlNotExist () throws EcdeBadURLException, EcdeBadURLFormatException {
+      ecdeFileService.convertURIToFile(null, ecde1, ecde2, ecde3);
+      fail("Une exception était attendue! L'exception IllegalArgumentException");
    }
    
-   /**
-    * Test pour que JUNIT genere bien une exception suite a la validation des parametres
-    * Dois afficher un message d erreur.
-    *  
-    * @throws EcdeBadFileException 
-    */
-   @Test
-   public void convertURIToFileTest() {
-      try {
-         ecde.convertURIToFile(uri, ecdeSource, ecdeSource2, ecdeSource3, ecdeSource4);
-         fail("Test doit planter!");
-      } catch (EcdeBadURLFormatException e) {
-         assertEquals(MESSAGE,ATT_NONRENSEIG , e.getMessage());
-      }catch (EcdeBadURLException e) {
-         assertEquals(MESSAGE,ATT_NONRENSEIG , e.getMessage());
-      }catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE,ATT_NONRENSEIG , e.getMessage());
-      }
+   //test avec ECDESOURCE null
+   @Test(expected = IllegalArgumentException.class)
+   public void convertUrlToFileTestUrlNull () throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
+      uri = new URI(ECDE, ECDECER69, ATTESTATION, null);
+      ecdeFileService.convertURIToFile(uri);
+      fail("Une exception était attendue! L'exception IllegalArgumentException");
    }
+ 
+   //test avec ECDESOURCE vide
+   @Test(expected = IllegalArgumentException.class)
+   public void convertUrlToFileTestUrlEmpty () throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
+      uri = new URI(ECDE, ECDECER69, ATTESTATION, null);
+      ecdeFileService.convertURIToFile(uri);
+      fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeSource vide");
+   }
+   
+   
    
    
 

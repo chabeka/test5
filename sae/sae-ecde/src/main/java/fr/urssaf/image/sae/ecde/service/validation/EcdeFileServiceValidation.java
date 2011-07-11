@@ -50,7 +50,7 @@ public class EcdeFileServiceValidation {
       
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
-      if(ecdeFile == null) {
+      if(ecdeFile == null || ecdeFile.getPath().lastIndexOf("..") != -1) { // verifier que ecdeFile ne contient pas de ../
          throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFile.IllegalArgumentException"));
       }
       if(sources == null || org.apache.commons.lang.ArrayUtils.isEmpty(sources)) {
@@ -74,7 +74,7 @@ public class EcdeFileServiceValidation {
       
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
-      if(ecdeURL == null) {
+      if(ecdeURL == null || ecdeURL.getPath().lastIndexOf("..") != -1) { // verifier que ecdeURL ne contient pas de ../
          throw new IllegalArgumentException(recupererMessage("java.lang.ecdeUrl.IllegalArgumentException"));
       }
       if(sources == null || org.apache.commons.lang.ArrayUtils.isEmpty(sources)) {
