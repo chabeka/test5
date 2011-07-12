@@ -1,6 +1,4 @@
 package fr.urssaf.image.sae.ecde.exception;
-
-
 /**
  * Exception levée lorsqu'une URL ECDE ne respecte pas le format d'une URL ECDE
  * 
@@ -21,6 +19,5 @@ public class EcdeBadURLFormatException extends EcdeGeneralException {
    public EcdeBadURLFormatException(String message) {
       super(message);
    }
-   
    
 }

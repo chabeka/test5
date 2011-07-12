@@ -23,7 +23,6 @@ import fr.urssaf.image.sae.ecde.service.EcdeFileService;
  * {@link EcdeFileService}
  * 
  */
-
 @Service
 public class EcdeFileServiceImpl implements EcdeFileService {
 
@@ -33,8 +32,6 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    public static final String ECDE = "ecde";
    public static final String DOCUMENTS = "documents";
    public static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
-   
-   
    /**
     * LOGGER
     */
@@ -54,8 +51,6 @@ public class EcdeFileServiceImpl implements EcdeFileService {
     * @throws EcdeBadFileException Mauvais chemin de fichier
     * 
     * @return URI uri converti
-    * 
-    * 
     */
    @Override
    public final URI convertFileToURI(File ecdeFile, EcdeSource... sources)
@@ -75,21 +70,10 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       // parcourir les ECDE Sources
       // comparer avec le debut du fichier
       // si retrouver alors remplacer le debut de fichier par ecde://point de montage
-      // ex :
-      // basePath = /mnt/ecde/lyon/
-      // host = ecde.cer69.recouv
-      // /mnt/ecde/lyon/DCL/20110708/1/documents/toto.pdf
-      // donne
-      // ecde://ecde.cer69.recouv/DCL/20110708/1/documents/toto.pdf
-
-      
       for (EcdeSource variable : sources) {
           // copie du bean
           org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
           String path = FilenameUtils.separatorsToSystem(ecdeSource.getBasePath().getPath());
-          // ici simplement pour le cas ou le chemin contiendrait des "\"
-          // d'ou la conversion en "/"
-          //String file = nomFichier.replace("\\", "/");
           if (nomFichier.contains(path)) {
              nomFichier = nomFichier.replace(path,"");
              trouve = true;
@@ -124,19 +108,16 @@ public class EcdeFileServiceImpl implements EcdeFileService {
     * @throws EcdeBadURLFormatException mauvais format d'url
     * 
     * @return File file converti
-    * 
-    * 
-    * */
+    */
    @Override
    public final File convertURIToFile(URI ecdeURL, EcdeSource... sources)
          throws EcdeBadURLException, EcdeBadURLFormatException {
 
       // basePath recuperer a partir de ecdeSource
       String basePath = "";
-      
       // boolean pour signaler que authority de l'uri bien trouvé dans sources
       boolean trouve = false;
-      
+      // pour la copie du bean
       EcdeSource ecdeSource = new EcdeSource("", new File(""));
 
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
@@ -178,6 +159,5 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       Object[] param = new Object[] {ecdeFile};
       return messageSource.getMessage(message, param, Locale.FRENCH);
    }
- 
 
 }

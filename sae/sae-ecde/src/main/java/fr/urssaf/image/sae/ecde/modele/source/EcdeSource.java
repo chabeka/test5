@@ -29,12 +29,9 @@ public class EcdeSource {
       this.basePath = basePath;
    }
    
-   
    // Attributs
    private String host; 
    private File basePath;
-   
-   
    /**
     * @return l'hote
     */
@@ -59,5 +56,4 @@ public class EcdeSource {
    public final void setBasePath(File basePath) {
       this.basePath = basePath;
    }
-   
 }

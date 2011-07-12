@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.ecde.exception;
 
-
 /**
  * 
  * Exception levée lorsqu'une URL ECDE n'appartient à aucun ECDE connu
@@ -10,7 +9,6 @@ package fr.urssaf.image.sae.ecde.exception;
  * */
 
 public class EcdeBadURLException extends EcdeGeneralException {
-   
    
    private static final long serialVersionUID = 1L;
    
@@ -34,6 +32,5 @@ public class EcdeBadURLException extends EcdeGeneralException {
     */
    public EcdeBadURLException(String message, Throwable cause ) {
       super(message, cause);
-   }
-   
+   }   
 }

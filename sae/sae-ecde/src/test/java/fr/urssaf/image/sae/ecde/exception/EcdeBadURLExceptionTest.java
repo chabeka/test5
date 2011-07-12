@@ -24,8 +24,7 @@ public class EcdeBadURLExceptionTest {
    private MessageSource messageSource; 
     
    /**
-    * Test afin de verifier que l'exception affiche bien 
-    * L'''URL ECDE '{0}' n'''appartient \u00E0 aucun ECDE transmis en param\u00e8tre du service.
+    * Test afin de verifier que l'exception s'affiche bien 
     */
    @Test
    public void ecdeBadURLException() {

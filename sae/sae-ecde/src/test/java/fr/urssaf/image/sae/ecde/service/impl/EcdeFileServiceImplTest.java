@@ -31,16 +31,12 @@ public class EcdeFileServiceImplTest {
    private EcdeFileService ecdeFileService;
    
    private static final String MESSAGE_INNATENDU = "message inattendu";
-   //private static final String AUCUN_ECDE = "Aucun ECDE n'est transmis en paramètre.";
-
    
    private static final String ECDECER69 = "ecde.cer69.recouv";
    private static final String ECDE = "ecde";
    private static final String ATTESTATION = "/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
-   
    // utilisation pour la convertion
    private static EcdeSource ecde1,ecde2,ecde3, ecde4;
-   
    // file attestation
    private static final File ATTESTATION_FILE = new File("/ecde/ecde_lyon/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf");
    private static final File ATTESTATION_FILE3 = new File("\\ecde/ecde_lyon/DCL001\\19991231/3/documents/attestation/1990\\attestation1.pdf");
@@ -54,7 +50,6 @@ public class EcdeFileServiceImplTest {
       ecde4 = new EcdeSource("ecde.tatoine2.recouv", new File("/mnt/ai/ecde/ecde_lokmen/"));
       
    }
-   
    
    // l'url est bien en concordance avec la liste ECDESource donnee en paramètre
    @Test
@@ -74,7 +69,6 @@ public class EcdeFileServiceImplTest {
       fail("Une exception était attendue! L'exception EcdeBadURLException");
    }   
    
-   
    // test pour montrer que la conversion ne fonctionne pas si dans l'URL 
    // ne respecte pas le format
    // ecde/authority/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
@@ -85,7 +79,6 @@ public class EcdeFileServiceImplTest {
       ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
       fail("Une exception de type EcdeBadURLFormatException était attendue!");
    }
-   
      
    // document n'est pas égal à la constante 'documents'
    @Test(expected = EcdeBadURLFormatException.class)
@@ -95,7 +88,6 @@ public class EcdeFileServiceImplTest {
       fail("Une exception était attendue! L'exception EcdeBadURLFormatException sur valeur constante documents");
    }
    
-   
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le mois 13
    @Test(expected = EcdeBadURLFormatException.class)
    public void convertUrlToFileBadURLFormatPathDateTest() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
@@ -103,7 +95,6 @@ public class EcdeFileServiceImplTest {
       ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
       fail("Une exception était attendue! L'exception EcdeBadURLFormatException sur format du mois");
    }
-   
     
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le jour 00
    @Test(expected = EcdeBadURLFormatException.class)
@@ -113,9 +104,7 @@ public class EcdeFileServiceImplTest {
       fail("Une exception était attendue! L'exception EcdeBadURLFormatException sur format du jour");
    }
    
-   
    //-------------------------- FILE TO URI -------------------------------------------------
-   
    //-------- Conversion OK  --------------------------------------------------------------
    @Test
    public void convertFileToURITest() throws EcdeBadFileException {
@@ -155,6 +144,5 @@ public class EcdeFileServiceImplTest {
       
       assertEquals("resultat non attendu", resultatAttendu, resultatObtenu);
    }
-   
    
 }

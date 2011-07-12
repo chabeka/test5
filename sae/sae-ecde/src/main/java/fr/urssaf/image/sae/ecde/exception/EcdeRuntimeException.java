@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.ecde.exception;
 
-
 /**
  * Encapsulation des exceptions levées non spécifiées
  * <br>

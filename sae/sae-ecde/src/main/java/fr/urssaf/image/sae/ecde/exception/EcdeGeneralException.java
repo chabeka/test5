@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.ecde.exception;
 
-
 /**
  * 
  * Classe mère des exceptions non runtime levées par sae-ecde
@@ -33,6 +32,5 @@ public class EcdeGeneralException extends Exception {
     */
    public EcdeGeneralException(String message, Throwable cause) {
       super(message, cause);
-   }
-   
+   }   
 }

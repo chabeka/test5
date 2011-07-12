@@ -36,5 +36,4 @@ public class EcdeBadFileExceptionTest {
 
       assertEquals("Message non attendu", resultatObtenu, resultatAttendu);   
    }
-
 }

@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.ecde.exception;
 
-
-
 /**
  * 
  * Exception levée lorsqu'un chemin de fichier d'un ECDE n'appartient à aucun ECDE connu

@@ -25,17 +25,15 @@ import fr.urssaf.image.sae.ecde.service.EcdeFileService;
  * Classe permettant de tester l'aspect sur la validation des paramètres d'entree
  * des méthodes de la classe EcdeFileServiceValidation
  * 
- *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
 public class EcdeFileServiceValidationTest {
    
-   private URI uri;
-   
    @Autowired
    private EcdeFileService ecdeFileService;
-      
+   
+   private URI uri;
    private static final String ECDECER69 = "ecde.cer69.recouv";
    private static final String ECDE = "ecde";
    private static final String ATTESTATION = "/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
@@ -54,8 +52,7 @@ public class EcdeFileServiceValidationTest {
       ecde4 = new EcdeSource("host4", null);
    }
    
-   
-   //------------------------------------ CONVERT FILE TO URI
+   //--------------------------- CONVERT FILE TO URI ------------------------
    
    //----------EcdeFile n'est pas renseigné -------------
    @Test(expected = IllegalArgumentException.class)
@@ -84,7 +81,6 @@ public class EcdeFileServiceValidationTest {
            "L'attribut Base Path de l'ECDE No 2 n'est pas renseigné");
    }
    
-
    //----------Verficiation : dans le chemin de fichier on n'est pas ../
    @Test(expected = IllegalArgumentException.class)
    public void convertFileToURIBadURLFormatPathFileTest() throws EcdeBadFileException, URISyntaxException {
@@ -94,8 +90,7 @@ public class EcdeFileServiceValidationTest {
         fail("Une exception était attendue! L'exception IllegalArgumentException sur ../");
    }
    
-   
-   // ------------------------------ URI TO FILE
+   // ------------------------ URI TO FILE ----------------------------
    //test avec url null
    @Test(expected = IllegalArgumentException.class)
    public void convertUrlToFileTestUrlNotExist () throws EcdeBadURLException, EcdeBadURLFormatException {
@@ -118,9 +113,7 @@ public class EcdeFileServiceValidationTest {
       ecdeFileService.convertURIToFile(uri);
       fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeSource vide");
    }
-   
-
-   
+      
    // ne doit pas etre present de ../ dans le chemin
    @Test(expected = IllegalArgumentException.class)
    public void convertUrlToFileBadURLFormatPathFileTest() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
