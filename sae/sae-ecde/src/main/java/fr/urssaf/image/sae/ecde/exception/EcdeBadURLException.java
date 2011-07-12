@@ -13,24 +13,12 @@ public class EcdeBadURLException extends EcdeGeneralException {
    private static final long serialVersionUID = 1L;
    
    /**
-    * implémentation du message par défaut {@value #MESSAGE}
+    * implémentation du message par défaut
     * 
     * @param cause
     *           raison de l'exception levée
     */
    public EcdeBadURLException(String cause) {
       super(cause);
-   }
-   
-   /**
-    * implémentation du message par défaut {@value #MESSAGE}
-    * 
-    * @param message
-    *           message de l'exception levée
-    * @param cause
-    *           raison de l'exception levée          
-    */
-   public EcdeBadURLException(String message, Throwable cause ) {
-      super(message, cause);
    }   
 }

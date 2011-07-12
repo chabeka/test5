@@ -23,14 +23,16 @@ import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 
 @Aspect
 public class EcdeFileServiceValidation {
-
-   private static final String NONRENSEIGNE = "java.lang.ecdeFileNonRenseigne.IllegalArgumentException";
    
-   private static final String PARAMCONVERTFILE = "execution(* fr.urssaf.image.sae.ecde.service.EcdeFileService.convertFileToURI(*,*))" +
+   private static final String ECDECLASS = "fr.urssaf.image.sae.ecde.service.EcdeFileService.";
+
+   private static final String NONRENSEIGNE = "ecdeFileAttributNonRenseigne";
+   
+   private static final String PARAMCONVERTFILE = "execution(* "+ECDECLASS+"convertFileToURI(*,*))" +
    		                                         "&& args(ecdeFile,sources)";
    
-   private static final String PARAMCONVERTURI = "execution(* fr.urssaf.image.sae.ecde.service.EcdeFileService.convertURIToFile(*,*))" +
-                                           "&& args(ecdeURL,sources)";
+   private static final String PARAMCONVERTURI = "execution(java.io.File "+ECDECLASS+"convertURIToFile(*,*))" +
+                                                 "&& args(ecdeURL,sources)";
    
    
    // Recupération du contexte pour les fichiers properties
@@ -51,10 +53,10 @@ public class EcdeFileServiceValidation {
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
       if(ecdeFile == null || ecdeFile.getPath().lastIndexOf("..") != -1) { // verifier que ecdeFile ne contient pas de ../
-         throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFile.IllegalArgumentException"));
+         throw new IllegalArgumentException(recupererMessage("ecdeFile.nonRenseigne"));
       }
       if(sources == null || org.apache.commons.lang.ArrayUtils.isEmpty(sources)) {
-         throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFileNotExist.IllegalArgumentException"));
+         throw new IllegalArgumentException(recupererMessage("ecdeFileNotExist"));
       }
       for(EcdeSource variable : sources){
         verifierEcdeSource(variable, curseur);
@@ -75,10 +77,10 @@ public class EcdeFileServiceValidation {
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
       if(ecdeURL == null || ecdeURL.getPath().lastIndexOf("..") != -1) { // verifier que ecdeURL ne contient pas de ../
-         throw new IllegalArgumentException(recupererMessage("java.lang.ecdeUrl.IllegalArgumentException"));
+         throw new IllegalArgumentException(recupererMessage("ecdeUrl.nonRenseigne"));
       }
       if(sources == null || org.apache.commons.lang.ArrayUtils.isEmpty(sources)) {
-         throw new IllegalArgumentException(recupererMessage("java.lang.ecdeFileNotExist.IllegalArgumentException"));
+         throw new IllegalArgumentException(recupererMessage("ecdeFileNotExist"));
       }
       
       for(EcdeSource variable : sources){

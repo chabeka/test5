@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.ecde.exception;
 /**
  * Encapsulation des exceptions levées non spécifiées
  * <br>
- * {@link RuntimeException}
+ * L'exception hérite de {@link RuntimeException}
  * */
 public class EcdeRuntimeException extends RuntimeException {
 
