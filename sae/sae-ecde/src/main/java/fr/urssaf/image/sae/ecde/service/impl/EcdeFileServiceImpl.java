@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -68,7 +69,8 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       URI uriRetournee = null;
       EcdeSource ecdeSource = new EcdeSource("", new File(""));
       
-      String nomFichier = ecdeFile.getPath();
+      //Adapter le separateur du systeme Linux ou Windows
+      String nomFichier = FilenameUtils.separatorsToSystem(ecdeFile.getPath());
 
       // parcourir les ECDE Sources
       // comparer avec le debut du fichier
@@ -79,16 +81,22 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       // /mnt/ecde/lyon/DCL/20110708/1/documents/toto.pdf
       // donne
       // ecde://ecde.cer69.recouv/DCL/20110708/1/documents/toto.pdf
+
+      
       for (EcdeSource variable : sources) {
-         // copie du bean
-         org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
-         String path = ecdeSource.getBasePath().getPath();
-         if (nomFichier.contains(path)) {
-            nomFichier = nomFichier.replace(path,"");
-            trouve = true;
-            host = ecdeSource.getHost();
-         }
-      }
+          // copie du bean
+          org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
+          String path = FilenameUtils.separatorsToSystem(ecdeSource.getBasePath().getPath());
+          // ici simplement pour le cas ou le chemin contiendrait des "\"
+          // d'ou la conversion en "/"
+          //String file = nomFichier.replace("\\", "/");
+          if (nomFichier.contains(path)) {
+             nomFichier = nomFichier.replace(path,"");
+             trouve = true;
+             host = ecdeSource.getHost();
+          }
+      } 
+         
       // levée d'exception car aucune correspondance
       if ( !trouve ){
          throw new EcdeBadFileException(recupererMessage("ecdeBadFileException.message", ecdeFile));
@@ -96,8 +104,8 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
       // Construction de l'URI adequate
       try {
-        String fichier = nomFichier.replace("\\", "/");
-        uriRetournee = new URI(ECDE, host, fichier, null);
+         String fichier = nomFichier.replace("\\", "/");
+         uriRetournee = new URI(ECDE, host, fichier, null);
       } catch (URISyntaxException e) {
          LOG.debug(e.getMessage());
       }

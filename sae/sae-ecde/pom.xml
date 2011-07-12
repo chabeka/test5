@@ -23,7 +23,7 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>aspectj-maven-plugin</artifactId>
          </plugin>
-         
+
       </plugins>
    </build>
 
@@ -71,6 +71,12 @@
          <version>${aspectj.version}</version>
       </dependency>
       <!-- Fin Programation Orientée aspect -->
+
+      <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>1.3.2</version>
+      </dependency>
 
 
    </dependencies>
