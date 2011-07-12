@@ -94,9 +94,10 @@ public class EcdeFileServiceImpl implements EcdeFileService {
          throw new EcdeBadFileException(recupererMessage("ecdeBadFileException.message", ecdeFile));
       }
       
-      // Construire le chemin absolu du fichier
+      // Construction de l'URI adequate
       try {
-        uriRetournee = new URI(ECDE, host, nomFichier.replace("\\", "/"), null);
+        String fichier = nomFichier.replace("\\", "/");
+        uriRetournee = new URI(ECDE, host, fichier, null);
       } catch (URISyntaxException e) {
          LOG.debug(e.getMessage());
       }

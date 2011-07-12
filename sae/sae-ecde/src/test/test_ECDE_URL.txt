@@ -17,3 +17,6 @@ convertFileToURIEcdeNotExistTest()=Chemin de fichier non présent dans ECDE sour
 convertFileToURIEcdeFileNonRenseingeTest()=EcdeFile n'est pas renseigné
 convertFileToURIEcdeNonRenseigneTest()=Aucun ECDE n'est renseigne
 convertFileToURIAttributEcdeNonRenseigneTest()=L'attribut d'un ECDE n'est pas renseigne
+convertFileToURI2Test()=Conversion OK avec /mnt/ai/ecde/ecde_lyon
+convertFileToURISlashTest()=Test avec un nom de fichier avec des \ et des /
+convertFileToURIBadURLFormatPathFileTest()=Verficiation : dans le chemin de fichier on n'est pas ../

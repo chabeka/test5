@@ -22,6 +22,7 @@ import fr.urssaf.image.sae.ecde.service.EcdeFileService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
+@SuppressWarnings("PMD.TooManyMethods")
 public class EcdeFileServiceImplTest {
    
    private URI uri;
@@ -38,16 +39,20 @@ public class EcdeFileServiceImplTest {
    private static final String ATTESTATION = "/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
    
    // utilisation pour la convertion
-   private static EcdeSource ecde1,ecde2,ecde3;
+   private static EcdeSource ecde1,ecde2,ecde3, ecde4;
    
    // file attestation
    private static final File ATTESTATION_FILE = new File("/ecde/ecde_lyon/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf");
+   private static final File ATTESTATION_FILE3 = new File("\\ecde/ecde_lyon/DCL001\\19991231/3/documents/attestation/1990\\attestation1.pdf");
+   private static final File ATTESTATION_FILE2 = new File("/mnt/ai/ecde/ecde_lokmen/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf");
    
    @BeforeClass
    public static void init() throws URISyntaxException {
       ecde1 = new EcdeSource("ecde.hoth.recouv", new File("/ecde/ecde_host/"));
       ecde2 = new EcdeSource(ECDECER69, new File("/ecde/ecde_lyon/"));
       ecde3 = new EcdeSource("ecde.tatoine.recouv", new File("/ecde/ecde_tatoine/"));
+      ecde4 = new EcdeSource("ecde.tatoine2.recouv", new File("/mnt/ai/ecde/ecde_lokmen/"));
+      
    }
    
    
@@ -109,14 +114,6 @@ public class EcdeFileServiceImplTest {
    }
    
    
-   // ne doit pas etre present de ../ dans le chemin
-   @Test(expected = IllegalArgumentException.class)
-   public void convertUrlToFileBadURLFormatPathFileTest() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
-        uri = new URI(ECDE, ECDECER69, "/DCL001/19991200/3/documents/../attestation/1990/attestation1.pdf", null);
-        ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
-        fail("Une exception était attendue! L'exception IllegalArgumentException sur ../");
-   }
-   
    //-------------------------- FILE TO URI -------------------------------------------------
    
    //-------- Conversion OK  --------------------------------------------------------------
@@ -138,6 +135,26 @@ public class EcdeFileServiceImplTest {
       	  "non retrouvé dans liste des Ecdes donne en param");
    }
    
+   //--------- Conversion OK avec /mnt/ai/ecde/ecde_lyon
+   @Test
+   public void convertFileToURI2Test() throws EcdeBadFileException {
+      URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE2, ecde1, ecde2, ecde3, ecde4);
+      String resultatAttendu = "ecde://ecde.tatoine2.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
+      String resultatObtenu = uri.toString();
+      
+      assertEquals("resultat non attendu", resultatAttendu, resultatObtenu);
+   }
+   
+   //----------Test avec un nom de fichier avec des \ et des /
+   @Test
+   public void convertFileToURISlashTest() throws EcdeBadFileException {
+      URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE3, ecde1, ecde2, ecde3);
+      
+      String resultatAttendu = "ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
+      String resultatObtenu = uri.toString();
+      
+      assertEquals("resultat non attendu", resultatAttendu, resultatObtenu);
+   }
    
    
 }
