@@ -3,19 +3,19 @@ package fr.urssaf.image.sae.ecde.service.impl;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeBadFileException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
+import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
+import fr.urssaf.image.sae.ecde.utils.MessageRessources;
 
 /**
  * Service de manipulation des URL ECDE et des chemins de fichiers.
@@ -37,8 +37,20 @@ public class EcdeFileServiceImpl implements EcdeFileService {
     */
    public static final Logger LOG = Logger.getLogger(EcdeFileServiceImpl.class);
    
-   @Autowired
-   private MessageSource messageSource;
+//   private final MessageSource messageSource;
+//   
+//   /**
+//    * Constructeur afin d'externaliser la classe.
+//    * <br>
+//    * Simplement au cas ou l'on souhaiterait travaillait sans SPRING
+//    * 
+//    * @param messageSource pour la recupération des messages d'erreur
+//    */
+//   @Autowired
+//   public EcdeFileServiceImpl(MessageSource messageSource) {
+//      Assert.notNull(messageSource, "Message sources null");
+//      this.messageSource = messageSource;
+//   }   
    
    /**
     * Implémentation de la méthode convertFileToURI
@@ -72,7 +84,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       // si retrouver alors remplacer le debut de fichier par ecde://point de montage
       for (EcdeSource variable : sources) {
           // copie du bean
-          org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
+          BeanUtils.copyProperties(variable, ecdeSource);
           String path = FilenameUtils.separatorsToSystem(ecdeSource.getBasePath().getPath());
           if (nomFichier.contains(path)) {
              nomFichier = nomFichier.replace(path,"");
@@ -83,7 +95,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
          
       // levée d'exception car aucune correspondance
       if ( !trouve ){
-         throw new EcdeBadFileException(recupererMessage("ecdeBadFileException.message", ecdeFile));
+         throw new EcdeBadFileException(MessageRessources.recupererMessage("ecdeBadFileException.message", ecdeFile));
       }
       
       // Construction de l'URI adequate
@@ -91,7 +103,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
          String fichier = nomFichier.replace("\\", "/");
          uriRetournee = new URI(ECDE, host, fichier, null);
       } catch (URISyntaxException e) {
-         LOG.debug(e.getMessage());
+         throw new EcdeRuntimeException(e);
       }
       return uriRetournee;
    }
@@ -123,7 +135,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
       // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
       if ( ! ecdeURL.toString().matches(EXPR_REG) ) {
-         throw new EcdeBadURLFormatException(recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
+         throw new EcdeBadURLFormatException(MessageRessources.recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
       }
       
       // il faut maintenant venir parcourir la liste sources afin de recuperer l'ECDE correspondant
@@ -133,31 +145,20 @@ public class EcdeFileServiceImpl implements EcdeFileService {
          org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
          if ( ecdeURL.getAuthority().equals(ecdeSource.getHost()) ) {
              //concordance entre uri et ecdesource donné en paramètre
-            basePath = ecdeSource.getBasePath().toString();
+            basePath = ecdeSource.getBasePath().getPath();
             trouve = true;
          }
       }
       
       // levée d'exception car uri non trouve dans sources
       if ( !trouve ){
-         throw new EcdeBadURLException(recupererMessage("ecdeBadUrlException.message", ecdeURL));
+         throw new EcdeBadURLException(MessageRessources.recupererMessage("ecdeBadUrlException.message", ecdeURL));
       }
 
       // Construire le chemin absolu du fichier
-      return new File(basePath + ecdeURL.getPath());
+      return new File(basePath.concat(ecdeURL.getPath()));
       
    }
    
-   // recupere les messages d erreur en affichant aussi l'url en question
-   private String recupererMessage(String message, URI ecdeURL) {
-      Object[] param = new Object[] {ecdeURL};
-      return messageSource.getMessage(message, param, Locale.FRENCH);
-   }
-   
-   // recupere les messages d erreur en affichant aussi le fichier en question
-   private String recupererMessage(String message, File ecdeFile) {
-      Object[] param = new Object[] {ecdeFile};
-      return messageSource.getMessage(message, param, Locale.FRENCH);
-   }
 
 }

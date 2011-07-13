@@ -13,7 +13,7 @@ import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
  * <br>L'URL ECDE doit être une instance de type java.net.URI
  * <ul>
     * <li>son scheme    = "ecde"</li>
-    * <li>son authority = doit respecter RFC 3986 Uniform Resource Identifier(URI) : Generic Syntax</li> 
+    * <li>son authority = doit respecter <a href="http://tools.ietf.org/html/rfc3986#section-3.2.2">RFC 3986 Uniform Resource Identifier(URI) : Generic Syntax</a></li> 
     * <li>son path doit respecter : numeroCS/dateTraitement/idTraitement/documents/nomFichier
     *     <ul>
     *          <li>numeroCs</li>
@@ -36,12 +36,13 @@ public interface EcdeFileService {
     * Cette methode prend donc en parametre un Fichier (en l'occurence son chemin) et une liste 
     * d'ECDESource pour le convertir en URI suivant le format decrit en entete de classe.
     * <br>
-    * Exemples :
-    *        <ul><li> succes : chemin = /ecde/ecde_lyon/DCL01/19991231/3/documents/attestation/1990/a.pdf<br>
+    * Exemples :<br>
+    *        <u>succes</u><ul><li>chemin = /ecde/ecde_lyon/DCL01/19991231/3/documents/attestation/1990/a.pdf<br>
     *                          et la liste ecdeSource {(ecde.hoth.recouv,/ecde/ecde_hoth/);(ecde.cer69.recouv,/ecde/ecde_lyon/);(ecde.toto.recouv,/ecde/ecde_toto)}<br>
     *                          <b>resultat</b> la conversion donnera :  ecde://ecde.cer69.recouv/DCL01/19991231/3/documents/attestation/1990/a.pdf
     *        </li>
-    *            <li>  echec : chemin = /ecde/ecde_lyon/DCL01/19991231/3/documents/attestation/1990/a.pdf<br>
+    *        </ul><u>echec : </u>
+    *        <ul><li>  chemin = /ecde/ecde_lyon/DCL01/19991231/3/documents/attestation/1990/a.pdf<br>
     *                          et la liste ecdeSource {(ecde.hoth.recouv,/ecde/ecde_hoth/);(ecde.toto.recouv,/ecde/ecde_toto)}<br>
     *                          <b>resultat</b> :  Exception levée = Le chemin de fichier n'appartient à aucun ECDE transmis en parametre du service.</li>
     *        </ul>    
@@ -64,15 +65,16 @@ public interface EcdeFileService {
     * d'ECDESource pour la convertir en Fichier.
     * <br>
     * Exemples :
-    *        <ul><li> <u>succes</u> : uri = ecde://ecde.cer69.recouv/DCL01/19991231/3/documents/attestation/1990/a.pdf
+    *        <br><u>succes :</u><ul><li> uri = ecde://ecde.cer69.recouv/DCL01/19991231/3/documents/attestation/1990/a.pdf
     *        <br>
     *                          et la liste ecdeSource {(ecde.hoth.recouv,/ecde/ecde_hoth/);(ecde.cer69.recouv,/ecde/ecde_lyon/);(ecde.toto.recouv,/ecde/ecde_toto)}<br>
     *                          <b>resultat</b> la conversion donnera :  /ecde/ecde_lyon/DCL01/19991231/3/documents/attestation/1990/a.pdf
     *        </li>
-    *            <li> <u>1er echec</u> : uri = ecde://ecde.cer69.recouv/DCL01/19991231/3/documents/attestation/1990/a.pdf<br>
+    *         </ul><u>1er echec : </u>
+    *        <ul>   <li> uri = ecde://ecde.cer69.recouv/DCL01/19991231/3/documents/attestation/1990/a.pdf<br>
     *                          et la liste ecdeSource {(ecde.hoth.recouv,/ecde/ecde_hoth/);(ecde.toto.recouv,/ecde/ecde_toto)}<br>
     *                          <b>resultat</b> :  Exception levée = L'URL ECDE n'appartient à aucun ECDE transmis en parametre du service.</li>
-    *            <li> <u>2ieme echec</u> : uri = <b>ecd</b>://ecde.cer69.recouv/DCL01/19991231/3/<b>document</b>/attestation/1990/a.pdf<br>
+    *            </ul><u>2eme echec : </u><ul><li> uri = <b>ecd</b>://ecde.cer69.recouv/DCL01/19991231/3/<b>document</b>/attestation/1990/a.pdf<br>
     *                          et la liste ecdeSource {(ecde.hoth.recouv,/ecde/ecde_hoth/);(ecde.toto.recouv,/ecde/ecde_toto)}<br>
     *                          <b>resultat</b> :  Exception levée = L'URL ECDE est incorrecte.</li>               
     *        </ul> 

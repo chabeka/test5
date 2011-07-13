@@ -18,5 +18,15 @@ public class EcdeRuntimeException extends RuntimeException {
    public EcdeRuntimeException(String message) {
       super(message);
    }
+   
+   /**
+    * implémenation d'un message spécifique
+    * 
+    * @param cause
+    *           cause de l'exception levée
+    */
+   public EcdeRuntimeException(Throwable cause) {
+      super(cause);
+   }
 
 }

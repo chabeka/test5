@@ -81,14 +81,6 @@ public class EcdeFileServiceValidationTest {
            "L'attribut Base Path de l'ECDE No 2 n'est pas renseigné");
    }
    
-   //----------Verficiation : dans le chemin de fichier on n'est pas ../
-   @Test(expected = IllegalArgumentException.class)
-   public void convertFileToURIBadURLFormatPathFileTest() throws EcdeBadFileException, URISyntaxException {
-        ecdeFileService.convertFileToURI(new File("ecde/ecde_lyon/DCL001/19991200/3/documents/../attestation/1990/attestation1.pdf"),
-                                         ecde1, ecde2, ecde3);
-        
-        fail("Une exception était attendue! L'exception IllegalArgumentException sur ../");
-   }
    
    // ------------------------ URI TO FILE ----------------------------
    //test avec url null
@@ -113,13 +105,6 @@ public class EcdeFileServiceValidationTest {
       ecdeFileService.convertURIToFile(uri);
       fail("Une exception était attendue! L'exception IllegalArgumentException sur ecdeSource vide");
    }
-      
-   // ne doit pas etre present de ../ dans le chemin
-   @Test(expected = IllegalArgumentException.class)
-   public void convertUrlToFileBadURLFormatPathFileTest() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
-        uri = new URI(ECDE, ECDECER69, "/DCL001/19991200/3/documents/../attestation/1990/attestation1.pdf", null);
-        ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
-        fail("Une exception était attendue! L'exception IllegalArgumentException sur ../");
-   }
+    
 
 }
