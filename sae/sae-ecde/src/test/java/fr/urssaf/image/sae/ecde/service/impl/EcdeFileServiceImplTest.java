@@ -127,7 +127,7 @@ public class EcdeFileServiceImplTest {
    }
    
    //-------------------------- FILE TO URI -------------------------------------------------
-   //-------- Conversion OK  --------------------------------------------------------------
+   //-------- Conversion OK  -----------------------------------------------------------
    @Test
    public void convertFileToURITest() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde2, ecde3);
