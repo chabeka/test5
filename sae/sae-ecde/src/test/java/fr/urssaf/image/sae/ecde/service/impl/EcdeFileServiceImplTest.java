@@ -22,8 +22,7 @@ import fr.urssaf.image.sae.ecde.service.EcdeFileService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
-//@SuppressWarnings("PMD.TooManyMethods")
-@SuppressWarnings("PMD")
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.TooManyMethods"})
 public class EcdeFileServiceImplTest {
    
    private URI uri;
@@ -57,7 +56,6 @@ public class EcdeFileServiceImplTest {
    }
    
    // l'url est bien en concordance avec la liste ECDESource donnee en paramètre
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
    public void convertUrlToFile_success() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
       uri = new URI(ECDE, "ecde.cer69.recouv", ATTESTATION, null);
@@ -69,17 +67,14 @@ public class EcdeFileServiceImplTest {
    
    // exception levée si l'URI est absente de la liste des ECDESources donnee en param
    //@Test(expected = EcdeBadURLException.class)
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
-   public void convertUrlToFile_failure_UriNotExist() {
+   public void convertUrlToFile_failure_UriNotExist() throws EcdeBadURLFormatException, URISyntaxException {
       try {
          uri = new URI(ECDE, ECDECER69, ATTESTATION, null);
          ecdeFileService.convertURIToFile(uri, ecde1, ecde3);
          fail("Une exception était attendue! L'exception EcdeBadURLException");
-      }catch (URISyntaxException e) {
       }catch (EcdeBadURLException e) {
          assertEquals("message inattendu","L'URL ECDE ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf n'appartient à aucun ECDE transmis en paramètre du service.",e.getMessage());
-      }catch (EcdeBadURLFormatException e) {
       }
       
    }   
@@ -88,37 +83,30 @@ public class EcdeFileServiceImplTest {
    // ne respecte pas le format
    // ecde/authority/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
    // scheme ne vaut pas ecde
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
-   public void convertUrlToFile_failure_BadURLFormat() {
+   public void convertUrlToFile_failure_BadURLFormat() throws EcdeBadURLException, URISyntaxException {
       try {
          uri = new URI("ecd", ECDECER69, ATTESTATION, null);
          ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
          fail("exception attendue!"+EcdeBadURLFormatException.class);
-      }catch (URISyntaxException e) {
-      }catch (EcdeBadURLException e) {
       }catch (EcdeBadURLFormatException e) {
          assertEquals(MESSAGE_INNATENDU,"L'URL ECDE ecd://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf est incorrecte.",e.getMessage());
       }      
    }
      
    // document n'est pas égal à la constante 'documents'
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
-   public void convertUrlToFile_failure_BadURLFormatPath_Document() {
+   public void convertUrlToFile_failure_BadURLFormatPath_Document() throws EcdeBadURLException, URISyntaxException {
       try {
          uri = new URI(ECDE, ECDECER69, "/DCL001/19991231/3/document/attestation/1990/attestation1.pdf", null);
          ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
          fail("exception attendue!"+EcdeBadURLFormatException.class);
-      }catch (URISyntaxException e) {
-      }catch (EcdeBadURLException e) {
       }catch (EcdeBadURLFormatException e) {  
          assertEquals(MESSAGE_INNATENDU,"L'URL ECDE ecde://ecde.cer69.recouv/DCL001/19991231/3/document/attestation/1990/attestation1.pdf est incorrecte.",e.getMessage());
       }
    }   
    
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le mois 13
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test(expected = EcdeBadURLFormatException.class)
    public void convertUrlToFile_failure_BadURLFormat_PathDate() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
       uri = new URI(ECDE, ECDECER69, "/DCL001/19991331/3/documents/attestation/1990/attestation1.pdf", null);
@@ -127,15 +115,12 @@ public class EcdeFileServiceImplTest {
    }
     
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le jour 00
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
-   public void convertUrlToFile_failure_BadURLFormat_PathDate2() {
+   public void convertUrlToFile_failure_BadURLFormat_PathDate2() throws EcdeBadURLException, URISyntaxException {
       try {
          uri = new URI(ECDE, ECDECER69, "/DCL001/19991200/3/documents/attestation/1990/attestation1.pdf", null);
          ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
          fail("exception attendue!"+EcdeBadURLFormatException.class);
-      }catch (URISyntaxException e) {
-      }catch (EcdeBadURLException e) {
       }catch (EcdeBadURLFormatException e) {  
          assertEquals(MESSAGE_INNATENDU,"L'URL ECDE ecde://ecde.cer69.recouv/DCL001/19991200/3/documents/attestation/1990/attestation1.pdf est incorrecte.",e.getMessage());
       }
@@ -143,7 +128,6 @@ public class EcdeFileServiceImplTest {
    
    //-------------------------- FILE TO URI -------------------------------------------------
    //-------- Conversion OK  --------------------------------------------------------------
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
    public void convertFileToURITest() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde2, ecde3);
@@ -154,7 +138,6 @@ public class EcdeFileServiceImplTest {
    }
    
    //----------Chemin de fichier non présent dans ECDE sources donne en param -------------
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure_EcdeNotExist() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde3);
@@ -164,7 +147,6 @@ public class EcdeFileServiceImplTest {
    }
    
    //--------- Conversion OK avec /mnt/ai/ecde/ecde_lyon
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
    public void convertFileToURI_success_2Test() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE2, ecde1, ecde2, ecde3, ecde4);
@@ -175,7 +157,6 @@ public class EcdeFileServiceImplTest {
    }
    
    //----------Test avec un nom de fichier avec des \ et des /
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
    public void convertFileToURI_success_SlashTest() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE3, ecde1, ecde2, ecde3);
@@ -188,7 +169,6 @@ public class EcdeFileServiceImplTest {
    
    //----------Test success
    //-------- nom fichier : /temp/text.txt  ECDESOURCE.BasePath = /temp
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
    public void convertFileToURI_success() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE5, ecde5);
@@ -201,7 +181,6 @@ public class EcdeFileServiceImplTest {
    
    //----------Test failure
    //-------- nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE6, ecde5);
