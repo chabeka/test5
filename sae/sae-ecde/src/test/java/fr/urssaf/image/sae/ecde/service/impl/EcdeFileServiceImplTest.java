@@ -44,6 +44,8 @@ public class EcdeFileServiceImplTest {
    private static final File ATTESTATION_FILE5 = new File("/temp/text.txt");
    private static final File ATTESTATION_FILE6 = new File("archive/temp/text.txt");
    
+   private static final String SEPARATOR = "://";
+   
    @BeforeClass
    public static void init() throws URISyntaxException {
       ecde1 = new EcdeSource("ecde.hoth.recouv", new File("/ecde/ecde_host/"));
@@ -52,7 +54,6 @@ public class EcdeFileServiceImplTest {
       ecde4 = new EcdeSource("ecde.tatoine2.recouv", new File("/mnt/ai/ecde/ecde_lokmen/"));
       ecde5 = new EcdeSource("ecde.temp.recouv", new File("/temp/"));
       ecde6 = new EcdeSource("ecde.temp.recouv", new File("temp"));
-      
    }
    
    // l'url est bien en concordance avec la liste ECDESource donnee en paramètre
@@ -66,7 +67,6 @@ public class EcdeFileServiceImplTest {
    }
    
    // exception levée si l'URI est absente de la liste des ECDESources donnee en param
-   //@Test(expected = EcdeBadURLException.class)
    @Test
    public void convertUrlToFile_failure_UriNotExist() throws EcdeBadURLFormatException, URISyntaxException {
       try {
@@ -111,7 +111,6 @@ public class EcdeFileServiceImplTest {
    public void convertUrlToFile_failure_BadURLFormat_PathDate() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
       uri = new URI(ECDE, ECDECER69, "/DCL001/19991331/3/documents/attestation/1990/attestation1.pdf", null);
       ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
-      fail("Une exception était attendue! L'exception EcdeBadURLFormatException sur format du mois");
    }
     
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le jour 00
@@ -132,7 +131,7 @@ public class EcdeFileServiceImplTest {
    public void convertFileToURITest() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde2, ecde3);
       String resultatAttendu = "ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
-      String resultatObtenu = uri.toString();
+      String resultatObtenu = uri.getScheme() + SEPARATOR + uri.getAuthority() + uri.getPath();
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
@@ -141,9 +140,6 @@ public class EcdeFileServiceImplTest {
    @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure_EcdeNotExist() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde3);
-      
-      fail("Une exception était attendue! L'exception EcdeBadFileException sur File " +
-      	  "non retrouvé dans liste des Ecdes donne en param");
    }
    
    //--------- Conversion OK avec /mnt/ai/ecde/ecde_lyon
@@ -151,7 +147,7 @@ public class EcdeFileServiceImplTest {
    public void convertFileToURI_success_2Test() throws EcdeBadFileException {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE2, ecde1, ecde2, ecde3, ecde4);
       String resultatAttendu = "ecde://ecde.tatoine2.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
-      String resultatObtenu = uri.toString();
+      String resultatObtenu = uri.getScheme() + SEPARATOR + uri.getAuthority() + uri.getPath();
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
@@ -162,7 +158,7 @@ public class EcdeFileServiceImplTest {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE3, ecde1, ecde2, ecde3);
       
       String resultatAttendu = "ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
-      String resultatObtenu = uri.toString();
+      String resultatObtenu = uri.getScheme() + SEPARATOR + uri.getAuthority() + uri.getPath();
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
@@ -174,7 +170,7 @@ public class EcdeFileServiceImplTest {
       URI uri = ecdeFileService.convertFileToURI(ATTESTATION_FILE5, ecde5);
       
       String resultatAttendu = "ecde://ecde.temp.recouv/text.txt";
-      String resultatObtenu = uri.toString();
+      String resultatObtenu = uri.getScheme() + SEPARATOR + uri.getAuthority() + uri.getPath();
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
@@ -184,22 +180,17 @@ public class EcdeFileServiceImplTest {
    @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE6, ecde5);
-      
-      fail("Une exception était attendue! L'exception EcdeBadFileException sur File " +
-      "non retrouvé dans liste des Ecdes donne en param");
    }
    
    //-------- nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
-   @SuppressWarnings("PMD.MethodNamingConventions")
    @Test
    public void convertFileToURI_failure_badURLFormat() {
       try {
          ecdeFileService.convertFileToURI(ATTESTATION_FILE6, ecde6);
          fail("Une exception était attendue! " + EcdeBadFileException.class);
       }catch (EcdeBadFileException e) {
-         assertEquals(MESSAGE_INNATENDU,"Le chemin du document 'archive\\temp\\text.txt' n'appartient à aucun ECDE transmis en paramètre du service.",e.getMessage());
+         assertEquals(MESSAGE_INNATENDU,"Le chemin du document 'archive"+File.separator+"temp"+File.separator+"text.txt' n'appartient à aucun ECDE transmis en paramètre du service.",e.getMessage());
       }
    }
-   
    
 }

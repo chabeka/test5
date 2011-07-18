@@ -82,7 +82,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
           // copie du bean
           BeanUtils.copyProperties(variable, ecdeSource);
           String path = FilenameUtils.separatorsToSystem(ecdeSource.getBasePath().getPath());
-          if (FilenameUtils.wildcardMatch(nomFichier, path+"\\*")) {
+          if (FilenameUtils.wildcardMatch(nomFichier, path+ File.separator + "*")) {
              nomFichier = StringUtils.removeStart(nomFichier,path);
              trouve = true;
              host = ecdeSource.getHost();
@@ -108,7 +108,8 @@ public class EcdeFileServiceImpl implements EcdeFileService {
     * Implémentation de la méthode convertURIToFile
     * 
     * @param ecdeURL
-    *           url a convertir
+    *           url a convertir<br>
+    *           Cette URL doit verifier le format {@value #EXPR_REG}
     * @param sources
     *           liste des ecdes
     *           

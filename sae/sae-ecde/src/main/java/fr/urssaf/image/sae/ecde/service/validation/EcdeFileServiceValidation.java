@@ -47,7 +47,7 @@ public class EcdeFileServiceValidation {
       if(ecdeFile == null) { 
          throw new IllegalArgumentException(MessageRessources.recupererMessageObject("ecdeFileorUrl.nonRenseigne", "ecdeFile"));
       }
-      if(sources == null || ArrayUtils.isEmpty(sources)) {
+      if(ArrayUtils.isEmpty(sources)) {
          throw new IllegalArgumentException(MessageRessources.recupererMessage("ecdeFileNotExist", null));
       }
       for(EcdeSource variable : sources){
