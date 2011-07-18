@@ -70,7 +70,7 @@ public class EcdeFileServiceImplTest {
    // exception levée si l'URI est absente de la liste des ECDESources donnee en param
    //@Test(expected = EcdeBadURLException.class)
    @SuppressWarnings("PMD.MethodNamingConventions")
-   @Test(expected = EcdeBadURLException.class)
+   @Test
    public void convertUrlToFile_failure_UriNotExist() {
       try {
          uri = new URI(ECDE, ECDECER69, ATTESTATION, null);
@@ -89,7 +89,7 @@ public class EcdeFileServiceImplTest {
    // ecde/authority/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
    // scheme ne vaut pas ecde
    @SuppressWarnings("PMD.MethodNamingConventions")
-   @Test(expected = EcdeBadURLFormatException.class)
+   @Test
    public void convertUrlToFile_failure_BadURLFormat() {
       try {
          uri = new URI("ecd", ECDECER69, ATTESTATION, null);
@@ -104,7 +104,7 @@ public class EcdeFileServiceImplTest {
      
    // document n'est pas égal à la constante 'documents'
    @SuppressWarnings("PMD.MethodNamingConventions")
-   @Test(expected = EcdeBadURLFormatException.class)
+   @Test
    public void convertUrlToFile_failure_BadURLFormatPath_Document() {
       try {
          uri = new URI(ECDE, ECDECER69, "/DCL001/19991231/3/document/attestation/1990/attestation1.pdf", null);
@@ -128,7 +128,7 @@ public class EcdeFileServiceImplTest {
     
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le jour 00
    @SuppressWarnings("PMD.MethodNamingConventions")
-   @Test(expected = EcdeBadURLFormatException.class)
+   @Test
    public void convertUrlToFile_failure_BadURLFormat_PathDate2() {
       try {
          uri = new URI(ECDE, ECDECER69, "/DCL001/19991200/3/documents/attestation/1990/attestation1.pdf", null);
@@ -202,7 +202,7 @@ public class EcdeFileServiceImplTest {
    //----------Test failure
    //-------- nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
    @SuppressWarnings("PMD.MethodNamingConventions")
-   @Test(expected=EcdeBadFileException.class)
+   @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE6, ecde5);
       
@@ -212,7 +212,7 @@ public class EcdeFileServiceImplTest {
    
    //-------- nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
    @SuppressWarnings("PMD.MethodNamingConventions")
-   @Test(expected=EcdeBadFileException.class)
+   @Test
    public void convertFileToURI_failure_badURLFormat() {
       try {
          ecdeFileService.convertFileToURI(ATTESTATION_FILE6, ecde6);
