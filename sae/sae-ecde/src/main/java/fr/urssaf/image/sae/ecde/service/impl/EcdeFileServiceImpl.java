@@ -5,7 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +29,9 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    /**
     * Recupération des Constantes
     */
-   public static final String ECDE = "ecde";
-   public static final String DOCUMENTS = "documents";
-   public static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
-   /**
-    * LOGGER
-    */
-   public static final Logger LOG = Logger.getLogger(EcdeFileServiceImpl.class);
+   private static final String ECDE = "ecde";
+   private static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
+   
    
 //   private final MessageSource messageSource;
 //   
@@ -86,8 +82,8 @@ public class EcdeFileServiceImpl implements EcdeFileService {
           // copie du bean
           BeanUtils.copyProperties(variable, ecdeSource);
           String path = FilenameUtils.separatorsToSystem(ecdeSource.getBasePath().getPath());
-          if (nomFichier.contains(path)) {
-             nomFichier = nomFichier.replace(path,"");
+          if (FilenameUtils.wildcardMatch(nomFichier, path+"\\*")) {
+             nomFichier = StringUtils.removeStart(nomFichier,path);
              trouve = true;
              host = ecdeSource.getHost();
           }
@@ -134,7 +130,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
 
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
       // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
-      if ( ! ecdeURL.toString().matches(EXPR_REG) ) {
+      if ( ! validateURL(ecdeURL, EXPR_REG) ) {
          throw new EcdeBadURLFormatException(MessageRessources.recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
       }
       
@@ -158,6 +154,20 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       // Construire le chemin absolu du fichier
       return new File(basePath.concat(ecdeURL.getPath()));
       
+   }
+   
+   /**
+    * Methode permettant de renvoyer un boolean pour signaler que l'url donnée en 
+    * paramètre verifie bien le format contenu dans l'expression reguliere.
+    * <br>
+    *  
+    * 
+    * @param ecdeURL que l'on veut verifier
+    * @param expReg indiquant le format de l'expression a verifier suivant {@value #EXPR_REG}
+    * @return boolean true ou false
+    */
+   public final boolean validateURL(URI ecdeURL, String expReg) {
+      return ecdeURL.toString().matches(expReg);
    }
    
 
