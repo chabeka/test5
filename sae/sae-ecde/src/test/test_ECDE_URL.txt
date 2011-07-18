@@ -24,6 +24,8 @@ convertFileToURI_success_SlashTest()=Test avec un nom de fichier avec des \ et d
 convertFileToURI_success()=nom fichier : /temp/text.txt  ECDESOURCE.BasePath = /temp
 convertFileToURI_failure()=Test failure -- nom fichier : archive/temp/text.txt ECDESOURCE.BasePath = /temp
 convertFileToURI_failure_badURLFormat()=nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
+
+convertFileToURI_failure_URIFormat()=Generation d'une runtimeException car format de host ne respecte pas RFC3986
 //---------------------- VALIDATION ---------------
 convertFileToURIEcdeFileNonRenseingeTest()=EcdeFile n'est pas renseigné
 convertFileToURIEcdeNonRenseigneTest()=Aucun ECDE n'est renseigne

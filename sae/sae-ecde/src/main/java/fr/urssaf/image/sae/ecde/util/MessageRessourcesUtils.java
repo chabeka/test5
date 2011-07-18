@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.ecde.utils;
+package fr.urssaf.image.sae.ecde.util;
 
 import java.util.Locale;
 
@@ -15,9 +15,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * plusieurs méthodes sont utilisées
  * 
  */
-public final class MessageRessources {
+public final class MessageRessourcesUtils {
 
-   private MessageRessources() {
+   private MessageRessourcesUtils() {
    }
    
    // Recupération du contexte pour les fichiers properties

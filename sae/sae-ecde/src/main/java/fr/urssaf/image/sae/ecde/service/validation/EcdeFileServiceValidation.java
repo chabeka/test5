@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
-import fr.urssaf.image.sae.ecde.utils.MessageRessources;
+import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
 
 /**
  * Classe EcdeFileServiceValidation
@@ -45,10 +45,10 @@ public class EcdeFileServiceValidation {
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
       if(ecdeFile == null) { 
-         throw new IllegalArgumentException(MessageRessources.recupererMessageObject("ecdeFileorUrl.nonRenseigne", "ecdeFile"));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessageObject("ecdeFileorUrl.nonRenseigne", "ecdeFile"));
       }
       if(ArrayUtils.isEmpty(sources)) {
-         throw new IllegalArgumentException(MessageRessources.recupererMessage("ecdeFileNotExist", null));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("ecdeFileNotExist", null));
       }
       for(EcdeSource variable : sources){
         verifierEcdeSource(variable, curseur);
@@ -69,10 +69,10 @@ public class EcdeFileServiceValidation {
       // curseur pour parcourir la liste ecdeSource afin de recuperer l'index
       int curseur = 0;
       if(ecdeURL == null) { 
-         throw new IllegalArgumentException(MessageRessources.recupererMessageObject("ecdeFileorUrl.nonRenseigne", "ecdeURL"));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessageObject("ecdeFileorUrl.nonRenseigne", "ecdeURL"));
       }
       if(ArrayUtils.isEmpty(sources)) {
-         throw new IllegalArgumentException(MessageRessources.recupererMessage("ecdeFileNotExist", null));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("ecdeFileNotExist", null));
       }
       
       for(EcdeSource variable : sources){
@@ -85,11 +85,11 @@ public class EcdeFileServiceValidation {
    private void verifierEcdeSource(EcdeSource variable, int curseur){
       // Si l'attribut Host de l'ECDE n'est pas renseigné
       if (  StringUtils.isBlank(variable.getHost())  ) {
-         throw new IllegalArgumentException(MessageRessources.recupMessageNonRenseigneException("Host", curseur));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupMessageNonRenseigneException("Host", curseur));
       }
       // Si l'attribut basePath de l'ECDE n'est pas renseigné
       if ( variable.getBasePath() == null ) {
-         throw new IllegalArgumentException(MessageRessources.recupMessageNonRenseigneException("Base Path", curseur));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupMessageNonRenseigneException("Base Path", curseur));
       }
    }
 

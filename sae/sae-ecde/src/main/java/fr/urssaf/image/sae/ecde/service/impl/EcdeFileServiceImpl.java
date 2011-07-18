@@ -15,7 +15,7 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
-import fr.urssaf.image.sae.ecde.utils.MessageRessources;
+import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
 
 /**
  * Service de manipulation des URL ECDE et des chemins de fichiers.
@@ -91,7 +91,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
          
       // levée d'exception car aucune correspondance
       if ( !trouve ){
-         throw new EcdeBadFileException(MessageRessources.recupererMessage("ecdeBadFileException.message", ecdeFile));
+         throw new EcdeBadFileException(MessageRessourcesUtils.recupererMessage("ecdeBadFileException.message", ecdeFile));
       }
       
       // Construction de l'URI adequate
@@ -132,7 +132,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       // Il faut commencer par vérifier que le ecdeURL respecte le format URL ECDE
       // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
       if ( ! validateURL(ecdeURL, EXPR_REG) ) {
-         throw new EcdeBadURLFormatException(MessageRessources.recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
+         throw new EcdeBadURLFormatException(MessageRessourcesUtils.recupererMessage("ecdeBadUrlFormatException.message", ecdeURL));
       }
       
       // il faut maintenant venir parcourir la liste sources afin de recuperer l'ECDE correspondant
@@ -149,7 +149,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       
       // levée d'exception car uri non trouve dans sources
       if ( !trouve ){
-         throw new EcdeBadURLException(MessageRessources.recupererMessage("ecdeBadUrlException.message", ecdeURL));
+         throw new EcdeBadURLException(MessageRessourcesUtils.recupererMessage("ecdeBadUrlException.message", ecdeURL));
       }
 
       // Construire le chemin absolu du fichier

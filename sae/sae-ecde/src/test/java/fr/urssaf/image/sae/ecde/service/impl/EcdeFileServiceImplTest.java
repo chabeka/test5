@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadFileException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
+import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
 
@@ -36,13 +37,14 @@ public class EcdeFileServiceImplTest {
    private static final String ECDE = "ecde";
    private static final String ATTESTATION = "/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
    // utilisation pour la convertion
-   private static EcdeSource ecde1,ecde2,ecde3, ecde4, ecde5, ecde6;
+   private static EcdeSource ecde1,ecde2,ecde3, ecde4, ecde5, ecde6, ecde7;
    // file attestation
    private static final File ATTESTATION_FILE = new File("/ecde/ecde_lyon/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf");
    private static final File ATTESTATION_FILE3 = new File("\\ecde/ecde_lyon/DCL001\\19991231/3/documents/attestation/1990\\attestation1.pdf");
    private static final File ATTESTATION_FILE2 = new File("/mnt/ai/ecde/ecde_lokmen/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf");
    private static final File ATTESTATION_FILE5 = new File("/temp/text.txt");
    private static final File ATTESTATION_FILE6 = new File("archive/temp/text.txt");
+   private static final File ATTESTATION_FILE7 = new File("/ecde_lokmen/ecde_lyon/DCL001/");
    
    private static final String SEPARATOR = "://";
    
@@ -54,6 +56,7 @@ public class EcdeFileServiceImplTest {
       ecde4 = new EcdeSource("ecde.tatoine2.recouv", new File("/mnt/ai/ecde/ecde_lokmen/"));
       ecde5 = new EcdeSource("ecde.temp.recouv", new File("/temp/"));
       ecde6 = new EcdeSource("ecde.temp.recouv", new File("temp"));
+      ecde7 = new EcdeSource("ecde._.recouv", new File("/ecde_lokmen/ecde_lyon/"));
    }
    
    // l'url est bien en concordance avec la liste ECDESource donnee en paramètre
@@ -190,6 +193,18 @@ public class EcdeFileServiceImplTest {
          fail("Une exception était attendue! " + EcdeBadFileException.class);
       }catch (EcdeBadFileException e) {
          assertEquals(MESSAGE_INNATENDU,"Le chemin du document 'archive"+File.separator+"temp"+File.separator+"text.txt' n'appartient à aucun ECDE transmis en paramètre du service.",e.getMessage());
+      }
+   }
+   
+   //---------- URI ne respectant pas le format RFC3986 -------------
+   // Generation d'une runtimeException
+   @Test
+   public void convertFileToURI_failure_URIFormat() throws EcdeBadFileException {
+      try {
+         ecdeFileService.convertFileToURI(ATTESTATION_FILE7, ecde1, ecde7);
+         fail("Erreur attendu de type ECDERuntimeException.");
+      } catch (EcdeRuntimeException e) {
+         assertEquals(MESSAGE_INNATENDU,"java.net.URISyntaxException: Illegal character in hostname at index 12: ecde://ecde._.recouv/DCL001",e.getMessage());
       }
    }
    

@@ -127,6 +127,20 @@ public class EcdeFileServiceValidationTest {
       URI uri = new URI(ECDE, ECDECER69, ATTESTATION, null);
       ecdeFileService.convertURIToFile(uri);
    }
+   
+   
+   
+ //------------- L'attribut scheme n'est pas correctement renseigne à savoir "ecde"---------
+   @Test
+   public void convertUrlToFile_failure_attributSchemeIncorrect() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
+      try {
+         URI uri = new URI("e", ECDECER69, ATTESTATION, null);
+         ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
+      }catch (EcdeBadURLFormatException e) {
+         assertEquals(MESSAGE_INATTENDU, "L'URL ECDE e://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf est incorrecte." , e.getMessage());
+      }
+   }
+   
  
 
 }
