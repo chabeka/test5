@@ -15,6 +15,68 @@
       <version>0.0.1-SNAPSHOT</version>
    </parent>
 
+
+   <profiles>
+      <profile>
+         <id>genererCodeModeleSommaireEtResultat</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/resources/xsd_som_res</schemaDirectory>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                     <includeSchemas>
+                        <includeSchema>commun_sommaire_et_resultat.xsd</includeSchema>
+                        <includeSchema>sommaire.xsd</includeSchema>
+                        <includeSchema>resultats.xsd</includeSchema>
+                     </includeSchemas>
+                  </configuration>
+               </plugin>
+
+               <plugin>
+                  <inherited>true</inherited>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <configuration>
+                     <encoding>${file.encoding}</encoding>
+                  </configuration>
+               </plugin>
+
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-antrun-plugin</artifactId>
+                  <version>1.6</version>
+                  <executions>
+                     <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                           <target name="addSuppressWarnings">
+                              <replace dir="${basedir}/src/main/java"
+                                 includes="**/modele/**/*.java" token="public class"
+                                 value='@SuppressWarnings("PMD")&#xA;public class' />
+                           </target>
+                        </configuration>
+                        <goals>
+                           <goal>run</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
    <build>
       <plugins>
 
@@ -71,6 +133,18 @@
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
          <version>${apache.commons-io.version}</version>
+      </dependency>
+
+      <!-- JAXB -->
+      <dependency>
+         <groupId>javax.xml.bind</groupId>
+         <artifactId>jaxb-api</artifactId>
+         <version>${jaxb.api.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.sun.xml.bind</groupId>
+         <artifactId>jaxb-impl</artifactId>
+         <version>${jaxb.impl.version}</version>
       </dependency>
 
 

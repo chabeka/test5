@@ -14,7 +14,7 @@ import java.io.File;
  *  
  * 
  * */
-
+@SuppressWarnings("PMD")
 public class EcdeSource {
    
    /**
