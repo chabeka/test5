@@ -8,16 +8,6 @@ package fr.urssaf.image.sae.ecde.exception;
 public class EcdeRuntimeException extends RuntimeException {
 
    private static final long serialVersionUID = 1L;
-
-   /**
-    * implémenation d'un message spécifique
-    * 
-    * @param message
-    *           message de l'exception levée
-    */
-   public EcdeRuntimeException(String message) {
-      super(message);
-   }
    
    /**
     * implémenation d'un message spécifique

@@ -198,14 +198,10 @@ public class EcdeFileServiceImplTest {
    
    //---------- URI ne respectant pas le format RFC3986 -------------
    // Generation d'une runtimeException
-   @Test
+   @Test(expected = EcdeRuntimeException.class)
    public void convertFileToURI_failure_URIFormat() throws EcdeBadFileException {
-      try {
          ecdeFileService.convertFileToURI(ATTESTATION_FILE7, ecde1, ecde7);
          fail("Erreur attendu de type ECDERuntimeException.");
-      } catch (EcdeRuntimeException e) {
-         assertEquals(MESSAGE_INNATENDU,"java.net.URISyntaxException: Illegal character in hostname at index 12: ecde://ecde._.recouv/DCL001",e.getMessage());
-      }
    }
    
 }
