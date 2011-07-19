@@ -198,10 +198,15 @@ public class EcdeFileServiceImplTest {
    
    //---------- URI ne respectant pas le format RFC3986 -------------
    // Generation d'une runtimeException
-   @Test(expected = EcdeRuntimeException.class)
+   @Test
    public void convertFileToURI_failure_URIFormat() throws EcdeBadFileException {
-         ecdeFileService.convertFileToURI(ATTESTATION_FILE7, ecde1, ecde7);
-         fail("Erreur attendu de type ECDERuntimeException.");
+         try {
+            ecdeFileService.convertFileToURI(ATTESTATION_FILE7, ecde1, ecde7);
+            fail("Erreur attendu de type ECDERuntimeException.");
+         }catch (EcdeRuntimeException e) {
+            assertEquals("exception inattendu", URISyntaxException.class, e.getCause().getClass());
+         }
+         
    }
    
 }
