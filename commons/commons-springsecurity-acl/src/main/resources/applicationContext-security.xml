@@ -13,14 +13,14 @@
       access-decision-manager-ref="methodAuthorizeManager" />
 
    <beans:bean id="methodAuthorizeManager"
-      class="org.springframework.security.access.vote.UnanimousBased">
+      class="org.springframework.security.access.vote.AffirmativeBased">
       <beans:property name="decisionVoters">
          <beans:list>
             <beans:bean
                class="org.springframework.security.access.vote.RoleHierarchyVoter">
                <beans:constructor-arg ref="roleHierarchy" />
             </beans:bean>
-            <beans:ref bean="aclReportAcceptVoter" />
+            <beans:ref bean="publicationWriteVoter" />
          </beans:list>
       </beans:property>
    </beans:bean>
@@ -29,34 +29,29 @@
       class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
       <beans:property name="hierarchy">
          <beans:value>
-            ROLE_AUTHOR > ROLE_READER
+            ROLE_ADMIN > ROLE_AUTHOR
+            ROLE_ADMIN > ROLE_EDITOR
             ROLE_EDITOR > ROLE_READER
+            ROLE_AUTHOR > ROLE_READER
          </beans:value>
       </beans:property>
    </beans:bean>
 
-   <beans:bean id="aclReportAcceptVoter"
+   <beans:bean id="publicationWriteVoter"
       class="org.springframework.security.acls.AclEntryVoter">
       <beans:constructor-arg ref="aclService" />
-      <beans:constructor-arg value="AFTER_ACL_READ" />
+      <beans:constructor-arg value="PUBLICATION_WRITE" />
       <beans:constructor-arg>
          <beans:list>
-            <util:constant id="acceptPermission"
-               static-field="org.springframework.security.acls.domain.BasePermission.READ" />
+            <util:constant
+               static-field="org.springframework.security.acls.domain.BasePermission.WRITE" />
          </beans:list>
       </beans:constructor-arg>
-      <!-- beans:property name="internalMethod" value="getUser" /-->
-      <beans:property name="objectIdentityRetrievalStrategy">
-         <beans:bean
-            class="fr.urssaf.image.commons.springsecurity.acl.security.PublicationStrategy" />
-      </beans:property>
-      <!--
-         this is tricky! We have to use Report here, so that voter find
-         it in protected method parameters; "internalMethod" will
-         convert it to User
-      -->
+      <beans:property name="objectIdentityRetrievalStrategy"
+         ref="publicationStrategy" />
+      <beans:property name="internalMethod" value="getAuthor" />
       <beans:property name="processDomainObjectClass"
-         value="int" />
+         value="fr.urssaf.image.commons.springsecurity.acl.model.Publication" />
    </beans:bean>
 
    <beans:bean id="aclService"

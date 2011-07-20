@@ -31,6 +31,15 @@ public final class AuthenticateUtils {
 
    }
 
+   public static void authenticate(int identifiant, String role) {
+
+      Authentication authentication = new TestingAuthenticationToken(
+            identifiant, "password_test", role);
+
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+
+   }
+
    public static void logout() {
       SecurityContextHolder.getContext().setAuthentication(null);
    }

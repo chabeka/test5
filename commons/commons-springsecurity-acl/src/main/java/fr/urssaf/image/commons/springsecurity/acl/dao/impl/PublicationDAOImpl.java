@@ -2,8 +2,6 @@ package fr.urssaf.image.commons.springsecurity.acl.dao.impl;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -32,26 +30,22 @@ public class PublicationDAOImpl extends HibernateDaoSupport implements
    }
    
    @Override
-   @SuppressWarnings("PMD.ShortVariable")
-   public Publication findById(int id) {
+   public Publication findById(int identity) {
 
       Criteria criteria = this.getSession().createCriteria(Publication.class);
-      criteria.add(Restrictions.eq("id", id));
+      criteria.add(Restrictions.eq("id", identity));
 
       return (Publication) criteria.uniqueResult();
       
    }
 
-   @RolesAllowed( { "ROLE_READER", "AFTER_ACL_READ" })
-   @SuppressWarnings("PMD.ShortVariable")
    @Override
-   public Publication find(int id) {
+   public Publication find(int identity) {
       Criteria criteria = this.getSession().createCriteria(Publication.class);
-      criteria.add(Restrictions.eq("id", id));
+      criteria.add(Restrictions.eq("id", identity));
       return (Publication) criteria.uniqueResult();
    }
 
-   @RolesAllowed("ROLE_READER")
    @Override
    public List<Publication> find() {
       Criteria criteria = this.getSession().createCriteria(Publication.class);
@@ -62,7 +56,6 @@ public class PublicationDAOImpl extends HibernateDaoSupport implements
       return publications;
    }
 
-   @RolesAllowed("ROLE_READER")
    @Override
    public List<Publication> findByAuthor(int idAuthor) {
 
@@ -76,8 +69,7 @@ public class PublicationDAOImpl extends HibernateDaoSupport implements
 
       return publications;
    }
-
-   @RolesAllowed("ROLE_AUTHOR")
+   
    @Override
    @Transactional
    public void save(Publication publication) {
@@ -86,7 +78,6 @@ public class PublicationDAOImpl extends HibernateDaoSupport implements
 
    }
 
-   @RolesAllowed("ROLE_EDITOR")
    @Override
    @Transactional
    public void update(Publication publication) {

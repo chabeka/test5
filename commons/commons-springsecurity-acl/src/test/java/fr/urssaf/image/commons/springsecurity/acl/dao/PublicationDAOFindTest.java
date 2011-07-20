@@ -1,5 +1,6 @@
 package fr.urssaf.image.commons.springsecurity.acl.dao;
 
+import static fr.urssaf.image.commons.springsecurity.acl.dao.util.AssertPublication.assertPublication;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
@@ -10,16 +11,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import fr.urssaf.image.commons.springsecurity.acl.model.Person;
 import fr.urssaf.image.commons.springsecurity.acl.model.Publication;
 import fr.urssaf.image.commons.springsecurity.acl.security.AuthenticateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-acl.xml",
       "/applicationContext-security.xml" })
-public class PublicationDAOTest {
+@SuppressWarnings("PMD.MethodNamingConventions")
+public class PublicationDAOFindTest {
 
    @Autowired
    private PublicationDAO dao;
@@ -30,7 +30,7 @@ public class PublicationDAOTest {
    }
 
    @Test
-   public void findById() {
+   public void findByIdentity() {
       AuthenticateUtils.authenticateReader();
       Publication publication = dao.find(1);
 
@@ -61,45 +61,4 @@ public class PublicationDAOTest {
       assertPublication(publications.get(2), 3, "Formatage des donnees en PHP");
    }
 
-   private static void assertPublication(Publication publication,
-         Integer idExpected, String titleExpected) {
-
-      assertEquals("id non attendu", idExpected, publication.getId());
-      assertEquals("title non attendu", titleExpected, publication.getTitle());
-
-   }
-
-   @Test
-   @Transactional
-   public void save() {
-      AuthenticateUtils.authenticateAuthor();
-      String title = "new publication";
-
-      Person author = new Person();
-      author.setId(1);
-      Publication publication = new Publication(author, title);
-
-      dao.save(publication);
-
-      publication = dao.findById(4);
-
-      assertPublication(publication, 4, title);
-   }
-
-   @Test
-   @Transactional
-   public void update() {
-      AuthenticateUtils.authenticateEditor();
-      String title = "new publication";
-
-      Publication publication = dao.findById(1);
-      publication.setTitle(title);
-
-      dao.update(publication);
-
-      publication = dao.findById(1);
-
-      assertPublication(publication, 1, title);
-
-   }
 }

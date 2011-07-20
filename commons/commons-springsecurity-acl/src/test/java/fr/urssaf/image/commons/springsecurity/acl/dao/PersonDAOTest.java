@@ -41,13 +41,12 @@ public class PersonDAOTest {
       assertEquals("nombre inattendu de personnes", 6, persons.size());
    }
 
-   @SuppressWarnings("PMD.ShortVariable")
    private static void assertPerson(Person person, String lastname,
-         String firstname, Integer id) {
+         String firstname, Integer identity) {
 
       assertEquals("lastname non attendu", lastname, person.getLastname());
       assertEquals("firstname non attendu", firstname, person.getFirstname());
-      assertEquals("id non attendu", id, person.getId());
+      assertEquals("id non attendu", identity, person.getId());
    }
 
 }
