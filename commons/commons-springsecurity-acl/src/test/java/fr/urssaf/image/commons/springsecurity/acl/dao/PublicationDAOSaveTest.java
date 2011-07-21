@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.urssaf.image.commons.springsecurity.acl.dao.service.TestDAO;
 import fr.urssaf.image.commons.springsecurity.acl.model.Person;
 import fr.urssaf.image.commons.springsecurity.acl.model.Publication;
 import fr.urssaf.image.commons.springsecurity.acl.security.AuthenticateUtils;
@@ -25,6 +26,9 @@ public class PublicationDAOSaveTest {
 
    @Autowired
    private PublicationDAO dao;
+   
+   @Autowired
+   private TestDAO<Publication,Integer> find;
 
    @After
    public void after() {
@@ -38,7 +42,7 @@ public class PublicationDAOSaveTest {
 
       save(TEST_TITLE,2);
 
-      Publication publication = dao.findById(4);
+      Publication publication = find.findById(4);
 
       assertPublication(publication, 4, TEST_TITLE);
    }

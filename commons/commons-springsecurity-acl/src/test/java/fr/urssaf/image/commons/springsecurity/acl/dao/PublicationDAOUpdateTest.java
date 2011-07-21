@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.urssaf.image.commons.springsecurity.acl.dao.service.TestDAO;
 import fr.urssaf.image.commons.springsecurity.acl.model.Publication;
 import fr.urssaf.image.commons.springsecurity.acl.security.AuthenticateUtils;
 
@@ -24,6 +25,9 @@ public class PublicationDAOUpdateTest {
 
    @Autowired
    private PublicationDAO dao;
+   
+   @Autowired
+   private TestDAO<Publication,Integer> find;
 
    @After
    public void after() {
@@ -37,7 +41,7 @@ public class PublicationDAOUpdateTest {
 
       update(1, TEST_TITLE);
 
-      Publication publication = dao.findById(1);
+      Publication publication = find.findById(1);
 
       assertPublication(publication, 1, TEST_TITLE);
 
@@ -50,7 +54,7 @@ public class PublicationDAOUpdateTest {
 
       update(3, TEST_TITLE);
 
-      Publication publication = dao.findById(3);
+      Publication publication = find.findById(3);
 
       assertPublication(publication, 3, TEST_TITLE);
 
@@ -76,7 +80,7 @@ public class PublicationDAOUpdateTest {
 
    private void update(int identity, String title) {
 
-      Publication publication = dao.findById(identity);
+      Publication publication = find.findById(identity);
       publication.setTitle(title);
 
       dao.update(publication);

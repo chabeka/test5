@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,11 +31,18 @@ public class PublicationDAOFindTest {
    }
 
    @Test
-   public void findByIdentity() {
+   public void findByIdentity_success() {
       AuthenticateUtils.authenticateReader();
       Publication publication = dao.find(1);
 
       assertPublication(publication, 1, "Semantique RDF");
+
+   }
+
+   @Test(expected = AccessDeniedException.class)
+   public void findByIdentity_failure() {
+      AuthenticateUtils.authenticateReader();
+      dao.find(2);
 
    }
 

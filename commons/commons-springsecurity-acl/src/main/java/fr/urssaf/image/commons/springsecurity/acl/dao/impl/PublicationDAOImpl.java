@@ -28,16 +28,6 @@ public class PublicationDAOImpl extends HibernateDaoSupport implements
       super();
       this.setSessionFactory(sessionFactory);
    }
-   
-   @Override
-   public Publication findById(int identity) {
-
-      Criteria criteria = this.getSession().createCriteria(Publication.class);
-      criteria.add(Restrictions.eq("id", identity));
-
-      return (Publication) criteria.uniqueResult();
-      
-   }
 
    @Override
    public Publication find(int identity) {

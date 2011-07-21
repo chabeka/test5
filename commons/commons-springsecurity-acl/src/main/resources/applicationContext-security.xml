@@ -10,7 +10,9 @@
          http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
    <global-method-security jsr250-annotations="enabled"
-      access-decision-manager-ref="methodAuthorizeManager" />
+      access-decision-manager-ref="methodAuthorizeManager" >
+      <after-invocation-provider ref="publicationReadAccess" />
+   </global-method-security>
 
    <beans:bean id="methodAuthorizeManager"
       class="org.springframework.security.access.vote.AffirmativeBased">
@@ -37,23 +39,6 @@
       </beans:property>
    </beans:bean>
 
-   <beans:bean id="publicationWriteVoter"
-      class="org.springframework.security.acls.AclEntryVoter">
-      <beans:constructor-arg ref="aclService" />
-      <beans:constructor-arg value="PUBLICATION_WRITE" />
-      <beans:constructor-arg>
-         <beans:list>
-            <util:constant
-               static-field="org.springframework.security.acls.domain.BasePermission.WRITE" />
-         </beans:list>
-      </beans:constructor-arg>
-      <beans:property name="objectIdentityRetrievalStrategy"
-         ref="publicationStrategy" />
-      <beans:property name="internalMethod" value="getAuthor" />
-      <beans:property name="processDomainObjectClass"
-         value="fr.urssaf.image.commons.springsecurity.acl.model.Publication" />
-   </beans:bean>
-
    <beans:bean id="aclService"
       class="org.springframework.security.acls.jdbc.JdbcAclService">
       <beans:constructor-arg ref="dataSource" />
@@ -69,7 +54,14 @@
          <beans:bean
             class="org.springframework.security.acls.domain.ConsoleAuditLogger" />
       </beans:constructor-arg>
+      <beans:property name="permissionFactory" ref="permissionFactory" />
 
+   </beans:bean>
+
+   <beans:bean id="permissionFactory"
+      class="org.springframework.security.acls.domain.DefaultPermissionFactory">
+      <beans:constructor-arg
+         value="fr.urssaf.image.commons.springsecurity.acl.security.ExtendedPermission" />
    </beans:bean>
 
    <beans:bean id="aclCache"
@@ -106,5 +98,6 @@
       </beans:constructor-arg>
    </beans:bean>
 
+   <beans:import resource="applicationContext-security-acl.xml" />
 
 </beans:beans>
