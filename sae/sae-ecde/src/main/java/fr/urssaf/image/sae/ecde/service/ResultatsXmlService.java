@@ -8,6 +8,11 @@ import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
 
 /**
  * Service permettant l'ecriture des fichiers resultat.xml  
+ * <br>
+ * Lorsqu'un traitement de capture de masse est terminé, le SAE doit générer un fichier resultats.xml au meme
+ * <br>emplacement que le fichier sommaire.xml. Le fichier resultats.xml décrit le résultat<br>
+ * de cette capture de masse.Il est généré quelque soit le résultat du traitement(réussite, echec partiel, echec complet).
+ * <br>
  * 
  */
 public interface ResultatsXmlService {

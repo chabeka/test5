@@ -11,6 +11,7 @@ package fr.urssaf.image.sae.ecde.modele.sommaire;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -50,6 +51,7 @@ import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocument
     "documents",
     "documentsVirtuels"
 })
+@XmlRootElement(name = "sommaire")
 @SuppressWarnings("PMD")
 public class SommaireType {
 

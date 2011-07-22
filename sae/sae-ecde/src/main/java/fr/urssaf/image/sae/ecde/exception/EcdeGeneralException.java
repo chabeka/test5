@@ -21,4 +21,15 @@ public class EcdeGeneralException extends Exception {
    public EcdeGeneralException(String cause) {
       super(cause);
    }
+   
+   /**
+    * implémentation du message par défaut
+    * 
+    * @param message a afficher
+    * @param throwable
+    *           raison de l'exception levée
+    */
+   public EcdeGeneralException(String message, Throwable throwable) {
+      super(message, throwable);
+   }
 }

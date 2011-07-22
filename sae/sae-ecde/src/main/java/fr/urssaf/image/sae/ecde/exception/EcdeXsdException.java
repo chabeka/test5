@@ -19,4 +19,13 @@ public class EcdeXsdException extends EcdeGeneralException {
    public EcdeXsdException(String message) {
       super(message);
    }
+   /**
+    * Constructor
+    * 
+    * @param message message a afficher
+    * @param throwable cause
+    */
+   public EcdeXsdException(String message, Throwable throwable) {
+      super(message, throwable);
+   }
 }

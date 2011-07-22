@@ -33,21 +33,6 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    private static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
    
    
-//   private final MessageSource messageSource;
-//   
-//   /**
-//    * Constructeur afin d'externaliser la classe.
-//    * <br>
-//    * Simplement au cas ou l'on souhaiterait travaillait sans SPRING
-//    * 
-//    * @param messageSource pour la recupération des messages d'erreur
-//    */
-//   @Autowired
-//   public EcdeFileServiceImpl(MessageSource messageSource) {
-//      Assert.notNull(messageSource, "Message sources null");
-//      this.messageSource = messageSource;
-//   }   
-   
    /**
     * Implémentation de la méthode convertFileToURI
     * 
