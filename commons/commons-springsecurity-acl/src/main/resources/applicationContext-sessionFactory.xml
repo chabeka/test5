@@ -15,9 +15,7 @@
          <ref bean="dataSource" />
       </property>
 
-      <property name="configLocation">
-         <value>classpath:hibernate.cfg.xml</value>
-      </property>
+      <property name="configLocation" ref="configLocation" />
 
       <property name="mappingLocations">
          <value>classpath:mapping/fr/urssaf/image/commons/springsecurity/acl/model/*.hbm.xml

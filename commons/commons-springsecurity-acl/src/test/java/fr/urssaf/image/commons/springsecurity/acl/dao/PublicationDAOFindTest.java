@@ -17,7 +17,7 @@ import fr.urssaf.image.commons.springsecurity.acl.model.Publication;
 import fr.urssaf.image.commons.springsecurity.acl.security.AuthenticateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-acl.xml",
+@ContextConfiguration(locations = { "/applicationContext-acl-test.xml",
       "/applicationContext-security.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class PublicationDAOFindTest {
@@ -65,8 +65,9 @@ public class PublicationDAOFindTest {
 
       assertPublication(publications.get(0), 1, "Semantique RDF");
       assertPublication(publications.get(1), 2, "HTML5 pour les web designers");
-
       assertPublication(publications.get(2), 3, "Formatage des donnees en PHP");
+
+      assertEquals("nombre inattendu de publications", 3, publications.size());
    }
 
 }

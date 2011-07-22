@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.commons.springsecurity.acl.model.Person;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext-acl.xml")
+@ContextConfiguration(locations = "/applicationContext-acl-test.xml")
 public class PersonDAOTest {
 
    @Autowired

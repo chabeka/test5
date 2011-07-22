@@ -7,7 +7,8 @@
       table="publication">
       <id name="id" type="java.lang.Integer">
          <column name="id" />
-         <generator class="identity" />
+         <generator class="increment" />
+           
       </id>
       <many-to-one name="author"
          class="fr.urssaf.image.commons.springsecurity.acl.model.Person"

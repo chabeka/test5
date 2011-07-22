@@ -17,7 +17,7 @@ import fr.urssaf.image.commons.springsecurity.acl.model.Publication;
 import fr.urssaf.image.commons.springsecurity.acl.security.AuthenticateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-acl.xml",
+@ContextConfiguration(locations = { "/applicationContext-acl-test.xml",
       "/applicationContext-security.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class PublicationDAOSaveTest {
@@ -26,9 +26,9 @@ public class PublicationDAOSaveTest {
 
    @Autowired
    private PublicationDAO dao;
-   
+
    @Autowired
-   private TestDAO<Publication,Integer> find;
+   private TestDAO<Publication, Integer> find;
 
    @After
    public void after() {
@@ -40,11 +40,11 @@ public class PublicationDAOSaveTest {
    public void save_success() {
       AuthenticateUtils.authenticate(2, "ROLE_AUTHOR");
 
-      save(TEST_TITLE,2);
+      int identifiant = save(TEST_TITLE, 2);
 
-      Publication publication = find.findById(4);
+      Publication publication = find.findById(identifiant);
 
-      assertPublication(publication, 4, TEST_TITLE);
+      assertPublication(publication, identifiant, TEST_TITLE);
    }
 
    @Test(expected = AccessDeniedException.class)
@@ -52,7 +52,7 @@ public class PublicationDAOSaveTest {
    public void save_failure_editor() {
       AuthenticateUtils.authenticateEditor();
 
-      save(TEST_TITLE,2);
+      save(TEST_TITLE, 2);
    }
 
    @Test(expected = AccessDeniedException.class)
@@ -60,16 +60,18 @@ public class PublicationDAOSaveTest {
    public void save_failure_author() {
       AuthenticateUtils.authenticate(1, "ROLE_AUTHOR");
 
-      save(TEST_TITLE,2);
+      save(TEST_TITLE, 2);
    }
 
-   private void save(String title,int idAuthor) {
+   private int save(String title, int idAuthor) {
 
       Person author = new Person();
       author.setId(idAuthor);
       Publication publication = new Publication(author, title);
 
       dao.save(publication);
+
+      return publication.getId();
    }
 
 }

@@ -16,7 +16,7 @@ import fr.urssaf.image.commons.springsecurity.acl.model.Publication;
 import fr.urssaf.image.commons.springsecurity.acl.security.AuthenticateUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-acl.xml",
+@ContextConfiguration(locations = { "/applicationContext-acl-test.xml",
       "/applicationContext-security.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class PublicationDAOUpdateTest {
@@ -25,9 +25,9 @@ public class PublicationDAOUpdateTest {
 
    @Autowired
    private PublicationDAO dao;
-   
+
    @Autowired
-   private TestDAO<Publication,Integer> find;
+   private TestDAO<Publication, Integer> find;
 
    @After
    public void after() {
@@ -46,7 +46,7 @@ public class PublicationDAOUpdateTest {
       assertPublication(publication, 1, TEST_TITLE);
 
    }
-   
+
    @Test
    @Transactional
    public void update_success_author() {
