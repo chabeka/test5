@@ -3,7 +3,7 @@
       <base>
          <baseId>SAE</baseId>
 		 <docId>doc1</docId>
-		 <filePath>src/test/resources/PDF/doc1.pdf</filePath>
+		 <filePath>src/test/resources/PDF/doc1.PDF</filePath>
 		 <typeDoc>PDF</typeDoc>
          <categories>
             <category>

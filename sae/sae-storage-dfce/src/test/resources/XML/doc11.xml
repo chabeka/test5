@@ -3,7 +3,7 @@
       <base>
          <baseId>SAE</baseId>
          <docId>doc11</docId>
-         	 <filePath>src/test/resources/PDF/doc11.pdf</filePath>
+         	 <filePath>src/test/resources/PDF/doc11.PDF</filePath>
 		 <typeDoc>PDF</typeDoc>
          <categories>
             <category>
@@ -57,7 +57,7 @@
             </category>
              <category>
                <name>NFI</name>
-               <value>doc11.pdf</value>
+               <value>doc11.PDF</value>
             </category>
              <category>
                <name>FFI</name>
