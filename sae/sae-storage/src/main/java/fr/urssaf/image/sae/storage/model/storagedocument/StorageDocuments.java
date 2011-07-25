@@ -5,61 +5,64 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Classe concrète représentant la liste des documents
- * 
+ * Classe concrète représentant la liste des documents.<BR />
+ * Elle contient l'attribut :
+ * <ul>
  * <li>
- * Attribut storageDocuments : La liste des documents bien archivés</li>
+ * storageDocuments : La liste des documents bien archivés</li>
+ * </ul>
  */
+@SuppressWarnings("PMD.LongVariable")
 public class StorageDocuments {
-
-	private List<StorageDocument> listOfStorageDocument; // NOPMD
+   
+	private List<StorageDocument> allStorageDocuments; 
 
 	/**
 	 * Retourne la liste des documents
 	 * 
 	 * @return La liste des documents
 	 */
-	public final List<StorageDocument> getListOfStorageDocument() {
-		return listOfStorageDocument;
+	public final List<StorageDocument> getAllStorageDocument() {
+		return allStorageDocuments;
 	}
 
 	/**
 	 * Initialise la liste des documents
 	 * 
-	 * @param listOfStorageDocument
+	 * @param storageDocuments
 	 *            : La liste des documents
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setListOfStorageDocument(
-			final List<StorageDocument> listOfStorageDocument) {
-		this.listOfStorageDocument = listOfStorageDocument;
+	public final void setAllStorageDocuments(
+			final List<StorageDocument> storageDocuments) {
+		this.allStorageDocuments = storageDocuments;
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un {@link StorageDocuments }.
 	 * 
-	 * @param listOfStorageDocument
+	 * @param storageDocuments
 	 *            La liste des documents
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public StorageDocuments(final List<StorageDocument> listOfStorageDocument) {
-		this.listOfStorageDocument = listOfStorageDocument;
+	public StorageDocuments(final List<StorageDocument> storageDocuments) {
+		this.allStorageDocuments = storageDocuments;
 	}
 
 	/**
-	 * Constructeur par défaut
+	 * Construit un {@link StorageDocuments } par défaut.
 	 * 
 	 */
 	public StorageDocuments() {
 		// ici on ne fait rien
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
-		@SuppressWarnings("PMD.LongVariable")
 		final StringBuffer stringBuffer = new StringBuffer();
-		if (listOfStorageDocument != null) {
-			for (StorageDocument storageDocument : listOfStorageDocument) {
+		if (allStorageDocuments != null) {
+			for (StorageDocument storageDocument : allStorageDocuments) {
 				stringBuffer.append(storageDocument.toString());
 			}
 		}

@@ -5,17 +5,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * Classe concrète contenant les caractéristiques de l’utilisateur mit à
  * disposition pour se connecter à la base de stockage. <BR />
- * 
+ * Elle contient les attributs :
+ * <ul>
  * <li>
- * Attribut login Représente le login de l’utilisateur</li>
- * 
+ * login Représente le login de l’utilisateur</li>
  * <li>
- * Attribut password Représente le mot de passe de l’utilisateur</li>
+ * password Représente le mot de passe de l’utilisateur</li>
+ * </ul>
  */
 public class StorageUser {
-
+	// Les attributs
 	private String login;
-
 	private String password;
 
 	/**
@@ -57,7 +57,7 @@ public class StorageUser {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un nouveau {@link StorageUser }.
 	 * 
 	 * @param login
 	 *            : Le login de l'utilisateur
@@ -70,16 +70,19 @@ public class StorageUser {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un nouveau {@link StorageUser } par défaut.
 	 * 
 	 */
 	public StorageUser() {
-		//ici on ne fait rien
+		// ici on ne fait rien
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
 		return new ToStringBuilder(this).append("login", login)
-				.append("password", password)
-							.toString();
+				.append("password", password).toString();
 	}
 }

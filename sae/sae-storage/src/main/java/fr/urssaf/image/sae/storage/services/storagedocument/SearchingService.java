@@ -8,46 +8,73 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCr
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
 
 /**
- * Fournit les services de recherche de document
+ * Fournit les services de recherche de document<BR />
+ * Ces services sont :
+ * <ul>
+ * <li>searchStorageDocumentByLuceneCriteria : service qui permet de faire une
+ * recherche par une requête lucene.</li>
+ * <li>searchStorageDocumentByUUIDCriteria : service qui permet de faire une
+ * recherche de document par UUID</li>
+ * <li>searchMetaDatasByUUIDCriteria :de faire une recherche des métadonnées par
+ * UUID.</li>
+ * </ul>
  */
 public interface SearchingService {
 
-   /**
-    * Permet de faire une recherche par une requête lucene
-    * 
-    * @param luceneCriteria :
-    *           La requête Lucene
-    * 
-    * @return Les résultats de la recherche
-    * 
-    * @throws SearchingServiceEx
-    *            Une exception runtime
-    */
-  
-   StorageDocuments searchStorageDocumentByLuceneCriteria(final
-         LuceneCriteria luceneCriteria) throws SearchingServiceEx;
+	/**
+	 * Permet de faire une recherche par une requête lucene.
+	 * 
+	 * @param luceneCriteria
+	 *            : La requête Lucene
+	 * 
+	 * @return Les résultats de la recherche
+	 * 
+	 * @throws SearchingServiceEx
+	 *             Une exception runtime
+	 */
 
-   /**
-    * Permet de faire une recherche par UUID de document
-    * 
-    * @param uuidCriteria :
-    *           L'UUID du document à rechercher
-    * 
-    * @return Le resultat de la recherche
-    * 
-    * @throws SearchingServiceEx
-    *            Une exception runtime
-    */
-   StorageDocument searchStorageDocumentByUUIDCriteria(final UUIDCriteria uuidCriteria)
-         throws SearchingServiceEx;
-   /**
-    * Permet d'initialiser les paramètres dont le service aura besoin
-    * 
-    * @param storageConnectionParameter
+	StorageDocuments searchStorageDocumentByLuceneCriteria(
+			final LuceneCriteria luceneCriteria) throws SearchingServiceEx;
+
+	/**
+	 * Permet de faire une recherche de document par UUID.
+	 * 
+	 * @param uuidCriteria
+	 *            : L'UUID du document à rechercher
+	 * 
+	 * @return un strorageDocument
+	 * 
+	 * @throws SearchingServiceEx
+	 *             Une exception runtime
+	 */
+	StorageDocument searchStorageDocumentByUUIDCriteria(
+			final UUIDCriteria uuidCriteria) throws SearchingServiceEx;
+
+	/**
+	 * Permet de faire une recherche des métadonnées par UUID.
+	 * 
+	 * @param uuidCriteria
+	 *            : L'UUID du document à rechercher
+	 * 
+	 * @return Le resultat de la recherche
+	 * 
+	 * @throws SearchingServiceEx
+	 *             Une exception runtime
+	 */
+	StorageDocument searchMetaDatasByUUIDCriteria(
+			final UUIDCriteria uuidCriteria) throws SearchingServiceEx;
+	
+	
+	
+
+	/**
+	 * Permet d'initialiser les paramètres dont le service aura besoin
+	 * 
+	 * @param storageConnectionParameter
 	 *            : Les paramètres de connexion à la base de stockage
-    */
-   @SuppressWarnings("PMD.LongVariable")
-   void setSearchingServiceParameter(final StorageConnectionParameter storageConnectionParameter);
-   
- 
+	 */
+	@SuppressWarnings("PMD.LongVariable")
+	void setSearchingServiceParameter(
+			final StorageConnectionParameter storageConnectionParameter);
+
 }

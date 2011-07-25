@@ -3,13 +3,15 @@ package fr.urssaf.image.sae.storage.model.connection;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Classe concrète contenant le nom de la base de stockage <br />
- * 
+ * Classe concrète contenant le nom de la base de stockage. <br/>
+ * Elle contient l'attribut : <br/>
+ * <ul>
  * <li>
- * Attribut baseName : Représente le nom de la base de stockage</li>
+ * baseName : Représente le nom de la base de stockage.</li>
+ * </ul>
  */
 public class StorageBase {
-
+	// Les attributs
 	private String baseName;
 
 	/**
@@ -32,7 +34,8 @@ public class StorageBase {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un nouveau {@link StorageBase } avec e nom de la base de
+	 * stockage
 	 * 
 	 * @param baseName
 	 *            : Le nom de la base de stockage
@@ -42,14 +45,15 @@ public class StorageBase {
 	}
 
 	/**
-	 * Constructeur par défaut
-	 * 
-	 * 
+	 * Construit un nouveau {@link StorageBase } par défaut.
 	 */
 	public StorageBase() {
-//ici on ne fait rien
+		// ici on ne fait rien
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
 		return new ToStringBuilder(this).append("baseName", baseName)

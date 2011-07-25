@@ -9,7 +9,13 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 
 /**
- * Fournit les services d’insertion de document
+ * Fournit les services d’insertion de document.<BR />
+ * Ces services sont :
+ * <ul>
+ * <li>insertStorageDocument : service qui permet d'insérer un document unique.</li>
+ * <li>bulkInsertStorageDocument : service qui permet de réaliser une insertion
+ * en masse de documents.</li>
+ * </ul>
  * 
  */
 public interface InsertionService {
@@ -34,20 +40,23 @@ public interface InsertionService {
 	 * @param storageDocuments
 	 *            : Les documents à stocker
 	 * @param allOrNothing
-	 *            : boolean qui permet de faire une insertion en masse en mode tout ou rien
-	 * @return Le resultat des insertions réussies et échouées
+	 *            : boolean qui permet de faire une insertion en masse en mode
+	 *            tout ou rien
+	 * @return Le résultat des insertions réussies et échouées
+	 * @throws InsertionServiceEx
+	 *             : une exception est levée à l'inssertion en masse.
 	 */
 	BulkInsertionResults bulkInsertStorageDocument(
-			StorageDocuments storageDocuments,final boolean allOrNothing);
+			StorageDocuments storageDocuments, final boolean allOrNothing)
+			throws InsertionServiceEx;
 
-	
-	
 	/**
-	    * Permet d'initialiser les paramètres dont le service aura besoin
-	    * 
-	    * @param storageConnectionParameter
-		 *            : Les paramètres de connexion à la base de stockage
-	    */
+	 * Permet d'initialiser les paramètres dont le service aura besoin
+	 * 
+	 * @param storageConnectionParameter
+	 *            : Les paramètres de connexion à la base de stockage
+	 */
 	@SuppressWarnings("PMD.LongVariable")
-	   void setInsertionServiceParameter(final StorageConnectionParameter storageConnectionParameter);
+	void setInsertionServiceParameter(
+			final StorageConnectionParameter storageConnectionParameter);
 }

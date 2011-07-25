@@ -7,10 +7,14 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Classe concrète représentant un document contenant un code erreur suite à une
- * insertion qui s’est mal déroulée <li>
- * Attribut codeError : Le message d'erreur retourné par l'archivage du document
- * </li>
+ * insertion qui s’est mal déroulée<BR />
+ * Elle contient l'attribut :
+ * <ul>
+ * <li>
+ * codeError : Le message d'erreur retourné par l'archivage du document</li>
+ * </ul>
  */
+
 public class StorageDocumentOnError extends AbstractStorageDocument {
 
 	private String codeError;
@@ -35,7 +39,7 @@ public class StorageDocumentOnError extends AbstractStorageDocument {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un {@link StorageDocumentOnError }.
 	 * 
 	 * @param metadatas
 	 *            : Les metadatas du document
@@ -52,6 +56,9 @@ public class StorageDocumentOnError extends AbstractStorageDocument {
 		this.codeError = codeError;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
 		@SuppressWarnings("PMD.LongVariable")

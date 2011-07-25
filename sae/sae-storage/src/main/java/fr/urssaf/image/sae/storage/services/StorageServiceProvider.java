@@ -6,7 +6,8 @@ import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentServi
 
 /**
  * 
- * Fournit l’ensemble des services pour Manipuler les Objets DFCE
+ * Fournit l’ensemble des services pour Manipuler les Objets DFCE.<BR />
+ * 
  * 
  */
 public interface StorageServiceProvider {
@@ -14,7 +15,7 @@ public interface StorageServiceProvider {
 	 * Permet d'initialiser les paramètres dont le service aura besoin
 	 * 
 	 * @param storageConnectionParameter
-	 *            : Les paramètres de connexion à la base de stockage
+	 *            : Les paramètres de connexion à la base de stockage.
 	 */
 	@SuppressWarnings("PMD.LongVariable")
 	void setStorageServiceProviderParameter(
@@ -22,13 +23,13 @@ public interface StorageServiceProvider {
 
 	/**
 	 * 
-	 * @return les services d'insertion ,de recherche,récupération
+	 * @return les services d'insertion ,de recherche,récupération.
 	 */
 	StorageDocumentService getStorageDocumentService();
 
 	/**
 	 * 
-	 * @return l'interface des services de connexion
+	 * @return l'interface des services de connexion.
 	 */
 	StorageConnectionService getStorageConnectionService();
 }

@@ -1,6 +1,6 @@
 package fr.urssaf.image.sae.storage.model.storagedocument;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,13 +8,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Classe concrète représentant un document contenant un identifiant unique
- * suite à une insertion qui s’est bien déroulée.
- * 
+ * suite à une insertion qui s’est bien déroulée. Elle contient l'attribut :
+ * <ul>
  * <li>
- * Attribut uuid : L'uuid du document</li>
+ * uuid : L'uuid du document</li>
+ * </ul>
  */
-public class StorageDocument extends AbstractStorageDocument {
 
+public class StorageDocument extends AbstractStorageDocument {
+	// L'attribut
 	private UUID uuid;
 
 	/**
@@ -37,41 +39,78 @@ public class StorageDocument extends AbstractStorageDocument {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un {@link StorageDocument }.
 	 * 
 	 * @param metadatas
-	 *            : Les metadatas du document
+	 *            : Les métadonnées du document
 	 * @param content
 	 *            : Le contenu du document
-	 * @param filePath
-	 *            : Le chemin du document
 	 * 
 	 */
 	public StorageDocument(final List<StorageMetadata> metadatas,
-			final byte[] content, final File filePath) {
-		super(metadatas, content, filePath);
+			final byte[] content) {
+		super(metadatas, content, null);
 
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un {@link StorageDocument }.
 	 * 
 	 * @param metadatas
-	 *            : Les metadatas du document
+	 *            : Les métadonnées du document
+	 * 
+	 */
+	public StorageDocument(final List<StorageMetadata> metadatas) {
+		super(metadatas, new byte[1], null);
+
+	}
+
+	/**
+	 * Construit un {@link StorageDocument }.
+	 * 
+	 * @param storageDocument
+	 *            : Un storageDocument
+	 * 
+	 */
+	@SuppressWarnings("PMD.CallSuperInConstructor")
+	public StorageDocument(final StorageDocument storageDocument) {
+		setContent(storageDocument.getContent());
+		setCreationDate(storageDocument.getCreationDate());
+		setFilePath(storageDocument.getFilePath());
+		setMetadatas(storageDocument.getMetadatas());
+		setTitle(storageDocument.getTitle());
+		setTypeDoc(storageDocument.getTypeDoc());
+		setUuid(storageDocument.getUuid());
+
+	}
+
+	/**
+	 * 
+	 * Construit un {@link StorageDocument } par défaut.
+	 */
+	public StorageDocument() {
+		super(new ArrayList<StorageMetadata>(), new byte[1], null);
+	}
+	/**
+	 * Construit un {@link StorageDocument }.
+	 * 
+	 * @param metadatas
+	 *            : Les métadonnées du document
 	 * @param content
 	 *            : Le contenu du document
-	 * @param filePath
-	 *            : Le chemin du document
 	 * @param uuid
 	 *            : l'uuid
 	 * 
 	 */
 	public StorageDocument(final List<StorageMetadata> metadatas,
-			final byte[] content, final File filePath, final UUID uuid) {
-		super(metadatas, content, filePath);
+			final byte[] content, final UUID uuid) {
+		super(metadatas, content, null);
 		this.uuid = uuid;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
 		@SuppressWarnings("PMD.LongVariable")
@@ -80,11 +119,14 @@ public class StorageDocument extends AbstractStorageDocument {
 			for (StorageMetadata metadata : getMetadatas()) {
 				stringBuffer.append(metadata.toString());
 			}
-
 		}
-		return new ToStringBuilder(this).append("content", getContent())
-				.append("uuid", uuid).append("filePath", getFilePath())
+		return new ToStringBuilder(this)
+				.append("creationDate", getCreationDate())
+				.append("content", getContent()).append("uuid", uuid)
+				.append("filePath", getFilePath())
 				.append("metadatas", stringBuffer.toString()).toString();
-
 	}
+
+
+
 }

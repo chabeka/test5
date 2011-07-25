@@ -3,73 +3,121 @@ package fr.urssaf.image.sae.storage.model.storagedocument;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Classe concrète représentant la métadonnée</BR>
- * 
+ * Classe concrète représentant la métadonnée.</BR> Elle contient les attributs
+ * :
+ * <ul>
  * <li>
- * Attribut code : Le code de la métadonnée</li> <li>
- * Attribut value : La valeur de la métadonnée</li>
+ * shortCode : Le code court de la métadonnée</li>
+ * <li>
+ * longCode : Le code long de la métadonnée</li>
+ * <li>
+ * value : La valeur de la métadonnée</li>
+ * </ul>
  */
 public class StorageMetadata {
+	// Les attributs
+	private String shortCode;
+	private String longCode;
+	private Object value;
 
-   private String code;
+	/**
+	 * @return Le code court de la métadonnée.
+	 */
+	public final String getShortCode() {
+		return shortCode;
+	}
 
-   private Object value;
+	/**
+	 * @param shortCode
+	 *            : Le code court de la métadonnée
+	 * 
+	 */
+	public final void setShortCode(final String shortCode) {
+		this.shortCode = shortCode;
+	}
 
-   /**
-    * Retourne le code de la métadonnée
-    * 
-    * @return Code de la métadonnée
-    */
-   public final String getCode() {
-      return code;
-   }
+	/**
+	 * @return Le code long de la métadonnée
+	 */
+	public final String getLongCode() {
+		return longCode;
+	}
 
-   /**
-    * Initialise le code de la métadonnée
-    * 
-    * @param code :
-    *           Le code de la métadonnée
-    */
-   public final void setCode(final String code) {
-      this.code = code;
-   }
+	/**
+	 * @param longCode
+	 *            : Le code long de la métadonnée.
+	 * 
+	 */
+	public final void setLongCode(final String longCode) {
+		this.longCode = longCode;
+	}
 
-   /**
-    * Retourne la valeur de la métadonnée
-    * 
-    * @return La valeur de la Métta donnée
-    */
-   public final Object getValue() {
-      return value;
-   }
+	/**
+	 * Retourne la valeur de la métadonnée
+	 * 
+	 * @return La valeur de la Métta donnée
+	 */
+	public final Object getValue() {
+		return value;
+	}
 
-   /**
-    * Initialise la valeur de la métadonnée
-    * 
-    * @param value :
-    *           La valeur de la métadonnée
-    */
-   public final void setValue(final Object value) {
-      this.value = value;
-   }
+	/**
+	 * Initialise la valeur de la métadonnée
+	 * 
+	 * @param value
+	 *            : La valeur de la métadonnée
+	 */
+	public final void setValue(final Object value) {
+		this.value = value;
+	}
 
-   /**
-    * Constructeur
-    * 
-    * @param code :
-    *           Le code de la Métadonnée
-    * @param value :
-    *           La valeur de la Métadonnée
-    */
-   public StorageMetadata(final String code, final Object value) {
-      this.code = code;
-      this.value = value;
-   }
-   @Override
+	/**
+	 * Construit un {@link StorageMetadata }.
+	 * 
+	 * @param shortCode
+	 *            : Le code court de la métadonnée
+	 * @param value
+	 *            : La valeur de la métadonnée
+	 */
+	public StorageMetadata(final String shortCode, final Object value) {
+		this.shortCode = shortCode;
+		this.value = value;
+	}
+
+	/**
+	 * Construit un {@link StorageMetadata }.
+	 * 
+	 * @param shortCode
+	 *            : Le code court de la métadonnée
+	 * @param longCode
+	 *            : Le code long de la métadonnée
+	 * @param value
+	 *            : La valeur de la métadonnée
+	 */
+	public StorageMetadata(final String longCode, final String shortCode,
+			final Object value) {
+		this(shortCode, value);
+		this.longCode = longCode;
+
+	}
+
+	/**
+	 * Construit un {@link StorageMetadata }.
+	 * 
+	 * @param shortCode
+	 *            : Le code court de la métadonnée
+	 * 
+	 */
+	public StorageMetadata(final String shortCode) {
+		this(null, shortCode, null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public final String toString() {
-		return new ToStringBuilder(this)
-				.append("code", code)
-				.append("value", value)
-				.toString();
+		return new ToStringBuilder(this).append("code", shortCode)
+				.append("longCode", longCode).append("value", value).toString();
 	}
 }

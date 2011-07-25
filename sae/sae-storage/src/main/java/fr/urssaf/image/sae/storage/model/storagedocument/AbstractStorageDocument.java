@@ -1,101 +1,177 @@
 package fr.urssaf.image.sae.storage.model.storagedocument;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Classe abstraite contenant les attributs communs des différents types de
- * documents destinés au stockage</BR>
- * 
+ * documents destinés au stockage.</BR> Elle contient les attributs :
+ * <ul>
  * <li>
- * Attribut metadatas : Liste des métadatas</li> <li>
- * Attribut content : Le contenu du document</li> <li>
- * Attribut filePath : Le chemin du document</li>
+ * metadatas : Liste des métadatas</li>
+ * <li>
+ * content : Le contenu du document</li>
+ * <li>
+ * typeDoc : type de document</li>
+ * <li>
+ * filePath : Le chemin du document</li>
+ * <li>
+ * processId : L'identifiant du traitement</li>
+ * </ul>
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractStorageDocument {
+	// Les attributs
+	private List<StorageMetadata> metadatas;
+	private byte[] content;
+	private File filePath;
+	private String typeDoc;
+	private Date creationDate;
+	private String title;
+	private String processId;
 
-   private List<StorageMetadata> metadatas;
+	/**
+	 * @return L'identifiant du traitement.
+	 */
+	public final String getProcessId() {
+		return processId;
+	}
 
-   private byte[] content;
+	/**
+	 * @param processId : L'identifiant du traitement.
+	 */
+	public final void setProcessId(final String processId) {
+		this.processId = processId;
+	}
 
-   private File filePath;
+	/**
+	 * Retourne la liste des métadonnées.
+	 * 
+	 * @return Liste des métadonnées
+	 */
+	public final List<StorageMetadata> getMetadatas() {
+		return metadatas;
+	}
 
-   /**
-    * Retourne la liste des métadonnées.
-    * 
-    * @return Liste des métadonnées
-    */
-   public final List<StorageMetadata> getMetadatas() {
-      return metadatas;
-   }
+	/**
+	 * Initialise la liste des métadonnées.
+	 * 
+	 * @param metadatas
+	 *            : La liste des métadonnées
+	 */
+	public final void setMetadatas(final List<StorageMetadata> metadatas) {
+		this.metadatas = metadatas;
+	}
 
-   /**
-    * Initialise la liste des métadonnées.
-    * 
-    * @param metadatas :
-    *           La liste des métadonnées
-    */
-   public final void setMetadatas(final List<StorageMetadata> metadatas) {
-      this.metadatas = metadatas;
-   }
+	/**
+	 * Retourne le contenu du document
+	 * 
+	 * @return Le contenu du document
+	 */
+	@SuppressWarnings("PMD.MethodReturnsInternalArray")
+	public final byte[] getContent() {
+		return content;
+	}
 
-   /**
-    * Retourne le contenu du document
-    * 
-    * @return Le contenu du document
-    */
-   @SuppressWarnings("PMD.MethodReturnsInternalArray")
-   public final byte[] getContent() {
-      return content;
-   }
+	/**
+	 * Initialise le contenu du document
+	 * 
+	 * @param content
+	 *            : Le contenu du document
+	 */
+	@SuppressWarnings("PMD.ArrayIsStoredDirectly")
+	public final void setContent(final byte[] content) {
+		this.content = content;
+	}
 
-   /**
-    * Initialise le contenu du document
-    * 
-    * @param content :
-    *           Le contenu du document
-    */
-   @SuppressWarnings("PMD.ArrayIsStoredDirectly")
-   public final void setContent(final byte[] content) {
-      this.content = content;
-   }
+	/**
+	 * Retourne le chemin du fichier
+	 * 
+	 * @return Le chemin du fichier
+	 */
+	public final File getFilePath() {
+		return filePath;
+	}
 
-   /**
-    * Retourne le chemin du fichier
-    * 
-    * @return Le chemin du fichier
-    */
-   public final File getFilePath() {
-      return filePath;
-   }
+	/**
+	 * Initialise le chemin du fichier
+	 * 
+	 * @param filePath
+	 *            : Le chemin du document
+	 */
+	public final void setFilePath(final File filePath) {
+		this.filePath = filePath;
+	}
 
-   /**
-    * Initialise le chemin du fichier
-    * 
-    * @param filePath :
-    *           Le chemin du document
-    */
-   public final void setFilePath(final File filePath) {
-      this.filePath = filePath;
-   }
+	/**
+	 * @return le type de document.
+	 */
+	public final String getTypeDoc() {
+		return typeDoc;
+	}
 
-   /**
-    * Constructeur
-    * 
-    * @param metadatas : 
-    *           Les metadatas du document
-    * @param content : 
-    *           Le contenu du document
-    * @param filePath :
-    *           Le chemin du fichier
-    */
-   @SuppressWarnings("PMD.ArrayIsStoredDirectly")
-   public AbstractStorageDocument(final List<StorageMetadata> metadatas,
-         final byte[] content, final File filePath) {
-      this.metadatas = metadatas;
-      this.content = content;
-      this.filePath = filePath;
-   }
+	/**
+	 * @param typeDoc
+	 *            :le type de document.
+	 */
+	public final void setTypeDoc(final String typeDoc) {
+		this.typeDoc = typeDoc;
+	}
+
+	/**
+	 * @return : date de creation.
+	 */
+	public final Date getCreationDate() {
+		return creationDate;
+	}
+
+	/**
+	 * @param creationDate
+	 *            : date de creation.
+	 */
+	public final void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	/**
+	 * @return le titre du document.
+	 */
+	public final String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title
+	 *            :le titre du document.
+	 */
+	public final void setTitle(String title) {
+		this.title = title;
+	}
+
+	/**
+	 * Construit un nouveau {@link AbstractStorageDocument }.
+	 * 
+	 * @param metadatas
+	 *            : Les metadatas du document
+	 * @param content
+	 *            : Le contenu du document
+	 * @param filePath
+	 *            : Le chemin du fichier
+	 */
+	@SuppressWarnings("PMD.ArrayIsStoredDirectly")
+	public AbstractStorageDocument(final List<StorageMetadata> metadatas,
+			final byte[] content, final File filePath) {
+		this.metadatas = metadatas;
+		this.content = content;
+		this.filePath = filePath;
+	}
+
+	/**
+	 * Construit un nouveau {@link AbstractStorageDocument } par défaut.
+	 */
+	public AbstractStorageDocument() {
+		// Ici on ne fait rien.
+	}
 
 }

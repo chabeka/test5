@@ -8,10 +8,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Classe concrète représentant le résultat de l’insertion en masse<BR>
- * 
+ * Elle contient les attributs :
+ * <ul>
  * <li>
- * Attribut storageDocuments : la liste des documents archivés</li> <li>
- * Attribut storageDocumentsOnError : la liste des documents en erreur</li>
+ * storageDocuments : la liste des documents archivés</li>
+ * <li>
+ * storageDocumentsOnError : la liste des documents en erreur</li>
+ * </ul>
  */
 
 public class BulkInsertionResults {
@@ -70,10 +73,10 @@ public class BulkInsertionResults {
 	public final List<UUID> getUuids() {
 		final List<UUID> listUuids = new ArrayList<UUID>();
 		if (storageDocuments != null
-				&& (storageDocuments.getListOfStorageDocument() != null)) {
+				&& (storageDocuments.getAllStorageDocument() != null)) {
 			// Ici on parcour tous les documents pour récuperer les uuids
 			for (StorageDocument document : storageDocuments
-					.getListOfStorageDocument()) {
+					.getAllStorageDocument()) {
 				listUuids.add(document.getUuid());
 			}
 		}
@@ -81,7 +84,7 @@ public class BulkInsertionResults {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un nouveau {@link BulkInsertionResults }.
 	 * 
 	 * @param storageDocuments
 	 *            : Les documents archivés
@@ -97,9 +100,11 @@ public class BulkInsertionResults {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
-		
 		final StringBuffer strBufferDocOnEr = new StringBuffer();
 		final StringBuffer stringBufferDoc = new StringBuffer();
 		if (storageDocumentsOnError != null) {
@@ -110,7 +115,7 @@ public class BulkInsertionResults {
 		}
 		return new ToStringBuilder(this)
 				.append("storageDocuments", stringBufferDoc.toString())
-				.append("storageDocumentsOnError",
-						strBufferDocOnEr.toString()).toString();
+				.append("storageDocumentsOnError", strBufferDocOnEr.toString())
+				.toString();
 	}
 }

@@ -5,23 +5,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * Classe concrète contenant les caractéristiques de la machine où se trouve la
  * base de stockage<BR />
- * 
+ * Elle contient les attributs :
+ * <ul>
  * <li>
- * Attribut contextRoot : Représente le chemin d'accès à l'application web</li>
+ * contextRoot : Représente le chemin d'accès à l'application web</li>
  * <li>
- * Attribut hostName : Représente le nom de la machine</li> <li>
- * Attribut hostPort : Représente le port de la machine</li> <li>
- * Attribut secure : Booléen permettant d'indiquer s'il faut utiliser http ou
- * https</li>
+ * hostName : Représente le nom de la machine</li>
+ * <li>
+ * hostPort : Représente le port de la machine</li>
+ * <li>
+ * secure : Booléen permettant d'indiquer s'il faut utiliser http ou https</li>
+ * </ul>
  */
 public class StorageHost {
-
+	// Les attributs
 	private String contextRoot;
-
 	private String hostName;
-
 	private int hostPort;
-
 	private boolean secure;
 
 	/**
@@ -63,9 +63,9 @@ public class StorageHost {
 	}
 
 	/**
-	 * Retourne le contexte root de l'application web
+	 * Retourne le context root de l'application web
 	 * 
-	 * @return Le contexte root de l'application web
+	 * @return Le context root de l'application web
 	 */
 	public final String getContextRoot() {
 		return contextRoot;
@@ -101,7 +101,7 @@ public class StorageHost {
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un nouveau {@link StorageHost }.
 	 * 
 	 * @param hostName
 	 *            : Le nom de la machine de stockage
@@ -122,12 +122,10 @@ public class StorageHost {
 	}
 
 	/**
-	 * Constructeur par défaut
-	 * 
-	 * 
+	 *  Construit un nouveau {@link StorageHost } par défaut.
 	 */
 	public StorageHost() {
-		//ici on ne fait rien
+		// ici on ne fait rien
 	}
 
 	@Override

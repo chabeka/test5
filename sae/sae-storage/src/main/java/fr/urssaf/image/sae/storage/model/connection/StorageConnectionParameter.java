@@ -5,21 +5,21 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * Classe concrète contenant les caractéristiques de l’utilisateur mit à
  * disposition pour se connecter à la base de stockage. <BR />
- * 
+ * Elle contient les attributs :
+ * <ul>
  * <li>
- * Attribut storageBase : Représente les paramètres de la base de stockage</li>
+ * storageBase : Représente les paramètres de la base de stockage</li>
  * <li>
- * Attribut storageHost : Représente les paramètres de la machine où est
- * localise la base</li> <li>
- * Attribut storageUser : Représente les paramètres de l’utilisateur de
- * connexion</li>
+ * storageHost : Représente les paramètres de la machine où est localise la base
+ * </li>
+ * <li>
+ * storageUser : Représente les paramètres de l’utilisateur de connexion</li>
+ * </ul>
  */
 public class StorageConnectionParameter {
-
+	// Les attributs
 	private StorageBase storageBase;
-
 	private StorageHost storageHost;
-
 	private StorageUser storageUser;
 
 	/**
@@ -61,7 +61,8 @@ public class StorageConnectionParameter {
 	}
 
 	/**
-	 * Retourne les paramètres de login à la base de stockage
+	 * Retourne les paramètres de l'utilisateur de connexion à la base de
+	 * stockage
 	 * 
 	 * @return L'utilisateur
 	 */
@@ -70,24 +71,26 @@ public class StorageConnectionParameter {
 	}
 
 	/**
-	 * Initialise les paramètres de login à la base de stockage
+	 * Initialise les paramètres de l'utilisateur de connexion à la base de
+	 * stockage
 	 * 
 	 * @param storageUser
-	 *            : L'utilisateur de login en base de stockage
+	 *            : L'utilisateur de connexion à la base de stockage
 	 */
 	public final void setStorageUser(final StorageUser storageUser) {
 		this.storageUser = storageUser;
 	}
 
 	/**
-	 * Constructeur
+	 * Construit un nouveau {@link StorageConnectionParameter }
 	 * 
 	 * @param storageBase
 	 *            : Le nom de la base de donnée de stockage
 	 * @param storageHost
 	 *            : Les paramètres de connexion à la base de stockage
 	 * @param storageUser
-	 *            : Les paramètres de login à la base de stockage
+	 *            : les paramètres de l'utilisateur de connexion à la base de
+	 *            stockage
 	 */
 	public StorageConnectionParameter(final StorageBase storageBase,
 			final StorageHost storageHost, final StorageUser storageUser) {
@@ -97,13 +100,16 @@ public class StorageConnectionParameter {
 	}
 
 	/**
-	 * Constructeur par défaut
+	 * Construit un nouveau {@link StorageConnectionParameter } par défaut
 	 * 
 	 */
 	public StorageConnectionParameter() {
-		//ici on ne fait rien
+		// ici on ne fait rien
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public final String toString() {
 		return new ToStringBuilder(this)

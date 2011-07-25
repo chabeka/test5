@@ -5,39 +5,63 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Classe concrète représentant la liste des documents en erreur
- * 
+ * Classe concrète représentant la liste des documents en erreur.<BR />
+ * Elle contient l'attribut :
+ * <ul>
  * <li>
- * Attribut storageDocumentsOnError : La liste des documents qui ont causé une
- * erreur d'archivage</li>
+ * storageDocumentsOnError : La liste des documents qui ont causé une erreur
+ * d'archivage</li>
+ * </ul>
  */
 public class StorageDocumentsOnError {
-   
-   private List<StorageDocumentOnError> storageDocumentsOnError;//NOPMD
 
-   /**
-    * Retourne la liste des documents en erreur
-    * 
-    * @return La liste des documents en erreur
-    */
-   public final List<StorageDocumentOnError> getStorageDocumentsOnError() {
-      return storageDocumentsOnError;
-   }
+	private List<StorageDocumentOnError> storageDocumentsOnError;// NOPMD
 
-   /**
-    * Initialise la liste des documents en erreur
-    * 
-    * @param storageDocumentsOnError :
-    *           La liste des documents en erreur
-    */
-   @SuppressWarnings("PMD.LongVariable")
-   public final void setStorageDocuments(
-       final  List<StorageDocumentOnError> storageDocumentsOnError) {
-      this.storageDocumentsOnError = storageDocumentsOnError;
-   }
-   @Override
+	/**
+	 * Retourne la liste des documents en erreur
+	 * 
+	 * @return La liste des documents en erreur
+	 */
+	public final List<StorageDocumentOnError> getStorageDocumentsOnError() {
+		return storageDocumentsOnError;
+	}
+
+	/**
+	 * Initialise la liste des documents en erreur
+	 * 
+	 * @param storageDocumentsOnError
+	 *            : La liste des documents en erreur
+	 */
+	@SuppressWarnings("PMD.LongVariable")
+	public final void setStorageDocuments(
+			final List<StorageDocumentOnError> storageDocumentsOnError) {
+		this.storageDocumentsOnError = storageDocumentsOnError;
+	}
+
+	/**
+	 * Construit un {@link StorageDocuments }.
+	 * 
+	 * @param storageDocumentsOnError
+	 *            : Liste des documents en erreur
+	 */
+	@SuppressWarnings("PMD.LongVariable")
+	public StorageDocumentsOnError(
+			List<StorageDocumentOnError> storageDocumentsOnError) {
+		this.storageDocumentsOnError = storageDocumentsOnError;
+	}
+
+	/**
+	 * Construit un {@link StorageDocuments } par défaut.
+	 */
+	public StorageDocumentsOnError() {
+		// ici on ne fait rien
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public final String toString() {
-	   @SuppressWarnings("PMD.LongVariable")
+		@SuppressWarnings("PMD.LongVariable")
 		final StringBuffer stringBuffer = new StringBuffer();
 		if (storageDocumentsOnError != null) {
 			for (StorageDocumentOnError storageDocumentOnError : storageDocumentsOnError) {

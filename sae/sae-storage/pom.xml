@@ -10,7 +10,7 @@
    <artifactId>sae-storage</artifactId>
    <name>sae-storage</name>
    <version>0.0.2-SNAPSHOT</version>
-   <description>Archive contenant les interfaces et modèles de stockage et récupération des documents</description>
+   <description>Archive contenant les interfaces de manipulation des objects de stockage</description>
    <developers>
       <developer>
          <name> Robert Legrand </name>
@@ -21,6 +21,7 @@
          <groupId>commons-lang</groupId>
          <artifactId>commons-lang</artifactId>
          <version>2.6</version>
-      </dependency>
+      </dependency>      
    </dependencies>
+
 </project>
