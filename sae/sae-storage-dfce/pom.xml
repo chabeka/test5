@@ -259,6 +259,8 @@
                   <exclude>**/BulkInsertionPerfFactory.java</exclude>
                   <exclude>**/InsertionServiceProviderTest.java
                   </exclude>
+                  <exclude>**/DeletionServiceImplTest.java
+                  </exclude>
                </excludes>
             </configuration>
          </plugin>
