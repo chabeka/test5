@@ -4,59 +4,71 @@ import org.apache.commons.lang.Validate;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
+import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 
 /**
+ * Fournit des méthodes de validation des arguments des services d'insertion par
+ * aspect.
  * 
  * @author akenore
  * 
  */
 
 @Aspect
-public class InsertionServiceValidation extends AbstractValidation {
-	/**
-	 * Valide l'argument de la méthode insertStorageDocument.
-	 * 
-	 * 
-	 * @param storageDocument
-	 *            : Le document à insérer
-	 */
-	@Before(value = "execution( java.util.UUID  fr.urssaf.image.sae.storage.dfce..InsertionServiceImpl.insertStorageDocument(..)) && args(storageDocument)")
-	public final void insertStorageDocumentValidation(
-			final StorageDocument storageDocument) {
-		// ici on valide que le document n'est pas null
-		Validate.notNull(storageDocument, getMessageHandler().getMessage(
-				"insertion.document.required", "insertion.impact",
-				"insertion.action"));
-		// ici on vérifie que tous les composants du document ne sont pas null.
-		if (storageDocument.getMetadatas() == null
-				&& (storageDocument.getContent() == null && storageDocument
-						.getFilePath() == null)) {
-			Validate.notNull(storageDocument.getMetadatas(), getMessageHandler()
-					.getMessage("insertion.document.component.required",
-							"insertion.impact", "insertion.action.component"));
-		}
-	}
+public class InsertionServiceValidation {
+   // Code erreur.
+   private static final String CODE_ERROR = "insertion.code.message";
 
-	/**
-	 * Valide l'argument de la méthode bulkInsertStorageDocument
-	 * 
-	 * @param storageDocuments
-	 *            : La liste des documents
-	 * @param allOrNothing
-	 *            : Paramètre qui indique si l'insertion sera réalisée en mode
-	 *            "Tout ou rien".
-	 */
-	@Before(value = "execution( fr.urssaf.image..BulkInsertionResults  fr.urssaf.image.sae.storage.dfce..InsertionServiceImpl.bulkInsertStorageDocument(..)) && args(storageDocuments,allOrNothing)")
-	public final void bulkInsertStorageDocumentValidation(
-			final StorageDocuments storageDocuments, final boolean allOrNothing) {
-		// ici on valide que le document n'est pas null
-		Validate.notNull(storageDocuments,
-				getMessageHandler().getMessage("bulk.insertion.document.required", "bulk.insertion.allOrNothing.impact", "bulk.insertion.allOrNothing.action"));
-		// ici on vérifie que tous les composants du document ne sont pas null.
-		Validate.notNull(storageDocuments.getListOfStorageDocument(),
-				getMessageHandler().getMessage("bulk.insertion.document.component.required",  "bulk.insertion.allOrNothing.impact", "bulk.insertion.allOrNothing.action"));
+   /**
+    * Valide l'argument de la méthode
+    * {@link fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument.InsertionServiceImpl#insertStorageDocument(StorageDocument)
+    * insertStorageDocument}
+    * 
+    * @param storageDocument
+    *           : Le document à insérer.
+    */
+   @Before(value = "execution( java.util.UUID  fr.urssaf.image.sae.storage.services.storagedocument..InsertionService.insertStorageDocument(..)) && @annotation(fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked) && args(storageDocument)")
+   public final void insertStorageDocumentValidation(
+         final StorageDocument storageDocument) {
+      // ici on valide que le document n'est pas null
+      Validate.notNull(storageDocument, MessageHandler.getMessage(CODE_ERROR,
+            "insertion.document.required", "insertion.impact",
+            "insertion.action"));
+      Validate.notNull(storageDocument.getContent(), MessageHandler.getMessage(
+            CODE_ERROR, "insertion.document.required", "insertion.impact",
+            "insertion.action"));
+      Validate.notNull(storageDocument.getTypeDoc(), MessageHandler.getMessage(
+            CODE_ERROR, "insertstorage.typedoc.required", "insertion.impact",
+            "insertstorage.typedoc.action"));
+   }
 
-	}
+   /**
+    * Valide l'argument de la méthode
+    * {@link fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument.InsertionServiceImpl#bulkInsertStorageDocument(StorageDocuments, boolean)
+    * bulkInsertStorageDocument}.
+    * 
+    * @param storageDocuments
+    *           : La liste des documents
+    * @param allOrNothing
+    *           : Paramètre qui indique si l'insertion sera réalisée en mode
+    *           "Tout ou rien".
+    */
+   @Before(value = "execution( fr.urssaf.image..BulkInsertionResults  fr.urssaf.image.sae.storage.services.storagedocument..InsertionService.bulkInsertStorageDocument(..)) && @annotation(fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked)  && args(storageDocuments,allOrNothing)")
+   public final void bulkInsertStorageDocumentValidation(
+         final StorageDocuments storageDocuments, final boolean allOrNothing) {
+      // ici on valide que le document n'est pas null
+      Validate.notNull(storageDocuments, MessageHandler.getMessage(CODE_ERROR,
+            "bulk.insertion.document.required",
+            "bulk.insertion.allOrNothing.impact",
+            "bulk.insertion.allOrNothing.action"));
+      // ici on vérifie que tous les composants du document ne sont pas null.
+      Validate.notNull(storageDocuments.getAllStorageDocument(), MessageHandler
+            .getMessage(CODE_ERROR,
+                  "bulk.insertion.document.component.required",
+                  "bulk.insertion.allOrNothing.impact",
+                  "bulk.insertion.allOrNothing.action"));
+
+   }
 }

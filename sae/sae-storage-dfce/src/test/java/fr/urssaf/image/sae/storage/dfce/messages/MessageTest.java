@@ -3,36 +3,20 @@ package fr.urssaf.image.sae.storage.dfce.messages;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-sae-storage-dfce.xml" })
-public class MessageTest {
-	@Autowired
-	private MessageHandler messageHandler;
+import fr.urssaf.image.sae.storage.dfce.services.CommonsServices;
 
-	@Test
-	public final void getMessageFromFile() {
-		Assert.assertNotNull(messageHandler.getMessage("insertion.document.required"));
-	}
-
-	/**
-	 * 
-	 * @param messageHandler
-	 *            : Le gestionnaire des message
-	 */
-	public void setMessageHandler(final MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
-	}
-
-	/**
-	 * 
-	 * @return une instance du gestionnaire de message
-	 */
-	public MessageHandler getMessageHandler() {
-		return messageHandler;
-	}
+/**
+ * Test de récupération des messages.
+ * 
+ */
+public class MessageTest extends CommonsServices {
+   /**
+    * Test la récupération du message à partir de la clé.
+    */
+   @Test
+   public final void getMessageFromFile() {
+      Assert.assertNotNull(MessageHandler
+            .getMessage("insertion.document.required"));
+   }
 }

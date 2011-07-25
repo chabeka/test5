@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
+import fr.urssaf.image.sae.storage.dfce.model.AbstractServiceProvider;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
@@ -26,237 +27,256 @@ import fr.urssaf.image.sae.storage.services.storagedocument.SearchingService;
 import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentService;
 
 /**
+ * Façade des services de gestions de StorageDocument :
+ * <ul>
+ * <li>{@link InsertionServiceImpl}</li>
+ * <li>{@link RetrievalServiceImpl}</li>
+ * <li>{@link SearchingServiceImpl}</li>
+ * <li>{@link DeletionServiceImpl}</li>
+ * </ul>
  * 
- * @author akenore
+ * @author Akenore, Rhofir
  * 
  */
 @Service
 @Qualifier("storageDocumentService")
 @FacadePattern(participants = { InsertionServiceImpl.class,
-		RetrievalServiceImpl.class, SearchingServiceImpl.class,
-		DeletionServiceImpl.class }, comment = "Fournit les services des classes participantes")
+      RetrievalServiceImpl.class, SearchingServiceImpl.class,
+      DeletionServiceImpl.class }, comment = "Fournit les services des classes participantes")
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public class StorageDocumentServiceImpl implements StorageDocumentService {
-	@Autowired
-	@Qualifier("insertionService")
-	private InsertionService insertionService;
-	@Autowired
-	@Qualifier("searchingService")
-	private SearchingService searchingService;
-	@Autowired
-	@Qualifier("retrievalService")
-	private RetrievalService retrievalService;
+public class StorageDocumentServiceImpl extends AbstractServiceProvider
+      implements StorageDocumentService {
+   @Autowired
+   @Qualifier("insertionService")
+   private InsertionService insertionService;
+   @Autowired
+   @Qualifier("searchingService")
+   private SearchingService searchingService;
+   @Autowired
+   @Qualifier("retrievalService")
+   private RetrievalService retrievalService;
+   @Autowired
+   @Qualifier("deletionService")
+   private DeletionService deletionService;
 
-	@Autowired
-	@Qualifier("deletionService")
-	private DeletionService deletionService;
+   /**
+    * @return les services de suppression
+    */
+   public final DeletionService getDeletionService() {
+      setDeletionServiceParameter(getStorageConnectionParameter());
+      return deletionService;
+   }
 
-	/**
-	 * @return les services de suppression
-	 */
-	public final DeletionService getDeletionService() {
-		return deletionService;
-	}
+   /**
+    * @param deletionService
+    *           : les services de suppression
+    */
+   public final void setDeletionService(final DeletionService deletionService) {
+      this.deletionService = deletionService;
+   }
 
-	/**
-	 * @param deletionService
-	 *            : les services de suppression
-	 */
-	public final void setDeletionService(final DeletionService deletionService) {
-		this.deletionService = deletionService;
-	}
+   /**
+    * {@inheritDoc}
+    */
 
-	/**
-	 * {@inheritDoc}
-	 */
+   public final UUID insertStorageDocument(final StorageDocument storageDocument)
+         throws InsertionServiceEx {
+      setInsertionServiceParameter(getStorageConnectionParameter());
+      return insertionService.insertStorageDocument(storageDocument);
+   }
 
-	public final UUID insertStorageDocument(
-			final StorageDocument storageDocument) throws InsertionServiceEx {
-		return insertionService.insertStorageDocument(storageDocument);
-	}
+   /**
+    * 
+    * @return Les services d'insertions
+    */
+   public final InsertionService getInsertionService() {
+      setInsertionServiceParameter(getStorageConnectionParameter());
+      return insertionService;
+   }
 
-	/**
-	 * 
-	 * @return Les services d'insertions
-	 */
-	public final InsertionService getInsertionService() {
-		return insertionService;
-	}
+   /**
+    * 
+    * @return les services de recherche
+    */
+   public final SearchingService getSearchingService() {
+      setDeletionServiceParameter(getStorageConnectionParameter());
+      return searchingService;
+   }
 
-	/**
-	 * 
-	 * @return les services de recherche
-	 */
-	public final SearchingService getSearchingService() {
-		return searchingService;
-	}
+   /**
+    * 
+    * @return les services de récupération
+    */
+   public final RetrievalService getRetrievalService() {
+      setDeletionServiceParameter(getStorageConnectionParameter());
+      return retrievalService;
+   }
 
-	/**
-	 * 
-	 * @return les services de récupération
-	 */
-	public final RetrievalService getRetrievalService() {
-		return retrievalService;
-	}
+   /**
+    * {@inheritDoc}
+    */
 
-	/**
-	 * {@inheritDoc}
-	 */
+   public final StorageDocuments searchStorageDocumentByLuceneCriteria(
+         final LuceneCriteria luceneCriteria) throws SearchingServiceEx {
+      setSearchingServiceParameter(getStorageConnectionParameter());
+      return searchingService
+            .searchStorageDocumentByLuceneCriteria(luceneCriteria);
+   }
 
-	public final StorageDocuments searchStorageDocumentByLuceneCriteria(
-			final LuceneCriteria luceneCriteria) throws SearchingServiceEx {
+   /**
+    * {@inheritDoc}
+    */
 
-		return searchingService
-				.searchStorageDocumentByLuceneCriteria(luceneCriteria);
-	}
+   public final StorageDocument searchStorageDocumentByUUIDCriteria(
+         final UUIDCriteria uUIDCriteria) throws SearchingServiceEx {
+      setSearchingServiceParameter(getStorageConnectionParameter());
+      return searchingService.searchStorageDocumentByUUIDCriteria(uUIDCriteria);
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
+   /**
+    * {@inheritDoc}
+    */
+   public final StorageDocument retrieveStorageDocumentByUUID(
+         final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+      setRetrievalServiceParameter(getStorageConnectionParameter());
+      return retrievalService.retrieveStorageDocumentByUUID(uUIDCriteria);
+   }
 
-	public final StorageDocument searchStorageDocumentByUUIDCriteria(
-			final UUIDCriteria uUIDCriteria) throws SearchingServiceEx {
+   /**
+    * {@inheritDoc}
+    */
 
-		return searchingService
-				.searchStorageDocumentByUUIDCriteria(uUIDCriteria);
-	}
+   public final byte[] retrieveStorageDocumentContentByUUID(
+         final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+      setRetrievalServiceParameter(getStorageConnectionParameter());
+      return retrievalService
+            .retrieveStorageDocumentContentByUUID(uUIDCriteria);
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public final StorageDocument retrieveStorageDocumentByUUID(
-			final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+   /**
+    * {@inheritDoc}
+    */
 
-		return retrievalService.retrieveStorageDocumentByUUID(uUIDCriteria);
-	}
+   public final List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
+         final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+      setRetrievalServiceParameter(getStorageConnectionParameter());
+      return retrievalService
+            .retrieveStorageDocumentMetaDatasByUUID(uUIDCriteria);
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
+   /**
+    * {@inheritDoc}
+    */
+   public final BulkInsertionResults bulkInsertStorageDocument(
+         final StorageDocuments storageDocuments, final boolean allOrNothing)
+         throws InsertionServiceEx {
+      setInsertionServiceParameter(getStorageConnectionParameter());
+      return insertionService.bulkInsertStorageDocument(storageDocuments,
+            allOrNothing);
+   }
 
-	public final byte[] retrieveStorageDocumentContentByUUID(
-			final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+   /**
+    * Initialise les services d'insertion
+    * 
+    * @param insertionService
+    *           : les services d'insertions
+    */
+   public final void setInsertionService(final InsertionService insertionService) {
+      this.insertionService = insertionService;
+   }
 
-		return retrievalService
-				.retrieveStorageDocumentContentByUUID(uUIDCriteria);
-	}
+   /**
+    * Initialise les services de recherche
+    * 
+    * @param searchingService
+    *           : Le service de recherche
+    */
+   public final void setSearchingService(final SearchingService searchingService) {
+      this.searchingService = searchingService;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
+   /**
+    * Initialise les services de récupération
+    * 
+    * @param retrievalService
+    *           : les services de récupération
+    */
+   public final void setRetrievalService(final RetrievalService retrievalService) {
+      this.retrievalService = retrievalService;
+   }
 
-	public final List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
-			final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+   /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.LongVariable")
+   public final void setInsertionServiceParameter(
+         final StorageConnectionParameter storageConnectionParameter) {
+      this.insertionService
+            .setInsertionServiceParameter(storageConnectionParameter);
+   }
 
-		return retrievalService
-				.retrieveStorageDocumentMetaDatasByUUID(uUIDCriteria);
-	}
+   /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.LongVariable")
+   public final void setSearchingServiceParameter(
+         final StorageConnectionParameter storageConnectionParameter) {
+      this.searchingService
+            .setSearchingServiceParameter(storageConnectionParameter);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public final BulkInsertionResults bulkInsertStorageDocument(
-			final StorageDocuments storageDocuments, final boolean allOrNothing) {
+   }
 
-		return insertionService.bulkInsertStorageDocument(storageDocuments,
-				allOrNothing);
-	}
+   /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.LongVariable")
+   public final void setRetrievalServiceParameter(
+         final StorageConnectionParameter storageConnectionParameter) {
+      this.retrievalService
+            .setRetrievalServiceParameter(storageConnectionParameter);
+   }
 
-	/**
-	 * Initialise les services d'insertion
-	 * 
-	 * @param insertionService
-	 *            : les services d'insertions
-	 */
-	public final void setInsertionService(
-			final InsertionService insertionService) {
-		this.insertionService = insertionService;
-	}
+   /**
+    * {@inheritDoc}
+    */
+   public final void deleteStorageDocument(final UUIDCriteria uuidCriteria)
+         throws DeletionServiceEx {
+      this.deletionService.deleteStorageDocument(uuidCriteria);
+   }
 
-	/**
-	 * Initialise les services de recherche
-	 * 
-	 * @param searchingService
-	 *            : Le service de recherche
-	 */
-	public final void setSearchingService(
-			final SearchingService searchingService) {
-		this.searchingService = searchingService;
-	}
+   /**
+    * {@inheritDoc}
+    */
+   public final StorageDocument searchMetaDatasByUUIDCriteria(
+         UUIDCriteria uuidCriteria) throws SearchingServiceEx {
+      setSearchingServiceParameter(getStorageConnectionParameter());
+      return searchingService.searchMetaDatasByUUIDCriteria(uuidCriteria);
+   }
 
-	/**
-	 * Initialise les services de récupération
-	 * 
-	 * @param retrievalService
-	 *            : les services de récupération
-	 */
-	public final void setRetrievalService(
-			final RetrievalService retrievalService) {
-		this.retrievalService = retrievalService;
-	}
+   /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.LongVariable")
+   public final void setDeletionServiceParameter(
+         final StorageConnectionParameter storageConnectionParameter) {
+      this.deletionService
+            .setDeletionServiceParameter(storageConnectionParameter);
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setInsertionServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		this.insertionService
-				.setInsertionServiceParameter(storageConnectionParameter);
-	}
+   /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.LongVariable")
+   public final void setStorageDocumentServiceParameter(
+         final StorageConnectionParameter storageConnectionParameter) {
+      setStorageConnectionParameter(storageConnectionParameter);
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setSearchingServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		this.searchingService
-				.setSearchingServiceParameter(storageConnectionParameter);
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setRetrievalServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		this.retrievalService
-				.setRetrievalServiceParameter(storageConnectionParameter);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void deleteStorageDocument(final UUIDCriteria uuidCriteria)
-			throws DeletionServiceEx {
-		this.deleteStorageDocument(uuidCriteria);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setDeletionServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		this.deletionService
-				.setDeletionServiceParameter(storageConnectionParameter);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setStorageDocumentServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		insertionService
-				.setInsertionServiceParameter(storageConnectionParameter);
-		retrievalService
-				.setRetrievalServiceParameter(storageConnectionParameter);
-		searchingService
-				.setSearchingServiceParameter(storageConnectionParameter);
-		deletionService.setDeletionServiceParameter(storageConnectionParameter);
-	}
-
+   /**
+    * {@inheritDoc}
+    */
+   public final void rollBack(String processId) throws DeletionServiceEx {
+      setSearchingServiceParameter(getStorageConnectionParameter());
+      deletionService.rollBack(processId);
+   }
 }

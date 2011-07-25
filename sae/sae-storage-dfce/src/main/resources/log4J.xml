@@ -18,12 +18,12 @@
 	</appender>
 	
 	<category name="fr.urssaf.image.sae.storage.dfce">
-		<priority value="debug" />
+		<priority value="error" />
 		<appender-ref ref="console" />
 	</category>
 
 	<root>
-		<priority value="debug" />
+		<priority value="error" />
 		<appender-ref ref="console" />
 	<!--  <appender-ref ref="rolling-file" />-->
 	</root>

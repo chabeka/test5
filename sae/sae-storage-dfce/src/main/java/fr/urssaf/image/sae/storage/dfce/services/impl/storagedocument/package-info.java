@@ -1,8 +1,8 @@
 /**
  * Ce package contient les classes qui implémentent les interfaces:
- * <li>InsertionService</li>
- * <li>SearchingService </li>
- * <li>RetrievalService </li>
- * <li>SuppressionService</li>
+ * <li>{@link InsertionService} </li>
+ * <li>{@link SearchingService}  </li>
+ * <li>{@link RetrievalService}  </li>
+ * <li>{@link  DeletionService}</li>
  */
 package fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument;

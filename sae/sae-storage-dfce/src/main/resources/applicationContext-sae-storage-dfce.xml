@@ -11,28 +11,11 @@
 		http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-   <context:component-scan base-package="fr.urssaf.image.sae.storage.dfce" />
-   <aop:aspectj-autoproxy />
-   <!--Permet de faire de l'autowiring dans de l'aspect -->
-   <bean
-      class="fr.urssaf.image.sae.storage.dfce.validation.InsertionServiceValidation"
-      factory-method="aspectOf" />
-   <bean
-      class="fr.urssaf.image.sae.storage.dfce.validation.RetrievalServiceValidation"
-      factory-method="aspectOf" />
-   <bean
-      class="fr.urssaf.image.sae.storage.dfce.validation.SearchingServiceValidation"
-      factory-method="aspectOf" />
-   <bean
-      class="fr.urssaf.image.sae.storage.dfce.validation.DeletionServiceValidation"
-      factory-method="aspectOf" />
-
-
+   <context:component-scan
+      base-package="fr.urssaf.image.sae.storage.dfce.services.impl, fr.urssaf.image.sae.storage.dfce.services.xml.impl" />
    <!--Gestion de message à partir d'un fichier -->
    <bean id="messageSource"
       class="org.springframework.context.support.ResourceBundleMessageSource">
       <property name="basename" value="i18n.storage_dfce_messages_fr_FR" />
    </bean>
-   <import resource="storageConnectionParameter.xml" />
-
 </beans>
