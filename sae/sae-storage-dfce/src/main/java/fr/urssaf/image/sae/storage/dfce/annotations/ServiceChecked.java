@@ -8,7 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Marque une méthode pour que ces paramètres soient vérifier par aspect.<BR />
+ * Marque une méthode pour que ces paramètres soient vérifié par aspect.<BR />
  * Ceci pour exclure la vérification des paramètres des services des façades.
  * 
  * @author akenore, rhofir.
