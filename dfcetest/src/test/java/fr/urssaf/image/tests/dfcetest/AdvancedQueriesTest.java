@@ -67,7 +67,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     * Requête booléenne de recherche simple : c1=x AND c2=y
     */
    @Test
-   public void AQ1() {
+   public void AQ1() throws Exception {
       // Document A
       String titleA = docGen.setRandomTitle("AQ1A").getTitle();
       docGen.put(Categories.INTEGER, 10);
@@ -85,9 +85,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       assertEquals(1, result.getDocuments().size());
 
       // SUT
-      //lucene = String.format("%s:%s AND %s:%s", intergerFName, 10, appliSourceFName, titleA);
-      // TODO : enlever la clause OR lorsque Docubase aura corrigé CRTL-45
-      lucene = String.format("%s:%s AND %s:%s OR 1:1", intergerFName, 10, appliSourceFName, titleA);
+      lucene = String.format("%s:%s AND %s:%s", intergerFName, 10, appliSourceFName, titleA);
       result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
       assertDocumentEquals(docA, result.getDocuments().get(0));      
@@ -97,7 +95,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     * Requête de type (c1=x OR c2=y) AND (c3 = z)
     */
    @Test
-   public void AQ2() {
+   public void AQ2() throws Exception {
       // Document A
       String titleA = docGen.setRandomTitle("AQ2A").getTitle();
       docGen.put(Categories.INTEGER, 10);
@@ -150,12 +148,12 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     * Le underscore est important car il est mal géré par Docubase.
     */
    @Test
-   public void AQ4() {
+   public void AQ4()  throws Exception {
       String firstPartTitle = DocubaseHelper.randomAlphaNum(10); 
       Document injectedDoc = docGen.setRandomTitle(firstPartTitle).store();      
-      log.debug("AQ4, Doc inséré -> " + injectedDoc.getUUID().toString());
+      log.debug("AQ4, Doc inséré -> " + injectedDoc.getUuid().toString());
       
-      Document docbyUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(injectedDoc.getUUID());
+      Document docbyUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(injectedDoc.getUuid());
       assertDocumentEquals(injectedDoc, docbyUUID);
       
       String lucene = appliSourceFName + ":" + docGen.getTitle();
@@ -179,7 +177,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     * de l'implémentation ensembliste.
     */
    @Test
-   public void AQ5() {
+   public void AQ5()  throws Exception {
       int nbDocsA = 17;
       String appliSourceA = docGen.setRandomTitle("AQ5A").getTitle();
       docGen.storeMany(nbDocsA);
@@ -202,7 +200,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     * Teste qu'une valeur peut contenir des espaces.
     */
    @Test
-   public void spaces() {
+   public void spaces() throws Exception {
       String appliSourceB = docGen.setRandomTitle("un titre ").getTitle();
       docGen.store();
       String lucene = String.format("%s:\"%s\"", appliSourceFName, appliSourceB);
@@ -216,7 +214,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
     * Teste le caractère joker mono caractère : "?"
     */
    @Test
-   public void wildcard_mono() {
+   public void wildcard_mono() throws Exception {
       docGen.setTitle("azerty");
       docGen.store();
       //String lucene = String.format("%s:az?rty", appliSourceFName);

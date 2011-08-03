@@ -1,7 +1,12 @@
 package fr.urssaf.image.tests.dfcetest.helpers;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +17,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import net.docubase.toolkit.exception.ged.CustomTagControlException;
+import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -66,7 +71,7 @@ public final class DocubaseHelper {
       Document document = ToolkitFactory.getInstance().createDocumentTag(base);
 
       // document.setDocTitle(title);
-      document.setDocType(type);
+      document.setType(type);
       storeThisDoc(base, document, catValues);
       return document;
    }
@@ -87,12 +92,16 @@ public final class DocubaseHelper {
     * @param catValues
     * @throws CustomTagControlException 
     */
-   public static boolean storeThisDoc(Base base, Document document, Map<String, Object> catValues) {
+   public static Document storeThisDoc(Base base, Document document, Map<String, Object> catValues) {
       for (Entry<String, Object> ent : catValues.entrySet()) {
          BaseCategory baseCategory = base.getBaseCategory(ent.getKey());
          document.addCriterion(baseCategory, ent.getValue());
       }
-      return ServiceProvider.getStoreService().storeDocument(document, getAFile());
+      try {
+         return ServiceProvider.getStoreService().storeDocument(document, getAFile());
+      } catch (TagControlException e) {
+         throw new RuntimeException(e);
+      }
    }   
    
    /**
@@ -123,7 +132,7 @@ public final class DocubaseHelper {
 
       // Ce n'est pas une catégorie obligatoire mais cela permet d'avoir une distribution normale
       // lors de l'injection en masse de valeur aléatoire
-      catValues.put(Categories.DECIMAL.toString(), rand.nextGaussian());      
+      //catValues.put(Categories.DECIMAL.toString(), rand.nextFloat()); // rand.nextGaussian()      
       return catValues;
    }
    
@@ -276,10 +285,28 @@ public final class DocubaseHelper {
       return sb.toString();
    }
 
-   public static File getAFile() {
-      File newDoc = null;
+   public static InputStream getAFile() {
+      ByteArrayInputStream docStream = null;
+      
       try {
-         newDoc = File.createTempFile("doc" + System.nanoTime(), ".tiff");
+      ByteArrayOutputStream content = new ByteArrayOutputStream();
+      content.write(DOC_CONTENT);
+      String randomPart = randomString(10);
+      //System.out.println(randomPart);
+      content.write(randomPart.getBytes());      
+      
+      
+      docStream = new ByteArrayInputStream(content.toByteArray());
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+      return docStream;
+      
+      /*File newDoc = null;
+      try {
+         InputStream is = new FileInputStream(randomString(0));
+         
+        newDoc = File.createTempFile("doc" + System.nanoTime(), ".tiff");
          FileOutputStream fos = new FileOutputStream(newDoc);
          fos.write(DOC_CONTENT);
          String randomPart = randomString(10);
@@ -287,11 +314,12 @@ public final class DocubaseHelper {
          fos.write(randomPart.getBytes());
          fos.flush();
          fos.close();
-         newDoc.deleteOnExit();
+         
+         //newDoc.deleteOnExit();
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
-      return newDoc;
+      return newDoc;*/
    }
 
    public static ConcurrentMap<String, List<String>> generatedStrings = new ConcurrentHashMap<String, List<String>>();

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,14 +14,13 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import net.docubase.toolkit.Authentication;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
+import net.docubase.toolkit.service.Authentication;
 import net.docubase.toolkit.service.ServiceProvider;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -68,15 +68,15 @@ public class ExtractionTest extends AbstractNcotiTest {
       String luceneQuery = String.format("%s:%s", fname, appliSource);
       SearchResult result = ServiceProvider.getSearchService().search(luceneQuery, 10, base);
       
-      File extractedDoc = null;
+      InputStream extractedDoc = null;
       if (result != null && result.getDocuments() != null) {
          assertEquals("Un seul document devrait être trouvé", 1, result.getDocuments().size());
          Document doc = result.getDocuments().get(0);
-         extractedDoc = ServiceProvider.getStoreService().getDocumentFile(doc).getAbsoluteFile();
+         extractedDoc = ServiceProvider.getStoreService().getDocumentFile(doc);
       } else {
          fail("Impossible de trouver le document dont l'appli source est " + appliSource);
       }
-      log.debug("{}, fichier : {}", Thread.currentThread().getName(), extractedDoc.getAbsolutePath());
+      log.debug("{}, fichier : {}", Thread.currentThread().getName(), extractedDoc.toString());
    }
    
    /**
@@ -93,47 +93,49 @@ public class ExtractionTest extends AbstractNcotiTest {
       final Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
       DocubaseHelper.storeOneDocWithRandomCategories(base, appliSource);
       
-      List<Future<File>> futures = new ArrayList<Future<File>>();
-      Set<String> files = new HashSet<String>();
+      List<Future<InputStream>> futures = new ArrayList<Future<InputStream>>();
+      List<String> files = new ArrayList<String>();
 
       for (int i = 0; i < nbThread; i++) {
-         Future<File> future = ThreadPerTaskExecutor.execute(new SearchThenExtractTask(appliSource));
+         Future<InputStream> future = ThreadPerTaskExecutor.execute(new SearchThenExtractTask(appliSource));
          futures.add(future);
       }
 
-      for (Future<File> future : futures) {
-         File extractedDoc = future.get();
+      for (Future<InputStream> future : futures) {
+         InputStream extractedDoc = future.get();
          assertNotNull(extractedDoc);
-         files.add(extractedDoc.getAbsolutePath());
+         files.add(extractedDoc.toString());
       }
+      // fixme : avant cela avait un sens avec le Set et les chemins de fichiers.
+      // Il faut trouver un test correct pour prouver l'efficacité en multi threading.
       assertEquals("L'extraction n'est pas thread safe.", nbThread, files.size());
    }
    
-   class SearchThenExtractTask implements Callable<File> {
+   class SearchThenExtractTask implements Callable<InputStream> {
       private String docAppliSource;
       
       public SearchThenExtractTask(String docAppliSource) {
          this.docAppliSource = docAppliSource;
       }
       
-      public File call() throws Exception {
-         Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_HOST, AMF_PORT, DOMAIN_ID);
+      public InputStream call() throws Exception {
+         Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
          Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
          BaseCategory cat = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
          String catFName = cat.getFormattedName();          
          
-         File extractedDoc = null;
+         InputStream extractedDoc = null;
          String luceneQuery = String.format("%s:%s", catFName, docAppliSource);
          SearchResult result = ServiceProvider.getSearchService().search(luceneQuery, 10, base);
          
          if (result != null && result.getDocuments() != null) {
             assertEquals("Un seul document devrait être trouvé", 1, result.getDocuments().size());
             Document doc = result.getDocuments().get(0);
-            extractedDoc = ServiceProvider.getStoreService().getDocumentFile(doc).getAbsoluteFile();
+            extractedDoc = ServiceProvider.getStoreService().getDocumentFile(doc);
          } else {
             fail("Impossible de trouver le document dont l'appli source est " + docAppliSource);
          }
-         log.debug("{}, fichier : {}", Thread.currentThread().getName(), extractedDoc.getAbsolutePath());
+         log.debug("{}, fichier : {}", Thread.currentThread().getName(), extractedDoc);
          Authentication.closeSession();
          return extractedDoc;
       } 

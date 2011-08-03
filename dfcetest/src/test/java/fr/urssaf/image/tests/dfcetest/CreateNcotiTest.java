@@ -20,8 +20,8 @@ public class CreateNcotiTest extends AbstractNcotiTest {
       Base base = NcotiHelper.createOrReplaceBase(BASE_ID);
       assertNotNull(base);
       assertNotNull(base.getBaseCategories());
-      // getBaseCategories() renvoie un hashset vide en 0.9.1 :
-      assertEquals(53, base.getBaseCategories().size());
+      // getBaseCategories() renvoie un hashset vide en 0.9.1
+      assertEquals(8, base.getBaseCategories().size());
       
       // FIXME : comment récupérer la description ? 
       // Il y a un setter mais pas de getter

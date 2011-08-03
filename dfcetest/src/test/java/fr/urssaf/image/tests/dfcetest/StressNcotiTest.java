@@ -12,19 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.docubase.am.client.exception.LuceneSearchLimitException;
-import net.docubase.rheatoolkit.RheaToolkitException;
-import net.docubase.toolkit.Authentication;
+import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
+import net.docubase.toolkit.service.Authentication;
 import net.docubase.toolkit.service.ServiceProvider;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -145,7 +141,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
       }
       
       Authentication.closeSession();
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_HOST, AMF_PORT, 2);
+      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
       initObjects();
       
       Base base = this.bases.get(1);
@@ -185,13 +181,13 @@ public class StressNcotiTest extends AbstractNcotiTest {
             // System.out.println("Recherche sur Domaine : " +
             // base.getBaseDefinition().getDescription().getDomain().getId());
             try {
-               //Document docFound = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(doc.getUUID());
-               Document docFound = ServiceProvider.getSearchService().getDocumentByUUID(base, doc.getUUID());
+               //Document docFound = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(doc.getUuid());
+               Document docFound = ServiceProvider.getSearchService().getDocumentByUUID(base, doc.getUuid());
                // Là ce serait pas de chance
-               assertEquals("Les UUID sont différents", doc.getUUID(), docFound.getUUID());
+               assertEquals("Les UUID sont différents", doc.getUuid(), docFound.getUuid());
                // System.out.println("Trouvé");
             } catch (Exception e) {
-               String msg = String.format("Le document %s n'a pas été trouvé", doc.getUUID());
+               String msg = String.format("Le document %s n'a pas été trouvé", doc.getUuid());
                // System.out.println(msg);
                fail(msg);
             }
@@ -209,7 +205,8 @@ public class StressNcotiTest extends AbstractNcotiTest {
 
       for (Document doc : this.docs) {
          // SUT
-         ServiceProvider.getStoreService().deleteDocument(doc);
+         log.debug("Suppression du doc " + doc.getUuid().toString());
+         ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
       }
       SearchResult result;
       String luceneQuery;
@@ -232,97 +229,12 @@ public class StressNcotiTest extends AbstractNcotiTest {
       System.out.println(concat);
    }
 
-   @Test(expected = LuceneSearchLimitException.class)
+   @Test(expected = ExceededSearchLimitException.class)
    public void maxLimit() throws Exception {
       Base base = (Base) this.bases.values().toArray()[0];
-      int limit = 100000; // net.docubase.am.network.service.common.lucene.CompleteQuery.MAX_SEARCH_LIMIT;
+      int limit = 100000;
       String luceneQuery = String.format("%s:toto", catAppliSourceFName);
       ServiceProvider.getSearchService().search(luceneQuery, limit, base);
-   }
-
-   /**
-    * TODO : vérifier que l'on teste bien ce cas dans les tests de RheaHA.
-    * 
-    * On se connecte à un document manager X puis on lance une requête sur un
-    * document manager Y. Une exception est levée car il y a un problème sur Y,
-    * on exécute alors la requête sur un autre document manager, Z.
-    * 
-    * @throws Exception
-    */
-   /*
-    * @Test public void failOver() throws Exception { List<Document> docsFound =
-    * null;
-    * 
-    * String commonPart = "testDelete_" + System.nanoTime();
-    * insertDocsForEachDomain(commonPart);
-    * 
-    * // On arrête le premier document manager à être requêté
-    * //shutdownDocumentManager(this.domainIds[0]);
-    * 
-    * for (Entry<Integer, Base> entry: this.bases.entrySet()) { int domId =
-    * entry.getKey(); try { print("Requête sur document manager n°" + domId);
-    * String luceneQuery = String.format("%s:%s*", catAppliSourceFName,
-    * commonPart); docsFound = entry.getValue().searchDocuments(luceneQuery,
-    * 100); break; } catch (RheaToolkitSessionLicenseException e) { // il faut
-    * changer d'AMF primaire si c'est possible
-    * print("Trop de connexion, il faut changer d'AMF primaire"); } catch
-    * (RheaToolkitException e) { // TODO : lorsque docubase typera +
-    * précisemment le dépassement de la limite, // il faudra catcher l'exception
-    * appropriée if (e.getMessage().indexOf("discriminante") != -1) {
-    * print("La requête n'est pas assez discriminante"); break; // pas la peine
-    * d'exécuter la requête sur un autre document manager } } catch (Exception
-    * e) { print(e.toString(), "testFailOver: skipping domain " + domId); } } if
-    * (docsFound != null) { print("docs.size = " + docsFound.size()); }
-    * //restartDocumentManager(this.domainIds[0]); }
-    */
-
-   @Test
-   @Ignore
-   public void http() throws IOException {
-      shutdownDocumentManager(1);
-   }
-
-   protected void shutdownDocumentManager(int domId, boolean restart) throws IOException {
-      final String server = "http://cer69-ds4int:8000/amfconfig/do/";
-      String restartAction = "";
-      HttpClient client = new HttpClient();
-
-      // On se logge en admin
-      PostMethod postLogon = new PostMethod(server + "logon");
-      NameValuePair[] data = { new NameValuePair("username", ADM_LOGIN),
-            new NameValuePair("password", ADM_PASSWORD) };
-      postLogon.setRequestBody(data);
-      assertEquals(302, client.executeMethod(postLogon));
-      print(postLogon.getResponseBodyAsString());
-
-      // On arrête le document manager
-      if (restart) {
-         restartAction = "reload=1&";
-      }
-      HttpMethod getShutdown = new GetMethod(server + "adm/shutdownFramework?" + restartAction
-            + "id=" + domId);
-      assertEquals(200, client.executeMethod(getShutdown));
-      postLogon.releaseConnection();
-      getShutdown.releaseConnection();
-   }
-
-   protected void shutdownDocumentManager(int domId) throws IOException {
-      shutdownDocumentManager(domId, false);
-   }
-
-   protected void restartDocumentManager(int domId) throws IOException {
-      shutdownDocumentManager(domId, true);
-   }
-
-   // TODO : à faire
-   @Test
-   @Ignore
-   public void injectionBatch() throws RheaToolkitException {
-      // String xmlPath = "/appl/ds4/lot_valide.xml";
-      // String xmlPath = "lot_valide.xml";
-      // List<Document> docs = InjectorFactory.inject(xmlPath,
-      // this.session.getSessionId());
-      // System.out.println(docs.size());
    }
 
    @Test
@@ -379,7 +291,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
       
       Thread t = new Thread() {
          public void run() {
-            Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_HOST, AMF_PORT, DOMAIN_ID);
+            Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
             System.out.println(Thread.currentThread().getName());
             Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
             System.out.println("getBaseMultiThreadWithAuth: " + base  + " " + Thread.currentThread().getName());

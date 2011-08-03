@@ -1,15 +1,16 @@
 package fr.urssaf.image.tests.dfcetest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import net.docubase.toolkit.Authentication;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
+import net.docubase.toolkit.service.Authentication;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,17 +36,11 @@ public abstract class AbstractNcotiTest {
    protected static ToolkitFactory toolkit;
    protected static final String ADM_LOGIN = "_ADMIN";
    protected static final String ADM_PASSWORD = "DOCUBASE";
-   protected static final Integer DOMAIN_ID = Integer.valueOf(1);
-   protected static final String AMF_HOST = "cer69-ds4int";
-   protected static final Integer AMF_PORT = Integer.valueOf(4020);
+   protected static final String AMF_URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
 
    @BeforeClass
    public static void beforeClass() throws Exception {
-      boolean openSession = Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_HOST, AMF_PORT,
-            DOMAIN_ID);
-      if (!openSession) {
-         fail("Impossible d'ouvrir une session");
-      }
+      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
       NcotiHelper.createOrReplaceBase(BASE_ID);
       toolkit = ToolkitFactory.getInstance();
    }
@@ -67,11 +62,11 @@ public abstract class AbstractNcotiTest {
     */
    public static void assertDocumentEquals(Document expectedDoc, Document actualDoc) {
       assertEquals("Les UUID des documents sont différents", 
-            expectedDoc.getUUID(), actualDoc.getUUID());
+            expectedDoc.getUuid(), actualDoc.getUuid());
       assertEquals("Les hash des fichiers sont différents", 
-            expectedDoc.getVersionDigest(), actualDoc.getVersionDigest());
+            expectedDoc.getDigest(), actualDoc.getDigest());
       assertEquals("Les titres des documents sont différents", 
-            expectedDoc.getDocTitle(), actualDoc.getDocTitle());   
+            expectedDoc.getTitle(), actualDoc.getTitle());   
    }
    
 
@@ -87,17 +82,17 @@ public abstract class AbstractNcotiTest {
       assertEquals("Le nombre de documents est différent", expectedDocs.size(), actualDocs.size());
       
       for (Document doc : expectedDocs) {
-         expectedDigests.put(doc.getUUID(), doc.getVersionDigest());
+         expectedDigests.put(doc.getUuid(), doc.getDigest());
       }
       
       for (Document actualDoc : actualDocs) {
-         String expectedDigest = expectedDigests.get(actualDoc.getUUID());
+         String expectedDigest = expectedDigests.get(actualDoc.getUuid());
          
          if (expectedDigest == null) {
-            fail("L'UUID " + actualDoc.getUUID() + " ne fait pas partie des documents attendus");
+            fail("L'UUID " + actualDoc.getUuid() + " ne fait pas partie des documents attendus");
          }
-         assertEquals("Les hash du document " + actualDoc.getUUID() + " ne correspondent pas", 
-               expectedDigest, actualDoc.getVersionDigest());
+         assertEquals("Les hash du document " + actualDoc.getUuid() + " ne correspondent pas", 
+               expectedDigest, actualDoc.getDigest());
       }
    } 
 }
