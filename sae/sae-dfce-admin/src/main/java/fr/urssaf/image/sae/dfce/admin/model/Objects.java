@@ -22,7 +22,7 @@ public class Objects {
 	private List<String> objects;
 
 	/**
-	 * @param object
+	 * @param objects
 	 *            : Les objets types
 	 */
 	public final void setObjects(final List<String> objects) {

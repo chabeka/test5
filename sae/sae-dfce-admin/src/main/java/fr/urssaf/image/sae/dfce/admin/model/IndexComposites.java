@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -46,7 +47,7 @@ public class IndexComposites {
 
 	@Override
 	public final String toString() {
-		final ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+		final ToStringBuilder toStringBuilder = new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE);
 		for (String index : Utils.nullSafeIterable(indexComp)) {
 			toStringBuilder.append("indexComposite", index);
 		}

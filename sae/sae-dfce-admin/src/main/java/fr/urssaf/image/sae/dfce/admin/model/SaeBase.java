@@ -8,6 +8,7 @@ import net.docubase.toolkit.model.base.Base.DocumentOverlayFormConfiguration;
 import net.docubase.toolkit.model.base.Base.DocumentOwnerType;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -277,7 +278,7 @@ public class SaeBase {
 	/** {@inheritDoc} */
 	@Override
 	public final String toString() {
-		final ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+		final ToStringBuilder toStringBuilder = new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE);
 		toStringBuilder.append("BaseId", baseId);
 		toStringBuilder.append("BaseDescription", baseDescription);
 		toStringBuilder.append("DocumentCreationDateConfiguration",

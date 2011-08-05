@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.dfce.admin.model;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -44,7 +45,7 @@ public class SaeCategories {
 	 * {@inheritDoc}
 	 */
 	public final String toString() {
-		final ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+		final ToStringBuilder toStringBuilder = new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE);
 		for (SaeCategory saeCategory : Utils.nullSafeIterable(categories)) {
 			toStringBuilder.append("SaeCategory", saeCategory.toString());
 		}

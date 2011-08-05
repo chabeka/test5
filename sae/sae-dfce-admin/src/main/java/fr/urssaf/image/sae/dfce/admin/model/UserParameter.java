@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.dfce.admin.model;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * Classe concrète contenant les caractéristiques de l’utilisateur mit à
@@ -82,7 +83,7 @@ public class UserParameter {
 	 * */
 	@Override
 	public final String toString() {
-		return new ToStringBuilder(this).append("login", login)
+		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE).append("login", login)
 				.append("password", password).toString();
 	}
 }

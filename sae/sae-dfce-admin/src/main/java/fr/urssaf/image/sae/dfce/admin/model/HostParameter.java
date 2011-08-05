@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.dfce.admin.model;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 /**
  * Cette classe contient les caractéristiques de la machine où se trouve la
@@ -135,7 +136,7 @@ public class HostParameter {
 
 	@Override
 	public final String toString() {
-		return new ToStringBuilder(this).append("hostName", hostName)
+		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE).append("hostName", hostName)
 				.append("hostPort", hostPort)
 				.append("contextRoot", contextRoot).append("secure", secure)
 				.toString();

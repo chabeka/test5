@@ -6,6 +6,7 @@ package fr.urssaf.image.sae.dfce.admin.model;
 import net.docubase.toolkit.model.base.CategoryDataType;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -173,7 +174,8 @@ public class SaeCategory {
 	/** {@inheritDoc} */
 	@Override
 	public final String toString() {
-		final ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+		final ToStringBuilder toStringBuilder = new ToStringBuilder(this,
+				ToStringStyle.MULTI_LINE_STYLE);
 		toStringBuilder.append("Name", name);
 		toStringBuilder.append("DataType", dataType);
 		toStringBuilder.append("MinimumValues", minimumValues);
