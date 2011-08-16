@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.webservices.impl.factory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -43,12 +42,12 @@ public final class ObjectStorageFactory {
 
       // TODO convertir ArchivageUnitaire en StorageDocument
       List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
-      File filePath = new File("");
+      // File filePath = new File("");
       byte[] content = "content".getBytes();
       UUID uuid = UUID.fromString("110E8400-E29B-11D4-A716-446655440000");
 
       StorageDocument storageDocument = new StorageDocument(metadatas, content,
-            filePath, uuid);
+            uuid);
 
       return storageDocument;
    }

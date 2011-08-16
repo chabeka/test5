@@ -139,21 +139,28 @@
          <artifactId>sae-igc</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-      
-       <!-- SAE STORAGE -->
+
+      <!-- SAE SERVICES -->
 
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-storage</artifactId>
+         <artifactId>sae-services</artifactId>
          <version>0.0.1-SNAPSHOT</version>
+          <exclusions>
+
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-api</artifactId>
+            </exclusion>
+
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-log4j12</artifactId>
+            </exclusion>
+
+         </exclusions>
       </dependency>
-      
-       <dependency>
-         <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-storage-bouchon</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
-    
+
       <!--  AXIS 2 -->
 
       <dependency>
@@ -266,6 +273,6 @@
          <artifactId>jsr250-api</artifactId>
          <version>1.0</version>
       </dependency>
-      
+
    </dependencies>
 </project>

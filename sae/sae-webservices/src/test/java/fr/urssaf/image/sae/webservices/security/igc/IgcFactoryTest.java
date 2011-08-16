@@ -10,10 +10,10 @@ import javax.naming.NamingException;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import fr.urssaf.image.sae.igc.util.TextUtils;
@@ -40,15 +40,20 @@ public class IgcFactoryTest {
 
    private static ApplicationContext createApplicationContext() {
 
-      return new ClassPathXmlApplicationContext(new String[] {
-            "applicationContext.xml", "applicationContext-security.xml" });
+      return new ClassPathXmlApplicationContext(
+            new String[] { "applicationContext.xml" });
    }
 
    @Test
-   @Ignore
-   public void loadIgcConfig_success() {
+   public void loadIgcConfig_success() throws IOException {
 
-      fail("non implementé");
+      ApplicationContext ctx = new ClassPathXmlApplicationContext(
+            new String[] { "applicationContext-service.xml" });
+
+      Resource resource = ctx.getResource("classpath:igcConfig_success.xml");
+
+      builder.bind(IGC_CONFIG_JNDI, resource.getFile().getAbsolutePath());
+      createApplicationContext();
    }
 
    @Test

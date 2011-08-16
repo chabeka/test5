@@ -18,7 +18,5 @@
          expression="fr.urssaf.image.sae.webservices.security.*" />
    </context:component-scan>
 
-   <import resource="applicationContext-sae-storage-bouchon.xml" />
-
 
 </beans>

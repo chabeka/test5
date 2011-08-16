@@ -16,7 +16,7 @@ public class SaeStorageException extends RuntimeException {
     * @param cause
     *           exception levée de type {@link StorageException}
     */
-   public SaeStorageException(StorageException cause) {
+   public SaeStorageException(Exception cause) {
       super(cause);
    }
 
