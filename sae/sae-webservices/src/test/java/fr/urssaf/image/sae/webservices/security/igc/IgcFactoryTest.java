@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import fr.urssaf.image.sae.igc.util.TextUtils;
@@ -40,20 +39,8 @@ public class IgcFactoryTest {
 
    private static ApplicationContext createApplicationContext() {
 
-      return new ClassPathXmlApplicationContext(
-            new String[] { "applicationContext.xml" });
-   }
-
-   @Test
-   public void loadIgcConfig_success() throws IOException {
-
-      ApplicationContext ctx = new ClassPathXmlApplicationContext(
-            new String[] { "applicationContext-service.xml" });
-
-      Resource resource = ctx.getResource("classpath:igcConfig_success.xml");
-
-      builder.bind(IGC_CONFIG_JNDI, resource.getFile().getAbsolutePath());
-      createApplicationContext();
+      return new ClassPathXmlApplicationContext(new String[] {
+            "applicationContext.xml", "applicationContext-security.xml" });
    }
 
    @Test
