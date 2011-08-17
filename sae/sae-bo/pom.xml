@@ -22,10 +22,6 @@
          <artifactId>commons-lang</artifactId>
          <version>2.6</version>
       </dependency>      
-      <dependency>
-      	<groupId>fr.urssaf.image.sae</groupId>
-      	<artifactId>sae-storage</artifactId>
-      	<version>0.0.2-SNAPSHOT</version>
-      </dependency>
+     
 	</dependencies>
 </project>
