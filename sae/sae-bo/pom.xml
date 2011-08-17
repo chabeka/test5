@@ -9,6 +9,7 @@
 	<groupId>fr.urssaf.image.sae</groupId>
 	<artifactId>sae-bo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>sae-bo</name>
 	<!-- Ajout des dépendances -->
 	<developers>
 		<developer>
