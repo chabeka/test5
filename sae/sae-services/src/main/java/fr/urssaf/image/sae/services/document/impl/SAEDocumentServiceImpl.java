@@ -1,13 +1,13 @@
 package fr.urssaf.image.sae.services.document.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
-import fr.urssaf.image.sae.exception.SAEConsultationServiceEx;
 import fr.urssaf.image.sae.exception.SAESearchServiceEx;
 import fr.urssaf.image.sae.model.SAELuceneCriteria;
 import fr.urssaf.image.sae.model.UntypedDocument;
@@ -15,7 +15,9 @@ import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.document.SAEConsultationService;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
 import fr.urssaf.image.sae.services.document.SAESearchService;
+import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
 /**
  * Fournit la façade des implementations des services :<br>
@@ -71,9 +73,10 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    /**
     * {@inheritDoc}
     */
-   public final UntypedDocument consultation(final UntypedDocument untypedDoc)
-         throws SAEConsultationServiceEx {
-      return saeConsultationService.consultation(untypedDoc);
+   @Override
+   public final StorageDocument consultation(UUID idArchive)
+         throws SAEConsultationServiceException {
+      return saeConsultationService.consultation(idArchive);
    }
 
 }

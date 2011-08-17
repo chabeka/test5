@@ -1,25 +1,27 @@
 package fr.urssaf.image.sae.services.document;
 
-import fr.urssaf.image.sae.exception.SAEConsultationServiceEx;
-import fr.urssaf.image.sae.model.UntypedDocument;
+import java.util.UUID;
+
+import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
 /**
- * Fournit l’ensemble des services pour la consultation.<br/>
+ * Ensemble des services de consultation du SAE
  * 
- * @author rhofir.
  */
 public interface SAEConsultationService {
 
    /**
     * 
-    * Service pour l'opération <b>Consultation</b>
+    * Service de consultation du SAE
     * 
-    * @param untypedDoc
-    *           : Un objet de type {@link UntypedDocument} .
-    * @return Un objet de type {@link UntypedDocument}.
-    * @throws SAEConsultationServiceEx
-    *            Exception levée lorsque la consultation ne se déroule pas bien.
+    * @param idArchive
+    *           identifiant unique de l'archive
+    * @return Document correspondant à l'identifiant, peut-être null si
+    *         l'identifiant n'existe pas dans le SAE
+    * @throws SAEConsultationServiceException
+    *            une exception est levée lors de la consultation
     */
-   UntypedDocument consultation(UntypedDocument untypedDoc)
-         throws SAEConsultationServiceEx;
+   StorageDocument consultation(UUID idArchive)
+         throws SAEConsultationServiceException;
 }

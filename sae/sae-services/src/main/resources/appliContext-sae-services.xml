@@ -11,10 +11,11 @@
 		http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-   <context:component-scan base-package="fr.urssaf.image.sae.services.document.impl, fr.urssaf.image.sae.services.impl" />
+   <context:component-scan base-package="fr.urssaf.image.sae.services" />
    <!--Gestion de message à partir d'un fichier -->
-   <bean id="messageSource"
+   <bean id="messageSource_sae_services"
       class="org.springframework.context.support.ResourceBundleMessageSource">
       <property name="basename" value="i18n.sae_services_messages_fr_FR" />
    </bean>
+
 </beans>
