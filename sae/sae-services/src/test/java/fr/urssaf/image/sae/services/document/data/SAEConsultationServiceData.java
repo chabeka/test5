@@ -71,7 +71,7 @@ public final class SAEConsultationServiceData {
          IOException {
 
       ApplicationContext ctx = new ClassPathXmlApplicationContext(
-            new String[] { "/appliContext-sae-services-test.xml" });
+            new String[] { "/applicationContext-sae-services-consultation-test.xml" });
 
       StorageServiceProvider provider = ctx
             .getBean(StorageServiceProvider.class);
