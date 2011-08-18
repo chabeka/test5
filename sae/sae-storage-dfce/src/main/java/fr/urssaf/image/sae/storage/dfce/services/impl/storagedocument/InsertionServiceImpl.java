@@ -98,25 +98,42 @@ public class InsertionServiceImpl extends AbstractServices implements
                            + insertExcp.getMessage()));
             }
             if (allOrNothing) {
+               rollback(storageDocDone);
+               // Les documents "rollbackés" ne doivent pas apparaitre dans BulkInsertionResults 
+               storageDocDone.clear();
                break;
-            }
-         }
-      }
-      if (allOrNothing) {
-         for (StorageDocument strDocument : Utils
-               .nullSafeIterable(storageDocDone)) {
-            try {
-               deletionService.deleteStorageDocument(new UUIDCriteria(
-                     strDocument.getUuid(), null));
-            } catch (DeletionServiceEx delSerEx) {
-               throw new InsertionServiceEx(MessageHandler
-                     .getMessage(Constants.INS_CODE_ERROR), delSerEx
-                     .getMessage(), delSerEx);
             }
          }
       }
       return new BulkInsertionResults(new StorageDocuments(storageDocDone),
             new StorageDocumentsOnError(storageDocFailed));
+   }
+
+   /**
+    * Supprime les documents qui ont déjà été insérés avec succès. 
+    * Appelée dans le cadre d'un traitement "tout ou rien" qui serait en erreur.
+    * 
+    * @param storageDocDone
+    * @throws InsertionServiceEx Levée si le rollback (donc la suppression) échoue.
+    */
+   private void rollback(final List<StorageDocument> storageDocDone) throws InsertionServiceEx {
+      for (StorageDocument strDocument : Utils.nullSafeIterable(storageDocDone)) {
+         try {
+            deletionService.deleteStorageDocument(new UUIDCriteria(
+                  strDocument.getUuid(), null));
+         } catch (DeletionServiceEx delSerEx) {
+            // FIXME: lever une exception plus parlante pour l'appelant 
+            // (par exemple : AllOrNothingRollbackException).
+            // Pour l'instant on laisse cette exception pour ne pas casser les signatures.
+            
+            // TODO : il faut continuer le rollback sur les autres documents. 
+            // L'appelant pourrait obtenir une liste des documents non rollbackés via un attribut
+            // de l'exception AllOrNothingRollbackException
+            throw new InsertionServiceEx(MessageHandler
+                  .getMessage(Constants.DEL_CODE_ERROR), delSerEx
+                  .getMessage(), delSerEx);
+         }
+      }
    }
 
    /**
