@@ -105,8 +105,15 @@ public class SearchingServiceImpl extends AbstractServices implements
          Document docDfce = ServiceProvider.getSearchService()
                .getDocumentByUUID(getBaseDFCE(), uUIDCriteria.getUuid());
 
-         return BeanMapper.dfceDocumentToStorageDocument(docDfce, uUIDCriteria
-               .getDesiredStorageMetadatas());
+         StorageDocument storageDoc = null;
+
+         if (docDfce != null) {
+            storageDoc = BeanMapper.dfceDocumentToStorageDocument(docDfce,
+                  uUIDCriteria.getDesiredStorageMetadatas());
+         }
+
+         return storageDoc;
+
       } catch (StorageException srcSerEx) {
          throw new SearchingServiceEx(MessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), srcSerEx.getMessage(),
