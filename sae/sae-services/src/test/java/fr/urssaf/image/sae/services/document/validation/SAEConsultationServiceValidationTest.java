@@ -16,7 +16,7 @@ import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceExc
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/appliContext-sae-services-test.xml" })
+@ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SAEConsultationServiceValidationTest {
 

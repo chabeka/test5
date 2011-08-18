@@ -13,7 +13,7 @@ import fr.urssaf.image.sae.services.SAEServiceProvider;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/appliContext-sae-services-test.xml" })
+@ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
 @SuppressWarnings( { "PMD.ExcessiveImports", "PMD.LongVariable",
       "AbstractClassWithoutAbstractMethod" })
 public class CommonsServices {
