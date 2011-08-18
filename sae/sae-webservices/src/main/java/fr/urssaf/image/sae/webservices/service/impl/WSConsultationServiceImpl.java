@@ -50,7 +50,7 @@ public class WSConsultationServiceImpl implements WSConsultationService {
             .getUrlConsultationDirecte())) {
 
          throw new ConsultationAxisFault(
-               "la fonctionnalité URL de consultation directe n’est pas implémentée",
+               "la fonctionnalité URL de consultation directe n'est pas implémentée",
                "FonctionNonImplementee");
       }
 
@@ -60,8 +60,8 @@ public class WSConsultationServiceImpl implements WSConsultationService {
          if (storageDocument == null) {
 
             throw new ConsultationAxisFault(
-                  "il n’existe aucun document pour l’identifiant d’archivage '"
-                        + uuid + "'", "sae:ArchiveNonTrouvee");
+                  "il n'existe aucun document pour l'identifiant d'archivage '"
+                        + uuid + "'", "ArchiveNonTrouvee");
 
          } else {
 

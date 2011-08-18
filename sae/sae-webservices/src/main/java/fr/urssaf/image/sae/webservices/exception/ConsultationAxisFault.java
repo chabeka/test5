@@ -29,7 +29,7 @@ public class ConsultationAxisFault extends AxisFault {
     */
    public ConsultationAxisFault(Throwable cause) {
 
-      super("Une exception a eu lieu dans la consultation",
+      super("une exception a eu lieu dans la consultation",
             SoapFaultCodeFactory.createSoapFaultCode("urn:sae:faultcodes",
                   "ConsultationServiceError", "sae"), cause);
 

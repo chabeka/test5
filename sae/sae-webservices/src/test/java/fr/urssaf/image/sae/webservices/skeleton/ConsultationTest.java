@@ -20,7 +20,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ import fr.urssaf.image.sae.webservices.util.Axis2Utils;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml",
+@ContextConfiguration(locations = { "/applicationContext-service-consultation-test.xml",
       "/applicationContext-security-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions", "PMD.TooManyStaticImports" })
 public class ConsultationTest {
@@ -91,7 +90,6 @@ public class ConsultationTest {
    }
 
    @Test
-   @Ignore("dans l'attente d'une base stable! de tests unitaire pour la consultation")
    public void consultation_success() throws IOException {
 
       Consultation request = createConsultationResponseType("src/test/resources/request/consultation_success.xml");
@@ -162,14 +160,13 @@ public class ConsultationTest {
 
          assertAxisFault(
                fault,
-               "la fonctionnalité URL de consultation directe n’est pas implémentée",
+               "la fonctionnalité URL de consultation directe n'est pas implémentée",
                "FonctionNonImplementee", "sae");
 
       }
    }
 
    @Test
-   @Ignore
    public void consultation_failure_uuidNotFound() {
       try {
          Consultation request = createConsultationResponseType("src/test/resources/request/consultation_failure_uuidNotFound.xml");
@@ -182,7 +179,7 @@ public class ConsultationTest {
 
          assertAxisFault(
                fault,
-               "Il n'existe aucun document pour l'identifiant d’archivage 'cc26f62e-fd52-42ff-ad83-afc26f96ea91' ",
+               "il n'existe aucun document pour l'identifiant d'archivage 'cc26f62e-fd52-42ff-ad83-afc26f96ea91'",
                "ArchiveNonTrouvee", "sae");
 
       }
