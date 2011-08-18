@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.xml.bind.JAXBException;
@@ -14,13 +15,22 @@ import org.apache.commons.lang.SystemUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.commons.util.checksum.ChecksumFileUtil;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.BatchModeType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ComposantDocumentVirtuelType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentVirtuelType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.FichierType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocumentsType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocumentsVirtuelsType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeMetadonneeType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.MetadonneeType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentVirtuelType.Composants;
 import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
 import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
 
@@ -31,94 +41,240 @@ import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions","PMD.TooManyMethods", "PMD"})
-
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.NcssMethodCount","PMD.ExcessiveMethodLength"})
 public class ResultatsXMLServiceImplTest {
 
-   private static ResultatsXmlService service;
+   @Autowired
+   private ResultatsXmlService service;
    
    private static ResultatsType resultats;
    
-   private static OutputStream output;
+   
    private static final String MESSAGE_INATTENDU = "message inattendu"; 
    
+   // Recupération repertoire temp
    private static final String REPERTORY;
-
-   
    static {
        REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
-
-         System.setProperty("file.encoding", "UTF-8");
-
+       System.setProperty("file.encoding", "UTF-8");
    }
+   // nom du répertoire creer dans le repertoire temp de l'os
+   private static String resultatsEcde = "resultatsEcde";
+   // separateur de fichier
+   private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+   // declaration d'un répertoire dans le repertoire temp de l'os
+   private static final String REPERTOIRE = REPERTORY + FILE_SEPARATOR + resultatsEcde;
+   
+   private static final String SHA1 = "SHA-1";
+   private static final String VALEUR = "La valeur";
+   private static final String META1 = "CODE_METADONNEE_1";
+   private static final String META2 = "CODE_METADONNEE_2";
    
    
    @BeforeClass
    public static void init() throws FileNotFoundException {
       resultats = new ResultatsType();
       
-      resultats.setBatchMode(BatchModeType.fromValue("PARTIEL"));
-      resultats.setInitialDocumentsCount(0);
-      resultats.setInitialVirtualDocumentsCount(0);
-      resultats.setIntegratedDocumentsCount(5);
-      resultats.setIntegratedVirtualDocumentsCount(18);
-      resultats.setNonIntegratedDocuments(new ListeDocumentsType());
-      resultats.setNonIntegratedDocumentsCount(18);
-      resultats.setNonIntegratedVirtualDocuments(new ListeDocumentsVirtuelsType());
-      resultats.setNonIntegratedVirtualDocumentsCount(6);
+      initialiseResultats();
       
-      output = new FileOutputStream(FilenameUtils.concat(REPERTORY,"resultatsLokmen.xml"));
-      
-      service = new ResultatsXmlServiceImpl();
+      File rep = new File(REPERTOIRE); 
+      //nettoyage du repertoire present dans le rep temp de l'os
+      for(File file : rep.listFiles()){
+         file.delete();
+      }  
+      // creation d'un repertoire dans le rep temp de l'os
+      rep.mkdirs();
    }
    
-   // Test simple avec un outputStream
-   @Test
-   public void writeResultatsXml_success() throws EcdeXsdException, JAXBException {
-      service.writeResultatsXml(resultats, output);
-      //TODO assert
+   private static void initialiseResultats() {
+      resultats.setBatchMode(BatchModeType.fromValue("PARTIEL"));
+      resultats.setInitialDocumentsCount(4);
+      resultats.setIntegratedDocumentsCount(2);
+      resultats.setNonIntegratedDocumentsCount(2);
+      resultats.setInitialVirtualDocumentsCount(5);
+      resultats.setIntegratedVirtualDocumentsCount(4);
+      resultats.setNonIntegratedVirtualDocumentsCount(1);
+      
+      // Non integratedDocuments -- document qui n'ont pas été archivés
+      // on cree donc une liste de document
+      // un document a :
+      //     -- un objet numerique qui lui meme a un cheminEtNomDuFichier, hashvaleur, hashalgo
+      //     -- des metadonnees qui elle meme ont un code et une valeur
+      //     -- un numero de pageDebut
+      //     -- un nombre de page
+      DocumentType doc1 = new DocumentType();
+      // objet num
+      FichierType objetNum = new FichierType();
+      objetNum.setCheminEtNomDuFichier("repertoire/fichier1.pdf");
+      objetNum.setHashValeur("541f9db389ff2d4b70dd25917277daafea1e7ba6");
+      objetNum.setHashAlgo(SHA1);
+      doc1.setObjetNumerique(objetNum);
+      //meta donnees
+      MetadonneeType meta1 = new MetadonneeType();
+      meta1.setCode(META1);
+      meta1.setValeur(VALEUR);
+      MetadonneeType meta2 = new MetadonneeType();
+      meta2.setCode(META2);
+      meta2.setValeur(VALEUR);
+      
+      ListeMetadonneeType listeM = new ListeMetadonneeType();
+      listeM.getMetadonnee().add(meta1);
+      listeM.getMetadonnee().add(meta2);
+      doc1.setMetadonnees(listeM);
+      
+      doc1.setNumeroPageDebut(1);
+      doc1.setNombreDePages(1);
+      //---------------------------------------      
+      DocumentType doc2 = new DocumentType();
+      // objet num
+      FichierType objetNum2 = new FichierType();
+      objetNum2.setCheminEtNomDuFichier("repertoire/fichier2.pdf");
+      objetNum2.setHashValeur("541f9db389ff2d4b70dd25917277daafea1dfb98");
+      objetNum2.setHashAlgo(SHA1);
+      doc2.setObjetNumerique(objetNum2);
+      //meta donnees
+      MetadonneeType meta3 = new MetadonneeType();
+      meta3.setCode(META1);
+      meta3.setValeur(VALEUR);
+      MetadonneeType meta4 = new MetadonneeType();
+      meta4.setCode(META2);
+      meta4.setValeur(VALEUR);
+      
+      ListeMetadonneeType listeM2 = new ListeMetadonneeType();
+      listeM2.getMetadonnee().add(meta3);
+      listeM2.getMetadonnee().add(meta4);
+      doc2.setMetadonnees(listeM2);
+            
+      ListeDocumentsType listeD = new ListeDocumentsType();
+      listeD.getDocument().add(doc1);
+      listeD.getDocument().add(doc2);
+      resultats.setNonIntegratedDocuments(listeD);
+      
+      // NonIntegratedVirtualDocument -- document virtuel qui n'ont pas été archivés
+      DocumentVirtuelType docVirtuel = new DocumentVirtuelType();
+      FichierType objNumVir = new FichierType();
+      objNumVir.setCheminEtNomDuFichier("repertoire/fichier3.pdf");
+      objNumVir.setHashValeur("777f9db389ff2d4b70dd25917277daafea1dfb98");
+      objNumVir.setHashAlgo(SHA1);
+      docVirtuel.setObjetNumerique(objNumVir);
+      
+      ComposantDocumentVirtuelType composant = new ComposantDocumentVirtuelType();
+      MetadonneeType meta5 = new MetadonneeType();
+      meta5.setCode(META1);
+      meta5.setValeur(VALEUR);
+      MetadonneeType meta6 = new MetadonneeType();
+      meta6.setCode(META2);
+      meta6.setValeur(VALEUR);
+      composant.setNumeroPageDebut(1);
+      composant.setNombreDePages(2);
+      ListeMetadonneeType listeM3 = new ListeMetadonneeType();
+      listeM3.getMetadonnee().add(meta5);
+      listeM3.getMetadonnee().add(meta6);
+      
+      composant.setMetadonnees(listeM3);
+            
+      ComposantDocumentVirtuelType composant2 = new ComposantDocumentVirtuelType();
+      MetadonneeType meta7 = new MetadonneeType();
+      meta7.setCode(META1);
+      meta7.setValeur(VALEUR);
+      MetadonneeType meta8 = new MetadonneeType();
+      meta8.setCode(META2);
+      meta8.setValeur(VALEUR);
+      composant2.setNumeroPageDebut(2);
+      composant2.setNombreDePages(2);
+      ListeMetadonneeType listeM4 = new ListeMetadonneeType();
+      listeM4.getMetadonnee().add(meta7);
+      listeM4.getMetadonnee().add(meta8);
+      
+      composant2.setMetadonnees(listeM4);
+      
+      Composants composants = new Composants();
+      composants.getComposant().add(composant);
+      composants.getComposant().add(composant2);
+      docVirtuel.setComposants(composants);
+      //-- un deuxieme document virtuel qui n'as pas pu être archivé
+      DocumentVirtuelType docVirtuel2 = new DocumentVirtuelType();
+      FichierType objNumVir2 = new FichierType();
+      objNumVir2.setCheminEtNomDuFichier("repertoire/fichier3.pdf");
+      objNumVir2.setHashValeur("777f9db389ff2d4b70dd25917277daafea1dfb98");
+      objNumVir2.setHashAlgo(SHA1);
+      docVirtuel2.setObjetNumerique(objNumVir2);
+      
+      ComposantDocumentVirtuelType composant3 = new ComposantDocumentVirtuelType();
+      MetadonneeType meta9 = new MetadonneeType();
+      meta9.setCode(META1);
+      meta9.setValeur(VALEUR);
+      MetadonneeType meta10 = new MetadonneeType();
+      meta10.setCode(META2);
+      meta10.setValeur(VALEUR);
+      composant3.setNumeroPageDebut(1);
+      composant3.setNombreDePages(2);
+      ListeMetadonneeType listeM5 = new ListeMetadonneeType();
+      listeM5.getMetadonnee().add(meta9);
+      listeM5.getMetadonnee().add(meta10);
+      
+      composant3.setMetadonnees(listeM5);
+            
+      ComposantDocumentVirtuelType composant4 = new ComposantDocumentVirtuelType();
+      MetadonneeType meta11 = new MetadonneeType();
+      meta11.setCode(META1);
+      meta11.setValeur(VALEUR);
+      MetadonneeType meta12 = new MetadonneeType();
+      meta12.setCode(META2);
+      meta12.setValeur(VALEUR);
+      composant4.setNumeroPageDebut(2);
+      composant4.setNombreDePages(2);
+      ListeMetadonneeType listeM6 = new ListeMetadonneeType();
+      listeM6.getMetadonnee().add(meta11);
+      listeM6.getMetadonnee().add(meta12);
+      
+      composant4.setMetadonnees(listeM6);
+      
+      Composants composants2 = new Composants();
+      composants2.getComposant().add(composant3);
+      composants2.getComposant().add(composant4);
+      docVirtuel2.setComposants(composants2);
+      
+      //--------------------
+      ListeDocumentsVirtuelsType listeDV = new ListeDocumentsVirtuelsType();
+      listeDV.getDocumentVirtuel().add(docVirtuel);
+      listeDV.getDocumentVirtuel().add(docVirtuel2);
+      resultats.setNonIntegratedVirtualDocuments(listeDV);
    }
    
    // Test avec un fichier en deuxieme argument
    // on vient verifier que le fichier a bien ete cree
    @Test
-   public void writeResutatsXml_success_file() throws EcdeXsdException {
-      File outputFile = new File(FilenameUtils.concat(REPERTORY,"resultatsLokmenFile.xml"));
+   public void writeResutatsXml_file_success() throws EcdeXsdException, IOException {
+      File outputFile = new File(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
       service.writeResultatsXml(resultats, outputFile);
       boolean exist = false;
       if(outputFile.exists()) {
          exist = true;
       }
-      assertEquals(MESSAGE_INATTENDU, true, exist);
+      assertEquals("fichier non existant", true, exist);
+      // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu)
+      // Sha-1 calculer via un logiciel externe
+      String fsumAttendu = "f991c14ce855dff90a5705cc3b14238e7f383dea";
+      String checksumObtenu = ChecksumFileUtil.sha(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
+      
+      assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
+   
    }
-   
-   
-   
-   //------------------- calcul checkSum
-//   private static long doChecksum(String fileName) {
-//
-//      try {
-//
-//          CheckedInputStream cis = null;
-//          long fileSize = 0;
-//          try {
-//              // Computer CRC32 checksum
-//              cis = new CheckedInputStream(new FileInputStream(fileName), new CRC32());
-//              fileSize = new File(fileName).length();
-//          } catch (FileNotFoundException e) {
-//              return 0;
-//          }
-//          byte[] buf = new byte[128];
-//          while(cis.read(buf) >= 0) {
-//          }
-//
-//          long checksum = cis.getChecksum().getValue();
-//          return checksum;
-//
-//      } catch (IOException e) {
-//          return 0;
-//      }
-//  }
-   
+
+   // Test simple avec un outputStream
+   @Test
+   public void writeResultatsXml_outputstream_success() throws EcdeXsdException, JAXBException, IOException {
+      File outputFile = new File(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
+      OutputStream output = new FileOutputStream(outputFile.getPath());
+      service.writeResultatsXml(resultats, output);
+      
+      // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu)
+      // Sha-1 calculer via un logiciel externe
+      String fsumAttendu = "f991c14ce855dff90a5705cc3b14238e7f383dea";
+      String checksumObtenu = ChecksumFileUtil.sha(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
+      
+      assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
+   }
    
 }

@@ -25,33 +25,27 @@ import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions","PMD.TooManyMethods", "PMD"})
+@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod"})
 public class SommaireXmlServiceValidationTest {
 
    @Autowired
    private SommaireXmlService service;
-   
-   // utilisation pour la convertion
-   private static InputStream input1;
-   
-   private static File inputFile;
    
    private static final String MESSAGE_INATTENDU = "message inattendu";
    
    
    @BeforeClass
    public static void init() throws URISyntaxException, FileNotFoundException {
-      input1 = null;
-      inputFile = null;
    }
    
    // inputStream à null
    @Test
-   public void readSommaireXml_failure() throws EcdeXsdException {
+   public void readSommaireXml_failure_inputstream() throws EcdeXsdException {
       try {
+         InputStream input1 = null;
          service.readSommaireXml(input1);
       }catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE_INATTENDU, "L'argument input doit être renseigné.", e.getMessage());
+         assertEquals(MESSAGE_INATTENDU, "L'argument flux doit être renseigné.", e.getMessage());
       }
    }
    
@@ -59,9 +53,10 @@ public class SommaireXmlServiceValidationTest {
    @Test
    public void readSommaireXml_failure_file() throws EcdeXsdException {
       try {
+         File inputFile = null;
          service.readSommaireXml(inputFile);
       }catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE_INATTENDU, "L'argument input doit être renseigné.", e.getMessage());
+         assertEquals(MESSAGE_INATTENDU, "L'argument fichier doit être renseigné.", e.getMessage());
       }
    }   
    

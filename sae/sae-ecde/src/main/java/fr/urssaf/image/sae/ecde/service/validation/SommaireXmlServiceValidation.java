@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.ecde.service.validation;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.aspectj.lang.annotation.Aspect;
@@ -15,8 +14,6 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
  * SommaireXmlService
  * 
  */
-
-@SuppressWarnings("PMD.PreserveStackTrace")
 @Aspect
 public class SommaireXmlServiceValidation {
 
@@ -41,14 +38,9 @@ public class SommaireXmlServiceValidation {
    @Before(READSOMXMLINPUT)
    public final void readSommaireXml(InputStream input) {
       
-      try {
-         if ( input == null || input.read() == -1 ) { // =-1 si fin de flux
-            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("input.nonRenseigne", null));
-         }
-      } catch (IOException e) {
-            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("input.nonRenseigne", null));
-      }
-      
+      if ( input == null ) {
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("inputFlux.nonRenseigne", null));
+      }      
    }
    
    /**
@@ -62,8 +54,13 @@ public class SommaireXmlServiceValidation {
    public final void readSommaireXml(File input) {
       
       if (input == null) { // le fichier est null
-            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("input.nonRenseigne", null));
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("inputFile.nonRenseigne", null));
       }
+      
+      if (!input.exists()) {
+         throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("inputFile.notExist", input.getPath()));
+      }
+      
    } 
    
 }

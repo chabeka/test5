@@ -1,8 +1,8 @@
 package fr.urssaf.image.sae.ecde.util;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -13,6 +13,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
+
+
 
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
 
@@ -39,7 +41,7 @@ public final class JAXBUtils {
     */
    public static <T> void marshal(  JAXBElement<T> rootElement, 
                                     OutputStream output,
-                                    File xsdSchema) throws JAXBException, SAXException {
+                                    URL xsdSchema) throws JAXBException, SAXException {
       
       // Création des objets nécessaires
       JAXBContext context = JAXBContext.newInstance(rootElement.getDeclaredType().getPackage().getName());
@@ -47,6 +49,7 @@ public final class JAXBUtils {
       
       // Option pour indenter le XML en sortie
       marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+      marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new JAXBNamespaceMapper());
       
       // Affectation du schéma XSD si spécifié
       if (xsdSchema!=null) {
@@ -54,11 +57,9 @@ public final class JAXBUtils {
          Schema schema = schemaFactory.newSchema(xsdSchema);
          marshaller.setSchema(schema);
       }
-            
       // Déclenche le marshalling
       marshaller.marshal(rootElement, output);
    }
-
  
    /**
     * Méthode générique d'unmarshalling avec JAXB
@@ -72,7 +73,7 @@ public final class JAXBUtils {
    @SuppressWarnings("unchecked")
    public static SommaireType unmarshal( Class<SommaireType> docClass,
                                   InputStream input,
-                                  File xsdSchema) throws JAXBException, SAXException {
+                                  URL xsdSchema) throws JAXBException, SAXException {
       
       // Création des objets nécessaires
       String packageName = docClass.getPackage().getName();
@@ -91,6 +92,5 @@ public final class JAXBUtils {
       
       // Renvoie de la valeur de retour
       return doc.getValue();
-      
       }
 }

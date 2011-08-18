@@ -1,32 +1,23 @@
 package fr.urssaf.image.sae.ecde.service.impl;
 
 import static org.junit.Assert.assertEquals;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
-import javax.xml.bind.JAXBContext;
+import java.io.InputStream;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.BatchModeType;
-import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocumentsType;
-import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocumentsVirtuelsType;
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
 import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
-
-
 /**
  * Classe permettant de tester l'implémentation
  * des méthodes de la classe SommaireXmlServiceImpl
@@ -34,88 +25,61 @@ import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions","PMD.TooManyMethods", "PMD"})
-@Ignore
+@SuppressWarnings({"PMD.MethodNamingConventions"})
 public class SommaireXmlServiceImplTest {
 
    @Autowired
    private SommaireXmlService service;
    
-   // Recupération repertoire temp
-//   private static final String REPERTORY;
-//   static {
-//       REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
-//
-//         System.setProperty("file.encoding", "UTF-8");
-//
-//   }
-   
    private static final String MESSAGE_INATTENDU = "message inattendu"; 
-   private static File input;
+   
+   
+   // Recupération repertoire temp de l'os
+   private static final String REPERTORY;
+   static {
+       REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
+       System.setProperty("file.encoding", "UTF-8");
+   }
+   // nom du répertoire creer dans le repertoire temp de l'os
+   private static String sommaireEcde = "sommaireEcde";
+   // separateur de fichier
+   private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+   // declaration d'un répertoire dans le repertoire temp de l'os
+   private static final String REPERTOIRE = REPERTORY + FILE_SEPARATOR + sommaireEcde;
    
    @BeforeClass
    public static void init() {
-      //input = new File(FilenameUtils.concat(REPERTORY, "sommaire.xml"));
-      input = new File("src/test/resources/sommaire-test001.xml");
+      File rep = new File(REPERTOIRE); 
+      // creation d'un repertoire dans le rep temp de l'os
+      rep.mkdir();
+      
    }
    
-   
-   // Test avec succes -- lecture du fichier sommaire.xml
+   // Test avec succes -- lecture du fichier sommaire-test001.xml 
+   // Ce fichier a été placé dans le répertoire temporaire de l'os
+   // Il est impératif de ce créer un fichier pour que ce test fonctionne
    @Test
-   public void readSommaireXml_success() throws EcdeXsdException {
-      //TODO a corriger
+   public void readSommaireXml_success_file() throws EcdeXsdException, FileNotFoundException, JAXBException {
+      File input = new File(FilenameUtils.concat(REPERTOIRE, "sommaire-test001.xml"));
       SommaireType sommaire = service.readSommaireXml(input);
       assertEquals(MESSAGE_INATTENDU, BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
+      assertEquals(MESSAGE_INATTENDU, "La description du traitement", sommaire.getDescription());
+      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocuments().getDocument().size());
+      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocumentsVirtuels().getDocumentVirtuel().size());
    }
    
-   
-   // test ne respectant pas la structure du sommaire.xsd
+   // Test avec succes -- lecture du fichier sommaire-test001.xml 
+   // Ce fichier a été placé dans le répertoire temporaire de l'os
+   // Il est impératif de ce créer un fichier pour que ce test fonctionne
    @Test
-   public void readSommaireXml_failure_nonRespectXSD() throws EcdeXsdException {
-      //TODO assert
-   }
-   
-   // test ne respectant pas la structure du commun_som_res.xsd 
-   @Test
-   public void readSommaireXml_failure_nonRespectCommunXSD() throws EcdeXsdException {
-    //TODO assert
-   }
-   
-   // test sans schema XSD
-   @Test
-   public void readSommaireXml_failure_sansXSD() throws EcdeXsdException {
-    //TODO assert
-   }
-   
-   
-   //----------------------- GENERATION DUN FICHIER
-   public void generationSchemaXsd() throws JAXBException, FileNotFoundException {
-      
-      SommaireType sommaireType = new SommaireType();
-      
-      ListeDocumentsType listeDocs = new ListeDocumentsType();
-      ListeDocumentsVirtuelsType listeVirtDocs = new ListeDocumentsVirtuelsType();
-      
-     
-      sommaireType.setBatchMode(BatchModeType.fromValue("PARTIEL"));
-      sommaireType.setDocuments(listeDocs);
-      sommaireType.setDateCreation(null);
-      sommaireType.setDescription("Xml Test Lokmen");
-      sommaireType.setDocumentsVirtuels(listeVirtDocs);
-      
-      
-      
-      // Création des objets nécessaires
-      JAXBContext context = JAXBContext.newInstance(SommaireType.class.getPackage().getName());
-      Marshaller marshaller = context.createMarshaller();
-      
-      // Option pour indenter le XML en sortie
-      marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-      
-      // Déclenche le marshalling
-      OutputStream output = new FileOutputStream("C:/sommaireLokmen.xml");
-      marshaller.marshal(sommaireType, System.out);
-      marshaller.marshal(sommaireType, output);
+   public void readSommaireXml_success_inputStream() throws EcdeXsdException, FileNotFoundException, JAXBException {
+      File file = new File(FilenameUtils.concat(REPERTOIRE, "sommaire-test001.xml"));
+      InputStream input= new FileInputStream(file);
+      SommaireType sommaire = service.readSommaireXml(input);
+      assertEquals(MESSAGE_INATTENDU, BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
+      assertEquals(MESSAGE_INATTENDU, "La description du traitement", sommaire.getDescription());
+      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocuments().getDocument().size());
+      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocumentsVirtuels().getDocumentVirtuel().size());
    }
    
 }

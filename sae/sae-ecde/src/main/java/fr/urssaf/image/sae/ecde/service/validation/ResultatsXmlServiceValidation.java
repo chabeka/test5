@@ -41,8 +41,11 @@ public class ResultatsXmlServiceValidation {
    @Before(WRITERESXMLOUTPUT)
    public final void writeResultatsXml(ResultatsType resultatsXml, OutputStream output) {
    
-         if (resultatsXml == null || output == null) { 
-            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("resultatsXml.nonRenseigne", null));
+         if (resultatsXml == null) { 
+            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("resultat.notExist", null));
+         }
+         if (output == null) { 
+            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("output.notExist", null));
          }
    }
    /**
@@ -53,8 +56,12 @@ public class ResultatsXmlServiceValidation {
     */
    @Before(WRITERESXMLFILE)
    public final void writeResultatsXml(ResultatsType resultatsXml, File output) {
-         if (resultatsXml == null || output == null) { 
-            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("resultatsXml.nonRenseigne", null));
+         
+         if (resultatsXml == null) { 
+            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("resultat.notExist", null));
+         }
+         if (output == null) { 
+            throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("output.notExist", null));
          }
    }
    

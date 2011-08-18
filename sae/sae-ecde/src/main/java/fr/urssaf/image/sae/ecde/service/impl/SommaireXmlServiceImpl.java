@@ -3,10 +3,12 @@ package fr.urssaf.image.sae.ecde.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -41,11 +43,14 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
       
       try {
          Class<SommaireType> docClass = SommaireType.class;
-         File xsdSchema = new File("src/main/resources/xsd_som_res/sommaire.xsd");
+         ClassPathResource classPath = new ClassPathResource("xsd_som_res/sommaire.xsd");
+         URL xsdSchema = classPath.getURL();
          return JAXBUtils.unmarshal(docClass, input, xsdSchema);
       } catch (JAXBException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
       } catch (SAXException e) {
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
+      } catch (IOException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
       }
       

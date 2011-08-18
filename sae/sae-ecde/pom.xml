@@ -135,6 +135,13 @@
          <version>${apache.commons-io.version}</version>
       </dependency>
 
+      <!-- Pour ajouter commentaire dans les XML générés -->
+      <dependency>
+         <groupId>org.jdom</groupId>
+         <artifactId>jdom</artifactId>
+         <version>1.1</version>
+      </dependency>
+
       <!-- JAXB -->
       <dependency>
          <groupId>javax.xml.bind</groupId>
@@ -147,6 +154,12 @@
          <version>${jaxb.impl.version}</version>
       </dependency>
 
+      <!-- Pour la comparaison de checkSum -->
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-util</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
    </dependencies>
 </project>

@@ -3,13 +3,17 @@ package fr.urssaf.image.sae.ecde.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
+import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.resultats.ObjectFactory;
 import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
@@ -22,6 +26,7 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
  * resultats.xml.
  * 
  */
+@Service
 public class ResultatsXmlServiceImpl implements ResultatsXmlService {
 
    // pour la creation d'un object JAXBElement resultatsType
@@ -37,17 +42,19 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
    @Override
    public final void writeResultatsXml(ResultatsType resultatsXml, OutputStream output) throws EcdeXsdException {
       try {
-         File xsdSchema = new File("src/main/resources/xsd_som_res/resultats.xsd");
+         ClassPathResource classPath = new ClassPathResource("xsd_som_res/resultats.xsd");
+         URL xsdSchema = classPath.getURL();
          JAXBElement<ResultatsType> resultats = object.createResultats(resultatsXml);
          
          JAXBUtils.marshal(resultats, output, xsdSchema);
       } catch (SAXException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message", null), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message"), e);
       } catch (JAXBException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message", null), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message"), e);
+      } catch (IOException e) {
+         throw new EcdeRuntimeException(e);
       }
-      
-   }
+  }
 
    /**
     * Methode permettant l'ecriture du fichier resultats.xml
@@ -57,12 +64,11 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
     * @throws EcdeXsdException erreur de structure a été détectée sur le resultats.xml
     */
    @Override
-   @SuppressWarnings("PMD.PreserveStackTrace")
    public final void writeResultatsXml(ResultatsType resultatsXml, File output) throws EcdeXsdException {
       try {
          writeResultatsXml(resultatsXml, convertFileToOutputStream(output));
       } catch (IOException e) {
-         throw new IllegalArgumentException("Erreur d'argument en entrée.");
+         throw new EcdeRuntimeException(e);
       }
       
    }
