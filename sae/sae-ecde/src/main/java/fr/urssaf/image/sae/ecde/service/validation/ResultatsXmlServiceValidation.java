@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
 import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
-
 /**
  * 
  * Classe de validation des arguments en entrée des implémentations du service
@@ -18,7 +17,6 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
 @Aspect
 public class ResultatsXmlServiceValidation {
 
-   
    private static final String ECDERESSERVICE = "fr.urssaf.image.sae.ecde.service.ResultatsXmlService.";
    
    // verification param entrée methode writeResultatsXml#1
@@ -28,8 +26,6 @@ public class ResultatsXmlServiceValidation {
    // verification param entrée methode writeResultatsXml#2
    private static final String WRITERESXMLFILE = "execution(void "+ECDERESSERVICE+"writeResultatsXml(*,*))" +
                                                 "&& args(resultatsXml, output)";
-   
-   
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la methode writeResultatsXml de l'interface
     * service.ResultatsXmlService sont bien correct.
@@ -40,7 +36,6 @@ public class ResultatsXmlServiceValidation {
     */
    @Before(WRITERESXMLOUTPUT)
    public final void writeResultatsXml(ResultatsType resultatsXml, OutputStream output) {
-   
          if (resultatsXml == null) { 
             throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("resultat.notExist", null));
          }
@@ -63,7 +58,5 @@ public class ResultatsXmlServiceValidation {
          if (output == null) { 
             throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("output.notExist", null));
          }
-   }
-   
-   
+   }   
 }

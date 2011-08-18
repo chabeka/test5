@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
+import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
 import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
@@ -47,15 +48,13 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
          URL xsdSchema = classPath.getURL();
          return JAXBUtils.unmarshal(docClass, input, xsdSchema);
       } catch (JAXBException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "sommaire.xml"), e);
       } catch (SAXException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "sommaire.xml"), e);
       } catch (IOException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
+         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", e));
       }
-      
    }
-
    /**
     * Methode permettant la lecture du fichier sommaire.xml
     * <br>avec en entree un flux
@@ -81,5 +80,4 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
       
       return FileUtils.openInputStream(file);
    }
-
 }

@@ -32,7 +32,6 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    private static final String ECDE = "ecde";
    private static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
    
-   
    /**
     * Implémentation de la méthode convertFileToURI
     * 
@@ -73,12 +72,10 @@ public class EcdeFileServiceImpl implements EcdeFileService {
              host = ecdeSource.getHost();
           }
       } 
-         
       // levée d'exception car aucune correspondance
       if ( !trouve ){
          throw new EcdeBadFileException(MessageRessourcesUtils.recupererMessage("ecdeBadFileException.message", ecdeFile));
       }
-      
       // Construction de l'URI adequate
       try {
          String fichier = nomFichier.replace("\\", "/");
@@ -136,10 +133,8 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       if ( !trouve ){
          throw new EcdeBadURLException(MessageRessourcesUtils.recupererMessage("ecdeBadUrlException.message", ecdeURL));
       }
-
       // Construire le chemin absolu du fichier
       return new File(basePath.concat(ecdeURL.getPath()));
-      
    }
    
    /**
@@ -155,6 +150,4 @@ public class EcdeFileServiceImpl implements EcdeFileService {
    public final boolean validateURL(URI ecdeURL, String expReg) {
       return ecdeURL.toString().matches(expReg);
    }
-   
-
 }

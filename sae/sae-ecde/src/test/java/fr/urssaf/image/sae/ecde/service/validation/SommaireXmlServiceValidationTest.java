@@ -16,8 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
-
-
 /**
  * Classe permettant de tester l'aspect sur la validation des paramètres d'entree
  * des méthodes de la classe SommaireXmlServiceValidation
@@ -32,7 +30,6 @@ public class SommaireXmlServiceValidationTest {
    private SommaireXmlService service;
    
    private static final String MESSAGE_INATTENDU = "message inattendu";
-   
    
    @BeforeClass
    public static void init() throws URISyntaxException, FileNotFoundException {

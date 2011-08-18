@@ -5,7 +5,6 @@ import java.io.OutputStream;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
-
 /**
  * Service permettant l'ecriture des fichiers resultat.xml  
  * <br>
@@ -17,7 +16,6 @@ import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
  */
 public interface ResultatsXmlService {
    
-   
    /**
     * Methode permettant l'ecriture du fichier resultats.xml
     * 
@@ -26,7 +24,6 @@ public interface ResultatsXmlService {
     * @throws EcdeXsdException erreur de structure a été détectée sur le resultats.xml
     */
    void writeResultatsXml(ResultatsType resultatsXml, OutputStream output) throws EcdeXsdException;
-   
    /**
     * Methode permettant l'ecriture du fichier resultats.xml
     * 
@@ -35,5 +32,4 @@ public interface ResultatsXmlService {
     * @throws EcdeXsdException erreur de structure a été détectée sur le resultats.xml
     */
    void writeResultatsXml(ResultatsType resultatsXml, File output)  throws EcdeXsdException;
-   
 }

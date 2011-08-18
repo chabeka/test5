@@ -20,7 +20,6 @@ import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
 import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
 import fr.urssaf.image.sae.ecde.util.JAXBUtils;
 import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
-
 /**
  * Implementation de la methode writeResultatsXml pour l'ecriture du fichier <br>
  * resultats.xml.
@@ -31,7 +30,6 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
 
    // pour la creation d'un object JAXBElement resultatsType
    private static ObjectFactory object = new ObjectFactory();
-   
    /**
     * Methode permettant l'ecriture du fichier resultats.xml
     * 
@@ -48,15 +46,14 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
          
          JAXBUtils.marshal(resultats, output, xsdSchema);
       } catch (SAXException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message"), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "resultats.xml"), e);
       } catch (JAXBException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message"), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "resultats.xml"), e);
       } catch (IOException e) {
-         throw new EcdeRuntimeException(e);
+         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message"), e);
       }
   }
-
-   /**
+  /**
     * Methode permettant l'ecriture du fichier resultats.xml
     * 
     * @param resultatsXml objet representant le contenu du resultats.xml
@@ -70,9 +67,7 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
       } catch (IOException e) {
          throw new EcdeRuntimeException(e);
       }
-      
    }
-   
    /*
     * Methode permettant de convertir un objet de type File en OutputStream
     */
@@ -80,7 +75,5 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
       
       return FileUtils.openOutputStream(file);
    }
-
-   
 
 }

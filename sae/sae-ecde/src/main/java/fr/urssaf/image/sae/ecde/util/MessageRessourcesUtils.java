@@ -19,13 +19,11 @@ public final class MessageRessourcesUtils {
 
    private MessageRessourcesUtils() {
    }
-   
    // Recupération du contexte pour les fichiers properties
    private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde.xml");
    private static final MessageSource MESSAGESOURCES = (MessageSource) CONTEXT.getBean("messageSource");
 
    private static final String NONRENSEIGNE = "ecdeFileAttributNonRenseigne";
-   
    /**
     * Methode qui récupére les messages d'erreur avec objet non renseigne.
     * 
@@ -36,8 +34,6 @@ public final class MessageRessourcesUtils {
    public static String recupererMessageObject(String message, String ecdeFileorUrl) {
       return MESSAGESOURCES.getMessage(message, new Object[] {ecdeFileorUrl}, Locale.getDefault());
    }
-   
-   
    /**
     * Methode qui récupére les messages d'erreur avec objet en question.
     * 
@@ -49,7 +45,6 @@ public final class MessageRessourcesUtils {
       Object[] param = new Object[] {object};
       return MESSAGESOURCES.getMessage(message, param, Locale.getDefault());
    }
-   
    /**
     * Methode qui récupére les messages d'erreur sans argument.
     * 
@@ -59,7 +54,6 @@ public final class MessageRessourcesUtils {
    public static String recupererMessage(String message) {
       return MESSAGESOURCES.getMessage(message, null, Locale.getDefault());
    }
-   
    /**
     * Methode qui récupére les messages d'erreur indiquant qu'elle attribut est manquant et dans 
     * quel position. 
@@ -71,6 +65,4 @@ public final class MessageRessourcesUtils {
    public static String recupMessageNonRenseigneException(String valeur, int curseur) {
       return MESSAGESOURCES.getMessage(NONRENSEIGNE, new Object[] {valeur, curseur}, Locale.getDefault());
    }
-
-   
 }

@@ -17,7 +17,6 @@ import org.xml.sax.SAXException;
 
 
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
-
 /**
  * Cette classe permet de pratiquer le marshalling et le unmarshalling
  * <br>à savoir JAVA->XML et XML->JAVA. 
@@ -29,7 +28,6 @@ public final class JAXBUtils {
 
    private JAXBUtils() {
    }
-   
    /**
     * Méthode générique de marshalling avec JAXB
     * @param <T> le type de l'élément racine
@@ -60,7 +58,6 @@ public final class JAXBUtils {
       // Déclenche le marshalling
       marshaller.marshal(rootElement, output);
    }
- 
    /**
     * Méthode générique d'unmarshalling avec JAXB
     * @param docClass la classe de l'élément racine 

@@ -25,8 +25,6 @@ import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
     * </li>     
  * </ul>            
  */
-
-
 public interface EcdeFileService {
    
    
@@ -55,7 +53,6 @@ public interface EcdeFileService {
     * @return URL ECDE
     */
     URI convertFileToURI (File ecdeFile, EcdeSource... sources) throws EcdeBadFileException;
-   
    
    /**
     * Conversion d'une URL ECDE vers un chemin absolu de fichier dans l'ECDE correspondant
@@ -92,5 +89,4 @@ public interface EcdeFileService {
     *  
     */
     File convertURIToFile (URI ecdeURL, EcdeSource... sources) throws EcdeBadURLException, EcdeBadURLFormatException;
-
 }

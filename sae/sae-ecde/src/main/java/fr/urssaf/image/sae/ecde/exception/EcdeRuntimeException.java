@@ -10,13 +10,33 @@ public class EcdeRuntimeException extends RuntimeException {
    private static final long serialVersionUID = 1L;
    
    /**
-    * implémenation d'un message spécifique
+    * implémentation du message par défaut
     * 
     * @param cause
+    *           raison de l'exception levée
+    */
+   public EcdeRuntimeException(String cause) {
+      super(cause);
+   }
+   /**
+    * implémenation d'un message spécifique
+    * 
+    * @param throwable
     *           cause de l'exception levée
     */
-   public EcdeRuntimeException(Throwable cause) {
-      super(cause);
+   public EcdeRuntimeException(Throwable throwable) {
+      super(throwable);
+   }
+   /**
+    * implémenation d'un message spécifique
+    * 
+    * @param message
+    *           message de l'exception levée
+    * @param throwable
+    *           cause de l'exception levée
+    */
+   public EcdeRuntimeException(String message, Throwable throwable) {
+      super(message, throwable);
    }
 
 }

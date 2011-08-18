@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
-
 /**
  * 
  * Classe de validation des arguments en entrée des implémentations du service
@@ -26,8 +25,6 @@ public class SommaireXmlServiceValidation {
    // verification param entrée methode readSommaireXml#2
    private static final String READSOMXMLFILE = "execution(fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType "+ECDESOMSERVICE+"readSommaireXml(*))" +
                                                 "&& args(input)";
-   
-   
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la methode readSommaireXml de l'interface
     * service.SommaireXmlService sont bien correct.
@@ -42,7 +39,6 @@ public class SommaireXmlServiceValidation {
          throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("inputFlux.nonRenseigne", null));
       }      
    }
-   
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la methode readSommaireXml de l'interface
     * service.SommaireXmlService sont bien correct.
@@ -56,11 +52,8 @@ public class SommaireXmlServiceValidation {
       if (input == null) { // le fichier est null
          throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("inputFile.nonRenseigne", null));
       }
-      
       if (!input.exists()) {
          throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("inputFile.notExist", input.getPath()));
       }
-      
    } 
-   
 }

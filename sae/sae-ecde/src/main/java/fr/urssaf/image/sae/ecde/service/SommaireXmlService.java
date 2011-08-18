@@ -5,7 +5,6 @@ import java.io.InputStream;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
-
 /**
  * Service permettant la lecture des fichiers sommaire.xml 
  * <br>
@@ -34,7 +33,6 @@ public interface SommaireXmlService {
     * @throws EcdeXsdException une erreur de structure a été detectée sur le sommaire.xml 
     */
     SommaireType readSommaireXml(InputStream input) throws EcdeXsdException;
-   
    /**
     * Methode permettant la lecture du fichier sommaire.xml
     * <br>avec en entree un flux
@@ -45,5 +43,4 @@ public interface SommaireXmlService {
     * @throws EcdeXsdException une erreur de structure a été detectée sur le sommaire.xml
     */
     SommaireType readSommaireXml(File input) throws EcdeXsdException;
-   
 }

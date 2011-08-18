@@ -20,19 +20,16 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
 @SuppressWarnings({"PMD.MethodNamingConventions","PMD.TooManyMethods"})
 public class EcdeFileServiceImplTest {
    
    private URI uri;
-      
    @Autowired
    private EcdeFileService ecdeFileService;
    
    private static final String MESSAGE_INNATENDU = "message inattendu";
-   
    private static final String ECDECER69 = "ecde.cer69.recouv";
    private static final String ECDE = "ecde";
    private static final String ATTESTATION = "/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
@@ -45,7 +42,6 @@ public class EcdeFileServiceImplTest {
    private static final File ATTESTATION_FILE5 = new File("/temp/text.txt");
    private static final File ATTESTATION_FILE6 = new File("archive/temp/text.txt");
    private static final File ATTESTATION_FILE7 = new File("/ecde_lokmen/ecde_lyon/DCL001/");
-   
    private static final String SEPARATOR = "://";
    
    @BeforeClass
@@ -58,7 +54,6 @@ public class EcdeFileServiceImplTest {
       ecde6 = new EcdeSource("ecde.temp.recouv", new File("temp"));
       ecde7 = new EcdeSource("ecde._.recouv", new File("/ecde_lokmen/ecde_lyon/"));
    }
-   
    // l'url est bien en concordance avec la liste ECDESource donnee en paramètre
    @Test
    public void convertUrlToFile_success() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
@@ -68,7 +63,6 @@ public class EcdeFileServiceImplTest {
       
       assertEquals(MESSAGE_INNATENDU, messageObtenu, messageAttendu);
    }
-   
    // exception levée si l'URI est absente de la liste des ECDESources donnee en param
    @Test
    public void convertUrlToFile_failure_UriNotExist() throws EcdeBadURLFormatException, URISyntaxException {
@@ -79,13 +73,9 @@ public class EcdeFileServiceImplTest {
       }catch (EcdeBadURLException e) {
          assertEquals("message inattendu","L'URL ECDE ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf n'appartient à aucun ECDE transmis en paramètre du service.",e.getMessage());
       }
-      
-   }   
-   
-   // test pour montrer que la conversion ne fonctionne pas si dans l'URL 
-   // ne respecte pas le format
-   // ecde/authority/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier
-   // scheme ne vaut pas ecde
+   }
+   // test pour montrer que la conversion ne fonctionne pas si dans l'URL ne respecte pas le format
+   // ecde/authority/numeroCS/dateTraitement/idTraitement/documents/nom_du_fichier -- scheme ne vaut pas ecde
    @Test
    public void convertUrlToFile_failure_BadURLFormat() throws EcdeBadURLException, URISyntaxException {
       try {
@@ -95,8 +85,7 @@ public class EcdeFileServiceImplTest {
       }catch (EcdeBadURLFormatException e) {
          assertEquals(MESSAGE_INNATENDU,"L'URL ECDE ecd://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf est incorrecte.",e.getMessage());
       }      
-   }
-     
+   } 
    // document n'est pas égal à la constante 'documents'
    @Test
    public void convertUrlToFile_failure_BadURLFormatPath_Document() throws EcdeBadURLException, URISyntaxException {
@@ -107,15 +96,13 @@ public class EcdeFileServiceImplTest {
       }catch (EcdeBadURLFormatException e) {  
          assertEquals(MESSAGE_INNATENDU,"L'URL ECDE ecde://ecde.cer69.recouv/DCL001/19991231/3/document/attestation/1990/attestation1.pdf est incorrecte.",e.getMessage());
       }
-   }   
-   
+   }
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le mois 13
    @Test(expected = EcdeBadURLFormatException.class)
    public void convertUrlToFile_failure_BadURLFormat_PathDate() throws URISyntaxException, EcdeBadURLException, EcdeBadURLFormatException {
       uri = new URI(ECDE, ECDECER69, "/DCL001/19991331/3/documents/attestation/1990/attestation1.pdf", null);
       ecdeFileService.convertURIToFile(uri, ecde1, ecde2, ecde3);
    }
-    
    // date traitement ne respecte pas le format AAAAMMJJ erreur sur le jour 00
    @Test
    public void convertUrlToFile_failure_BadURLFormat_PathDate2() throws EcdeBadURLException, URISyntaxException {
@@ -127,7 +114,6 @@ public class EcdeFileServiceImplTest {
          assertEquals(MESSAGE_INNATENDU,"L'URL ECDE ecde://ecde.cer69.recouv/DCL001/19991200/3/documents/attestation/1990/attestation1.pdf est incorrecte.",e.getMessage());
       }
    }
-   
    //-------------------------- FILE TO URI -------------------------------------------------
    //-------- Conversion OK  -----------------------------------------------------------
    @Test
@@ -138,13 +124,11 @@ public class EcdeFileServiceImplTest {
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
-   
    //----------Chemin de fichier non présent dans ECDE sources donne en param -------------
    @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure_EcdeNotExist() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE, ecde1, ecde3);
    }
-   
    //--------- Conversion OK avec /mnt/ai/ecde/ecde_lyon
    @Test
    public void convertFileToURI_success_2Test() throws EcdeBadFileException {
@@ -154,7 +138,6 @@ public class EcdeFileServiceImplTest {
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
-   
    //----------Test avec un nom de fichier avec des \ et des /
    @Test
    public void convertFileToURI_success_SlashTest() throws EcdeBadFileException {
@@ -162,11 +145,8 @@ public class EcdeFileServiceImplTest {
       
       String resultatAttendu = "ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation/1990/attestation1.pdf";
       String resultatObtenu = uri.getScheme() + SEPARATOR + uri.getAuthority() + uri.getPath();
-      
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
-   
-   //----------Test success
    //-------- nom fichier : /temp/text.txt  ECDESOURCE.BasePath = /temp
    @Test
    public void convertFileToURI_success() throws EcdeBadFileException {
@@ -177,14 +157,11 @@ public class EcdeFileServiceImplTest {
       
       assertEquals(MESSAGE_INNATENDU, resultatAttendu, resultatObtenu);
    }
-   
-   //----------Test failure
    //-------- nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
    @Test(expected = EcdeBadFileException.class)
    public void convertFileToURI_failure() throws EcdeBadFileException {
       ecdeFileService.convertFileToURI(ATTESTATION_FILE6, ecde5);
    }
-   
    //-------- nom fichier : archive/temp/text.txt  ECDESOURCE.BasePath = /temp
    @Test
    public void convertFileToURI_failure_badURLFormat() {
@@ -195,9 +172,7 @@ public class EcdeFileServiceImplTest {
          assertEquals(MESSAGE_INNATENDU,"Le chemin du document 'archive"+File.separator+"temp"+File.separator+"text.txt' n'appartient à aucun ECDE transmis en paramètre du service.",e.getMessage());
       }
    }
-   
    //---------- URI ne respectant pas le format RFC3986 -------------
-   // Generation d'une runtimeException
    @Test
    public void convertFileToURI_failure_URIFormat() throws EcdeBadFileException {
          try {
@@ -206,7 +181,5 @@ public class EcdeFileServiceImplTest {
          }catch (EcdeRuntimeException e) {
             assertEquals("exception inattendu", URISyntaxException.class, e.getCause().getClass());
          }
-         
-   }
-   
+   }   
 }

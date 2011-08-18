@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
-
 /**
  * Classe EcdeFileServiceValidation
  * 
@@ -18,7 +17,6 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
  * EcdeFileServiceValidation *
  * 
  */
-
 @Aspect
 public class EcdeFileServiceValidation {
    
@@ -29,9 +27,6 @@ public class EcdeFileServiceValidation {
    
    private static final String PARAMCONVERTURI = "execution(java.io.File "+ECDECLASS+"convertURIToFile(*,*))" +
                                                  "&& args(ecdeURL,sources)";
-   
-   
-   
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la methode convertFileToURI de l'interface
     * service.EcdeFileService sont bien correct.
@@ -55,7 +50,6 @@ public class EcdeFileServiceValidation {
         curseur ++;
       }
    }
-   
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la methode convertURIToFile de l'interface
     * service.EcdeFileService sont bien correct.
@@ -74,7 +68,6 @@ public class EcdeFileServiceValidation {
       if(ArrayUtils.isEmpty(sources)) {
          throw new IllegalArgumentException(MessageRessourcesUtils.recupererMessage("ecdeFileNotExist", null));
       }
-      
       for(EcdeSource variable : sources){
         verifierEcdeSource(variable, curseur);
         curseur ++;
@@ -92,6 +85,4 @@ public class EcdeFileServiceValidation {
          throw new IllegalArgumentException(MessageRessourcesUtils.recupMessageNonRenseigneException("Base Path", curseur));
       }
    }
-
-
 }
