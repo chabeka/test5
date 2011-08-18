@@ -84,7 +84,7 @@ public class CommonsServices {
          throws IOException, ParseException, InsertionServiceEx {
       // Injection de jeu de donnée.
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
-            new File(Constants.XML_FILE_PATH[0]));
+            new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
       return insertionService.insertStorageDocument(storageDocument);

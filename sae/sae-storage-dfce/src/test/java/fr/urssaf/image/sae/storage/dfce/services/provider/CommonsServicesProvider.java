@@ -94,9 +94,9 @@ public class CommonsServicesProvider extends CommonsServices {
    private StorageDocuments getStorageDocumentsFromXml() throws IOException,
          ParseException {
       List<StorageDocument> storageDoc = new ArrayList<StorageDocument>();
-      File files[] = new File[Constants.XML_FILE_PATH.length];
+      File files[] = new File[Constants.XML_PATH_DOC_WITHOUT_ERROR.length];
       int numFile = 0;
-      for (String pathFile : Constants.XML_FILE_PATH) {
+      for (String pathFile : Constants.XML_PATH_DOC_WITHOUT_ERROR) {
          files[numFile] = new File(pathFile);
          numFile++;
       }
@@ -139,7 +139,7 @@ public class CommonsServicesProvider extends CommonsServices {
    private StorageDocument getStorageDocumentFromXml() throws IOException,
          ParseException {
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
-            new File(Constants.XML_FILE_PATH[0]));
+            new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
       return BeanTestDocumentMapper.saeDocumentXmlToStorageDocument(saeDocument);
    }
 
