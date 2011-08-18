@@ -42,11 +42,9 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCrit
  * 
  * @author rhofir, kenore.
  */
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings( { "PMD.ExcessiveImports",
+      "PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidDuplicateLiterals" })
 public class InsertionServiceImplTest extends CommonServicesImpl {
-   // Logger de test
-   public final static Logger LOGGER = Logger
-         .getLogger(InsertionServiceImplTest.class);
 
    /**
     * Test du service :
@@ -59,7 +57,7 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
    public void insertTwiceSameDocument() throws IOException, ParseException,
          InsertionServiceEx {
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
-            new File(Constants.XML_FILE_PATH[0]));
+            new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
       UUID firstDocument = getInsertionService().insertStorageDocument(
@@ -80,27 +78,66 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
     * bulkInsertStorageDocument} <br>
     * Insertion en masse des documents avec la valeur allOrNothing = true.<br>
     */
-   @Test(expected = RetrievalServiceEx.class)
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   @Test
    public void bulkInsertAll() throws IOException, ParseException,
          InsertionServiceEx, RetrievalServiceEx {
       boolean allOrNothing = true;
-      BulkInsertionResults insertionResults = buildBlukStorageDocument(allOrNothing);
+      BulkInsertionResults insertionResults = buildBlukStorageDocument(
+            allOrNothing, Constants.XML_PATH_DOC_WITHOUT_ERROR);
+      Assert.assertNotNull(
+            "Objet resultat de l'insertion en masse ne doit pas être null ",
+            insertionResults);
+      Assert.assertNotNull("Objet StorageDocument en masse sans erreur ",
+            insertionResults.getStorageDocuments());
       Assert
-            .assertNotNull("Objet resultat de l'insertion en masse ne doit pas être null "
-                  + insertionResults);
-      Assert.assertNotNull("Objet StorageDocument en masse sans erreur "
-            + insertionResults.getStorageDocuments());
-      for (StorageDocument storageDocument : insertionResults
-            .getStorageDocuments().getAllStorageDocument()) {
-         Assert.assertNotNull("UUID insérer sans erreur "
-               + storageDocument.getUuid());
+            .assertEquals(
+                  "Vérfier que le nombre des documents insert est égale à celui insert ",
+                  Constants.XML_PATH_DOC_WITHOUT_ERROR.length, insertionResults
+                        .getStorageDocuments().getAllStorageDocument().size());
+      Assert.assertNotNull("Objet StorageDocument en masse avec erreur ",
+            insertionResults.getStorageDocumentsOnError()
+                  .getStorageDocumentsOnError().size());
+      for (StorageDocument storageDocument : Utils
+            .nullSafeIterable(insertionResults.getStorageDocuments()
+                  .getAllStorageDocument())) {
+         Assert.assertNotNull("UUID insérer sans erreur ", storageDocument
+               .getUuid());
          UUIDCriteria uuidCriteria = new UUIDCriteria(
                storageDocument.getUuid(), new ArrayList<StorageMetadata>());
-         getRetrievalService().retrieveStorageDocumentByUUID(uuidCriteria);
+         Assert
+               .assertNotNull(
+                     "Tester l'objet StorageDocument retrouvé dans la base est non null ",
+                     getRetrievalService().retrieveStorageDocumentByUUID(
+                           uuidCriteria));
       }
-      Assert.assertNotNull("Objet StorageDocument en masse avec erreur "
-            + insertionResults.getStorageDocumentsOnError());
+
+   }
+
+   /**
+    * Test du service :
+    * {@link fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument.InsertionServiceImpl#bulkInsertStorageDocument(StorageDocuments, boolean)
+    * bulkInsertStorageDocument} <br>
+    * Insertion en masse des documents avec la valeur allOrNothing = true.<br>
+    */
+   @Test
+   public void bulkInsertAllWithError() throws IOException, ParseException,
+         InsertionServiceEx, RetrievalServiceEx {
+      boolean allOrNothing = true;
+      BulkInsertionResults insertionResults = buildBlukStorageDocument(
+            allOrNothing, Constants.XML_PATH_DOC_WITH_ERROR);
+      Assert.assertNotNull(
+            "Objet resultat de l'insertion en masse ne doit pas être null ",
+            insertionResults);
+      Assert.assertNotNull("Objet StorageDocument en masse sans erreur ",
+            insertionResults.getStorageDocuments());
+      Assert
+            .assertEquals(
+                  "Vérfier que le nombre des documents insert est égale à celui insert ",
+                  0, insertionResults.getStorageDocuments()
+                        .getAllStorageDocument().size());
+      Assert.assertEquals("Objet StorageDocument en masse avec erreur ", 1,
+            insertionResults.getStorageDocumentsOnError()
+                  .getStorageDocumentsOnError().size());
    }
 
    /**
@@ -111,21 +148,28 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
     * {@inheritDoc}
     */
    @Test
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    public void bulkInsertNotAll() throws IOException, ParseException,
          InsertionServiceEx, RetrievalServiceEx {
       // à compléter
       boolean allOrNothing = false;
-      BulkInsertionResults insertionResults = buildBlukStorageDocument(allOrNothing);
+      BulkInsertionResults insertionResults = buildBlukStorageDocument(
+            allOrNothing, Constants.XML_PATH_DOC_WITH_ERROR);
+      Assert.assertNotNull(
+            "Objet resultat de l'insertion en masse ne doit pas être null ",
+            insertionResults);
       Assert
-            .assertNotNull("Objet resultat de l'insertion en masse ne doit pas être null "
-                  + insertionResults);
-      Assert.assertNotNull("Objet StorageDocument en masse sans erreur "
-            + insertionResults.getStorageDocuments());
-      for (StorageDocument storageDocument : insertionResults
-            .getStorageDocuments().getAllStorageDocument()) {
-         Assert.assertNotNull("UUID insérer sans erreur "
-               + storageDocument.getUuid());
+            .assertEquals(
+                  "Vérfier que le nombre des documents insert est égale à celui insert ",
+                  6, insertionResults.getStorageDocuments()
+                        .getAllStorageDocument().size());
+      Assert.assertEquals("Objet StorageDocument en masse avec erreur ", 1,
+            insertionResults.getStorageDocumentsOnError()
+                  .getStorageDocumentsOnError().size());
+      for (StorageDocument storageDocument : Utils
+            .nullSafeIterable(insertionResults.getStorageDocuments()
+                  .getAllStorageDocument())) {
+         Assert.assertNotNull("UUID insérer sans erreur ", storageDocument
+               .getUuid());
          final UUIDCriteria uuidCriteria = new UUIDCriteria(storageDocument
                .getUuid(), new ArrayList<StorageMetadata>());
          Assert.assertNotNull(
@@ -133,27 +177,33 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
                getRetrievalService()
                      .retrieveStorageDocumentByUUID(uuidCriteria).getUuid());
       }
-      Assert.assertNotNull("Objet StorageDocument en masse avec erreur "
-            + insertionResults.getStorageDocumentsOnError());
-      for (StorageDocumentOnError storageDocumentOnError : insertionResults
-            .getStorageDocumentsOnError().getStorageDocumentsOnError()) {
+      Assert.assertNotNull("Objet StorageDocument en masse avec erreur ",
+            insertionResults.getStorageDocumentsOnError());
+      for (StorageDocumentOnError storageDocumentOnError : Utils
+            .nullSafeIterable(insertionResults.getStorageDocumentsOnError()
+                  .getStorageDocumentsOnError())) {
          Assert
-               .assertNotNull("Le code erreur non null lors de l'insertion en masse avec erreur "
-                     + storageDocumentOnError.getCodeError());
+               .assertNotNull(
+                     "Le code erreur non null lors de l'insertion en masse avec erreur ",
+                     storageDocumentOnError.getCodeError());
       }
    }
 
    /**
     * Construit un ensemble de fichier pour tester l'insertion en masse. <br>
+    * 
+    * @param allOrNothing
+    *           : Flag d'insertion en masses.
+    * @param filesPath
+    *           : Chemin des fichiers xml
     */
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-   private BulkInsertionResults buildBlukStorageDocument(boolean allOrNothing)
-         throws FileNotFoundException, IOException, ParseException,
-         InsertionServiceEx {
+   private BulkInsertionResults buildBlukStorageDocument(boolean allOrNothing,
+         final String[] filesPath) throws FileNotFoundException, IOException,
+         ParseException, InsertionServiceEx {
       List<StorageDocument> lstDocument = new ArrayList<StorageDocument>();
-      File files[] = new File[7];
+      File files[] = new File[filesPath.length];
       int numFile = 0;
-      for (String pathFile : Constants.XML_FILE_PATH) {
+      for (String pathFile : filesPath) {
          files[numFile] = new File(pathFile);
          numFile++;
       }
@@ -190,13 +240,12 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
    public void insertStorageDocument() throws IOException, ParseException,
          StorageException, NoSuchAlgorithmException {
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
-            new File(Constants.XML_FILE_PATH[0]));
+            new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
       List<StorageMetadata> entryMetaData = storageDocument.getMetadatas();
       UUID uuid = getInsertionService().insertStorageDocument(storageDocument);
-      Assert
-            .assertNotNull("UUID après insertion ne doit pas être null " + uuid);
+      Assert.assertNotNull("UUID après insertion ne doit pas être null ", uuid);
       Document doc = ServiceProvider.getSearchService().getDocumentByUUID(
             getBase(), uuid);
       InputStream docContent = ServiceProvider.getStoreService()

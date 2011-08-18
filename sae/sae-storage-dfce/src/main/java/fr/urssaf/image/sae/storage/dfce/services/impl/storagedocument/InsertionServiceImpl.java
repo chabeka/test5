@@ -15,14 +15,22 @@ import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
-import fr.urssaf.image.sae.storage.dfce.messages.*;
+import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
+import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
-import fr.urssaf.image.sae.storage.exception.*;
-import fr.urssaf.image.sae.storage.model.connection.*;
-import fr.urssaf.image.sae.storage.model.storagedocument.*;
+import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
+import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.model.connection.StorageBase;
+import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
+import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentOnError;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentsOnError;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
-import fr.urssaf.image.sae.storage.services.storagedocument.*;
+import fr.urssaf.image.sae.storage.services.storagedocument.DeletionService;
+import fr.urssaf.image.sae.storage.services.storagedocument.InsertionService;
 
 /**
  * Implémente les services de l'interface {@link InsertionService}.
@@ -32,6 +40,7 @@ import fr.urssaf.image.sae.storage.services.storagedocument.*;
  */
 @Service
 @Qualifier("insertionService")
+@SuppressWarnings("PMD.ExcessiveImports")
 public class InsertionServiceImpl extends AbstractServices implements
       InsertionService {
    @Autowired
@@ -77,8 +86,8 @@ public class InsertionServiceImpl extends AbstractServices implements
     *            Exception levée lorsque l'insertion ne se déroule pas bien
     */
    @Loggable(LogLevel.TRACE)
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    @ServiceChecked
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    public final BulkInsertionResults bulkInsertStorageDocument(
          final StorageDocuments storageDocuments, final boolean allOrNothing)
          throws InsertionServiceEx {
@@ -99,7 +108,8 @@ public class InsertionServiceImpl extends AbstractServices implements
             }
             if (allOrNothing) {
                rollback(storageDocDone);
-               // Les documents "rollbackés" ne doivent pas apparaitre dans BulkInsertionResults 
+               // Les documents "rollbackés" ne doivent pas apparaitre dans
+               // BulkInsertionResults
                storageDocDone.clear();
                break;
             }
@@ -110,28 +120,33 @@ public class InsertionServiceImpl extends AbstractServices implements
    }
 
    /**
-    * Supprime les documents qui ont déjà été insérés avec succès. 
-    * Appelée dans le cadre d'un traitement "tout ou rien" qui serait en erreur.
+    * Supprime les documents qui ont déjà été insérés avec succès. Appelée dans
+    * le cadre d'un traitement "tout ou rien" qui serait en erreur.
     * 
     * @param storageDocDone
-    * @throws InsertionServiceEx Levée si le rollback (donc la suppression) échoue.
+    * @throws InsertionServiceEx
+    *            Levée si le rollback (donc la suppression) échoue.
     */
-   private void rollback(final List<StorageDocument> storageDocDone) throws InsertionServiceEx {
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   private void rollback(final List<StorageDocument> storageDocDone)
+         throws InsertionServiceEx {
       for (StorageDocument strDocument : Utils.nullSafeIterable(storageDocDone)) {
          try {
-            deletionService.deleteStorageDocument(new UUIDCriteria(
-                  strDocument.getUuid(), null));
+            deletionService.deleteStorageDocument(new UUIDCriteria(strDocument
+                  .getUuid(), null));
          } catch (DeletionServiceEx delSerEx) {
-            // FIXME: lever une exception plus parlante pour l'appelant 
+            // FIXME: lever une exception plus parlante pour l'appelant
             // (par exemple : AllOrNothingRollbackException).
-            // Pour l'instant on laisse cette exception pour ne pas casser les signatures.
-            
-            // TODO : il faut continuer le rollback sur les autres documents. 
-            // L'appelant pourrait obtenir une liste des documents non rollbackés via un attribut
+            // Pour l'instant on laisse cette exception pour ne pas casser les
+            // signatures.
+
+            // TODO : il faut continuer le rollback sur les autres documents.
+            // L'appelant pourrait obtenir une liste des documents non
+            // rollbackés via un attribut
             // de l'exception AllOrNothingRollbackException
             throw new InsertionServiceEx(MessageHandler
-                  .getMessage(Constants.DEL_CODE_ERROR), delSerEx
-                  .getMessage(), delSerEx);
+                  .getMessage(Constants.DEL_CODE_ERROR), delSerEx.getMessage(),
+                  delSerEx);
          }
       }
    }

@@ -65,7 +65,7 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
          ParseException, DeletionServiceEx, NoSuchAlgorithmException {
       // Injection de jeu de donnée.
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
-            new File(Constants.XML_FILE_PATH[1]));
+            new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[1]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
       UUID uuid = getInsertionService().insertStorageDocument(storageDocument);
@@ -97,7 +97,7 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
          IOException, ParseException {
       // Injection de jeu de donnée.
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
-            new File(Constants.XML_FILE_PATH[1]));
+            new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[1]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
       UUID uuid = getInsertionService().insertStorageDocument(storageDocument);

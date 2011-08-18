@@ -24,9 +24,9 @@ public class SaeDocumentProviderTest extends CommonServicesImpl {
    @Test
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    public void getSaeDocumentsFromXML() throws FileNotFoundException {
-      File file[] = new File[7];
+      File file[] = new File[Constants.XML_PATH_DOC_WITHOUT_ERROR.length];
       int numFile = 0;
-      for (String pathFile : Constants.XML_FILE_PATH) {
+      for (String pathFile : Constants.XML_PATH_DOC_WITHOUT_ERROR) {
          file[numFile] = new File(pathFile);
          numFile++;
       }
