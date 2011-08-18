@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class SAEConsultationServiceTest {
    private SAEConsultationService service;
 
    @Test
-   // @Ignore("dans l'attente d'une base stable! de tests unitaire pour la consultation")
+   @Ignore("dans l'attente d'une base stable! de tests unitaire pour la consultation")
    public void consultation_success() throws IOException,
          SAEConsultationServiceException {
 
