@@ -23,7 +23,7 @@ import fr.urssaf.image.sae.webservices.security.spring.AuthenticationToken;
 import fr.urssaf.image.sae.webservices.util.Axis2Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service.xml",
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml",
       "/applicationContext-security-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class PingSecureTest {

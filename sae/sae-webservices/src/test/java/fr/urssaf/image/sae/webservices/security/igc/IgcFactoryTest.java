@@ -39,8 +39,8 @@ public class IgcFactoryTest {
 
    private static ApplicationContext createApplicationContext() {
 
-      return new ClassPathXmlApplicationContext(new String[] {
-            "applicationContext.xml", "applicationContext-security.xml" });
+      return new ClassPathXmlApplicationContext(
+            new String[] { "applicationContext-security.xml" });
    }
 
    @Test

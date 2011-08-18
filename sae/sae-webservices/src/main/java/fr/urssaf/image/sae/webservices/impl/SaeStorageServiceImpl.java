@@ -1,47 +1,34 @@
 package fr.urssaf.image.sae.webservices.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.axiom.attachments.utils.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
-import fr.cirtil.www.saeservice.Consultation;
-import fr.cirtil.www.saeservice.ConsultationResponse;
-import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
-import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentService;
 import fr.urssaf.image.sae.webservices.SaeStorageService;
-import fr.urssaf.image.sae.webservices.exception.SaeStorageException;
-import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.impl.factory.ObjectStorageResponseFactory;
 
 /**
  * Implémentation de {@link SaeStorageService}<br>
  * La classe est un singleton de type {@link Service} esta ccessible avec
- * {@link Autowired}<br>
- * Si aucun bean de type {@link StorageDocumentService} n'est instancié alors
- * une Exception sera levée par Spring
+ * {@link org.springframework.beans.factory.annotation.Autowired}<br>
+ * Si aucun bean de type
+ * {@link fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentService}
+ * n'est instancié alors une Exception sera levée par Spring
  * 
  * 
  */
 @Service
 public class SaeStorageServiceImpl implements SaeStorageService {
-
-   @Autowired
-   private ApplicationContext ctx;
 
    /**
     * {@inheritDoc}
@@ -69,42 +56,6 @@ public class SaeStorageServiceImpl implements SaeStorageService {
 
       response = ObjectStorageResponseFactory
             .createArchivageUnitaireResponse(uuid);
-
-      return response;
-   }
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final ConsultationResponse consultation(Consultation request) {
-
-      ConsultationResponse response;
-
-      List<MetadonneeType> metadonnees = new ArrayList<MetadonneeType>();
-
-      metadonnees.add(ObjectTypeFactory.createMetadonneeType("NumeroCotisant",
-            "719900"));
-      metadonnees.add(ObjectTypeFactory.createMetadonneeType("CodeRND",
-            "1.2.3.3.1"));
-      metadonnees.add(ObjectTypeFactory.createMetadonneeType("Siret",
-            "07412723410007"));
-      metadonnees.add(ObjectTypeFactory.createMetadonneeType("CodeOrganisme",
-            "UR030"));
-      metadonnees.add(ObjectTypeFactory.createMetadonneeType(
-            "DenominationCompte", "COUTURIER GINETTE"));
-
-      Resource resource = ctx.getResource("classpath:data/attestation.pdf");
-
-      byte[] content;
-      try {
-         content = IOUtils.getStreamAsByteArray(resource.getInputStream());// encodeFileToString(resource);
-      } catch (IOException e) {
-         throw new SaeStorageException(e);
-      }
-
-      response = ObjectStorageResponseFactory.createConsultationResponse(
-            content, metadonnees);
 
       return response;
    }

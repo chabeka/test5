@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service.xml" })
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SaeServiceTest {
 

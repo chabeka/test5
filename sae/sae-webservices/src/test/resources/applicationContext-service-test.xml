@@ -10,18 +10,9 @@
       http://www.springframework.org/schema/security
       http://www.springframework.org/schema/security/spring-security-3.0.4.xsd">
 
-   <security:global-method-security
-      jsr250-annotations="enabled" />
+   <import resource="applicationContext-service.xml" />
+   <import resource="applicationContext-storageConnectionParameter-test.xml" />
 
-   <context:component-scan base-package="fr.urssaf.image.sae.webservices">
-      <context:exclude-filter type="regex"
-         expression="fr.urssaf.image.sae.webservices.security.*" />
-   </context:component-scan>
 
-   <import resource="applicationContext-sae-services.xml" />
-   <import resource="applicationContext-sae-storage-dfce.xml" />
-
-   <bean id="consultationService" factory-method="loadSAEConsultationService"
-      factory-bean="SAEServiceManager" />
 
 </beans>

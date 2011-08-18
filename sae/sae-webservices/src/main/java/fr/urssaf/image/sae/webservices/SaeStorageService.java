@@ -4,8 +4,6 @@ import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
-import fr.cirtil.www.saeservice.Consultation;
-import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 
@@ -63,22 +61,5 @@ public interface SaeStorageService {
     * @return instance de {@link RechercheResponse}
     */
    RechercheResponse search(Recherche request);
-
-   /**
-    * 
-    * Service pour l'opération <b>Consultation</b>
-    * 
-    * <pre>
-    * &lt;wsdl:operation name="consultation">
-    *    &lt;wsdl:documentation>Service de consultation documentaire du SAE</wsdl:documentation>
-    *    ...      
-    * &lt;/wsdl:operation>
-    * </pre>
-    * 
-    * @param request
-    *           Message de demande d'une consultation de documents SAE
-    * @return instance de {@link ConsultationResponse}
-    */
-   ConsultationResponse consultation(Consultation request);
 
 }

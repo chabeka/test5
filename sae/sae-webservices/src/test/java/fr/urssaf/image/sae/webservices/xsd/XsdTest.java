@@ -2,8 +2,8 @@ package fr.urssaf.image.sae.webservices.xsd;
 
 
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -12,9 +12,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.webservices.xsd.XSDValidator.SAXParseExceptionType;
 
@@ -23,8 +20,6 @@ import fr.urssaf.image.sae.webservices.xsd.XSDValidator.SAXParseExceptionType;
  * Classe de Test du fichier XSD SaeService.xsd
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service.xml" })
 @SuppressWarnings({
    "PMD.TooManyMethods",
    "PMD.JUnitTestsShouldIncludeAssert",

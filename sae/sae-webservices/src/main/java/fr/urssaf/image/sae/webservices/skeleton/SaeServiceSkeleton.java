@@ -27,6 +27,8 @@ import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.webservices.SaeService;
 import fr.urssaf.image.sae.webservices.SaeStorageService;
+import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
+import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 
 /**
  * Skeleton du web service coté serveur<br>
@@ -90,6 +92,9 @@ public class SaeServiceSkeleton {
       this.service = service;
       this.storageService = storageService;
    }
+
+   @Autowired
+   private WSConsultationService consultation;
 
    /**
     * endpoint du ping
@@ -170,10 +175,13 @@ public class SaeServiceSkeleton {
     * @param request
     *           request du web service
     * @return reponse du web service
+    * @throws ConsultationAxisFault
+    *            exception levée lors de la consultation
     */
-   public final ConsultationResponse consultationSecure(Consultation request) {
+   public final ConsultationResponse consultationSecure(Consultation request)
+         throws ConsultationAxisFault {
 
-      return this.storageService.consultation(request);
+      return this.consultation.consultation(request);
 
    }
 

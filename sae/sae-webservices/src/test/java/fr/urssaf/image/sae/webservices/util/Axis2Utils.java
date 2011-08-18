@@ -51,4 +51,17 @@ public final class Axis2Utils {
       }
 
    }
+
+   /**
+    * initialisation d'un contexte de sécurité
+    */
+   public static void initMessageContextSecurity() {
+
+      MessageContext ctx = new MessageContext();
+      MessageContext.setCurrentMessageContext(ctx);
+
+      Axis2Utils.initMessageContext(ctx,
+            "src/test/resources/request/pingsecure_success.xml");
+
+   }
 }

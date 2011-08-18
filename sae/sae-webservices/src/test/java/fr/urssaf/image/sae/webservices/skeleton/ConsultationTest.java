@@ -1,19 +1,26 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.activation.DataHandler;
+import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axiom.util.base64.Base64Utils;
-import org.apache.axis2.context.MessageContext;
+import org.apache.axis2.AxisFault;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,50 +30,103 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.cirtil.www.saeservice.Consultation;
 import fr.cirtil.www.saeservice.ConsultationResponseType;
 import fr.cirtil.www.saeservice.MetadonneeType;
+import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.util.Axis2Utils;
+import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service.xml",
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml",
       "/applicationContext-security-test.xml" })
-@SuppressWarnings( { "PMD.MethodNamingConventions" })
+@SuppressWarnings( { "PMD.MethodNamingConventions", "PMD.TooManyStaticImports" })
 public class ConsultationTest {
 
    @Autowired
    private SaeServiceSkeleton skeleton;
 
-   private MessageContext ctx;
-
    @Before
-   public void before() {
+   public final void before() {
 
-      ctx = new MessageContext();
-      MessageContext.setCurrentMessageContext(ctx);
+      Axis2Utils.initMessageContextSecurity();
 
    }
 
+   private ConsultationResponseType createConsultationResponseType(
+         String filePath) throws ConsultationAxisFault {
+
+      Consultation request;
+      try {
+
+         XMLStreamReader reader = XMLStreamUtils
+               .createXMLStreamReader(filePath);
+         request = Consultation.Factory.parse(reader);
+
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
+
+      return skeleton.consultationSecure(request).getConsultationResponse();
+   }
+
+   private static void assertMetadata(MetadonneeType metadata,
+         Map<String, Object> expectedMetadatas) {
+
+      assertTrue("la metadonnée '" + metadata.getCode().getMetadonneeCodeType()
+            + "' est inattendue", expectedMetadatas.containsKey(metadata
+            .getCode().getMetadonneeCodeType()));
+
+      assertEquals("la valeur de la metadonnée est inattendue",
+            expectedMetadatas.get(metadata.getCode().getMetadonneeCodeType()),
+            metadata.getValeur().getMetadonneeValeurType());
+
+      expectedMetadatas.remove(metadata.getCode().getMetadonneeCodeType());
+   }
+
+   private static final String AXIS_FAULT = "AxisFault non attendue";
+
+   private static void assertAxisFault(AxisFault axisFault, String expectedMsg,
+         String expectedType, String expectedPrefix) {
+
+      assertEquals(AXIS_FAULT, expectedMsg, axisFault.getMessage());
+      assertEquals(AXIS_FAULT, expectedType, axisFault.getFaultCode()
+            .getLocalPart());
+      assertEquals(AXIS_FAULT, expectedPrefix, axisFault.getFaultCode()
+            .getPrefix());
+   }
+
    @Test
+   @Ignore("dans l'attente d'une base stable! de tests unitaire pour la consultation")
    public void consultation_success() throws IOException {
 
-      Axis2Utils.initMessageContext(ctx,
-            "src/test/resources/request/consultation_success.xml");
+      ConsultationResponseType response = createConsultationResponseType("src/test/resources/request/consultation_success.xml");
 
-      Consultation request = new Consultation();
+      MetadonneeType[] metadatas = response.getMetadonnees().getMetadonnee();
 
-      ConsultationResponseType response = skeleton.consultationSecure(request)
-            .getConsultationResponse();
+      assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
+      assertEquals("nombre de metadatas inattendu", 10, metadatas.length);
 
-      MetadonneeType[] metadonnees = response.getMetadonnees().getMetadonnee();
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
 
-      assertEquals("nombre de metadonnees inattendu", 5, metadonnees.length);
+      expectedMetadatas.put("ASO", "GED");
+      expectedMetadatas.put("ACT", "2");
+      expectedMetadatas.put("OTY", "autonome");
+      expectedMetadatas.put("CSE", "CS1");
+      expectedMetadatas.put("DCO", "12");
+      expectedMetadatas.put("DFC", "2015/12/01");
+      expectedMetadatas.put("COP", "UR030");
+      expectedMetadatas.put("DOM", "2");
+      expectedMetadatas.put("RND", "2.2.3.2.2");
+      expectedMetadatas.put("FFI", "fmt/18");
 
-      assertMetadonnee(metadonnees[0], "NumeroCotisant", "719900");
-      assertMetadonnee(metadonnees[1], "CodeRND", "1.2.3.3.1");
-      // assertMetadonnee(metadonnees[2], "UUID",
-      // "48758200-A29B-18C4-B616-455677840120");
-      assertMetadonnee(metadonnees[2], "Siret", "07412723410007");
-      assertMetadonnee(metadonnees[3], "CodeOrganisme", "UR030");
-      assertMetadonnee(metadonnees[4], "DenominationCompte",
-            "COUTURIER GINETTE");
+      assertMetadata(metadatas[0], expectedMetadatas);
+      assertMetadata(metadatas[1], expectedMetadatas);
+      assertMetadata(metadatas[2], expectedMetadatas);
+      assertMetadata(metadatas[3], expectedMetadatas);
+      assertMetadata(metadatas[4], expectedMetadatas);
+      assertMetadata(metadatas[5], expectedMetadatas);
+      assertMetadata(metadatas[6], expectedMetadatas);
+      assertMetadata(metadatas[7], expectedMetadatas);
+      assertMetadata(metadatas[8], expectedMetadatas);
+      assertMetadata(metadatas[9], expectedMetadatas);
 
       File expectedContent = new File(
             "src/test/resources/storage/attestation.pdf");
@@ -88,13 +148,39 @@ public class ConsultationTest {
                   .getObjetNumeriqueConsultationTypeChoice_type0().getUrl());
    }
 
-   private static void assertMetadonnee(MetadonneeType metadonnee,
-         String expectedCode, String expectedValeur) {
+   @Test
+   public void consultation_failure_urldirecte() {
+      try {
+         createConsultationResponseType("src/test/resources/request/consultation_failure_urldirecte.xml");
 
-      assertEquals("mauvais code", expectedCode, metadonnee.getCode()
-            .getMetadonneeCodeType());
-      assertEquals("mauvaise valeur", expectedValeur, metadonnee.getValeur()
-            .getMetadonneeValeurType());
+         fail("le test doit échouer car l'url de consultation directe ne peut être à true");
+
+      } catch (ConsultationAxisFault fault) {
+
+         assertAxisFault(
+               fault,
+               "la fonctionnalité URL de consultation directe n’est pas implémentée",
+               "FonctionNonImplementee", "sae");
+
+      }
+   }
+
+   @Test
+   @Ignore
+   public void consultation_failure_uuidNotFound() {
+      try {
+         createConsultationResponseType("src/test/resources/request/consultation_failure_uuidNotFound.xml");
+
+         fail("le test doit échouer car l'uuid n'existe pas dans le SAE");
+
+      } catch (ConsultationAxisFault fault) {
+
+         assertAxisFault(
+               fault,
+               "Il n'existe aucun document pour l'identifiant d’archivage 'cc26f62e-fd52-42ff-ad83-afc26f96ea91' ",
+               "ArchiveNonTrouvee", "sae");
+
+      }
    }
 
 }
