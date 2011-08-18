@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.context.MessageContext;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import fr.urssaf.image.sae.webservices.security.ActionsUnitaires;
 import fr.urssaf.image.sae.webservices.security.spring.AuthenticationContext;
 import fr.urssaf.image.sae.webservices.security.spring.AuthenticationToken;
 import fr.urssaf.image.sae.webservices.util.Axis2Utils;
+import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service-test.xml",
@@ -31,12 +34,12 @@ public class PingSecureTest {
    @Autowired
    private SaeServiceSkeleton skeleton;
 
-   private MessageContext ctx;
+   // private MessageContext ctx;
 
    @Before
    public void before() {
-      ctx = new MessageContext();
-      MessageContext.setCurrentMessageContext(ctx);
+
+      Axis2Utils.initMessageContextSecurity();
 
    }
 
@@ -45,20 +48,26 @@ public class PingSecureTest {
       SecurityContextHolder.getContext().setAuthentication(null);
    }
 
-   private PingSecureResponse pingSecure(String soap) throws AxisFault {
+   private PingSecureRequest createPingSecureRequest(String filePath) {
 
-      Axis2Utils.initMessageContext(ctx, soap);
+      try {
 
-      PingSecureRequest request = new PingSecureRequest();
+         XMLStreamReader reader = XMLStreamUtils
+               .createXMLStreamReader(filePath);
+         return PingSecureRequest.Factory.parse(reader);
 
-      return skeleton.pingSecure(request);
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
+
    }
 
    @Test
    public void pingSecure() throws AxisFault {
 
-      PingSecureResponse response = this
-            .pingSecure("src/test/resources/request/pingsecure_success.xml");
+      PingSecureRequest request = createPingSecureRequest("src/test/resources/request/pingsecure_success.xml");
+
+      PingSecureResponse response = skeleton.pingSecure(request);
 
       assertEquals("Test du ping",
             "Les services du SAE sécurisés par authentification sont en ligne",
@@ -82,5 +91,4 @@ public class PingSecureTest {
 
    }
 
-  
 }

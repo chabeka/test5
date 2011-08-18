@@ -50,21 +50,18 @@ public class ConsultationTest {
 
    }
 
-   private ConsultationResponseType createConsultationResponseType(
-         String filePath) throws ConsultationAxisFault {
+   private Consultation createConsultationResponseType(String filePath) {
 
-      Consultation request;
       try {
 
          XMLStreamReader reader = XMLStreamUtils
                .createXMLStreamReader(filePath);
-         request = Consultation.Factory.parse(reader);
+         return Consultation.Factory.parse(reader);
 
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
 
-      return skeleton.consultationSecure(request).getConsultationResponse();
    }
 
    private static void assertMetadata(MetadonneeType metadata,
@@ -97,7 +94,10 @@ public class ConsultationTest {
    @Ignore("dans l'attente d'une base stable! de tests unitaire pour la consultation")
    public void consultation_success() throws IOException {
 
-      ConsultationResponseType response = createConsultationResponseType("src/test/resources/request/consultation_success.xml");
+      Consultation request = createConsultationResponseType("src/test/resources/request/consultation_success.xml");
+
+      ConsultationResponseType response = skeleton.consultationSecure(request)
+            .getConsultationResponse();
 
       MetadonneeType[] metadatas = response.getMetadonnees().getMetadonnee();
 
@@ -151,7 +151,10 @@ public class ConsultationTest {
    @Test
    public void consultation_failure_urldirecte() {
       try {
-         createConsultationResponseType("src/test/resources/request/consultation_failure_urldirecte.xml");
+
+         Consultation request = createConsultationResponseType("src/test/resources/request/consultation_failure_urldirecte.xml");
+
+         skeleton.consultationSecure(request).getConsultationResponse();
 
          fail("le test doit échouer car l'url de consultation directe ne peut être à true");
 
@@ -169,7 +172,9 @@ public class ConsultationTest {
    @Ignore
    public void consultation_failure_uuidNotFound() {
       try {
-         createConsultationResponseType("src/test/resources/request/consultation_failure_uuidNotFound.xml");
+         Consultation request = createConsultationResponseType("src/test/resources/request/consultation_failure_uuidNotFound.xml");
+
+         skeleton.consultationSecure(request).getConsultationResponse();
 
          fail("le test doit échouer car l'uuid n'existe pas dans le SAE");
 

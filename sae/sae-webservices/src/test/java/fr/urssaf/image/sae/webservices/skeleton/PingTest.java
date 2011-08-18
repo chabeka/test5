@@ -2,7 +2,9 @@ package fr.urssaf.image.sae.webservices.skeleton;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.axis2.context.MessageContext;
+import javax.xml.stream.XMLStreamReader;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
 import fr.urssaf.image.sae.webservices.util.Axis2Utils;
+import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service-test.xml",
@@ -23,22 +26,31 @@ public class PingTest {
    @Autowired
    private SaeServiceSkeleton skeleton;
 
-   private MessageContext ctx;
-
    @Before
    public void before() {
 
-      ctx = new MessageContext();
-      MessageContext.setCurrentMessageContext(ctx);
+      Axis2Utils.initMessageContextSecurity();
+
+   }
+
+   private PingRequest createPing(String filePath) {
+
+      try {
+
+         XMLStreamReader reader = XMLStreamUtils
+               .createXMLStreamReader(filePath);
+         return PingRequest.Factory.parse(reader);
+
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
 
    }
 
    @Test
    public void ping() {
 
-      Axis2Utils.initMessageContext(ctx, "src/test/resources/request/ping.xml");
-
-      PingRequest request = new PingRequest();
+      PingRequest request = createPing("src/test/resources/request/ping.xml");
 
       PingResponse response = skeleton.ping(request);
 

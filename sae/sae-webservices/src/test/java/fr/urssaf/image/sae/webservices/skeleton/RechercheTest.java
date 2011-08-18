@@ -6,8 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.context.MessageContext;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +22,7 @@ import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponseType;
 import fr.cirtil.www.saeservice.ResultatRechercheType;
 import fr.urssaf.image.sae.webservices.util.Axis2Utils;
+import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service-test.xml",
@@ -30,17 +33,26 @@ public class RechercheTest {
    @Autowired
    private SaeServiceSkeleton skeleton;
 
-   private MessageContext ctx;
-
    @Before
    public void before() {
 
-      ctx = new MessageContext();
-      MessageContext.setCurrentMessageContext(ctx);
+      Axis2Utils.initMessageContextSecurity();
 
    }
 
-   // private static final String UUID_META = "UUID";
+   private Recherche createRecherche(String filePath) {
+
+      try {
+
+         XMLStreamReader reader = XMLStreamUtils
+               .createXMLStreamReader(filePath);
+         return Recherche.Factory.parse(reader);
+
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
+
+   }
 
    private static final String CODE_RND_META = "CodeRND";
 
@@ -55,10 +67,7 @@ public class RechercheTest {
    @Test
    public void recherche_success() throws AxisFault {
 
-      Axis2Utils.initMessageContext(ctx,
-            "src/test/resources/request/recherche_success.xml");
-
-      Recherche request = new Recherche();
+      Recherche request = createRecherche("src/test/resources/request/recherche_success.xml");
 
       RechercheResponseType response = skeleton.rechercheSecure(request)
             .getRechercheResponse();
