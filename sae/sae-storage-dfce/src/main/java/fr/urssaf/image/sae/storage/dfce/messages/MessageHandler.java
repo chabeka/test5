@@ -2,8 +2,8 @@ package fr.urssaf.image.sae.storage.dfce.messages;
 
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import fr.urssaf.image.sae.storage.dfce.component.StorageApplicationContext;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 
 /**
@@ -13,9 +13,15 @@ import fr.urssaf.image.sae.storage.dfce.contants.Constants;
  * 
  */
 public final class MessageHandler { 
-   // Récupération du contexte pour les fichiers properties
-   private static final MessageSource MESSAGE_SOURCES = (MessageSource) new ClassPathXmlApplicationContext(
-         "applicationContext-sae-storage-dfce.xml").getBean("messageSource");
+  
+   private static final MessageSource MESSAGE_SOURCES;
+
+   static {
+      // Récupération du contexte pour les fichiers properties
+      MESSAGE_SOURCES = StorageApplicationContext.getApplicationContext()
+            .getBean("messageSource_sae_storage_dfce", MessageSource.class);
+   }
+   
    /**
     * Récupéré un message d'erreur.
     * 
