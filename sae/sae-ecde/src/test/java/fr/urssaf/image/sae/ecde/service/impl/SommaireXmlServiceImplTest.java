@@ -1,19 +1,24 @@
 package fr.urssaf.image.sae.ecde.service.impl;
 
 import static org.junit.Assert.assertEquals;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+
 import javax.xml.bind.JAXBException;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.BatchModeType;
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
@@ -42,26 +47,24 @@ public class SommaireXmlServiceImplTest {
    }
    // nom du répertoire creer dans le repertoire temp de l'os
    private static String sommaireEcde = "sommaireEcde";
-   // separateur de fichier
-   private static final String FILE_SEPARATOR = System.getProperty("file.separator");
    // declaration d'un répertoire dans le repertoire temp de l'os
-   private static final String REPERTOIRE = REPERTORY + FILE_SEPARATOR + sommaireEcde;
+   private static final String REPERTOIRE = FilenameUtils.concat(REPERTORY, sommaireEcde);
    
    @BeforeClass
-   public static void init() {
-      File rep = new File(REPERTOIRE); 
+   public static void init() throws IOException {
+      File rep = new File(REPERTOIRE);   
       // creation d'un repertoire dans le rep temp de l'os
-      rep.mkdir();
-      
+      FileUtils.forceMkdir(rep);
    }
    
    // Test avec succes -- lecture du fichier sommaire-test001.xml 
    // Ce fichier a été placé dans le répertoire temporaire de l'os
    // Il est impératif de ce créer un fichier pour que ce test fonctionne
    @Test
-   public void readSommaireXml_success_file() throws EcdeXsdException, FileNotFoundException, JAXBException {
-      File input = new File(FilenameUtils.concat(REPERTOIRE, "sommaire-test001.xml"));
-      SommaireType sommaire = service.readSommaireXml(input);
+   public void readSommaireXml_success_file() throws EcdeXsdException, JAXBException, IOException {
+      ClassPathResource classPath = new ClassPathResource("sommaire/sommaire-test001.xml");
+      File file = classPath.getFile();
+      SommaireType sommaire = service.readSommaireXml(file);
       assertEquals(MESSAGE_INATTENDU, BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
       assertEquals(MESSAGE_INATTENDU, "La description du traitement", sommaire.getDescription());
       assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocuments().getDocument().size());
@@ -72,9 +75,9 @@ public class SommaireXmlServiceImplTest {
    // Ce fichier a été placé dans le répertoire temporaire de l'os
    // Il est impératif de ce créer un fichier pour que ce test fonctionne
    @Test
-   public void readSommaireXml_success_inputStream() throws EcdeXsdException, FileNotFoundException, JAXBException {
-      File file = new File(FilenameUtils.concat(REPERTOIRE, "sommaire-test001.xml"));
-      InputStream input= new FileInputStream(file);
+   public void readSommaireXml_success_inputStream() throws EcdeXsdException, JAXBException, IOException {
+      ClassPathResource classPath = new ClassPathResource("sommaire/sommaire-test001.xml");
+      InputStream input = classPath.getInputStream();
       SommaireType sommaire = service.readSommaireXml(input);
       assertEquals(MESSAGE_INATTENDU, BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
       assertEquals(MESSAGE_INATTENDU, "La description du traitement", sommaire.getDescription());

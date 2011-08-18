@@ -3,13 +3,16 @@ package fr.urssaf.image.sae.ecde.service.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.BeforeClass;
@@ -19,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.urssaf.image.commons.util.checksum.ChecksumFileUtil;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.BatchModeType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ComposantDocumentVirtuelType;
@@ -41,7 +43,7 @@ import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions","PMD.NcssMethodCount","PMD.ExcessiveMethodLength"})
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.NcssMethodCount","PMD.ExcessiveMethodLength", "PMD.ExcessiveImports"})
 public class ResultatsXMLServiceImplTest {
 
    @Autowired
@@ -53,17 +55,15 @@ public class ResultatsXMLServiceImplTest {
    private static final String MESSAGE_INATTENDU = "message inattendu"; 
    
    // Recupération repertoire temp
-   private static final String REPERTORY;
-   static {
-       REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
-       System.setProperty("file.encoding", "UTF-8");
-   }
+   private static final String REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
+//   static {
+//       REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
+//       // System.setProperty("file.encoding", "UTF-8");
+//   }
    // nom du répertoire creer dans le repertoire temp de l'os
    private static String resultatsEcde = "resultatsEcde";
-   // separateur de fichier
-   private static final String FILE_SEPARATOR = System.getProperty("file.separator");
    // declaration d'un répertoire dans le repertoire temp de l'os
-   private static final String REPERTOIRE = REPERTORY + FILE_SEPARATOR + resultatsEcde;
+   private static final String REPERTOIRE = FilenameUtils.concat(REPERTORY, resultatsEcde);
    
    private static final String SHA1 = "SHA-1";
    private static final String VALEUR = "La valeur";
@@ -72,18 +72,16 @@ public class ResultatsXMLServiceImplTest {
    
    
    @BeforeClass
-   public static void init() throws FileNotFoundException {
+   public static void init() throws IOException {
       resultats = new ResultatsType();
       
       initialiseResultats();
       
       File rep = new File(REPERTOIRE); 
-      //nettoyage du repertoire present dans le rep temp de l'os
-      for(File file : rep.listFiles()){
-         file.delete();
-      }  
       // creation d'un repertoire dans le rep temp de l'os
-      rep.mkdirs();
+      FileUtils.forceMkdir(rep);
+      //nettoyage du repertoire present dans le rep temp de l'os
+      FileUtils.cleanDirectory(rep);
    }
    
    private static void initialiseResultats() {
@@ -256,7 +254,7 @@ public class ResultatsXMLServiceImplTest {
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu)
       // Sha-1 calculer via un logiciel externe
       String fsumAttendu = "f991c14ce855dff90a5705cc3b14238e7f383dea";
-      String checksumObtenu = ChecksumFileUtil.sha(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
+      String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
       
       assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
    
@@ -272,9 +270,15 @@ public class ResultatsXMLServiceImplTest {
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu)
       // Sha-1 calculer via un logiciel externe
       String fsumAttendu = "f991c14ce855dff90a5705cc3b14238e7f383dea";
-      String checksumObtenu = ChecksumFileUtil.sha(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
+      String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
       
       assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
+   }
+   
+   
+   private static String sha(String path) throws IOException{
+      InputStream data = new FileInputStream(path);
+      return DigestUtils.shaHex(data);
    }
    
 }

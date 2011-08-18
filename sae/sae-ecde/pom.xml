@@ -128,11 +128,16 @@
          <version>${aspectj.version}</version>
       </dependency>
 
-      <!-- COMMONS IO -->
+      <!-- Apache Commons -->
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
          <version>${apache.commons-io.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>commons-codec</groupId>
+         <artifactId>commons-codec</artifactId>
+         <version>${apache.commons-codec.version}</version>
       </dependency>
 
       <!-- Pour ajouter commentaire dans les XML générés -->
@@ -153,13 +158,6 @@
          <artifactId>jaxb-impl</artifactId>
          <version>${jaxb.impl.version}</version>
       </dependency>
-
-      <!-- Pour la comparaison de checkSum -->
-      <dependency>
-         <groupId>fr.urssaf.image.commons</groupId>
-         <artifactId>commons-util</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
-
+      
    </dependencies>
 </project>
