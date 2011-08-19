@@ -51,7 +51,7 @@
          <xsd:element name="nonIntegratedVirtualDocumentsCount" type="xsd:int" minOccurs="1" maxOccurs="1" />
          
          <!-- Liste des documents non archivés (le cas échéant) -->
-         <xsd:element name="nonIntegratedDocuments" type="somres:listeDocumentsType" minOccurs="1" maxOccurs="1">
+         <xsd:element name="nonIntegratedDocuments" type="somres:listeNonIntegratedDocumentsType" minOccurs="1" maxOccurs="1">
             <xsd:annotation>
                <xsd:documentation>La liste des documents qui n'ont pas été archivés (le cas échéant)</xsd:documentation>
             </xsd:annotation>

@@ -15,14 +15,14 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Une métadonnée, définie par un code et une valeur
+ * Une erreur, définie par un code et un libellé
  * 
- * <p>Java class for metadonneeType complex type.
+ * <p>Java class for erreurType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="metadonneeType">
+ * &lt;complexType name="erreurType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="valeur" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="libelle" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -43,17 +43,17 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "metadonneeType", propOrder = {
+@XmlType(name = "erreurType", propOrder = {
     "code",
-    "valeur"
+    "libelle"
 })
 @SuppressWarnings("PMD")
-public class MetadonneeType {
+public class ErreurType {
 
     @XmlElement(required = true)
     protected String code;
     @XmlElement(required = true)
-    protected String valeur;
+    protected String libelle;
 
     /**
      * Gets the value of the code property.
@@ -80,27 +80,27 @@ public class MetadonneeType {
     }
 
     /**
-     * Gets the value of the valeur property.
+     * Gets the value of the libelle property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getValeur() {
-        return valeur;
+    public String getLibelle() {
+        return libelle;
     }
 
     /**
-     * Sets the value of the valeur property.
+     * Sets the value of the libelle property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setValeur(String value) {
-        this.valeur = value;
+    public void setLibelle(String value) {
+        this.libelle = value;
     }
 
 }

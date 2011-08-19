@@ -50,7 +50,7 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
       } catch (JAXBException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "resultats.xml"), e);
       } catch (IOException e) {
-         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message"), e);
+         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message", null), e);
       }
   }
   /**

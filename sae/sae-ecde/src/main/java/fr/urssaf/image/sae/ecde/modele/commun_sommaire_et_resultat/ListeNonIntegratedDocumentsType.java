@@ -16,18 +16,18 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Une liste de documents virtuels
+ * Une liste de documents non archivés
  * 
- * <p>Java class for listeDocumentsVirtuelsType complex type.
+ * <p>Java class for listeNonIntegratedDocumentsType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="listeDocumentsVirtuelsType">
+ * &lt;complexType name="listeNonIntegratedDocumentsType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="documentVirtuel" type="{http://www.cirtil.fr/sae/commun_sommaire_et_resultat}documentVirtuelType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="nonIntegratedDocument" type="{http://www.cirtil.fr/sae/commun_sommaire_et_resultat}nonIntegratedDocumentType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -37,41 +37,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "listeDocumentsVirtuelsType", propOrder = {
-    "documentVirtuel"
+@XmlType(name = "listeNonIntegratedDocumentsType", propOrder = {
+    "nonIntegratedDocument"
 })
 @SuppressWarnings("PMD")
-public class ListeDocumentsVirtuelsType {
+public class ListeNonIntegratedDocumentsType {
 
-    protected List<DocumentVirtuelType> documentVirtuel;
+    protected List<NonIntegratedDocumentType> nonIntegratedDocument;
 
     /**
-     * Gets the value of the documentVirtuel property.
+     * Gets the value of the nonIntegratedDocument property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the documentVirtuel property.
+     * This is why there is not a <CODE>set</CODE> method for the nonIntegratedDocument property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getDocumentVirtuel().add(newItem);
+     *    getNonIntegratedDocument().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link DocumentVirtuelType }
+     * {@link NonIntegratedDocumentType }
      * 
      * 
      */
-    public List<DocumentVirtuelType> getDocumentVirtuel() {
-        if (documentVirtuel == null) {
-            documentVirtuel = new ArrayList<DocumentVirtuelType>();
+    public List<NonIntegratedDocumentType> getNonIntegratedDocument() {
+        if (nonIntegratedDocument == null) {
+            nonIntegratedDocument = new ArrayList<NonIntegratedDocumentType>();
         }
-        return this.documentVirtuel;
+        return this.nonIntegratedDocument;
     }
 
 }

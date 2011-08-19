@@ -65,12 +65,11 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
     * @throws EcdeXsdException une erreur de structure a été detectée sur le sommaire.xml
     */
    @Override
-   @SuppressWarnings("PMD.PreserveStackTrace")
    public final SommaireType readSommaireXml(File input) throws EcdeXsdException {
       try {
          return readSommaireXml(convertFileToInputStream(input));
       } catch (IOException e) {
-         throw new IllegalArgumentException("Erreur d'argument en entrée.");
+         throw new IllegalArgumentException("Erreur d'argument en entrée.", e);
       }
    }
    /*

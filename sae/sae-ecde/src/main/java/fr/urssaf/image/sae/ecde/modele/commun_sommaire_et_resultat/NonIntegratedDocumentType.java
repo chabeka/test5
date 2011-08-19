@@ -8,8 +8,6 @@
 
 package fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -17,29 +15,19 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Un document virtuel
+ * Définition d'un document non archivé
  * 
- * <p>Java class for documentVirtuelType complex type.
+ * <p>Java class for nonIntegratedDocumentType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="documentVirtuelType">
+ * &lt;complexType name="nonIntegratedDocumentType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="objetNumerique" type="{http://www.cirtil.fr/sae/commun_sommaire_et_resultat}fichierType"/>
- *         &lt;element name="composants">
- *           &lt;complexType>
- *             &lt;complexContent>
- *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                 &lt;sequence>
- *                   &lt;element name="composant" type="{http://www.cirtil.fr/sae/commun_sommaire_et_resultat}composantDocumentVirtuelType" maxOccurs="unbounded" minOccurs="0"/>
- *                 &lt;/sequence>
- *               &lt;/restriction>
- *             &lt;/complexContent>
- *           &lt;/complexType>
- *         &lt;/element>
+ *         &lt;element name="erreurs" type="{http://www.cirtil.fr/sae/commun_sommaire_et_resultat}listeErreurType"/>
  *         &lt;element name="numeroPageDebut" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="nombreDePages" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *       &lt;/sequence>
@@ -51,19 +39,19 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "documentVirtuelType", propOrder = {
+@XmlType(name = "nonIntegratedDocumentType", propOrder = {
     "objetNumerique",
-    "composants",
+    "erreurs",
     "numeroPageDebut",
     "nombreDePages"
 })
 @SuppressWarnings("PMD")
-public class DocumentVirtuelType {
+public class NonIntegratedDocumentType {
 
     @XmlElement(required = true)
     protected FichierType objetNumerique;
     @XmlElement(required = true)
-    protected DocumentVirtuelType.Composants composants;
+    protected ListeErreurType erreurs;
     protected Integer numeroPageDebut;
     protected Integer nombreDePages;
 
@@ -92,27 +80,27 @@ public class DocumentVirtuelType {
     }
 
     /**
-     * Gets the value of the composants property.
+     * Gets the value of the erreurs property.
      * 
      * @return
      *     possible object is
-     *     {@link DocumentVirtuelType.Composants }
+     *     {@link ListeErreurType }
      *     
      */
-    public DocumentVirtuelType.Composants getComposants() {
-        return composants;
+    public ListeErreurType getErreurs() {
+        return erreurs;
     }
 
     /**
-     * Sets the value of the composants property.
+     * Sets the value of the erreurs property.
      * 
      * @param value
      *     allowed object is
-     *     {@link DocumentVirtuelType.Composants }
+     *     {@link ListeErreurType }
      *     
      */
-    public void setComposants(DocumentVirtuelType.Composants value) {
-        this.composants = value;
+    public void setErreurs(ListeErreurType value) {
+        this.erreurs = value;
     }
 
     /**
@@ -161,65 +149,6 @@ public class DocumentVirtuelType {
      */
     public void setNombreDePages(Integer value) {
         this.nombreDePages = value;
-    }
-
-
-    /**
-     * <p>Java class for anonymous complex type.
-     * 
-     * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
-     * <pre>
-     * &lt;complexType>
-     *   &lt;complexContent>
-     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *       &lt;sequence>
-     *         &lt;element name="composant" type="{http://www.cirtil.fr/sae/commun_sommaire_et_resultat}composantDocumentVirtuelType" maxOccurs="unbounded" minOccurs="0"/>
-     *       &lt;/sequence>
-     *     &lt;/restriction>
-     *   &lt;/complexContent>
-     * &lt;/complexType>
-     * </pre>
-     * 
-     * 
-     */
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "composant"
-    })
-    public static class Composants {
-
-        protected List<ComposantDocumentVirtuelType> composant;
-
-        /**
-         * Gets the value of the composant property.
-         * 
-         * <p>
-         * This accessor method returns a reference to the live list,
-         * not a snapshot. Therefore any modification you make to the
-         * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the composant property.
-         * 
-         * <p>
-         * For example, to add a new item, do as follows:
-         * <pre>
-         *    getComposant().add(newItem);
-         * </pre>
-         * 
-         * 
-         * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link ComposantDocumentVirtuelType }
-         * 
-         * 
-         */
-        public List<ComposantDocumentVirtuelType> getComposant() {
-            if (composant == null) {
-                composant = new ArrayList<ComposantDocumentVirtuelType>();
-            }
-            return this.composant;
-        }
-
     }
 
 }

@@ -55,6 +55,38 @@
       </xsd:sequence>
    </xsd:complexType>
    
+    <!-- 
+   =======================================
+   Document  non archivé
+   =======================================
+   -->
+   <xsd:complexType name="nonIntegratedDocumentType">
+      <xsd:annotation>
+         <xsd:documentation>Définition d'un document non archivé</xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         
+         <!-- L'objet numérique (fichier) -->
+         <xsd:element name="objetNumerique" type="somres:fichierType" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+               <xsd:documentation>Le fichier représentant le contenu du document à archiver</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+
+         <!-- Les erreurs -->
+         <xsd:element name="erreurs" type="somres:listeErreurType" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+               <xsd:documentation>La liste des erreurs des documents non archivés</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+         
+         <xsd:element name="numeroPageDebut" type="xsd:int" minOccurs="0" maxOccurs="1" />
+         
+         <xsd:element name="nombreDePages" type="xsd:int" minOccurs="0" maxOccurs="1" />
+                  
+      </xsd:sequence>
+   </xsd:complexType>
+   
    
    <!-- 
    =======================================
@@ -67,6 +99,20 @@
       </xsd:annotation>
       <xsd:sequence>
          <xsd:element name="document" type="somres:documentType" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+   </xsd:complexType>
+   
+   <!-- 
+   =======================================
+   La liste des documents qui n'ont pas été archivés
+   =======================================
+   -->
+   <xsd:complexType name="listeNonIntegratedDocumentsType">
+      <xsd:annotation>
+         <xsd:documentation>Une liste de documents non archivés</xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:element name="nonIntegratedDocument" type="somres:nonIntegratedDocumentType" minOccurs="0" maxOccurs="unbounded" />
       </xsd:sequence>
    </xsd:complexType>
    
@@ -175,6 +221,57 @@
          <xsd:element name="metadonnee" type="somres:metadonneeType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
                <xsd:documentation>Les métadonnées</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   
+    <!-- 
+   =======================================
+   Une erreur
+   =======================================
+   -->
+   <xsd:complexType name="erreurType">
+      <xsd:annotation>
+         <xsd:documentation>Une erreur, définie par un code et un libellé</xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         
+         <!-- Le code -->
+         <xsd:element name="code" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+               <xsd:documentation>Le code de l'erreur</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+               <xsd:restriction base="xsd:string">
+                  <xsd:minLength value="1"/>
+               </xsd:restriction>
+            </xsd:simpleType>
+         </xsd:element>
+         
+         <!-- Le libelle -->
+         <xsd:element name="libelle" type="xsd:string" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+               <xsd:documentation>Le libelle de l'erreur</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+         
+      </xsd:sequence>
+   </xsd:complexType>
+   
+   <!-- 
+   =======================================
+   Liste de erreurs
+   =======================================
+   -->
+   <xsd:complexType name="listeErreurType">
+      <xsd:annotation>
+         <xsd:documentation>Une liste d'erreur</xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:element name="erreur" type="somres:erreurType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+               <xsd:documentation>Les erreurs</xsd:documentation>
             </xsd:annotation>
          </xsd:element>
       </xsd:sequence>

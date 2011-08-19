@@ -21,7 +21,7 @@ public final class MessageRessourcesUtils {
    }
    // Recupération du contexte pour les fichiers properties
    private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde.xml");
-   private static final MessageSource MESSAGESOURCES = (MessageSource) CONTEXT.getBean("messageSource");
+   private static final MessageSource MESSAGESOURCES = (MessageSource) CONTEXT.getBean("messageSource_sae_ecde");
 
    private static final String NONRENSEIGNE = "ecdeFileAttributNonRenseigne";
    /**
@@ -44,15 +44,6 @@ public final class MessageRessourcesUtils {
    public static String recupererMessage(String message, Object object) {
       Object[] param = new Object[] {object};
       return MESSAGESOURCES.getMessage(message, param, Locale.getDefault());
-   }
-   /**
-    * Methode qui récupére les messages d'erreur sans argument.
-    * 
-    * @param message cle de l'exception contenu dans le fichier .properties
-    * @return String message exception en question
-    */
-   public static String recupererMessage(String message) {
-      return MESSAGESOURCES.getMessage(message, null, Locale.getDefault());
    }
    /**
     * Methode qui récupére les messages d'erreur indiquant qu'elle attribut est manquant et dans 

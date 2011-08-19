@@ -14,14 +14,6 @@ public class EcdeXsdException extends EcdeGeneralException {
    /**
     * Constructor
     * 
-    * @param message cause
-    */
-   public EcdeXsdException(String message) {
-      super(message);
-   }
-   /**
-    * Constructor
-    * 
     * @param message message a afficher
     * @param throwable cause
     */

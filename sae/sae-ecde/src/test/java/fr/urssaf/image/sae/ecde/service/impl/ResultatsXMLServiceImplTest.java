@@ -26,13 +26,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.BatchModeType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ComposantDocumentVirtuelType;
-import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentVirtuelType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ErreurType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.FichierType;
-import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocumentsType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeDocumentsVirtuelsType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeErreurType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeMetadonneeType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ListeNonIntegratedDocumentsType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.MetadonneeType;
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.NonIntegratedDocumentType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentVirtuelType.Composants;
 import fr.urssaf.image.sae.ecde.modele.resultats.ResultatsType;
 import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
@@ -92,59 +94,64 @@ public class ResultatsXMLServiceImplTest {
       resultats.setNonIntegratedVirtualDocumentsCount(1);
       
       // Non integratedDocuments -- document qui n'ont pas été archivés
-      DocumentType doc1 = new DocumentType();
+      NonIntegratedDocumentType doc1 = new NonIntegratedDocumentType();
       // objet num
       FichierType objetNum = new FichierType();
       objetNum.setCheminEtNomDuFichier("repertoire/fichier1.pdf");
       objetNum.setHashValeur("541f9db389ff2d4b70dd25917277daafea1e7ba6");
       objetNum.setHashAlgo(SHA1);
       doc1.setObjetNumerique(objetNum);
-      //meta donnees
-      MetadonneeType meta1 = new MetadonneeType();
-      meta1.setCode(META1);
-      meta1.setValeur(VALEUR);
-      MetadonneeType meta2 = new MetadonneeType();
-      meta2.setCode(META2);
-      meta2.setValeur(VALEUR);
       
-      ListeMetadonneeType listeM = new ListeMetadonneeType();
-      listeM.getMetadonnee().add(meta1);
-      listeM.getMetadonnee().add(meta2);
-      doc1.setMetadonnees(listeM);
+      // erreurs
+      ErreurType erreur = new ErreurType();
+      erreur.setCode("wsse:SecurityTokenUnavailable");
+      erreur.setLibelle(" La référence au jeton de sécurité est introuvable");
       
-      doc1.setNumeroPageDebut(1);
-      doc1.setNombreDePages(1);
+      ErreurType erreur2 = new ErreurType();
+      erreur2.setCode("vi:InvalidVI");
+      erreur2.setLibelle(" Le VI est invalide");
+      
+      ListeErreurType listeErreur = new ListeErreurType();
+      listeErreur.getErreur().add(erreur);
+      listeErreur.getErreur().add(erreur2);
+      
+      doc1.setErreurs(listeErreur);
+      
       //---------------------------------------      
-      DocumentType doc2 = new DocumentType();
+      NonIntegratedDocumentType doc2 = new NonIntegratedDocumentType();
       // objet num
       FichierType objetNum2 = new FichierType();
       objetNum2.setCheminEtNomDuFichier("repertoire/fichier2.pdf");
       objetNum2.setHashValeur("541f9db389ff2d4b70dd25917277daafea1dfb98");
       objetNum2.setHashAlgo(SHA1);
       doc2.setObjetNumerique(objetNum2);
-      //meta donnees
-      MetadonneeType meta3 = new MetadonneeType();
-      meta3.setCode(META1);
-      meta3.setValeur(VALEUR);
-      MetadonneeType meta4 = new MetadonneeType();
-      meta4.setCode(META2);
-      meta4.setValeur(VALEUR);
       
-      ListeMetadonneeType listeM2 = new ListeMetadonneeType();
-      listeM2.getMetadonnee().add(meta3);
-      listeM2.getMetadonnee().add(meta4);
-      doc2.setMetadonnees(listeM2);
-            
-      ListeDocumentsType listeD = new ListeDocumentsType();
-      listeD.getDocument().add(doc1);
-      listeD.getDocument().add(doc2);
-      resultats.setNonIntegratedDocuments(listeD);
+      // erreurs
+      ErreurType erreur3 = new ErreurType();
+      erreur3.setCode("vi:InvalidService");
+      erreur3.setLibelle("Le service visé par le VI n’existe pas ou est invalide");
+      
+      ErreurType erreur4 = new ErreurType();
+      erreur4.setCode("vi:InvalidPagm");
+      erreur4.setLibelle("Le ou les PAGM présents dans le VI sont invalides");
+      
+      ListeErreurType listeErreur2 = new ListeErreurType();
+      listeErreur2.getErreur().add(erreur3);
+      listeErreur2.getErreur().add(erreur4);
+      
+      doc2.setErreurs(listeErreur2);
+      
+      ListeNonIntegratedDocumentsType listeN = new ListeNonIntegratedDocumentsType();
+      listeN.getNonIntegratedDocument().add(doc1);
+      listeN.getNonIntegratedDocument().add(doc2);
+      
+      resultats.setNonIntegratedDocuments(listeN);
       
       // NonIntegratedVirtualDocument -- document virtuel qui n'ont pas été archivés
       DocumentVirtuelType docVirtuel = new DocumentVirtuelType();
       FichierType objNumVir = new FichierType();
       objNumVir.setCheminEtNomDuFichier("repertoire/fichier3.pdf");
-      objNumVir.setHashValeur(hashValeur);
+      objNumVir.setHashValeur("777f9db389ff2d4b70dd25917277daafea1dfb98");
       objNumVir.setHashAlgo(SHA1);
       docVirtuel.setObjetNumerique(objNumVir);
       
@@ -185,8 +192,8 @@ public class ResultatsXMLServiceImplTest {
       //-- un deuxieme document virtuel qui n'as pas pu être archivé
       DocumentVirtuelType docVirtuel2 = new DocumentVirtuelType();
       FichierType objNumVir2 = new FichierType();
-      objNumVir2.setCheminEtNomDuFichier("repertoire/fichier3.pdf");
-      objNumVir2.setHashValeur(hashValeur);
+      objNumVir2.setCheminEtNomDuFichier("repertoire/fichier4.pdf");
+      objNumVir2.setHashValeur("888f9db389ff2d4b70dd25917277daafea1dfb98");
       objNumVir2.setHashAlgo(SHA1);
       docVirtuel2.setObjetNumerique(objNumVir2);
       
@@ -234,33 +241,34 @@ public class ResultatsXMLServiceImplTest {
 
    private static void initialiseResultats2() {
       
-      // Non integratedDocuments -- document qui n'ont pas été archivés
-      DocumentType doc1 = new DocumentType();
+   // Non integratedDocuments -- document qui n'ont pas été archivés
+      NonIntegratedDocumentType doc1 = new NonIntegratedDocumentType();
       // objet num
       FichierType objetNum = new FichierType();
       objetNum.setCheminEtNomDuFichier("repertoire/fichier1.pdf");
       objetNum.setHashValeur("541f9db389ff2d4b70dd25917277daafea1e7ba6");
       objetNum.setHashAlgo(SHA1);
       doc1.setObjetNumerique(objetNum);
-      //meta donnees
-      MetadonneeType meta1 = new MetadonneeType();
-      meta1.setCode(META1);
-      meta1.setValeur(VALEUR);
-      MetadonneeType meta2 = new MetadonneeType();
-      meta2.setCode(META2);
-      meta2.setValeur(VALEUR);
       
-      ListeMetadonneeType listeM = new ListeMetadonneeType();
-      listeM.getMetadonnee().add(meta1);
-      listeM.getMetadonnee().add(meta2);
-      doc1.setMetadonnees(listeM);
+      // erreurs
+      ErreurType erreur = new ErreurType();
+      erreur.setCode("wsse:SecurityTokenUnavailable");
+      erreur.setLibelle(" La référence au jeton de sécurité est introuvable");
       
-      doc1.setNumeroPageDebut(1);
-      doc1.setNombreDePages(1);
-            
-      ListeDocumentsType listeD = new ListeDocumentsType();
-      listeD.getDocument().add(doc1);
-      resultats2.setNonIntegratedDocuments(listeD);
+      ErreurType erreur2 = new ErreurType();
+      erreur2.setCode("vi:InvalidVI");
+      erreur2.setLibelle(" Le VI est invalide");
+      
+      ListeErreurType listeErreur = new ListeErreurType();
+      listeErreur.getErreur().add(erreur);
+      listeErreur.getErreur().add(erreur2);
+      
+      doc1.setErreurs(listeErreur);
+      
+      ListeNonIntegratedDocumentsType listeN = new ListeNonIntegratedDocumentsType();
+      listeN.getNonIntegratedDocument().add(doc1);
+      
+      resultats2.setNonIntegratedDocuments(listeN);
       
       // NonIntegratedVirtualDocument -- document virtuel qui n'ont pas été archivés
       DocumentVirtuelType docVirtuel = new DocumentVirtuelType();
@@ -289,14 +297,10 @@ public class ResultatsXMLServiceImplTest {
       MetadonneeType meta7 = new MetadonneeType();
       meta7.setCode(META1);
       meta7.setValeur(VALEUR);
-      MetadonneeType meta8 = new MetadonneeType();
-      meta8.setCode(META2);
-      meta8.setValeur(VALEUR);
       composant2.setNumeroPageDebut(2);
       composant2.setNombreDePages(2);
       ListeMetadonneeType listeM4 = new ListeMetadonneeType();
       listeM4.getMetadonnee().add(meta7);
-      listeM4.getMetadonnee().add(meta8);
       
       composant2.setMetadonnees(listeM4);
       
@@ -304,39 +308,10 @@ public class ResultatsXMLServiceImplTest {
       composants.getComposant().add(composant);
       composants.getComposant().add(composant2);
       docVirtuel.setComposants(composants);
-      //-- un deuxieme document virtuel qui n'as pas pu être archivé
-      DocumentVirtuelType docVirtuel2 = new DocumentVirtuelType();
-      FichierType objNumVir2 = new FichierType();
-      objNumVir2.setCheminEtNomDuFichier("repertoire/fichier6.pdf");
-      objNumVir2.setHashValeur(hashValeur);
-      objNumVir2.setHashAlgo(SHA1);
-      docVirtuel2.setObjetNumerique(objNumVir2);
-      
-      ComposantDocumentVirtuelType composant3 = new ComposantDocumentVirtuelType();
-      MetadonneeType meta9 = new MetadonneeType();
-      meta9.setCode(META1);
-      meta9.setValeur(VALEUR);
-      MetadonneeType meta10 = new MetadonneeType();
-      meta10.setCode(META2);
-      meta10.setValeur(VALEUR);
-      composant3.setNumeroPageDebut(1);
-      composant3.setNombreDePages(2);
-      ListeMetadonneeType listeM5 = new ListeMetadonneeType();
-      listeM5.getMetadonnee().add(meta9);
-      listeM5.getMetadonnee().add(meta10);
-      
-      composant3.setMetadonnees(listeM5);
-            
-      
-      Composants composants2 = new Composants();
-      composants2.getComposant().add(composant3);
-      
-      docVirtuel2.setComposants(composants2);
       
       //--------------------
       ListeDocumentsVirtuelsType listeDV = new ListeDocumentsVirtuelsType();
       listeDV.getDocumentVirtuel().add(docVirtuel);
-      listeDV.getDocumentVirtuel().add(docVirtuel2);
       resultats2.setNonIntegratedVirtualDocuments(listeDV);
    }
 
@@ -351,7 +326,7 @@ public class ResultatsXMLServiceImplTest {
       }
       assertEquals("fichier non existant", true, exist);
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu), Sha-1 calculé via un logiciel externe
-      String fsumAttendu = "2e8cb99e8f0b921ac26f55f5a29585f34f709bf6";
+      String fsumAttendu = "a42547557eb45cb374a8335cb7df08d1f87bdbd1";
       String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
       
       assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
@@ -364,7 +339,7 @@ public class ResultatsXMLServiceImplTest {
       service.writeResultatsXml(resultats, output);
       
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu), Sha-1 calculé via un logiciel externe
-      String fsumAttendu = "2e8cb99e8f0b921ac26f55f5a29585f34f709bf6";
+      String fsumAttendu = "a42547557eb45cb374a8335cb7df08d1f87bdbd1";
       String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
       
       assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
