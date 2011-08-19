@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import fr.cirtil.www.saeservice.Consultation;
 import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.MetadonneeType;
-import fr.urssaf.image.sae.services.document.SAEConsultationService;
+import fr.urssaf.image.sae.services.document.SAEDocumentService;
 import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
@@ -31,8 +31,8 @@ import fr.urssaf.image.sae.webservices.util.CollectionUtils;
 public class WSConsultationServiceImpl implements WSConsultationService {
 
    @Autowired
-   @Qualifier("consultationService")
-   private SAEConsultationService saeService;
+   @Qualifier("documentService")
+   private SAEDocumentService saeService;
 
    /**
     * {@inheritDoc}

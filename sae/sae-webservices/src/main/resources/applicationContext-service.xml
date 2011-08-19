@@ -21,7 +21,7 @@
    <import resource="applicationContext-sae-services.xml" />
    <import resource="applicationContext-sae-storage-dfce.xml" />
 
-   <bean id="consultationService" factory-method="loadSAEConsultationService"
+   <bean id="documentService" factory-method="loadSAEDocumentService"
       factory-bean="SAEServiceManager" />
 
 </beans>

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import fr.urssaf.image.sae.services.SAEServiceProvider;
-import fr.urssaf.image.sae.services.document.SAEConsultationService;
+import fr.urssaf.image.sae.services.document.SAEDocumentService;
 
 /**
  * Classe de composant pour récuperer les Services exposé dans l'artefact
@@ -20,12 +20,10 @@ public final class SAEServiceManager {
 
    /**
     * 
-    * @return service de consultation du SAE
+    * @return l'ensemble des services du SAE
     */
-   public SAEConsultationService loadSAEConsultationService() {
-
+   public SAEDocumentService loadSAEDocumentService() {
       return provider.getSaeDocumentService();
-
    }
 
 }
