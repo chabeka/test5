@@ -7,17 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
 import fr.urssaf.image.sae.exception.SAESearchServiceEx;
 import fr.urssaf.image.sae.model.SAELuceneCriteria;
-import fr.urssaf.image.sae.model.UntypedDocument;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.document.SAEConsultationService;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
 import fr.urssaf.image.sae.services.document.SAESearchService;
 import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
 /**
  * Fournit la façade des implementations des services :<br>
@@ -57,7 +56,7 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    /**
     * {@inheritDoc}
     */
-   public final String capture(final UntypedDocument unTypedDoc)
+   public final String capture(final fr.urssaf.image.sae.model.UntypedDocument unTypedDoc)
          throws SAECaptureServiceEx {
       return saeCaptureService.capture(unTypedDoc);
    }
@@ -65,7 +64,7 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    /**
     * {@inheritDoc}
     */
-   public final List<UntypedDocument> search(
+   public final List<fr.urssaf.image.sae.model.UntypedDocument> search(
          final SAELuceneCriteria sAELuceneCriteria) throws SAESearchServiceEx {
       return saeSearchService.search(sAELuceneCriteria);
    }
@@ -74,7 +73,7 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
     * {@inheritDoc}
     */
    @Override
-   public final StorageDocument consultation(UUID idArchive)
+   public final UntypedDocument consultation(UUID idArchive)
          throws SAEConsultationServiceException {
       return saeConsultationService.consultation(idArchive);
    }

@@ -22,9 +22,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-consultation-test.xml" })
@@ -40,14 +40,14 @@ public class SAEConsultationServiceTest {
    public void consultation_success() throws IOException,
          SAEConsultationServiceException {
 
-      UUID idArchive = UUID.fromString("364e880d-0a11-4a1d-8d3b-ec9c13769c42");
+      UUID idArchive = UUID.fromString("1261362f-c87c-4e48-a06a-bc6b69f514e4");
 
-      StorageDocument storageDocument = service.consultation(idArchive);
+      UntypedDocument untypedDocument = service.consultation(idArchive);
 
       assertNotNull("idArchive '" + idArchive + "' doit être consultable",
-            storageDocument);
+            untypedDocument);
 
-      List<StorageMetadata> metadatas = storageDocument.getMetadatas();
+      List<UntypedMetadata> metadatas = untypedDocument.getUMetadatas();
 
       assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
       assertEquals("nombre de metadatas inattendu", 10, metadatas.size());
@@ -82,20 +82,20 @@ public class SAEConsultationServiceTest {
 
       assertTrue("le contenu n'est pas attendu", IOUtils.contentEquals(
             FileUtils.openInputStream(expectedContent),
-            new ByteArrayInputStream(storageDocument.getContent())));
+            new ByteArrayInputStream(untypedDocument.getContent())));
    }
 
-   private static void assertMetadata(StorageMetadata metadata,
+   private static void assertMetadata(UntypedMetadata metadata,
          Map<String, Object> expectedMetadatas) {
 
-      assertTrue("la metadonnée '" + metadata.getShortCode()
+      assertTrue("la metadonnée '" + metadata.getLongCode()
             + "' est inattendue", expectedMetadatas.containsKey(metadata
-            .getShortCode()));
+            .getLongCode()));
 
       assertEquals("la valeur de la metadonnée est inattendue",
-            expectedMetadatas.get(metadata.getShortCode()), metadata.getValue());
+            expectedMetadatas.get(metadata.getLongCode()), metadata.getValue());
 
-      expectedMetadatas.remove(metadata.getShortCode());
+      expectedMetadatas.remove(metadata.getLongCode());
    }
 
 }

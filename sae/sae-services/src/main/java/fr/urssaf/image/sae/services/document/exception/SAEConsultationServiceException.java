@@ -11,7 +11,7 @@ public class SAEConsultationServiceException extends SAEServiceException {
 
    private static final long serialVersionUID = 1L;
 
-   private static final String MSG_EXCEPTION = "une exception a eu lieu dans la consultation";
+   private static final String MSG_EXCEPTION = "Une exception a eu lieu dans la consultation";
 
    /**
     * le message de l'exception est {@value #MSG_EXCEPTION}

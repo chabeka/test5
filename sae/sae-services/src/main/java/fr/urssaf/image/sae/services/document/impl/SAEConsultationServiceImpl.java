@@ -5,8 +5,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.services.document.SAEConsultationService;
 import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.factory.UntypedDocumentFactory;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
@@ -25,7 +27,7 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
     * {@inheritDoc}
     */
    @Override
-   public final StorageDocument consultation(UUID idArchive)
+   public final UntypedDocument consultation(UUID idArchive)
          throws SAEConsultationServiceException {
 
       this.getStorageServiceProvider().setStorageServiceProviderParameter(
@@ -39,8 +41,19 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
          try {
 
-            return this.getStorageServiceProvider().getStorageDocumentService()
-                  .retrieveStorageDocumentByUUID(uuidCriteria);
+            StorageDocument storageDocument = this.getStorageServiceProvider()
+                  .getStorageDocumentService().retrieveStorageDocumentByUUID(
+                        uuidCriteria);
+
+            UntypedDocument untypedDocument = null;
+
+            if (storageDocument != null) {
+               // TODO référentiel métadonnée : filtrer les métadonnées de type "consultables"
+               untypedDocument = UntypedDocumentFactory
+                     .createUntypedDocument(storageDocument);
+            }
+
+            return untypedDocument;
 
          } catch (RetrievalServiceEx e) {
 

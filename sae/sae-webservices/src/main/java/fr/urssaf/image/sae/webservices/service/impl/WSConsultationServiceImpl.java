@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import fr.cirtil.www.saeservice.Consultation;
 import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.MetadonneeType;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
 import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
@@ -50,35 +50,35 @@ public class WSConsultationServiceImpl implements WSConsultationService {
             .getUrlConsultationDirecte())) {
 
          throw new ConsultationAxisFault(
-               "la fonctionnalité URL de consultation directe n'est pas implémentée",
+               "La fonctionnalité URL de consultation directe n'est pas implémentée",
                "FonctionNonImplementee");
       }
 
       try {
-         StorageDocument storageDocument = saeService.consultation(uuid);
+         UntypedDocument untypedDocument = saeService.consultation(uuid);
 
-         if (storageDocument == null) {
+         if (untypedDocument == null) {
 
             throw new ConsultationAxisFault(
-                  "il n'existe aucun document pour l'identifiant d'archivage '"
+                  "Il n'existe aucun document pour l'identifiant d'archivage '"
                         + uuid + "'", "ArchiveNonTrouvee");
 
          } else {
 
             List<MetadonneeType> metadatas = new ArrayList<MetadonneeType>();
 
-            for (StorageMetadata storageMetadata : CollectionUtils
-                  .loadListNotNull(storageDocument.getMetadatas())) {
+            for (UntypedMetadata untypedMetadata : CollectionUtils
+                  .loadListNotNull(untypedDocument.getUMetadatas())) {
 
-               String code = storageMetadata.getShortCode();
-               String valeur = storageMetadata.getValue().toString();
+               String code = untypedMetadata.getLongCode();
+               String valeur = untypedMetadata.getValue();
                MetadonneeType metadonnee = ObjectTypeFactory
                      .createMetadonneeType(code, valeur);
 
                metadatas.add(metadonnee);
             }
 
-            byte[] content = storageDocument.getContent();
+            byte[] content = untypedDocument.getContent();
 
             response = ObjectConsultationFactory.createConsultationResponse(
                   content, metadatas);

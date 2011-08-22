@@ -33,7 +33,7 @@ public class UntypedMetadata extends AbstractMetadata {
 	/**
 	 * @return La valeur de la métadonnée.
 	 */
-	public final Object getValue() {
+	public final String getValue() {
 		return value;
 	}
 

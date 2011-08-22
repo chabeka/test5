@@ -162,7 +162,7 @@ public class ConsultationTest {
 
          assertAxisFault(
                fault,
-               "la fonctionnalité URL de consultation directe n'est pas implémentée",
+               "La fonctionnalité URL de consultation directe n'est pas implémentée",
                "FonctionNonImplementee", "sae");
 
       }
@@ -181,7 +181,7 @@ public class ConsultationTest {
 
          assertAxisFault(
                fault,
-               "il n'existe aucun document pour l'identifiant d'archivage 'cc26f62e-fd52-42ff-ad83-afc26f96ea91'",
+               "Il n'existe aucun document pour l'identifiant d'archivage 'cc26f62e-fd52-42ff-ad83-afc26f96ea91'",
                "ArchiveNonTrouvee", "sae");
 
       }

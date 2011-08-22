@@ -19,7 +19,7 @@ public class SAEConsultationServiceValidation {
 
    private static final String CLASS = "fr.urssaf.image.sae.services.document.SAEConsultationService.";
 
-   private static final String METHOD = "execution(fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument "
+   private static final String METHOD = "execution(fr.urssaf.image.sae.bo.model.untyped.UntypedDocument "
          + CLASS + "consultation(*))" + "&& args(idArchive)";
 
    @SuppressWarnings("PMD.LongVariable")

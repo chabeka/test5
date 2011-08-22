@@ -139,6 +139,14 @@
          <artifactId>sae-igc</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      
+       <!-- SAE BO -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-bo</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
       <!-- SAE SERVICES -->
 
