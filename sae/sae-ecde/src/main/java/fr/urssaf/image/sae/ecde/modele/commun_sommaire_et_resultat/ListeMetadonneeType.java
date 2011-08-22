@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Une liste de métadonnées
+ * Une liste de mÃ©tadonnÃ©es
  * 
  * <p>Java class for listeMetadonneeType complex type.
  * 

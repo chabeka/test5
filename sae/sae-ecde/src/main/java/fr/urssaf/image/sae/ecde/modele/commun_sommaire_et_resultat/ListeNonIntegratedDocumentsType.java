@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Une liste de documents non archivés
+ * Une liste de documents non archivÃ©s
  * 
  * <p>Java class for listeNonIntegratedDocumentsType complex type.
  * 

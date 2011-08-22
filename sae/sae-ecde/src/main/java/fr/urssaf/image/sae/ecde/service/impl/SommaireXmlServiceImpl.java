@@ -52,7 +52,7 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
       } catch (SAXException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "sommaire.xml"), e);
       } catch (IOException e) {
-         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", e));
+         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
       }
    }
    /**
