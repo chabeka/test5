@@ -89,6 +89,12 @@
       </plugins>
    </build>
 
+   <developers>
+      <developer>
+         <name>Lokmen BAADJ</name>
+         <organization>Atos</organization>
+      </developer>
+   </developers>
 
    <dependencies>
 
