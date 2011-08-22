@@ -13,19 +13,17 @@
    <version>0.0.1-SNAPSHOT</version>
    <description>Packaging des web services du SAE</description>
 
-   <!--
-      <properties> <axis2.version>1.5.4</axis2.version> </properties>
-   -->
    <modules>
 
       <module>../sae-parent</module>
-      <module>../sae-webservices</module>
       <module>../sae-vi</module>
       <module>../sae-saml</module>
       <module>../sae-igc</module>
-      <module>../sae-services</module>
+      <module>../sae-bo</module>
       <module>../sae-storage</module>
       <module>../sae-storage-dfce</module>
+      <module>../sae-services</module>
+      <module>../sae-webservices</module>
 
    </modules>
 
@@ -52,6 +50,21 @@
             </executions>
 
          </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+               <file>${project.build.directory}\sae-integration.war</file>
+               <url>http://cer69-nexus.cer69.recouv:8081/nexus/content/repositories/snapshots</url>
+               <groupId>fr.urssaf.image.sae</groupId>
+               <artifactId>sae-integration</artifactId>
+               <version>0.0.1-SNAPSHOT</version>
+               <uniqueVersion>false</uniqueVersion>
+            </configuration>
+         </plugin>
+
 
       </plugins>
 
