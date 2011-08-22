@@ -1,10 +1,14 @@
 package fr.urssaf.image.sae.webservices;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.axiom.util.base64.Base64Utils;
 import org.apache.axis2.AxisFault;
@@ -115,26 +119,49 @@ public class ConsultationSoapTest {
       NodeList metadonnees = (NodeList) response.getElementsByTagNameNS(
             NAMESPACE_URI, "metadonnees").item(0);
 
-      assertEquals("nombre de metadonnees inattendu", 5, metadonnees
-            .getLength());
+      assertNotNull("la liste des metadonnées doit être renseignée",
+            metadonnees);
+      assertEquals("nombre de metadatas inattendu", 10, metadonnees.getLength());
 
-      assertMetadonnee(metadonnees.item(0), "NumeroCotisant", "719900");
-      assertMetadonnee(metadonnees.item(1), "CodeRND", "1.2.3.3.1");
-      // assertMetadonnee(metadonnees.item(2), "UUID",
-      // "48758200-A29B-18C4-B616-455677840120");
-      assertMetadonnee(metadonnees.item(2), "Siret", "07412723410007");
-      assertMetadonnee(metadonnees.item(3), "CodeOrganisme", "UR030");
-      assertMetadonnee(metadonnees.item(4), "DenominationCompte",
-            "COUTURIER GINETTE");
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
+
+      expectedMetadatas.put("ASO", "GED");
+      expectedMetadatas.put("ACT", "2");
+      expectedMetadatas.put("OTY", "autonome");
+      expectedMetadatas.put("CSE", "CS1");
+      expectedMetadatas.put("DCO", "12");
+      expectedMetadatas.put("DFC", "2015/12/01");
+      expectedMetadatas.put("COP", "UR030");
+      expectedMetadatas.put("DOM", "2");
+      expectedMetadatas.put("RND", "2.2.3.2.2");
+      expectedMetadatas.put("FFI", "fmt/18");
+
+      assertMetadata(metadonnees.item(0), expectedMetadatas);
+      assertMetadata(metadonnees.item(1), expectedMetadatas);
+      assertMetadata(metadonnees.item(2), expectedMetadatas);
+      assertMetadata(metadonnees.item(3), expectedMetadatas);
+      assertMetadata(metadonnees.item(4), expectedMetadatas);
+      assertMetadata(metadonnees.item(5), expectedMetadatas);
+      assertMetadata(metadonnees.item(6), expectedMetadatas);
+      assertMetadata(metadonnees.item(7), expectedMetadatas);
+      assertMetadata(metadonnees.item(8), expectedMetadatas);
+      assertMetadata(metadonnees.item(9), expectedMetadatas);
 
    }
 
-   private static void assertMetadonnee(Node metadonnee, String expectedCode,
-         String expectedValeur) {
+   private static void assertMetadata(Node metadonnee,
+         Map<String, Object> expectedMetadatas) {
 
-      assertEquals("mauvaise métadonnée", expectedCode, metadonnee
-            .getChildNodes().item(0).getTextContent());
-      assertEquals("mauvaise valeur", expectedValeur, metadonnee
-            .getChildNodes().item(1).getTextContent());
+      String code = metadonnee.getChildNodes().item(0).getTextContent();
+      String value = metadonnee.getChildNodes().item(1).getTextContent();
+
+      assertTrue("la metadonnée '" + code + "' est inattendue",
+            expectedMetadatas.containsKey(code));
+
+      assertEquals("la valeur de la metadonnée est inattendue",
+            expectedMetadatas.get(code), value);
+
+      expectedMetadatas.remove(code);
    }
+
 }

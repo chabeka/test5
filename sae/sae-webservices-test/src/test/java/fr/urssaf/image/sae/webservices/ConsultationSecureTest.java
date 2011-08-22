@@ -1,15 +1,21 @@
 package fr.urssaf.image.sae.webservices;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.activation.DataHandler;
 
 import org.apache.axiom.util.base64.Base64Utils;
+import org.apache.axis2.AxisFault;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -38,6 +44,8 @@ public class ConsultationSecureTest {
    public final void before() {
 
       service = SecurityConfiguration.before();
+
+      AuthenticateUtils.authenticate("ROLE_TOUS");
    }
 
    @After
@@ -46,13 +54,37 @@ public class ConsultationSecureTest {
       SecurityConfiguration.after();
    }
 
+   private static void assertMetadata(MetadonneeType metadata,
+         Map<String, Object> expectedMetadatas) {
+
+      assertTrue("la metadonnée '" + metadata.getCode().getMetadonneeCodeType()
+            + "' est inattendue", expectedMetadatas.containsKey(metadata
+            .getCode().getMetadonneeCodeType()));
+
+      assertEquals("la valeur de la metadonnée est inattendue",
+            expectedMetadatas.get(metadata.getCode().getMetadonneeCodeType()),
+            metadata.getValeur().getMetadonneeValeurType());
+
+      expectedMetadatas.remove(metadata.getCode().getMetadonneeCodeType());
+   }
+
+   private static final String AXIS_FAULT = "AxisFault non attendue";
+
+   private static void assertAxisFault(AxisFault axisFault, String expectedMsg,
+         String expectedType, String expectedPrefix) {
+
+      assertEquals(AXIS_FAULT, expectedMsg, axisFault.getMessage());
+      assertEquals(AXIS_FAULT, expectedType, axisFault.getFaultCode()
+            .getLocalPart());
+      assertEquals(AXIS_FAULT, expectedPrefix, axisFault.getFaultCode()
+            .getPrefix());
+   }
+
    @Test
    public void consultation_success() throws IOException {
 
-      AuthenticateUtils.authenticate("ROLE_TOUS");
-
       Consultation request = RequestServiceFactory.createConsultation(
-            "48758200-A29B-18C4-B616-455677840120", false);
+            "1261362f-c87c-4e48-a06a-bc6b69f514e4", false);
 
       ConsultationResponseType response = service.consultation(request)
             .getConsultationResponse();
@@ -60,18 +92,34 @@ public class ConsultationSecureTest {
       String xml = ADBBeanUtils.print(response);
       LOG.debug(xml);
 
-      MetadonneeType[] metadonnees = response.getMetadonnees().getMetadonnee();
+      MetadonneeType[] metadatas = response.getMetadonnees().getMetadonnee();
 
-      assertEquals("nombre de metadonnees inattendu", 5, metadonnees.length);
+      assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
+      assertEquals("nombre de metadatas inattendu", 10, metadatas.length);
 
-      assertMetadonnee(metadonnees[0], "NumeroCotisant", "719900");
-      assertMetadonnee(metadonnees[1], "CodeRND", "1.2.3.3.1");
-      // assertMetadonnee(metadonnees[2], "UUID",
-      // "48758200-A29B-18C4-B616-455677840120");
-      assertMetadonnee(metadonnees[2], "Siret", "07412723410007");
-      assertMetadonnee(metadonnees[3], "CodeOrganisme", "UR030");
-      assertMetadonnee(metadonnees[4], "DenominationCompte",
-            "COUTURIER GINETTE");
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
+
+      expectedMetadatas.put("ASO", "GED");
+      expectedMetadatas.put("ACT", "2");
+      expectedMetadatas.put("OTY", "autonome");
+      expectedMetadatas.put("CSE", "CS1");
+      expectedMetadatas.put("DCO", "12");
+      expectedMetadatas.put("DFC", "2015/12/01");
+      expectedMetadatas.put("COP", "UR030");
+      expectedMetadatas.put("DOM", "2");
+      expectedMetadatas.put("RND", "2.2.3.2.2");
+      expectedMetadatas.put("FFI", "fmt/18");
+
+      assertMetadata(metadatas[0], expectedMetadatas);
+      assertMetadata(metadatas[1], expectedMetadatas);
+      assertMetadata(metadatas[2], expectedMetadatas);
+      assertMetadata(metadatas[3], expectedMetadatas);
+      assertMetadata(metadatas[4], expectedMetadatas);
+      assertMetadata(metadatas[5], expectedMetadatas);
+      assertMetadata(metadatas[6], expectedMetadatas);
+      assertMetadata(metadatas[7], expectedMetadatas);
+      assertMetadata(metadatas[8], expectedMetadatas);
+      assertMetadata(metadatas[9], expectedMetadatas);
 
       File expectedContent = new File(
             "src/test/resources/storage/attestation.pdf");
@@ -94,13 +142,24 @@ public class ConsultationSecureTest {
 
    }
 
-   private static void assertMetadonnee(MetadonneeType metadonnee,
-         String expectedCode, String expectedValeur) {
+   @Test
+   public void consultation_failure_urldirecte() throws RemoteException {
+      try {
+         Consultation request = RequestServiceFactory.createConsultation(
+               "a08addbb-f948-4489-a8a4-70fcb19feb9f", true);
 
-      assertEquals("mauvais code", expectedCode, metadonnee.getCode()
-            .getMetadonneeCodeType());
-      assertEquals("mauvaise valeur", expectedValeur, metadonnee.getValeur()
-            .getMetadonneeValeurType());
+         service.consultation(request).getConsultationResponse();
+
+         fail("le test doit échouer car l'url de consultation directe ne peut être à true");
+
+      } catch (AxisFault fault) {
+
+         assertAxisFault(
+               fault,
+               "La fonctionnalité URL de consultation directe n'est pas implémentée",
+               "FonctionNonImplementee", "sae");
+
+      }
    }
 
 }
