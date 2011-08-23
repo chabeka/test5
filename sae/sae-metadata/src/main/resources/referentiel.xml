@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<referentiel>
+	<metaDataReference>
+		<longCode>NbPages</longCode>
+		<shortCode>NBP</shortCode>
+		<label>Nombre de pages</label>
+		<description>Nombre de pages du document</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>INTEGER</type>
+		<pattern></pattern>
+		<length>-1</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeRND</longCode>
+		<shortCode>RND</shortCode>
+		<label>Code référentiel nationale de document
+		</label>
+		<description>Code issu d'un référentiel permettant de typer
+			nationalement un document</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>11</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>VersionRND</longCode>
+		<shortCode>VRN</shortCode>
+		<label>Version de Code RND</label>
+		<description>Numéro permettant d'identifier la version de provenance
+			du code RND renseigné précédemment</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeFonction</longCode>
+		<shortCode>DOM</shortCode>
+		<label>Code fonction RFP</label>
+		<description>Code de la fonction/domaine RFP</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>2</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeActivite</longCode>
+		<shortCode>ACT</shortCode>
+		<label>Code Activite RFP</label>
+		<description>Code de l'acitivté RFP</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>2</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DureeConservation</longCode>
+		<shortCode>DCO</shortCode>
+		<label>Duree de conservation</label>
+		<description>Duree de conservation de l'archive au terme duquel
+			l'archive est détruite</description>
+		<archivable>False</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>False</internal>
+		<type>INTEGER</type>
+		<pattern></pattern>
+		<length>-1</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DateDebutConservation</longCode>
+		<shortCode>DDC</shortCode>
+		<label>Date debut conservation</label>
+		<description>Date de début de la durée de conservation. (Si elle n'est
+			pas renseignée, la date de début de conservation est considérée comme
+			étant égale à la date d'archivage)</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>DATE</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DateFinConservation</longCode>
+		<shortCode>DFC</shortCode>
+		<label>Date fin conservation</label>
+		<description>Date de fin de la durée de conservation</description>
+		<archivable>False</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>DATE</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>JetonDePreuve</longCode>
+		<shortCode>JDP</shortCode>
+		<label>Jeton de preuve</label>
+		<description>Possibilité de stocker le jeton de preuve à des fins de
+			conservation long terme</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>-1</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>TracabilitrePreArchivage</longCode>
+		<shortCode>TPA</shortCode>
+		<label>Tracabilite pre archivage</label>
+		<description>Tracabilité utilisé surtout dans le cas de la chaine
+			d'acquisition</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal></internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>200</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>Hash</longCode>
+		<shortCode>version.1.digest</shortCode>
+		<label>Hash du fichier
+		</label>
+		<description>Hash du fichier
+		</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>TypeHash</longCode>
+		<shortCode>version.1.digest.algorithm</shortCode>
+		<label>type de hash utilisé</label>
+		<description>type de hash utilisé</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required></required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DateArchivage</longCode>
+		<shortCode>_archivageDate</shortCode>
+		<label>Date archivage
+		</label>
+		<description>Date à laquelle le document a été archivé dans le SAE
+		</description>
+		<archivable>False</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>False</internal>
+		<type>DATE</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DateCreation</longCode>
+		<shortCode>_creationDate</shortCode>
+		<label>Date creation</label>
+		<description>Date de création du document au niveau de l'application
+			émettrice</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>False</internal>
+		<type>DATE</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DateModification</longCode>
+		<shortCode>_modificationDate</shortCode>
+		<label>Date modification (DFCE)</label>
+		<description>Date modification (DFCE)</description>
+		<archivable>False</archivable>
+		<consultable>False</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type></type>
+		<pattern>DATE</pattern>
+		<length>10</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>DateReception</longCode>
+		<shortCode>DRE</shortCode>
+		<label>Date reception</label>
+		<description>Date à laquelle le document a été reçu pour un courrier
+			par exemple</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>DATE</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>ContratDeService</longCode>
+		<shortCode>CSE</shortCode>
+		<label>Contrat de Service</label>
+		<description>Numero permettant d'identifier sur quel contrat de
+			service le document a pu être archivé</description>
+		<archivable>False</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>ApplicationProductrice</longCode>
+		<shortCode>APR</shortCode>
+		<label>Application Produtrice du document</label>
+		<description>Code de l'application qui a produit le document (pour un
+			document WATT issu du scan, ce sera la chaine d'acquisiton)
+		</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>ApplicationTraitement</longCode>
+		<shortCode>ATR</shortCode>
+		<label>Application traitant le document</label>
+		<description>Code de l'application qui a fait des traitements sur le
+			document avant archivage</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>String</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>SiteAcquisition</longCode>
+		<shortCode>SAC</shortCode>
+		<label>Site acquisition</label>
+		<description>Code site du lieu d'acquisition dans le cas d'une
+			numérisation</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>String</type>
+		<pattern></pattern>
+		<length>5</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>FormatFichier</longCode>
+		<shortCode>FFI</shortCode>
+		<label>Format de fichier</label>
+		<description>identifiant pronom (PRONOM Unique ID )</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>TailleFichier</longCode>
+		<shortCode>TFI</shortCode>
+		<label>Taille du fichier</label>
+		<description>taille du fichier en ko</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type>LONG</type>
+		<pattern></pattern>
+		<length>-1</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeOrganismeProprietaire</longCode>
+		<shortCode>COP</shortCode>
+		<label>Code organisme proprietaire</label>
+		<description>code organisme propriétaire du document</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>5</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeOrganismeGestionnaire</longCode>
+		<shortCode>COG</shortCode>
+		<label>Code organisme gestionnaire</label>
+		<description>code organisme gestionnaire de la pièce </description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>String</type>
+		<pattern></pattern>
+		<length>5</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>Periode</longCode>
+		<shortCode>PER</shortCode>
+		<label>Periode</label>
+		<description>Correspond à la période V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>4</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>Siren</longCode>
+		<shortCode>SRN</shortCode>
+		<label>Siren</label>
+		<description>Numéro de SIREN V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NniEmployeur</longCode>
+		<shortCode>NNE</shortCode>
+		<label>NNI employeur</label>
+		<description>Numéro National d'Identification ou Numéro de sécurité
+			sociale de l'Employeur</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>15</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NumeroPersonne</longCode>
+		<shortCode>NPE</shortCode>
+		<label>Numero de personne</label>
+		<description>Numero de personne (V2)</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>Denomination</longCode>
+		<shortCode>DEN</shortCode>
+		<label>Denomination du compte</label>
+		<description>Dénomination du compte (provient de la raison sociale V2)
+		</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>100</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeCategorieV2</longCode>
+		<shortCode>CV2</shortCode>
+		<label>Code categorie V2</label>
+		<description>Code categorie V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>1</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>CodeSousCategorieV2</longCode>
+		<shortCode>SCV</shortCode>
+		<label>Code sous categorie V2</label>
+		<description>Code sous categorie V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>2</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NumeroCompteInterne</longCode>
+		<shortCode>NCI</shortCode>
+		<label>Numero de compte interne</label>
+		<description>Numero de compte interne V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>18</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NumeroCompteExterne</longCode>
+		<shortCode>NCE</shortCode>
+		<label>Numero de compte interne</label>
+		<description>Numero de compte externe V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>False</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>18</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>Siret</longCode>
+		<shortCode>SRT</shortCode>
+		<label>Numero de siret</label>
+		<description>Numéro de Siret V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>14</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>PseudoSiret</longCode>
+		<shortCode>PSI</shortCode>
+		<label>Numero de pseudosiret</label>
+		<description>Numéro de Pseudo Siret V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>10</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NumeroStructure</longCode>
+		<shortCode>NST</shortCode>
+		<label>Numero de structure</label>
+		<description>Numéro de structure V2</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NumeroRecours</longCode>
+		<shortCode>NRE </shortCode>
+		<label>Numero de recours</label>
+		<description>Numero de recours</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>NumeroIntControle</longCode>
+		<shortCode>NIC</shortCode>
+		<label>Numero interne contrôle</label>
+		<description>Numero interne contrôle</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>Titre</longCode>
+		<shortCode>_title</shortCode>
+		<label>Titre du document (DFCE)</label>
+		<description>Titre du document (DFCE)</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>False</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>100</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>type</longCode>
+		<shortCode>_type</shortCode>
+		<label>type (DFCE)</label>
+		<description>type</description>
+		<archivable>False</archivable>
+		<consultable>False</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>versionNumber</longCode>
+		<shortCode>_versionNb</shortCode>
+		<label>versionNumber (DFCE)</label>
+		<description>versionNumber</description>
+		<archivable>False</archivable>
+		<consultable>False</consultable>
+		<searchable>False</searchable>
+		<internal>False</internal>
+		<type>INTEGER</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>False</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>referenceUUID</longCode>
+		<shortCode>_referenceUUID</shortCode>
+		<label>referenceUUID (DFCE)</label>
+		<description>Pour un document virtuel, il s'agit de l'uuid du document
+			container</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>False</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>30</length>
+		<required>True</required>
+	</metaDataReference>
+	<metaDataReference>
+		<longCode>IdTraitementMasse</longCode>
+		<shortCode>ITM</shortCode>
+		<label>IdTraitementMasse</label>
+		<description>Identifiant permettant de gérer le rollback sur les
+			traitements de masse</description>
+		<archivable>True</archivable>
+		<consultable>True</consultable>
+		<searchable>True</searchable>
+		<internal>True</internal>
+		<type>STRING</type>
+		<pattern></pattern>
+		<length>20</length>
+		<required>False</required>
+	</metaDataReference>
+</referentiel>

@@ -1,0 +1,95 @@
+package fr.urssaf.image.sae.metadata.referential.services.impl;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+import com.thoughtworks.xstream.XStream;
+
+import fr.urssaf.image.sae.metadata.constants.Constants;
+import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
+import fr.urssaf.image.sae.metadata.referential.model.ReferentialDatas;
+import fr.urssaf.image.sae.metadata.referential.model.Referentiel;
+import fr.urssaf.image.sae.metadata.referential.services.XmlDataService;
+import fr.urssaf.image.sae.metadata.utils.Utils;
+import fr.urssaf.image.sae.metadata.utils.XStreamHelper;
+
+/**
+ * Fournit des méthodes de désérialisation
+ * 
+ * @author akenore
+ * 
+ */
+@Service
+@Qualifier("xmlDataService")
+public class XmlDataServiceImpl implements XmlDataService {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final Map<String, MetadataReference> referentialReader(
+			final File xmlFile) throws FileNotFoundException {
+		final Referentiel dataFromXml = getReferential(xmlFile);
+		final Map<String, MetadataReference> referential = new HashMap<String, MetadataReference>();
+		for (MetadataReference metaData : Utils.nullSafeIterable(dataFromXml
+				.getMetadatas())) {
+			referential.put(metaData.getLongCode(), metaData);
+		}
+		return referential;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final Map<String, MetadataReference> referentialReader() throws FileNotFoundException {
+		final Referentiel dataFromXml = getReferential();
+		final Map<String, MetadataReference> referential = new HashMap<String, MetadataReference>();
+		for (MetadataReference metaData : Utils.nullSafeIterable(dataFromXml
+				.getMetadatas())) {
+			referential.put(metaData.getLongCode(), metaData);
+		}
+		return referential;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @throws FileNotFoundException
+	 *             Lorsque le fichier n'existe pas
+	 */
+	private Referentiel getReferential(final File xmlFile)
+			throws FileNotFoundException {
+		return XStreamHelper.parse(xmlFile, Constants.ENCODING,
+				Referentiel.class, buildReadingXStream(Referentiel.class));
+	}
+
+	/**
+	 * 
+	 * 
+	 * @throws FileNotFoundException
+	 *             Lorsque le fichier n'existe pas
+	 */
+	private Referentiel getReferential()
+			throws FileNotFoundException {
+
+		return XStreamHelper.loadDataProcess(
+				Utils.getFileFromString(ReferentialDatas.buildXmlfile()),
+				Referentiel.class);
+	}
+
+	/**
+	 * Construit le composant XStream utilisé en lecture.
+	 * 
+	 * @param xstrClass
+	 *            : La classe à désérialiser
+	 * @return le composant xstream
+	 */
+	private XStream buildReadingXStream(final Class<?> xstrClass) {
+
+		return XStreamHelper.newXStream(xstrClass);
+	}
+}
