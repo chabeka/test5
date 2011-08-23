@@ -116,6 +116,7 @@
 						<exclude>**/SearchLongCodePerfTest.java</exclude>
 						<exclude>**/SearchLongCodeTest.java</exclude>
 						<exclude>**/SearchLongCodeTestPerfFactory.java</exclude>
+						<exclude>**/AbstractService.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
