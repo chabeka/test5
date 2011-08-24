@@ -1,7 +1,9 @@
 package fr.urssaf.image.sae.metadata.referential.services.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -43,10 +45,11 @@ public class XmlDataServiceImplTest {
 	}
 	@Test
 	public void getReferentielMetaData() throws IOException {
-		final File xmlFile = new File(getClass().getResource("/referentiel.xml")
-				.getPath());
+	  
+		final InputStream xmlInputStream = new FileInputStream(new File(getClass().getResource("/referentiel.xml")
+				.getPath()));
 		final Map<String, MetadataReference> ref = xmlService
-				.referentialReader(xmlFile);
+				.referentialReader(xmlInputStream);
 		Assert.assertTrue("Le nombre de métadonnées doit être égal à 43",
 				ref.size() == 43);
 	}

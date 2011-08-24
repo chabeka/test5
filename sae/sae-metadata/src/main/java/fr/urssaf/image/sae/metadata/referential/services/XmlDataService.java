@@ -1,7 +1,7 @@
 package fr.urssaf.image.sae.metadata.referential.services;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Map;
 
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
@@ -15,13 +15,13 @@ import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 public interface XmlDataService {
 	/**
 	 * 
-	 * @param xmlFile
-	 *            : Le fichier xml contenant les données
+	 * @param xmlInputStream
+	 *            : Le flux xml contenant les données
 	 * @return Le Referentiel des métadonnées
 	 * @throws FileNotFoundException
 	 *             Lorsque le fichier n'est pas présent
 	 */
-	Map<String, MetadataReference> referentialReader(final File xmlFile)
+	Map<String, MetadataReference> referentialReader(final InputStream xmlInputStream)
 			throws FileNotFoundException;
 	
 	/**

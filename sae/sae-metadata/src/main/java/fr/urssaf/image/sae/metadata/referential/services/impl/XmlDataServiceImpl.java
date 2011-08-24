@@ -1,7 +1,8 @@
 package fr.urssaf.image.sae.metadata.referential.services.impl;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +33,8 @@ public class XmlDataServiceImpl implements XmlDataService {
 	 * {@inheritDoc}
 	 */
 	public final Map<String, MetadataReference> referentialReader(
-			final File xmlFile) throws FileNotFoundException {
-		final Referentiel dataFromXml = getReferential(xmlFile);
+			final InputStream xmlInputStream) throws FileNotFoundException {
+		final Referentiel dataFromXml = getReferential(xmlInputStream);
 		final Map<String, MetadataReference> referential = new HashMap<String, MetadataReference>();
 		for (MetadataReference metaData : Utils.nullSafeIterable(dataFromXml
 				.getMetadatas())) {
@@ -61,10 +62,11 @@ public class XmlDataServiceImpl implements XmlDataService {
 	 * @throws FileNotFoundException
 	 *             Lorsque le fichier n'existe pas
 	 */
-	private Referentiel getReferential(final File xmlFile)
+	private Referentiel getReferential(final InputStream xmlInputStream)
 			throws FileNotFoundException {
-		return XStreamHelper.parse(xmlFile, Constants.ENCODING,
-				Referentiel.class, buildReadingXStream(Referentiel.class));
+	   return XStreamHelper.parse(new InputStreamReader(xmlInputStream),
+            Constants.ENCODING, Referentiel.class,
+            buildReadingXStream(Referentiel.class));
 	}
 
 	/**

@@ -1,16 +1,15 @@
 package fr.urssaf.image.sae.metadata.referential.services.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-
-
 
 import fr.urssaf.image.sae.control.messages.MessageHandler;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
@@ -33,6 +32,9 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
 	@Autowired
 	@Qualifier("xmlDataService")
 	private XmlDataService xmlDataService;
+	
+	@Autowired
+	private ApplicationContext context;
 
 	/**
 	 * @return Le service Xml
@@ -50,24 +52,30 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throws ReferentialException
-	 *             Exception lever lorsque la récupération des métadonnées ne
-	 *             sont pas disponibles.
-	 */
-	public final Map<String, MetadataReference> getAllMetadataReferences()
-			throws ReferentialException {
-		final File xmlFile = new File(getClass()
-				.getResource("/referentiel.xml").getPath());
-		try {
-			return xmlDataService.referentialReader(xmlFile);
-		} catch (FileNotFoundException fileNotFoundExcpt) {
-			throw new ReferentialException(MessageHandler.getMessage(
-					"referential.file.notfound", xmlFile.getAbsolutePath()),
-					fileNotFoundExcpt);
-		}
-	}
+    * {@inheritDoc}
+    * 
+    * @throws ReferentialException
+    *            Exception lever lorsque la récupération des métadonnées ne sont
+    *            pas disponibles.
+    */
+   public final Map<String, MetadataReference> getAllMetadataReferences()
+         throws ReferentialException {
+
+      Resource referentiel = context
+            .getResource("classpath:referentiel.xml");
+
+      try {
+
+         return xmlDataService.referentialReader(referentiel
+               .getInputStream());
+
+      } catch (IOException e) {
+         throw new ReferentialException(MessageHandler.getMessage(
+               "referential.file.notfound", referentiel.getFilename()),
+               e);
+      }
+
+   }
 
 	/**
 	 * {@inheritDoc}
