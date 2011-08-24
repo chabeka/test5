@@ -10,6 +10,7 @@
 
 
    <import resource="applicationContext-sae-services.xml" />
+   <import resource="applicationContext-sae-metadata.xml" />
    <import resource="applicationContext-sae-storage-dfce.xml" />
 
    <!--Chargement du fichier de properties de l'application -->

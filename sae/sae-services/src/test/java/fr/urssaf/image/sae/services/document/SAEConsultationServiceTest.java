@@ -40,7 +40,7 @@ public class SAEConsultationServiceTest {
    public void consultation_success() throws IOException,
          SAEConsultationServiceException {
 
-      UUID idArchive = UUID.fromString("1261362f-c87c-4e48-a06a-bc6b69f514e4");
+      UUID idArchive = UUID.fromString("cc4a5ec1-788d-4b41-baa8-d349947865bf");
 
       UntypedDocument untypedDocument = service.consultation(idArchive);
 
@@ -50,21 +50,18 @@ public class SAEConsultationServiceTest {
       List<UntypedMetadata> metadatas = untypedDocument.getUMetadatas();
 
       assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
-      assertEquals("nombre de metadatas inattendu", 10, metadatas.size());
+      assertEquals("nombre de metadatas inattendu", 8, metadatas.size());
 
       Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
 
-      expectedMetadatas.put("ASO", "GED");
-
-      expectedMetadatas.put("ACT", "2");
-      expectedMetadatas.put("OTY", "autonome");
-      expectedMetadatas.put("CSE", "CS1");
-      expectedMetadatas.put("DCO", "12");
-      expectedMetadatas.put("DFC", "2015/12/01");
-      expectedMetadatas.put("COP", "UR030");
-      expectedMetadatas.put("DOM", "2");
-      expectedMetadatas.put("RND", "2.2.3.2.2");
-      expectedMetadatas.put("FFI", "fmt/18");
+      expectedMetadatas.put("CodeActivite", "2");
+      expectedMetadatas.put("ContratDeService", "CS1");
+      expectedMetadatas.put("DureeConservation", "12");
+      expectedMetadatas.put("DateFinConservation", "2015/12/01");
+      expectedMetadatas.put("CodeOrganismeProprietaire", "UR030");
+      expectedMetadatas.put("CodeFonction", "2");
+      expectedMetadatas.put("CodeRND", "2.2.3.2.2");
+      expectedMetadatas.put("FormatFichier", "fmt/18");
 
       assertMetadata(metadatas.get(0), expectedMetadatas);
       assertMetadata(metadatas.get(1), expectedMetadatas);
@@ -74,8 +71,11 @@ public class SAEConsultationServiceTest {
       assertMetadata(metadatas.get(5), expectedMetadatas);
       assertMetadata(metadatas.get(6), expectedMetadatas);
       assertMetadata(metadatas.get(7), expectedMetadatas);
-      assertMetadata(metadatas.get(8), expectedMetadatas);
-      assertMetadata(metadatas.get(9), expectedMetadatas);
+      
+      //assertMetadata(metadatas.get(8), expectedMetadatas);
+      //assertMetadata(metadatas.get(9), expectedMetadatas);
+      
+      assertTrue("Des métadonnées sont attendues", expectedMetadatas.isEmpty());
 
       File expectedContent = new File(
             "src/test/resources/doc/attestation_consultation.pdf");

@@ -1,14 +1,11 @@
 package fr.urssaf.image.sae.services.factory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.prettyprint.cassandra.utils.Assert;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
 /**
@@ -29,49 +26,23 @@ public final class UntypedMetadataFactory {
     * 
     * @param storageMetadata
     *           instance modèle, doit être non null
+    * @param metadataReference
+    *           instance de la référence de la métadonnée, doit être non null
     * @return instance de {@link UntypedMetadata}
     */
    public static UntypedMetadata createUntypedMetadata(
-         StorageMetadata storageMetadata) {
+         StorageMetadata storageMetadata, MetadataReference metadataReference) {
 
       Assert.notNull(storageMetadata, "'storageMetadata' is required");
+      Assert.notNull(metadataReference, "'metadataReference' is required");
 
       UntypedMetadata untypedMetadata = new UntypedMetadata();
-      // TODO référentiel métadonnée : charger le code long
-      untypedMetadata.setLongCode(storageMetadata.getShortCode());
+     
+      untypedMetadata.setLongCode(metadataReference.getLongCode());
       untypedMetadata
             .setValue(ObjectUtils.toString(storageMetadata.getValue()));
 
       return untypedMetadata;
-   }
-
-   /**
-    * instanciation d'une liste de {@link UntypedMetadata} à partir d'une liste
-    * de {@link StorageMetadata}.
-    * 
-    * 
-    * @param storageMetadatas
-    *           liste des modèles
-    * @return liste de {@link UntypedMetadata}
-    */
-   public static List<UntypedMetadata> createUntypedMetadata(
-         List<StorageMetadata> storageMetadatas) {
-
-      List<UntypedMetadata> untypedMetadatas = new ArrayList<UntypedMetadata>();
-
-      if (CollectionUtils.isNotEmpty(storageMetadatas)) {
-
-         for (StorageMetadata storageMetadata : storageMetadatas) {
-
-            if (storageMetadata != null) {
-
-               untypedMetadatas.add(createUntypedMetadata(storageMetadata));
-            }
-         }
-
-      }
-
-      return untypedMetadatas;
    }
 
 }
