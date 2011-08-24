@@ -168,6 +168,14 @@
 
          </exclusions>
       </dependency>
+      
+       <!-- SAE METADATA -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-metadata</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
       <!--  AXIS 2 -->
 

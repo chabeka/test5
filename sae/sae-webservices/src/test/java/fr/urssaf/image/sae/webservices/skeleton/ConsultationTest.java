@@ -102,20 +102,18 @@ public class ConsultationTest {
       MetadonneeType[] metadatas = response.getMetadonnees().getMetadonnee();
 
       assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
-      assertEquals("nombre de metadatas inattendu", 10, metadatas.length);
+      assertEquals("nombre de metadatas inattendu", 8, metadatas.length);
 
       Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
 
-      expectedMetadatas.put("ASO", "GED");
-      expectedMetadatas.put("ACT", "2");
-      expectedMetadatas.put("OTY", "autonome");
-      expectedMetadatas.put("CSE", "CS1");
-      expectedMetadatas.put("DCO", "12");
-      expectedMetadatas.put("DFC", "2015/12/01");
-      expectedMetadatas.put("COP", "UR030");
-      expectedMetadatas.put("DOM", "2");
-      expectedMetadatas.put("RND", "2.2.3.2.2");
-      expectedMetadatas.put("FFI", "fmt/18");
+      expectedMetadatas.put("CodeActivite", "2");
+      expectedMetadatas.put("ContratDeService", "CS1");
+      expectedMetadatas.put("DureeConservation", "12");
+      expectedMetadatas.put("DateFinConservation", "2015/12/01");
+      expectedMetadatas.put("CodeOrganismeProprietaire", "UR030");
+      expectedMetadatas.put("CodeFonction", "2");
+      expectedMetadatas.put("CodeRND", "2.2.3.2.2");
+      expectedMetadatas.put("FormatFichier", "fmt/18");
 
       assertMetadata(metadatas[0], expectedMetadatas);
       assertMetadata(metadatas[1], expectedMetadatas);
@@ -125,8 +123,10 @@ public class ConsultationTest {
       assertMetadata(metadatas[5], expectedMetadatas);
       assertMetadata(metadatas[6], expectedMetadatas);
       assertMetadata(metadatas[7], expectedMetadatas);
-      assertMetadata(metadatas[8], expectedMetadatas);
-      assertMetadata(metadatas[9], expectedMetadatas);
+      //assertMetadata(metadatas[8], expectedMetadatas);
+      //assertMetadata(metadatas[9], expectedMetadatas);
+      
+      assertTrue("Des métadonnées sont attendues", expectedMetadatas.isEmpty());
 
       File expectedContent = new File(
             "src/test/resources/storage/attestation.pdf");
