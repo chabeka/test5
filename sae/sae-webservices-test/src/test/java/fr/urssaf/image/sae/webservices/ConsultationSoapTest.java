@@ -121,20 +121,19 @@ public class ConsultationSoapTest {
 
       assertNotNull("la liste des metadonnées doit être renseignée",
             metadonnees);
-      assertEquals("nombre de metadatas inattendu", 10, metadonnees.getLength());
+      assertNotNull("la liste des metadonnées doit être renseignée", metadonnees);
+      assertEquals("nombre de metadatas inattendu", 8, metadonnees.getLength());
 
       Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
-
-      expectedMetadatas.put("ASO", "GED");
-      expectedMetadatas.put("ACT", "2");
-      expectedMetadatas.put("OTY", "autonome");
-      expectedMetadatas.put("CSE", "CS1");
-      expectedMetadatas.put("DCO", "12");
-      expectedMetadatas.put("DFC", "2015/12/01");
-      expectedMetadatas.put("COP", "UR030");
-      expectedMetadatas.put("DOM", "2");
-      expectedMetadatas.put("RND", "2.2.3.2.2");
-      expectedMetadatas.put("FFI", "fmt/18");
+      
+      expectedMetadatas.put("CodeActivite", "2");
+      expectedMetadatas.put("ContratDeService", "CS1");
+      expectedMetadatas.put("DureeConservation", "12");
+      expectedMetadatas.put("DateFinConservation", "2015/12/01");
+      expectedMetadatas.put("CodeOrganismeProprietaire", "UR030");
+      expectedMetadatas.put("CodeFonction", "2");
+      expectedMetadatas.put("CodeRND", "2.2.3.2.2");
+      expectedMetadatas.put("FormatFichier", "fmt/18");
 
       assertMetadata(metadonnees.item(0), expectedMetadatas);
       assertMetadata(metadonnees.item(1), expectedMetadatas);
@@ -144,8 +143,7 @@ public class ConsultationSoapTest {
       assertMetadata(metadonnees.item(5), expectedMetadatas);
       assertMetadata(metadonnees.item(6), expectedMetadatas);
       assertMetadata(metadonnees.item(7), expectedMetadatas);
-      assertMetadata(metadonnees.item(8), expectedMetadatas);
-      assertMetadata(metadonnees.item(9), expectedMetadatas);
+      
 
    }
 
