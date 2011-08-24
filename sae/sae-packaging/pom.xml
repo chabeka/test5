@@ -20,6 +20,7 @@
       <module>../sae-saml</module>
       <module>../sae-igc</module>
       <module>../sae-bo</module>
+      <module>../sae-metadata</module>
       <module>../sae-storage</module>
       <module>../sae-storage-dfce</module>
       <module>../sae-services</module>
