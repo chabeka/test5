@@ -16,7 +16,7 @@ import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
@@ -95,7 +95,7 @@ public class InsertionServiceImpl extends AbstractServices implements
       final List<StorageDocumentOnError> storageDocFailed = new ArrayList<StorageDocumentOnError>();
 
       for (StorageDocument storageDocument : Utils
-            .nullSafeIterable(storageDocuments.getAllStorageDocument())) {
+            .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
          try {
             storageDocument.setUuid(insertStorageDocument(storageDocument));
             storageDocDone.add(storageDocument);
@@ -144,7 +144,7 @@ public class InsertionServiceImpl extends AbstractServices implements
             // L'appelant pourrait obtenir une liste des documents non
             // rollbackés via un attribut
             // de l'exception AllOrNothingRollbackException
-            throw new InsertionServiceEx(MessageHandler
+            throw new InsertionServiceEx(StorageMessageHandler
                   .getMessage(Constants.DEL_CODE_ERROR), delSerEx.getMessage(),
                   delSerEx);
          }
@@ -166,11 +166,11 @@ public class InsertionServiceImpl extends AbstractServices implements
          return ServiceProvider.getStoreService().storeDocument(docDfce,
                docContent).getUuid();
       } catch (TagControlException tagCtrlEx) {
-         throw new InsertionServiceEx(MessageHandler
+         throw new InsertionServiceEx(StorageMessageHandler
                .getMessage(Constants.INS_CODE_ERROR), tagCtrlEx.getMessage(),
                tagCtrlEx);
       } catch (Exception except) {
-         throw new InsertionServiceEx(MessageHandler
+         throw new InsertionServiceEx(StorageMessageHandler
                .getMessage(Constants.INS_CODE_ERROR), except.getMessage(),
                except);
       }

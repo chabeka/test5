@@ -16,7 +16,7 @@ public class MessageTest extends CommonsServices {
     */
    @Test
    public final void getMessageFromFile() {
-      Assert.assertNotNull(MessageHandler
+      Assert.assertNotNull(StorageMessageHandler
             .getMessage("insertion.document.required"));
    }
 }

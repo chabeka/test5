@@ -3,8 +3,8 @@ package fr.urssaf.image.sae.storage.dfce.messages;
 
 import org.springframework.context.MessageSource;
 
-import fr.urssaf.image.sae.storage.dfce.component.StorageApplicationContext;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.context.StorageApplicationContext;
 
 /**
  * Fournit des services qui retournent un message à partir de sa clés .
@@ -12,7 +12,7 @@ import fr.urssaf.image.sae.storage.dfce.contants.Constants;
  * @author akenore
  * 
  */
-public final class MessageHandler { 
+public final class StorageMessageHandler { 
   
    private static final MessageSource MESSAGE_SOURCES;
 
@@ -69,7 +69,7 @@ public final class MessageHandler {
    }
 
    /** Cette classe n'est pas faite pour être instanciée. */
-   private MessageHandler() {
+   private StorageMessageHandler() {
       assert false;
    }
 }

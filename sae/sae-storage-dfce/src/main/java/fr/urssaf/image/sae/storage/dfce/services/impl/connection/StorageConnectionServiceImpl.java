@@ -6,7 +6,7 @@ import net.docubase.toolkit.service.Authentication;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServiceProvider;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
@@ -94,11 +94,11 @@ public class StorageConnectionServiceImpl extends AbstractServiceProvider
                storageHost.getHostPort(), storageHost.getContextRoot());
          url = urlConnection.toString();
       } catch (MalformedURLException except) {
-         throw new ConnectionServiceEx(MessageHandler
+         throw new ConnectionServiceEx(StorageMessageHandler
                .getMessage(Constants.CNT_CODE_ERROR), except.getMessage(),
                except);
       } catch (Exception except) {
-         throw new ConnectionServiceEx(MessageHandler
+         throw new ConnectionServiceEx(StorageMessageHandler
                .getMessage(Constants.CNT_CODE_ERROR), except.getMessage(),
                except);
       }

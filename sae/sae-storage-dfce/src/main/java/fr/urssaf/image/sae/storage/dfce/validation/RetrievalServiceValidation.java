@@ -4,7 +4,7 @@ import org.apache.commons.lang.Validate;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
 
 /**
@@ -74,9 +74,9 @@ public class RetrievalServiceValidation {
     */
    private void checkNotNull(final UUIDCriteria uUIDCriteria,
          final String... message) {
-      Validate.notNull(uUIDCriteria, MessageHandler.getMessage(CODE_ERROR,
+      Validate.notNull(uUIDCriteria, StorageMessageHandler.getMessage(CODE_ERROR,
             "retrieve.from.uuid.criteria.required", message[0], message[1]));
-      Validate.notNull(uUIDCriteria.getUuid(), MessageHandler.getMessage(
+      Validate.notNull(uUIDCriteria.getUuid(), StorageMessageHandler.getMessage(
             CODE_ERROR, "retrieve.from.uuid.criteria.required", message[0],
             message[1]));
 

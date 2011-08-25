@@ -17,7 +17,7 @@ import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
@@ -75,19 +75,19 @@ public class SearchingServiceImpl extends AbstractServices implements
                   document, luceneCriteria.getDesiredStorageMetadatas()));
          }
       } catch (StorageException srcSerEx) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), srcSerEx.getMessage(),
                srcSerEx);
       } catch (IOException ioExcept) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), ioExcept.getMessage(),
                ioExcept);
       } catch (ExceededSearchLimitException exceedSearchEx) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), exceedSearchEx
                .getMessage(), exceedSearchEx);
       } catch (Exception except) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), except.getMessage(),
                except);
       }
@@ -115,15 +115,15 @@ public class SearchingServiceImpl extends AbstractServices implements
          return storageDoc;
 
       } catch (StorageException srcSerEx) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), srcSerEx.getMessage(),
                srcSerEx);
       } catch (IOException ioExcept) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), ioExcept.getMessage(),
                ioExcept);
       } catch (Exception except) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), except.getMessage(),
                except);
       }
@@ -150,15 +150,15 @@ public class SearchingServiceImpl extends AbstractServices implements
          return BeanMapper.dfceMetaDataToStorageDocument(docDfce, uuidCriteria
                .getDesiredStorageMetadatas());
       } catch (StorageException srcSerEx) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), srcSerEx.getMessage(),
                srcSerEx);
       } catch (IOException ioExcept) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), ioExcept.getMessage(),
                ioExcept);
       } catch (Exception except) {
-         throw new SearchingServiceEx(MessageHandler
+         throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), except.getMessage(),
                except);
       }

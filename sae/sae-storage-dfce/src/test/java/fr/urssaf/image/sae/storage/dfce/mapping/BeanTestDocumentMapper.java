@@ -60,7 +60,7 @@ public final class BeanTestDocumentMapper {
          } else if (Constants.TEC_METADATAS[1].equals(codeMetaData)) {
             storageDocument.setTitle(value);
          } else {
-            metadatas.add(new StorageMetadata(null, codeMetaData, value));
+            metadatas.add(new StorageMetadata(codeMetaData, value));
          }
       }
       storageDocument.setMetadatas(metadatas);

@@ -4,7 +4,7 @@ import org.apache.commons.lang.Validate;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 
 /**
@@ -45,16 +45,16 @@ public class StorageConnectionServiceValidation {
    @SuppressWarnings("PMD.LongVariable")
    private void checkBaseParameter(
          final StorageConnectionParameter storageConnectionParameter) {
-      Validate.notNull(storageConnectionParameter, MessageHandler.getMessage(
+      Validate.notNull(storageConnectionParameter, StorageMessageHandler.getMessage(
             CODE_ERROR, "connection.parameters.required", "connection.impact",
             "connection.action"));
       // Vérification de la partie base name
       Validate.notNull(storageConnectionParameter.getStorageBase(),
-            MessageHandler.getMessage(CODE_ERROR,
+            StorageMessageHandler.getMessage(CODE_ERROR,
                   "connection.parameters.basename.required",
                   "connection.basename.impact", "connection.basename.action"));
       Validate.notNull(storageConnectionParameter.getStorageBase()
-            .getBaseName(), MessageHandler.getMessage(CODE_ERROR,
+            .getBaseName(), StorageMessageHandler.getMessage(CODE_ERROR,
             "connection.parameters.basename.required",
             "connection.basename.impact", "connection.basename.action"));
    }
@@ -70,19 +70,19 @@ public class StorageConnectionServiceValidation {
          final StorageConnectionParameter storageConnectionParameter) {
       // Vérification de la partie Host
       Validate.notNull(storageConnectionParameter.getStorageHost(),
-            MessageHandler.getMessage(CODE_ERROR,
+            StorageMessageHandler.getMessage(CODE_ERROR,
                   "connection.parameters.host.required",
                   "connection.host.impact", "connection.host.action"));
       Validate.notNull(storageConnectionParameter.getStorageHost()
-            .getContextRoot(), MessageHandler.getMessage(CODE_ERROR,
+            .getContextRoot(), StorageMessageHandler.getMessage(CODE_ERROR,
             "connection.parameters.contextroot.required",
             "connection.contextroot.impact", "connection.contextroot.action"));
       Validate.notNull(storageConnectionParameter.getStorageHost()
-            .getHostName(), MessageHandler.getMessage(CODE_ERROR,
+            .getHostName(), StorageMessageHandler.getMessage(CODE_ERROR,
             "connection.parameters.host.required",
             "connection.hostname.impact", "connection.hostname.action"));
       Validate.notNull(storageConnectionParameter.getStorageHost()
-            .getHostPort(), MessageHandler.getMessage(CODE_ERROR,
+            .getHostPort(), StorageMessageHandler.getMessage(CODE_ERROR,
             "connection.parameters.hostport.required",
             "connection.hostport.impact", "connection.hostport.action"));
    }
@@ -97,15 +97,15 @@ public class StorageConnectionServiceValidation {
    private void checkUserParameter(
          final StorageConnectionParameter storageConnectParam) {
       // Vérification des paramètres utilisateurs
-      Validate.notNull(storageConnectParam.getStorageUser(), MessageHandler
+      Validate.notNull(storageConnectParam.getStorageUser(), StorageMessageHandler
             .getMessage(CODE_ERROR, "connection.user.required",
                   "connection.user.impact", "connection.user.action"));
 
       Validate.notNull(storageConnectParam.getStorageUser().getLogin(),
-            MessageHandler.getMessage(CODE_ERROR, "connection.login.required",
+            StorageMessageHandler.getMessage(CODE_ERROR, "connection.login.required",
                   "connection.login.impact", "connection.login.action"));
       Validate.notNull(storageConnectParam.getStorageUser().getPassword(),
-            MessageHandler.getMessage(CODE_ERROR,
+            StorageMessageHandler.getMessage(CODE_ERROR,
                   "connection.password.required", "connection.password.impact",
                   "connection.password.action"));
    }

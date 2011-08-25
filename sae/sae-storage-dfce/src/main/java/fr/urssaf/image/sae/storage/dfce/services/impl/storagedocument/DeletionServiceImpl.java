@@ -12,7 +12,7 @@ import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
@@ -83,7 +83,7 @@ public class DeletionServiceImpl extends AbstractServices implements
          ServiceProvider.getStoreService().deleteDocument(
                uuidCriteria.getUuid());
       } catch (Exception except) {
-         throw new DeletionServiceEx(MessageHandler
+         throw new DeletionServiceEx(StorageMessageHandler
                .getMessage(Constants.DEL_CODE_ERROR), except.getMessage(),
                except);
       }
@@ -111,19 +111,19 @@ public class DeletionServiceImpl extends AbstractServices implements
       try {
          storageDocuments = searchingService
                .searchStorageDocumentByLuceneCriteria(new LuceneCriteria(
-                     lucene, Integer.parseInt(MessageHandler
+                     lucene, Integer.parseInt(StorageMessageHandler
                            .getMessage("max.lucene.results")), null));
          for (StorageDocument storageDocument : storageDocuments
-               .getAllStorageDocument()) {
+               .getAllStorageDocuments()) {
             deleteStorageDocument(new UUIDCriteria(storageDocument.getUuid(),
                   new ArrayList<StorageMetadata>()));
          }
       } catch (NumberFormatException except) {
-         throw new DeletionServiceEx(MessageHandler
+         throw new DeletionServiceEx(StorageMessageHandler
                .getMessage(Constants.DEL_CODE_ERROR), except.getMessage(),
                except);
       } catch (SearchingServiceEx except) {
-         throw new DeletionServiceEx(MessageHandler
+         throw new DeletionServiceEx(StorageMessageHandler
                .getMessage(Constants.DEL_CODE_ERROR), except.getMessage(),
                except);
       }

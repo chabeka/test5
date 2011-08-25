@@ -4,7 +4,7 @@ import org.apache.commons.lang.Validate;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
 
 /**
@@ -32,10 +32,10 @@ public class DeletionServiceValidation {
    public final void deleteStorageDocumentValidation(
          final UUIDCriteria uuidCriteria) {
 
-      Validate.notNull(uuidCriteria, MessageHandler.getMessage(CODE_ERROR,
+      Validate.notNull(uuidCriteria, StorageMessageHandler.getMessage(CODE_ERROR,
             "deletion.from.uuid.criteria.required", "delete.impact",
             "delete.action"));
-      Validate.notNull(uuidCriteria.getUuid(), MessageHandler.getMessage(
+      Validate.notNull(uuidCriteria.getUuid(), StorageMessageHandler.getMessage(
             CODE_ERROR, "deletion.from.uuid.criteria.required",
             "delete.action", "delete.action"));
 
@@ -51,13 +51,13 @@ public class DeletionServiceValidation {
     */
    @Before(value = "execution(void fr.urssaf.image.sae.storage.services.storagedocument..DeletionService.rollBack(..)) && @annotation(fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked) && args(processId)")
    public final void rollBackValidation(final String processId) {
-      Validate.notNull(processId, MessageHandler.getMessage(CODE_ERROR,
+      Validate.notNull(processId, StorageMessageHandler.getMessage(CODE_ERROR,
             "rollback.processId.required", "rollback.processId.impact",
             "rollback.processId.action"));
       try {
-         Integer.parseInt(MessageHandler.getMessage("max.lucene.results"));
+         Integer.parseInt(StorageMessageHandler.getMessage("max.lucene.results"));
       } catch (NumberFormatException e) {
-         Validate.isTrue(true, MessageHandler.getMessage(CODE_ERROR,
+         Validate.isTrue(true, StorageMessageHandler.getMessage(CODE_ERROR,
                "max.lucene.results.required", "max.lucene.results.impact",
                "max.lucene.results.action"));
       }

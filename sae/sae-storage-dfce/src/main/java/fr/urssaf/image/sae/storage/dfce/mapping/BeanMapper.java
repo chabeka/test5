@@ -94,7 +94,7 @@ public final class BeanMapper {
          final Document document, final List<StorageMetadata> desiredMetaData) {
       // Permet de savoir si la liste listMetaData est constitué.
       boolean treatementDone = false;
-      List<StorageMetadata> metaDatas = new ArrayList<StorageMetadata>();
+      List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
       if (document != null) {
          List<Criterion> criterions = document.getAllCriterions();
          // Traitement pour filtrer sur la liste des métadonnées souhaitées.
@@ -104,20 +104,19 @@ public final class BeanMapper {
             for (Criterion criterion : Utils.nullSafeIterable(criterions)) {
                if (criterion.getCategoryName()
                      .contains(metadata.getShortCode())) {
-                  metaDatas.add(new StorageMetadata(metadata.getLongCode(),
-                        metadata.getShortCode(), criterion.getWord()));
+                  metadatas.add(new StorageMetadata(metadata.getShortCode(), criterion.getWord()));
                }
             }
          }
          // la liste des métadonnées souhaitées est vide
          if (!treatementDone) {
             for (Criterion criterion : Utils.nullSafeIterable(criterions)) {
-               metaDatas.add(new StorageMetadata(null, criterion
+               metadatas.add(new StorageMetadata( criterion
                      .getCategoryName(), criterion.getWord()));
             }
          }
       }
-      return metaDatas;
+      return metadatas;
    }
 
    /**

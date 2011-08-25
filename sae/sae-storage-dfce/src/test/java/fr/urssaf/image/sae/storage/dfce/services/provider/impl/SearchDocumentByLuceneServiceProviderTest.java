@@ -42,9 +42,9 @@ public class SearchDocumentByLuceneServiceProviderTest extends
             .getStorageDocumentService().searchStorageDocumentByLuceneCriteria(
                   new LuceneCriteria(lucene, 1, null));
       // ici on vérifie qu'on a bien des documents
-      Assert.assertNotNull(strDocuments.getAllStorageDocument());
+      Assert.assertNotNull(strDocuments.getAllStorageDocuments());
       // ici on vérifie que le nombre de document est bien supérieur à 1
-      Assert.assertTrue(strDocuments.getAllStorageDocument().size() >= 1);
+      Assert.assertTrue(strDocuments.getAllStorageDocuments().size() >= 1);
       // on ferme la connection
       getServiceProvider().getStorageConnectionService().closeConnexion();
    }

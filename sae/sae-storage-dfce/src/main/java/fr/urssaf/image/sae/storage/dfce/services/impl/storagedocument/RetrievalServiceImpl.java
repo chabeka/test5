@@ -16,7 +16,7 @@ import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
@@ -70,11 +70,11 @@ public class RetrievalServiceImpl extends AbstractServices implements
          return searchingService
                .searchStorageDocumentByUUIDCriteria(uUIDCriteria);
       } catch (SearchingServiceEx srcSerEx) {
-         throw new RetrievalServiceEx(MessageHandler
+         throw new RetrievalServiceEx(StorageMessageHandler
                .getMessage(Constants.RTR_CODE_ERROR), srcSerEx.getMessage(),
                srcSerEx);
       } catch (Exception exc) {
-         throw new RetrievalServiceEx(MessageHandler
+         throw new RetrievalServiceEx(StorageMessageHandler
                .getMessage(Constants.RTR_CODE_ERROR), exc.getMessage(), exc);
       }
    }
@@ -93,11 +93,11 @@ public class RetrievalServiceImpl extends AbstractServices implements
                .getDocumentFile(docDfce);
          return IOUtils.toByteArray(docContent);
       } catch (IOException except) {
-         throw new RetrievalServiceEx(MessageHandler
+         throw new RetrievalServiceEx(StorageMessageHandler
                .getMessage(Constants.RTR_CODE_ERROR), except.getMessage(),
                except);
       } catch (Exception except) {
-         throw new RetrievalServiceEx(MessageHandler
+         throw new RetrievalServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), except.getMessage(),
                except);
       }
@@ -116,7 +116,7 @@ public class RetrievalServiceImpl extends AbstractServices implements
       } catch (SearchingServiceEx srcSerEx) {
          throw new RetrievalServiceEx(srcSerEx.getMessage(), srcSerEx);
       } catch (Exception except) {
-         throw new RetrievalServiceEx(MessageHandler
+         throw new RetrievalServiceEx(StorageMessageHandler
                .getMessage(Constants.RTR_CODE_ERROR), except.getMessage(),
                except);
       }

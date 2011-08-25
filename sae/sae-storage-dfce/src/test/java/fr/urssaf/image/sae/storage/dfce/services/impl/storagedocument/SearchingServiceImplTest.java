@@ -45,7 +45,7 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
             new ArrayList<StorageMetadata>());
       Assert.assertNotNull("La recherche de documents par requette Lucence: ",
             getSearchingService().searchStorageDocumentByLuceneCriteria(
-                  luceneCriteria).getAllStorageDocument().size() >= 0);
+                  luceneCriteria).getAllStorageDocuments().size() >= 0);
       destroyMockTest(uuid, getDeletionService());
    }
 

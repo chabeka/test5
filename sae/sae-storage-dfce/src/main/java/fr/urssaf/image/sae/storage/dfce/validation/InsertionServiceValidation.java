@@ -4,7 +4,7 @@ import org.apache.commons.lang.Validate;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 
@@ -33,13 +33,13 @@ public class InsertionServiceValidation {
    public final void insertStorageDocumentValidation(
          final StorageDocument storageDocument) {
       // ici on valide que le document n'est pas null
-      Validate.notNull(storageDocument, MessageHandler.getMessage(CODE_ERROR,
+      Validate.notNull(storageDocument, StorageMessageHandler.getMessage(CODE_ERROR,
             "insertion.document.required", "insertion.impact",
             "insertion.action"));
-      Validate.notNull(storageDocument.getContent(), MessageHandler.getMessage(
+      Validate.notNull(storageDocument.getContent(), StorageMessageHandler.getMessage(
             CODE_ERROR, "insertion.document.required", "insertion.impact",
             "insertion.action"));
-      Validate.notNull(storageDocument.getTypeDoc(), MessageHandler.getMessage(
+      Validate.notNull(storageDocument.getTypeDoc(), StorageMessageHandler.getMessage(
             CODE_ERROR, "insertstorage.typedoc.required", "insertion.impact",
             "insertstorage.typedoc.action"));
    }
@@ -59,12 +59,12 @@ public class InsertionServiceValidation {
    public final void bulkInsertStorageDocumentValidation(
          final StorageDocuments storageDocuments, final boolean allOrNothing) {
       // ici on valide que le document n'est pas null
-      Validate.notNull(storageDocuments, MessageHandler.getMessage(CODE_ERROR,
+      Validate.notNull(storageDocuments, StorageMessageHandler.getMessage(CODE_ERROR,
             "bulk.insertion.document.required",
             "bulk.insertion.allOrNothing.impact",
             "bulk.insertion.allOrNothing.action"));
       // ici on vérifie que tous les composants du document ne sont pas null.
-      Validate.notNull(storageDocuments.getAllStorageDocument(), MessageHandler
+      Validate.notNull(storageDocuments.getAllStorageDocuments(), StorageMessageHandler
             .getMessage(CODE_ERROR,
                   "bulk.insertion.document.component.required",
                   "bulk.insertion.allOrNothing.impact",

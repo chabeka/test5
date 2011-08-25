@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.storage.dfce.component;
+package fr.urssaf.image.sae.storage.dfce.context;
 
 import me.prettyprint.cassandra.utils.Assert;
 

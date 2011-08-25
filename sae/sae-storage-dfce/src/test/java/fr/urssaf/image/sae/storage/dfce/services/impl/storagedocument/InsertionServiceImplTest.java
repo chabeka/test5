@@ -93,13 +93,13 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
             .assertEquals(
                   "Vérfier que le nombre des documents insert est égale à celui insert ",
                   Constants.XML_PATH_DOC_WITHOUT_ERROR.length, insertionResults
-                        .getStorageDocuments().getAllStorageDocument().size());
+                        .getStorageDocuments().getAllStorageDocuments().size());
       Assert.assertNotNull("Objet StorageDocument en masse avec erreur ",
             insertionResults.getStorageDocumentsOnError()
                   .getStorageDocumentsOnError().size());
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(insertionResults.getStorageDocuments()
-                  .getAllStorageDocument())) {
+                  .getAllStorageDocuments())) {
          Assert.assertNotNull("UUID insérer sans erreur ", storageDocument
                .getUuid());
          UUIDCriteria uuidCriteria = new UUIDCriteria(
@@ -134,7 +134,7 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
             .assertEquals(
                   "Vérfier que le nombre des documents insert est égale à celui insert ",
                   0, insertionResults.getStorageDocuments()
-                        .getAllStorageDocument().size());
+                        .getAllStorageDocuments().size());
       Assert.assertEquals("Objet StorageDocument en masse avec erreur ", 1,
             insertionResults.getStorageDocumentsOnError()
                   .getStorageDocumentsOnError().size());
@@ -161,13 +161,13 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
             .assertEquals(
                   "Vérfier que le nombre des documents insert est égale à celui insert ",
                   6, insertionResults.getStorageDocuments()
-                        .getAllStorageDocument().size());
+                        .getAllStorageDocuments().size());
       Assert.assertEquals("Objet StorageDocument en masse avec erreur ", 1,
             insertionResults.getStorageDocumentsOnError()
                   .getStorageDocumentsOnError().size());
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(insertionResults.getStorageDocuments()
-                  .getAllStorageDocument())) {
+                  .getAllStorageDocuments())) {
          Assert.assertNotNull("UUID insérer sans erreur ", storageDocument
                .getUuid());
          final UUIDCriteria uuidCriteria = new UUIDCriteria(storageDocument
