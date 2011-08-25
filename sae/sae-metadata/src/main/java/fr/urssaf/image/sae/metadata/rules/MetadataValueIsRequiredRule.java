@@ -13,7 +13,7 @@ import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
  * 
  */
 @Component
-public class MetaDataValueIsRequiredRule extends
+public class MetadataValueIsRequiredRule extends
 		AbstractLeafRule<SAEMetadata, MetadataReference> {
 	/**
 	 * {@inheritDoc}

@@ -14,9 +14,9 @@ import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
-import fr.urssaf.image.sae.control.messages.MessageHandler;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
+import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
 import fr.urssaf.image.sae.metadata.utils.Utils;
@@ -53,16 +53,16 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						.getByLongCode(metadata.getLongCode());
 				if (!ruleFactory.getArchivableRule().isSatisfiedBy(metadata,
 						reference)) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.archivage"), metadata
-							.getLongCode(), MessageHandler.getMessage(
+							.getLongCode(), MetadataMessageHandler.getMessage(
 							"metadata.not.archivable", metadata.getLongCode())));
 				}
 			} catch (ReferentialException refExcept) {
-				errors.add(new MetadataError(MessageHandler
+				errors.add(new MetadataError(MetadataMessageHandler
 						.getMessage("metadata.referentiel.error"), metadata
 						.getLongCode(),
-						MessageHandler.getMessage(
+						MetadataMessageHandler.getMessage(
 								"metadata.referentiel.retrieve",
 								metadata.getLongCode())));
 			}
@@ -84,16 +84,16 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						.getByLongCode(metadata.getLongCode());
 				if (!ruleFactory.getExistingRule().isSatisfiedBy(metadata,
 						reference)) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.existing"), metadata
-							.getLongCode(), MessageHandler.getMessage(
+							.getLongCode(), MetadataMessageHandler.getMessage(
 							"metadata.not.exist", metadata.getLongCode())));
 				}
 			} catch (ReferentialException refExcept) {
-				errors.add(new MetadataError(MessageHandler
+				errors.add(new MetadataError(MetadataMessageHandler
 						.getMessage("metadata.referentiel.error"), metadata
 						.getLongCode(),
-						MessageHandler.getMessage(
+						MetadataMessageHandler.getMessage(
 								"metadata.referentiel.retrieve",
 								metadata.getLongCode())));
 			}
@@ -116,23 +116,23 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						.getByLongCode(metadata.getLongCode());
 				if (!ruleFactory.getValueTypeRule().isSatisfiedBy(metadata,
 						reference)) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.type"), metadata
-							.getLongCode(), MessageHandler.getMessage(
+							.getLongCode(), MetadataMessageHandler.getMessage(
 							"metadata.bad.type", metadata.getLongCode())));
 				}
 				if (!ruleFactory.getValueLengthRule().isSatisfiedBy(metadata,
 						reference)) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.Length"), metadata
-							.getLongCode(), MessageHandler.getMessage(
+							.getLongCode(), MetadataMessageHandler.getMessage(
 							"metadata.length.not.verified",
 							metadata.getLongCode(), reference.getLength())));
 				}
 			} catch (ReferentialException refExcept) {
-				errors.add(new MetadataError(MessageHandler
+				errors.add(new MetadataError(MetadataMessageHandler
 						.getMessage("metadata.referentiel.error"), metadata
-						.getLongCode(), MessageHandler
+						.getLongCode(), MetadataMessageHandler
 						.getMessage("metadata.referentiel.retrieve")));
 			}
 
@@ -155,9 +155,9 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 					references).entrySet()) {
 				if (!Utils.isInRequiredList(metadata.getValue(),
 						saeDoc.getMetadatas())) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.required"), metadata
-							.getValue().getLongCode(), MessageHandler
+							.getValue().getLongCode(), MetadataMessageHandler
 							.getMessage("metadata.required", metadata
 									.getValue().getLongCode())));
 				}
@@ -169,26 +169,26 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 							.getByLongCode(metadata.getLongCode());
 					if (!ruleFactory.getRequiredRule().isSatisfiedBy(metadata,
 							reference)) {
-						errors.add(new MetadataError(MessageHandler
+						errors.add(new MetadataError(MetadataMessageHandler
 								.getMessage("metadata.control.value.required"),
-								metadata.getLongCode(), MessageHandler.getMessage(
+								metadata.getLongCode(), MetadataMessageHandler.getMessage(
 										"metadata.value.required",
 										metadata.getLongCode())));
 					}
 				} catch (ReferentialException refExcept) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.referentiel.error"), metadata
 							.getLongCode(),
-							MessageHandler.getMessage(
+							MetadataMessageHandler.getMessage(
 									"metadata.referentiel.retrieve",
 									metadata.getLongCode())));
 				}
 			}
 						
 		} catch (ReferentialException refExcept) {
-			errors.add(new MetadataError(MessageHandler
+			errors.add(new MetadataError(MetadataMessageHandler
 					.getMessage("metadata.referentiel.error"), null,
-					MessageHandler.getMessage("metadata.referentiel.retrieve")));
+					MetadataMessageHandler.getMessage("metadata.referentiel.retrieve")));
 		}
 		return errors;
 	}
@@ -206,16 +206,16 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						.getByLongCode(metadata.getLongCode());
 				if (!ruleFactory.getConsultableRule().isSatisfiedBy(metadata,
 						reference)) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.consultable"),
-							metadata.getLongCode(), MessageHandler.getMessage(
+							metadata.getLongCode(), MetadataMessageHandler.getMessage(
 									"metadata.not.consultable",
 									metadata.getLongCode())));
 				}
 			} catch (ReferentialException refExcept) {
-				errors.add(new MetadataError(MessageHandler
+				errors.add(new MetadataError(MetadataMessageHandler
 						.getMessage("metadata.referentiel.error"), metadata
-						.getLongCode(), MessageHandler
+						.getLongCode(), MetadataMessageHandler
 						.getMessage("metadata.referentiel.retrieve")));
 			}
 		}
@@ -235,17 +235,17 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						.getByLongCode(metadata.getLongCode());
 				if (!ruleFactory.getSearchableRule().isSatisfiedBy(metadata,
 						reference)) {
-					errors.add(new MetadataError(MessageHandler
+					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.searchable"),
-							metadata.getLongCode(), MessageHandler.getMessage(
+							metadata.getLongCode(), MetadataMessageHandler.getMessage(
 									"metadata.not.searchable",
 									metadata.getLongCode())));
 				}
 
 			} catch (ReferentialException refExcept) {
-				errors.add(new MetadataError(MessageHandler
+				errors.add(new MetadataError(MetadataMessageHandler
 						.getMessage("metadata.referentiel.error"), metadata
-						.getLongCode(), MessageHandler
+						.getLongCode(), MetadataMessageHandler
 						.getMessage("metadata.referentiel.retrieve")));
 			}
 
@@ -263,9 +263,9 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 		for (UntypedMetadata metadata : Utils.nullSafeIterable(metadatas)) {
 			if (!Utils.hasDuplicate(metadata, metadatas)) {
 				final MetadataError error = new MetadataError(
-						MessageHandler
+						MetadataMessageHandler
 								.getMessage("metadata.control.duplicate"),
-						metadata.getLongCode(), MessageHandler.getMessage(
+						metadata.getLongCode(), MetadataMessageHandler.getMessage(
 								"metadata.duplicated", metadata.getLongCode()));
 				if (!Utils.exist(error, errors)) {
 					errors.add(error);

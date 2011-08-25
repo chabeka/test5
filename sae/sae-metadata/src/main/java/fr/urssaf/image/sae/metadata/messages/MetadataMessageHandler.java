@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.control.messages;
+package fr.urssaf.image.sae.metadata.messages;
 
 import org.springframework.context.MessageSource;
 import fr.urssaf.image.sae.metadata.constants.Constants;
@@ -10,7 +10,7 @@ import fr.urssaf.image.sae.metadata.context.MetadataApplicationContext;
  * @author akenore
  * 
  */
-public final class MessageHandler {
+public final class MetadataMessageHandler {
 	private static final MessageSource MESSAGE_SOURCES;
 
 	static {
@@ -67,7 +67,7 @@ public final class MessageHandler {
 	}
 
 	/** Cette classe n'est pas faite pour être instanciée. */
-	private MessageHandler() {
+	private MetadataMessageHandler() {
 		assert false;
 	}
 }

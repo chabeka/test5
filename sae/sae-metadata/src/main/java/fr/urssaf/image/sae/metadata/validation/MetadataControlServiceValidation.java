@@ -10,7 +10,7 @@ import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
-import fr.urssaf.image.sae.control.messages.MessageHandler;
+import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 
 /**
  * Fournit des méthodes de validation des arguments des services de controle des
@@ -33,9 +33,9 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkArchivableMetadata(..)) && args(saeDocument)")
 	public final void checkArchivableMetadata(final SAEDocument saeDocument) {
-		Validate.notNull(saeDocument, MessageHandler.getMessage(
+		Validate.notNull(saeDocument, MetadataMessageHandler.getMessage(
 				"document.required", SAEDocument.class.getName()));
-		Validate.notNull(saeDocument.getMetadatas(), MessageHandler.getMessage(
+		Validate.notNull(saeDocument.getMetadatas(), MetadataMessageHandler.getMessage(
 				"metadatas.required", SAEDocument.class.getName()));
 
 	}
@@ -50,9 +50,9 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkRequiredMetadata(..)) && args(saeDocument)")
 	public final void checkRequiredMetadata(final SAEDocument saeDocument) {
-		Validate.notNull(saeDocument, MessageHandler.getMessage(
+		Validate.notNull(saeDocument, MetadataMessageHandler.getMessage(
 				"document.required", SAEDocument.class.getName()));
-		Validate.notNull(saeDocument.getMetadatas(), MessageHandler.getMessage(
+		Validate.notNull(saeDocument.getMetadatas(), MetadataMessageHandler.getMessage(
 				"metadatas.required", SAEDocument.class.getName()));
 
 	}
@@ -67,9 +67,9 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkExistingMetadata(..)) && args(untypedDoc)")
 	public final void checkExistingMetadata(final UntypedDocument untypedDoc) {
-		Validate.notNull(untypedDoc, MessageHandler.getMessage(
+		Validate.notNull(untypedDoc, MetadataMessageHandler.getMessage(
 				"document.required", UntypedDocument.class.getName()));
-		Validate.notNull(untypedDoc.getUMetadatas(), MessageHandler.getMessage(
+		Validate.notNull(untypedDoc.getUMetadatas(), MetadataMessageHandler.getMessage(
 				"metadatas.required", UntypedDocument.class.getName()));
 
 	}
@@ -85,9 +85,9 @@ public class MetadataControlServiceValidation {
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkMetadataValueTypeAndFormat(..)) && args(untypedDoc)")
 	public final void checkMetadataValueTypeAndFormat(
 			final UntypedDocument untypedDoc) {
-		Validate.notNull(untypedDoc, MessageHandler.getMessage(
+		Validate.notNull(untypedDoc, MetadataMessageHandler.getMessage(
 				"document.required", UntypedDocument.class.getName()));
-		Validate.notNull(untypedDoc.getUMetadatas(), MessageHandler.getMessage(
+		Validate.notNull(untypedDoc.getUMetadatas(), MetadataMessageHandler.getMessage(
 				"metadatas.required", UntypedDocument.class.getName()));
 
 	}
@@ -102,7 +102,7 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkSearchableMetadata(..)) && args(metadatas)")
 	public final void checkSearchableMetadata(final List<SAEMetadata> metadatas) {
-		Validate.notNull(metadatas, MessageHandler.getMessage(
+		Validate.notNull(metadatas, MetadataMessageHandler.getMessage(
 				"metadatas.required", SAEMetadata.class.getName()));
 
 	}
@@ -117,7 +117,7 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkConsultableMetadata(..)) && args(metadatas)")
 	public final void checkConsultableMetadata(final List<SAEMetadata> metadatas) {
-		Validate.notNull(metadatas, MessageHandler.getMessage(
+		Validate.notNull(metadatas, MetadataMessageHandler.getMessage(
 				"metadatas.required", SAEMetadata.class.getName()));
 
 	}
@@ -133,7 +133,7 @@ public class MetadataControlServiceValidation {
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkDuplicateMetadata(..)) && args(metadatas)")
 	public final void checkDuplicateMetadata(
 			final List<UntypedMetadata> metadatas) {
-		Validate.notNull(metadatas, MessageHandler.getMessage(
+		Validate.notNull(metadatas, MetadataMessageHandler.getMessage(
 				"metadatas.required", UntypedMetadata.class.getName()));
 
 	}

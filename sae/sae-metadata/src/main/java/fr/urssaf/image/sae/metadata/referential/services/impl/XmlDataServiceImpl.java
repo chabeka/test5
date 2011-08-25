@@ -28,6 +28,7 @@ import fr.urssaf.image.sae.metadata.utils.XStreamHelper;
 @Service
 @Qualifier("xmlDataService")
 public class XmlDataServiceImpl implements XmlDataService {
+	
 
 	/**
 	 * {@inheritDoc}

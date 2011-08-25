@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import fr.urssaf.image.sae.metadata.rules.MetaDataValueIsRequiredRule;
+import fr.urssaf.image.sae.metadata.rules.MetadataValueIsRequiredRule;
 import fr.urssaf.image.sae.metadata.rules.MetadataIsArchivableRule;
 import fr.urssaf.image.sae.metadata.rules.MetadataIsConsultableRule;
 import fr.urssaf.image.sae.metadata.rules.MetadataIsSearchableRule;
@@ -22,7 +22,7 @@ import fr.urssaf.image.sae.metadata.rules.UntypedMetadataValueTypeRule;
 @Qualifier("ruleFactory")
 public class MetadataRuleFactory {
 	@Autowired
-	private MetaDataValueIsRequiredRule requiredRule;
+	private MetadataValueIsRequiredRule requiredRule;
 	
 	@Autowired
 	private MetadataIsArchivableRule archivableRule;
@@ -151,17 +151,17 @@ public class MetadataRuleFactory {
 
 	/**
 	 * @param requiredRule Une instance de la règle
-	 *            {@link MetaDataValueIsRequiredRule}.
+	 *            {@link MetadataValueIsRequiredRule}.
 	 */
-	public final void setRequiredRule(final MetaDataValueIsRequiredRule requiredRule) {
+	public final void setRequiredRule(final MetadataValueIsRequiredRule requiredRule) {
 		this.requiredRule = requiredRule;
 	}
 
 	/**
 	 * @return Une instance de la règle
-	 *            {@link MetaDataValueIsRequiredRule}.
+	 *            {@link MetadataValueIsRequiredRule}.
 	 */
-	public final MetaDataValueIsRequiredRule getRequiredRule() {
+	public final MetadataValueIsRequiredRule getRequiredRule() {
 		return requiredRule;
 	}
 }

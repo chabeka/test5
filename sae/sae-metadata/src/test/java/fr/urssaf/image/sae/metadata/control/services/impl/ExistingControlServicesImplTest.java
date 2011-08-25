@@ -10,7 +10,7 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
 import fr.urssaf.image.sae.metadata.test.constants.Constants;
-import fr.urssaf.image.sae.metadata.test.dataprovider.DataProviderUtils;
+import fr.urssaf.image.sae.metadata.test.dataprovider.MetadataDataProviderUtils;
 
 /**
  * 
@@ -36,10 +36,10 @@ public class ExistingControlServicesImplTest extends AbstractDataProvider {
 			throws FileNotFoundException {
 		List<UntypedMetadata> metadatas = null;
 		if (withoutFault) {
-			metadatas = DataProviderUtils
+			metadatas = MetadataDataProviderUtils
 					.getUntypedMetadata(Constants.EXISTING_FILE_1);
 		} else {
-			metadatas = DataProviderUtils
+			metadatas = MetadataDataProviderUtils
 					.getUntypedMetadata(Constants.EXISTING_FILE_2);
 		}
 		return new UntypedDocument(null, metadatas);

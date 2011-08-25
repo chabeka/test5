@@ -16,7 +16,7 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
 import fr.urssaf.image.sae.metadata.test.constants.Constants;
-import fr.urssaf.image.sae.metadata.test.dataprovider.DataProviderUtils;
+import fr.urssaf.image.sae.metadata.test.dataprovider.MetadataDataProviderUtils;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-metadata.xml" })
@@ -81,7 +81,7 @@ public class SearchLongCodeTest {
 	 */
 	@Before
 	public void getUntypedMetadata() throws FileNotFoundException {
-		metadatas = DataProviderUtils
+		metadatas = MetadataDataProviderUtils
 				.getUntypedMetadata(Constants.SHORT_LONG_CODE);
 	}
 

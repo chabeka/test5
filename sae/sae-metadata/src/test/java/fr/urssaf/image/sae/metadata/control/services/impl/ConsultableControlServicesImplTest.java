@@ -9,7 +9,7 @@ import org.junit.Test;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
 import fr.urssaf.image.sae.metadata.test.constants.Constants;
-import fr.urssaf.image.sae.metadata.test.dataprovider.DataProviderUtils;
+import fr.urssaf.image.sae.metadata.test.dataprovider.MetadataDataProviderUtils;
 
 /**
  * 
@@ -36,10 +36,10 @@ public class ConsultableControlServicesImplTest extends AbstractDataProvider {
 			throws FileNotFoundException {
 		List<SAEMetadata> metadatas = null;
 		if (withoutFault) {
-			metadatas = DataProviderUtils
+			metadatas = MetadataDataProviderUtils
 					.getSAEMetadata(Constants.CONSULTABLE_FILE_1);
 		} else {
-			metadatas = DataProviderUtils
+			metadatas = MetadataDataProviderUtils
 					.getSAEMetadata(Constants.CONSULTABLE_FILE_2);
 		}
 		return metadatas;

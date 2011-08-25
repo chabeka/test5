@@ -11,8 +11,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import fr.urssaf.image.sae.control.messages.MessageHandler;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
+import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
 import fr.urssaf.image.sae.metadata.referential.services.XmlDataService;
@@ -70,7 +70,7 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
                .getInputStream());
 
       } catch (IOException e) {
-         throw new ReferentialException(MessageHandler.getMessage(
+         throw new ReferentialException(MetadataMessageHandler.getMessage(
                "referential.file.notfound", referentiel.getFilename()),
                e);
       }

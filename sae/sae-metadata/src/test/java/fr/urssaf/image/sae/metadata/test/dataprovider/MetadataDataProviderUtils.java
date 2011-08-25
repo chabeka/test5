@@ -21,7 +21,7 @@ import fr.urssaf.image.sae.metadata.utils.XStreamHelper;
  * 
  * 
  */
-public final class DataProviderUtils {
+public final class MetadataDataProviderUtils {
 
 	/**
 	 * Retourne une liste de métadonnée de type {@link SAEMetadata} à partir
@@ -98,7 +98,7 @@ public final class DataProviderUtils {
 	/**
 	 * Cette classe n'est pas faite pour être instanciée.
 	 */
-	private DataProviderUtils() {
+	private MetadataDataProviderUtils() {
 		assert false;
 
 	}
