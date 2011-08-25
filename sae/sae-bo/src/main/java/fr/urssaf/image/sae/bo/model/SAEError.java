@@ -79,7 +79,7 @@ public class SAEError {
 	public  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);
-		toStrBuilder.append("code court", getCode());
+		toStrBuilder.append("code erreur", getCode());
 		toStrBuilder.append("message", getMessage());
 
 		return toStrBuilder.toString();

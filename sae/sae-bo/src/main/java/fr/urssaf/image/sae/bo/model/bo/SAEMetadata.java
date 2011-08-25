@@ -75,31 +75,6 @@ public class SAEMetadata extends AbstractMetadata {
 	/**
 	 * Construit un objet de type {@link SAEMetadata}
 	 * 
-	 * @param shortCode
-	 *            : Le code court de la métadonnée métier.
-	 */
-	public SAEMetadata(final String shortCode) {
-		super(null);
-		this.shortCode = shortCode;
-	}
-
-	/**
-	 * Construit un objet de type {@link SAEMetadata}
-	 * 
-	 * @param longCode
-	 *            : Le long long de la métadonnée métier.
-	 * @param shortCode
-	 *            : Le code court de la métadonnée métier.
-	 */
-	public SAEMetadata(final String longCode, final String shortCode) {
-		super(longCode);
-		this.shortCode = shortCode;
-
-	}
-
-	/**
-	 * Construit un objet de type {@link SAEMetadata}
-	 * 
 	 * @param longCode
 	 *            : Le long court de la métadonnée métier.
 	 * @param shortCode

@@ -11,7 +11,7 @@ import fr.urssaf.image.sae.bo.model.AbstractMetadata;
  * valeur)dont les valeurs sont non typées).<br/>
  * Elle contient les attributs :
  * <ul>
- * <li>shortCode : Le code court de la métadonnée.</li>
+ * <li>longCode : Le code long de la métadonnée.</li>
  * <li>value : La valeur de la métadonnée.</li>
  * </ul>
  * 

@@ -62,7 +62,7 @@ public class MetadataError extends SAEError {
 	public final  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);
-		toStrBuilder.append("code court", getCode());
+		toStrBuilder.append("code erreur", getCode());
 		toStrBuilder.append("code long", longCode);
 		toStrBuilder.append("message", getMessage());
 
