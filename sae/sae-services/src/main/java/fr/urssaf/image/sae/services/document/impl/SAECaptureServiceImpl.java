@@ -8,7 +8,6 @@ import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
-import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;

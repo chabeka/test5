@@ -5,7 +5,6 @@ import org.springframework.context.MessageSource;
 
 import fr.urssaf.image.sae.services.context.ServicesApplicationContext;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
-import fr.urssaf.image.sae.storage.dfce.context.StorageApplicationContext;
 
 /**
  * Fournit des services qui retournent un message à partir de sa clés .
