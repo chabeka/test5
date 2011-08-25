@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.document.component;
+package fr.urssaf.image.sae.services.context;
 
 import me.prettyprint.cassandra.utils.Assert;
 

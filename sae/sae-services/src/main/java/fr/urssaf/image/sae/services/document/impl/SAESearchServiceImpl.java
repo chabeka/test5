@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAESearchServiceEx;
-import fr.urssaf.image.sae.model.SAELuceneCriteria;
-import fr.urssaf.image.sae.model.UntypedDocument;
 import fr.urssaf.image.sae.services.document.SAESearchService;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -45,15 +45,15 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                .getStorageDocumentService()
                .searchStorageDocumentByLuceneCriteria(luceneCriteria);
          // TODO passer l'objet storageDocuments à sea-bo pour le convertir.
-         storageDocuments.getAllStorageDocument();
+         storageDocuments.getAllStorageDocuments();
          // TODO à supprimer
          return new ArrayList<UntypedDocument>();
       } catch (ConnectionServiceEx except) {
-         throw new SAESearchServiceEx(MessageHandler
+         throw new SAESearchServiceEx(StorageMessageHandler
                .getMessage(Constants.CNT_CODE_ERROR), except.getMessage(),
                except);
       } catch (SearchingServiceEx except) {
-         throw new SAESearchServiceEx(MessageHandler
+         throw new SAESearchServiceEx(StorageMessageHandler
                .getMessage(Constants.RTR_CODE_ERROR), except.getMessage(),
                except);
       } finally {

@@ -1,7 +1,8 @@
 package fr.urssaf.image.sae.services.document;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
-import fr.urssaf.image.sae.model.UntypedDocument;
+
 
 /**
  * Fournit l’ensemble des services :<BR/>

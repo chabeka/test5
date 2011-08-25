@@ -2,11 +2,13 @@ package fr.urssaf.image.sae.services.document.impl;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
-import fr.urssaf.image.sae.model.UntypedDocument;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
+import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
-import fr.urssaf.image.sae.storage.dfce.messages.MessageHandler;
+import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -35,11 +37,11 @@ public class SAECaptureServiceImpl extends AbstractSAEServices implements
          getStorageServiceProvider().getStorageDocumentService()
                .bulkInsertStorageDocument(new StorageDocuments(), true);
       } catch (ConnectionServiceEx except) {
-         throw new SAECaptureServiceEx(MessageHandler
+         throw new SAECaptureServiceEx(ServiceMessageHandler
                .getMessage(Constants.CNT_CODE_ERROR), except.getMessage(),
                except);
       } catch (InsertionServiceEx except) {
-         throw new SAECaptureServiceEx(MessageHandler
+         throw new SAECaptureServiceEx(ServiceMessageHandler
                .getMessage(Constants.CNT_CODE_ERROR), except.getMessage(),
                except);
       } finally {

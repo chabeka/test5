@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
 import fr.urssaf.image.sae.exception.SAESearchServiceEx;
-import fr.urssaf.image.sae.model.SAELuceneCriteria;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.document.SAEConsultationService;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
@@ -56,7 +56,7 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    /**
     * {@inheritDoc}
     */
-   public final String capture(final fr.urssaf.image.sae.model.UntypedDocument unTypedDoc)
+   public final String capture(final UntypedDocument unTypedDoc)
          throws SAECaptureServiceEx {
       return saeCaptureService.capture(unTypedDoc);
    }
@@ -64,7 +64,7 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    /**
     * {@inheritDoc}
     */
-   public final List<fr.urssaf.image.sae.model.UntypedDocument> search(
+   public final List<UntypedDocument> search(
          final SAELuceneCriteria sAELuceneCriteria) throws SAESearchServiceEx {
       return saeSearchService.search(sAELuceneCriteria);
    }
