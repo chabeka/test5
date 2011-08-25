@@ -73,10 +73,10 @@ public class BulkInsertionResults {
 	public final List<UUID> getUuids() {
 		final List<UUID> listUuids = new ArrayList<UUID>();
 		if (storageDocuments != null
-				&& (storageDocuments.getAllStorageDocument() != null)) {
+				&& (storageDocuments.getAllStorageDocuments() != null)) {
 			// Ici on parcour tous les documents pour récuperer les uuids
 			for (StorageDocument document : storageDocuments
-					.getAllStorageDocument()) {
+					.getAllStorageDocuments()) {
 				listUuids.add(document.getUuid());
 			}
 		}

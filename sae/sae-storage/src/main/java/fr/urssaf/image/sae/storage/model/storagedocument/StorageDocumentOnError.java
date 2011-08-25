@@ -11,13 +11,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * Elle contient l'attribut :
  * <ul>
  * <li>
- * codeError : Le message d'erreur retourné par l'archivage du document</li>
+ * codeError : Le code d'erreur retourné par l'archivage du document</li>
+ * <li>
+ * messageError : Le message d'erreur retourné par l'archivage du document</li>
  * </ul>
  */
 
 public class StorageDocumentOnError extends AbstractStorageDocument {
 
 	private String codeError;
+
+	private String messageError;
 
 	/**
 	 * Retourne le code erreur
@@ -71,8 +75,24 @@ public class StorageDocumentOnError extends AbstractStorageDocument {
 		}
 		return new ToStringBuilder(this).append("content", getContent())
 				.append("codeError", codeError)
+				.append("messageError", messageError)
 				.append("filePath", getFilePath())
 				.append("metadatas", stringBuffer.toString()).toString();
 
+	}
+
+	/**
+	 * @param messageError
+	 *            : Le message d'erreur retourné par l'archivage du document
+	 */
+	public final void setMessageError(final String messageError) {
+		this.messageError = messageError;
+	}
+
+	/**
+	 * @return Le message d'erreur retourné par l'archivage du document
+	 */
+	public final String getMessageError() {
+		return messageError;
 	}
 }

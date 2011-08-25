@@ -45,7 +45,7 @@ public class StorageDocumentsOnError {
 	 *            : Liste des documents en erreur
 	 */
 	@SuppressWarnings("PMD.LongVariable")
-	public StorageDocumentsOnError(
+	public StorageDocumentsOnError(final 
 			List<StorageDocumentOnError> storageDocumentsOnError) {
 		this.storageDocumentsOnError = storageDocumentsOnError;
 	}

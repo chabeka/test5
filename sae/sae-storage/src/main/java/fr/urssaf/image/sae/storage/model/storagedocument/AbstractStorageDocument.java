@@ -130,7 +130,7 @@ public abstract class AbstractStorageDocument {
 	 * @param creationDate
 	 *            : date de creation.
 	 */
-	public final void setCreationDate(Date creationDate) {
+	public final void setCreationDate(final Date creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -145,7 +145,7 @@ public abstract class AbstractStorageDocument {
 	 * @param title
 	 *            :le titre du document.
 	 */
-	public final void setTitle(String title) {
+	public final void setTitle(final String title) {
 		this.title = title;
 	}
 

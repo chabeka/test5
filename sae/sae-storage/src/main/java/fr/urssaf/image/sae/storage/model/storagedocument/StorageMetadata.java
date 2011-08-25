@@ -17,7 +17,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class StorageMetadata {
 	// Les attributs
 	private String shortCode;
-	private String longCode;
 	private Object value;
 
 	/**
@@ -36,22 +35,7 @@ public class StorageMetadata {
 		this.shortCode = shortCode;
 	}
 
-	/**
-	 * @return Le code long de la métadonnée
-	 */
-	public final String getLongCode() {
-		return longCode;
-	}
-
-	/**
-	 * @param longCode
-	 *            : Le code long de la métadonnée.
-	 * 
-	 */
-	public final void setLongCode(final String longCode) {
-		this.longCode = longCode;
-	}
-
+	
 	/**
 	 * Retourne la valeur de la métadonnée
 	 * 
@@ -84,22 +68,6 @@ public class StorageMetadata {
 		this.value = value;
 	}
 
-	/**
-	 * Construit un {@link StorageMetadata }.
-	 * 
-	 * @param shortCode
-	 *            : Le code court de la métadonnée
-	 * @param longCode
-	 *            : Le code long de la métadonnée
-	 * @param value
-	 *            : La valeur de la métadonnée
-	 */
-	public StorageMetadata(final String longCode, final String shortCode,
-			final Object value) {
-		this(shortCode, value);
-		this.longCode = longCode;
-
-	}
 
 	/**
 	 * Construit un {@link StorageMetadata }.
@@ -109,7 +77,7 @@ public class StorageMetadata {
 	 * 
 	 */
 	public StorageMetadata(final String shortCode) {
-		this(null, shortCode, null);
+		this(shortCode, null);
 	}
 
 	/**
@@ -118,6 +86,6 @@ public class StorageMetadata {
 	@Override
 	public final String toString() {
 		return new ToStringBuilder(this).append("code", shortCode)
-				.append("longCode", longCode).append("value", value).toString();
+				.append("value", value).toString();
 	}
 }

@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * Elle contient l'attribut :
  * <ul>
  * <li>
- * storageDocuments : La liste des documents bien archivés</li>
+ * allStorageDocuments : La liste des documents.</li>
  * </ul>
  */
 @SuppressWarnings("PMD.LongVariable")
@@ -22,7 +22,7 @@ public class StorageDocuments {
 	 * 
 	 * @return La liste des documents
 	 */
-	public final List<StorageDocument> getAllStorageDocument() {
+	public final List<StorageDocument> getAllStorageDocuments() {
 		return allStorageDocuments;
 	}
 
