@@ -31,6 +31,7 @@
       <module>../sae-bo</module>
       <module>../sae-storage</module>
       <module>../sae-metadata</module>
+       <module>../sae-mapping</module>
       <module>../sae-storage-dfce</module>
       <module>../sae-storage-bouchon</module>
       <module>../sae-dfce-admin</module>
