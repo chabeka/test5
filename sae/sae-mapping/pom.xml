@@ -9,6 +9,7 @@
 	<groupId>fr.urssaf.image.sae</groupId>
 	<artifactId>sae-mapping</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>sae-mapping</name>
 	<!-- Ajout des dépendances -->
 	<dependencies>
 		<dependency>
