@@ -38,14 +38,14 @@ public class ArchivageMasseRequestType
                         */
 
                         
-                                    protected fr.cirtil.www.saeservice.EcdeUrlType localUrlSommaire ;
+                                    protected fr.cirtil.www.saeservice.EcdeUrlSommaireType localUrlSommaire ;
                                 
 
                            /**
                            * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.EcdeUrlType
+                           * @return fr.cirtil.www.saeservice.EcdeUrlSommaireType
                            */
-                           public  fr.cirtil.www.saeservice.EcdeUrlType getUrlSommaire(){
+                           public  fr.cirtil.www.saeservice.EcdeUrlSommaireType getUrlSommaire(){
                                return localUrlSommaire;
                            }
 
@@ -55,7 +55,7 @@ public class ArchivageMasseRequestType
                                * Auto generated setter method
                                * @param param UrlSommaire
                                */
-                               public void setUrlSommaire(fr.cirtil.www.saeservice.EcdeUrlType param){
+                               public void setUrlSommaire(fr.cirtil.www.saeservice.EcdeUrlSommaireType param){
                             
                                             this.localUrlSommaire=param;
                                     
@@ -417,7 +417,7 @@ public class ArchivageMasseRequestType
                                 
                                     if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","urlSommaire").equals(reader.getName())){
                                 
-                                                object.setUrlSommaire(fr.cirtil.www.saeservice.EcdeUrlType.Factory.parse(reader));
+                                                object.setUrlSommaire(fr.cirtil.www.saeservice.EcdeUrlSommaireType.Factory.parse(reader));
                                               
                                         reader.next();
                                     

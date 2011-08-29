@@ -1,6 +1,6 @@
 
 /**
- * EcdeUrlType.java
+ * EcdeUrlSommaireType.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
@@ -10,17 +10,17 @@
             
 
             /**
-            *  EcdeUrlType bean class
+            *  EcdeUrlSommaireType bean class
             */
         
 // CHECKSTYLE:OFF
 @SuppressWarnings("all")
-public class EcdeUrlType
+public class EcdeUrlSommaireType
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
                 "http://www.cirtil.fr/saeService",
-                "ecdeUrlType",
+                "ecdeUrlSommaireType",
                 "ns1");
 
             
@@ -35,31 +35,31 @@ public class EcdeUrlType
         
 
                         /**
-                        * field for EcdeUrlType
+                        * field for EcdeUrlSommaireType
                         */
 
                         
-                                    protected org.apache.axis2.databinding.types.URI localEcdeUrlType ;
+                                    protected org.apache.axis2.databinding.types.URI localEcdeUrlSommaireType ;
                                 
 
                            /**
                            * Auto generated getter method
                            * @return org.apache.axis2.databinding.types.URI
                            */
-                           public  org.apache.axis2.databinding.types.URI getEcdeUrlType(){
-                               return localEcdeUrlType;
+                           public  org.apache.axis2.databinding.types.URI getEcdeUrlSommaireType(){
+                               return localEcdeUrlSommaireType;
                            }
 
                            
                         
                             /**
                                * Auto generated setter method
-                               * @param param EcdeUrlType
+                               * @param param EcdeUrlSommaireType
                                */
-                               public void setEcdeUrlType(org.apache.axis2.databinding.types.URI param){
+                               public void setEcdeUrlSommaireType(org.apache.axis2.databinding.types.URI param){
                             
-                                            if (org.apache.axis2.databinding.utils.ConverterUtil.convertToString(param).matches("ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/[^/|\\\\]*/documents/.+")) {
-                                                this.localEcdeUrlType=param;
+                                            if (org.apache.axis2.databinding.utils.ConverterUtil.convertToString(param).matches("ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/[^/|\\\\]*/sommaire.xml")) {
+                                                this.localEcdeUrlSommaireType=param;
                                             }
                                             else {
                                                 throw new java.lang.RuntimeException();
@@ -71,7 +71,7 @@ public class EcdeUrlType
 
                             public java.lang.String toString(){
                                 
-                                        return localEcdeUrlType.toString();
+                                        return localEcdeUrlSommaireType.toString();
                                     
                             }
                         
@@ -108,7 +108,7 @@ public class EcdeUrlType
                        new org.apache.axis2.databinding.ADBDataSource(this,MY_QNAME){
 
                  public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       EcdeUrlType.this.serialize(MY_QNAME,factory,xmlWriter);
+                       EcdeUrlSommaireType.this.serialize(MY_QNAME,factory,xmlWriter);
                  }
                };
                return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
@@ -158,22 +158,22 @@ public class EcdeUrlType
                                    java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
                                    if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
                                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                                           namespacePrefix+":ecdeUrlType",
+                                           namespacePrefix+":ecdeUrlSommaireType",
                                            xmlWriter);
                                    } else {
                                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                                           "ecdeUrlType",
+                                           "ecdeUrlSommaireType",
                                            xmlWriter);
                                    }
                                }
                             
-                                          if (localEcdeUrlType==null){
+                                          if (localEcdeUrlSommaireType==null){
                                             
                                                      throw new org.apache.axis2.databinding.ADBException("Value cannot be null !!");
                                                 
                                          }else{
                                         
-                                                       xmlWriter.writeCharacters(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localEcdeUrlType));
+                                                       xmlWriter.writeCharacters(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localEcdeUrlSommaireType));
                                             
                                          }
                                     
@@ -341,7 +341,7 @@ public class EcdeUrlType
                  return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(MY_QNAME,
                             new java.lang.Object[]{
                             org.apache.axis2.databinding.utils.reader.ADBXMLStreamReader.ELEMENT_TEXT,
-                            org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localEcdeUrlType)
+                            org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localEcdeUrlSommaireType)
                             },
                             null);
 
@@ -356,25 +356,25 @@ public class EcdeUrlType
 
         
         
-                public static EcdeUrlType fromString(java.lang.String value,
+                public static EcdeUrlSommaireType fromString(java.lang.String value,
                                                     java.lang.String namespaceURI){
-                    EcdeUrlType returnValue = new  EcdeUrlType();
+                    EcdeUrlSommaireType returnValue = new  EcdeUrlSommaireType();
                     
-                            returnValue.setEcdeUrlType(
+                            returnValue.setEcdeUrlSommaireType(
                                 org.apache.axis2.databinding.utils.ConverterUtil.convertToAnyURI(value));
                         
 
                     return returnValue;
                 }
 
-                public static EcdeUrlType fromString(javax.xml.stream.XMLStreamReader xmlStreamReader,
+                public static EcdeUrlSommaireType fromString(javax.xml.stream.XMLStreamReader xmlStreamReader,
                                                                     java.lang.String content) {
                     if (content.indexOf(":") > -1){
                         java.lang.String prefix = content.substring(0,content.indexOf(":"));
                         java.lang.String namespaceUri = xmlStreamReader.getNamespaceContext().getNamespaceURI(prefix);
-                        return EcdeUrlType.Factory.fromString(content,namespaceUri);
+                        return EcdeUrlSommaireType.Factory.fromString(content,namespaceUri);
                     } else {
-                       return EcdeUrlType.Factory.fromString(content,"");
+                       return EcdeUrlSommaireType.Factory.fromString(content,"");
                     }
                 }
 
@@ -387,9 +387,9 @@ public class EcdeUrlType
         * Postcondition: If this object is an element, the reader is positioned at its end element
         *                If this object is a complex type, the reader is positioned at the end element of its outer element
         */
-        public static EcdeUrlType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
-            EcdeUrlType object =
-                new EcdeUrlType();
+        public static EcdeUrlSommaireType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
+            EcdeUrlSommaireType object =
+                new EcdeUrlSommaireType();
 
             int event;
             java.lang.String nillableValue = null;
@@ -416,7 +416,7 @@ public class EcdeUrlType
                                 
                                     java.lang.String content = reader.getElementText();
                                     
-                                              object.setEcdeUrlType(
+                                              object.setEcdeUrlSommaireType(
                                                     org.apache.axis2.databinding.utils.ConverterUtil.convertToAnyURI(content));
                                             
                               }  // End of if for expected property start element

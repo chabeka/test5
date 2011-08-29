@@ -104,6 +104,16 @@ public class ExtensionMapper{
               
                   if (
                   "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
+                  "ecdeUrlSommaireType".equals(typeName)){
+                   
+                            return  fr.cirtil.www.saeservice.EcdeUrlSommaireType.Factory.parse(reader);
+                        
+
+                  }
+
+              
+                  if (
+                  "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
                   "urlConsultationDirecteType".equals(typeName)){
                    
                             return  fr.cirtil.www.saeservice.UrlConsultationDirecteType.Factory.parse(reader);

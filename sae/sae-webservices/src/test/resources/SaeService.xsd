@@ -45,9 +45,17 @@
 			<xsd:documentation>Une URL pointant sur l'ECDE, de la forme ecde://ecdeX/numeroCS/dateTraitement/documents/nom_du_fichier</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:anyURI">
-			<xsd:pattern value="ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+"/>
+			<xsd:pattern value='ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/[^/|\\]*/documents/.+'/>
 		</xsd:restriction>
 	</xsd:simpleType>
+    <xsd:simpleType name="ecdeUrlSommaireType">
+        <xsd:annotation>
+            <xsd:documentation>Une URL pointant sur le fichier sommaire.xml d'un traitement de masse, de la forme ecde://ecdeX/numeroCS/dateTraitement/sommaire.xml</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:anyURI">
+            <xsd:pattern value="ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/[^/|\\]*/sommaire.xml"/>
+        </xsd:restriction>
+    </xsd:simpleType>
 	<xsd:complexType name="objetNumeriqueType">
 		<xsd:annotation>
 			<xsd:documentation>Un objet numérique peut être représenté soit par son URL ECDE, soit par un flux binaire encodé en base64</xsd:documentation>
@@ -185,7 +193,7 @@
 			<xsd:documentation>Paramètre d'entrée de l'opération 'archivageMasse'</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="urlSommaire" type="sae:ecdeUrlType">
+			<xsd:element name="urlSommaire" type="sae:ecdeUrlSommaireType">
 				<xsd:annotation>
 					<xsd:documentation>L'URL ECDE du fichier sommaire.xml décrivant le traitement de masse</xsd:documentation>
 				</xsd:annotation>

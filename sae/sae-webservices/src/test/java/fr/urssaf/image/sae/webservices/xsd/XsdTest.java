@@ -438,5 +438,22 @@ public class XsdTest {
       testEchec("041");
    }
    
+
+   /**
+    * Demande d'archivage de masse avec une mauvaise URL ecde pour le sommaire.
+    */
+   @Test
+   public void casTest42() {
+      testEchec("042");
+   }
+   
+   /**
+    * Demande d'archivage de unitaire avec une mauvaise URL ecde (le numéro du traitement est incorrect).
+    */
+   @Test
+   public void casTest43() {
+      testEchec("043");
+   }
+   
    
 }
