@@ -49,6 +49,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 		final StorageDocument storageDoc = new StorageDocument();
 		final List<StorageMetadata> sMetadata = new ArrayList<StorageMetadata>();
 		storageDoc.setContent(saeDoc.getContent());
+		storageDoc.setFilePath(saeDoc.getFilePath());
 		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc
 				.getMetadatas())) {
 			final TechnicalMetadatas technical = Utils
@@ -85,7 +86,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 		final SAEDocument saeDoc = new SAEDocument();
 		final List<SAEMetadata> metadatas = new ArrayList<SAEMetadata>();
 		saeDoc.setContent(storageDoc.getContent());
-
+		saeDoc.setFilePath(storageDoc.getFilePath());
 		for (StorageMetadata sMetadata : Utils.nullSafeIterable(storageDoc
 				.getMetadatas())) {
 			try {
@@ -127,7 +128,8 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 			}
 		}
 
-		return new UntypedDocument(saeDoc.getContent(), metadatas);
+		return new UntypedDocument(saeDoc.getFilePath(), saeDoc.getContent(),
+				metadatas);
 	}
 
 	/**
@@ -154,7 +156,8 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 			}
 		}
 
-		return new SAEDocument(untyped.getContent(), metadatas);
+		return new SAEDocument(untyped.getFilePath(), untyped.getContent(),
+				metadatas);
 	}
 
 	/**
@@ -195,7 +198,8 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 			}
 		}
 
-		return new UntypedDocument(storage.getContent(), metadatas);
+		return new UntypedDocument(storage.getFilePath(), storage.getContent(),
+				metadatas);
 	}
 
 }
