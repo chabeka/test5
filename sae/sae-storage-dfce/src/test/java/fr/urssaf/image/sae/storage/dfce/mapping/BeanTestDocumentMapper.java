@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.storage.dfce.mapping;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -64,8 +65,8 @@ public final class BeanTestDocumentMapper {
          }
       }
       storageDocument.setMetadatas(metadatas);
-      storageDocument.setContent(Files.toByteArray(saeDocument.getBase()
-            .getFilePath()));
+      storageDocument.setContent(Files.toByteArray(new File(saeDocument.getBase()
+            .getFilePath())));
       return storageDocument;
    }
 

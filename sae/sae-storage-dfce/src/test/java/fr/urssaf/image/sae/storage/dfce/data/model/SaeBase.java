@@ -28,7 +28,7 @@ public class SaeBase {
    private String baseId;
    private String docId;
    private String typeDoc;
-   private File filePath;
+   private String filePath;
    @XStreamAlias("categories")
    private SaeCategories saeCategories;
 
@@ -108,14 +108,14 @@ public class SaeBase {
     * @param filePath
     *           : Le chemin du fichier
     */
-   public final void setFilePath(final File filePath) {
+   public final void setFilePath(final String filePath) {
       this.filePath = filePath;
    }
 
    /**
     * @return Le chemin du fichier
     */
-   public final File getFilePath() {
+   public final String getFilePath() {
       return filePath;
    }
 
