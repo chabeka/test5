@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.storage.model.storagedocument;
 
-import java.io.File;
 import java.util.Date;
 import java.util.List;
 
