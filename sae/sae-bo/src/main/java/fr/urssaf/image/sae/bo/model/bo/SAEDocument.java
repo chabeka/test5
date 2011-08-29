@@ -15,9 +15,9 @@ import fr.urssaf.image.sae.bo.model.AbstractDocument;
  * <ul>
  * <li>metadatas : La liste des métadonnées métiers.</li>
  * </ul>
- *
+ * 
  * @author akenore
- *
+ * 
  */
 public class SAEDocument extends AbstractDocument {
 	private List<SAEMetadata> metadatas;
@@ -46,7 +46,7 @@ public class SAEDocument extends AbstractDocument {
 
 	/**
 	 * Construit un objet de type {@link SAEDocument}.
-	 *
+	 * 
 	 * @param content
 	 *            : Le contenu du document métier.
 	 * @param saeMetadatas
@@ -58,10 +58,27 @@ public class SAEDocument extends AbstractDocument {
 		this.metadatas = saeMetadatas;
 	}
 
+	/**
+	 * Construit un objet de type {@link SAEDocument}.
+	 * 
+	 * @param content
+	 *            : Le contenu du document métier.
+	 * @param filePath
+	 *            : Le chemin du fichier.
+	 * @param saeMetadatas
+	 *            : La liste des métadonnées métiers.
+	 */
+	public SAEDocument(final String filePath, final byte[] content,
+			final List<SAEMetadata> saeMetadatas) {
+		super(content,filePath);
+		this.metadatas = saeMetadatas;
+	}
+
 	// CHECKSTYLE:OFF
-	public String toString(){
+	public String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);
+		toStrBuilder.append("chemin du fichier",getFilePath());
 		if (metadatas != null) {
 			for (SAEMetadata metadata : metadatas) {
 				toStrBuilder.append(metadata.toString());

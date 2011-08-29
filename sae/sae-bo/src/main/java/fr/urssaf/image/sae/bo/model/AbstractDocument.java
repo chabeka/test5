@@ -9,16 +9,18 @@ import java.util.UUID;
  * <ul>
  * <li>content : Le contenu d’un document.</li>
  * <li>uuid :L'identifiant unique d’un document.</li>
+ * <li>filePath :Le chemin absolu du fichier.</li>
  * </ul>
- *
+ * 
  * @author akenore
- *
+ * 
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractDocument {
 	// Les attributs
 	private byte[] content;
 	private UUID uuid;
+	private String filePath;
 
 	/**
 	 * @return Le contenu d’un document
@@ -74,4 +76,38 @@ public abstract class AbstractDocument {
 
 	}
 
+	/**
+	 * Construit un objet de type {@link AbstractDocument}.
+	 * 
+	 * @param fileContent
+	 *            : Le contenu d’un document.
+	 * @param filePath
+	 *            : Le chemin absolu du fichier.
+	 */
+	@SuppressWarnings("PMD.ArrayIsStoredDirectly")
+	public AbstractDocument(final byte[] fileContent, final String filePath) {
+		// Pas de clone pour des raisons de performance.
+		this.content = fileContent;
+		this.filePath = filePath;
+
+	}
+
+	/**
+	 * Retourne le chemin du fichier
+	 * 
+	 * @return Le chemin du fichier
+	 */
+	public final String getFilePath() {
+		return filePath;
+	}
+
+	/**
+	 * Initialise le chemin du fichier
+	 * 
+	 * @param filePath
+	 *            : Le chemin du document
+	 */
+	public final void setFilePath(final String filePath) {
+		this.filePath = filePath;
+	}
 }
