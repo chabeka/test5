@@ -41,7 +41,7 @@ public class ArchivageMasseSecureTest {
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
       URI url = new URI(
-            "ecde://cer69-ecde.cer69.recouv/DCL001/19991231/3/documents/sommaire.xml");
+            "ecde://cer69-ecde.cer69.recouv/DCL001/19991231/3/sommaire.xml");
 
       ArchivageMasse request = RequestServiceFactory.createArchivageMasse(url);
 

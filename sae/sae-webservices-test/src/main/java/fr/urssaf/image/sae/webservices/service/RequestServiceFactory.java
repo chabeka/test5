@@ -17,6 +17,7 @@ import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaire;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaireRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.Consultation;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationRequestType;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.EcdeUrlSommaireType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.EcdeUrlType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ListeMetadonneeCodeType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ListeMetadonneeType;
@@ -116,10 +117,10 @@ public final class RequestServiceFactory {
       ArchivageMasseRequestType requestType = new ArchivageMasseRequestType();
       request.setArchivageMasse(requestType);
 
-      EcdeUrlType urlType = new EcdeUrlType();
+      EcdeUrlSommaireType urlType = new EcdeUrlSommaireType();
 
       urlType
-            .setEcdeUrlType(ConverterUtil.convertToAnyURI(url.toASCIIString()));
+            .setEcdeUrlSommaireType(ConverterUtil.convertToAnyURI(url.toASCIIString()));
       requestType.setUrlSommaire(urlType);
 
       return request;
