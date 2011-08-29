@@ -25,7 +25,7 @@ public abstract class AbstractStorageDocument {
 	// Les attributs
 	private List<StorageMetadata> metadatas;
 	private byte[] content;
-	private File filePath;
+	private String filePath;
 	private String typeDoc;
 	private Date creationDate;
 	private String title;
@@ -90,7 +90,7 @@ public abstract class AbstractStorageDocument {
 	 * 
 	 * @return Le chemin du fichier
 	 */
-	public final File getFilePath() {
+	public final String getFilePath() {
 		return filePath;
 	}
 
@@ -100,7 +100,7 @@ public abstract class AbstractStorageDocument {
 	 * @param filePath
 	 *            : Le chemin du document
 	 */
-	public final void setFilePath(final File filePath) {
+	public final void setFilePath(final String filePath) {
 		this.filePath = filePath;
 	}
 
@@ -161,7 +161,7 @@ public abstract class AbstractStorageDocument {
 	 */
 	@SuppressWarnings("PMD.ArrayIsStoredDirectly")
 	public AbstractStorageDocument(final List<StorageMetadata> metadatas,
-			final byte[] content, final File filePath) {
+			final byte[] content, final String filePath) {
 		this.metadatas = metadatas;
 		this.content = content;
 		this.filePath = filePath;
