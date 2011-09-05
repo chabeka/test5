@@ -43,6 +43,7 @@
                            <generateServerSide>true</generateServerSide>
                            <skipBuildXML>true</skipBuildXML>
                            <skipWSDL>false</skipWSDL>
+                           <generateServerSideInterface>true</generateServerSideInterface>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
                            <targetResourcesFolderLocation>main/resources/META-INF</targetResourcesFolderLocation>
                         </configuration>
@@ -139,8 +140,8 @@
          <artifactId>sae-igc</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-      
-       <!-- SAE BO -->
+
+      <!-- SAE BO -->
 
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
@@ -154,7 +155,7 @@
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-services</artifactId>
          <version>0.0.1-SNAPSHOT</version>
-          <exclusions>
+         <exclusions>
 
             <exclusion>
                <groupId>org.slf4j</groupId>
@@ -168,8 +169,8 @@
 
          </exclusions>
       </dependency>
-      
-       <!-- SAE METADATA -->
+
+      <!-- SAE METADATA -->
 
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
@@ -289,6 +290,16 @@
          <artifactId>jsr250-api</artifactId>
          <version>1.0</version>
       </dependency>
+
+      <!-- EASYMOCK -->
+
+      <dependency>
+         <groupId>org.easymock</groupId>
+         <artifactId>easymock</artifactId>
+         <version>3.0</version>
+         <scope>test</scope>
+      </dependency>
+
 
    </dependencies>
 </project>

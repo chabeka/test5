@@ -10,8 +10,11 @@
    <bean id="applicationContext"
       class="org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder" />
 
-   <import resource="applicationContext-security.xml"/>
-   <import resource="applicationContext-service.xml"/>
+   <import resource="applicationContext-security.xml" />
+   <import resource="applicationContext-service.xml" />
+   <import resource="applicationContext-sae-services.xml" />
+   <import resource="applicationContext-sae-storage-dfce.xml" />
+   <import resource="applicationContext-sae-metadata.xml" />
    <import resource="applicationContext-storageConnectionParameter.xml" />
 
 </beans>

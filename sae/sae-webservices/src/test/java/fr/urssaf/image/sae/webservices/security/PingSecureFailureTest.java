@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.PingSecureRequest;
-import fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton;
+import fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeletonInterface;
 import fr.urssaf.image.sae.webservices.util.Axis2Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,7 +29,7 @@ public class PingSecureFailureTest {
    private static final String FAULT_CODE = "FaultCode incorrect";
 
    @Autowired
-   private SaeServiceSkeleton skeleton;
+   private SaeServiceSkeletonInterface skeleton;
 
    private MessageContext ctx;
 

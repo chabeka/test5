@@ -11,12 +11,10 @@
    <bean id="applicationContext"
       class="org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder" />
    
-   
-   <context:component-scan base-package="fr.urssaf.image.sae.webservices.security" />
+   <import resource="applicationContext-security.xml" />
 
-   <!--
-      le bean est de type fr.urssaf.image.sae.igc.modele.IgcConfig
-   -->
+   <bean id="igcConfigResource" abstract="true" />
+
    <bean id="igcConfig"
       class="fr.urssaf.image.sae.webservices.component.IgcConfigFactory"
       factory-method="createIgcConfig" />

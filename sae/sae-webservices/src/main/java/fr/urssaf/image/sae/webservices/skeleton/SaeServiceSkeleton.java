@@ -68,7 +68,7 @@ import fr.urssaf.image.sae.webservices.service.WSConsultationService;
  * 
  */
 @Component
-public class SaeServiceSkeleton {
+public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    private final SaeService service;
 
@@ -97,12 +97,9 @@ public class SaeServiceSkeleton {
    private WSConsultationService consultation;
 
    /**
-    * endpoint du ping
-    * 
-    * @param pingRequest
-    *           vide
-    * @return reponse du web service
+    * {@inheritDoc}
     */
+   @Override
    public final PingResponse ping(PingRequest pingRequest) {
 
       PingResponse response = new PingResponse();
@@ -113,12 +110,9 @@ public class SaeServiceSkeleton {
    }
 
    /**
-    * endpoint du ping sécurisé
-    * 
-    * @param pingRequest
-    *           vide
-    * @return reponse du web service
+    * {@inheritDoc}
     */
+   @Override
    public final PingSecureResponse pingSecure(PingSecureRequest pingRequest) {
 
       PingSecureResponse response = new PingSecureResponse();
@@ -129,12 +123,9 @@ public class SaeServiceSkeleton {
    }
 
    /**
-    * endpoint de la capture unitaire
-    * 
-    * @param request
-    *           requete du web service
-    * @return reponse du web service
+    * {@inheritDoc}
     */
+   @Override
    public final ArchivageUnitaireResponse archivageUnitaireSecure(
          ArchivageUnitaire request) {
 
@@ -143,12 +134,9 @@ public class SaeServiceSkeleton {
    }
 
    /**
-    * endpoint de la capture de masse
-    * 
-    * @param request
-    *           request du web service
-    * @return reponse du web service
+    * {@inheritDoc}
     */
+   @Override
    public final ArchivageMasseResponse archivageMasseSecure(
          ArchivageMasse request) {
 
@@ -157,12 +145,9 @@ public class SaeServiceSkeleton {
    }
 
    /**
-    * endpoint de recherche
-    * 
-    * @param request
-    *           request du web service
-    * @return reponse du web service
+    * {@inheritDoc}
     */
+   @Override
    public final RechercheResponse rechercheSecure(Recherche request) {
 
       return this.storageService.search(request);
@@ -170,14 +155,9 @@ public class SaeServiceSkeleton {
    }
 
    /**
-    * endpoint de consultation
-    * 
-    * @param request
-    *           request du web service
-    * @return reponse du web service
-    * @throws ConsultationAxisFault
-    *            exception levée lors de la consultation
+    * {@inheritDoc}
     */
+   @Override
    public final ConsultationResponse consultationSecure(Consultation request)
          throws ConsultationAxisFault {
 

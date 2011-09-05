@@ -10,7 +10,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +20,15 @@ import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponseType;
 import fr.cirtil.www.saeservice.ResultatRechercheType;
-import fr.urssaf.image.sae.webservices.util.Axis2Utils;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml",
-      "/applicationContext-security-test.xml" })
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml"})
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class RechercheTest {
 
    @Autowired
-   private SaeServiceSkeleton skeleton;
-
-   @Before
-   public void before() {
-
-      Axis2Utils.initMessageContextSecurity();
-
-   }
+   private SaeServiceSkeletonInterface skeleton;
 
    private Recherche createRecherche(String filePath) {
 

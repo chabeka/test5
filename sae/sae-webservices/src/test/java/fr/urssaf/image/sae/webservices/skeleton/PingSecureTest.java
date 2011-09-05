@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.context.MessageContext;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.After;
 import org.junit.Before;
@@ -32,14 +33,15 @@ import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 public class PingSecureTest {
 
    @Autowired
-   private SaeServiceSkeleton skeleton;
+   private SaeServiceSkeletonInterface skeleton;
 
-   // private MessageContext ctx;
+   private MessageContext ctx;
 
    @Before
    public void before() {
 
-      Axis2Utils.initMessageContextSecurity();
+      ctx = new MessageContext();
+      MessageContext.setCurrentMessageContext(ctx);
 
    }
 
@@ -49,6 +51,8 @@ public class PingSecureTest {
    }
 
    private PingSecureRequest createPingSecureRequest(String filePath) {
+
+      Axis2Utils.initMessageContext(ctx, filePath);
 
       try {
 

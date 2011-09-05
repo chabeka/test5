@@ -6,7 +6,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +14,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
-import fr.urssaf.image.sae.webservices.util.Axis2Utils;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml",
-      "/applicationContext-security-test.xml" })
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml"})
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class ArchivageMasseTest {
 
    @Autowired
-   private SaeServiceSkeleton skeleton;
-
-   @Before
-   public void before() {
-
-      Axis2Utils.initMessageContextSecurity();
-
-   }
+   private SaeServiceSkeletonInterface skeleton;
 
    @Test
    public void archivageMasse_success() throws AxisFault {

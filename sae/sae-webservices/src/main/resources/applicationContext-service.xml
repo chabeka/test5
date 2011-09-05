@@ -18,11 +18,8 @@
          expression="fr.urssaf.image.sae.webservices.security.*" />
    </context:component-scan>
 
-   <import resource="applicationContext-sae-services.xml" />
-   <import resource="applicationContext-sae-storage-dfce.xml" />
-   <import resource="applicationContext-sae-metadata.xml" />
-  
    <bean id="documentService" factory-method="loadSAEDocumentService"
       factory-bean="SAEServiceManager" />
+
 
 </beans>

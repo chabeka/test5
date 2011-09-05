@@ -9,14 +9,12 @@ import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.util.XMLUtils;
 import org.apache.log4j.Logger;
 import org.apache.ws.security.WSConstants;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
-import fr.urssaf.image.sae.webservices.component.SpringConfiguration;
 import fr.urssaf.image.sae.webservices.security.SecurityService;
 import fr.urssaf.image.sae.webservices.security.exception.SaeAccessDeniedAxisFault;
 import fr.urssaf.image.sae.webservices.security.exception.SaeCertificateAxisFault;
@@ -34,28 +32,30 @@ import fr.urssaf.image.sae.webservices.security.igc.exception.LoadCertifsAndCrlE
  * 
  * 
  */
-@Aspect
+// @Aspect
+@Component
 public class AuthenticateHandler {
 
    private static final Logger LOG = Logger
          .getLogger(AuthenticateHandler.class);
 
-   private static final String SKELETON = "fr.urssaf.image.sae.webservices.skeleton.*Skeleton.*Secure(..)";
+   // private static final String SKELETON =
+   // "fr.urssaf.image.sae.webservices.skeleton.*Skeleton.*Secure(..)";
 
-   private static final String METHODE = "execution(public * " + SKELETON + ")";
+   // private static final String METHODE = "execution(public * " + SKELETON +
+   // ")";
 
    private final SecurityService securityService;
 
+  
+
    /**
-    * instanciation de {@link SecurityService}
+    * 
+    * @param securityService
+    *           service de sécurité des web services
     */
-   public AuthenticateHandler() {
-
-      this(SpringConfiguration.getService(SecurityService.class));
-
-   }
-
-   protected AuthenticateHandler(SecurityService securityService) {
+   @Autowired
+   public AuthenticateHandler(SecurityService securityService) {
 
       this.securityService = securityService;
 
@@ -74,7 +74,9 @@ public class AuthenticateHandler {
     *            les autorisations sont insuffisantes dans le contexte de
     *            sécurité
     */
-   @AfterThrowing(pointcut = "execution(public * fr.urssaf.image.sae.webservices.skeleton.*Skeleton.*(..))", throwing = "exception")
+   // @AfterThrowing(pointcut =
+   // "execution(public * fr.urssaf.image.sae.webservices.skeleton.*Skeleton.*(..))",
+   // throwing = "exception")
    public final void deniedAccess(Throwable exception) throws AxisFault {
 
       if (exception instanceof AccessDeniedException) {
@@ -99,7 +101,7 @@ public class AuthenticateHandler {
     * 
     * @throws AxisFault le VI comporte une erreur ou est absent
     */
-   @Before(METHODE)
+   // @Before(METHODE)
    public final void authenticate() throws AxisFault {
 
       String prefixeLog = "Demande de consommation d'un service web sécurisé - ";

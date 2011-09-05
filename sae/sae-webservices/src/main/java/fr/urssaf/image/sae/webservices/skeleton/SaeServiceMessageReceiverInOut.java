@@ -24,7 +24,7 @@ public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.A
         // get the implementation class for the Web Service
         Object obj = getTheImplementationObject(msgContext);
 
-        SaeServiceSkeleton skel = (SaeServiceSkeleton)obj;
+        SaeServiceSkeletonInterface skel = (SaeServiceSkeletonInterface)obj;
         //Out Envelop
         org.apache.axiom.soap.SOAPEnvelope envelope = null;
         //Find the axisOperation that has been set by the Dispatch phase.
@@ -40,110 +40,110 @@ public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.A
 
             if("recherche".equals(methodName)){
                 
-                fr.cirtil.www.saeservice.RechercheResponse rechercheResponse1 = null;
+                fr.cirtil.www.saeservice.RechercheResponse rechercheResponse13 = null;
 	                        fr.cirtil.www.saeservice.Recherche wrappedParam =
                                                              (fr.cirtil.www.saeservice.Recherche)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     fr.cirtil.www.saeservice.Recherche.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               rechercheResponse1 =
+                                               rechercheResponse13 =
                                                    
                                                    
                                                          skel.rechercheSecure(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), rechercheResponse1, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), rechercheResponse13, false);
                                     } else 
 
             if("ping".equals(methodName)){
                 
-                fr.cirtil.www.saeservice.PingResponse pingResponse3 = null;
+                fr.cirtil.www.saeservice.PingResponse pingResponse15 = null;
 	                        fr.cirtil.www.saeservice.PingRequest wrappedParam =
                                                              (fr.cirtil.www.saeservice.PingRequest)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     fr.cirtil.www.saeservice.PingRequest.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               pingResponse3 =
+                                               pingResponse15 =
                                                    
                                                    
                                                          skel.ping(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), pingResponse3, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), pingResponse15, false);
                                     } else 
 
             if("archivageUnitaire".equals(methodName)){
                 
-                fr.cirtil.www.saeservice.ArchivageUnitaireResponse archivageUnitaireResponse5 = null;
+                fr.cirtil.www.saeservice.ArchivageUnitaireResponse archivageUnitaireResponse17 = null;
 	                        fr.cirtil.www.saeservice.ArchivageUnitaire wrappedParam =
                                                              (fr.cirtil.www.saeservice.ArchivageUnitaire)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     fr.cirtil.www.saeservice.ArchivageUnitaire.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               archivageUnitaireResponse5 =
+                                               archivageUnitaireResponse17 =
                                                    
                                                    
                                                          skel.archivageUnitaireSecure(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), archivageUnitaireResponse5, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), archivageUnitaireResponse17, false);
                                     } else 
 
             if("pingSecure".equals(methodName)){
                 
-                fr.cirtil.www.saeservice.PingSecureResponse pingSecureResponse7 = null;
+                fr.cirtil.www.saeservice.PingSecureResponse pingSecureResponse19 = null;
 	                        fr.cirtil.www.saeservice.PingSecureRequest wrappedParam =
                                                              (fr.cirtil.www.saeservice.PingSecureRequest)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     fr.cirtil.www.saeservice.PingSecureRequest.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               pingSecureResponse7 =
+                                               pingSecureResponse19 =
                                                    
                                                    
                                                          skel.pingSecure(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), pingSecureResponse7, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), pingSecureResponse19, false);
                                     } else 
 
             if("consultation".equals(methodName)){
                 
-                fr.cirtil.www.saeservice.ConsultationResponse consultationResponse9 = null;
+                fr.cirtil.www.saeservice.ConsultationResponse consultationResponse21 = null;
 	                        fr.cirtil.www.saeservice.Consultation wrappedParam =
                                                              (fr.cirtil.www.saeservice.Consultation)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     fr.cirtil.www.saeservice.Consultation.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               consultationResponse9 =
+                                               consultationResponse21 =
                                                    
                                                    
                                                          skel.consultationSecure(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), consultationResponse9, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), consultationResponse21, false);
                                     } else 
 
             if("archivageMasse".equals(methodName)){
                 
-                fr.cirtil.www.saeservice.ArchivageMasseResponse archivageMasseResponse11 = null;
+                fr.cirtil.www.saeservice.ArchivageMasseResponse archivageMasseResponse23 = null;
 	                        fr.cirtil.www.saeservice.ArchivageMasse wrappedParam =
                                                              (fr.cirtil.www.saeservice.ArchivageMasse)fromOM(
                                     msgContext.getEnvelope().getBody().getFirstElement(),
                                     fr.cirtil.www.saeservice.ArchivageMasse.class,
                                     getEnvelopeNamespaces(msgContext.getEnvelope()));
                                                 
-                                               archivageMasseResponse11 =
+                                               archivageMasseResponse23 =
                                                    
                                                    
                                                          skel.archivageMasseSecure(wrappedParam)
                                                     ;
                                             
-                                        envelope = toEnvelope(getSOAPFactory(msgContext), archivageMasseResponse11, false);
+                                        envelope = toEnvelope(getSOAPFactory(msgContext), archivageMasseResponse23, false);
                                     
             } else {
               throw new java.lang.RuntimeException("method not found");
