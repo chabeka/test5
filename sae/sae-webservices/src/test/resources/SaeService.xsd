@@ -249,11 +249,6 @@
 					<xsd:documentation>L'identifiant unique d'archivage de l'archive à consulter</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="urlConsultationDirecte" type="xsd:boolean">
-				<xsd:annotation>
-					<xsd:documentation>Flag indiquant si on veut récupérer une URL de consultation directe, plutôt que le binaire du document dans son format d'archivage.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="consultationResponseType">

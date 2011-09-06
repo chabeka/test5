@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -45,14 +44,6 @@ public class WSConsultationServiceImpl implements WSConsultationService {
 
       UUID uuid = UUID.fromString(request.getConsultation().getIdArchive()
             .getUuidType());
-
-      if (BooleanUtils.isTrue(request.getConsultation()
-            .getUrlConsultationDirecte())) {
-
-         throw new ConsultationAxisFault(
-               "La fonctionnalité URL de consultation directe n'est pas implémentée",
-               "FonctionNonImplementee");
-      }
 
       try {
          UntypedDocument untypedDocument = saeService.consultation(uuid);

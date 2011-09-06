@@ -392,14 +392,6 @@ public class XsdTest {
    }
    
    /**
-    * Le flag de consultation directe est absent
-    */
-   @Test
-   public void casTest36() {
-      testEchec("036");
-   }
-   
-   /**
     * La réponse standard à une consultation
     */
    @Test

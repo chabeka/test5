@@ -63,30 +63,6 @@ public class ConsultationFailureTest {
       EasyMock.reset(documentService);
    }
 
-   
-
-   @Test
-   public void consultation_failure_urldirecte() {
-
-      try {
-
-         Consultation request = createConsultationResponseType("src/test/resources/request/consultation_failure_urldirecte.xml");
-
-         skeleton.consultationSecure(request).getConsultationResponse();
-
-         Assert
-               .fail("le test doit échouer car l'url de consultation directe ne peut être à true");
-
-      } catch (ConsultationAxisFault fault) {
-
-         assertAxisFault(
-               fault,
-               "La fonctionnalité URL de consultation directe n'est pas implémentée",
-               "FonctionNonImplementee", "sae");
-
-      }
-   }
-
    @Test
    public void consultation_failure_uuidNotFound()
          throws SAEConsultationServiceException {
