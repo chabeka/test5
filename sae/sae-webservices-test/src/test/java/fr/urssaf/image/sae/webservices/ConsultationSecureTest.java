@@ -84,7 +84,7 @@ public class ConsultationSecureTest {
    public void consultation_success() throws IOException {
 
       Consultation request = RequestServiceFactory.createConsultation(
-            "cc4a5ec1-788d-4b41-baa8-d349947865bf", false);
+            "8af8a933-0ebb-41fb-bcff-df68532faa22");
 
       ConsultationResponseType response = service.consultation(request)
             .getConsultationResponse();
@@ -139,21 +139,21 @@ public class ConsultationSecureTest {
    }
 
    @Test
-   public void consultation_failure_urldirecte() throws RemoteException {
+   public void consultation_failure_uuidNotFound() throws RemoteException {
       try {
          Consultation request = RequestServiceFactory.createConsultation(
-               "a08addbb-f948-4489-a8a4-70fcb19feb9f", true);
+               "a08addbb-f948-4489-a8a4-70fcb19feb9f");
 
          service.consultation(request).getConsultationResponse();
 
-         fail("le test doit échouer car l'url de consultation directe ne peut être à true");
+         fail("le test doit échouer car l'archive n'existe dans le SAE");
 
       } catch (AxisFault fault) {
 
          assertAxisFault(
                fault,
-               "La fonctionnalité URL de consultation directe n'est pas implémentée",
-               "FonctionNonImplementee", "sae");
+               "Il n'existe aucun document pour l'identifiant d'archivage 'a08addbb-f948-4489-a8a4-70fcb19feb9f'",
+               "ArchiveNonTrouvee", "sae");
 
       }
    }

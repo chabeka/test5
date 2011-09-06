@@ -80,13 +80,9 @@ public final class RequestServiceFactory {
     * 
     * @param uuid
     *           L'identifiant unique d'archivage de l'archive à consulter
-    * @param directe
-    *           Flag indiquant si on veut récupérer une URL de consultation
-    *           directe, plutôt que le binaire du document dans son format
-    *           d'archivage.
     * @return instance de {@link Consultation}
     */
-   public static Consultation createConsultation(String uuid, boolean directe) {
+   public static Consultation createConsultation(String uuid) {
 
       Consultation request = new Consultation();
 
@@ -95,8 +91,6 @@ public final class RequestServiceFactory {
       uuidType.setUuidType(uuid);
 
       requestType.setIdArchive(uuidType);
-
-      requestType.setUrlConsultationDirecte(directe);
 
       request.setConsultation(requestType);
 
@@ -119,8 +113,8 @@ public final class RequestServiceFactory {
 
       EcdeUrlSommaireType urlType = new EcdeUrlSommaireType();
 
-      urlType
-            .setEcdeUrlSommaireType(ConverterUtil.convertToAnyURI(url.toASCIIString()));
+      urlType.setEcdeUrlSommaireType(ConverterUtil.convertToAnyURI(url
+            .toASCIIString()));
       requestType.setUrlSommaire(urlType);
 
       return request;

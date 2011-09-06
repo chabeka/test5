@@ -9059,36 +9059,6 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                                }
                             
 
-                        /**
-                        * field for UrlConsultationDirecte
-                        */
-
-                        
-                                    protected boolean localUrlConsultationDirecte ;
-                                
-
-                           /**
-                           * Auto generated getter method
-                           * @return boolean
-                           */
-                           public  boolean getUrlConsultationDirecte(){
-                               return localUrlConsultationDirecte;
-                           }
-
-                           
-                        
-                            /**
-                               * Auto generated setter method
-                               * @param param UrlConsultationDirecte
-                               */
-                               public void setUrlConsultationDirecte(boolean param){
-                            
-                                            this.localUrlConsultationDirecte=param;
-                                    
-
-                               }
-                            
-
      /**
      * isReaderMTOMAware
      * @return true if the reader supports MTOM
@@ -9192,35 +9162,6 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                                            localIdArchive.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","idArchive"),
                                                factory,xmlWriter);
                                         
-                                    namespace = "http://www.cirtil.fr/saeService";
-                                    if (! namespace.equals("")) {
-                                        prefix = xmlWriter.getPrefix(namespace);
-
-                                        if (prefix == null) {
-                                            prefix = generatePrefix(namespace);
-
-                                            xmlWriter.writeStartElement(prefix,"urlConsultationDirecte", namespace);
-                                            xmlWriter.writeNamespace(prefix, namespace);
-                                            xmlWriter.setPrefix(prefix, namespace);
-
-                                        } else {
-                                            xmlWriter.writeStartElement(namespace,"urlConsultationDirecte");
-                                        }
-
-                                    } else {
-                                        xmlWriter.writeStartElement("urlConsultationDirecte");
-                                    }
-                                
-                                               if (false) {
-                                           
-                                                         throw new org.apache.axis2.databinding.ADBException("urlConsultationDirecte cannot be null!!");
-                                                      
-                                               } else {
-                                                    xmlWriter.writeCharacters(org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localUrlConsultationDirecte));
-                                               }
-                                    
-                                   xmlWriter.writeEndElement();
-                             
                     xmlWriter.writeEndElement();
                
 
@@ -9392,12 +9333,6 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                                     }
                                     elementList.add(localIdArchive);
                                 
-                                      elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "urlConsultationDirecte"));
-                                 
-                                elementList.add(
-                                   org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localUrlConsultationDirecte));
-                            
 
                 return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(qName, elementList.toArray(), attribList.toArray());
             
@@ -9479,25 +9414,6 @@ public class SaeServiceStub extends org.apache.axis2.client.Stub
                                     if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","idArchive").equals(reader.getName())){
                                 
                                                 object.setIdArchive(UuidType.Factory.parse(reader));
-                                              
-                                        reader.next();
-                                    
-                              }  // End of if for expected property start element
-                                
-                                else{
-                                    // A start element we are not expecting indicates an invalid parameter was passed
-                                    throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                                }
-                            
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
-                                
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","urlConsultationDirecte").equals(reader.getName())){
-                                
-                                    java.lang.String content = reader.getElementText();
-                                    
-                                              object.setUrlConsultationDirecte(
-                                                    org.apache.axis2.databinding.utils.ConverterUtil.convertToBoolean(content));
                                               
                                         reader.next();
                                     

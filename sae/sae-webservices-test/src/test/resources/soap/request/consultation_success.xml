@@ -95,8 +95,7 @@
 
    <soap:Body>
       <sae:consultation>
-         <sae:idArchive>1261362f-c87c-4e48-a06a-bc6b69f514e4</sae:idArchive>
-         <sae:urlConsultationDirecte>false</sae:urlConsultationDirecte>
+         <sae:idArchive>8af8a933-0ebb-41fb-bcff-df68532faa22</sae:idArchive>
       </sae:consultation>
    </soap:Body>
    
