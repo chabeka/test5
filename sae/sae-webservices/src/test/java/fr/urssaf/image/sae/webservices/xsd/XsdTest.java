@@ -184,14 +184,6 @@ public class XsdTest {
    }
    
    /**
-    * Les 2 éléments du choix sont présents simultanément
-    */
-   @Test
-   public void catTest010Echec(){
-      testEchec("010");
-   }
-   
-   /**
     * Archivage unitaire avec contenu base64 et liste de métadonnées
     */
    @Test
@@ -389,14 +381,6 @@ public class XsdTest {
    @Test
    public void casTest35() {
       testEchec("035");
-   }
-   
-   /**
-    * La réponse standard à une consultation
-    */
-   @Test
-   public void casTest37(){
-      testReussite("037");
    }
    
    /**

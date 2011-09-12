@@ -44,16 +44,6 @@ public class ExtensionMapper{
               
                   if (
                   "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
-                  "objetNumeriqueType".equals(typeName)){
-                   
-                            return  fr.cirtil.www.saeservice.ObjetNumeriqueType.Factory.parse(reader);
-                        
-
-                  }
-
-              
-                  if (
-                  "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
                   "uuidType".equals(typeName)){
                    
                             return  fr.cirtil.www.saeservice.UuidType.Factory.parse(reader);
@@ -144,9 +134,9 @@ public class ExtensionMapper{
               
                   if (
                   "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
-                  "objetNumeriqueConsultationType".equals(typeName)){
+                  "listeResultatRechercheType".equals(typeName)){
                    
-                            return  fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType.Factory.parse(reader);
+                            return  fr.cirtil.www.saeservice.ListeResultatRechercheType.Factory.parse(reader);
                         
 
                   }
@@ -154,9 +144,9 @@ public class ExtensionMapper{
               
                   if (
                   "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
-                  "listeResultatRechercheType".equals(typeName)){
+                  "objetNumeriqueConsultationType".equals(typeName)){
                    
-                            return  fr.cirtil.www.saeservice.ListeResultatRechercheType.Factory.parse(reader);
+                            return  fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType.Factory.parse(reader);
                         
 
                   }

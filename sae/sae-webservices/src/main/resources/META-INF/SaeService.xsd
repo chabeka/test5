@@ -164,9 +164,9 @@
             <xsd:documentation>Paramètre d'entrée de l'opération 'archivage unitaire'</xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="objetNumerique" type="sae:objetNumeriqueType">
+            <xsd:element name="ecdeUrl" type="sae:ecdeUrlType">
                 <xsd:annotation>
-                    <xsd:documentation>L'objet numérique à archiver, soit sous la forme d'une URL pointant vers un fichier de l'ECDE, soit en donnant directement son contenu binaire encodé en base64.</xsd:documentation>
+                    <xsd:documentation>L'objet numérique à archiver sous la forme d'une URL pointant vers un fichier de l'ECDE.</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
             <xsd:element name="metadonnees" type="sae:listeMetadonneeType">

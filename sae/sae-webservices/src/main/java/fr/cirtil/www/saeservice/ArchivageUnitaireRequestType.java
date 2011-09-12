@@ -34,30 +34,30 @@ public class ArchivageUnitaireRequestType
         
 
                         /**
-                        * field for ObjetNumerique
+                        * field for EcdeUrl
                         */
 
                         
-                                    protected fr.cirtil.www.saeservice.ObjetNumeriqueType localObjetNumerique ;
+                                    protected fr.cirtil.www.saeservice.EcdeUrlType localEcdeUrl ;
                                 
 
                            /**
                            * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.ObjetNumeriqueType
+                           * @return fr.cirtil.www.saeservice.EcdeUrlType
                            */
-                           public  fr.cirtil.www.saeservice.ObjetNumeriqueType getObjetNumerique(){
-                               return localObjetNumerique;
+                           public  fr.cirtil.www.saeservice.EcdeUrlType getEcdeUrl(){
+                               return localEcdeUrl;
                            }
 
                            
                         
                             /**
                                * Auto generated setter method
-                               * @param param ObjetNumerique
+                               * @param param EcdeUrl
                                */
-                               public void setObjetNumerique(fr.cirtil.www.saeservice.ObjetNumeriqueType param){
+                               public void setEcdeUrl(fr.cirtil.www.saeservice.EcdeUrlType param){
                             
-                                            this.localObjetNumerique=param;
+                                            this.localEcdeUrl=param;
                                     
 
                                }
@@ -190,10 +190,10 @@ public class ArchivageUnitaireRequestType
                
                    }
                
-                                            if (localObjetNumerique==null){
-                                                 throw new org.apache.axis2.databinding.ADBException("objetNumerique cannot be null!!");
+                                            if (localEcdeUrl==null){
+                                                 throw new org.apache.axis2.databinding.ADBException("ecdeUrl cannot be null!!");
                                             }
-                                           localObjetNumerique.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","objetNumerique"),
+                                           localEcdeUrl.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","ecdeUrl"),
                                                factory,xmlWriter);
                                         
                                             if (localMetadonnees==null){
@@ -365,13 +365,13 @@ public class ArchivageUnitaireRequestType
 
                 
                             elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "objetNumerique"));
+                                                                      "ecdeUrl"));
                             
                             
-                                    if (localObjetNumerique==null){
-                                         throw new org.apache.axis2.databinding.ADBException("objetNumerique cannot be null!!");
+                                    if (localEcdeUrl==null){
+                                         throw new org.apache.axis2.databinding.ADBException("ecdeUrl cannot be null!!");
                                     }
-                                    elementList.add(localObjetNumerique);
+                                    elementList.add(localEcdeUrl);
                                 
                             elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
                                                                       "metadonnees"));
@@ -460,9 +460,9 @@ public class ArchivageUnitaireRequestType
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","objetNumerique").equals(reader.getName())){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","ecdeUrl").equals(reader.getName())){
                                 
-                                                object.setObjetNumerique(fr.cirtil.www.saeservice.ObjetNumeriqueType.Factory.parse(reader));
+                                                object.setEcdeUrl(fr.cirtil.www.saeservice.EcdeUrlType.Factory.parse(reader));
                                               
                                         reader.next();
                                     
