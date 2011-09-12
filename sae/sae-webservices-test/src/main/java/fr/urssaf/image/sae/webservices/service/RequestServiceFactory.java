@@ -4,11 +4,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.activation.DataHandler;
-
 import org.apache.axis2.databinding.utils.ConverterUtil;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 
 import fr.urssaf.image.sae.webservices.factory.ObjectModeleFactory;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageMasse;
@@ -24,8 +20,6 @@ import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ListeMetadonneeType
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.MetadonneeCodeType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.MetadonneeType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.MetadonneeValeurType;
-import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ObjetNumeriqueType;
-import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ObjetNumeriqueTypeChoice_type0;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.Recherche;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RechercheRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RequeteRechercheType;
@@ -123,32 +117,6 @@ public final class RequestServiceFactory {
 
    /**
     * 
-    * @param content
-    *           l'objet numérique est représenté par un flux binaire qui sera
-    *           encodé en base64
-    * @param metadonnees
-    *           Les métadonnées.
-    * @return instance de {@link ArchivageUnitaire}
-    */
-   public static ArchivageUnitaire createArchivageUnitaire(byte[] content,
-         Map<String, String> metadonnees) {
-
-      ArchivageUnitaire request = createArchivageUnitaire(metadonnees);
-
-      ObjetNumeriqueTypeChoice_type0 choice = request.getArchivageUnitaire()
-            .getObjetNumerique().getObjetNumeriqueTypeChoice_type0();
-
-      // instanciation de DataHandler
-      DataHandler contenu = ConverterUtil.convertToDataHandler(StringUtils
-            .newStringUtf8(Base64.encodeBase64(content, false)));
-      choice.setContenu(contenu);
-
-      return request;
-
-   }
-
-   /**
-    * 
     * @param url
     *           l'objet numérique est représenté soit par son URL ECDE
     * @param metadonnees
@@ -160,14 +128,12 @@ public final class RequestServiceFactory {
 
       ArchivageUnitaire request = createArchivageUnitaire(metadonnees);
 
-      ObjetNumeriqueTypeChoice_type0 choice = request.getArchivageUnitaire()
-            .getObjetNumerique().getObjetNumeriqueTypeChoice_type0();
-
+     
       // instanciation de EcdeUrlType
       EcdeUrlType ecdeURL = new EcdeUrlType();
       ecdeURL
             .setEcdeUrlType(ConverterUtil.convertToAnyURI(url.toASCIIString()));
-      choice.setUrl(ecdeURL);
+      request.getArchivageUnitaire().setEcdeUrl(ecdeURL);
 
       return request;
 
@@ -201,13 +167,6 @@ public final class RequestServiceFactory {
       }
 
       requestType.setMetadonnees(listeMetadonnee);
-
-      // instanciation de ObjetNumeriqueType
-      ObjetNumeriqueType numeriqueType = new ObjetNumeriqueType();
-      requestType.setObjetNumerique(numeriqueType);
-      ObjetNumeriqueTypeChoice_type0 choice = new ObjetNumeriqueTypeChoice_type0();
-      numeriqueType.setObjetNumeriqueTypeChoice_type0(choice);
-
       request.setArchivageUnitaire(requestType);
 
       return request;

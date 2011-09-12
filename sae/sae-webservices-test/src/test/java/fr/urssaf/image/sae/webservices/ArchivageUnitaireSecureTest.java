@@ -37,7 +37,7 @@ public class ArchivageUnitaireSecureTest {
    }
 
    @Test
-   public void archivageUnitaire_success_url() throws RemoteException,
+   public void archivageUnitaire_success() throws RemoteException,
          URISyntaxException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -52,32 +52,6 @@ public class ArchivageUnitaireSecureTest {
 
       ArchivageUnitaire request = RequestServiceFactory
             .createArchivageUnitaire(url, metadonnees);
-
-      ArchivageUnitaireResponseType response = service.archivageUnitaire(
-            request).getArchivageUnitaireResponse();
-
-      // String xml = ADBBeanUtils.print(response);
-      // LOG.debug(xml);
-
-      assertEquals("Test de l'archivage unitaire",
-            "110E8400-E29B-11D4-A716-446655440000", response.getIdArchive()
-                  .getUuidType());
-
-   }
-
-   @Test
-   public void archivageUnitaire_success_content() throws RemoteException {
-
-      AuthenticateUtils.authenticate("ROLE_TOUS");
-
-      byte[] content = "content".getBytes();
-      Map<String, String> metadonnees = new HashMap<String, String>();
-      metadonnees.put("CodeRND", "rnd");
-      metadonnees.put("DenominationCompte", "compte");
-      metadonnees.put("CodeOrganisme", "orga");
-
-      ArchivageUnitaire request = RequestServiceFactory
-            .createArchivageUnitaire(content, metadonnees);
 
       ArchivageUnitaireResponseType response = service.archivageUnitaire(
             request).getArchivageUnitaireResponse();
