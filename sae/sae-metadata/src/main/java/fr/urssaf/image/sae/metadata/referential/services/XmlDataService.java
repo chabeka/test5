@@ -24,14 +24,7 @@ public interface XmlDataService {
 	Map<String, MetadataReference> referentialReader(final InputStream xmlInputStream)
 			throws FileNotFoundException;
 	
-	/**
-	 * 
-	 * @return Le Référentiel des métadonnées
-	 * @throws FileNotFoundException
-	 *             Lorsque le fichier n'est pas présent
-	 */
-	Map<String, MetadataReference> referentialReader()
-			throws FileNotFoundException;
+	
 
 
 }

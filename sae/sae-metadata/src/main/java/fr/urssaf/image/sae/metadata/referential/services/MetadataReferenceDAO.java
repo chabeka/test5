@@ -25,6 +25,17 @@ public interface MetadataReferenceDAO {
 
 	/**
 	 * 
+	 * @return La liste des métadonnées consultables par défaut du référentiel des
+	 *         métadonnées.
+	 * @throws ReferentialException
+	 *             Exception levée lorsqu'un dysfonctionnement survient.
+	 */
+	Map<String, MetadataReference> getDefaultConsultableMetadataReferences()
+			throws ReferentialException;
+	
+	
+	/**
+	 * 
 	 * @return La liste des métadonnées consultables du référentiel des
 	 *         métadonnées.
 	 * @throws ReferentialException
@@ -45,12 +56,22 @@ public interface MetadataReferenceDAO {
 	
 	/**
 	 * 
-	 * @return La liste des métadonnées obligatoires du référentiel des
+	 * @return La liste des métadonnées obligatoires pour le stockage du référentiel des
 	 *         métadonnées.
 	 * @throws ReferentialException
 	 *             Exception levée lorsqu'un dysfonctionnement survient.
 	 */
-	Map<String, MetadataReference> getRequiredMetadataReferences()
+	Map<String, MetadataReference> getRequiredForStorageMetadataReferences()
+			throws ReferentialException;
+	
+	/**
+	 * 
+	 * @return La liste des métadonnées obligatoires pour l'archivage du référentiel des
+	 *         métadonnées.
+	 * @throws ReferentialException
+	 *             Exception levée lorsqu'un dysfonctionnement survient.
+	 */
+	Map<String, MetadataReference> getRequiredForArchivalMetadataReferences()
 			throws ReferentialException;
 
 	/**

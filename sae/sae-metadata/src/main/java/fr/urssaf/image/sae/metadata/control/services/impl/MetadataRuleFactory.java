@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import fr.urssaf.image.sae.metadata.rules.MetadataValueIsRequiredRule;
+import fr.urssaf.image.sae.metadata.rules.MetadataExistingRule;
+import fr.urssaf.image.sae.metadata.rules.MetadataValueIsRequiredForArchivalRule;
 import fr.urssaf.image.sae.metadata.rules.MetadataIsArchivableRule;
 import fr.urssaf.image.sae.metadata.rules.MetadataIsConsultableRule;
 import fr.urssaf.image.sae.metadata.rules.MetadataIsSearchableRule;
-import fr.urssaf.image.sae.metadata.rules.UntypedMetadataExistingRule;
+import fr.urssaf.image.sae.metadata.rules.MetadataValueIsRequiredForStorageRule;
 import fr.urssaf.image.sae.metadata.rules.UntypedMetadataValueLengthRule;
 import fr.urssaf.image.sae.metadata.rules.UntypedMetadataValueTypeRule;
 
@@ -20,10 +21,13 @@ import fr.urssaf.image.sae.metadata.rules.UntypedMetadataValueTypeRule;
  */
 @Component
 @Qualifier("ruleFactory")
+@SuppressWarnings("PMD.LongVariable")
 public class MetadataRuleFactory {
 	@Autowired
-	private MetadataValueIsRequiredRule requiredRule;
-	
+	private MetadataValueIsRequiredForArchivalRule requiredForArchivalRule;
+
+	@Autowired
+	private MetadataValueIsRequiredForStorageRule requiredForStorageRule;
 	@Autowired
 	private MetadataIsArchivableRule archivableRule;
 	@Autowired
@@ -32,16 +36,16 @@ public class MetadataRuleFactory {
 	private MetadataIsConsultableRule consultableRule;
 	@Autowired
 	private UntypedMetadataValueTypeRule valueTypeRule;
-
 	@Autowired
-	private UntypedMetadataExistingRule existingRule;
+	private MetadataExistingRule existingRule;
+	
 	@Autowired
 	private UntypedMetadataValueLengthRule valueLengthRule;
 
 	/**
-	 * @return Une instance de la règle {@link MetadataExistingRule}
+	 * @return Une instance de la règle {@link UntypedMetadataExistingRule}
 	 */
-	public final UntypedMetadataExistingRule getExistingRule() {
+	public final MetadataExistingRule getExistingRule() {
 		return existingRule;
 	}
 
@@ -50,7 +54,7 @@ public class MetadataRuleFactory {
 	 *            : Une instance de la règle {@link UntypedMetadataExistingRule}
 	 */
 	public final void setExistingRule(
-			final UntypedMetadataExistingRule existingRule) {
+			final MetadataExistingRule existingRule) {
 		this.existingRule = existingRule;
 	}
 
@@ -144,24 +148,55 @@ public class MetadataRuleFactory {
 	 *            : Une instance de la règle
 	 *            {@link UntypedMetadataValueTypeRule}.
 	 */
-	public final void setValueTypeRule(final
-			UntypedMetadataValueTypeRule valueTypeRule) {
+	public final void setValueTypeRule(
+			final UntypedMetadataValueTypeRule valueTypeRule) {
 		this.valueTypeRule = valueTypeRule;
 	}
 
 	/**
-	 * @param requiredRule Une instance de la règle
-	 *            {@link MetadataValueIsRequiredRule}.
+	 * @param requiredForArchivalRule
+	 *            Une instance de la règle
+	 *            {@link MetadataValueIsRequiredForArchivalRule}.
 	 */
-	public final void setRequiredRule(final MetadataValueIsRequiredRule requiredRule) {
-		this.requiredRule = requiredRule;
+	public final void setRequiredRule(
+			final MetadataValueIsRequiredForArchivalRule requiredForArchivalRule) {
+		this.requiredForArchivalRule = requiredForArchivalRule;
+	}
+
+
+	/**
+	 * @param requiredForStorageRule
+	 *            : Une instance de la règle
+	 *            {@link MetadataValueIsRequiredForStorageRule}.
+	 */
+	public final void setRequiredForStorageRule(
+			final MetadataValueIsRequiredForStorageRule requiredForStorageRule) {
+		this.requiredForStorageRule = requiredForStorageRule;
 	}
 
 	/**
 	 * @return Une instance de la règle
-	 *            {@link MetadataValueIsRequiredRule}.
+	 *         {@link MetadataValueIsRequiredForStorageRule}.
 	 */
-	public final MetadataValueIsRequiredRule getRequiredRule() {
-		return requiredRule;
+	public final MetadataValueIsRequiredForStorageRule getRequiredForStorageRule() {
+		return requiredForStorageRule;
+	}
+
+	/**
+	 * @return Une instance de la règle
+	 *         {@link MetadataValueIsRequiredForArchivalRule}.
+	 */
+	public final MetadataValueIsRequiredForArchivalRule getRequiredForArchivalRule() {
+		return requiredForArchivalRule;
+	}
+
+	/**
+	 * @param requiredForArchivalRule
+	 *            Une instance de la règle
+	 *            {@link MetadataValueIsRequiredForArchivalRule}.
+	 */
+	public final void setRequiredForArchivalRule(
+			final MetadataValueIsRequiredForArchivalRule requiredForArchivalRule) {
+		this.requiredForArchivalRule = requiredForArchivalRule;
 	}
 }

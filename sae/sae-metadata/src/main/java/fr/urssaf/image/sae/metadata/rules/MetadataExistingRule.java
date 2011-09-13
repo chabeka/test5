@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.metadata.rules;
 
 import org.springframework.stereotype.Component;
 
-import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 
 /**
@@ -14,14 +13,14 @@ import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
  */
 @Component
 public class MetadataExistingRule extends
-		AbstractLeafRule<SAEMetadata, MetadataReference> {
+		AbstractLeafRule<String, MetadataReference> {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public final boolean isSatisfiedBy(final SAEMetadata saeMetadata,
+	public final boolean isSatisfiedBy(final String code,
 			final MetadataReference metaDataReference) {
 		boolean result = true;
 		if (metaDataReference == null) {

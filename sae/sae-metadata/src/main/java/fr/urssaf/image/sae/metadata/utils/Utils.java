@@ -1,19 +1,12 @@
 package fr.urssaf.image.sae.metadata.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+
 import fr.urssaf.image.sae.bo.model.MetadataError;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
-import fr.urssaf.image.sae.metadata.constants.Constants;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 
 /**
@@ -68,62 +61,8 @@ public final class Utils {
 		assert false;
 	}
 
-	/**
-	 * Vérifie qu'une date est bien au format souhaité.
-	 * 
-	 * @param date
-	 *            : La date à contrôler.
-	 * @param local
-	 *            : Le locale.
-	 * @param datePattern
-	 *            :Le pattern de la date à contrôler.
-	 * @return une date à partir d'une chaîne.
-	 * @throws ParseException
-	 *             Exception lorsque le parsing de la chaîne ne se déroule pas
-	 *             bien.
-	 */
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public static boolean checkDatePattern(final String date,
-			final String datePattern, final Locale local) throws ParseException {
-		boolean result = false;
-		if (date != null) {
-			final SimpleDateFormat formatter = new SimpleDateFormat(
-					datePattern, local);
-			formatter.setLenient(false);
-			if (formatter.parse(date, new ParsePosition(0)) == null) {
-				result = true;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Convertie une chaîne en Date
-	 * 
-	 * @param date
-	 *            : La chaîne à convertir.
-	 * @return une date à partir d'une chaîne.
-	 * @throws ParseException
-	 *             Exception lorsque le parsing de la chaîne ne se déroule pas
-	 *             bien.
-	 */
-	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public static Date formatStringToDate(final String date)
-			throws ParseException {
-		Date newDate = new Date();
-		if (date != null) {
-			SimpleDateFormat formatter = new SimpleDateFormat(
-					Constants.DATE_FORMAT_ENTRY, Constants.DEFAULT_LOCAL);
-			formatter.setLenient(false);
-			newDate = formatter.parse(date);
-			if (formatter.parse(date, new ParsePosition(0)) == null) {
-				formatter = new SimpleDateFormat(Constants.DATE_FORMAT,
-						Constants.DEFAULT_LOCAL);
-				newDate = formatter.parse(date);
-			}
-		}
-		return newDate;
-	}
+	
+	
 
 	/**
 	 * Permet d'identifier les doublons
@@ -194,17 +133,6 @@ public final class Utils {
 		return found;
 	}
 	
-	/**
-	 * Retourne un strean en lieu et place d'une chaîne de caractère
-	 * 
-	 * @param xlmlFlux
-	 *            : la chaîne
-	 * @return un strean en lieu et place d'une chaîne de caractère
-	 */
-	public static InputStreamReader getFileFromString(final String xlmlFlux) {
-		final byte[] bytes = xlmlFlux.getBytes(Constants.ENCODING);
-		final ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-		return new InputStreamReader(bais);
-	}
+	
 
 }

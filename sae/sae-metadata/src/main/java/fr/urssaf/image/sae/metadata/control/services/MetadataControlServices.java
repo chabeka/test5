@@ -33,6 +33,15 @@ public interface MetadataControlServices {
 	 * @return une liste d’objet de type {@link MetadataError}
 	 */
 	List<MetadataError> checkExistingMetadata(final UntypedDocument untypedDoc);
+	
+	/**
+	 * Contrôle que chaque terme de la requête existe dans le référentiel.
+	 * 
+	 * @param longCodes
+	 *            : Le code long de la métadonnée
+	 * @return une liste d’objet de type {@link MetadataError}
+	 */
+	List<MetadataError> checkExistingQueryTerms(final List<String> longCodes);
 
 	/**
 	 * Contrôle le type ,le format , la taille max de la valeur de chaque
@@ -47,13 +56,23 @@ public interface MetadataControlServices {
 
 	/**
 	 * Contrôle que la liste des métadonnées fournit contient toutes les
-	 * métadonnées obligatoire.
+	 * métadonnées obligatoire à l'archivage.
 	 * 
 	 * @param saeDoc
 	 *            : Un objet métier de type {@link SAEDocument}
 	 * @return une liste d’objet de type {@link MetadataError}
 	 */
-	List<MetadataError> checkRequiredMetadata(final SAEDocument saeDoc);
+	List<MetadataError> checkRequiredForArchivalMetadata(final SAEDocument saeDoc);
+	
+	/**
+	 * Contrôle que la liste des métadonnées fournit contient toutes les
+	 * métadonnées obligatoire au stockage.
+	 * 
+	 * @param saeDoc
+	 *            : Un objet métier de type {@link SAEDocument}
+	 * @return une liste d’objet de type {@link MetadataError}
+	 */
+	List<MetadataError> checkRequiredForStorageMetadata(final SAEDocument saeDoc);
 
 	/**
 	 * Contrôle que la liste des métadonnées est autorisée à la consultation.

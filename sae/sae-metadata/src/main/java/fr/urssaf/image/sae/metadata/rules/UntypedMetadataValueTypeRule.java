@@ -29,7 +29,7 @@ public class UntypedMetadataValueTypeRule extends
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 	private boolean checkPattern(final UntypedMetadata uMetadata,
 			final MetadataReference reference) {
-		final SAEMetadataType saeType = SAEMetadataType.valueOf(reference
+		final SAEMetadataType saeType = typeFinder(reference
 				.getType());
 		boolean result = false;
 		final String value = String.valueOf(uMetadata.getValue());
@@ -64,7 +64,7 @@ public class UntypedMetadataValueTypeRule extends
 	private boolean validate(final String value, final String pattern,
 			final String defaultPattern) {
 		boolean result = false;
-		if (StringUtils.isNotEmpty(pattern)) {
+		if (StringUtils.isNotEmpty(pattern.trim())) {
 			if (value.matches(pattern)) {
 				result = true;
 			}
@@ -85,5 +85,23 @@ public class UntypedMetadataValueTypeRule extends
 			final MetadataReference referentiel) {
 		return checkPattern(metaData, referentiel);
 	}
+	
+	/**
+	 * Permet de trouver le bon type dans l'enumération des types
+	 * 
+	 * @param type
+	 *            : Le type cherché
+	 * @return Le type métier correspondant au type cherché.
+	 */
+	@SuppressWarnings("PMD.OnlyOneReturn")
+	private static SAEMetadataType typeFinder(final String type) {
+		for (SAEMetadataType saeType : SAEMetadataType.values()) {
+			if (saeType.getType().equalsIgnoreCase(type)) {
+				return saeType;
+			}
+		}
+		return null;
+	}
+
 
 }

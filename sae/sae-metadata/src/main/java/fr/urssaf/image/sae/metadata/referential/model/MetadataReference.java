@@ -14,23 +14,28 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * <li>shortCode : Le code court.</li>
  * <li>longCode : Le code long.</li>
  * <li>type : Le type de la métadonnée.</li>
- * <li>isRequired : True si la métadonnée est obligatoire sinon False.</li>
+ * <li>requiredForArchival : True si la métadonnée est obligatoire à l'archivage
+ * sinon False.</li>
+ * <li>requiredForStorage : True si la métadonnée est obligatoire au stockage
+ * sinon False.</li>
  * <li>length : La longueur maximal de la valeur de la métadonnée.</li>
  * <li>pattern : Le motif que la valeur de la métadonnée doit respecter.</li>
- * <li>isConsultable : True si la métadonnée est consultable par l'utisateur
- * sinon False.</li>
- * <li>isSearchable : True si la métadonnée est interrogeable par l'utisateur
- * sinon False.</li>
- * li>isArchivable : True si la métadonnée est archivable par l'utisateur sinon
+ * <li>consultable : True si la métadonnée est consultable par l'utisateur sinon
  * False.</li>
- * <li>isInternal : True si la métadonnée est une métadonnée métier sinon False.
- * </li>
+ * <li>searchable : True si la métadonnée est interrogeable par l'utisateur
+ * sinon False.</li>
+ * <li>defaultConsultable : True si la métadonnée est consultable par
+ * l'utisateur par défaut sinon False.</li>
+ * <li>archivable : True si la métadonnée est archivable par l'utisateur sinon
+ * False.</li>
+ * <li>internal : True si la métadonnée est une métadonnée métier sinon False.</li>
  * </ul>
  * 
  * @author akenore
  * 
  */
 @XStreamAlias("metaDataReference")
+@SuppressWarnings("PMD.LongVariable")
 public class MetadataReference implements Serializable {
 
 	/**
@@ -40,10 +45,12 @@ public class MetadataReference implements Serializable {
 	private String shortCode;
 	private String longCode;
 	private String type;
-	private boolean required;
+	private boolean requiredForArchival;
+	private boolean requiredForStorage;
 	private int length;
 	private String pattern;
 	private boolean consultable;
+	private boolean defaultConsultable;
 	private boolean searchable;
 	private boolean internal;
 	private boolean archivable;
@@ -93,21 +100,6 @@ public class MetadataReference implements Serializable {
 	 */
 	public final void setType(final String type) {
 		this.type = type;
-	}
-
-	/**
-	 * @return True si la métadonnée est obligatoire sinon False.
-	 */
-	public final boolean isRequired() {
-		return required;
-	}
-
-	/**
-	 * @param isRequired
-	 *            : True si la métadonnée est obligatoire sinon False.
-	 */
-	public final void setRequired(final boolean isRequired) {
-		this.required = isRequired;
 	}
 
 	/**
@@ -214,12 +206,75 @@ public class MetadataReference implements Serializable {
 	@Override
 	public final String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("shortCode", shortCode).append("longCode", longCode)
-				.append("type", type).append("required", required)
-				.append("length", length).append("pattern", pattern)
+				.append("shortCode", shortCode)
+				.append("longCode", longCode)
+				.append("label", label)
+				.append("pattern", pattern)
+				.append("type", type)
+				.append("required", "")
+				.append("length", length)
+				.append("pattern", pattern)
 				.append("consultable", consultable)
-				.append("searchable", searchable).append("internal", internal)
-				.append("archivable", archivable).toString();
+				.append("archivable", archivable)
+				.append("requiredForStorage", requiredForStorage)
+				.append("requiredForArchival", requiredForArchival)
+				.append("defaultConsultable", defaultConsultable)
+				.append("searchable", searchable)
+				.append("internal", internal).toString();
+	}
+
+	/**
+	 * 
+	 * @return True si la métadonnée est requise pour l'archivage.
+	 */
+	public final boolean isRequiredForArchival() {
+		return requiredForArchival;
+	}
+
+	/**
+	 * 
+	 * @param requiredForArchival
+	 *            : le booleen qui indique si la métadonnée est requise pour
+	 *            l'archivage.
+	 */
+	public final void setRequiredForArchival(final boolean requiredForArchival) {
+		this.requiredForArchival = requiredForArchival;
+	}
+
+	/**
+	 * 
+	 * @return True si la métadonnée est requise pour le stockage.
+	 */
+	public final boolean isRequiredForStorage() {
+		return requiredForStorage;
+	}
+
+	/**
+	 * 
+	 * @param requiredForStorage
+	 *            : le booleen qui indique si la métadonnée est requise pour le
+	 *            stockage.
+	 */
+	public final void setRequiredForStorage(final boolean requiredForStorage) {
+		this.requiredForStorage = requiredForStorage;
+	}
+
+	/**
+	 * 
+	 * @return True si la métadonnée est consultable par défaut.
+	 */
+	public final boolean isDefaultConsultable() {
+		return defaultConsultable;
+	}
+
+	/**
+	 * 
+	 * @param defaultConsultable
+	 *            : le booleen qui indique si la métadonnée consultable par
+	 *            défaut.
+	 */
+	public final void setDefaultConsultable(final boolean defaultConsultable) {
+		this.defaultConsultable = defaultConsultable;
 	}
 
 	/**

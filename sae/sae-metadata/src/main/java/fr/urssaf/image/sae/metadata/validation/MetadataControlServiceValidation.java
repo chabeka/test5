@@ -19,7 +19,7 @@ import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
  * @author akenore
  * 
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals","PMD.TooManyMethods"})
 @Aspect
 public class MetadataControlServiceValidation {
 
@@ -33,10 +33,34 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkArchivableMetadata(..)) && args(saeDocument)")
 	public final void checkArchivableMetadata(final SAEDocument saeDocument) {
+		validateSaeDocument(saeDocument);
+
+	}
+
+	/**
+	 * 
+	 * @param saeDocument
+	 *            : Un objet de type {@link SAEDocument}
+	 */
+	private void validateSaeDocument(final SAEDocument saeDocument) {
 		Validate.notNull(saeDocument, MetadataMessageHandler.getMessage(
 				"document.required", SAEDocument.class.getName()));
-		Validate.notNull(saeDocument.getMetadatas(), MetadataMessageHandler.getMessage(
-				"metadatas.required", SAEDocument.class.getName()));
+		Validate.notNull(saeDocument.getMetadatas(), MetadataMessageHandler
+				.getMessage("metadatas.required", SAEDocument.class.getName()));
+	}
+
+	/**
+	 * Valide l'argument de la méthode
+	 * {@link fr.urssaf.image.sae.metadata.control.services.MetadataControlServices#checkRequiredMetadata(fr.urssaf.image.sae.bo.model.bo.SAEDocument)}
+	 * checkRequiredMetadata}. <br>
+	 * 
+	 * @param saeDocument
+	 *            : Un objet de type {@link SAEDocument}
+	 */
+	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkRequiredForArchivalMetadata(..)) && args(saeDocument)")
+	public final void checkRequiredForArchivalMetadata(
+			final SAEDocument saeDocument) {
+		validateSaeDocument(saeDocument);
 
 	}
 
@@ -48,12 +72,9 @@ public class MetadataControlServiceValidation {
 	 * @param saeDocument
 	 *            : Un objet de type {@link SAEDocument}
 	 */
-	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkRequiredMetadata(..)) && args(saeDocument)")
-	public final void checkRequiredMetadata(final SAEDocument saeDocument) {
-		Validate.notNull(saeDocument, MetadataMessageHandler.getMessage(
-				"document.required", SAEDocument.class.getName()));
-		Validate.notNull(saeDocument.getMetadatas(), MetadataMessageHandler.getMessage(
-				"metadatas.required", SAEDocument.class.getName()));
+	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkRequiredForStorageMetadata(..)) && args(saeDocument)")
+	public final void checkRequiredForStorageMetadata(final SAEDocument saeDocument) {
+		validateSaeDocument(saeDocument);
 
 	}
 
@@ -67,11 +88,35 @@ public class MetadataControlServiceValidation {
 	 */
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkExistingMetadata(..)) && args(untypedDoc)")
 	public final void checkExistingMetadata(final UntypedDocument untypedDoc) {
+		validateUntypedDocument(untypedDoc);
+
+	}
+
+	/**
+	 * Valide l'argument de la méthode
+	 * {@link fr.urssaf.image.sae.metadata.control.services.MetadataControlServices#checkExistingQueryTerms(List)}
+	 * checkExistingQueryTerms}. <br>
+	 * 
+	 * @param codes
+	 *            : La liste des termes de la requête(code long)
+	 */
+	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkExistingQueryTerms(..)) && args(codes)")
+	public final void checkExistingQueryTerms(final List<String> codes) {
+		Validate.notNull(codes, MetadataMessageHandler.getMessage(
+				"terms.required"));
+
+	}
+	/**
+	 * 
+	 * @param untypedDoc
+	 *            : Un objet de type {@link UntypedDocument}
+	 */
+	private void validateUntypedDocument(final UntypedDocument untypedDoc) {
 		Validate.notNull(untypedDoc, MetadataMessageHandler.getMessage(
 				"document.required", UntypedDocument.class.getName()));
-		Validate.notNull(untypedDoc.getUMetadatas(), MetadataMessageHandler.getMessage(
-				"metadatas.required", UntypedDocument.class.getName()));
-
+		Validate.notNull(untypedDoc.getUMetadatas(), MetadataMessageHandler
+				.getMessage("metadatas.required",
+						UntypedDocument.class.getName()));
 	}
 
 	/**
@@ -85,10 +130,7 @@ public class MetadataControlServiceValidation {
 	@Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkMetadataValueTypeAndFormat(..)) && args(untypedDoc)")
 	public final void checkMetadataValueTypeAndFormat(
 			final UntypedDocument untypedDoc) {
-		Validate.notNull(untypedDoc, MetadataMessageHandler.getMessage(
-				"document.required", UntypedDocument.class.getName()));
-		Validate.notNull(untypedDoc.getUMetadatas(), MetadataMessageHandler.getMessage(
-				"metadatas.required", UntypedDocument.class.getName()));
+		validateUntypedDocument(untypedDoc);
 
 	}
 

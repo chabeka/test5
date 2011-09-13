@@ -37,6 +37,20 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
 	private ApplicationContext context;
 
 	/**
+	 * @return Le context.
+	 */
+	public final ApplicationContext getContext() {
+		return context;
+	}
+
+	/**
+	 * @param context : le context
+	 */
+	public final void setContext(final ApplicationContext context) {
+		this.context = context;
+	}
+
+	/**
 	 * @return Le service Xml
 	 */
 	public final XmlDataService getXmlDataService() {
@@ -61,8 +75,8 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
    public final Map<String, MetadataReference> getAllMetadataReferences()
          throws ReferentialException {
 
-      Resource referentiel = context
-            .getResource("classpath:referentiel.xml");
+   final   Resource referentiel = context
+            .getResource("classpath:MetadataReferential.xml");
 
       try {
 
@@ -159,13 +173,43 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final Map<String, MetadataReference> getRequiredMetadataReferences()
+	public final Map<String, MetadataReference> getRequiredForStorageMetadataReferences()
 			throws ReferentialException {
 		final Map<String, MetadataReference> reqMetaDatas = new HashMap<String, MetadataReference>();
 		final Map<String, MetadataReference> referentiel = getAllMetadataReferences();
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
 				referentiel).entrySet()) {
-			if (metaData.getValue().isRequired()) {
+			if (metaData.getValue().isRequiredForStorage()) {
+				reqMetaDatas.put(metaData.getKey(), metaData.getValue());
+			}
+		}
+		return reqMetaDatas;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public final Map<String, MetadataReference> getDefaultConsultableMetadataReferences()
+			throws ReferentialException {
+		final Map<String, MetadataReference> reqMetaDatas = new HashMap<String, MetadataReference>();
+		final Map<String, MetadataReference> referentiel = getAllMetadataReferences();
+		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
+				referentiel).entrySet()) {
+			if (metaData.getValue().isDefaultConsultable()) {
+				reqMetaDatas.put(metaData.getKey(), metaData.getValue());
+			}
+		}
+		return reqMetaDatas;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public final Map<String, MetadataReference> getRequiredForArchivalMetadataReferences()
+			throws ReferentialException {
+		final Map<String, MetadataReference> reqMetaDatas = new HashMap<String, MetadataReference>();
+		final Map<String, MetadataReference> referentiel = getAllMetadataReferences();
+		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
+				referentiel).entrySet()) {
+			if (metaData.getValue().isRequiredForArchival()) {
 				reqMetaDatas.put(metaData.getKey(), metaData.getValue());
 			}
 		}

@@ -13,7 +13,7 @@ import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
  * 
  */
 @Component
-public class MetadataValueIsRequiredRule extends
+public class MetadataValueIsRequiredForStorageRule extends
 		AbstractLeafRule<SAEMetadata, MetadataReference> {
 	/**
 	 * {@inheritDoc}
@@ -23,7 +23,7 @@ public class MetadataValueIsRequiredRule extends
 	public final boolean isSatisfiedBy(final SAEMetadata saeMetadata,
 			final MetadataReference reference) {
 		boolean result = false;
-		if (reference.isRequired() && saeMetadata.getValue() != null) {
+		if (reference.isRequiredForArchival() && saeMetadata.getValue() != null) {
 				result = true;
 		}
 		return result;

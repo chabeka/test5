@@ -19,6 +19,7 @@ import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
+import fr.urssaf.image.sae.metadata.rules.AbstractLeafRule;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 
 /**
@@ -82,7 +83,7 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 			try {
 				final MetadataReference reference = referenceDAO
 						.getByLongCode(metadata.getLongCode());
-				if (!ruleFactory.getExistingRule().isSatisfiedBy(metadata,
+				if (!ruleFactory.getExistingRule().isSatisfiedBy(metadata.getLongCode(),
 						reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.existing"), metadata
@@ -145,52 +146,71 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 	 */
 	@SuppressWarnings({ "PMD.AvoidInstantiatingObjectsInLoops",
 			"PMD.DataflowAnomalyAnalysis" })
-	public final List<MetadataError> checkRequiredMetadata(
+	public final List<MetadataError> checkRequiredForArchivalMetadata(
 			final SAEDocument saeDoc) {
 		final List<MetadataError> errors = new ArrayList<MetadataError>();
 		try {
 			final Map<String, MetadataReference> references = referenceDAO
-					.getRequiredMetadataReferences();
-			for (Entry<String, MetadataReference> metadata : Utils.nullSafeMap(
-					references).entrySet()) {
-				if (!Utils.isInRequiredList(metadata.getValue(),
-						saeDoc.getMetadatas())) {
-					errors.add(new MetadataError(MetadataMessageHandler
-							.getMessage("metadata.control.required"), metadata
-							.getValue().getLongCode(), MetadataMessageHandler
-							.getMessage("metadata.required", metadata
-									.getValue().getLongCode())));
-				}
-			}
-			for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc
-					.getMetadatas())) {
-				try {
-					final MetadataReference reference = referenceDAO
-							.getByLongCode(metadata.getLongCode());
-					if (!ruleFactory.getRequiredRule().isSatisfiedBy(metadata,
-							reference)) {
-						errors.add(new MetadataError(MetadataMessageHandler
-								.getMessage("metadata.control.value.required"),
-								metadata.getLongCode(), MetadataMessageHandler.getMessage(
-										"metadata.value.required",
-										metadata.getLongCode())));
-					}
-				} catch (ReferentialException refExcept) {
-					errors.add(new MetadataError(MetadataMessageHandler
-							.getMessage("metadata.referentiel.error"), metadata
-							.getLongCode(),
-							MetadataMessageHandler.getMessage(
-									"metadata.referentiel.retrieve",
-									metadata.getLongCode())));
-				}
-			}
-						
+			.getRequiredForArchivalMetadataReferences();
+			checkRequired(saeDoc, errors,references ,ruleFactory.getRequiredForArchivalRule());
 		} catch (ReferentialException refExcept) {
 			errors.add(new MetadataError(MetadataMessageHandler
 					.getMessage("metadata.referentiel.error"), null,
-					MetadataMessageHandler.getMessage("metadata.referentiel.retrieve")));
+					MetadataMessageHandler
+							.getMessage("metadata.referentiel.retrieve")));
 		}
+
 		return errors;
+	}
+
+	/**
+	 * Permet de controller la presence des métadonnées obligatoires.
+	 * 
+	 * @param saeDoc
+	 *            : Le document métier
+	 * @param errors
+	 *            : La liste des erreurs
+	 * @param references
+	 *            : Les métadonnées du référentiel
+	 */
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+	private void checkRequired(final SAEDocument saeDoc,
+			final List<MetadataError> errors,
+			final Map<String, MetadataReference> references,
+			final AbstractLeafRule<SAEMetadata, MetadataReference> rule ) {
+		for (Entry<String, MetadataReference> metadata : Utils.nullSafeMap(
+				references).entrySet()) {
+			if (!Utils.isInRequiredList(metadata.getValue(),
+					saeDoc.getMetadatas())) {
+				errors.add(new MetadataError(MetadataMessageHandler
+						.getMessage("metadata.control.required"), metadata
+						.getValue().getLongCode(), MetadataMessageHandler
+						.getMessage("metadata.required", metadata.getValue()
+								.getLongCode())));
+			}
+		}
+		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc
+				.getMetadatas())) {
+			try {
+				final MetadataReference reference = referenceDAO
+						.getByLongCode(metadata.getLongCode());
+				if (!rule.isSatisfiedBy(metadata,reference)) {
+					errors.add(new MetadataError(MetadataMessageHandler
+							.getMessage("metadata.control.value.required"),
+							metadata.getLongCode(), MetadataMessageHandler
+									.getMessage("metadata.value.required",
+											metadata.getLongCode())));
+				}
+			} catch (ReferentialException refExcept) {
+				errors.add(new MetadataError(MetadataMessageHandler
+						.getMessage("metadata.referentiel.error"), metadata
+						.getLongCode(),
+						MetadataMessageHandler.getMessage(
+								"metadata.referentiel.retrieve",
+								metadata.getLongCode())));
+			}
+		}
+
 	}
 
 	/**
@@ -208,9 +228,9 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.consultable"),
-							metadata.getLongCode(), MetadataMessageHandler.getMessage(
-									"metadata.not.consultable",
-									metadata.getLongCode())));
+							metadata.getLongCode(), MetadataMessageHandler
+									.getMessage("metadata.not.consultable",
+											metadata.getLongCode())));
 				}
 			} catch (ReferentialException refExcept) {
 				errors.add(new MetadataError(MetadataMessageHandler
@@ -237,9 +257,9 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 						reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.searchable"),
-							metadata.getLongCode(), MetadataMessageHandler.getMessage(
-									"metadata.not.searchable",
-									metadata.getLongCode())));
+							metadata.getLongCode(), MetadataMessageHandler
+									.getMessage("metadata.not.searchable",
+											metadata.getLongCode())));
 				}
 
 			} catch (ReferentialException refExcept) {
@@ -265,8 +285,9 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 				final MetadataError error = new MetadataError(
 						MetadataMessageHandler
 								.getMessage("metadata.control.duplicate"),
-						metadata.getLongCode(), MetadataMessageHandler.getMessage(
-								"metadata.duplicated", metadata.getLongCode()));
+						metadata.getLongCode(), MetadataMessageHandler
+								.getMessage("metadata.duplicated",
+										metadata.getLongCode()));
 				if (!Utils.exist(error, errors)) {
 					errors.add(error);
 				}
@@ -311,6 +332,58 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 	 */
 	public final MetadataReferenceDAO getReferenceDAO() {
 		return referenceDAO;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings({ "PMD.AvoidInstantiatingObjectsInLoops",
+			"PMD.DataflowAnomalyAnalysis" })
+	public final List<MetadataError> checkRequiredForStorageMetadata(
+			final SAEDocument saeDoc) {
+		final List<MetadataError> errors = new ArrayList<MetadataError>();
+		try {
+			final Map<String, MetadataReference> references = referenceDAO
+			.getRequiredForStorageMetadataReferences();
+			checkRequired(saeDoc, errors,references,ruleFactory.getRequiredForStorageRule());
+		} catch (ReferentialException refExcept) {
+			errors.add(new MetadataError(MetadataMessageHandler
+					.getMessage("metadata.referentiel.error"), null,
+					MetadataMessageHandler
+							.getMessage("metadata.referentiel.retrieve")));
+		}
+
+		return errors;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings({ "PMD.AvoidInstantiatingObjectsInLoops",
+			"PMD.DataflowAnomalyAnalysis" })
+	public final List<MetadataError> checkExistingQueryTerms(final List<String> longCodes) {
+		final List<MetadataError> errors = new ArrayList<MetadataError>();
+		for (String codeLong : Utils.nullSafeIterable(longCodes)) {
+			try {
+				final MetadataReference reference = referenceDAO
+						.getByLongCode(codeLong);
+				if (!ruleFactory.getExistingRule().isSatisfiedBy(codeLong,
+						reference)) {
+					errors.add(new MetadataError(MetadataMessageHandler
+							.getMessage("metadata.control.existing"), codeLong
+							, MetadataMessageHandler.getMessage(
+							"metadata.not.exist", codeLong)));
+				}
+			} catch (ReferentialException refExcept) {
+				errors.add(new MetadataError(MetadataMessageHandler
+						.getMessage("metadata.referentiel.error"), codeLong,
+						MetadataMessageHandler.getMessage(
+								"metadata.referentiel.retrieve",
+								codeLong)));
+			}
+
+		}
+		return errors;
 	}
 
 }
