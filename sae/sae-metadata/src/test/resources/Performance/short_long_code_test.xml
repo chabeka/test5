@@ -2,15 +2,14 @@
 <metadatas>
 	<metadata>
 		<longCode>referenceUUID</longCode>
-		<shortCode>_referenceUUID</shortCode>
+		<shortCode>version.1.virtual.ref.uuid</shortCode>
 	</metadata>
 	<metadata>
-		<longCode>IdTraitementMasse</longCode>
-		<shortCode>ITM</shortCode>
+		<longCode>IdTraitementMasseInterne</longCode>
+		<shortCode>ITI</shortCode>
 	</metadata>
 	<metadata>
 		<longCode>NumeroIntControle</longCode>
 		<shortCode>NIC</shortCode>
 	</metadata>
-
 </metadatas>
