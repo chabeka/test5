@@ -18,6 +18,7 @@ import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-metadata.xml" })
+@SuppressWarnings("PMD.TooManyMethods")
 public class ValidationServiceImplTest {
 	@Autowired
 	@Qualifier("metadataControlServices")
@@ -25,7 +26,8 @@ public class ValidationServiceImplTest {
 
 	/**
 	 * validation de l'argument du service
-	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkArchivableMetadata(SAEDocument)
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkArchivableMetadata(SAEDocument)
+	 * checkArchivableMetadata }
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkArchivableDocument() {
@@ -34,7 +36,8 @@ public class ValidationServiceImplTest {
 
 	/**
 	 * validation de l'argument du service
-	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkArchivableMetadata(SAEDocument)
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkArchivableMetadata(SAEDocument)
+	 * checkArchivableMetadata}
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkArchivableMetadata() {
@@ -43,7 +46,8 @@ public class ValidationServiceImplTest {
 
 	/**
 	 * validation de l'argument du service
-	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkConsultableMetadata(java.util.List)
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkConsultableMetadata(java.util.List)
+	 * checkConsultableMetadata }
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkConsultableMetadata() {
@@ -52,7 +56,8 @@ public class ValidationServiceImplTest {
 
 	/**
 	 * validation de l'argument du service
-	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkDuplicateMetadata(java.util.List)
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkDuplicateMetadata(java.util.List)
+	 * checkDuplicateMetadata}
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkDuplicateMetadata() {
@@ -61,33 +66,77 @@ public class ValidationServiceImplTest {
 
 	/**
 	 * validation de l'argument du service
-	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkExistingMetadata(UntypedDocument)
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkExistingMetadata(UntypedDocument)
+	 * checkExistingMetadata}
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkExistingDocument() {
 		controlService.checkExistingMetadata(null);
 	}
 
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkExistingQueryTerms(java.util.List)
+	 * checkExistingQueryTerms}
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void checkExistingQueryTerms() {
+		controlService.checkExistingQueryTerms(null);
+	}
+
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkExistingMetadata(UntypedDocument)
+	 * checkExistingMetadata}
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkExistingMetadata() {
 		controlService.checkExistingMetadata(new UntypedDocument());
 	}
 
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkMetadataValueTypeAndFormat(UntypedDocument)
+	 * checkMetadataValueTypeAndFormat}
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkMetadataValueTypeAndFormatDoc() {
 		controlService.checkMetadataValueTypeAndFormat(null);
 	}
 
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkMetadataValueTypeAndFormat(UntypedDocument)
+	 * checkMetadataValueTypeAndFormat}
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkMetadataValueTypeAndFormatMetadata() {
 		controlService.checkMetadataValueTypeAndFormat(new UntypedDocument());
 	}
 
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkRequiredForStorageMetadata(SAEDocument)
+	 * checkRequiredForStorageMetadata}
+	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void checkRequiredMetadata() {
-		controlService.checkRequiredMetadata(null);
+	public void checkRequiredForStorageMetadata() {
+		controlService.checkRequiredForStorageMetadata(null);
 	}
-
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkRequiredForArchivalMetadata(SAEDocument)
+	 * checkRequiredForArchivalMetadata}
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void checkRequiredForArchivalMetadata() {
+		controlService.checkRequiredForArchivalMetadata(null);
+	}
+	/**
+	 * validation de l'argument du service
+	 * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkSearchableMetadata(SAEDocument)
+	 * checkSearchableMetadata}
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void checkSearchableMetadata() {
 		controlService.checkSearchableMetadata(null);

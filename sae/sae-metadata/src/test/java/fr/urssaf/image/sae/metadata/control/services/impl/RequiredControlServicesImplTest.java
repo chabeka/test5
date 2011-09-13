@@ -32,7 +32,32 @@ public class RequiredControlServicesImplTest extends AbstractDataProvider {
 	 *             Exception levé lorsque le fichier n'existe pas.
 	 */
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public final SAEDocument requiredData(final boolean withoutValue)
+	public final SAEDocument requiredForArchivalData(final boolean withoutValue)
+			throws FileNotFoundException {
+		List<SAEMetadata> metadatas = null;
+		if (withoutValue) {
+			metadatas = MetadataDataProviderUtils
+					.getSAEMetadata(Constants.REQUIRED_FILE_1);
+		} else {
+			metadatas = MetadataDataProviderUtils
+					.getSAEMetadata(Constants.REQUIRED_FILE_2);
+		}
+		return new SAEDocument(null, metadatas);
+	}
+
+	/**
+	 * Fournit des données pour valider la méthode
+	 * {@link MetadataControlServicesImpl#checkRequiredForStorageMetadata(SAEDocument)
+	 * checkRequiredForStorageMetadata}
+	 * 
+	 * @param withoutValue
+	 *            : boolean qui permet de prendre en compte un intrus
+	 * @return Un objet de type {@link SAEDocument}
+	 * @throws FileNotFoundException
+	 *             Exception levé lorsque le fichier n'existe pas.
+	 */
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	public final SAEDocument requiredForStorageData(final boolean withoutValue)
 			throws FileNotFoundException {
 		List<SAEMetadata> metadatas = null;
 		if (withoutValue) {
@@ -52,10 +77,11 @@ public class RequiredControlServicesImplTest extends AbstractDataProvider {
 	 *             Exception levé lorsque le fichier n'existe pas.
 	 */
 	@Test
-	public void checkRequiredMetadataWithRequiredMetadata()
+	public void checkRequiredForArchivalWithRequiredMetadata()
 			throws FileNotFoundException {
-		Assert.assertTrue(!getControlService().checkRequiredMetadata(
-				requiredData(true)).isEmpty());
+		Assert.assertTrue(!getControlService()
+				.checkRequiredForArchivalMetadata(requiredForStorageData(true))
+				.isEmpty());
 	}
 
 	/**
@@ -65,10 +91,36 @@ public class RequiredControlServicesImplTest extends AbstractDataProvider {
 	 *             Exception levé lorsque le fichier n'existe pas.
 	 */
 	@Test
-	public void checkRequiredMetadataWithoutRequiredMetadataValue()
+	public void checkRequiredForArchivalWithoutValue()
 			throws FileNotFoundException {
-		Assert.assertTrue(!getControlService().checkRequiredMetadata(
-				requiredData(false)).isEmpty());
+		Assert.assertTrue(!getControlService()
+				.checkRequiredForArchivalMetadata(requiredForStorageData(false))
+				.isEmpty());
 	}
 
+	/**
+	 * Vérifie que la liste contenant un intrus n'est valide.
+	 * 
+	 * @throws FileNotFoundException
+	 *             Exception levé lorsque le fichier n'existe pas.
+	 */
+	@Test
+	public void checkRequiredForStorageWithRequiredMetadata()
+			throws FileNotFoundException {
+		Assert.assertTrue(!getControlService().checkRequiredForStorageMetadata(
+				requiredForStorageData(true)).isEmpty());
+	}
+
+	/**
+	 * Vérifie que la liste contenant un intrus n'est valide.
+	 * 
+	 * @throws FileNotFoundException
+	 *             Exception levé lorsque le fichier n'existe pas.
+	 */
+	@Test
+	public void checkRequiredForStorageWithoutValue()
+			throws FileNotFoundException {
+		Assert.assertTrue(!getControlService().checkRequiredForStorageMetadata(
+				requiredForStorageData(false)).isEmpty());
+	}
 }

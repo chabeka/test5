@@ -24,37 +24,52 @@ import fr.urssaf.image.sae.metadata.referential.services.XmlDataService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-metadata.xml" })
 public class XmlDataServiceImplTest {
-   @Autowired
-   @Qualifier("xmlDataService")
-   private XmlDataService xmlService;
+	@Autowired
+	@Qualifier("xmlDataService")
+	private XmlDataService xmlService;
 
-   @Autowired
-   private ApplicationContext context;
+	@Autowired
+	private ApplicationContext context;
 
-   /**
-    * @param xmlService
-    *           : Le service de lecture du flux Xml.
-    */
-   public final void setXmlService(final XmlDataService xmlService) {
-      this.xmlService = xmlService;
-   }
+	/**
+	 * @return Le context.
+	 */
+	public final ApplicationContext getContext() {
+		return context;
+	}
 
-   /**
-    * @return Le service de lecture du flux Xml.
-    */
-   public XmlDataService getXmlService() {
-      return xmlService;
-   }
+	/**
+	 * @param context
+	 *            : Le context
+	 */
+	public final void setContext(final ApplicationContext context) {
+		this.context = context;
+	}
 
-   @Test
-   public void getReferentielMetaData() throws IOException {
+	/**
+	 * @param xmlService
+	 *            : Le service de lecture du flux Xml.
+	 */
+	public final void setXmlService(final XmlDataService xmlService) {
+		this.xmlService = xmlService;
+	}
 
-      final InputStream xmlInputStream = context.getResource(
-            "classpath:referentiel.xml").getInputStream();
-      final Map<String, MetadataReference> ref = xmlService
-            .referentialReader(xmlInputStream);
-      Assert.assertTrue("Le nombre de métadonnées doit être égal à 43", ref
-            .size() == 43);
-   }
+	/**
+	 * @return Le service de lecture du flux Xml.
+	 */
+	public XmlDataService getXmlService() {
+		return xmlService;
+	}
+
+	@Test
+	public void getReferentielMetaData() throws IOException {
+
+		final InputStream xmlInputStream = context.getResource(
+				"classpath:MetadataReferential.xml").getInputStream();
+		final Map<String, MetadataReference> ref = xmlService
+				.referentialReader(xmlInputStream);
+		Assert.assertTrue("Le nombre de métadonnées doit être égal à 50",
+				ref.size() == 50);
+	}
 
 }

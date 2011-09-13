@@ -44,14 +44,20 @@ public final class Constants {
 	// Fichier pour test la méthode checkExistingMetadata
 	public static final File EXISTING_FILE_2 = new File(
 			"src/test/resources/Existing/checkExisting_2.xml");
-
-	// Fichier pour test la méthode checkRequiredMetadata
+	// Fichier pour test la méthode checkRequiredForArchivalMetadata
 	public static final File REQUIRED_FILE_1 = new File(
 			"src/test/resources/Required/checkRequired_1.xml");
-	// Fichier pour test la méthode checkRequiredMetadata
+	// Fichier pour test la méthode checkRequiredForArchivalMetadata
 	public static final File REQUIRED_FILE_2 = new File(
 			"src/test/resources/Required/checkRequired_2.xml");
 
+	// Fichier pour test la méthode checkRequiredForStorageMetadata
+	public static final File REQUIRED_FILE_3 = new File(
+			"src/test/resources/Required/checkRequired_3.xml");
+	// Fichier pour test la méthode checkRequiredForStorageMetadata
+	public static final File REQUIRED_FILE_4 = new File(
+			"src/test/resources/Required/checkRequired_4.xml");
+	
 	// Fichier pour test la méthode checkTypeAndFormatMetadata
 	@SuppressWarnings("PMD.LongVariable")
 	public static final File TYPE_FORMAT_FILE_1 = new File(

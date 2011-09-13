@@ -17,7 +17,7 @@ import com.clarkware.junitperf.TimedTest;
 @ContextConfiguration(locations = { "/applicationContext-sae-metadata.xml" })
 public class SearchLongCodePerfTest {
 	
-	 public  static   long maxElapsedTime = 700;
+	 public  static   long maxElapsedTime = 800;
 	 public  static   int users = 5;	
    /**
     * Test de performance de l'insertion en masse.
