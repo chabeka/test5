@@ -29,7 +29,8 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	@Test
 	public void getAllMetadataReferences() throws IOException,
 			ReferentialException {
-		Assert.assertTrue(getAllMetadatas().size() == 43);
+		Assert.assertTrue(getMetadataReferenceDAO().getAllMetadataReferences()
+				.size() == 50);
 	}
 
 	/**
@@ -44,11 +45,18 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	@Test
 	public void getConsultableMetadataReferences() throws IOException,
 			ReferentialException {
-		Assert.assertTrue(getConsultable().size() == 40);
+		Assert.assertTrue(getMetadataReferenceDAO()
+				.getConsultableMetadataReferences().size() == 42);
+		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
+				getMetadataReferenceDAO().getConsultableMetadataReferences())
+				.entrySet()) {
+			Assert.assertTrue(metaData.getValue().isConsultable());
+		}
 	}
 
 	/**
-	 * Permet de valider la liste des métadonnées consultables du référentiel.
+	 * Permet de tester la récupération des métadonnées consultables par défaut
+	 * du référentiel.
 	 * 
 	 * @throws IOException
 	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
@@ -56,14 +64,66 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
 	 */
 	@Test
-	public void getValidateConsultableMetadata() throws IOException,
+	public void getDefaultConsultableMetadataReferences() throws IOException,
 			ReferentialException {
+		Assert.assertTrue(getMetadataReferenceDAO()
+				.getDefaultConsultableMetadataReferences().size() == 10);
+		
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
-				getConsultable()).entrySet()) {
-			Assert.assertTrue(metaData.getValue().isConsultable());
+				getMetadataReferenceDAO()
+				.getDefaultConsultableMetadataReferences())
+				.entrySet()) {
+			Assert.assertTrue(metaData.getValue().isDefaultConsultable());
 		}
 	}
 
+	/**
+	 * Permet de tester la récupération des métadonnées obligatoire pour
+	 * l'archivage du référentiel.
+	 * 
+	 * @throws IOException
+	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
+	 * @throws ReferentialException
+	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
+	 */
+	@Test
+	public void getRequiredForArchivalMetadataReferences() throws IOException,
+			ReferentialException {
+		Assert.assertTrue(getMetadataReferenceDAO()
+				.getRequiredForArchivalMetadataReferences().size() == 9);
+		
+		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
+				getMetadataReferenceDAO()
+				.getRequiredForArchivalMetadataReferences())
+				.entrySet()) {
+			Assert.assertTrue(metaData.getValue().isRequiredForArchival());
+		}
+	}
+
+	/**
+	 * Permet de tester la récupération des métadonnées obligatoire pour le
+	 * stockage du référentiel.
+	 * 
+	 * @throws IOException
+	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
+	 * @throws ReferentialException
+	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
+	 */
+	@Test
+	public void getRequiredForStorageMetadataReferences() throws IOException,
+			ReferentialException {
+		Assert.assertTrue(getMetadataReferenceDAO()
+				.getRequiredForStorageMetadataReferences().size() == 22);
+		
+		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
+				getMetadataReferenceDAO()
+				.getRequiredForStorageMetadataReferences())
+				.entrySet()) {
+			Assert.assertTrue(metaData.getValue().isRequiredForStorage());
+		}
+	}
+
+	
 	/**
 	 * Permet de tester la récupération des métadonnées autorisée à la
 	 * rechercher du référentiel.
@@ -76,23 +136,12 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	@Test
 	public void getSearchableMetadataReferences() throws IOException,
 			ReferentialException {
-		Assert.assertTrue(getSearchable().size() == 24);
-	}
-
-	/**
-	 * Permet de valider la liste des métadonnées autorisées à la recherche du
-	 * référentiel.
-	 * 
-	 * @throws IOException
-	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
-	 * @throws ReferentialException
-	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
-	 */
-	@Test
-	public void getValidateSearchableMetadata() throws IOException,
-			ReferentialException {
+		Assert.assertTrue(getMetadataReferenceDAO()
+				.getSearchableMetadataReferences().size() == 30);
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
-				getSearchable()).entrySet()) {
+				getMetadataReferenceDAO()
+				.getSearchableMetadataReferences())
+				.entrySet()) {
 			Assert.assertTrue(metaData.getValue().isSearchable());
 		}
 	}
@@ -109,25 +158,11 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	@Test
 	public void getArchivableMetadataReferences() throws IOException,
 			ReferentialException {
-		Assert.assertTrue(getArchivable().size() == 36);
+		Assert.assertTrue(getMetadataReferenceDAO()
+				.getArchivableMetadataReferences().size() == 33);
 	}
 
-	/**
-	 * Permet de valider la liste des métadonnées archivable du référentiel.
-	 * 
-	 * @throws IOException
-	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
-	 * @throws ReferentialException
-	 *             Exception levée lorsqu'il y'a un dysfonctionnement.
-	 */
-	@Test
-	public void getValidateArchivableMetadata() throws IOException,
-			ReferentialException {
-		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
-				getArchivable()).entrySet()) {
-			Assert.assertTrue(metaData.getValue().isArchivable());
-		}
-	}
+
 
 	/**
 	 * Permet de tester la récupération d'une métadonnées du référentiel à
