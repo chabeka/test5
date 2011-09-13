@@ -96,7 +96,7 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 									MessageHandler
 											.getMessage("database.already.exist.impact"),
 									MessageHandler
-											.getMessage("database.alread.yexist.action")),
+											.getMessage("database.already.exist.action")),
 					objAlreadyExistsEx);
 		}
 

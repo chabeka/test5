@@ -37,6 +37,11 @@ public class BaseAdministrationServiceValidation extends AbstractService{
 				MessageHandler.getMessage(
 						"database.parameters.required", "database.impact",
 						"database.action"));
+		Validate.notNull(
+				xmlDataService,
+				MessageHandler.getMessage(
+						"database.parameters.required", "database.impact",
+						"database.action"));
 		
 	}
 	/**

@@ -41,10 +41,10 @@ public class CreationBaseValidationTest extends AbstractComponents {
 	 * @throws ConnectionServiceEx
 	 *             Lorsque la connexion ne s'est pas bien déroulée
 	 * @throws BaseAdministrationServiceEx
-	 *             Lorsque le servive de création ne s'est pas bien déroulée
-	 * @throws FileNotFoundException
+	 *             Lorsque le service de création ne s'est pas bien déroulée
+	 * @throws FileNotFoundException Lorsque le fichier xml n'existe pas.
 	 */
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void createBaseService() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
 		getConnectionService().setConnectionParameter(getConnectionParameter());
