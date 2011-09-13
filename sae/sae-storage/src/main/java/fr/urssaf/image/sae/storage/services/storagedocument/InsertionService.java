@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.storage.services.storagedocument;
 
-import java.util.UUID;
-
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
@@ -26,12 +24,12 @@ public interface InsertionService {
 	 * @param storageDocument
 	 *            : Le document à stocker
 	 * 
-	 * @return L'identifiant unique du document
+	 * @return  Le document
 	 * 
 	 * @throws InsertionServiceEx
 	 *             Runtime exception typée
 	 */
-	UUID insertStorageDocument(StorageDocument storageDocument)
+	StorageDocument insertStorageDocument(StorageDocument storageDocument)
 			throws InsertionServiceEx;
 
 	/**
