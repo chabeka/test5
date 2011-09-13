@@ -58,7 +58,7 @@ public class OtherServiceTest {
    public void loadMontesquieuSuccess() {
 
       authenticate("ROLE_AUTH");
-      Assert.assertEquals("Montesquieu", service.load(0));
+      Assert.assertEquals("Montesquieu", service.load(0).getTitle());
 
    }
 
@@ -74,7 +74,7 @@ public class OtherServiceTest {
    public void loadConradSuccess() {
 
       authenticate("ROLE_USER");
-      Assert.assertEquals("Conrad", service.load(1));
+      Assert.assertEquals("Conrad", service.load(1).getTitle());
    }
 
    @Test(expected = AccessDeniedException.class)

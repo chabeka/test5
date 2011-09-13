@@ -58,7 +58,7 @@ public class SimpleServiceTest {
    public void loadSuccess() {
 
       authenticate("ROLE_USER");
-      Assert.assertEquals("Monstesquieu",service.load());
+      Assert.assertEquals("Montesquieu",service.load().getTitle());
 
    }
 
