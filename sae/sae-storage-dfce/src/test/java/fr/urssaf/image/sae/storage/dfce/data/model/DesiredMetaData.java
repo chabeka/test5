@@ -37,7 +37,7 @@ public class DesiredMetaData {
 	 * @param codes
 	 *            : Les codes des métadonnées souhaitées
 	 */
-	public final void setCodes(List<String> codes) {
+	public final void setCodes(final List<String> codes) {
 		this.codes = codes;
 	}
 

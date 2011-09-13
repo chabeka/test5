@@ -32,12 +32,12 @@ public final class StorageApplicationContext {
     *           contexte de l'application
     */
    @Autowired
-   public void setStorageApplicationContext(ApplicationContext context) {
+   public void setStorageApplicationContext(final ApplicationContext context) {
       Assert.notNull(context, "'context' is required ");
       setContext(context);
    }
 
-   private static void setContext(ApplicationContext context) {
+   private static void setContext(final ApplicationContext context) {
       ctx = context;
    }
 

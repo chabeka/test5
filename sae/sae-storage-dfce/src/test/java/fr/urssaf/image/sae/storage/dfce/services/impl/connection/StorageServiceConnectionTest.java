@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.storage.dfce.services.impl.connection;
 
-import net.docubase.toolkit.service.Authentication;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +20,7 @@ public class StorageServiceConnectionTest extends CommonServicesImpl {
    public final void openConnectionTest() throws ConnectionServiceEx,
          InsertionServiceEx {
       getStorageConnectionService().openConnection();
-      Assert.assertTrue(Authentication.isServerUp());
+      Assert.assertTrue(getStorageConnectionService().isActive());
    }
 
    /**
@@ -33,6 +31,6 @@ public class StorageServiceConnectionTest extends CommonServicesImpl {
          InsertionServiceEx {
       getStorageConnectionService().openConnection();
       getStorageConnectionService().closeConnexion();
-      Assert.assertFalse(Authentication.isSessionActive());
+      Assert.assertFalse(getStorageConnectionService().isActive());
    }
 }

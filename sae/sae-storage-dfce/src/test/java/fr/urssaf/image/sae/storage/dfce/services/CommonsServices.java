@@ -80,7 +80,7 @@ public class CommonsServices {
     * Initialisation des tests. <br>{@inheritDoc}
     */
 
-   public final UUID getMockData(final InsertionService insertionService)
+   public final StorageDocument getMockData(final InsertionService insertionService)
          throws IOException, ParseException, InsertionServiceEx {
       // Injection de jeu de donnée.
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(

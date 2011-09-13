@@ -16,7 +16,7 @@ public final class Constants {
     * Chemin des fichiers Xml
     */
    public static final String XML_PATH_DOC_WITHOUT_ERROR[] = { XML_DIR + "doc1.xml",
-         XML_DIR + "doc11.xml", XML_DIR + "doc77.xml" };
+         XML_DIR + "doc11.xml", XML_DIR + "doc7.xml" };
    /**
     * Chemin des fichiers Xml
     */
@@ -26,7 +26,7 @@ public final class Constants {
    /**
     * Liste des métadatas techniques
     */
-   public static final String TEC_METADATAS[] = { "DCR", "title", "docType" };
+   public static final String TEC_METADATAS[] = { "_creationDate", "DDC", "docType" };
    /**
     * Chemin du fichier Xml des code fonction.
     */

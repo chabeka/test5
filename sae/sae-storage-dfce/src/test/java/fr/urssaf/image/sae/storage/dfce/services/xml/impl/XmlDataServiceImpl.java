@@ -40,7 +40,7 @@ public class XmlDataServiceImpl implements XmlDataService {
     * @param clazz : classe à séraialiser.
     * @return le composant xstream
     */
-   private XStream buildReadingXStream(final Class clazz) {
+   private XStream buildReadingXStream(final Class<?> clazz) {
 
       return XStreamHelper.newXStream(clazz);
    }

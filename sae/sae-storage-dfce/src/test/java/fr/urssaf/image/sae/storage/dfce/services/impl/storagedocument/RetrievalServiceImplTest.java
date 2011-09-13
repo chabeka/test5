@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.docubase.toolkit.service.ServiceProvider;
 
@@ -44,14 +43,14 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
    public void retrieveStorageDocumentByUUID() throws RetrievalServiceEx,
          InsertionServiceEx, IOException, ParseException, DeletionServiceEx {
       // Initialisation des jeux de données UUID
-      UUID uuid = getMockData(getInsertionService());
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
+	   StorageDocument document = getMockData(getInsertionService());
+      UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(),
             new ArrayList<StorageMetadata>());
       Assert.assertNotNull("Récupération d'un StorageDocument par uuid :",
             getRetrievalService().retrieveStorageDocumentByUUID(uuidCriteria)
                   .getUuid());
       // Suppression du document insert
-      destroyMockTest(uuid,getDeletionService());
+      destroyMockTest(document.getUuid(),getDeletionService());
    }
 
    /**
@@ -68,9 +67,9 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
             new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[1]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
-      UUID uuid = getInsertionService().insertStorageDocument(storageDocument);
+      StorageDocument document = getInsertionService().insertStorageDocument(storageDocument);
 
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
+      UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(),
             new ArrayList<StorageMetadata>());
       byte[] content = getRetrievalService()
             .retrieveStorageDocumentContentByUUID(uuidCriteria);
@@ -81,9 +80,9 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
       Assert.assertTrue("Les deux SHA1 doivent être identique", DigestUtils
             .shaHex(storageDocument.getContent()).equals(
                   ServiceProvider.getSearchService().getDocumentByUUID(
-                        getBase(), uuid).getDigest()));
+                        getBase(), document.getUuid()).getDigest()));
       // Suppression du document insert
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
 
    /**
@@ -100,8 +99,8 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
             new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[1]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
-      UUID uuid = getInsertionService().insertStorageDocument(storageDocument);
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
+      StorageDocument document  = getInsertionService().insertStorageDocument(storageDocument);
+      UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(),
             new ArrayList<StorageMetadata>());
       List<StorageMetadata> storageMetadatas = getRetrievalService()
             .retrieveStorageDocumentMetaDatasByUUID(uuidCriteria);
@@ -116,6 +115,6 @@ public class RetrievalServiceImplTest extends CommonServicesImpl {
             CheckDataUtils.checkMetaDatas(storageDocument.getMetadatas(),
                   storageMetadatas));
       // Suppression du document insert
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
 }

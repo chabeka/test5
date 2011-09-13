@@ -32,7 +32,7 @@ public class BulkInsertionPerfFactory extends TestFactory {
     * @param testClass
     *           : classe de test.
     */
-   public BulkInsertionPerfFactory(final Class testClass) {
+   public BulkInsertionPerfFactory(final Class<?> testClass) {
       super(BulkInsertionServiceProviderTest.class);
       this.bulkInsertionTestClass = testClass;
    }

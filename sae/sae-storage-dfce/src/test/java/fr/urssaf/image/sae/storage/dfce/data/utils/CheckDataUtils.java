@@ -34,8 +34,8 @@ public final class CheckDataUtils {
     * @throws NoSuchAlgorithmException
     *            Exception levé quand l'algorthme n'est pas supporter.
     */
-   public static boolean checkDocumentSha1(byte[] firstSaeDocument,
-         byte[] secondSaeDocument) throws NoSuchAlgorithmException,
+   public static boolean checkDocumentSha1(final byte[] firstSaeDocument,
+        final byte[] secondSaeDocument) throws NoSuchAlgorithmException,
          UnsupportedEncodingException {
       Assert.assertNotNull("firstSaeDocument ne doit pas être null", firstSaeDocument);
       Assert.assertNotNull("secondSaeDocument ne doit pas être null", secondSaeDocument);
@@ -52,8 +52,8 @@ public final class CheckDataUtils {
     *           : Deuxième liste des métadonnées.
     * @return true si les deux listes sont identique sinon false
     */
-   public static boolean checkMetaDatas(List<StorageMetadata> entryMetadatas,
-         List<StorageMetadata> desiredMetadatas) {
+   public static boolean checkMetaDatas(final List<StorageMetadata> entryMetadatas,
+       final  List<StorageMetadata> desiredMetadatas) {
       Assert.assertNotNull("entryMetadatas ne doit pas être null",
             entryMetadatas);
       Assert.assertNotNull("desiredMetadatas  ne doit pas être null",
@@ -85,16 +85,15 @@ public final class CheckDataUtils {
     *           : Deuxième liste des métadonnées.
     * @return true si les deux listes sont identique sinon false
     */
-   public static boolean checkDesiredMetaDatas(
+   public static boolean checkDesiredMetaDatas(final 
          List<StorageMetadata> entryMetadatas,
-         List<StorageMetadata> desiredMetadatas) {
+       final  List<StorageMetadata> desiredMetadatas) {
       Assert.assertNotNull("EntryMetadatas ne doit pas être null",
             entryMetadatas);
       Assert.assertNotNull("DesiredMetadatas  ne doit pas être null",
             desiredMetadatas);
       Assert.assertEquals("La tailles des deux listes doivent être égale :",
             entryMetadatas.size(), desiredMetadatas.size());
-      boolean isMetaDatasEquals = true;
       int nbrMDEqualas = 0;
       for (StorageMetadata desiredMetadata : Utils
             .nullSafeIterable(desiredMetadatas)) {
@@ -111,7 +110,7 @@ public final class CheckDataUtils {
          Assert
                .fail("Les codes des métadonnées des deux listes doivent être identique.");
       }
-      return isMetaDatasEquals;
+      return true;
    }
 
    /**

@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -79,7 +78,7 @@ public class StorageDocumentServiceImpl extends AbstractServiceProvider
     * {@inheritDoc}
     */
 
-   public final UUID insertStorageDocument(final StorageDocument storageDocument)
+   public final StorageDocument insertStorageDocument(final StorageDocument storageDocument)
          throws InsertionServiceEx {
       setInsertionServiceParameter(getStorageConnectionParameter());
       return insertionService.insertStorageDocument(storageDocument);

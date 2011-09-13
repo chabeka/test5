@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import junit.framework.Assert;
 
@@ -14,6 +13,7 @@ import fr.urssaf.image.sae.storage.dfce.data.test.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
 
@@ -30,8 +30,8 @@ public class DeletionServiceImplTest extends CommonServicesImpl {
    public void deleteStorageDocument() throws InsertionServiceEx, IOException,
          ParseException {
       // Initialisation des jeux de données UUID
-      UUID uuid = getMockData(getInsertionService());
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
+	   StorageDocument storageDoc = getMockData(getInsertionService());
+      UUIDCriteria uuidCriteria = new UUIDCriteria(storageDoc.getUuid(),
             new ArrayList<StorageMetadata>());
       try {
          getDeletionService().deleteStorageDocument(uuidCriteria);

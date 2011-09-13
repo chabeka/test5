@@ -23,10 +23,8 @@ public final class Constants {
    public static final String HTTPS = "https";
    // Protocole HTTP
    public static final String HTTP = "http";
-   // format de date 
-   public static final String DATE_PATTERN_FR = "yyyy/MM/dd";
    // format de date iso 8601
-   public static final String DATE_PATTERN_AN = "yyyy-MM-dd";
+   public static final String DATE_PATTERN = "yyyy-MM-dd";
    // le local
    public static final Locale DEFAULT_LOCAL = Locale.FRENCH;
    /** encoding de lecture **/

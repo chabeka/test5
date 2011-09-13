@@ -29,7 +29,7 @@ public class InsertionServiceValidation {
     * @param storageDocument
     *           : Le document à insérer.
     */
-   @Before(value = "execution( java.util.UUID  fr.urssaf.image.sae.storage.services.storagedocument..InsertionService.insertStorageDocument(..)) && @annotation(fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked) && args(storageDocument)")
+   @Before(value = "execution( fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument  fr.urssaf.image.sae.storage.services.storagedocument..InsertionService.insertStorageDocument(..)) && @annotation(fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked) && args(storageDocument)")
    public final void insertStorageDocumentValidation(
          final StorageDocument storageDocument) {
       // ici on valide que le document n'est pas null

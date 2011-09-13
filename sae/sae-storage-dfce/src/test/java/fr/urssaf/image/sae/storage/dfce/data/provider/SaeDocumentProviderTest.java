@@ -22,7 +22,7 @@ import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
  */
 public class SaeDocumentProviderTest extends CommonServicesImpl {
    @Test
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops","PMD.DataflowAnomalyAnalysis"})
    public void getSaeDocumentsFromXML() throws FileNotFoundException {
       File file[] = new File[Constants.XML_PATH_DOC_WITHOUT_ERROR.length];
       int numFile = 0;

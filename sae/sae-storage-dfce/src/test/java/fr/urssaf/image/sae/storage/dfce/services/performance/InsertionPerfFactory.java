@@ -36,7 +36,7 @@ public class InsertionPerfFactory extends TestFactory {
     * @param testClass
     *           : classe à tester.
     */
-   public InsertionPerfFactory(final Class testClass) {
+   public InsertionPerfFactory(final Class<?> testClass) {
       super(InsertionServiceProviderTest.class);
       this.insertionTestClass = testClass;
    }

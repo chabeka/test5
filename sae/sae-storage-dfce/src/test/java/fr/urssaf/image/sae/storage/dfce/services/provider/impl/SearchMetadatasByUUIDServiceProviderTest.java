@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.storage.dfce.services.provider.impl;
 
-import java.util.UUID;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -26,13 +24,13 @@ public class SearchMetadatasByUUIDServiceProviderTest extends
 		// On récupère la connexion
 		getServiceProvider().getStorageConnectionService().openConnection();
 		// on insert le document.
-		UUID uuid = getServiceProvider().getStorageDocumentService()
+		StorageDocument document= getServiceProvider().getStorageDocumentService()
 				.insertStorageDocument(getStorageDocument());
 		// on test ici si on a un UUID
-		Assert.assertNotNull(uuid);
+		Assert.assertNotNull(document.getUuid());
 		StorageDocument storageDocument = getServiceProvider()
 				.getStorageDocumentService().searchMetaDatasByUUIDCriteria(
-						new UUIDCriteria(uuid, null));
+						new UUIDCriteria(document.getUuid(), null));
 
 		// ici on vérifie qu'on a bien des métadonnées
 		Assert.assertTrue(storageDocument.getMetadatas().size() > 3);

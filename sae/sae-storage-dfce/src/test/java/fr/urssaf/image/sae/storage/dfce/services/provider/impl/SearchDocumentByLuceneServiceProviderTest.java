@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.storage.dfce.services.provider.impl;
 
-import java.util.UUID;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -10,6 +8,7 @@ import fr.urssaf.image.sae.storage.dfce.services.provider.CommonsServicesProvide
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCriteria;
 
@@ -33,11 +32,11 @@ public class SearchDocumentByLuceneServiceProviderTest extends
       // On récupère la connexion
       getServiceProvider().getStorageConnectionService().openConnection();
       // On insert le document.
-      UUID uuid = getServiceProvider().getStorageDocumentService()
+      StorageDocument document= getServiceProvider().getStorageDocumentService()
             .insertStorageDocument(getStorageDocument());
       // On test ici si on a un UUID
-      Assert.assertNotNull(uuid);
-      final String lucene = String.format("%s:%s", "_uuid", uuid.toString());
+      Assert.assertNotNull(document.getUuid());
+      final String lucene = String.format("%s:%s", "_uuid", document.getUuid().toString());
       StorageDocuments strDocuments = getServiceProvider()
             .getStorageDocumentService().searchStorageDocumentByLuceneCriteria(
                   new LuceneCriteria(lucene, 1, null));

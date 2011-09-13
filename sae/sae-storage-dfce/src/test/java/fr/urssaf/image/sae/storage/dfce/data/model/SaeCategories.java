@@ -22,21 +22,21 @@ import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 @XStreamAlias("categories")
 public class SaeCategories {
    @XStreamImplicit(itemFieldName = "category")
-   private List<SaeCategory> categoriesSae;
+   private List<SaeCategory> categories;
 
    /**
     * @param categories
     *           : La liste des catégories.
     */
-   public final void setSaeCategories(final List<SaeCategory> categories) {
-      this.categoriesSae = categories;
+   public final void setCategories(final List<SaeCategory> categories) {
+      this.categories = categories;
    }
 
    /**
     * @return La liste des catégories.
     */
-   public final List<SaeCategory> getSaeCategories() {
-      return categoriesSae;
+   public final List<SaeCategory> getCategories() {
+      return categories;
    }
 
    /**
@@ -44,7 +44,7 @@ public class SaeCategories {
     */
    public final String toString() {
       final ToStringBuilder toStringBuilder = new ToStringBuilder(this);
-      for (SaeCategory saeCategory : Utils.nullSafeIterable(categoriesSae)) {
+      for (SaeCategory saeCategory : Utils.nullSafeIterable(categories)) {
          toStringBuilder.append("SaeCategory", saeCategory.toString());
       }
       return toStringBuilder.toString();

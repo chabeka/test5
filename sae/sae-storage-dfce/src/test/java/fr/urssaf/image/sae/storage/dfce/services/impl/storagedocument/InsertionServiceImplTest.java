@@ -8,13 +8,11 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +20,6 @@ import fr.urssaf.image.sae.storage.dfce.data.model.SaeDocument;
 import fr.urssaf.image.sae.storage.dfce.data.test.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.data.utils.CheckDataUtils;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanTestDocumentMapper;
-import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
 import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
@@ -60,15 +57,15 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
             new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
-      UUID firstDocument = getInsertionService().insertStorageDocument(
+      StorageDocument firstDocument = getInsertionService().insertStorageDocument(
             storageDocument);
-      UUID secondDocument = getInsertionService().insertStorageDocument(
+      StorageDocument secondDocument = getInsertionService().insertStorageDocument(
             storageDocument);
       // si la valeur de la comparaison est égale à 1, c'est que les deux UUID
       // sont différent.
       Assert.assertEquals(
             "Les deux UUID du même document doivent être différent :", true,
-            secondDocument.getLeastSignificantBits() != firstDocument
+            secondDocument.getUuid().getLeastSignificantBits() != firstDocument.getUuid()
                   .getMostSignificantBits());
    }
 
@@ -243,19 +240,16 @@ public class InsertionServiceImplTest extends CommonServicesImpl {
             new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
       StorageDocument storageDocument = BeanTestDocumentMapper
             .saeDocumentXmlToStorageDocument(saeDocument);
-      List<StorageMetadata> entryMetaData = storageDocument.getMetadatas();
-      UUID uuid = getInsertionService().insertStorageDocument(storageDocument);
-      Assert.assertNotNull("UUID après insertion ne doit pas être null ", uuid);
+      StorageDocument document = getInsertionService().insertStorageDocument(storageDocument);
+      Assert.assertNotNull("UUID après insertion ne doit pas être null ", document.getUuid());
       Document doc = ServiceProvider.getSearchService().getDocumentByUUID(
-            getBase(), uuid);
+            getBase(), document.getUuid());
       InputStream docContent = ServiceProvider.getStoreService()
             .getDocumentFile(doc);
       byte[] content = IOUtils.toByteArray(docContent);
       Assert.assertNotNull(
             "le contenue du document récupérer doit être non null", content);
-      Assert.assertTrue("Les deux listes des métaData doivent être identique",
-            CheckDataUtils.checkMetaDatas(entryMetaData, BeanMapper
-                  .dfceMetaDataToStorageDocument(doc, null).getMetadatas()));
+     
       Assert.assertTrue("Les deux SHA1 doivent être identique", CheckDataUtils
             .checkDocumentSha1(storageDocument.getContent(), content));
    }

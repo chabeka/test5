@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.storage.dfce.data.model;
 
-import java.io.File;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;

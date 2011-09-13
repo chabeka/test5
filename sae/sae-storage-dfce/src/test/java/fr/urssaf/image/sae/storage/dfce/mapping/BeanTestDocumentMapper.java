@@ -52,18 +52,18 @@ public final class BeanTestDocumentMapper {
       List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
       // Liste des catégories à partir du XML
       List<SaeCategory> listOfCategoory = saeDocument.getDataBase()
-            .getSaeCategories().getSaeCategories();
+            .getSaeCategories().getCategories();
       for (SaeCategory saeCategory : Utils.nullSafeIterable(listOfCategoory)) {
          final String codeMetaData = saeCategory.getName();
-         final String value = saeCategory.getValue();
-         if (Constants.TEC_METADATAS[0].equals(codeMetaData)) {
-            storageDocument.setCreationDate(Utils.formatStringToDate(value));
-         } else if (Constants.TEC_METADATAS[1].equals(codeMetaData)) {
-            storageDocument.setTitle(value);
-         } else {
+         Object value = saeCategory.getValue();
+        	   if (Constants.TEC_METADATAS[0].equals(codeMetaData)) {
+        	      		value =  Utils.formatStringToDate((String)value);
+              } 
+        	   if (Constants.TEC_METADATAS[1].equals(codeMetaData)) {
+   	      		value =  Utils.formatStringToDate((String)value);
+         } 
             metadatas.add(new StorageMetadata(codeMetaData, value));
-         }
-      }
+               }
       storageDocument.setMetadatas(metadatas);
       storageDocument.setContent(Files.toByteArray(new File(saeDocument.getBase()
             .getFilePath())));
@@ -107,7 +107,7 @@ public final class BeanTestDocumentMapper {
          listOfCategory.add(saeCategory);
       }
       // Set les éléments pour la construction de l'objet SaeDocument
-      saeCategories.setSaeCategories(listOfCategory);
+      saeCategories.setCategories(listOfCategory);
       seaBase.setSaeCategories(saeCategories);
       seaBase.setFilePath(storageDocument.getFilePath());
       seaBase.setTypeDoc(storageDocument.getTypeDoc());
@@ -120,7 +120,7 @@ public final class BeanTestDocumentMapper {
     * Permet de convertir les données du document métadonnées XML vers un
     * StorageDocument.<br/>
     * 
-    * @param saeDocument
+    * @param saeMetadata
     *           : document xml.
     * @return StorageDocument.
     * @throws IOException
@@ -132,13 +132,13 @@ public final class BeanTestDocumentMapper {
 
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    public static StorageDocument saeMetaDataXmlToStorageMetaData(
-         DesiredMetaData saeDocument) throws IOException, ParseException {
+         DesiredMetaData saeMetadata) throws IOException, ParseException {
       Assert
             .assertNotNull("Objet DesiredMetaData ne doit pas être null pour faire le mapping"
-                  + saeDocument);
+                  + saeMetadata);
       // Initialisation de l'objet StotageDocument
       List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
-      for (String desiredMetaData : saeDocument.getCodes()) {
+      for (String desiredMetaData : saeMetadata.getCodes()) {
          final StorageMetadata storageMetadata = new StorageMetadata(
                desiredMetaData);
          metadatas.add(storageMetadata);

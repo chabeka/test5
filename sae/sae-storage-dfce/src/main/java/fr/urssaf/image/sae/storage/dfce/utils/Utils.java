@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Map;
 
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
-
+import fr.urssaf.image.sae.storage.dfce.model.StorageTechnicalMetadatas;
 /**
  * Cette classe contient des méthodes utilitaires
  * 
@@ -75,11 +75,11 @@ public final class Utils {
       Date newDate = new Date();
       if (date != null) {
          SimpleDateFormat formatter = new SimpleDateFormat(
-               Constants.DATE_PATTERN_FR, Constants.DEFAULT_LOCAL);
+               Constants.DATE_PATTERN, Constants.DEFAULT_LOCAL);
          formatter.setLenient(false);
          newDate = formatter.parse(date);
          if (formatter.parse(date, new ParsePosition(0)) == null) {
-            formatter = new SimpleDateFormat(Constants.DATE_PATTERN_AN,
+            formatter = new SimpleDateFormat(Constants.DATE_PATTERN,
                   Constants.DEFAULT_LOCAL);
             newDate = formatter.parse(date);
          }
@@ -102,9 +102,39 @@ public final class Utils {
       String newDate = Constants.BLANK;
       if (date != null) {
          final SimpleDateFormat formatter = new SimpleDateFormat(
-               Constants.DATE_PATTERN_FR, Constants.DEFAULT_LOCAL);
+               Constants.DATE_PATTERN, Constants.DEFAULT_LOCAL);
          newDate = formatter.format(date);
       }
       return newDate;
    }
+   
+   /**
+	 * Permet de trouver le bon type dans l'enumération des types.
+	 * 
+	 * @param shortCode
+	 *            : Le code court cherché
+	 * @return Le type métier correspondant au type cherché.
+	 */
+	@SuppressWarnings("PMD.OnlyOneReturn")
+	public static StorageTechnicalMetadatas technicalMetadataFinder(
+			final String shortCode) {
+		for (StorageTechnicalMetadatas technical : StorageTechnicalMetadatas.values()) {
+			if (technical.getShortCode().equals(shortCode)) {
+				return technical;
+			}
+		}
+		return StorageTechnicalMetadatas.NOVALUE;
+	}
+	
+	/**
+	 * Permet de trouver le bon type dans l'enumération des des métadonnées
+	 * techniques à exclure.
+	 * 
+	 * @param longCode
+	 *            : Le code long cherché
+	 * @return True si la métadonnée est à exclure.
+	 */
+		public static boolean excludeTechnicalMetadataFinder(final String longCode) {
+		return technicalMetadataFinder(longCode) != StorageTechnicalMetadatas.NOVALUE;
+	}
 }

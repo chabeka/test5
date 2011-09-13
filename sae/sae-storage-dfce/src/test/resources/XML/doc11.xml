@@ -7,35 +7,42 @@
 		 <typeDoc>PDF</typeDoc>
          <categories>
             <category>
-               <name>title</name>
+               <name>_titre</name>
                <value>ECHEANCIER DE COTISATIONS du 53097842800015</value>
             </category>
                    <category>
-               <name>DFC</name>
-               <value>2015/12/01</value>
+             <name>DDC</name>
+               <value>2015-12-01</value>
             </category>
+            <category>
+				<name>_type</name>
+				<value>PDF</value>
+			</category>
              <category>
                <name>RND</name>
                <value>2.1.1.2.1</value>
             </category>
+            <category>
+				<name>VRN</name>
+				<value>11.1</value>
+			</category>
              <category>
                <name>DOM</name>
                <value>2</value>
             </category>
+            <category>
+				<name>DFC</name>
+				<value>2011-12-01</value>
+			</category>
              <category>
                <name>ACT</name>
                <value>1</value>
             </category>
-           
              <category>
                <name>DCO</name>
                <value>36</value>
             </category>
-             <category>
-               <name>JDP</name>
-               <value>P</value>
-            </category>
-             <category>
+              <category>
                <name>TPA</name>
                <value>P</value>
             </category>
@@ -44,7 +51,7 @@
                <value>CS1</value>
             </category>
              <category>
-               <name>ASO</name>
+               <name>APR</name>
                <value>ADELAIDE</value>
             </category>
              <category>
@@ -64,7 +71,7 @@
                <value>fmt/18</value>
             </category>
              <category>
-               <name>TFI</name>
+               <name>version.1.size</name>
                <value>59459</value>
             </category>
              <category>
@@ -123,7 +130,10 @@
                <name>PER</name>
                <value>P</value>
             </category>
-            
+            <category>
+				<name>_creationDate</name>
+				<value>2011-12-01</value>
+			</category>
          </categories>
       </base>
 </docuBase>

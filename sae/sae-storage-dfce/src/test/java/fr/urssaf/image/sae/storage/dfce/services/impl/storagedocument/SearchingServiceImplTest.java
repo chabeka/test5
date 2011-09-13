@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import junit.framework.Assert;
 
@@ -19,6 +18,7 @@ import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCriteria;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
@@ -39,14 +39,14 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
          throws SearchingServiceEx, InsertionServiceEx, IOException,
          ParseException, DeletionServiceEx {
       int limit = 5;
-      UUID uuid = getMockData(getInsertionService());
-      final String lucene = String.format("%s:%s", "_uuid", uuid.toString());
+      StorageDocument document = getMockData(getInsertionService());
+      final String lucene = String.format("%s:%s", "_uuid", document.getUuid().toString());
       LuceneCriteria luceneCriteria = new LuceneCriteria(lucene, limit,
             new ArrayList<StorageMetadata>());
       Assert.assertNotNull("La recherche de documents par requette Lucence: ",
             getSearchingService().searchStorageDocumentByLuceneCriteria(
                   luceneCriteria).getAllStorageDocuments().size() >= 0);
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
 
    /**
@@ -56,13 +56,13 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
    @Test
    public void searchDocumentByUUID() throws SearchingServiceEx,
          InsertionServiceEx, IOException, ParseException, DeletionServiceEx {
-      UUID uuid = getMockData(getInsertionService());
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
+	   StorageDocument document = getMockData(getInsertionService());
+      UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(),
             new ArrayList<StorageMetadata>());
       Assert.assertNotNull("Recupération d'un document par UUID :",
             getSearchingService().searchStorageDocumentByUUIDCriteria(
                   uuidCriteria).getUuid());
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
 
    /**
@@ -74,7 +74,7 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
          throws SearchingServiceEx, InsertionServiceEx, IOException,
          ParseException, DeletionServiceEx {
       // Initialisation des jeux de données UUID
-      UUID uuid = getMockData(getInsertionService());
+	   StorageDocument document  = getMockData(getInsertionService());
       // Initialisation des jeux de données Metadata
       final DesiredMetaData metaDataFromXml = getXmlDataService()
             .desiredMetaDataReader(
@@ -82,7 +82,7 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
       List<StorageMetadata> desiredMetadatas = BeanTestDocumentMapper
             .saeMetaDataXmlToStorageMetaData(metaDataFromXml).getMetadatas();
 
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid, desiredMetadatas);
+      UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(), desiredMetadatas);
       Assert.assertNotNull("Le resultat de recherche :", getSearchingService()
             .searchStorageDocumentByUUIDCriteria(uuidCriteria).getUuid());
       Assert.assertTrue(
@@ -91,7 +91,7 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
                   getSearchingService().searchMetaDatasByUUIDCriteria(
                         uuidCriteria).getMetadatas()));
       // Suppression du document insert
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
 
    /**
@@ -101,15 +101,15 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
    public void searchMetaDatasByUUID() throws SearchingServiceEx,
          InsertionServiceEx, IOException, ParseException, DeletionServiceEx {
       // Initialisation des jeux de données UUID
-      UUID uuid = getMockData(getInsertionService());
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
-            new ArrayList<StorageMetadata>());
+	   StorageDocument document  = getMockData(getInsertionService());
+	   UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(),
+	            new ArrayList<StorageMetadata>());
       Assert.assertNotNull(
             "Recupération d'une liste de métadonnées par uuid :",
             getSearchingService().searchMetaDatasByUUIDCriteria(uuidCriteria)
                   .getMetadatas());
       // Suppression du document insert
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
 
    /**
@@ -121,14 +121,14 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
          throws SearchingServiceEx, IOException, ParseException,
          InsertionServiceEx, DeletionServiceEx {
       // Initialisation des jeux de données UUID
-      UUID uuid = getMockData(getInsertionService());
+	   StorageDocument document  = getMockData(getInsertionService());
       // Initialisation des jeux de données Metadata
       final DesiredMetaData desiredMetaData = getXmlDataService()
             .desiredMetaDataReader(
                   new File(Constants.XML_FILE_DESIRED_MDATA[0]));
       List<StorageMetadata> desiredMetadatas = BeanTestDocumentMapper
             .saeMetaDataXmlToStorageMetaData(desiredMetaData).getMetadatas();
-      UUIDCriteria uuidCriteria = new UUIDCriteria(uuid, desiredMetadatas);
+      UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(), desiredMetadatas);
       Assert.assertNotNull("Le resultat de recherche :", getSearchingService()
             .searchMetaDatasByUUIDCriteria(uuidCriteria).getMetadatas());
       Assert.assertTrue("Les deux listes des métaData doivent être identique",
@@ -136,6 +136,28 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
                   getSearchingService().searchMetaDatasByUUIDCriteria(
                         uuidCriteria).getMetadatas()));
       // Suppression du document insert
-      destroyMockTest(uuid, getDeletionService());
+      destroyMockTest(document.getUuid(), getDeletionService());
    }
+   
+   /**
+    * Test de recherche par requête Lucence.<br>{@inheritDoc}
+    */
+   @Test
+   public void searchStorageDocumentByLucene()
+         throws SearchingServiceEx, InsertionServiceEx, IOException,
+         ParseException, DeletionServiceEx {
+      int limit = 5;
+    //  UUID uuid = getMockData(getInsertionService());
+      final String lucene = String.format("%s:%s", "cop", "UR030");
+      LuceneCriteria luceneCriteria = new LuceneCriteria(lucene, limit,
+            new ArrayList<StorageMetadata>());
+      
+      List<StorageDocument> docs =getSearchingService().searchStorageDocumentByLuceneCriteria(
+              luceneCriteria).getAllStorageDocuments();
+      Assert.assertNotNull("La recherche de documents par requette Lucence: ",
+    		  docs.size() >= 0);
+   //   destroyMockTest(uuid, getDeletionService());
+   }
+   
+   
 }
