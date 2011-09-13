@@ -14,7 +14,11 @@
 	</metadata>
 	<metadata>
 		<longCode>versionNumber</longCode>
-		<value>20111202</value>
+		<value>1</value>
+	</metadata>
+	<metadata>
+		<longCode>Gel</longCode>
+		<value>false</value>
 	</metadata>
 	<metadata>
 		<longCode>CodeFonction</longCode>
