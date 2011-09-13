@@ -8,6 +8,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.storage.dfce.data.model.DesiredMetaData;
@@ -143,6 +144,7 @@ public class SearchingServiceImplTest extends CommonServicesImpl {
     * Test de recherche par requête Lucence.<br>{@inheritDoc}
     */
    @Test
+   @Ignore
    public void searchStorageDocumentByLucene()
          throws SearchingServiceEx, InsertionServiceEx, IOException,
          ParseException, DeletionServiceEx {
