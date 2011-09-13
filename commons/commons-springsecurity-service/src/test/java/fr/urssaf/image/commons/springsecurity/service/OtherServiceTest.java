@@ -1,5 +1,6 @@
 package fr.urssaf.image.commons.springsecurity.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class OtherServiceTest {
    private OtherService service;
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void saveSuccess() {
 
       authenticate("ROLE_ADMIN");
@@ -56,10 +58,10 @@ public class OtherServiceTest {
    public void loadMontesquieuSuccess() {
 
       authenticate("ROLE_AUTH");
-      service.load(0);
+      Assert.assertEquals("Montesquieu", service.load(0));
 
    }
-   
+
    @Test(expected = AccessDeniedException.class)
    public void loadMontesquieuFailure() {
 
@@ -72,9 +74,9 @@ public class OtherServiceTest {
    public void loadConradSuccess() {
 
       authenticate("ROLE_USER");
-      service.load(1);
+      Assert.assertEquals("Conrad", service.load(1));
    }
-   
+
    @Test(expected = AccessDeniedException.class)
    public void loadConradFailure() {
 

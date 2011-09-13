@@ -18,10 +18,10 @@ public class ModelePermissionEvaluator implements PermissionEvaluator {
 
    @Override
    public boolean hasPermission(Authentication authentication,
-         Object targetDomainObject, Object permission) {
+         Object domain, Object permission) {
 
       LOG.debug("Authentication:" + authentication);
-      LOG.debug("domain:" + targetDomainObject.getClass());
+      LOG.debug("domain:" + domain.getClass());
       LOG.debug("permission:" + permission);
 
       boolean hasPermission = false;
@@ -29,13 +29,13 @@ public class ModelePermissionEvaluator implements PermissionEvaluator {
       if (AuthorityUtils.authorityListToSet(authentication.getAuthorities())
             .contains(permission)
 
-            && "Montesquieu".equals(((Modele) targetDomainObject).getTitle())) {
+            && "Montesquieu".equals(((Modele) domain).getTitle())) {
 
          hasPermission = true;
 
       } else if (AuthorityUtils.authorityListToSet(
             authentication.getAuthorities()).contains("ROLE_USER")
-            && "Conrad".equals(((Modele) targetDomainObject).getTitle())) {
+            && "Conrad".equals(((Modele) domain).getTitle())) {
 
          hasPermission = true;
 

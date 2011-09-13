@@ -1,5 +1,6 @@
 package fr.urssaf.image.commons.springsecurity.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class SimpleServiceTest {
    private SimpleService service;
 
    @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void saveSuccess() {
 
       authenticate("ROLE_ADMIN");
@@ -56,7 +58,7 @@ public class SimpleServiceTest {
    public void loadSuccess() {
 
       authenticate("ROLE_USER");
-      service.load();
+      Assert.assertEquals("Monstesquieu",service.load());
 
    }
 
