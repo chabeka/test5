@@ -21,7 +21,7 @@ import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-dfce-admin.xml" })
-public abstract class CommonTestComponents {
+public abstract class AbstractComponents {
 
 	@Autowired
 	@Qualifier("connectionService")

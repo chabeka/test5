@@ -5,16 +5,17 @@ import java.io.FileNotFoundException;
 import junit.framework.Assert;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
-import fr.urssaf.image.sae.dfce.admin.services.CommonTestComponents;
+import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
 import fr.urssaf.image.sae.dfce.admin.utils.BaseUtils;
 
 
-public class CreationBaseDFCETest extends CommonTestComponents {
+public class CreationBaseDFCETest extends AbstractComponents {
 	/**
 	 * Test unitaire sur la création d'une base
 	 * 
@@ -25,6 +26,7 @@ public class CreationBaseDFCETest extends CommonTestComponents {
 	 * @throws FileNotFoundException
 	 */
 	@Test
+	@Ignore
 	public void createBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
 		getConnectionService().setConnectionParameter(getConnectionParameter());

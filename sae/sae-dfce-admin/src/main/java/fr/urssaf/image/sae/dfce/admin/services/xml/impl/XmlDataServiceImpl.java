@@ -49,7 +49,7 @@ public class XmlDataServiceImpl implements XmlDataService {
 	 *            : La classe à désérialiser
 	 * @return le composant xstream
 	 */
-	private final  XStream buildReadingXStream( final Class<?> xstrClass) {
+	private   XStream buildReadingXStream( final Class<?> xstrClass) {
 
 		return XStreamHelper.newXStream(xstrClass);
 	}

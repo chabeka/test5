@@ -5,11 +5,11 @@ import net.docubase.toolkit.service.Authentication;
 import org.junit.Assert;
 import org.junit.Test;
 
-import fr.urssaf.image.sae.dfce.admin.services.CommonTestComponents;
+import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
 
 
-public class ConnectionServiceTest extends CommonTestComponents {
+public class ConnectionServiceTest extends AbstractComponents {
 
 	/**
 	 * Test de manière unitaire si la connexion est ouverte

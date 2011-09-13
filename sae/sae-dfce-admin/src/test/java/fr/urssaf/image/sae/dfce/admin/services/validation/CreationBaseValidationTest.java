@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
-import fr.urssaf.image.sae.dfce.admin.services.CommonTestComponents;
+import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
 import fr.urssaf.image.sae.dfce.admin.utils.BaseUtils;
@@ -16,7 +16,7 @@ import fr.urssaf.image.sae.dfce.admin.utils.BaseUtils;
  * @author akenore
  * 
  */
-public class CreationBaseValidationTest extends CommonTestComponents {
+public class CreationBaseValidationTest extends AbstractComponents {
 	/**
 	 * Test unitaire de validation de la création d'une base
 	 * 
@@ -27,7 +27,7 @@ public class CreationBaseValidationTest extends CommonTestComponents {
 	 * @throws FileNotFoundException
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void createBase_base() throws ConnectionServiceEx,
+	public void createBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
 		getConnectionService().setConnectionParameter(getConnectionParameter());
 		getConnectionService().openConnection();
@@ -45,7 +45,7 @@ public class CreationBaseValidationTest extends CommonTestComponents {
 	 * @throws FileNotFoundException
 	 */
 	@Test(expected = NullPointerException.class)
-	public void createBase_service() throws ConnectionServiceEx,
+	public void createBaseService() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
 		getConnectionService().setConnectionParameter(getConnectionParameter());
 		getConnectionService().openConnection();

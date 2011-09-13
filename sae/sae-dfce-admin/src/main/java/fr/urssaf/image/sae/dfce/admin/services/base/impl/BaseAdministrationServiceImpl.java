@@ -55,7 +55,8 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 			final XmlDataService xmlDataService)
 			throws BaseAdministrationServiceEx, FileNotFoundException {
 		try {
-			LOGGER.info(MessageHandler.getMessage("database.initialization",dataBaseModel.toString()));
+			LOGGER.info(MessageHandler.getMessage("database.initialization",
+					dataBaseModel.toString()));
 			// Instantiation d'une base
 			final Base base = getBaseDfce(dataBaseModel.getBase().getBaseId());
 			LOGGER.info(MessageHandler
@@ -73,8 +74,7 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 			for (BaseCategory baseCategory : Utils
 					.nullSafeIterable(baseCategories)) {
 				baseDfce.addBaseCategory(baseCategory);
-				BaseUtils.addDictionnary(baseCategory, xmlDataService);
-			}
+				}
 			LOGGER.info(MessageHandler.getMessage("database.creation"));
 			// Création de la base
 			ServiceProvider.getBaseAdministrationService().createBase(baseDfce);
@@ -119,5 +119,6 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 
 		return xmlDataService.baseModelReader(xmlBaseModel);
 	}
+
 
 }

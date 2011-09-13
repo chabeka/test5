@@ -11,8 +11,6 @@ import net.docubase.toolkit.model.base.Base;
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractService {
-
-	
 	/**
 	 * 
 	 * @param baseId

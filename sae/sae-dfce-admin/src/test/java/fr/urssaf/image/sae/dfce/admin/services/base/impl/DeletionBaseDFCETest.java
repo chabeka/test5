@@ -5,16 +5,17 @@ import java.io.FileNotFoundException;
 import junit.framework.Assert;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
-import fr.urssaf.image.sae.dfce.admin.services.CommonTestComponents;
+import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
 import fr.urssaf.image.sae.dfce.admin.utils.BaseUtils;
 
 
-public class DeletionBaseDFCETest extends CommonTestComponents {
+public class DeletionBaseDFCETest extends AbstractComponents {
 	/**
 	 * Permet de supprimer une base
 	 * @throws ConnectionServiceEx Exception levée lorsque la connection ne se passe pas bien.
@@ -22,6 +23,7 @@ public class DeletionBaseDFCETest extends CommonTestComponents {
 	 * @throws FileNotFoundException Exception levée lorsque le fichier n'existe pas.
 	 */
 	@Test
+	@Ignore
 	public void deleteBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
 		getConnectionService().setConnectionParameter(getConnectionParameter());

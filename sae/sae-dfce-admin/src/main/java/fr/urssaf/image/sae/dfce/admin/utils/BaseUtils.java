@@ -1,12 +1,9 @@
 package fr.urssaf.image.sae.dfce.admin.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
@@ -14,16 +11,8 @@ import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.administration.StorageAdministrationService;
-import fr.urssaf.image.sae.dfce.admin.model.Applications;
-import fr.urssaf.image.sae.dfce.admin.model.CodeImage;
-import fr.urssaf.image.sae.dfce.admin.model.Codes;
-import fr.urssaf.image.sae.dfce.admin.model.Contrats;
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
-import fr.urssaf.image.sae.dfce.admin.model.Objects;
-import fr.urssaf.image.sae.dfce.admin.model.Organisme;
-import fr.urssaf.image.sae.dfce.admin.model.Organismes;
 import fr.urssaf.image.sae.dfce.admin.model.SaeCategory;
-import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
 
 /**
  * Contient des services de gestion de bean
@@ -31,35 +20,17 @@ import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
  * @author akenore
  * 
  */
-@SuppressWarnings({ "PMD.LongVariable", "PMD.DataflowAnomalyAnalysis",
-		"AvoidInstantiatingObjectsInLoops" })
+@SuppressWarnings("PMD.TooManyMethods" )
 public final class BaseUtils {
 	/** le répertoire de base */
 	private static final String BASE_DIR = "src/main/resources/saeBase/";
-	/** le répertoire de base */
-	private static final String DICTIONARY_DIR = BASE_DIR + "dictionary/";
-	/** le fichier xml des application sources */
-	private static final File APPLICATIONS_XML_FILE = new File(DICTIONARY_DIR
-			+ "applications.xml");
-	/** le fichier xml des contrats de services */
-	private static final File CONTRAT_XML_FILE = new File(DICTIONARY_DIR
-			+ "contrats.xml");
-	/** le fichier xml des organismes */
-	private static final File ORGANISME_XML_FILE = new File(DICTIONARY_DIR
-			+ "organisme.xml");
-	/** le fichier xml des object types */
-	private static final File OBJECT_TYPE_XML_FILE = new File(DICTIONARY_DIR
-			+ "objetType.xml");
-	/** le fichier xml des code: Code RND, Code Domaine, Code activite */
-	private static final File RND_XML_FILE = new File(DICTIONARY_DIR
-			+ "codesfonctions.xml");
 
 	/** le fichier xml de la base */
-	public static final File BASE_XML_FILE = new File(BASE_DIR
-			+ "saeBase.xml");
+	public static final File BASE_XML_FILE = new File(BASE_DIR + "saeBase.xml");
 
 	/**
-	 * @param base : la base.
+	 * @param base
+	 *            : La base DFCE.
 	 * @param dataBaseModel
 	 *            : Le modèle de base de donnée.
 	 * @return La base
@@ -145,7 +116,6 @@ public final class BaseUtils {
 										indexC);
 						indexComposite.add(category);
 					}
-
 				}
 			}
 			indexComposites.add(indexComposite);
@@ -180,145 +150,6 @@ public final class BaseUtils {
 	 */
 	private BaseUtils() {
 		assert false;
-	}
-
-	/**
-	 * 
-	 * @param baseCategory
-	 *            : La base catégories
-	 * @param xmlDataService
-	 *            le service de désérialisation des flux xml
-	 * @throws FileNotFoundException
-	 *             Lorsque le fichier n'existe pas
-	 */
-
-	public static void addDictionnary(final BaseCategory baseCategory,
-			final XmlDataService xmlDataService) throws FileNotFoundException {
-		final String catName = baseCategory.getCategory().getName();
-		// Ajout des Code RND ,Code Domaine, CodeActivite
-		if (catName.contains("RND") || catName.contains("DOM")
-				|| catName.contains("ACT")) {
-			addRndDictionary(baseCategory, xmlDataService);
-		}
-		// Ajout des contrat de services
-		if (catName.contains("CSE")) {
-			final Contrats contrats = xmlDataService
-					.contratReader(CONTRAT_XML_FILE);
-			for (String contrt : Utils.nullSafeIterable(contrats.getContrats())) {
-				ServiceProvider.getStorageAdministrationService()
-						.addDictionaryTerm(baseCategory, contrt);
-			}
-		}
-		// Ajout des applications
-		if (catName.contains("ASO")) {
-			final Applications applications = xmlDataService
-					.applicationsReader(APPLICATIONS_XML_FILE);
-			for (String application : Utils.nullSafeIterable(applications
-					.getApplications())) {
-				ServiceProvider.getStorageAdministrationService()
-						.addDictionaryTerm(baseCategory, application);
-			}
-		}
-		addDicoOtyOrg(baseCategory, xmlDataService, catName);
-
-	}
-
-	/**
-	 * Permet d'ajouter les termes OTY et COP, COG SAC.
-	 * 
-	 * @param baseCategory
-	 *            : La base catégorie
-	 * @param xmlDataService
-	 *            : le service de désérialisation.
-	 * @param catName
-	 *            : Le nom de la catégorie.
-	 * @throws FileNotFoundException
-	 *             Exception levée lorsque le fichier n'existye pas.
-	 */
-	private static void addDicoOtyOrg(final BaseCategory baseCategory,
-			final XmlDataService xmlDataService, final String catName)
-			throws FileNotFoundException {
-		// Ajout des objets
-		if (catName.contains("OTY")) {
-			final Objects objectsTypes = xmlDataService
-					.objectTypeReader(OBJECT_TYPE_XML_FILE);
-			for (String object : Utils.nullSafeIterable(objectsTypes
-					.getObjects())) {
-				ServiceProvider.getStorageAdministrationService()
-						.addDictionaryTerm(baseCategory, object);
-			}
-		}
-
-		if (catName.contains("COP") || catName.contains("COG")
-				|| catName.contains("SAC")) {
-			final Organismes codeOrganismes = xmlDataService
-					.organismesReader(ORGANISME_XML_FILE);
-			for (Organisme org : Utils.nullSafeIterable(codeOrganismes
-					.getOrganismes())) {
-				ServiceProvider.getStorageAdministrationService()
-						.addDictionaryTerm(baseCategory, org.getCode());
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param baseCategory
-	 *            : La base catégories
-	 * @param xmlDataService
-	 *            le service de désérialisation des flux xml
-	 * @throws FileNotFoundException
-	 *             Lorsque le fichier n'existe pas
-	 */
-	private static void addRndDictionary(final BaseCategory baseCategory,
-			final XmlDataService xmlDataService) throws FileNotFoundException {
-		final String catName = baseCategory.getCategory().getName();
-		final Codes codes = xmlDataService.rndReader(RND_XML_FILE);
-		if (catName.contains("RND")) {
-			for (CodeImage codeImage : Utils.nullSafeIterable(codes
-					.getCodeImages())) {
-				if (!StringUtils.isEmpty(codeImage.getCodeRnd())) {
-					ServiceProvider.getStorageAdministrationService()
-							.addDictionaryTerm(baseCategory,
-									codeImage.getCodeRnd());
-				}
-			}
-
-		}
-		addDictionnaryDomAct(baseCategory, catName, codes);
-	}
-
-	/**
-	 * 
-	 * @param baseCategory
-	 *            : La base catégorie
-	 * @param catName
-	 *            : le nom de la catégorie
-	 * @param codes
-	 *            : les codes
-	 */
-	private static void addDictionnaryDomAct(final BaseCategory baseCategory,
-			final String catName, final Codes codes) {
-		if (catName.contains("DOM")) {
-			for (CodeImage codeImage : Utils.nullSafeIterable(codes
-					.getCodeImages())) {
-				if (!StringUtils.isEmpty(codeImage.getCodeFonction())) {
-					ServiceProvider.getStorageAdministrationService()
-							.addDictionaryTerm(baseCategory,
-									codeImage.getCodeFonction());
-				}
-			}
-		}
-		if (catName.contains("ACT")) {
-			for (CodeImage codeImage : Utils.nullSafeIterable(codes
-					.getCodeImages())) {
-				if (!StringUtils.isEmpty(codeImage.getCodeActivite())) {
-					ServiceProvider.getStorageAdministrationService()
-							.addDictionaryTerm(baseCategory,
-									codeImage.getCodeActivite());
-				}
-			}
-		}
 	}
 
 	/**

@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 
-import fr.urssaf.image.sae.dfce.admin.services.CommonTestComponents;
+import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
 
@@ -15,7 +15,7 @@ import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
  * @author akenore
  * 
  */
-public class DeletionBaseValidationTest extends CommonTestComponents {
+public class DeletionBaseValidationTest extends AbstractComponents {
 	/**
 	 * Test unitaire de validation de la suppression d'une base
 	 * 
