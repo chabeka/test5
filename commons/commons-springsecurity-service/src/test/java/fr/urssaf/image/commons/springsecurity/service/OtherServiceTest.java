@@ -14,11 +14,11 @@ import fr.urssaf.image.commons.springsecurity.service.modele.Modele;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service.xml",
-      "/applicationContext-security.xml" })
-public class SimpleServiceImplTest {
+      "/applicationContext-authorization.xml" })
+public class OtherServiceTest {
 
    @Autowired
-   private SimpleService service;
+   private OtherService service;
 
    @Test
    public void saveSuccess() {
@@ -53,18 +53,33 @@ public class SimpleServiceImplTest {
    }
 
    @Test
-   public void loadSuccess() {
+   public void loadMontesquieuSuccess() {
+
+      authenticate("ROLE_AUTH");
+      service.load(0);
+
+   }
+   
+   @Test(expected = AccessDeniedException.class)
+   public void loadMontesquieuFailure() {
 
       authenticate("ROLE_USER");
-      service.load();
+      service.load(0);
 
    }
 
+   @Test
+   public void loadConradSuccess() {
+
+      authenticate("ROLE_USER");
+      service.load(1);
+   }
+   
    @Test(expected = AccessDeniedException.class)
-   public void loadFailure() {
+   public void loadConradFailure() {
 
       authenticate("ROLE_AUTH");
-      service.load();
+      service.load(1);
    }
 
 }
