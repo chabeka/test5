@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.mapping.services.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
-import fr.urssaf.image.sae.mapping.model.TechnicalMetadatas;
 import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
 import fr.urssaf.image.sae.mapping.utils.Utils;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
@@ -52,26 +50,11 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 		storageDoc.setFilePath(saeDoc.getFilePath());
 		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc
 				.getMetadatas())) {
-			final TechnicalMetadatas technical = Utils
-					.technicalMetadataFinder(metadata.getLongCode());
-			switch (technical) {
-			case DATECREATION:
-				storageDoc.setCreationDate((Date) metadata.getValue());
-				break;
-			case TITRE:
-				storageDoc.setTitle(String.valueOf(metadata.getValue()));
-				break;
-			case TYPE:
-				storageDoc.setTypeDoc(String.valueOf(metadata.getValue()));
-				break;
-			case NOVALUE:
-			default:
-				sMetadata.add(new StorageMetadata(metadata.getShortCode(),
-						metadata.getValue()));
-			}
-			storageDoc.setMetadatas(sMetadata);
-
+			sMetadata.add(new StorageMetadata(metadata.getShortCode(), metadata
+					.getValue()));
 		}
+		storageDoc.setMetadatas(sMetadata);
+
 		return storageDoc;
 	}
 

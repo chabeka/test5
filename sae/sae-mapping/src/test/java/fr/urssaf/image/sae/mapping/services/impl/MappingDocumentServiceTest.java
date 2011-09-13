@@ -129,15 +129,11 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 		final StorageDocument storageDoc = getMappingService()
 				.saeDocumentToStorageDocument(saeDoc);
 		Assert.assertNotNull(storageDoc);
-		Assert.assertNotNull(storageDoc.getTitle().equals("Titre Test"));
-		Assert.assertNotNull(storageDoc.getTypeDoc().equals("PDF"));
-		Assert.assertNotNull(Utils.dateToString(storageDoc.getCreationDate())
-				.equals("2011-06-03"));
 		Assert.assertNotNull(storageDoc.getMetadatas());
-		Assert.assertTrue(storageDoc.getMetadatas().size() == 3);
+		Assert.assertTrue(storageDoc.getMetadatas().size() == 6);
 
 	}
-
+	
 	/**
 	 * Test de la méthode storageDocumentToSaeDocument
 	 * 
@@ -162,7 +158,7 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 		saeDoc = getMappingService().storageDocumentToSaeDocument(storageDoc);
 		Assert.assertNotNull(saeDoc);
 		Assert.assertNotNull(saeDoc.getMetadatas());
-		Assert.assertTrue(saeDoc.getMetadatas().size() == 3);
+		Assert.assertTrue(saeDoc.getMetadatas().size() == 6);
 		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc
 				.getMetadatas())) {
 			if (metadata.getLongCode().equals("DateArchivage")) {
@@ -205,7 +201,7 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 				storageDoc);
 		Assert.assertNotNull(untyped);
 		Assert.assertNotNull(untyped.getUMetadatas());
-		Assert.assertTrue(untyped.getUMetadatas().size() == 3);
+		Assert.assertTrue(untyped.getUMetadatas().size() == 6);
 		for (UntypedMetadata metadata : Utils.nullSafeIterable(untyped
 				.getUMetadatas())) {
 			if (metadata.getLongCode().equals("DateArchivage")) {

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import fr.urssaf.image.sae.bo.model.SAEMetadataType;
 import fr.urssaf.image.sae.mapping.constants.Constants;
-import fr.urssaf.image.sae.mapping.model.TechnicalMetadatas;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 
 /**
@@ -161,23 +160,6 @@ public final class Utils {
 		return null;
 	}
 
-	/**
-	 * Permet de trouver le bon type dans l'enumération des types.
-	 * 
-	 * @param longCode
-	 *            : Le code long cherché
-	 * @return Le type métier correspondant au type cherché.
-	 */
-	@SuppressWarnings("PMD.OnlyOneReturn")
-	public static TechnicalMetadatas technicalMetadataFinder(
-			final String longCode) {
-		for (TechnicalMetadatas technical : TechnicalMetadatas.values()) {
-			if (technical.getLongCode().equals(longCode)) {
-				return technical;
-			}
-		}
-		return TechnicalMetadatas.NOVALUE;
-	}
 
 	/**
 	 * Permet de convertir les valeur des metadonnées {@link UntypedMetadata} en
@@ -195,7 +177,7 @@ public final class Utils {
 	public static Object conversionToObject(final String untypedValue,
 			final MetadataReference reference) throws ParseException {
 		final SAEMetadataType saeType = typeFinder(reference.getType());
-		
+
 		Object value = null;
 		switch (saeType) {
 		case DATE:
@@ -206,6 +188,9 @@ public final class Utils {
 			break;
 		case BOOLEAN:
 			value = Boolean.valueOf(untypedValue);
+			break;
+		case LONG:
+			value = Long.valueOf(untypedValue);
 			break;
 		default:
 			value = untypedValue;
