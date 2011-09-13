@@ -86,12 +86,12 @@ public final class SAEConsultationServiceData {
       byte[] content = FileUtils.readFileToByteArray(new File(
             "src/test/resources/doc/attestation_consultation.pdf"));
       CONSULTATION_DOC.setContent(content);
-      UUID uuid = provider.getStorageDocumentService().insertStorageDocument(
+      StorageDocument document = provider.getStorageDocumentService().insertStorageDocument(
             CONSULTATION_DOC);
 
       provider.getStorageConnectionService().closeConnexion();
 
-      return uuid;
+      return document.getUuid();
    }
 
    /**
