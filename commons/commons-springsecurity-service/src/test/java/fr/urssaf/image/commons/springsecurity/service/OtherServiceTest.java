@@ -25,7 +25,7 @@ public class OtherServiceTest {
    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void saveSuccess() {
 
-      authenticate("ROLE_ADMIN");
+      authenticate("ROLE_AUTH");
       save();
 
    }
@@ -41,7 +41,7 @@ public class OtherServiceTest {
 
       Modele modele = new Modele();
       modele.setText("text");
-      modele.setTitle("title");
+      modele.setTitle("Montesquieu");
       service.save(modele);
    }
 
