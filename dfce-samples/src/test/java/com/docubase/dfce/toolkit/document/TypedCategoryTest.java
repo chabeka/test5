@@ -94,7 +94,7 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	BaseCategory stringCategory = base.getBaseCategory(catNames[0]);
 	BaseCategory dateBaseCategory = base.getBaseCategory(catNames[6]);
-	String strDate = ServiceProvider.getSearchService().formatDate(
+	String strDate = serviceProvider.getSearchService().formatDate(
 		currDate, DateFormat.DATE);
 
 	Document document = toolkitFactory.createDocumentTag(base);
@@ -120,7 +120,7 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 	Date currDate = new Date();
 	BaseCategory stringCategory = base.getBaseCategory(catNames[0]);
 	BaseCategory dateTimeBaseCategory = base.getBaseCategory(catNames[7]);
-	String strDateTime = ServiceProvider.getSearchService().formatDate(
+	String strDateTime = serviceProvider.getSearchService().formatDate(
 		currDate, DateFormat.DATETIME);
 
 	Document document = toolkitFactory.createDocumentTag(base);
@@ -153,9 +153,9 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 	String dateTimeFN = dateTimeBaseCategory.getFormattedName();
 
 	Date currDate = new Date();
-	String strDate = ServiceProvider.getSearchService().formatDate(
+	String strDate = serviceProvider.getSearchService().formatDate(
 		currDate, DateFormat.DATE);
-	String strDateTime = ServiceProvider.getSearchService().formatDate(
+	String strDateTime = serviceProvider.getSearchService().formatDate(
 		currDate, DateFormat.DATETIME);
 
 	Document document = toolkitFactory.createDocumentTag(base);
@@ -190,7 +190,7 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 	String c0FName = stringCategory.getFormattedName();
 	String query = c0FName + ":My*";
 	assertEquals(6,
-		ServiceProvider.getSearchService().search(query, 100, base)
+		serviceProvider.getSearchService().search(query, 100, base)
 			.getTotalHits());
 
 	query = c0FName + ":My*Test";

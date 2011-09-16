@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -24,24 +24,25 @@ public class InjectorTest extends AbstractEventTest {
      * Test d'injection en masse de documents
      * 
      * @throws IOException
+     * @throws FrozenDocumentException
      * 
      */
     @Ignore
     @Test
-    public void testInjectBatch() throws IOException {
+    public void testInjectBatch() throws IOException, FrozenDocumentException {
 	File file = createFile();
 
 	// File file = getFile(XML_BATCH, this.getClass());
 	List<Document> documens = null;
 	String absolutePath = file.getAbsolutePath();
-	documens = ServiceProvider.getStoreService().injectDocuments(
+	documens = serviceProvider.getStoreService().injectDocuments(
 		absolutePath);
 
 	assertEquals("Tous les documents n'ont pas été injectés.", 3,
 		documens.size());
 
 	for (Document doc : documens) {
-	    ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
+	    serviceProvider.getStoreService().deleteDocument(doc.getUuid());
 	}
 
     }

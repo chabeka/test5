@@ -2,16 +2,16 @@ package com.docubase.dfce.toolkit.document;
 
 import static junit.framework.Assert.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.ServiceProvider;
+import net.docubase.toolkit.model.reference.FileReference;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,48 +22,19 @@ import com.itextpdf.text.pdf.PdfReader;
 public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
 
     /** The ref document. */
-    private static Document refDocument;
+    private static FileReference fileReference;
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-	if (refDocument == null) {
-	    refDocument = insertReferenceDocument();
+	if (fileReference == null) {
+	    fileReference = createFileReference();
 	}
-    }
-
-    /**
-     * Cette méthode insert le docuemnt de référence utiliser pour les tests.
-     * 
-     * @return the uUID
-     * @throws CustomTagControlException
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
-    private static Document insertReferenceDocument()
-	    throws TagControlException {
-
-	File fileRef = getFile("48pages.pdf", VirtualDocumentTest.class);
-	assertNotNull(fileRef);
-
-	Document document = ToolkitFactory.getInstance()
-		.createDocumentTag(base);
-	document.setType("PDF");
-
-	document.addCriterion(base.getBaseCategory(catNames[0]), "FileRef");
-
-	document = storeDocument(document, fileRef);
-
-	assertNotNull(document);
-
-	logger.info("Ref document stored.");
-
-	return document;
     }
 
     /**
      * Insert un document virtuel.
      * 
-     * @param refDocument
+     * @param fileReference
      *            uuid du document de référence
      * @param startPage
      *            première page
@@ -74,23 +45,23 @@ public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
      * 
      * @return le doucument virtuel.
      */
-    private static Document insertVirtualDocument(Document refDocument,
+    private static Document insertVirtualDocument(FileReference fileReference,
 	    int startPage, int endPage, String name) throws TagControlException {
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
-	document.setCreationDate(generateCreationDate()).setType("pdf");
+	document.setCreationDate(generateCreationDate());
 	document.addCriterion(base.getBaseCategory(catNames[0]),
 		"DocumentVirtual" + UUID.randomUUID());
 
-	Document stored = ServiceProvider
-		.getStoreService()
-		.storeVirtualDocument(document, refDocument, startPage, endPage);
-	assertNotNull(stored);
-	assertEquals(refDocument.getUuid(), stored.getVirtualReferenceUUID());
-	assertEquals(startPage, stored.getVirtualStartPage());
-	assertEquals(endPage, stored.getVirtualEndPage());
+	Document documentStored = serviceProvider.getStoreService()
+		.storeVirtualDocument(document, fileReference, startPage,
+			endPage);
+	assertNotNull(documentStored);
+	assertEquals(fileReference.getUuid(), documentStored.getFileUUID());
+	assertEquals(startPage, documentStored.getStartPage());
+	assertEquals(endPage, documentStored.getEndPage());
 
-	return stored;
+	return documentStored;
     }
 
     /**
@@ -127,8 +98,8 @@ public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
 	Document documentTag = ToolkitFactory.getInstance().createDocumentTag(
 		base);
 
-	ServiceProvider.getStoreService().storeVirtualDocument(documentTag,
-		refDocument, 2, 1);
+	serviceProvider.getStoreService().storeVirtualDocument(documentTag,
+		fileReference, 2, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -136,8 +107,8 @@ public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
 	Document documentTag = ToolkitFactory.getInstance().createDocumentTag(
 		base);
 
-	ServiceProvider.getStoreService().storeVirtualDocument(documentTag,
-		refDocument, 0, 5);
+	serviceProvider.getStoreService().storeVirtualDocument(documentTag,
+		fileReference, 0, 5);
     }
 
     /**
@@ -146,46 +117,59 @@ public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
      * 
      * @throws CustomTagControlException
      * @throws IOException
+     * @throws NoSuchAlgorithmException
      */
     @Test
-    public void testInsertVirtualDocument() throws IOException,
-	    TagControlException {
+    public void testInsertAndExtractVirtualDocument() throws IOException,
+	    TagControlException, NoSuchAlgorithmException {
 	logger.info("Start testVirtualDocument()...");
 	int startPage = 3;
 	int endPage = 5;
 
-	Document document = insertVirtualDocument(refDocument, startPage,
+	Document document = insertVirtualDocument(fileReference, startPage,
 		endPage, "VirtualDoc.pdf");
-	document = ServiceProvider.getSearchService().getDocumentByUUID(base,
+	document = serviceProvider.getSearchService().getDocumentByUUID(base,
 		document.getUuid());
 	assertNotNull(document.getUuid());
-	assertEquals(refDocument.getUuid(), document.getVirtualReferenceUUID());
-	assertEquals(startPage, document.getVirtualStartPage());
-	assertEquals(endPage, document.getVirtualEndPage());
+	assertEquals(fileReference.getUuid(), document.getFileUUID());
+	assertEquals(startPage, document.getStartPage());
+	assertEquals(endPage, document.getEndPage());
 
-	InputStream documentFile = ServiceProvider.getStoreService()
+	InputStream documentFile = serviceProvider.getStoreService()
 		.getDocumentFile(document);
+
 	checkPDF(documentFile, 3);
+
+	// Check reference document digest
+	// MessageDigest instance = MessageDigest.getInstance(document
+	// .getDigestAlgorithm());
+	// Document refDocument = serviceProvider.getSearchService()
+	// .getDocumentByUUID(base, document.isVirtual());
+	// InputStream refInputStream = serviceProvider.getStoreService()
+	// .getDocumentFile(refDocument);
+	// byte[] digest = instance.digest(IOUtils.toByteArray(refInputStream));
+	// assertEquals(Hex.encodeHexString(digest), document.getDigest());
 
 	logger.info("... end testVirtualDocument().");
 	documentFile.close();
     }
 
     @Test
-    public void test_Modify_StartPage() throws IOException, TagControlException {
+    public void test_Modify_StartPage() throws IOException,
+	    TagControlException, FrozenDocumentException {
 
 	int startPage = 3;
 	int endPage = 5;
 
-	Document document = insertVirtualDocument(refDocument, startPage,
+	Document document = insertVirtualDocument(fileReference, startPage,
 		endPage, "StartPage3.pdf");
 
-	document = ServiceProvider.getStoreService().updateVirtualDocument(
+	document = serviceProvider.getStoreService().updateVirtualDocument(
 		document, 1, 7);
 
-	assertEquals(1, document.getVirtualStartPage());
+	assertEquals(1, document.getStartPage());
 
-	InputStream pdf = ServiceProvider.getStoreService().getDocumentFile(
+	InputStream pdf = serviceProvider.getStoreService().getDocumentFile(
 		document);
 
 	checkPDF(pdf, 7);

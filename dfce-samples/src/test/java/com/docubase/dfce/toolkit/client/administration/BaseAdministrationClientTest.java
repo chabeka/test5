@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
-import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.administration.BaseAdministrationService;
 
 import org.junit.Test;
@@ -12,7 +11,7 @@ import org.junit.Test;
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
 public class BaseAdministrationClientTest extends AbstractDFCEToolkitClientTest {
-    private BaseAdministrationService baseAdministrationService = ServiceProvider
+    private BaseAdministrationService baseAdministrationService = serviceProvider
 	    .getBaseAdministrationService();
 
     @Test

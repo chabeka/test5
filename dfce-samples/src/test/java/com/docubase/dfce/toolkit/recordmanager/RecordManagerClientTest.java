@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class RecordManagerClientTest extends AbstractEventTest {
 
-    private RecordManagerService recordManagerService = ServiceProvider
+    private RecordManagerService recordManagerService = serviceProvider
 	    .getRecordManagerService();
 
     /**
@@ -173,7 +173,7 @@ public class RecordManagerClientTest extends AbstractEventTest {
 
 	recordManagerService.createCustomDocumentEventLog(docEventLog);
 
-	List<RMDocEvent> events = ServiceProvider.getRecordManagerService()
+	List<RMDocEvent> events = serviceProvider.getRecordManagerService()
 		.getDocumentEventLogsByUUID(KEY_DOC);
 
 	boolean found = false;

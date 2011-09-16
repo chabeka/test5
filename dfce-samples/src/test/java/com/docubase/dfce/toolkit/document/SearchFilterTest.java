@@ -1,19 +1,15 @@
 package com.docubase.dfce.toolkit.document;
 
 import static junit.framework.Assert.*;
-
-import java.io.File;
-
-import junit.framework.Assert;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
+import net.docubase.toolkit.model.reference.FileReference;
 import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.ChainedFilter.ChainedFilterOperator;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,14 +25,11 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     private static BaseCategory number;
 
     /** UUID du document de réféence pour les tests. */
-    private static Document referenceDocument;
-
-    private static File file;
+    private static FileReference fileReference;
 
     @BeforeClass
     public static final void beforeClass() throws TagControlException {
-	file = getFile("48pages.pdf", VirtualDocumentTest.class);
-	storeDocument();
+	fileReference = createFileReference();
 	insertDocument();
     }
 
@@ -69,30 +62,15 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	    tag.addCriterion(number, i);
 
 	    // stockage
-	    insertVirtualDocument(tag, referenceDocument, 1, 5);
+	    insertVirtualDocument(tag, fileReference, 1, 5);
 	}
 
-    }
-
-    private static Document storeDocument() throws TagControlException {
-	Document tag = ToolkitFactory.getInstance().createDocumentTag(base)
-		.setCreationDate(generateCreationDate()).setType("PDF");
-
-	BaseCategory baseCategory = base.getBaseCategory(catNames[0]);
-	tag.addCriterion(baseCategory, "FileRef_" + System.currentTimeMillis());
-
-	Document stored = storeDocument(tag, file);
-
-	Assert.assertNotNull(stored);
-	referenceDocument = stored;
-
-	return tag;
     }
 
     /**
      * Insert un document virtuel.
      * 
-     * @param referenceDocument
+     * @param fileReference
      *            uuid du document de référence
      * @param startPage
      *            première page
@@ -104,14 +82,12 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
      * @return le doucument virtuel.
      */
     private static Document insertVirtualDocument(Document document,
-	    Document refDocument, int startPage, int endPage)
+	    FileReference fileReference, int startPage, int endPage)
 	    throws TagControlException {
 
-	document.setType("PDF");
-
-	Document stored = ServiceProvider
-		.getStoreService()
-		.storeVirtualDocument(document, refDocument, startPage, endPage);
+	Document stored = serviceProvider.getStoreService()
+		.storeVirtualDocument(document, fileReference, startPage,
+			endPage);
 
 	assertNotNull(stored);
 	return stored;
@@ -126,7 +102,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 			ChainedFilterOperator.AND)
 		.addTermFilter(owner.getFormattedName(), "bob",
 			ChainedFilterOperator.AND);
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
 
 	assertEquals(50, result.getTotalHits());
@@ -141,7 +117,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 			ChainedFilterOperator.OR)
 		.addTermFilter(company.getFormattedName(), "at&t",
 			ChainedFilterOperator.OR);
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(200, result.getTotalHits());
 
@@ -155,7 +131,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 		.addTermFilter(owner.getFormattedName(), "bob",
 			ChainedFilterOperator.ANDNOT);
 
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(100, result.getTotalHits());
     }
@@ -166,7 +142,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	ChainedFilter chainedFilter = ToolkitFactory.getInstance()
 		.createChainedFilter()
 		.addIntRangeFilter(id.getFormattedName(), 7, 47, false, false);
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(50, result.getTotalHits());
 
@@ -178,7 +154,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	ChainedFilter chainedFilter = ToolkitFactory.getInstance()
 		.createChainedFilter()
 		.addIntRangeFilter(id.getFormattedName(), 7, 47, true, true);
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(150, result.getTotalHits());
 
@@ -195,7 +171,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 			ChainedFilterOperator.AND)
 		.addTermFilter(owner.getFormattedName(), "sue",
 			ChainedFilterOperator.OR);
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		number.getFormattedName() + ":[1 TO 10]", 1000, base,
 		chainedFilter);
 
@@ -205,7 +181,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testNumericRangeQuery() throws ExceededSearchLimitException {
-	SearchResult result = ServiceProvider.getSearchService().search(
+	SearchResult result = serviceProvider.getSearchService().search(
 		owner.getFormattedName() + ":bob AND "
 			+ number.getFormattedName() + ":[1 TO 20]", 1000, base);
 	assertEquals(10, result.getTotalHits());

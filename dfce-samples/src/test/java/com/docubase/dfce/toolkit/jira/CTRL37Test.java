@@ -1,7 +1,6 @@
 package com.docubase.dfce.toolkit.jira;
 
 import net.docubase.toolkit.model.base.Base;
-import net.docubase.toolkit.service.Authentication;
 import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.Test;
@@ -17,11 +16,14 @@ public class CTRL37Test {
     private static final String ADM_LOGIN = "_ADMIN";
     private static final String ADM_PASSWORD = "DOCUBASE";
 
+    private static ServiceProvider serviceProvider = ServiceProvider
+	    .newServiceProvider();
+
     @Test
     public void getBaseMultiThread() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD,
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
 		AbstractBaseTestCase.SERVICE_URL);
-	Base base = ServiceProvider.getBaseAdministrationService().getBase(
+	Base base = serviceProvider.getBaseAdministrationService().getBase(
 		BASE_ID);
 
 	System.out.println(base + " " + Thread.currentThread().getName());
@@ -29,36 +31,30 @@ public class CTRL37Test {
 	Thread t = new Thread() {
 	    @Override
 	    public void run() {
-		Authentication.openSession(ADM_LOGIN, ADM_PASSWORD,
-			AbstractBaseTestCase.SERVICE_URL);
 		System.out.println(Thread.currentThread().getName());
-		ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
-		Authentication.closeSession();
+		serviceProvider.getBaseAdministrationService().getBase(BASE_ID);
 	    };
 	};
 	t.start();
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     @Test
     public void getBaseMultiThreadWithAuth() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD,
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
 		AbstractBaseTestCase.SERVICE_URL);
-	Base base = ServiceProvider.getBaseAdministrationService().getBase(
+	Base base = serviceProvider.getBaseAdministrationService().getBase(
 		BASE_ID);
 	System.out.println(base + " " + Thread.currentThread().getName());
 
 	Thread t = new Thread() {
 	    @Override
 	    public void run() {
-		Authentication.openSession(ADM_LOGIN, ADM_PASSWORD,
-			AbstractBaseTestCase.SERVICE_URL);
 		System.out.println(Thread.currentThread().getName());
-		ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
-		Authentication.closeSession();
+		serviceProvider.getBaseAdministrationService().getBase(BASE_ID);
 	    };
 	};
 	t.start();
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 }

@@ -12,12 +12,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import junit.framework.Assert;
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -79,7 +80,7 @@ public class DocumentVersioningTest extends
     private Document storeDocument() throws TagControlException {
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
-	document.setCreationDate(generateCreationDate()).setType("PDF");
+	document.setCreationDate(generateCreationDate());
 	document.addCriterion(base.getBaseCategory(catNames[0]), "FileRef_"
 		+ System.currentTimeMillis());
 
@@ -102,7 +103,7 @@ public class DocumentVersioningTest extends
 	UUID uuid = document.getUuid();
 	assertNotNull(uuid);
 
-	assertEquals(1, document.getCurrentVersionNumber());
+	assertEquals("0.0.0", document.getVersion());
 	String digest = document.getDigest();
 	String algorithm = document.getDigestAlgorithm();
 
@@ -112,7 +113,7 @@ public class DocumentVersioningTest extends
 	InputStream inputStream = new FileInputStream(file);
 	checkDigest(digest, algorithm, inputStream);
 
-	InputStream documentFile = ServiceProvider.getStoreService()
+	InputStream documentFile = serviceProvider.getStoreService()
 		.getDocumentFile(document);
 
 	checkDigest(digest, algorithm, documentFile);
@@ -128,22 +129,31 @@ public class DocumentVersioningTest extends
      * Test update document version.
      * 
      * @throws TagControlException
+     * @throws FrozenDocumentException
      * 
      */
     // Versioning is not active by default.
     @Test(expected = RuntimeException.class)
     public void testUpdateDocumentVersion() throws TagControlException,
-	    FileNotFoundException {
+	    FileNotFoundException, FrozenDocumentException {
 	Document document = storeDocument();
 
-	Document updated = ServiceProvider.getStoreService().updateFileVersion(
+	Document updated = serviceProvider.getStoreService().updateFileVersion(
 		document, new FileInputStream(file));
 	assertNotNull(updated);
 
-	document = ServiceProvider.getSearchService().getDocumentByUUID(base,
+	document = serviceProvider.getSearchService().getDocumentByUUID(base,
 		document.getUuid());
 	assertNotNull(document);
-	assertEquals(2, document.getCurrentVersionNumber());
+	assertEquals(2, document.getVersion());
+    }
 
+    @Test
+    public void testDocumentVersionData() throws TagControlException {
+	Document document = storeDocument();
+
+	assertEquals(file.length(), document.getSize());
+	assertEquals(FilenameUtils.getBaseName(file.getName()),
+		document.getFilename());
     }
 }

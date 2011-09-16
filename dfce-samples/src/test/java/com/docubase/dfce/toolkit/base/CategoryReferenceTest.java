@@ -7,8 +7,6 @@ import junit.framework.Assert;
 import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.reference.Category;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -26,12 +24,12 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
 
     @BeforeClass
     public static void beforeAll() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
     }
 
     @AfterClass
     public static void afterAll() {
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     /**
@@ -42,7 +40,7 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
      */
     @Test
     public void testInsertCategory() throws ObjectAlreadyExistsException {
-	boolean alreadyExists = ServiceProvider
+	boolean alreadyExists = serviceProvider
 		.getStorageAdministrationService().createCategory(
 			CATEGORY_CODE1, CategoryDataType.DATE);
 	Assert.assertFalse(alreadyExists);
@@ -57,11 +55,11 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
     @Test
     public void testInsertCategoryAlreadyExists()
 	    throws ObjectAlreadyExistsException {
-	boolean alreadyExists = ServiceProvider
+	boolean alreadyExists = serviceProvider
 		.getStorageAdministrationService().createCategory(
 			CATEGORY_CODE2, CategoryDataType.DATE);
 	Assert.assertFalse(alreadyExists);
-	alreadyExists = ServiceProvider.getStorageAdministrationService()
+	alreadyExists = serviceProvider.getStorageAdministrationService()
 		.createCategory(CATEGORY_CODE2, CategoryDataType.DATE);
 	Assert.assertTrue(alreadyExists);
     }
@@ -74,9 +72,9 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
      */
     @Test
     public void testGetAllCategories() throws ObjectAlreadyExistsException {
-	ServiceProvider.getStorageAdministrationService().createCategory(
+	serviceProvider.getStorageAdministrationService().createCategory(
 		CATEGORY_CODE3, CategoryDataType.INTEGER);
-	Set<Category> allCategories = ServiceProvider
+	Set<Category> allCategories = serviceProvider
 		.getStorageAdministrationService().getAllCategories();
 
 	Category categoryFound = null;
@@ -98,9 +96,9 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
      */
     @Test
     public void testGetCategoryByCode() throws ObjectAlreadyExistsException {
-	ServiceProvider.getStorageAdministrationService().createCategory(
+	serviceProvider.getStorageAdministrationService().createCategory(
 		CATEGORY_CODE4, CategoryDataType.INTEGER);
-	Category category = ServiceProvider.getStorageAdministrationService()
+	Category category = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATEGORY_CODE4);
 	Assert.assertNotNull(category);
 	Assert.assertEquals(category.getName(), category.getName());

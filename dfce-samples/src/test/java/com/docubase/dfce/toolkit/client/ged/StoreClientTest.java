@@ -11,17 +11,17 @@ import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.administration.BaseAdministrationService;
 import net.docubase.toolkit.service.ged.StoreService;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
 
 public class StoreClientTest extends AbstractDFCEToolkitClientTest {
-    private final StoreService storeService = ServiceProvider.getStoreService();
-    private final BaseAdministrationService baseAdministrationService = ServiceProvider
+    private final StoreService storeService = serviceProvider.getStoreService();
+    private final BaseAdministrationService baseAdministrationService = serviceProvider
 	    .getBaseAdministrationService();
 
     @Test
@@ -35,15 +35,16 @@ public class StoreClientTest extends AbstractDFCEToolkitClientTest {
 		e.printStackTrace();
 		fail("base : " + base.getBaseId() + " already exists");
 	    }
-	    base = ServiceProvider.getBaseAdministrationService().getBase(
+	    base = serviceProvider.getBaseAdministrationService().getBase(
 		    "baseId");
 	}
 
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
-	document.setType("PDF");
 	File file = new File(this.getClass().getResource("doc1.pdf").getPath());
 	Document storeDocument = storeService.storeDocument(document,
+		FilenameUtils.getBaseName(file.getName()),
+		FilenameUtils.getExtension(file.getName()),
 		new FileInputStream(file));
 	assertNotNull(storeDocument);
     }

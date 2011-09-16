@@ -7,6 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.exception.ged.TagControlException;
@@ -16,13 +19,18 @@ import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.Category;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
+import net.docubase.toolkit.model.reference.FileReference;
+import net.docubase.toolkit.model.user.User;
+import net.docubase.toolkit.model.user.UserGroup;
+import net.docubase.toolkit.model.user.UserPermission;
 import net.docubase.toolkit.service.administration.StorageAdministrationService;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+
+import com.docubase.dfce.toolkit.document.VirtualDocumentTest;
 
 public abstract class AbstractTestCaseCreateAndPrepareBase extends
 	AbstractBaseTestCase {
@@ -39,59 +47,73 @@ public abstract class AbstractTestCaseCreateAndPrepareBase extends
 
     @BeforeClass
     public static void before() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+
 	base = deleteAndCreateBaseThenStarts();
+
+	createSimpleUser();
+    }
+
+    private static void createSimpleUser() {
+	UserGroup userGroup = serviceProvider.getUserAdministrationService()
+		.loadUserGroup("USER");
+
+	if (userGroup == null) {
+	    Set<UserPermission> permissions = new HashSet<UserPermission>();
+	    permissions.add(UserPermission.GET_BASE);
+	    permissions.add(UserPermission.DOCUMENT_STORE);
+	    permissions.add(UserPermission.DOCUMENT_EXTRACT);
+	    permissions.add(UserPermission.BASE_SEARCH);
+
+	    try {
+		userGroup = serviceProvider.getUserAdministrationService()
+			.createUserGroup("USER", permissions);
+	    } catch (ObjectAlreadyExistsException e) {
+		throw new RuntimeException(e);
+	    }
+	}
+
+	User simpleUser = serviceProvider.getUserAdministrationService()
+		.loadUser(SIMPLE_USER_NAME);
+	if (simpleUser == null) {
+	    try {
+		simpleUser = serviceProvider.getUserAdministrationService()
+			.createUser(SIMPLE_USER_NAME, SIMPLE_USER_PASSWORD,
+				"USER");
+	    } catch (ObjectAlreadyExistsException e) {
+		throw new RuntimeException(e);
+	    }
+	}
     }
 
     @AfterClass
     public static void after() {
 	deleteBase(base);
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     protected static Base deleteAndCreateBaseThenStarts() {
-	Base base = ServiceProvider.getBaseAdministrationService().getBase(
+	Base base = serviceProvider.getBaseAdministrationService().getBase(
 		BASEID);
 	if (base != null) {
 	    deleteBase(base);
 	}
 	base = createBase();
 
-	ServiceProvider.getBaseAdministrationService().startBase(base);
+	serviceProvider.getBaseAdministrationService().startBase(base);
 
-	base = ServiceProvider.getBaseAdministrationService().getBase(BASEID);
+	base = serviceProvider.getBaseAdministrationService().getBase(BASEID);
 	return base;
     }
 
     private static Base createBase() {
 	ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
-	StorageAdministrationService storageAdministrationService = ServiceProvider
+	StorageAdministrationService storageAdministrationService = serviceProvider
 		.getStorageAdministrationService();
 
 	Base base = toolkitFactory.createBase(BASEID);
 
 	base.setDescription("My-Ged-Is-Rich");
-
-	// Déclare une date de création disponible mais optionnell
-	base.setDocumentCreationDateConfiguration(Base.DocumentCreationDateConfiguration.OPTIONAL);
-	// Pas de fond de page
-	base.setDocumentOverlayFormConfiguration(Base.DocumentOverlayFormConfiguration.NONE);
-	// Pas de groupe de document
-	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-	// Le propriétaire d'un document n'est pas modifiable à postériori de
-	// son injection
-	base.setDocumentOwnerModify(false);
-	/*
-	 * Masque de titre. C'est encore maintenu en DS4, même si maintenant on
-	 * peut remonter les valeurs de catégorie dans les listes de solution
-	 * sans avoir besoin de cet artifice.
-	 */
-	base.setDocumentTitleMask("C0+\" < \"+C1");
-	// taille maximum d'un titre
-	base.setDocumentTitleMaxSize(255);
-	// Impossible de modifier un titre à postériori
-	base.setDocumentTitleModify(false);
-	base.setDocumentTitleSeparator(">");
 
 	Category category0 = storageAdministrationService.findOrCreateCategory(
 		catNames[0], CategoryDataType.STRING);
@@ -158,7 +180,7 @@ public abstract class AbstractTestCaseCreateAndPrepareBase extends
 	base.addBaseCategory(baseCategory8);
 
 	try {
-	    ServiceProvider.getBaseAdministrationService().createBase(base);
+	    serviceProvider.getBaseAdministrationService().createBase(base);
 	} catch (ObjectAlreadyExistsException e) {
 	    e.printStackTrace();
 	    fail("base : " + base.getBaseId() + " already exists");
@@ -177,7 +199,7 @@ public abstract class AbstractTestCaseCreateAndPrepareBase extends
 	baseCategoryDateHeure.setEnableDictionary(false);
 	base.addBaseCategory(baseCategoryDateHeure);
 
-	ServiceProvider.getBaseAdministrationService().updateBase(base);
+	serviceProvider.getBaseAdministrationService().updateBase(base);
 
 	return base;
     }
@@ -188,8 +210,9 @@ public abstract class AbstractTestCaseCreateAndPrepareBase extends
 
 	try {
 	    in = new FileInputStream(file);
-	    return ServiceProvider.getStoreService()
-		    .storeDocument(document, in);
+	    return serviceProvider.getStoreService().storeDocument(document,
+		    FilenameUtils.getBaseName(file.getName()),
+		    FilenameUtils.getExtension(file.getName()), in);
 	} catch (FileNotFoundException e) {
 	    throw new RuntimeException(e);
 	} finally {
@@ -202,4 +225,46 @@ public abstract class AbstractTestCaseCreateAndPrepareBase extends
 	    }
 	}
     }
+
+    /**
+     * Cette méthode insert le docuemnt de référence utiliser pour les tests.
+     * 
+     * @return the uUID
+     * @throws CustomTagControlException
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    protected static FileReference createFileReference() {
+
+	File file = getFile("48pages.pdf", VirtualDocumentTest.class);
+
+	assertNotNull(file);
+	InputStream inputStream = null;
+	try {
+	    inputStream = new FileInputStream(file);
+	} catch (FileNotFoundException e) {
+	    fail(e.getMessage());
+	}
+
+	StorageAdministrationService storageAdministrationService = serviceProvider
+		.getStorageAdministrationService();
+
+	FileReference fileReference = storageAdministrationService
+		.createFileReference(FilenameUtils.getBaseName(file.getName()),
+			FilenameUtils.getExtension(file.getName()), inputStream);
+
+	assertNotNull(fileReference);
+
+	logger.info("FileReference created stored.");
+
+	return fileReference;
+    }
+
+    protected Document createTestDocument() {
+	Document document = ToolkitFactory.getInstance()
+		.createDocumentTag(base);
+	document.addCriterion(baseCategory0, "New Value 12" + UUID.randomUUID());
+	return document;
+    }
+
 }

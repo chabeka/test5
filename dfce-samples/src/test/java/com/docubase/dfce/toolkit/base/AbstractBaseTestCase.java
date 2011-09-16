@@ -17,6 +17,7 @@ import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.SearchResult;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -30,8 +31,12 @@ public abstract class AbstractBaseTestCase {
     public static final String SERVICE2_URL;
     public static final String SIMPLE_USER_NAME = "SIMPLE_USER_NAME";
     public static final String SIMPLE_USER_PASSWORD = "SIMPLE_USER_PASSWORD";
+    public static final String SIMPLE_USER_GROUP = "SIMPLE_USER_GROUP";
     /* Instance de la base GED. Utilisée pour définir / modifier la base GED */
     protected static Base base;
+
+    protected static ServiceProvider serviceProvider = ServiceProvider
+	    .newServiceProvider();
 
     static {
 	Properties props = new Properties();
@@ -53,13 +58,10 @@ public abstract class AbstractBaseTestCase {
 	FileInputStream in = null;
 	try {
 	    in = new FileInputStream(newDoc);
-	    String type = newDoc.getName()
-		    .substring(newDoc.getName().lastIndexOf(".") + 1)
-		    .toUpperCase();
-	    document.setType(type);
 
-	    stored = ServiceProvider.getStoreService().storeDocument(document,
-		    in);
+	    stored = serviceProvider.getStoreService().storeDocument(document,
+		    FilenameUtils.getBaseName(newDoc.getName()),
+		    FilenameUtils.getExtension(newDoc.getName()), in);
 	    Assert.assertEquals(expectStore, stored != null);
 	    in.close();
 
@@ -83,8 +85,8 @@ public abstract class AbstractBaseTestCase {
     }
 
     protected static void deleteBase(Base base) {
-	ServiceProvider.getBaseAdministrationService().stopBase(base);
-	ServiceProvider.getBaseAdministrationService().deleteBase(base);
+	serviceProvider.getBaseAdministrationService().stopBase(base);
+	serviceProvider.getBaseAdministrationService().deleteBase(base);
     }
 
     protected static File getFile(String fileName, Class<?> clazz) {
@@ -100,7 +102,7 @@ public abstract class AbstractBaseTestCase {
     }
 
     /**
-     * Génére une date de crétation. Date du jour moins 2 heures.
+     * Génére une date de création. Date du jour moins 2 heures.
      * 
      * @return the date
      */
@@ -117,7 +119,7 @@ public abstract class AbstractBaseTestCase {
     protected int searchLucene(String query, int searchLimit,
 	    ChainedFilter chainedFilter) throws ExceededSearchLimitException {
 
-	SearchResult search = ServiceProvider.getSearchService().search(query,
+	SearchResult search = serviceProvider.getSearchService().search(query,
 		searchLimit, base, chainedFilter);
 	if (search == null) {
 	    return 0;

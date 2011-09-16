@@ -15,18 +15,15 @@ import java.util.Set;
 import junit.framework.TestCase;
 import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
-import net.docubase.toolkit.model.base.Base.DocumentCreationDateConfiguration;
-import net.docubase.toolkit.model.base.Base.DocumentOverlayFormConfiguration;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.ged.SearchService.MetaData;
 
 import org.junit.AfterClass;
@@ -49,7 +46,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
 
     @BeforeClass
     public static void setUp() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
 	storedDocs = new ArrayList<Document>();
 
 	/*
@@ -64,24 +61,25 @@ public class MultibaseTest extends AbstractBaseTestCase {
     }
 
     /**
+     * @throws FrozenDocumentException
      * @see TestCase#tearDown()
      */
     @AfterClass
-    public static void tearDown() {
+    public static void tearDown() throws FrozenDocumentException {
 	for (Document document : storedDocs) {
-	    ServiceProvider.getStoreService()
+	    serviceProvider.getStoreService()
 		    .deleteDocument(document.getUuid());
 	}
 	deleteBase(base1);
 	deleteBase(base2);
 
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     protected static Base createBase(String baseId, String description,
 	    String[] catNames) {
 
-	Base base = ServiceProvider.getBaseAdministrationService().getBase(
+	Base base = serviceProvider.getBaseAdministrationService().getBase(
 		baseId);
 
 	if (base != null) {
@@ -89,18 +87,8 @@ public class MultibaseTest extends AbstractBaseTestCase {
 	}
 	base = ToolkitFactory.getInstance().createBase(baseId);
 
-	// Déclare une date de création disponible mais optionnell
-	base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
-	// Pas de fond de page
-	base.setDocumentOverlayFormConfiguration(DocumentOverlayFormConfiguration.NONE);
-	// Pas de groupe de document
-	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-	// Le propriétaire d'un document n'est pas modifiable à postériori de
-	// son injection
-	base.setDocumentOwnerModify(false);
-
 	for (int i = 0; i < catNames.length; i++) {
-	    Category category = ServiceProvider
+	    Category category = serviceProvider
 		    .getStorageAdministrationService().findOrCreateCategory(
 			    catNames[i], CategoryDataType.STRING);
 
@@ -113,12 +101,12 @@ public class MultibaseTest extends AbstractBaseTestCase {
 	}
 
 	try {
-	    ServiceProvider.getBaseAdministrationService().createBase(base);
+	    serviceProvider.getBaseAdministrationService().createBase(base);
 	} catch (ObjectAlreadyExistsException e) {
 	    e.printStackTrace();
 	    fail("base : " + base.getBaseId() + " already exists");
 	}
-	ServiceProvider.getBaseAdministrationService().startBase(base);
+	serviceProvider.getBaseAdministrationService().startBase(base);
 
 	return base;
     }
@@ -140,7 +128,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
 	/*
 	 * On vérifie qu'on les trouve individuellement en requête monobase.
 	 */
-	Category categoryA = ServiceProvider.getStorageAdministrationService()
+	Category categoryA = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATA);
 	String query1 = categoryA.getFormattedName() + ":"
 		+ catValues.get(CATA);
@@ -179,7 +167,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
 	    assertTrue(baseNames.add(doc.getBaseId()));
 
 	    // On réussit bien à extraire le fichier
-	    InputStream documentFile = ServiceProvider.getStoreService()
+	    InputStream documentFile = serviceProvider.getStoreService()
 		    .getDocumentFile(doc);
 
 	    assertNotNull(documentFile);
@@ -200,10 +188,10 @@ public class MultibaseTest extends AbstractBaseTestCase {
 
     @Test(expected = ExceededSearchLimitException.class)
     public void testExceededSearchLimit() throws ExceededSearchLimitException {
-	Category category = ServiceProvider.getStorageAdministrationService()
+	Category category = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATA);
 	String query = category.getFormattedName() + ":Docubase";
-	ServiceProvider.getSearchService().multiBaseSearch(query, 100, null,
+	serviceProvider.getSearchService().multiBaseSearch(query, 100, null,
 		50000);
     }
 
@@ -213,7 +201,6 @@ public class MultibaseTest extends AbstractBaseTestCase {
 		target);
 
 	document.setTitle(title);
-	document.setType("PDF");
 
 	Set<BaseCategory> baseCategories = target.getBaseCategories();
 	for (BaseCategory baseCategory : baseCategories) {
@@ -237,7 +224,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
     private static List<Document> searchMono(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
 	    throws ExceededSearchLimitException {
-	SearchResult searchResult = ServiceProvider.getSearchService().search(
+	SearchResult searchResult = serviceProvider.getSearchService().search(
 		queryTxt, limit, target, chainedFilter);
 	if (nbExpectedResults != null) {
 	    assertEquals((int) nbExpectedResults, searchResult.getTotalHits());
@@ -260,7 +247,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
     private static List<Document> searchMulti(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
 	    throws ExceededSearchLimitException {
-	SearchResult searchResult = ServiceProvider.getSearchService()
+	SearchResult searchResult = serviceProvider.getSearchService()
 		.multiBaseSearch(queryTxt, limit, chainedFilter);
 	if (nbExpectedResults != null) {
 	    assertEquals((int) nbExpectedResults, searchResult.getTotalHits());

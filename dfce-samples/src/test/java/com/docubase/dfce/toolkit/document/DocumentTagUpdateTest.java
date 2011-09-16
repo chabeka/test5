@@ -8,13 +8,14 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Criterion;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,7 +37,7 @@ public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase 
 	file = getFile("48pages.pdf", DocumentTagUpdateTest.class);
     }
 
-    private ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
+    private final ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
 
     private BaseCategory baseCategory0;
 
@@ -57,10 +58,11 @@ public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase 
 	document.addCriterion(baseCategory0, c0Value);
 	document.addCriterion(baseCategoryInteger, 12);
 	document.addCriterion(baseCategoryInteger, 212);
-	document.setType("PDF");
 
-	storedDocument = ServiceProvider.getStoreService().storeDocument(
-		document, new FileInputStream(file));
+	storedDocument = serviceProvider.getStoreService().storeDocument(
+		document, FilenameUtils.getBaseName(file.getName()),
+		FilenameUtils.getExtension(file.getName()),
+		new FileInputStream(file));
 
 	List<Criterion> category0Criterions = storedDocument
 		.getCriterions(baseCategory0);
@@ -75,16 +77,17 @@ public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase 
     }
 
     @Test
-    public void testUpdateCriterionValue() throws TagControlException {
-	Document documentByUUID = ServiceProvider.getSearchService()
+    public void testUpdateCriterionValue() throws TagControlException,
+	    FrozenDocumentException {
+	Document documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUID(base, storedDocument.getUuid());
 
 	List<Criterion> categoryIntegercriterions = storedDocument
 		.getCriterions(baseCategoryInteger);
 	categoryIntegercriterions.get(0).setWord(512);
-	ServiceProvider.getStoreService().updateDocument(storedDocument);
+	serviceProvider.getStoreService().updateDocument(storedDocument);
 
-	documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(
+	documentByUUID = serviceProvider.getSearchService().getDocumentByUUID(
 		base, storedDocument.getUuid());
 
 	categoryIntegercriterions = documentByUUID
@@ -95,14 +98,15 @@ public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase 
     }
 
     @Test
-    public void testDeleteCriterion() throws TagControlException {
-	Document documentByUUID = ServiceProvider.getSearchService()
+    public void testDeleteCriterion() throws TagControlException,
+	    FrozenDocumentException {
+	Document documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUID(base, storedDocument.getUuid());
 
 	documentByUUID.deleteCriterion(baseCategoryInteger);
-	ServiceProvider.getStoreService().updateDocument(documentByUUID);
+	serviceProvider.getStoreService().updateDocument(documentByUUID);
 
-	documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(
+	documentByUUID = serviceProvider.getSearchService().getDocumentByUUID(
 		base, storedDocument.getUuid());
 	List<Criterion> categoryIntegercriterions = documentByUUID
 		.getCriterions(baseCategoryInteger);
@@ -113,14 +117,15 @@ public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase 
     }
 
     @Test
-    public void testAddCriterion() throws TagControlException {
-	Document documentByUUID = ServiceProvider.getSearchService()
+    public void testAddCriterion() throws TagControlException,
+	    FrozenDocumentException {
+	Document documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUID(base, storedDocument.getUuid());
 
 	documentByUUID.addCriterion(baseCategoryBoolean, Boolean.TRUE);
-	ServiceProvider.getStoreService().updateDocument(documentByUUID);
+	serviceProvider.getStoreService().updateDocument(documentByUUID);
 
-	documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(
+	documentByUUID = serviceProvider.getSearchService().getDocumentByUUID(
 		base, storedDocument.getUuid());
 	List<Criterion> categoryBooleanCriterions = documentByUUID
 		.getCriterions(baseCategoryBoolean);

@@ -19,9 +19,9 @@ import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.Authentication;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -37,7 +37,7 @@ import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 @RunWith(Parameterized.class)
 public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 
-    private int nbThread;
+    private final int nbThread;
 
     @Parameters
     public static List<Integer[]> numbersOfThreads() {
@@ -61,16 +61,23 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
      */
     @Test
     public void multiSearchExtraction() throws Exception {
+	serviceProvider = ServiceProvider.newServiceProvider();
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
 	final String appliSource = "test_multiExtraction" + System.nanoTime();
 
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
 	BaseCategory baseCategory = base.getBaseCategory(catNames[0]);
 	document.addCriterion(baseCategory, appliSource);
-	document.setType("PDF");
 	File file = getFile("doc1.pdf", this.getClass());
-	ServiceProvider.getStoreService().storeDocument(document,
-		new FileInputStream(file));
+
+	Document storeDocument = serviceProvider.getStoreService()
+		.storeDocument(document,
+			FilenameUtils.getBaseName(file.getName()),
+			FilenameUtils.getExtension(file.getName()),
+			new FileInputStream(file));
+
+	assertNotNull(storeDocument);
 
 	List<Future<File>> futures = new ArrayList<Future<File>>();
 	Set<String> files = new HashSet<String>();
@@ -91,7 +98,9 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     class SearchThenExtractTask implements Callable<File> {
-	private String docAppliSource;
+	private final String docAppliSource;
+	private final ServiceProvider localServiceProvider = ServiceProvider
+		.newServiceProvider();
 
 	public SearchThenExtractTask(String docAppliSource) {
 	    this.docAppliSource = docAppliSource;
@@ -100,8 +109,8 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 	@Override
 	public File call() throws Exception {
 	    try {
-		Authentication
-			.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+		localServiceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
+			SERVICE_URL);
 
 	    } catch (Throwable e) {
 		e.printStackTrace();
@@ -110,15 +119,15 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 	    BaseCategory baseCategory = base.getBaseCategory(catNames[0]);
 	    String fname = baseCategory.getFormattedName();
 	    String luceneQuery = String.format("%s:%s", fname, docAppliSource);
-	    SearchResult result = ServiceProvider.getSearchService().search(
-		    luceneQuery, 100, base, null);
+	    SearchResult result = localServiceProvider.getSearchService()
+		    .search(luceneQuery, 100, base, null);
 
 	    if (result != null && result.getDocuments() != null) {
 		assertEquals("Un seul document devrait être trouvé", 1,
 			result.getDocuments().size());
 
 		for (Document document : result.getDocuments()) {
-		    extractedDoc = ServiceProvider.getStoreService()
+		    extractedDoc = localServiceProvider.getStoreService()
 			    .getDocumentFile(document);
 		}
 	    } else {
@@ -138,7 +147,7 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 	    }
 
 	    extractedDoc.close();
-	    Authentication.closeSession();
+	    localServiceProvider.disconnect();
 	    return tempFile;
 	}
     }

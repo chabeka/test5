@@ -16,16 +16,12 @@ import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
-import net.docubase.toolkit.model.base.Base.DocumentCreationDateConfiguration;
-import net.docubase.toolkit.model.base.Base.DocumentOverlayFormConfiguration;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
@@ -68,14 +64,14 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	 * (on verra que celà n'a pas d'importance) base2 est la seule à avoir
 	 * CATD.
 	 */
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL);
 	createBase(BASE2, "Base no 1 - dom1", new String[] { CATA, CATC, CATB });
-	Authentication.closeSession();
+	serviceProvider.disconnect();
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL2);
 	createBase(BASE3, "Base no 2 - dom1", new String[] { CATA, CATB, CATC,
 		CATD });
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     /**
@@ -84,25 +80,25 @@ public class MultiDomainTest extends AbstractBaseTestCase {
     @AfterClass
     public static void tearDown() {
 	try {
-	    if (Authentication.isSessionActive()) {
-		Authentication.closeSession();
+	    if (serviceProvider.isSessionActive()) {
+		serviceProvider.disconnect();
 	    }
-	    Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
+	    serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL);
 	    for (Document document : storedDocs) {
-		ServiceProvider.getStoreService().deleteDocument(
+		serviceProvider.getStoreService().deleteDocument(
 			document.getUuid());
 	    }
-	    Base base2 = ServiceProvider.getBaseAdministrationService()
+	    Base base2 = serviceProvider.getBaseAdministrationService()
 		    .getBase(BASE2);
-	    Base base3 = ServiceProvider.getBaseAdministrationService()
+	    Base base3 = serviceProvider.getBaseAdministrationService()
 		    .getBase(BASE3);
 	    deleteBase(base2);
 	    deleteBase(base3);
 	} catch (Exception e) {
 	    LOGGER.error(e);
 	} finally {
-	    if (Authentication.isSessionActive()) {
-		Authentication.closeSession();
+	    if (serviceProvider.isSessionActive()) {
+		serviceProvider.disconnect();
 	    }
 	}
 
@@ -111,7 +107,7 @@ public class MultiDomainTest extends AbstractBaseTestCase {
     protected static Base createBase(String baseId, String description,
 	    String[] catNames) {
 
-	Base base = ServiceProvider.getBaseAdministrationService().getBase(
+	Base base = serviceProvider.getBaseAdministrationService().getBase(
 		baseId);
 
 	if (base != null) {
@@ -119,18 +115,8 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	}
 	base = ToolkitFactory.getInstance().createBase(baseId);
 
-	// Déclare une date de création disponible mais optionnell
-	base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
-	// Pas de fond de page
-	base.setDocumentOverlayFormConfiguration(DocumentOverlayFormConfiguration.NONE);
-	// Pas de groupe de document
-	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-	// Le propriétaire d'un document n'est pas modifiable à postériori de
-	// son injection
-	base.setDocumentOwnerModify(false);
-
 	for (int i = 0; i < catNames.length; i++) {
-	    Category category = ServiceProvider
+	    Category category = serviceProvider
 		    .getStorageAdministrationService().findOrCreateCategory(
 			    catNames[i], CategoryDataType.STRING);
 
@@ -143,12 +129,12 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	}
 
 	try {
-	    ServiceProvider.getBaseAdministrationService().createBase(base);
+	    serviceProvider.getBaseAdministrationService().createBase(base);
 	} catch (ObjectAlreadyExistsException e) {
 	    e.printStackTrace();
 	    fail("base : " + base.getBaseId() + " already exists");
 	}
-	ServiceProvider.getBaseAdministrationService().startBase(base);
+	serviceProvider.getBaseAdministrationService().startBase(base);
 
 	return base;
     }
@@ -161,14 +147,14 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	catValues.put(CATB, "EE74");
 	catValues.put(CATC, "50000Euros");
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-	Base base2 = ServiceProvider.getBaseAdministrationService().getBase(
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL);
+	Base base2 = serviceProvider.getBaseAdministrationService().getBase(
 		BASE2);
 	storeDoc(base2, "docA", catValues);
-	Authentication.closeSession();
+	serviceProvider.disconnect();
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-	Base base3 = ServiceProvider.getBaseAdministrationService().getBase(
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL2);
+	Base base3 = serviceProvider.getBaseAdministrationService().getBase(
 		BASE2);
 	storeDoc(base3, "docB", catValues);
 
@@ -186,15 +172,15 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	    System.out.println("Extraction du document " + doc.getTitle());
 
 	    // On réussit bien à extraire le fichier
-	    InputStream documentFile = ServiceProvider.getStoreService()
+	    InputStream documentFile = serviceProvider.getStoreService()
 		    .getDocumentFile(doc);
 	    assertNotNull(documentFile);
 	    documentFile.close();
 	}
-	Authentication.closeSession();
+	serviceProvider.disconnect();
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-	base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL);
+	base2 = serviceProvider.getBaseAdministrationService().getBase(BASE2);
 	/*
 	 * On recherche à nouveau
 	 */
@@ -207,12 +193,12 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	    System.out.println("Extraction du document " + doc.getTitle());
 
 	    // On réussit bien à extraire le fichier
-	    InputStream documentFile = ServiceProvider.getStoreService()
+	    InputStream documentFile = serviceProvider.getStoreService()
 		    .getDocumentFile(doc);
 	    assertNotNull(documentFile);
 	    documentFile.close();
 	}
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     @Test
@@ -222,26 +208,26 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	catValues.put(CATB, "EE74");
 	catValues.put(CATC, "50000Euros");
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-	Base base2 = ServiceProvider.getBaseAdministrationService().getBase(
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL);
+	Base base2 = serviceProvider.getBaseAdministrationService().getBase(
 		BASE2);
 	Document storeDoc = storeDoc(base2, "docA", catValues);
 
 	UUID uuid = storeDoc.getUuid();
-	Document documentByUUID = ServiceProvider.getSearchService()
+	Document documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUID(base2, uuid);
 	assertNotNull(documentByUUID);
 	assertEquals(uuid, documentByUUID.getUuid());
-	Authentication.closeSession();
+	serviceProvider.disconnect();
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-	base2 = ServiceProvider.getBaseAdministrationService().getBase(BASE2);
-	documentByUUID = ServiceProvider.getSearchService().getDocumentByUUID(
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL2);
+	base2 = serviceProvider.getBaseAdministrationService().getBase(BASE2);
+	documentByUUID = serviceProvider.getSearchService().getDocumentByUUID(
 		base2, uuid);
 	assertNotNull(documentByUUID);
 	assertEquals(uuid, documentByUUID.getUuid());
 
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     @Test
@@ -251,25 +237,25 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	catValues.put(CATB, "EE74");
 	catValues.put(CATC, "50000Euros");
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL);
-	Base base2 = ServiceProvider.getBaseAdministrationService().getBase(
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL);
+	Base base2 = serviceProvider.getBaseAdministrationService().getBase(
 		BASE2);
 	Document storeDoc = storeDoc(base2, "docA", catValues);
 
 	UUID uuid = storeDoc.getUuid();
-	Document documentByUUID = ServiceProvider.getSearchService()
+	Document documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUIDMultiBase(uuid);
 	assertNotNull(documentByUUID);
 	assertEquals(uuid, documentByUUID.getUuid());
-	Authentication.closeSession();
+	serviceProvider.disconnect();
 
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, URL2);
-	documentByUUID = ServiceProvider.getSearchService()
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, URL2);
+	documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUIDMultiBase(uuid);
 	assertNotNull(documentByUUID);
 	assertEquals(uuid, documentByUUID.getUuid());
 
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     private static Document storeDoc(Base target, String title,
@@ -278,7 +264,6 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 		target);
 
 	document.setTitle(title);
-	document.setType("PDF");
 
 	Set<BaseCategory> baseCategories = target.getBaseCategories();
 	for (BaseCategory baseCategory : baseCategories) {
@@ -309,7 +294,7 @@ public class MultiDomainTest extends AbstractBaseTestCase {
     private static List<Document> searchMulti(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
 	    throws ExceededSearchLimitException {
-	SearchResult searchResult = ServiceProvider.getSearchService()
+	SearchResult searchResult = serviceProvider.getSearchService()
 		.multiBaseSearch(queryTxt, limit, chainedFilter);
 	if (nbExpectedResults != null) {
 	    assertEquals((int) nbExpectedResults, searchResult.getTotalHits());

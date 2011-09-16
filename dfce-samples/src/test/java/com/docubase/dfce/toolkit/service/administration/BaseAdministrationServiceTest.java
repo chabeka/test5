@@ -10,8 +10,6 @@ import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.reference.Category;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,30 +21,30 @@ public class BaseAdministrationServiceTest extends AbstractBaseTestCase {
 
     @BeforeClass
     public static void setUp() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
     }
 
     @AfterClass
     public static void afterClass() {
-	Authentication.closeSession();
+	serviceProvider.disconnect();
     }
 
     @Test
     public void testGetAllBases() {
-	Base newBase = ServiceProvider.getBaseAdministrationService().getBase(
+	Base newBase = serviceProvider.getBaseAdministrationService().getBase(
 		"newBase");
 	if (newBase != null) {
-	    ServiceProvider.getBaseAdministrationService().stopBase(newBase);
-	    ServiceProvider.getBaseAdministrationService().deleteBase(newBase);
+	    serviceProvider.getBaseAdministrationService().stopBase(newBase);
+	    serviceProvider.getBaseAdministrationService().deleteBase(newBase);
 	}
 
-	List<Base> allBases = ServiceProvider.getBaseAdministrationService()
+	List<Base> allBases = serviceProvider.getBaseAdministrationService()
 		.getAllBases();
 	int allBasesSize = allBases.size();
 
 	newBase = ToolkitFactory.getInstance().createBase("newBase");
 
-	Category category = ServiceProvider.getStorageAdministrationService()
+	Category category = serviceProvider.getStorageAdministrationService()
 		.findOrCreateCategory("newCategory", CategoryDataType.STRING);
 
 	BaseCategory baseCategory = ToolkitFactory.getInstance()
@@ -55,18 +53,18 @@ public class BaseAdministrationServiceTest extends AbstractBaseTestCase {
 	newBase.addBaseCategory(baseCategory);
 
 	try {
-	    ServiceProvider.getBaseAdministrationService().createBase(newBase);
+	    serviceProvider.getBaseAdministrationService().createBase(newBase);
 	} catch (ObjectAlreadyExistsException e) {
 	    e.printStackTrace();
 	    fail("base : " + base.getBaseId() + " already exists");
 	}
 
-	List<Base> allBasesAfterNewBase = ServiceProvider
+	List<Base> allBasesAfterNewBase = serviceProvider
 		.getBaseAdministrationService().getAllBases();
 	int allBasesAfterNewBaseSize = allBasesAfterNewBase.size();
 
 	assertEquals(allBasesSize + 1, allBasesAfterNewBaseSize);
 
-	ServiceProvider.getBaseAdministrationService().deleteBase(newBase);
+	serviceProvider.getBaseAdministrationService().deleteBase(newBase);
     }
 }

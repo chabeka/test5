@@ -14,7 +14,6 @@ import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.Category;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Before
     public void setupEach() {
-	ServiceProvider.getStorageAdministrationService()
+	serviceProvider.getStorageAdministrationService()
 		.updateAllIndexesUsageCount();
     }
 
@@ -46,7 +45,6 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 	    // On définit le Tag du futur document, lié à la base uBase.
 	    Document document = ToolkitFactory.getInstance().createDocumentTag(
 		    base);
-	    document.setType("PDF");
 
 	    // On dit que l'on veut mettre "Identifier" en valeur d'identifiant
 	    // de la 1ère catégorie (d'indice 0)
@@ -72,7 +70,7 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 	}
 	System.out
 		.println("TPS = " + (System.currentTimeMillis() - deb) + "ms");
-	ServiceProvider.getStorageAdministrationService()
+	serviceProvider.getStorageAdministrationService()
 		.updateAllIndexesUsageCount();
 	return storedDocuments;
     }
@@ -80,9 +78,9 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testDocInsertionCounts() throws TagControlException {
 
-	Category category0Reference = ServiceProvider
+	Category category0Reference = serviceProvider
 		.getStorageAdministrationService().getCategory(catNames[0]);
-	Category category1Reference = ServiceProvider
+	Category category1Reference = serviceProvider
 		.getStorageAdministrationService().getCategory(catNames[1]);
 
 	Integer c0TotalIndexUseCount = category0Reference
@@ -98,9 +96,9 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 	int nbDocuments = 1;
 	storeNDocumentsAndUpdateIndexCounts(nbDocuments);
 
-	category0Reference = ServiceProvider.getStorageAdministrationService()
+	category0Reference = serviceProvider.getStorageAdministrationService()
 		.getCategory(catNames[0]);
-	category1Reference = ServiceProvider.getStorageAdministrationService()
+	category1Reference = serviceProvider.getStorageAdministrationService()
 		.getCategory(catNames[1]);
 
 	Assert.assertEquals(
@@ -120,17 +118,17 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
     public void testDocDeleteCounts() throws Exception {
 	// assertTrue("La base " + BASEID + " n'est pas démarrée.",
 	// base.isStarted());
-	Category category0Reference = ServiceProvider
+	Category category0Reference = serviceProvider
 		.getStorageAdministrationService().getCategory(catNames[0]);
-	Category category1Reference = ServiceProvider
+	Category category1Reference = serviceProvider
 		.getStorageAdministrationService().getCategory(catNames[1]);
 
 	int nbDocuments = 1;
 	Collection<Document> storedDocuments = storeNDocumentsAndUpdateIndexCounts(nbDocuments);
 
-	category0Reference = ServiceProvider.getStorageAdministrationService()
+	category0Reference = serviceProvider.getStorageAdministrationService()
 		.getCategory(catNames[0]);
-	category1Reference = ServiceProvider.getStorageAdministrationService()
+	category1Reference = serviceProvider.getStorageAdministrationService()
 		.getCategory(catNames[1]);
 
 	Integer c0TotalIndexUseCount = category0Reference
@@ -144,15 +142,15 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 		.getDistinctIndexUseCount();
 
 	for (Document document : storedDocuments) {
-	    ServiceProvider.getStoreService()
+	    serviceProvider.getStoreService()
 		    .deleteDocument(document.getUuid());
 	}
 
-	ServiceProvider.getStorageAdministrationService()
+	serviceProvider.getStorageAdministrationService()
 		.updateAllIndexesUsageCount();
-	category0Reference = ServiceProvider.getStorageAdministrationService()
+	category0Reference = serviceProvider.getStorageAdministrationService()
 		.getCategory(catNames[0]);
-	category1Reference = ServiceProvider.getStorageAdministrationService()
+	category1Reference = serviceProvider.getStorageAdministrationService()
 		.getCategory(catNames[1]);
 
 	Assert.assertEquals(

@@ -20,7 +20,6 @@ import net.docubase.toolkit.model.recordmanager.DocEventLogType;
 import net.docubase.toolkit.model.recordmanager.RMDocEvent;
 import net.docubase.toolkit.model.recordmanager.RMLogArchiveReport;
 import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
-import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.ged.ArchiveService;
 import net.docubase.toolkit.service.ged.RecordManagerService;
 import net.docubase.toolkit.service.ged.SearchService;
@@ -32,15 +31,15 @@ import org.junit.Test;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class ArchiveClientTest extends AbstractTestCaseCreateAndPrepareBase {
-    private final ArchiveService archiveService = ServiceProvider
+    private final ArchiveService archiveService = serviceProvider
 	    .getArchiveService();
-    private final RecordManagerService recordManagerService = ServiceProvider
+    private final RecordManagerService recordManagerService = serviceProvider
 	    .getRecordManagerService();
 
-    private final SearchService searchService = ServiceProvider
+    private final SearchService searchService = serviceProvider
 	    .getSearchService();
 
-    private final StoreService storeService = ServiceProvider.getStoreService();
+    private final StoreService storeService = serviceProvider.getStoreService();
 
     @Test
     public void runDocumentLogsArchiveJob() throws IOException {

@@ -5,7 +5,6 @@ import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
 	    storeDoc(tag, getFile("doc1.pdf", RichQueriesTest.class), true);
 	}
 
-	ServiceProvider.getStorageAdministrationService()
+	serviceProvider.getStorageAdministrationService()
 		.updateAllIndexesUsageCount();
     }
 
@@ -93,7 +92,7 @@ public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test(expected = ExceededSearchLimitException.class)
     public void testExceededSearchLimit() throws ExceededSearchLimitException {
 	String query = c1.getFormattedName() + ":adulte";
-	ServiceProvider.getSearchService().search(query, 100, 0, base, null,
+	serviceProvider.getSearchService().search(query, 100, 0, base, null,
 		50000);
     }
 

@@ -16,8 +16,8 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.recordmanager.DocEventLogType;
 import net.docubase.toolkit.model.recordmanager.RMDocEvent;
 import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
-import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
@@ -94,12 +94,13 @@ public abstract class AbstractEventTest extends
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
 	document.setCreationDate(Calendar.getInstance().getTime());
-	document.setType("pdf");
 	document.addCriterion(base.getBaseCategory(catNames[0]), "FileRef");
 
 	File file = getFile(filename, ArchiveClientTest.class);
-	Document stored = ServiceProvider.getStoreService().storeDocument(
-		document, new FileInputStream(file));
+	Document stored = serviceProvider.getStoreService().storeDocument(
+		document, FilenameUtils.getBaseName(file.getName()),
+		FilenameUtils.getExtension(file.getName()),
+		new FileInputStream(file));
 
 	return stored;
     }

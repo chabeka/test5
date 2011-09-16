@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import junit.framework.Assert;
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -49,7 +50,6 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	newDoc = getFile("doc1.pdf", TagControlTest.class);
 
 	document = ToolkitFactory.getInstance().createDocumentTag(base);
-	document.setType("PDF");
     }
 
     @Test
@@ -145,6 +145,21 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test(expected = TagControlException.class)
+    public void testUpdateNoC0() throws TagControlException,
+	    FrozenDocumentException {
+	String c0 = "Identifier" + UUID.randomUUID();
+	document.addCriterion(category0, c0);
+	document.addCriterion(categoryDate, new Date());
+
+	Document stored = storeDocument(document, newDoc);
+
+	Assert.assertNotNull(stored);
+
+	stored.deleteCriterion(baseCategory0);
+	serviceProvider.getStoreService().updateDocument(stored);
+    }
+
+    @Test(expected = TagControlException.class)
     public void testWrongTypeDate() throws TagControlException {
 	String c0 = "Identifier" + UUID.randomUUID();
 	document.addCriterion(category0, c0);
@@ -180,8 +195,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	String c0 = "Identifier" + UUID.randomUUID();
 	document.addCriterion(category0, c0);
 
-	newDoc = getFile("note.txt", this.getClass());
-	document.setType("WRG");
+	newDoc = getFile("unsupportedExtension.dummy", this.getClass());
 	storeDocument(document, newDoc);
     }
 
@@ -190,8 +204,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	String c0 = "Identifier" + UUID.randomUUID();
 	document.addCriterion(category0, c0);
 
-	newDoc = getFile("doc1.pdf", this.getClass());
-	document.setType("PDF");
+	newDoc = getFile("note.txt", this.getClass());
 	Document stored = storeDocument(document, newDoc);
 
 	Assert.assertNotNull(stored);

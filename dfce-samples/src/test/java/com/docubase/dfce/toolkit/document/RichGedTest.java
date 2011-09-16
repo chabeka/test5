@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -13,190 +14,39 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
-import net.docubase.toolkit.model.base.Base;
-import net.docubase.toolkit.model.base.Base.DocumentCreationDateConfiguration;
 import net.docubase.toolkit.model.base.BaseCategory;
-import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.document.Criterion;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.ChainedFilter.ChainedFilterOperator;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
-import net.docubase.toolkit.service.administration.StorageAdministrationService;
 import net.docubase.toolkit.service.ged.SearchService.DateFormat;
 import net.docubase.toolkit.service.ged.SearchService.MetaData;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
+import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 @RunWith(JUnit4.class)
-public class RichGedTest extends AbstractBaseTestCase {
-    // private Logger logger = Logger.getLogger(RichGedTest.class);
-
-    /* Nom de la base GED pour ce test */
-    private static final String BASEID = "RICHGED";
-
+public class RichGedTest extends AbstractTestCaseCreateAndPrepareBase {
     public final static Double pi = Double.valueOf("3.1415926535");
 
     private static final String[] catNames = { "Catégorie zéro",
 	    "Catégorie un", "Catégorie deux", "Cat booléenne", "Cat entière",
 	    "Cat décimale", "Cat date", "Cat date et heure" };
 
-    private static ToolkitFactory toolkitFactory;
-
-    @BeforeClass
-    public static void before() {
-	Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
-	base = deleteAndCreateBaseThenStarts();
-	toolkitFactory = ToolkitFactory.getInstance();
-    }
-
-    @AfterClass
-    public static void after() {
-	deleteBase(base);
-	Authentication.closeSession();
-    }
-
-    protected static Base deleteAndCreateBaseThenStarts() {
-	Base base = ServiceProvider.getBaseAdministrationService().getBase(
-		BASEID);
-	if (base != null) {
-	    deleteBase(base);
-	}
-	base = createBase();
-
-	ServiceProvider.getBaseAdministrationService().startBase(base);
-
-	return base;
-    }
+    private static ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
 
     protected static File getFile(String fileName) {
 	Class<?> clazz = RichGedTest.class;
 	return getFile(fileName, clazz);
-    }
-
-    private static Base createBase() {
-	ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
-	StorageAdministrationService storageAdministrationService = ServiceProvider
-		.getStorageAdministrationService();
-
-	Base base = toolkitFactory.createBase(BASEID);
-
-	base.setDescription("My-Ged-Is-Rich");
-
-	// Déclare une date de création disponible mais optionnell
-	base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
-	// Pas de fond de page
-	base.setDocumentOverlayFormConfiguration(Base.DocumentOverlayFormConfiguration.NONE);
-	// Pas de groupe de document
-	base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-	// Le propriétaire d'un document n'est pas modifiable à postériori de
-	// son injection
-	base.setDocumentOwnerModify(false);
-	/*
-	 * Masque de titre. C'est encore maintenu en DS4, même si maintenant on
-	 * peut remonter les valeurs de catégorie dans les listes de solution
-	 * sans avoir besoin de cet artifice.
-	 */
-	base.setDocumentTitleMask("C0+\" < \"+C1");
-	// taille maximum d'un titre
-	base.setDocumentTitleMaxSize(255);
-	// Impossible de modifier un titre à postériori
-	base.setDocumentTitleModify(false);
-	base.setDocumentTitleSeparator(">");
-
-	Category category0 = storageAdministrationService.findOrCreateCategory(
-		catNames[0], CategoryDataType.STRING);
-	Category category1 = storageAdministrationService.findOrCreateCategory(
-		catNames[1], CategoryDataType.STRING);
-	Category category2 = storageAdministrationService.findOrCreateCategory(
-		catNames[2], CategoryDataType.STRING);
-	Category categoryBoolean = storageAdministrationService
-		.findOrCreateCategory(catNames[3], CategoryDataType.BOOLEAN);
-	Category categoryInteger = storageAdministrationService
-		.findOrCreateCategory(catNames[4], CategoryDataType.INTEGER);
-	Category categoryDecimal = storageAdministrationService
-		.findOrCreateCategory(catNames[5], CategoryDataType.DOUBLE);
-	Category categoryDate = storageAdministrationService
-		.findOrCreateCategory(catNames[6], CategoryDataType.DATE);
-
-	BaseCategory baseCategory0 = toolkitFactory.createBaseCategory(
-		category0, true);
-	baseCategory0.setMinimumValues((short) 1);
-	baseCategory0.setSingle(true);
-	base.addBaseCategory(baseCategory0);
-
-	BaseCategory baseCategory1 = toolkitFactory.createBaseCategory(
-		category1, true);
-	baseCategory1.setEnableDictionary(false);
-	base.addBaseCategory(baseCategory1);
-
-	BaseCategory baseCategory2 = toolkitFactory.createBaseCategory(
-		category2, true);
-	baseCategory2.setMaximumValues((short) 10);
-	baseCategory2.setEnableDictionary(false);
-	base.addBaseCategory(baseCategory2);
-
-	BaseCategory baseCategoryBoolean = toolkitFactory.createBaseCategory(
-		categoryBoolean, true);
-	baseCategoryBoolean.setMaximumValues((short) 10);
-	baseCategoryBoolean.setEnableDictionary(false);
-	base.addBaseCategory(baseCategoryBoolean);
-
-	BaseCategory baseCategoryInteger = toolkitFactory.createBaseCategory(
-		categoryInteger, true);
-	baseCategoryInteger.setMaximumValues((short) 10);
-	baseCategoryInteger.setEnableDictionary(false);
-	base.addBaseCategory(baseCategoryInteger);
-
-	BaseCategory baseCategoryDecimal = toolkitFactory.createBaseCategory(
-		categoryDecimal, true);
-	baseCategoryDecimal.setMaximumValues((short) 10);
-	baseCategoryDecimal.setEnableDictionary(false);
-	base.addBaseCategory(baseCategoryDecimal);
-
-	BaseCategory baseCategoryDate = toolkitFactory.createBaseCategory(
-		categoryDate, true);
-	baseCategoryDate.setMaximumValues((short) 10);
-	baseCategoryDate.setEnableDictionary(false);
-	base.addBaseCategory(baseCategoryDate);
-
-	try {
-	    ServiceProvider.getBaseAdministrationService().createBase(base);
-	} catch (ObjectAlreadyExistsException e) {
-	    e.printStackTrace();
-	    fail("base : " + base.getBaseId() + " already exists");
-	}
-
-	/*
-	 * On va, alors qu'il n'y a aucun document, modifier la base pour y
-	 * ajouter la dernière catégorie
-	 */
-	Category categoryDateHeure = storageAdministrationService
-		.findOrCreateCategory(catNames[7], CategoryDataType.DATETIME);
-
-	BaseCategory baseCategoryDateHeure = toolkitFactory.createBaseCategory(
-		categoryDateHeure, true);
-	baseCategoryDateHeure.setMaximumValues((short) 10);
-	baseCategoryDateHeure.setEnableDictionary(false);
-	base.addBaseCategory(baseCategoryDateHeure);
-
-	ServiceProvider.getBaseAdministrationService().updateBase(base);
-
-	return base;
     }
 
     private void control(Document doc, File newDoc, String c0)
@@ -205,15 +55,15 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertNotNull(doc);
 
 	// getCriterionList renvoie la liste des catégories C0, C1, etc...
-	List<Criterion> criterionList = doc.getCriteria(base
+	List<Criterion> criterionList = doc.getCriterions(base
 		.getBaseCategory(catNames[0]));
 	assertEquals(1, criterionList.size());
 	assertEquals(c0, criterionList.get(0).getWord());
 
 	// Une autre vérification sur le tag : les 3 valeurs décimales sur C5
 	// On va juste chercher si l'une d'entre elle est Pi.
-	List<Criterion> c5s = doc
-		.getCriteria(base.getBaseCategory(catNames[5]));
+	List<Criterion> c5s = doc.getCriterions(base
+		.getBaseCategory(catNames[5]));
 	assertEquals(3, c5s.size());
 	boolean foundPi = false;
 	for (int i = 0; i < c5s.size() && !foundPi; i++) {
@@ -222,7 +72,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertTrue(foundPi);
 
 	// Cet appel, la 1ère fois (lazy loading) va extraire le document.
-	InputStream documentFile = ServiceProvider.getStoreService()
+	InputStream documentFile = serviceProvider.getStoreService()
 		.getDocumentFile(doc);
 	// le document extrait (dans une zone temporaire) doit avoir la même
 	// taille que le document utilisé avant injection.
@@ -230,6 +80,148 @@ public class RichGedTest extends AbstractBaseTestCase {
 	assertEquals(DigestUtils.shaHex(new FileInputStream(newDoc)),
 		DigestUtils.shaHex(documentFile));
 	documentFile.close();
+    }
+
+    @Test
+    public void testEscapeCharacterParenthesis() throws TagControlException,
+	    FileNotFoundException, ExceededSearchLimitException {
+	Document document = ToolkitFactory.getInstance()
+		.createDocumentTag(base);
+	document.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document.addCriterion(catNames[1], "(test)");
+
+	File file = getFile("doc1.pdf");
+	InputStream inputStream = new FileInputStream(file);
+	document = serviceProvider.getStoreService().storeDocument(document,
+		"doc1", "pdf", inputStream);
+
+	UUID insertedUUID = document.getUuid();
+	BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
+
+	SearchResult searchResult = serviceProvider.getSearchService().search(
+		baseCategory1.getFormattedName() + ":\\(test\\)", 10, base);
+	assertEquals(1, searchResult.getTotalHits());
+	Document document2 = searchResult.getDocuments().get(0);
+	assertEquals(insertedUUID, document2.getUuid());
+	assertEquals("(test)", document2.getSingleCriterion(catNames[1])
+		.getWord());
+    }
+
+    @Test
+    public void testEscapeCharacterFieldGrouping() throws TagControlException,
+	    FileNotFoundException, ExceededSearchLimitException {
+	Document document = ToolkitFactory.getInstance()
+		.createDocumentTag(base);
+	document.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document.addCriterion(catNames[1], "testEscapeCharacterFieldGrouping1");
+	document.addCriterion(catNames[1], "testEscapeCharacterFieldGrouping2");
+
+	File file = getFile("doc1.pdf");
+	InputStream inputStream = new FileInputStream(file);
+	document = serviceProvider.getStoreService().storeDocument(document,
+		"doc1", "pdf", inputStream);
+
+	UUID insertedUUID = document.getUuid();
+	BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
+
+	SearchResult searchResult = serviceProvider
+		.getSearchService()
+		.search(baseCategory1.getFormattedName()
+			+ ":(+testEscapeCharacterFieldGrouping1 +testEscapeCharacterFieldGrouping2)",
+			10, base);
+	assertEquals(1, searchResult.getTotalHits());
+	Document document2 = searchResult.getDocuments().get(0);
+	assertEquals(insertedUUID, document2.getUuid());
+    }
+
+    @Test
+    public void testEscapeCharacterWithJoker() throws TagControlException,
+	    FileNotFoundException, ExceededSearchLimitException {
+	Document document = ToolkitFactory.getInstance()
+		.createDocumentTag(base);
+	document.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document.addCriterion(catNames[1], "+test&&");
+
+	File file = getFile("doc1.pdf");
+	InputStream inputStream = new FileInputStream(file);
+	document = serviceProvider.getStoreService().storeDocument(document,
+		"doc1", "pdf", inputStream);
+
+	UUID insertedUUID = document.getUuid();
+	BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
+
+	SearchResult searchResult = serviceProvider.getSearchService().search(
+		baseCategory1.getFormattedName() + ":\\+test*", 10, base);
+	assertEquals(1, searchResult.getTotalHits());
+	Document document2 = searchResult.getDocuments().get(0);
+	assertEquals(insertedUUID, document2.getUuid());
+	assertEquals("+test&&", document2.getSingleCriterion(catNames[1])
+		.getWord());
+    }
+
+    @Test
+    public void testPlusAndMinusSearch() throws FileNotFoundException,
+	    TagControlException, ExceededSearchLimitException {
+	Document document1 = ToolkitFactory.getInstance().createDocumentTag(
+		base);
+	document1.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document1.addCriterion(catNames[1], "testPlusAndMinusSearch");
+	document1.addCriterion(catNames[2], "CAT2");
+
+	File file = getFile("doc1.pdf");
+	InputStream inputStream = new FileInputStream(file);
+	document1 = serviceProvider.getStoreService().storeDocument(document1,
+		"doc1", "pdf", inputStream);
+
+	Document document2 = ToolkitFactory.getInstance().createDocumentTag(
+		base);
+	document2.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document2.addCriterion(catNames[1], "testPlusAndMinusSearch");
+	document2.addCriterion(catNames[2], "WRONGCAT2");
+
+	UUID insertedUUID = document1.getUuid();
+	BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
+	BaseCategory baseCategory2 = base.getBaseCategory(catNames[2]);
+
+	SearchResult searchResult = serviceProvider.getSearchService().search(
+		"+" + baseCategory1.getFormattedName()
+			+ ":testPlusAndMinusSearch -"
+			+ baseCategory2.getFormattedName() + ":WRONGCAT2", 10,
+		base);
+	assertEquals(1, searchResult.getTotalHits());
+	assertEquals(insertedUUID, searchResult.getDocuments().get(0).getUuid());
+    }
+
+    @Test
+    public void testNotSearch() throws FileNotFoundException,
+	    TagControlException, ExceededSearchLimitException {
+	Document document1 = ToolkitFactory.getInstance().createDocumentTag(
+		base);
+	document1.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document1.addCriterion(catNames[1], "testNotSearch");
+	document1.addCriterion(catNames[2], "CATNOT2");
+
+	File file = getFile("doc1.pdf");
+	InputStream inputStream = new FileInputStream(file);
+	document1 = serviceProvider.getStoreService().storeDocument(document1,
+		"doc1", "pdf", inputStream);
+
+	Document document2 = ToolkitFactory.getInstance().createDocumentTag(
+		base);
+	document2.addCriterion(catNames[0], UUID.randomUUID().toString());
+	document2.addCriterion(catNames[1], "testNotSearch");
+	document2.addCriterion(catNames[2], "WRONGCATNOT2");
+
+	UUID insertedUUID = document1.getUuid();
+	BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
+	BaseCategory baseCategory2 = base.getBaseCategory(catNames[2]);
+
+	SearchResult searchResult = serviceProvider.getSearchService().search(
+		baseCategory1.getFormattedName() + ":testNotSearch AND NOT "
+			+ baseCategory2.getFormattedName() + ":WRONGCATNOT2",
+		10, base);
+	assertEquals(1, searchResult.getTotalHits());
+	assertEquals(insertedUUID, searchResult.getDocuments().get(0).getUuid());
     }
 
     /**
@@ -287,9 +279,9 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	// Date et DateHeure
 	Date currDate = new Date();
-	String strDate = ServiceProvider.getSearchService().formatDate(
+	String strDate = serviceProvider.getSearchService().formatDate(
 		currDate, DateFormat.DATE);
-	String strDateTime = ServiceProvider.getSearchService().formatDate(
+	String strDateTime = serviceProvider.getSearchService().formatDate(
 		currDate, DateFormat.DATETIME);
 	BaseCategory dateBaseCategory = base.getBaseCategory(catNames[6]);
 
@@ -326,7 +318,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	String c0FName = c0.getFormattedName();
 	lucene = c0FName + ":My*";
 	assertEquals(5,
-		ServiceProvider.getSearchService().search(lucene, 100, base)
+		serviceProvider.getSearchService().search(lucene, 100, base)
 			.getTotalHits());
 
 	lucene = c0FName + ":My*Test";
@@ -375,7 +367,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	/*
 	 * On recherche le document par sa catégorie C0:UUIDFourni
 	 */
-	List<Document> docs = ServiceProvider
+	List<Document> docs = serviceProvider
 		.getSearchService()
 		.search(baseCategory0.getFormattedName() + ":UUIDFourni", 5,
 			base).getDocuments();
@@ -388,7 +380,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	 * On recherche également par cet UUIDFourni Comme c'est un champs
 	 * statique du tag c'est dans LucRef.
 	 */
-	docs = ServiceProvider
+	docs = serviceProvider
 		.getSearchService()
 		.search(MetaData.UUID.getFormattedName() + ":"
 			+ uuidFourni.toString(), 5, base).getDocuments();
@@ -421,7 +413,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	/*
 	 * On recherche le document
 	 */
-	List<Document> docs = ServiceProvider
+	List<Document> docs = serviceProvider
 		.getSearchService()
 		.search(baseCategory0.getFormattedName() + ":UUIDNonFourni", 5,
 			base).getDocuments();
@@ -496,7 +488,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	     * sera 10 maximum) et le nombre théorique de documents vérifiant la
 	     * requête (ici ce sera tjs 100)
 	     */
-	    SearchResult searchResult = ServiceProvider.getSearchService()
+	    SearchResult searchResult = serviceProvider.getSearchService()
 		    .search(queryText, 10, offset, base, null);
 	    assertEquals(searchResult.getTotalHits(), 100);
 	    assertNotNull(searchResult.getDocuments());
@@ -660,7 +652,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	System.out.println("requête \"les adultes de sexe masculin\" :\n"
 		+ query);
 
-	result = ServiceProvider.getSearchService().search(query, 1000, base,
+	result = serviceProvider.getSearchService().search(query, 1000, base,
 		chainedFilter);
 	assertNotNull(result.getDocuments());
 	assertEquals(20, result.getDocuments().size());
@@ -681,7 +673,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 		.println("requête \"les adultes ou les individus de sexe masculin\" :\n"
 			+ query);
 
-	result = ServiceProvider.getSearchService().search(query, 1000, base,
+	result = serviceProvider.getSearchService().search(query, 1000, base,
 		chainedFilter);
 	assertNotNull(result.getDocuments());
 	assertEquals(45, result.getDocuments().size());
@@ -720,7 +712,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 		.println("Requête \"les femmes et les enfants d'abord ainsi que les passagers 48 et 49 qui sont des VIPs\" :\n "
 			+ query);
 
-	result = ServiceProvider.getSearchService().search(query, 1000, base,
+	result = serviceProvider.getSearchService().search(query, 1000, base,
 		chainedFilter);
 	assertNotNull(result.getDocuments());
 	assertEquals(21, result.getDocuments().size());
@@ -756,7 +748,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	storeDoc(document, getFile("doc1.pdf"), true);
 
-	SearchResult searchResult = ServiceProvider.getSearchService().search(
+	SearchResult searchResult = serviceProvider.getSearchService().search(
 		baseCategory0.getFormattedName() + ":" + c0Val, 10, base);
 	List<Document> docs = searchResult.getDocuments();
 	assertNotNull(docs);
@@ -815,7 +807,6 @@ public class RichGedTest extends AbstractBaseTestCase {
 	for (int i = 1; i < 5; i++) {
 	    document.addCriterion(c2, "C2 val" + i);
 	}
-	document.setType("PDF");
 
 	/*
 	 * Valeurs typées BOOLEAN, INTEGER, DECIMAL, DATE, DATETIME.
@@ -827,22 +818,6 @@ public class RichGedTest extends AbstractBaseTestCase {
 
 	// booleen "true" ou "false"
 
-	// 2 façons, 1 en mettant "true", une en mettant le type primitif
-	if (false)
-	    document.addCriterion(base.getBaseCategory(catNames[3]), "true");
-	// tag.addCriterion(uBase.getBaseDefinition().getIndex().getCategory(catNames[3),
-	// true, true);
-
-	// integer : 2 façons
-	if (false)
-	    document.addCriterion(base.getBaseCategory(catNames[4]), "-10");
-	// tag.addCriterion(uBase.getBaseDefinition().getIndex().getCategory(catNames[4),
-	// true, -10);
-
-	// decimal : 30 digits maximums, dont 10 sur la partie décimale.
-
-	if (false)
-	    document.addCriterion(base.getBaseCategory(catNames[5]), "-1.54");
 	document.addCriterion(base.getBaseCategory(catNames[5]), -1.54);
 	document.addCriterion(base.getBaseCategory(catNames[5]), pi); //
 
@@ -865,8 +840,10 @@ public class RichGedTest extends AbstractBaseTestCase {
 	cal.add(Calendar.HOUR, -1);
 	document.setCreationDate(cal.getTime());
 
-	Document stored = ServiceProvider.getStoreService().storeDocument(
-		document, new FileInputStream(newDoc));
+	Document stored = serviceProvider.getStoreService().storeDocument(
+		document, FilenameUtils.getBaseName(newDoc.getName()),
+		FilenameUtils.getExtension(newDoc.getName()),
+		new FileInputStream(newDoc));
 
 	// On vérifie que le document a passé le controle.
 	assertNotNull(stored);
@@ -877,7 +854,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	 * Recherche sur UUID
 	 */
 
-	Document documentByUUID = ServiceProvider.getSearchService()
+	Document documentByUUID = serviceProvider.getSearchService()
 		.getDocumentByUUID(base, archiveUUID);
 	System.out.println(documentByUUID.getUuid());
 
@@ -920,7 +897,7 @@ public class RichGedTest extends AbstractBaseTestCase {
 	 * de résultats à remonter. Le serveur interdira les valeurs au delà de
 	 * LuceneUtils.SEARCH_LIMIT (10 000) ;
 	 */
-	SearchResult searchResult = ServiceProvider.getSearchService().search(
+	SearchResult searchResult = serviceProvider.getSearchService().search(
 		query, 5, base);
 	List<Document> docs = searchResult.getDocuments();
 	assertTrue(docs != null && docs.size() == 1);

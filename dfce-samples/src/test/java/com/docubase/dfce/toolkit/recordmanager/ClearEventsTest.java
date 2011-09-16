@@ -10,7 +10,6 @@ import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.recordmanager.DocEventLogType;
 import net.docubase.toolkit.model.recordmanager.RMDocEvent;
 import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
-import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.ged.ArchiveService;
 import net.docubase.toolkit.service.ged.RecordManagerService;
 
@@ -19,8 +18,8 @@ import org.junit.Test;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
-    private ArchiveService archiveService = ServiceProvider.getArchiveService();
-    private RecordManagerService recordManagerService = ServiceProvider
+    private ArchiveService archiveService = serviceProvider.getArchiveService();
+    private RecordManagerService recordManagerService = serviceProvider
 	    .getRecordManagerService();
 
     @Test(expected = UnsupportedOperationException.class)
