@@ -21,7 +21,7 @@ public class SpyHandler extends ExceptionHandler {
    public boolean callNext = true;
    
    @Override
-   public void handleException(Exception exception) throws Exception {
+   public <T extends Exception> void handleException(T exception) throws T {
       called = true;
       
       if (!callNext) {
