@@ -7,8 +7,8 @@ package fr.urssaf.image.sae.services.dispatchers;
  * exception selon l'implémentation et le rang de chaque handler.
  * 
  * <p>
- * Exemple de handler participant à la chaine de responsabilité : 
- * {@link fr.urssaf.image.sae.services.dispatchers.handlers.LoggerExceptionHandler} 
+ * Exemple de handlers concrets participant à la chaine de responsabilité :
+ * {@link fr.urssaf.image.sae.services.dispatchers.handlers.LoggerExceptionHandler}
  * {@link fr.urssaf.image.sae.services.dispatchers.handlers.ThrowerExceptionHandler}
  * {@link fr.urssaf.image.sae.services.dispatchers.handlers.SpyHandler}
  * </p>
@@ -24,7 +24,8 @@ public class ExceptionDispatcher {
     * Dispatche l'exception au travers d'une chaine de responsabilité
     * 
     * @param exception
-    * @param class1
+    *           Exception à dispatcher, elle sera traitée par les handlers
+    *           concrets.
     * @throws Exception
     */
    public <T extends Exception> void dispatch(T exception) throws T {
