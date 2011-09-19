@@ -3,6 +3,7 @@ package com.docubase.dfce.toolkit.jira;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
