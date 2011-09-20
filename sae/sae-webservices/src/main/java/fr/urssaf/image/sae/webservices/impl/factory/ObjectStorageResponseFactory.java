@@ -1,14 +1,11 @@
 package fr.urssaf.image.sae.webservices.impl.factory;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
 
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponseType;
-import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
-import fr.cirtil.www.saeservice.ArchivageUnitaireResponseType;
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.ListeResultatRechercheType;
 import fr.cirtil.www.saeservice.MetadonneeType;
@@ -97,51 +94,6 @@ public final class ObjectStorageResponseFactory {
 
       return response;
 
-   }
-
-   /**
-    * instanciation de {@link ArchivageUnitaireResponse}.<br>
-    * Implementation de {@link ArchivageUnitaireResponseType}
-    * 
-    * <pre>
-    * &lt;xsd:complexType name="archivageUnitaireResponseType">
-    *    ...     
-    *    &lt;xsd:sequence>
-    *       &lt;xsd:element name="idArchive" type="sae:uuidType">
-    *       ...      
-    *       &lt;/xsd:element>
-    *    &lt;/xsd:sequence>
-    * &lt;/xsd:complexType>
-    * </pre>
-    * 
-    * @param idArchive
-    *           valeur de <code>uuidType</code>
-    * @return instance de {@link ArchivageUnitaireResponse}
-    */
-   public static ArchivageUnitaireResponse createArchivageUnitaireResponse(
-         UUID idArchive) {
-
-      ArchivageUnitaireResponse response = createArchivageUnitaireResponse();
-      ArchivageUnitaireResponseType responseType = response
-            .getArchivageUnitaireResponse();
-
-      responseType.setIdArchive(ObjectTypeFactory.createUuidType(idArchive));
-
-      return response;
-   }
-
-   /**
-    * instanciation de {@link ArchivageUnitaireResponse} vide.<br>
-    * 
-    * @return instance de {@link ArchivageUnitaireResponse}
-    */
-   public static ArchivageUnitaireResponse createArchivageUnitaireResponse() {
-
-      ArchivageUnitaireResponse response = new ArchivageUnitaireResponse();
-      ArchivageUnitaireResponseType responseType = new ArchivageUnitaireResponseType();
-      response.setArchivageUnitaireResponse(responseType);
-
-      return response;
    }
 
    /**

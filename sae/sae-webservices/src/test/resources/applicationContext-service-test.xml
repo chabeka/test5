@@ -9,4 +9,8 @@
 
    <import resource="applicationContext-service.xml" />
 
+
+   <bean id="saeCaptureService" factory-bean="SAEServiceFactory"
+      factory-method="createSAECaptureService" />
+
 </beans>

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
-import fr.cirtil.www.saeservice.ArchivageUnitaire;
-import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
@@ -40,22 +38,6 @@ public class SaeStorageServiceImpl implements SaeStorageService {
             .createArchivageMasseResponse();
 
       // TODO implémenter l'archivage de masse
-
-      return response;
-   }
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final ArchivageUnitaireResponse capture(ArchivageUnitaire request) {
-
-      ArchivageUnitaireResponse response;
-
-      UUID uuid = UUID.fromString("110E8400-E29B-11D4-A716-446655440000");
-
-      response = ObjectStorageResponseFactory
-            .createArchivageUnitaireResponse(uuid);
 
       return response;
    }

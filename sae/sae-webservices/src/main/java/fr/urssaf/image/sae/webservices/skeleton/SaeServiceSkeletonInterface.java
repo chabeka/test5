@@ -43,7 +43,7 @@ public interface SaeServiceSkeletonInterface {
     * @throws AxisFault
     *            exception levée dans la consommation du web service
     */
-   RechercheResponse rechercheSecure(Recherche request) throws AxisFault;;
+   RechercheResponse rechercheSecure(Recherche request) throws AxisFault;
 
    /**
     * endpoint de la capture unitaire
@@ -55,7 +55,7 @@ public interface SaeServiceSkeletonInterface {
     *            exception levée dans la consommation du web service
     */
    ArchivageUnitaireResponse archivageUnitaireSecure(ArchivageUnitaire request)
-         throws AxisFault;;
+         throws AxisFault;
 
    /**
     * endpoint de la capture de masse
@@ -67,7 +67,7 @@ public interface SaeServiceSkeletonInterface {
     *            exception levée dans la consommation du web service
     */
    ArchivageMasseResponse archivageMasseSecure(ArchivageMasse request)
-         throws AxisFault;;
+         throws AxisFault;
 
    /**
     * endpoint du ping sécurisé
@@ -90,6 +90,6 @@ public interface SaeServiceSkeletonInterface {
     * @throws AxisFault
     *            exception levée dans la consommation du web service
     */
-   PingResponse ping(PingRequest pingRequest) throws AxisFault;;
+   PingResponse ping(PingRequest pingRequest) throws AxisFault;
 
 }

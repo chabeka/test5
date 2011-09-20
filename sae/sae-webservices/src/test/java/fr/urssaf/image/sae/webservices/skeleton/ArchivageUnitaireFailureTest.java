@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.webservices.skeleton;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -19,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
-import fr.cirtil.www.saeservice.ArchivageUnitaireResponseType;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.capture.exception.SAECaptureException;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
@@ -27,7 +25,7 @@ import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
-public class ArchivageUnitaireTest {
+public class ArchivageUnitaireFailureTest {
 
    private static final String FAIL_MSG = "le test doit échouer";
 
@@ -59,8 +57,8 @@ public class ArchivageUnitaireTest {
    }
 
    @Test
-   public void archivageUnitaire_success() throws SAECaptureException,
-         AxisFault {
+   public void archivageUnitaire_failure_erreurInterneCapture()
+         throws SAECaptureException {
 
       URI ecdeURL = URI
             .create("ecde://cer69-ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
@@ -69,27 +67,14 @@ public class ArchivageUnitaireTest {
       metadatas.put("code_test_1", "value_test_1");
       metadatas.put("code_test_2", "value_test_2");
 
-      EasyMock.expect(captureService.capture(metadatas, ecdeURL)).andReturn(
-            UUID.fromString("110E8400-E29B-11D4-A716-446655440000"));
+      EasyMock.expect(captureService.capture(metadatas, ecdeURL)).andThrow(
+            new SAECaptureException(new Exception()));
 
       EasyMock.replay(captureService);
 
-      ArchivageUnitaire request = createArchivageMasseResponse("src/test/resources/request/archivageUnitaire_success.xml");
-
-      ArchivageUnitaireResponseType response = skeleton
-            .archivageUnitaireSecure(request).getArchivageUnitaireResponse();
-
-      Assert.assertEquals("Test de l'archivage unitaire",
-            "110E8400-E29B-11D4-A716-446655440000", response.getIdArchive()
-                  .getUuidType());
-   }
-
-   @Test
-   public void archivageUnitaire_failure_metadonnees_vide() {
-
       try {
 
-         ArchivageUnitaire request = createArchivageMasseResponse("src/test/resources/request/archivageUnitaire_failure_metadonnees_vide.xml");
+         ArchivageUnitaire request = createArchivageMasseResponse("src/test/resources/request/archivageUnitaire_success.xml");
 
          skeleton.archivageUnitaireSecure(request)
                .getArchivageUnitaireResponse();
@@ -98,11 +83,13 @@ public class ArchivageUnitaireTest {
 
       } catch (AxisFault axisFault) {
 
-         Assert.assertEquals(FAIL_SOAPFAULT,
-               "Archivage impossible. La liste des métadonnées est vide.",
-               axisFault.getMessage());
-         Assert.assertEquals(FAIL_SOAPFAULT, "CaptureMetaDonneesVide",
-               axisFault.getFaultCode().getLocalPart());
+         Assert
+               .assertEquals(
+                     FAIL_SOAPFAULT,
+                     "Une erreur interne à l'application est survenue dans la capture.",
+                     axisFault.getMessage());
+         Assert.assertEquals(FAIL_SOAPFAULT, "ErreurInterneCapture", axisFault
+               .getFaultCode().getLocalPart());
          Assert.assertEquals(FAIL_SOAPFAULT, "sae", axisFault.getFaultCode()
                .getPrefix());
 
@@ -110,5 +97,4 @@ public class ArchivageUnitaireTest {
                .getFaultCode().getNamespaceURI());
       }
    }
-
 }

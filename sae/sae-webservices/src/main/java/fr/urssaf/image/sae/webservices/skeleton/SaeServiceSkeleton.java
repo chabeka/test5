@@ -27,7 +27,9 @@ import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.webservices.SaeService;
 import fr.urssaf.image.sae.webservices.SaeStorageService;
+import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
+import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 
 /**
@@ -96,6 +98,9 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Autowired
    private WSConsultationService consultation;
 
+   @Autowired
+   private WSCaptureService capture;
+
    /**
     * {@inheritDoc}
     */
@@ -124,12 +129,13 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    /**
     * {@inheritDoc}
+    * @throws CaptureAxisFault 
     */
    @Override
    public final ArchivageUnitaireResponse archivageUnitaireSecure(
-         ArchivageUnitaire request) {
+         ArchivageUnitaire request) throws CaptureAxisFault {
 
-      return this.storageService.capture(request);
+      return this.capture.archivageUnitaire(request);
 
    }
 
