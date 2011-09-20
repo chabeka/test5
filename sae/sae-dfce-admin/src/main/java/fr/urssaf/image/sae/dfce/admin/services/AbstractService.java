@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.dfce.admin.services;
 
-import net.docubase.toolkit.model.ToolkitFactory;
-import net.docubase.toolkit.model.base.Base;
+import net.docubase.toolkit.service.ServiceProvider;
 
 /**
  * Cette classe contient les éléments communs des différentes services.
@@ -11,13 +10,22 @@ import net.docubase.toolkit.model.base.Base;
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractService {
+	private ServiceProvider serviceProvider;
+
 	/**
+	 * Permet d'initialiser le service provider.
 	 * 
-	 * @param baseId
-	 *            : L'identifiant de la base.
-	 * @return Une nouvelle instance de la  base sae.
+	 * @param serviceProvider
+	 *            : Le service provider.
 	 */
-	public final  Base getBaseDfce(final String baseId) {
-		return ToolkitFactory.getInstance().createBase(baseId);
+	public final void setServiceProvider(final ServiceProvider serviceProvider) {
+		this.serviceProvider = serviceProvider;
+	}
+/**
+ * 
+ * @return Le service provider
+ */
+	public final ServiceProvider getServiceProvider() {
+		return serviceProvider;
 	}
 }

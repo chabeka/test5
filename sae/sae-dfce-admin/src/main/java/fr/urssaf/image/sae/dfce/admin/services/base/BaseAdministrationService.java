@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
+import fr.urssaf.image.sae.dfce.admin.services.exceptions.ConnectionServiceEx;
 import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
 
 /**
@@ -21,6 +22,19 @@ import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
  * 
  */
 public interface BaseAdministrationService {
+	
+	/**
+	 * Ouvre la connection
+	 * 
+	 * @throws ConnectionServiceEx
+	 *             Lorsqu'un problème survient lors de la connxion
+	 */
+	void openConnection() throws ConnectionServiceEx;
+
+	/**
+	 * Ferme la connection
+	 */
+	void closeConnection();
 	/**
 	 * Service de création de la base.
 	 * 
