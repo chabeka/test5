@@ -30,8 +30,7 @@ public class DeletionBaseValidationTest extends AbstractComponents {
 	@Test(expected = IllegalArgumentException.class)
 	public void deleteBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
-		getConnectionService().setConnectionParameter(getConnectionParameter());
-		getConnectionService().openConnection();
+		getBaseAdmiService().openConnection();
 		getBaseAdmiService().deleteBase(null);
 	}
 

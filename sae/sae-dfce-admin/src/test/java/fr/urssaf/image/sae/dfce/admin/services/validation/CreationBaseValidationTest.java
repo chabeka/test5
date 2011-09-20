@@ -29,8 +29,7 @@ public class CreationBaseValidationTest extends AbstractComponents {
 	@Test(expected = IllegalArgumentException.class)
 	public void createBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
-		getConnectionService().setConnectionParameter(getConnectionParameter());
-		getConnectionService().openConnection();
+		getBaseAdmiService().openConnection();
 		getBaseAdmiService().createBase(null, getXmlDBModelService());
 
 	}
@@ -47,8 +46,7 @@ public class CreationBaseValidationTest extends AbstractComponents {
 	@Test(expected = IllegalArgumentException.class)
 	public void createBaseService() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException {
-		getConnectionService().setConnectionParameter(getConnectionParameter());
-		getConnectionService().openConnection();
+		getBaseAdmiService().openConnection();
 		final DataBaseModel dataModel = getBaseAdmiService().getDataBaseModel(
 				BaseUtils.BASE_XML_FILE, getXmlDBModelService());
 		getBaseAdmiService().createBase(dataModel, null);
