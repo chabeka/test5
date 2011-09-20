@@ -2,13 +2,10 @@ package fr.urssaf.image.sae.dfce.admin.services;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import fr.urssaf.image.sae.dfce.admin.model.ConnectionParameter;
 import fr.urssaf.image.sae.dfce.admin.services.base.BaseAdministrationService;
-import fr.urssaf.image.sae.dfce.admin.services.connection.ConnectionService;
 import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
 
 /**
@@ -23,57 +20,17 @@ import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
 @ContextConfiguration(locations = { "/applicationContext-sae-dfce-admin.xml" })
 public abstract class AbstractComponents {
 
-	@Autowired
-	@Qualifier("connectionService")
-	private ConnectionService connectionService;
 	@SuppressWarnings("PMD.LongVariable")
 	@Autowired
 	private ConnectionParameter connectionParameter;
-
 	@Autowired
 	private XmlDataService xmlDBModelService;
 
 	@Autowired
 	private BaseAdministrationService baseAdmiService;
 
-	/**
-	 * 
-	 * @param connectionService
-	 *            : Le service de connection
-	 */
-	public final void setConnectionService(
-			final ConnectionService connectionService) {
-		this.connectionService = connectionService;
-	}
-
-	/**
-	 * 
-	 * @return Le service de connection
-	 * 
-	 */
-	public final ConnectionService getConnectionService() {
-		return connectionService;
-	}
-
-	/**
-	 * 
-	 * @param connectionParameter
-	 *            : Les paramètres de connexion
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setConnectionParameter(
-			final ConnectionParameter connectionParameter) {
-		this.connectionParameter = connectionParameter;
-	}
-
-	/**
-	 * 
-	 * @return Les paramètres de connexion
-	 */
-	public final ConnectionParameter getConnectionParameter() {
-		return connectionParameter;
-	}
-
+	
+	
 	/**
 	 * 
 	 * @param xmlDBModelService
@@ -108,5 +65,22 @@ public abstract class AbstractComponents {
 	 */
 	public final BaseAdministrationService getBaseAdmiService() {
 		return baseAdmiService;
+	}
+	/**
+	 * 
+	 * @return Les paramètres de connections
+	 */
+	public final ConnectionParameter getConnectionParameter() {
+		return connectionParameter;
+	}
+
+	/**
+	 * 
+	 * @param cnxParameter
+	 *            : Les paramètres de connections.
+	 */
+	public final void setConnectionParameter(
+			final ConnectionParameter cnxParameter) {
+		this.connectionParameter = cnxParameter;
 	}
 }
