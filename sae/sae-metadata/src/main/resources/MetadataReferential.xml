@@ -561,8 +561,8 @@
     <description>Nombre de pages du document</description>
   </metaDataReference>
    <metaDataReference>
-    <shortCode>NomFichier</shortCode>
-    <longCode>NFI</longCode>
+    <shortCode>NFI</shortCode>
+    <longCode>NomFichier</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
     <requiredForStorage>true</requiredForStorage>
