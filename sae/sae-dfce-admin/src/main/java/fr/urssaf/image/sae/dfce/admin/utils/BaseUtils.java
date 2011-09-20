@@ -1,6 +1,8 @@
 package fr.urssaf.image.sae.dfce.admin.utils;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +12,7 @@ import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.service.ServiceProvider;
-import net.docubase.toolkit.service.administration.StorageAdministrationService;
+import fr.urssaf.image.sae.dfce.admin.model.ConnectionParameter;
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
 import fr.urssaf.image.sae.dfce.admin.model.SaeCategory;
 
@@ -20,7 +22,7 @@ import fr.urssaf.image.sae.dfce.admin.model.SaeCategory;
  * @author akenore
  * 
  */
-@SuppressWarnings("PMD.TooManyMethods" )
+@SuppressWarnings("PMD.TooManyMethods")
 public final class BaseUtils {
 	/** le répertoire de base */
 	private static final String BASE_DIR = "src/main/resources/saeBase/";
@@ -33,50 +35,33 @@ public final class BaseUtils {
 	 *            : La base DFCE.
 	 * @param dataBaseModel
 	 *            : Le modèle de base de donnée.
-	 * @return La base
 	 */
-	public static Base initTechnicalMetadata(final Base base,
+	public static void initBaseProperties(final Base base,
 			final DataBaseModel dataBaseModel) {
-
 		// on définit les caractéristiques de la base
 		base.setDescription(dataBaseModel.getBase().getBaseDescription());
-		base.setDocumentCreationDateConfiguration(dataBaseModel.getBase()
-				.documentCreationDateConfiguration());
-		base.setDocumentOverlayFormConfiguration(dataBaseModel.getBase()
-				.documentOverlayFormConfiguration());
-		base.setDocumentOwnerDefault(dataBaseModel.getBase()
-				.documentOwnerType());
-		base.setDocumentOwnerModify(dataBaseModel.getBase()
-				.isDocumentOwnerModify());
-		base.setDocumentTitleMask(dataBaseModel.getBase()
-				.getDocumentTitleMask());
-		base.setDocumentTitleMaxSize(dataBaseModel.getBase()
-				.getDocumentTitleMaxSize());
-		base.setDocumentTitleModify(dataBaseModel.getBase()
-				.isDocumentTitleModify());
-		base.setDocumentTitleSeparator(dataBaseModel.getBase()
-				.getDocumentTitleSeparator());
-		return base;
 	}
 
 	/**
 	 * 
 	 * @param dataBaseModel
 	 *            : Le model de base
+	 * @param serviceProvider
+	 *            : Le service provider.
 	 * @return une liste de baseCategories
 	 */
 	@SuppressWarnings({ "PMD.AvoidUsingShortType",
 			"PMD.DataflowAnomalyAnalysis" })
 	public static List<BaseCategory> initBaseCategories(
-			final DataBaseModel dataBaseModel) {
+			final DataBaseModel dataBaseModel,
+			final ServiceProvider serviceProvider) {
 		final List<BaseCategory> baseCategories = new ArrayList<BaseCategory>();
-		final StorageAdministrationService stAdmiService = ServiceProvider
-				.getStorageAdministrationService();
 		final ToolkitFactory toolkit = ToolkitFactory.getInstance();
 		for (SaeCategory category : Utils.nullSafeIterable(dataBaseModel
 				.getDataBase().getSaeCategories().getCategories())) {
-			final Category categoryDfce = stAdmiService.findOrCreateCategory(
-					category.getName(), category.categoryDataType());
+			final Category categoryDfce = serviceProvider
+					.getStorageAdministrationService().findOrCreateCategory(
+							category.getName(), category.categoryDataType());
 			final BaseCategory baseCategory = toolkit.createBaseCategory(
 					categoryDfce, category.isIndex());
 			baseCategory.setEnableDictionary(category.isEnableDictionary());
@@ -91,6 +76,8 @@ public final class BaseUtils {
 	/**
 	 * Contrôle la cohérence entre les catégories et les index composites
 	 * 
+	 * @param serviceProvider
+	 *            : Le service provider.
 	 * @param dataBaseModel
 	 *            : Le model de base
 	 * @return True si tous les index existent bien en temps que catégorie.
@@ -98,7 +85,8 @@ public final class BaseUtils {
 	 */
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public static List<List<Category>> buildIndexComposite(
-			final DataBaseModel dataBaseModel) {
+			final DataBaseModel dataBaseModel,
+			final ServiceProvider serviceProvider) {
 		final List<List<Category>> indexComposites = new ArrayList<List<Category>>();
 		for (String indexComp : Utils.nullSafeIterable(dataBaseModel
 				.getIndexComposites())) {
@@ -111,7 +99,7 @@ public final class BaseUtils {
 				}
 				if (find) {
 					for (String indexC : Utils.nullSafeIterable(index)) {
-						final Category category = ServiceProvider
+						final Category category = serviceProvider
 								.getStorageAdministrationService().getCategory(
 										indexC);
 						indexComposite.add(category);
@@ -155,15 +143,18 @@ public final class BaseUtils {
 	/**
 	 * Crée les indexComposites d'une base
 	 * 
+	 * @param serviceProvider
+	 *            : Le service provider.
 	 * @param dataBaseModel
 	 *            : Le model de base
 	 */
 	@SuppressWarnings({ "PMD.AvoidUsingShortType",
 			"PMD.DataflowAnomalyAnalysis",
 			"PMD.AvoidInstantiatingObjectsInLoops" })
-	public static void createIndexComposite(final DataBaseModel dataBaseModel) {
+	public static void createIndexComposite(final DataBaseModel dataBaseModel,
+			final ServiceProvider serviceProvider) {
 		final List<List<Category>> indexComposites = BaseUtils
-				.buildIndexComposite(dataBaseModel);
+				.buildIndexComposite(dataBaseModel, serviceProvider);
 		for (List<Category> indexComposite : Utils
 				.nullSafeIterable(indexComposites)) {
 			final Category[] categories = new Category[indexComposite.size()];
@@ -172,9 +163,31 @@ public final class BaseUtils {
 				categories[position] = category;
 				position++;
 			}
-			ServiceProvider.getStorageAdministrationService()
+			serviceProvider.getStorageAdministrationService()
 					.findOrCreateCompositeIndex(categories);
 		}
+	}
+	
+	/**
+	 * @param cnxParameter : Les paramètres de connexion.
+	 * @return L'url de connection
+	 * @throws MalformedURLException
+	 *             : L'exception lorsque la construction de l'url ne s'est pas
+	 *             bien construite
+	 */
+	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+	public  static String buildUrlForConnection(final ConnectionParameter cnxParameter) throws MalformedURLException {
+
+	URL urlConnection = new URL("http", cnxParameter.getHost()
+				.getHostName(), cnxParameter.getHost().getHostPort(),
+				cnxParameter.getHost().getContextRoot());
+		if (cnxParameter.getHost().isSecure()) {
+			urlConnection = new URL("https", cnxParameter.getHost()
+					.getHostName(),
+					cnxParameter.getHost().getHostPort(),
+					cnxParameter.getHost().getContextRoot());
+		}
+		return urlConnection.toString();
 	}
 
 }
