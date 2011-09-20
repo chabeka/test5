@@ -8,6 +8,6 @@ package fr.urssaf.image.sae.services.document;
  * <li>
  * {@link SAEConsultationService Consultation}</li>
  */
-public interface SAEDocumentService extends SAECaptureService,
-      SAESearchService, SAEConsultationService {
+public interface SAEDocumentService extends SAESearchService,
+      SAEConsultationService {
 }

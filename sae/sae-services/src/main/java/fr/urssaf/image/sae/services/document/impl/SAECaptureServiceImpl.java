@@ -1,9 +1,5 @@
 package fr.urssaf.image.sae.services.document.impl;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
@@ -19,8 +15,8 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
  * 
  * @author akenore,rhofir.
  */
-@Service
-@Qualifier("saeCaptureService")
+//@Service
+//@Qualifier("saeCaptureService")
 public class SAECaptureServiceImpl extends AbstractSAEServices implements
       SAECaptureService {
 
@@ -49,12 +45,4 @@ public class SAECaptureServiceImpl extends AbstractSAEServices implements
       }
    }
 
-   /**
-    * {@inheritDoc}
-    */
-   public final String capture(UntypedDocument unTypedDoc)
-         throws SAECaptureServiceEx {
-      // TODO Auto-generated method stub
-      return null;
-   }
 }

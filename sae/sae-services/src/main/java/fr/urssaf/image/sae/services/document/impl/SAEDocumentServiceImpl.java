@@ -35,8 +35,8 @@ import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
       SAEConsultationServiceImpl.class, SAESearchServiceImpl.class }, comment = "Fournit les services des classes participantes")
 public class SAEDocumentServiceImpl implements SAEDocumentService {
 
-   @Autowired
-   @Qualifier("saeCaptureService")
+   //@Autowired
+   //@Qualifier("saeCaptureService")
    private SAECaptureService saeCaptureService;
    @Autowired
    @Qualifier("saeConsultationService")
@@ -51,14 +51,6 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    public final void bulkCapture(final String urlEcde)
          throws SAECaptureServiceEx {
       saeCaptureService.bulkCapture(urlEcde);
-   }
-
-   /**
-    * {@inheritDoc}
-    */
-   public final String capture(final UntypedDocument unTypedDoc)
-         throws SAECaptureServiceEx {
-      return saeCaptureService.capture(unTypedDoc);
    }
 
    /**

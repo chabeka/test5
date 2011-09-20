@@ -1,17 +1,21 @@
-package fr.urssaf.image.sae.services.document.data;
+package fr.urssaf.image.sae.services.capture.impl;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.services.capture.SAECaptureService;
+import fr.urssaf.image.sae.services.capture.exception.SAECaptureException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
@@ -20,20 +24,26 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 
 /**
- * Classe d'insertion d'un document dans le SAE pour qu'il soit consultable
- * 
+ * Implémentation du service {@link SAECaptureService}
  * 
  */
-public final class SAEConsultationServiceData {
+@Service
+public class SAECaptureServiceImpl implements SAECaptureService {
 
-   private SAEConsultationServiceData() {
+   @Autowired
+   @Qualifier("storageServiceProvider")
+   private StorageServiceProvider serviceProvider;
 
-   }
+   @Autowired
+   @Qualifier("storageConnectionParameter")
+   private StorageConnectionParameter connection;
 
-   private static final Logger LOG = Logger
-         .getLogger(SAEConsultationServiceData.class);
+   @Autowired
+   private ApplicationContext context;
 
    private static final StorageDocument CONSULTATION_DOC;
+
+   private static final int DATE_YEAR = 2012;
 
    static {
 
@@ -45,6 +55,8 @@ public final class SAEConsultationServiceData {
       // "Attestation de viligance"));
 
       Calendar calendar = Calendar.getInstance();
+
+      calendar.set(DATE_YEAR, Calendar.JANUARY, 1, 0, 0, 0);
 
       // metadatas.add(new StorageMetadata("_creationDate",
       // calendar.getTime()));
@@ -72,61 +84,46 @@ public final class SAEConsultationServiceData {
       CONSULTATION_DOC.setTypeDoc("PDF");
       CONSULTATION_DOC.setMetadatas(metadatas);
 
+      CONSULTATION_DOC.setTypeDoc("PDF");
+      CONSULTATION_DOC.setMetadatas(metadatas);
+
    }
 
-   /**
-    * insertion d'un document
-    * 
-    * @return uuid de l'archive
-    * @throws ConnectionServiceEx
-    *            levée lors de l'insertion
-    * @throws InsertionServiceEx
-    *            levée lors de l'insertion
-    * @throws IOException
-    *            levée lors de l'insertion
-    */
-   public static UUID insert() throws ConnectionServiceEx, InsertionServiceEx,
+   private UUID insert() throws ConnectionServiceEx, InsertionServiceEx,
          IOException {
 
-      ApplicationContext ctx = new ClassPathXmlApplicationContext(
-            new String[] { "/applicationContext-sae-services-test.xml" });
+      serviceProvider.setStorageServiceProviderParameter(connection);
 
-      StorageServiceProvider provider = ctx
-            .getBean(StorageServiceProvider.class);
+      serviceProvider.getStorageConnectionService().openConnection();
 
-      StorageConnectionParameter connection = ctx
-            .getBean(StorageConnectionParameter.class);
+      byte[] content = IOUtils.toByteArray(context.getResource(
+            "classpath:attestation_temp.pdf").getInputStream());
 
-      provider.setStorageServiceProviderParameter(connection);
-
-      provider.getStorageConnectionService().openConnection();
-
-      byte[] content = FileUtils.readFileToByteArray(new File(
-            "src/test/resources/doc/attestation_consultation.pdf"));
       CONSULTATION_DOC.setContent(content);
-      StorageDocument document = provider.getStorageDocumentService()
+      StorageDocument document = serviceProvider.getStorageDocumentService()
             .insertStorageDocument(CONSULTATION_DOC);
 
-      provider.getStorageConnectionService().closeConnexion();
+      serviceProvider.getStorageConnectionService().closeConnexion();
 
       return document.getUuid();
    }
 
    /**
-    * 
-    * @param args
-    *           non utilisé
-    * @throws ConnectionServiceEx
-    *            levée lors de l'insertion
-    * @throws InsertionServiceEx
-    *            levée lors de l'insertion
-    * @throws IOException
-    *            levée lors de l'insertion
+    * {@inheritDoc}
     */
-   public static void main(String[] args) throws ConnectionServiceEx,
-         InsertionServiceEx, IOException {
+   @Override
+   public final UUID capture(Map<String, String> metadatas, URI uriEcde)
+         throws SAECaptureException {
 
-      LOG.info("insertion réussie de l'archive :" + insert());
-
+      try {
+         return insert();
+      } catch (ConnectionServiceEx e) {
+         throw new SAECaptureException(e);
+      } catch (InsertionServiceEx e) {
+         throw new SAECaptureException(e);
+      } catch (IOException e) {
+         throw new SAECaptureException(e);
+      }
    }
+
 }

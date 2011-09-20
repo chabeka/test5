@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.services.document;
 
-import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
 
 
@@ -12,17 +11,7 @@ import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
  * @author rhofir.
  */
 public interface SAECaptureService {
-   /**
-    * Service pour l'opération <b>capture unitaire</b>
-    * 
-    * @param untypedDoc
-    *           : Un objet de type {@link UntypedDocument}.
-    * @return Une chaîne dont le contenu est un UUID.
-    * @throws SAECaptureServiceEx
-    *            Exception levée lorsque la capture ne se déroule pas bien.
-    */
-   String capture(UntypedDocument untypedDoc) throws SAECaptureServiceEx;
-
+   
    /**
     * Service pour l'opération <b>capture en Masse</b>
     * 
