@@ -3,16 +3,6 @@
 	<base>
 		<baseId>SAE-TEST</baseId>
 		<baseDescription>Systeme Archivage Electronique</baseDescription>
-		<documentCreationDateConfiguration>NONE
-		</documentCreationDateConfiguration>
-		<documentOverlayFormConfiguration>OPTIONAL
-		</documentOverlayFormConfiguration>
-		<documentOwnerDefaultType>PUBLIC</documentOwnerDefaultType>
-		<documentOwnerModify>NONE</documentOwnerModify>
-		<documentTitleMask>NONE</documentTitleMask>
-		<documentTitleMaxSize>100</documentTitleMaxSize>
-		<documentTitleModify>true</documentTitleModify>
-		<documentTitleSeparator>NONE</documentTitleSeparator>
 		<categories>
 			<!-- Période -->
 			<category>
@@ -22,7 +12,7 @@
 				<index>true</index>
 				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
-				<single>false</single>
+	 			<single>false</single>
 				<enableDictionary>false</enableDictionary>
 			</category>
 			<!-- Siren -->
