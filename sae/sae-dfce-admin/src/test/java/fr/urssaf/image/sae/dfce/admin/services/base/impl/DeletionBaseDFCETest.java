@@ -1,13 +1,11 @@
 package fr.urssaf.image.sae.dfce.admin.services.base.impl;
 
 import java.io.FileNotFoundException;
-
+import java.net.MalformedURLException;
 import junit.framework.Assert;
 import net.docubase.toolkit.service.ServiceProvider;
-
 import org.junit.Ignore;
 import org.junit.Test;
-
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
 import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
@@ -21,17 +19,21 @@ public class DeletionBaseDFCETest extends AbstractComponents {
 	 * @throws ConnectionServiceEx Exception levée lorsque la connection ne se passe pas bien.
 	 * @throws BaseAdministrationServiceEx  Exception levée lorsque la le service de suppression ne se passe pas bien.
 	 * @throws FileNotFoundException Exception levée lorsque le fichier n'existe pas.
+	 * @throws MalformedURLException Exception levée
 	 */
 	@Test
 	@Ignore
 	public void deleteBase() throws ConnectionServiceEx,
-			BaseAdministrationServiceEx, FileNotFoundException {
-		getConnectionService().setConnectionParameter(getConnectionParameter());
-		getConnectionService().openConnection();
+			BaseAdministrationServiceEx, FileNotFoundException, MalformedURLException {
+		
 		final DataBaseModel dataModel = getBaseAdmiService().getDataBaseModel(BaseUtils.BASE_XML_FILE, getXmlDBModelService());
+		getBaseAdmiService().openConnection();
 		getBaseAdmiService().deleteBase(dataModel);
 		final String baseSae = dataModel.getDataBase().getBaseId();
-		Assert.assertNull( ServiceProvider
+		final ServiceProvider service = ServiceProvider.newServiceProvider();
+		service.connect(getConnectionParameter().getUser().getLogin(),
+				getConnectionParameter().getUser().getPassword(),BaseUtils.buildUrlForConnection(getConnectionParameter()));
+		Assert.assertNull( service
 				.getBaseAdministrationService().getBase(baseSae.trim()));
 	}
 	
