@@ -61,9 +61,6 @@ public final class Utils {
 		assert false;
 	}
 
-	
-	
-
 	/**
 	 * Permet d'identifier les doublons
 	 * 
@@ -79,7 +76,7 @@ public final class Utils {
 			final List<UntypedMetadata> metadatas) {
 		int count = 0;
 		for (UntypedMetadata data : metadatas) {
-			if (data.getLongCode().contains(metadata.getLongCode())) {
+			if (data.getLongCode().trim().equals(metadata.getLongCode().trim())) {
 				count++;
 			}
 		}
@@ -132,7 +129,5 @@ public final class Utils {
 		}
 		return found;
 	}
-	
-	
 
 }
