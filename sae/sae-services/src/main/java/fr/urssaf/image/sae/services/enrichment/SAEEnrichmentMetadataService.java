@@ -1,7 +1,7 @@
 package fr.urssaf.image.sae.services.enrichment;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
-import fr.urssaf.image.sae.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
 
 /**
  * Service d’enrichissement des métadonnées.

@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
-import fr.urssaf.image.sae.exception.enrichment.ReferentialRndException;
-import fr.urssaf.image.sae.exception.enrichment.SAEEnrichmentEx;
-import fr.urssaf.image.sae.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.mapping.utils.Utils;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.dao.RNDReferenceDAO;
 import fr.urssaf.image.sae.services.enrichment.dao.impl.SAEMetatadaFinderUtils;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
+import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 /**
  * Classe concrète pour l’enrichissement des métadonnées.

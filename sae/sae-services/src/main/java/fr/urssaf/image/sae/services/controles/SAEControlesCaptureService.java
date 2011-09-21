@@ -5,14 +5,14 @@ package fr.urssaf.image.sae.services.controles;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.exception.capture.DuplicatedMetadataEx;
-import fr.urssaf.image.sae.exception.capture.EmptyDocumentEx;
-import fr.urssaf.image.sae.exception.capture.InvalidValueTypeAndFormatMetadataEx;
-import fr.urssaf.image.sae.exception.capture.NotSpecifiableMetadataEx;
-import fr.urssaf.image.sae.exception.capture.RequiredArchivableMetadataEx;
-import fr.urssaf.image.sae.exception.capture.RequiredStorageMetadataEx;
-import fr.urssaf.image.sae.exception.capture.UnknownHashCodeEx;
-import fr.urssaf.image.sae.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 
 /**
  * Classe de contrôle des métadonnées.

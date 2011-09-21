@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
-import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
-import fr.urssaf.image.sae.exception.enrichment.SAEEnrichmentEx;
 import fr.urssaf.image.sae.services.CommonsServices;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
 
 public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
    @Autowired

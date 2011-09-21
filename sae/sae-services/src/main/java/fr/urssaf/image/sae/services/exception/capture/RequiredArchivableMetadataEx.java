@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.exception.capture;
+package fr.urssaf.image.sae.services.exception.capture;
 
 /**
  *Exception est levée lors du contrôle de présence des métadonnées

@@ -10,12 +10,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import fr.urssaf.image.sae.exception.enrichment.ReferentialRndException;
-import fr.urssaf.image.sae.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.services.enrichment.dao.RNDReferenceDAO;
 import fr.urssaf.image.sae.services.enrichment.xml.model.TypeDocument;
 import fr.urssaf.image.sae.services.enrichment.xml.services.XmlRndDataService;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 /**
  * Classe représentant le DAO du référentiel des codes RND.

@@ -1,4 +1,7 @@
-package fr.urssaf.image.sae.exception;
+package fr.urssaf.image.sae.services.exception.capture;
+
+import fr.urssaf.image.sae.exception.SAEServiceException;
+
 /**
  * Exception à utiliser pour les erreurs de dans la partie capture.<BR/>
  */

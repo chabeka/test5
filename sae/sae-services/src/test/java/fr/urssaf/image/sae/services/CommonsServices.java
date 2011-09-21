@@ -15,10 +15,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
 import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.model.SAEDocumentMockData;
 import fr.urssaf.image.sae.services.SAEServiceProvider;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.mapping.BeanTestDocumentMapper;
 
 /**

@@ -1,6 +1,6 @@
 package fr.urssaf.image.sae.services.document;
 
-import fr.urssaf.image.sae.exception.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 
 
 /**

@@ -2,9 +2,9 @@ package fr.urssaf.image.sae.services.enrichment.dao;
 
 import java.util.Map;
 
-import fr.urssaf.image.sae.exception.enrichment.ReferentialRndException;
-import fr.urssaf.image.sae.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.services.enrichment.xml.model.TypeDocument;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 /**
  * Service pour la manipulation du référentiel des codes RND.

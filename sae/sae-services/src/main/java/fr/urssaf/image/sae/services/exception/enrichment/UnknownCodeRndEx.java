@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.exception.enrichment;
+package fr.urssaf.image.sae.services.exception.enrichment;
 
 import fr.urssaf.image.sae.metadata.exceptions.ControlException;
 
