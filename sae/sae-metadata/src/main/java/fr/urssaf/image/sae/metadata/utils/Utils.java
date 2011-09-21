@@ -122,7 +122,7 @@ public final class Utils {
 			final List<SAEMetadata> metadatas) {
 		boolean found = false;
 		for (SAEMetadata data : Utils.nullSafeIterable(metadatas)) {
-			if (data.getLongCode().contains(metadata.getLongCode())) {
+			if (data.getLongCode().trim().equals(metadata.getLongCode().trim())) {
 				found = true;
 				break;
 			}
