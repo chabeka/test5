@@ -19,7 +19,6 @@ import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
-import fr.urssaf.image.sae.metadata.rules.AbstractLeafRule;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 
 /**
@@ -83,8 +82,8 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 			try {
 				final MetadataReference reference = referenceDAO
 						.getByLongCode(metadata.getLongCode());
-				if (!ruleFactory.getExistingRule().isSatisfiedBy(metadata.getLongCode(),
-						reference)) {
+				if (!ruleFactory.getExistingRule().isSatisfiedBy(
+						metadata.getLongCode(), reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.existing"), metadata
 							.getLongCode(), MetadataMessageHandler.getMessage(
@@ -151,8 +150,8 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 		final List<MetadataError> errors = new ArrayList<MetadataError>();
 		try {
 			final Map<String, MetadataReference> references = referenceDAO
-			.getRequiredForArchivalMetadataReferences();
-			checkRequired(saeDoc, errors,references ,ruleFactory.getRequiredForArchivalRule());
+					.getRequiredForArchivalMetadataReferences();
+			checkRequired(saeDoc, errors, references);
 		} catch (ReferentialException refExcept) {
 			errors.add(new MetadataError(MetadataMessageHandler
 					.getMessage("metadata.referentiel.error"), null,
@@ -176,8 +175,7 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	private void checkRequired(final SAEDocument saeDoc,
 			final List<MetadataError> errors,
-			final Map<String, MetadataReference> references,
-			final AbstractLeafRule<SAEMetadata, MetadataReference> rule ) {
+			final Map<String, MetadataReference> references) {
 		for (Entry<String, MetadataReference> metadata : Utils.nullSafeMap(
 				references).entrySet()) {
 			if (!Utils.isInRequiredList(metadata.getValue(),
@@ -194,7 +192,8 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 			try {
 				final MetadataReference reference = referenceDAO
 						.getByLongCode(metadata.getLongCode());
-				if (!rule.isSatisfiedBy(metadata,reference)) {
+				if (!ruleFactory.getRequiredValueRule().isSatisfiedBy(metadata,
+						reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
 							.getMessage("metadata.control.value.required"),
 							metadata.getLongCode(), MetadataMessageHandler
@@ -344,8 +343,8 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 		final List<MetadataError> errors = new ArrayList<MetadataError>();
 		try {
 			final Map<String, MetadataReference> references = referenceDAO
-			.getRequiredForStorageMetadataReferences();
-			checkRequired(saeDoc, errors,references,ruleFactory.getRequiredForStorageRule());
+					.getRequiredForStorageMetadataReferences();
+			checkRequired(saeDoc, errors, references);
 		} catch (ReferentialException refExcept) {
 			errors.add(new MetadataError(MetadataMessageHandler
 					.getMessage("metadata.referentiel.error"), null,
@@ -361,7 +360,8 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 	 */
 	@SuppressWarnings({ "PMD.AvoidInstantiatingObjectsInLoops",
 			"PMD.DataflowAnomalyAnalysis" })
-	public final List<MetadataError> checkExistingQueryTerms(final List<String> longCodes) {
+	public final List<MetadataError> checkExistingQueryTerms(
+			final List<String> longCodes) {
 		final List<MetadataError> errors = new ArrayList<MetadataError>();
 		for (String codeLong : Utils.nullSafeIterable(longCodes)) {
 			try {
@@ -370,16 +370,15 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 				if (!ruleFactory.getExistingRule().isSatisfiedBy(codeLong,
 						reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
-							.getMessage("metadata.control.existing"), codeLong
-							, MetadataMessageHandler.getMessage(
-							"metadata.not.exist", codeLong)));
+							.getMessage("metadata.control.existing"), codeLong,
+							MetadataMessageHandler.getMessage(
+									"metadata.not.exist", codeLong)));
 				}
 			} catch (ReferentialException refExcept) {
 				errors.add(new MetadataError(MetadataMessageHandler
 						.getMessage("metadata.referentiel.error"), codeLong,
 						MetadataMessageHandler.getMessage(
-								"metadata.referentiel.retrieve",
-								codeLong)));
+								"metadata.referentiel.retrieve", codeLong)));
 			}
 
 		}
