@@ -43,6 +43,13 @@
          <artifactId>sae-bo</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      
+      <!-- SAE MAPPING -->
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-mapping</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
       <!-- SAE STORAGE -->
 
@@ -51,15 +58,15 @@
          <artifactId>sae-storage</artifactId>
          <version>0.0.2-SNAPSHOT</version>
       </dependency>
-      
+
       <!-- SAE STORAGE DFCE -->
-      
+
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-storage-dfce</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-      
+
       <!-- SAE METADATA -->
 
       <dependency>
@@ -67,49 +74,49 @@
          <artifactId>sae-metadata</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-      
-       <!-- JASPECT -->
-      
+
+      <!-- JASPECT -->
+
       <dependency>
          <groupId>org.aspectj</groupId>
          <artifactId>aspectjrt</artifactId>
          <version>${aspectj.version}</version>
       </dependency>
-      
+
       <!-- SPRING -->
-      
+
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-beans</artifactId>
          <version>${spring.framework.version}</version>
       </dependency>
-      
+
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
          <version>${spring.framework.version}</version>
       </dependency>
-      
+
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-test</artifactId>
          <version>${spring.framework.version}</version>
          <scope>test</scope>
       </dependency>
-      
+
       <!-- COMMONS APACHE -->
-     
+
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
          <version>${apache.commons-io.version}</version>
       </dependency>
-      
+
       <dependency>
          <groupId>commons-lang</groupId>
          <artifactId>commons-lang</artifactId>
          <version>${apache.commons-lang.version}</version>
       </dependency>
-     
+
    </dependencies>
 </project>
