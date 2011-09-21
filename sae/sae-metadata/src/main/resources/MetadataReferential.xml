@@ -273,7 +273,7 @@
     <description>Date à laquelle le document a été reçu pour un courrier par exemple</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>APR </shortCode>
+    <shortCode>APR</shortCode>
     <longCode>ApplicationProductrice</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
