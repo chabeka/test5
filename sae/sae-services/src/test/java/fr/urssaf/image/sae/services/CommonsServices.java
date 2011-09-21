@@ -100,7 +100,9 @@ public class CommonsServices {
          return BeanTestDocumentMapper
                .saeMockDocumentXmlToSAEDocument(saeDocumentMock);
       } catch (IOException e) {
-         throw new SAECaptureServiceEx("Le fichier contenant les documents de tests unitaire n''est pas disponible.", e);
+         throw new SAECaptureServiceEx(
+               "Le fichier contenant les documents de tests unitaire n''est pas disponible.",
+               e);
       }
    }
 
@@ -112,7 +114,7 @@ public class CommonsServices {
          throws IOException, ParseException, SAECaptureServiceEx {
       // Injection de jeu de donnée.
       final Resource resource = context
-            .getResource("classpath:xml/saeDocumentMockData.xml");
+            .getResource("classpath:XML/saeDocumentMockData.xml");
       try {
          final SAEDocumentMockData saeDocumentMock = getXmlDataService()
                .saeDocumentReader(resource.getInputStream());
@@ -120,12 +122,11 @@ public class CommonsServices {
          return saeMockDocumentXmlToUntypedDocument(saeDocumentMock);
       } catch (IOException e) {
          throw new SAECaptureServiceEx(
-               MetadataMessageHandler
-                     .getMessage(
-                           "Le fichier contenant les documents de tests n''est pas disponible",
-                           resource.getFilename()), e);
+               "Le fichier contenant les documents de tests unitaire n''est pas disponible.",
+               e);
       }
    }
+
    /**
     * @return Un service.
     */
@@ -134,7 +135,8 @@ public class CommonsServices {
    }
 
    /**
-    * @param sAEServiceProvider  : Service provider. 
+    * @param sAEServiceProvider
+    *           : Service provider.
     */
    public final void setSaeServiceProvider(SAEServiceProvider sAEServiceProvider) {
       this.sAEServiceProvider = sAEServiceProvider;
