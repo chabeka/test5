@@ -84,7 +84,7 @@ public class NcotiHelper {
       Category DATETIME_REF = storageAdministrationService.findOrCreateCategory(
             Categories.DATETIME.toString(), CategoryDataType.DATETIME);  
       Category DECIMAL_REF = storageAdministrationService.findOrCreateCategory(
-            Categories.DECIMAL.toString(), CategoryDataType.DECIMAL);
+            Categories.DOUBLE.toString(), CategoryDataType.DOUBLE);
       Category INTEGER_REF = storageAdministrationService.findOrCreateCategory(
             Categories.INTEGER.toString(), CategoryDataType.INTEGER); 
       Category BOOLEAN_REF = storageAdministrationService.findOrCreateCategory(

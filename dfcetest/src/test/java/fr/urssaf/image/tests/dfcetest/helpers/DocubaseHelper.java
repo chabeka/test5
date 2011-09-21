@@ -1,10 +1,9 @@
 package fr.urssaf.image.tests.dfcetest.helpers;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,20 +65,22 @@ public final class DocubaseHelper {
       }
       return docs;
    }
-   
-   public static Document storeOneDoc(Base base, String title, String type, Map<String, Object> catValues) {
+
+   public static Document storeOneDoc(Base base, String title, String type,
+         Map<String, Object> catValues) {
       Document document = ToolkitFactory.getInstance().createDocumentTag(base);
 
-      // document.setDocTitle(title);
+      document.setTitle(title);
       document.setType(type);
-      storeThisDoc(base, document, catValues);
+      document = storeThisDoc(base, document, catValues);
       return document;
    }
-   
+
    public static Document storeOneDoc(Base base, Map<String, Object> catValues) {
       String type = Math.random() > 0.5 ? "PDF" : "DOC";
-      return storeOneDoc(base, catValues.get(Categories.TITRE.toString()).toString(), type, catValues);
-   }   
+      return storeOneDoc(base, catValues.get(Categories.TITRE.toString()).toString(), type,
+            catValues);
+   }
 
    public static Document storeOneDocWithRandomCategories(Base base, String title) throws Exception {
       String type = Math.random() > 0.5 ? "PDF" : "DOC";
@@ -90,7 +91,7 @@ public final class DocubaseHelper {
    /**
     * @param document
     * @param catValues
-    * @throws CustomTagControlException 
+    * @throws CustomTagControlException
     */
    public static Document storeThisDoc(Base base, Document document, Map<String, Object> catValues) {
       for (Entry<String, Object> ent : catValues.entrySet()) {
@@ -98,12 +99,14 @@ public final class DocubaseHelper {
          document.addCriterion(baseCategory, ent.getValue());
       }
       try {
-         return ServiceProvider.getStoreService().storeDocument(document, getAFile());
+         InputStream is = getAFile();
+         Document doc = ServiceProvider.getStoreService().storeDocument(document, is);
+         return doc;
       } catch (TagControlException e) {
          throw new RuntimeException(e);
       }
-   }   
-   
+   }
+
    /**
     * @param title
     * @return
@@ -127,16 +130,16 @@ public final class DocubaseHelper {
       if (Math.random() > .2)
          catValues.put(Categories.INTEGER.toString(), rand.nextInt());
 
-      if (Math.random() > .75)
-         catValues.put(Categories.BOOLEAN.toString(), rand.nextBoolean());
+      //if (Math.random() > .75)
+     //    catValues.put(Categories.BOOLEAN.toString(), rand.nextBoolean());
 
-      // Ce n'est pas une catégorie obligatoire mais cela permet d'avoir une distribution normale
-      // lors de l'injection en masse de valeur aléatoire
-      //catValues.put(Categories.DECIMAL.toString(), rand.nextFloat()); // rand.nextGaussian()      
+      // Ce n'est pas une catégorie obligatoire mais cela permet d'avoir une
+      // distribution normale lors de l'injection en masse de valeur aléatoire
+      catValues.put(Categories.DOUBLE.toString(), rand.nextGaussian());
+      
       return catValues;
    }
-   
-   
+
    /**
     * @param title
     *           Le titre du document est affecté à la catégorie
@@ -145,7 +148,7 @@ public final class DocubaseHelper {
     */
    public static Map<String, String> getNcotiCategoriesRandomValues(String title) {
       Map<String, String> catValues = new HashMap<String, String>();
-      
+
       catValues.put(NcotiCategories.TYPE_DOC.toString(), Math.random() > 0.5 ? ".pdf" : ".doc"); // 0
       catValues.put(NcotiCategories.TYPE_DOC_LIBELLE.toString(),
             generateString("libTypeDoc".toLowerCase(), 50, 1000)); // 1
@@ -287,39 +290,27 @@ public final class DocubaseHelper {
 
    public static InputStream getAFile() {
       ByteArrayInputStream docStream = null;
-      
+      ByteArrayOutputStream content = null;
+
       try {
-      ByteArrayOutputStream content = new ByteArrayOutputStream();
-      content.write(DOC_CONTENT);
-      String randomPart = randomString(10);
-      //System.out.println(randomPart);
-      content.write(randomPart.getBytes());      
-      
-      
-      docStream = new ByteArrayInputStream(content.toByteArray());
+         content = new ByteArrayOutputStream();
+         content.write(DOC_CONTENT);
+         String randomPart = randomString(10);
+         // System.out.println(randomPart);
+         content.write(randomPart.getBytes());
+         docStream = new ByteArrayInputStream(content.toByteArray());
       } catch (IOException e) {
          throw new RuntimeException(e);
+      } finally {
+         if (content != null) {
+            try {
+               content.close();
+            } catch (IOException e) {
+               throw new RuntimeException(e);
+            }
+         }
       }
       return docStream;
-      
-      /*File newDoc = null;
-      try {
-         InputStream is = new FileInputStream(randomString(0));
-         
-        newDoc = File.createTempFile("doc" + System.nanoTime(), ".tiff");
-         FileOutputStream fos = new FileOutputStream(newDoc);
-         fos.write(DOC_CONTENT);
-         String randomPart = randomString(10);
-         //System.out.println(randomPart);
-         fos.write(randomPart.getBytes());
-         fos.flush();
-         fos.close();
-         
-         //newDoc.deleteOnExit();
-      } catch (Exception e) {
-         throw new RuntimeException(e);
-      }
-      return newDoc;*/
    }
 
    public static ConcurrentMap<String, List<String>> generatedStrings = new ConcurrentHashMap<String, List<String>>();

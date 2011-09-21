@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.model.base.Base;
@@ -66,7 +67,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
    @After
    public void deleteDocuments() throws Exception {
       for (Document doc : this.docs) {
-         ServiceProvider.getStoreService().deleteDocument(doc);
+         ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
       }
    }
 

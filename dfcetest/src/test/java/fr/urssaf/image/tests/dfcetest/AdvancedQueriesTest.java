@@ -6,9 +6,10 @@ package fr.urssaf.image.tests.dfcetest;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -59,7 +60,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    @After
    public void teardown() {
       for (Document doc : DocGen.storedDocuments) {
-         ServiceProvider.getStoreService().deleteDocument(doc);
+         ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
       }
    }
    
@@ -92,6 +93,23 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    }
    
    /**
+    * Requête c1>date
+    */
+   @Test
+   public void date_superieur() throws Exception {
+      // Document A
+      String titleA = docGen.setRandomTitle("date_superieur").getTitle();
+      docGen.put(Categories.DATE, new Date(2012, 1, 1));
+      Document docA = docGen.store();
+
+   
+      String lucene = "Date>2011-12-31";
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      assertEquals(1, result.getDocuments().size());
+      assertDocumentEquals(docA, result.getDocuments().get(0));      
+   }   
+   
+   /**
     * Requête de type (c1=x OR c2=y) AND (c3 = z)
     */
    @Test
@@ -99,7 +117,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       // Document A
       String titleA = docGen.setRandomTitle("AQ2A").getTitle();
       docGen.put(Categories.INTEGER, 10);
-      docGen.put(Categories.BOOLEAN, false);
+      //docGen.put(Categories.BOOLEAN, false);
       Document docA = docGen.store();
       
       // Document B
@@ -113,6 +131,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       
       lucene = String.format("%s:%s", appliSourceFName, titleA);
       result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      Document d = result.getDocuments().get(0);
       assertEquals(1, result.getDocuments().size());      
 
       lucene = String.format("%s:%s OR %s:%s", intergerFName, 10, appliSourceFName, titleA);
@@ -217,11 +236,37 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    public void wildcard_mono() throws Exception {
       docGen.setTitle("azerty");
       docGen.store();
+      String lucene = String.format("%s:az?rty", appliSourceFName);
+      // SUT
+      SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
+      assertEquals(1, result.getDocuments().size());
+      assertEquals(docGen.getTitle(), result.getDocuments().get(0).getFirstCriterion(appliSourceCategory).getWord());
+   }   
+   
+   
+   /**
+    * Teste qu'un wildcard est interdit en tant que premier caractère
+    */
+   @Test(expected=RuntimeException.class)
+   public void wildcard_first() throws Exception {
+      docGen.setTitle("azerty");
+      docGen.store();
       //String lucene = String.format("%s:az?rty", appliSourceFName);
       String lucene = String.format("%s:?????", appliSourceFName);
       // SUT
       SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
       assertEquals(1, result.getDocuments().size());
       assertEquals(docGen.getTitle(), result.getDocuments().get(0).getFirstCriterion(appliSourceCategory).getWord());
-   }   
+   }     
+   
+   /**
+    * Peut-on valoriser une catégorie par une chaine vide ? 
+    * Réponse : Non => TagControlException
+    * @throws Exception
+    */
+   @Test(expected=TagControlException.class)
+   public void emptyStringMetadata() throws Exception {
+      docGen.setTitle("");
+      docGen.store();
+   }  
 }

@@ -7,11 +7,11 @@ package fr.urssaf.image.tests.dfcetest;
 public enum Categories {
    TITRE("Titre"),
    TYPE_DOC("Type de document"),  
-   APPLI_SOURCE("Application Source"), 
+   APPLI_SOURCE("_aasource"), 
    DATE("Date"),  
    DATETIME("Datetime"), 
    INTEGER("Entier"), 
-   DECIMAL("Décimal"), 
+   DOUBLE("Double"), 
    BOOLEAN("Booléen");
 
    /**

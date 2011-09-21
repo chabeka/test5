@@ -3,9 +3,11 @@
  */
 package fr.urssaf.image.tests.dfcetest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,10 +26,10 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
 import net.docubase.toolkit.service.ServiceProvider;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.urssaf.image.tests.dfcetest.helpers.DocGen;
 import fr.urssaf.image.tests.dfcetest.helpers.DocubaseHelper;
 
 /**
@@ -38,11 +40,14 @@ public class CrudTest extends AbstractNcotiTest {
 
    private Base base;
    private BaseCategory appliSourceCategory;
+   private DocGen docGen;   
    String appliSourceFName;
 
    @Before
    public void createContext() {
       base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      docGen = new DocGen(base);  
+      
       appliSourceCategory = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
       appliSourceFName = appliSourceCategory.getFormattedName();
    }
@@ -131,29 +136,39 @@ public class CrudTest extends AbstractNcotiTest {
             .iterator().next());
    }
    
+   /**
+    * On teste que la suppression d'un document supprime le document (i.e. le fichier) 
+    * ainsi que ses méta données.
+    * @throws Exception
+    */
    @Test
-   public void documentFileByUUID() throws Exception {
-      String appliSource = "documentFileByUUID" + System.nanoTime();
+   public void deleteDocument() throws Exception {
+      String appliSource = "deleteDocument" + System.nanoTime();
 
-      Document doc = DocubaseHelper.insertOneDoc(base, appliSource);
+      Document doc = docGen.setTitle(appliSource).store();  
+      assertNotNull(doc);
       UUID uuid = doc.getUuid();
-      Document emptyDoc = toolkit.createDocumentTag(base);
-      emptyDoc.setUuid(uuid);
+      assertNotNull(uuid);
       
-      InputStream docContent = ServiceProvider.getStoreService().getDocumentFile(emptyDoc);
-      assertNotNull(docContent);
-   }
-   
-   @Test
-   public void deleteByUUID() throws Exception {
-      String appliSource = "deleteByUUID" + System.nanoTime();
-
-      Document doc = DocubaseHelper.insertOneDoc(base, appliSource);
-      UUID uuid = doc.getUuid();
-      Document emptyDoc = toolkit.createDocumentTag(base);
-      emptyDoc.setUuid(uuid);
+      // Requête lucene qui ramène le document
+      String luceneQuery = appliSourceFName + ":" + appliSource;
       
-      ServiceProvider.getStoreService().deleteDocument(emptyDoc);
+      // On teste la requête lucene avant de supprimer le document
+      SearchResult result = ServiceProvider.getSearchService().search(luceneQuery, 100, base);
+      List<Document> docs = result.getDocuments();
+      assertEquals("La requête lucene aurait dû ramener le document", 1, docs.size());
+      
+      // SUT
+      ServiceProvider.getStoreService().deleteDocument(uuid);      
+      
+      // On s'assure que le document ne remonte plus via l'UUID
+      Document ghostDoc = ServiceProvider.getSearchService().getDocumentByUUID(base, uuid);
+      assertNull(ghostDoc);
+      
+      // On s'assure que les méta données du document n'existe plus
+      result = ServiceProvider.getSearchService().search(luceneQuery, 100, base);
+      docs = result.getDocuments();
+      assertEquals("Le document est censé avoir été supprimé", 0, docs.size());
    }
 
    @Test
@@ -279,4 +294,13 @@ public class CrudTest extends AbstractNcotiTest {
       docFound = result.getDocuments().get(0);
       assertEquals(doc3.getUuid(), docFound.getUuid());
    }   
+   
+   
+   @Test
+   public void UUID_inexistant() throws Exception {
+      UUID uuid = UUID.randomUUID();
+      Document doc = ServiceProvider.getSearchService().getDocumentByUUID(this.base, uuid);
+      assertNull(doc);
+   }
+ 
 }
