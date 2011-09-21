@@ -16,7 +16,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
-import fr.urssaf.image.sae.services.capture.exception.SAECaptureException;
+import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
@@ -54,7 +62,10 @@ public class SAECaptureServiceValidationTest {
    }
 
    @Test
-   public void capture_success() throws SAECaptureException {
+   public void capture_success() throws SAECaptureServiceEx,
+         RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
+         UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
+         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx {
 
       try {
          service.capture(metadatas, ecdeURL);
@@ -66,7 +77,10 @@ public class SAECaptureServiceValidationTest {
    }
 
    @Test
-   public void capture_failure_metadatas_null() throws SAECaptureException {
+   public void capture_failure_metadatas_null() throws SAECaptureServiceEx,
+         RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
+         UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
+         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx {
 
       assertCapture_failure_metadatas(service, null);
       assertCapture_failure_metadatas(service, new HashMap<String, String>());
@@ -75,7 +89,10 @@ public class SAECaptureServiceValidationTest {
 
    private static void assertCapture_failure_metadatas(
          SAECaptureService service, Map<String, String> metadatas)
-         throws SAECaptureException {
+         throws SAECaptureServiceEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx {
 
       try {
 
@@ -84,13 +101,17 @@ public class SAECaptureServiceValidationTest {
          fail("l'argument metadatas ne doit pas être renseigné");
       } catch (IllegalArgumentException e) {
          assertEquals("message d'exception non attendu",
-               "L'argument 'metadatas' doit être renseigné", e.getMessage());
+               "L'argument 'metadatas' doit être renseigné ou être non null.",
+               e.getMessage());
       }
 
    }
 
    @Test
-   public void capture_failure_ecdeUrl_null() throws SAECaptureException {
+   public void capture_failure_ecdeUrl_null() throws SAECaptureServiceEx,
+         RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
+         UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
+         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx {
 
       try {
 
@@ -99,7 +120,8 @@ public class SAECaptureServiceValidationTest {
          fail("l'argument ecdeURL ne doit pas être renseigné");
       } catch (IllegalArgumentException e) {
          assertEquals("message d'exception non attendu",
-               "L'argument 'ecdeURL' doit être renseigné", e.getMessage());
+               "L'argument 'ecdeURL' doit être renseigné ou être non null.", e
+                     .getMessage());
       }
 
    }

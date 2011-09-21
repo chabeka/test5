@@ -7,21 +7,31 @@ import fr.urssaf.image.sae.exception.SAEServiceException;
  */
 public class SAECaptureServiceEx extends SAEServiceException {
 
-   /**
-    * L'identifiant unique de l'exception
-    */
-   private static final long serialVersionUID = -298210295473447438L;
+   private static final long serialVersionUID = 1L;
+
+   private static final String MSG_EXCEPTION = "Une exception a eu lieu dans la capture";
 
    /**
-    * Construit une nouvelle {@link SAECaptureServiceEx }.
+    * le message de l'exception est {@value #MSG_EXCEPTION}
+    * 
     */
    public SAECaptureServiceEx() {
-      super();
+      super(MSG_EXCEPTION);
    }
 
    /**
-    * Construit une nouvelle {@link SAECaptureServiceEx } avec un message et une cause
-    * données.
+    * le message de l'exception est {@value #MSG_EXCEPTION}
+    * 
+    * @param cause
+    *           cause de l'exception
+    */
+   public SAECaptureServiceEx(Throwable cause) {
+      super(MSG_EXCEPTION, cause);
+   }
+
+   /**
+    * Construit une nouvelle {@link SAECaptureServiceEx } avec un message et une
+    * cause données.
     * 
     * @param message
     *           : Message de l'erreur
@@ -43,8 +53,8 @@ public class SAECaptureServiceEx extends SAEServiceException {
    }
 
    /**
-    * Construit une nouvelle {@link SAECaptureServiceEx } avec un message ,une cause
-    * données et un code erreur donné .
+    * Construit une nouvelle {@link SAECaptureServiceEx } avec un message ,une
+    * cause données et un code erreur donné .
     * 
     * @param message
     *           : Le message d'erreur

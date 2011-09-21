@@ -4,7 +4,15 @@ import java.net.URI;
 import java.util.Map;
 import java.util.UUID;
 
-import fr.urssaf.image.sae.services.capture.exception.SAECaptureException;
+import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 
 /**
  * Service pour l'opération : capture unitaire
@@ -13,7 +21,8 @@ import fr.urssaf.image.sae.services.capture.exception.SAECaptureException;
  */
 public interface SAECaptureService {
 
-   /***
+   /**
+    * 
     * Service pour l'opération : capture unitaire
     * 
     * @param metadatas
@@ -21,9 +30,32 @@ public interface SAECaptureService {
     * @param ecdeURL
     *           url ECDE du fichier numérique à archiver
     * @return Identifiant unique du document dans le SAE
-    * @throws SAECaptureException
+    * 
+    * 
+    * 
+    * @throws SAECaptureServiceEx
     *            exception levée lors de la capture
+    * @throws RequiredStorageMetadataEx
+    *            les métadonnées obligatoires sont absentes
+    * @throws InvalidValueTypeAndFormatMetadataEx
+    *            les valeurs des métadonnées ne sont pas du bon type ou au bon
+    *            format
+    * @throws UnknownMetadataEx
+    *            les métadonnées n'existent pas dans le référentiel
+    * @throws DuplicatedMetadataEx
+    *            les métadonnées sont dupliquées
+    * @throws NotSpecifiableMetadataEx
+    *            les métadonnées ne sont pas archivables
+    * @throws RequiredArchivableMetadataEx
+    *            les métadonnées obligatoires pour l'archivage sont absentes
+    * @throws EmptyDocumentEx
+    *            Le fichier à archiver est vide
+    * @throws NotArchivableMetadataEx
+    *            les métadonnées ne sont pas archivables
     */
    UUID capture(Map<String, String> metadatas, URI ecdeURL)
-         throws SAECaptureException;
+         throws SAECaptureServiceEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx;
 }

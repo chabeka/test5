@@ -60,7 +60,8 @@ public class SAEConsultationServiceValidationTest {
          fail("l'argument idArchive doit être renseigné");
       } catch (IllegalArgumentException e) {
          assertEquals("message d'exception non attendu",
-               "L'argument 'idArchive' doit être renseigné", e.getMessage());
+               "L'argument 'idArchive' doit être renseigné ou être non null.", e
+                     .getMessage());
       }
 
    }

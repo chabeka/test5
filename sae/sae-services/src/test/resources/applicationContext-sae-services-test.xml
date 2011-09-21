@@ -13,5 +13,7 @@
    <import resource="storageConnectionParameter.xml" />
    <import resource="applicationContext-sae-storage-dfce.xml" />
    <import resource="applicationContext-sae-metadata.xml" />
+   <import resource="applicationContext-sae-ecde.xml" />
+   <import resource="applicationContext-sae-mapping.xml" />
 
 </beans>

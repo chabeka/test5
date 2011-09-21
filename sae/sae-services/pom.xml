@@ -43,7 +43,7 @@
          <artifactId>sae-bo</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-      
+
       <!-- SAE MAPPING -->
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
@@ -72,6 +72,14 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-metadata</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
+      <!-- SAE ECDE -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-ecde</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
 
