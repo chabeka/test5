@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.mapping.utils.Utils;
+import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
+import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.dao.RNDReferenceDAO;
 import fr.urssaf.image.sae.services.enrichment.dao.impl.SAEMetatadaFinderUtils;
@@ -34,10 +36,40 @@ public class SAEEnrichmentMetadataServiceImpl implements
    @Autowired
    @Qualifier("rndReferenceDAO")
    private RNDReferenceDAO rndReferenceDAO;
+   @Autowired
+   @Qualifier("metadataReferenceDAO")
+   private MetadataReferenceDAO metadataReferenceDAO;
 
-   // @Autowired
-   // @Qualifier("saeMetatadaFinder")
-   // private static SAEMetatadaFinderUtils saeMetatadaFinder;
+   /**
+    * @return Le service RND reference.
+    */
+   public final RNDReferenceDAO getRndReferenceDAO() {
+      return rndReferenceDAO;
+   }
+
+   /**
+    * @param rndReferenceDAO
+    *           : Le service RND reference.
+    */
+   public final void setRndReferenceDAO(RNDReferenceDAO rndReferenceDAO) {
+      this.rndReferenceDAO = rndReferenceDAO;
+   }
+
+   /**
+    * @return Le service metadataReferenceDAO.
+    */
+   public final MetadataReferenceDAO getMetadataReferenceDAO() {
+      return metadataReferenceDAO;
+   }
+
+   /**
+    * @param metadataReferenceDAO
+    *           : Le service metadataReferenceDAO.
+    */
+   public final void setMetadataReferenceDAO(
+         MetadataReferenceDAO metadataReferenceDAO) {
+      this.metadataReferenceDAO = metadataReferenceDAO;
+   }
 
    @Override
    public final void enrichmentMetadata(SAEDocument saeDoc)
@@ -56,6 +88,8 @@ public class SAEEnrichmentMetadataServiceImpl implements
          throw new SAEEnrichmentEx(e.getMessage(), e);
       } catch (ParseException e) {
          throw new SAEEnrichmentEx(e.getMessage(), e);
+      } catch (ReferentialException e) {
+         throw new SAEEnrichmentEx(e.getMessage(), e);
       }
    }
 
@@ -69,13 +103,14 @@ public class SAEEnrichmentMetadataServiceImpl implements
     * @throws UnknownCodeRndEx
     * @throws ReferentialRndException
     * @throws ParseException
+    * @throws ReferentialException
     */
    // CHECKSTYLE:OFF
    @SuppressWarnings( { "PMD.CyclomaticComplexity",
          "PMD.AvoidInstantiatingObjectsInLoops" })
-
    private void completedMetadatas(SAEDocument saeDocument, String rndCode)
-         throws ReferentialRndException, UnknownCodeRndEx, ParseException {
+         throws ReferentialRndException, UnknownCodeRndEx, ParseException,
+         ReferentialException {
       SAEMetadata saeMetadata = new SAEMetadata();
       for (SAEArchivalMetadatas metadata : SAEArchivalMetadatas.values()) {
          saeMetadata = new SAEMetadata();
@@ -84,44 +119,74 @@ public class SAEEnrichmentMetadataServiceImpl implements
                .metadtaFinder(metadata.getLongCode());
          switch (metadata) {
          case CODEACTIVITE:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.CODEACTIVITE.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(rndReferenceDAO.getActivityCodeByRnd(rndCode));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case CODEFONCTION:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.CODEFONCTION.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(rndReferenceDAO.getFonctionCodeByRnd(rndCode));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case DUREECONSERVATION:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.DUREECONSERVATION.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(rndReferenceDAO
                   .getStorageDurationByRnd(rndCode));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case DATEARCHIVAGE:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.DATEARCHIVAGE.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(Utils.dateToString(new Date()));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case DATEDEBUTCONSERVATION:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.DATEDEBUTCONSERVATION.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(Utils.dateToString(new Date()));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case DATEFINCONSERVATION:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.DATEFINCONSERVATION.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(Utils
                   .dateToString(DateUtils.addDays(new Date(), rndReferenceDAO
                         .getStorageDurationByRnd(rndCode))));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case GEL:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.GEL.getLongCode()).getShortCode());
             saeMetadata.setValue(false);
             saeDocument.getMetadatas().add(saeMetadata);
+            break;
          case OBJECTTYPE:
+            saeMetadata
+                  .setShortCode(metadataReferenceDAO.getByLongCode(
+                        SAEArchivalMetadatas.OBJECTTYPE.getLongCode())
+                        .getShortCode());
             saeMetadata.setValue("autonomous");
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case TYPE:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.TYPE.getLongCode()).getShortCode());
             saeMetadata.setValue("PDF");
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case CONTRATDESERVICE:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.CONTRATDESERVICE.getLongCode())
+                  .getShortCode());
             // FIXME attente de spécification.
             saeMetadata.setValue("ATT_PROD_001");
             saeDocument.getMetadatas().add(saeMetadata);
@@ -129,7 +194,6 @@ public class SAEEnrichmentMetadataServiceImpl implements
          default:
             break;
          }
-
       }
    }
    // CHECKSTYLE:ON

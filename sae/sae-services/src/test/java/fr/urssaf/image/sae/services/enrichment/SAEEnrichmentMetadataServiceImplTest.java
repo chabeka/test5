@@ -3,12 +3,16 @@ package fr.urssaf.image.sae.services.enrichment;
 import java.io.IOException;
 import java.text.ParseException;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
+import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
+import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
+import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
 import fr.urssaf.image.sae.services.CommonsServices;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
@@ -19,6 +23,24 @@ public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
    @Autowired
    @Qualifier("saeEnrichmentMetadataService")
    SAEEnrichmentMetadataService saeEnrichmentMetadataService;
+   @Autowired
+   @Qualifier("mappingDocumentService")
+   private MappingDocumentService mappingService;
+
+   /**
+    * @return Le service de mappingService
+    */
+   public final MappingDocumentService getMappingService() {
+      return mappingService;
+   }
+
+   /**
+    * @param mappingService
+    *           : Le service de mappingService.
+    */
+   public final void setMappingService(MappingDocumentService mappingService) {
+      this.mappingService = mappingService;
+   }
 
    /**
     * @return Le service d'enrichment des metadonnées.
@@ -43,9 +65,12 @@ public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
     */
    @Test
    public final void enrichmentMetadata() throws SAECaptureServiceEx,
-         IOException, ParseException, SAEEnrichmentEx {
-      SAEDocument saeDocument = getSAEDocumentMockData();
+         IOException, ParseException, SAEEnrichmentEx, InvalidSAETypeException,
+         MappingFromReferentialException {
+      SAEDocument saeDocument = mappingService
+            .untypedDocumentToSaeDocument(getUntypedDocumentMockData());
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
+      Assert.assertNotNull(saeDocument);
    }
 
    /**
