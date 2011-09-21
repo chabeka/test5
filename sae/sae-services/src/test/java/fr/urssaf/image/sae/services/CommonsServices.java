@@ -92,7 +92,7 @@ public class CommonsServices {
          ParseException, SAECaptureServiceEx {
       // Injection de jeu de donnée.
       final Resource resource = context
-            .getResource("classpath:xml/saeDocumentMockData.xml");
+            .getResource("classpath:XML/saeDocumentMockData.xml");
       try {
          final SAEDocumentMockData saeDocumentMock = getXmlDataService()
                .saeDocumentReader(resource.getInputStream());
@@ -100,11 +100,7 @@ public class CommonsServices {
          return BeanTestDocumentMapper
                .saeMockDocumentXmlToSAEDocument(saeDocumentMock);
       } catch (IOException e) {
-         throw new SAECaptureServiceEx(
-               MetadataMessageHandler
-                     .getMessage(
-                           "Le fichier contenant les documents de tests n''est pas disponible",
-                           resource.getFilename()), e);
+         throw new SAECaptureServiceEx("Le fichier contenant les documents de tests unitaire n''est pas disponible.", e);
       }
    }
 
