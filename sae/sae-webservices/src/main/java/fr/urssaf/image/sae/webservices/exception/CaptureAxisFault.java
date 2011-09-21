@@ -14,12 +14,6 @@ public class CaptureAxisFault extends AxisFault {
    private static final long serialVersionUID = 1L;
 
    /**
-    * 
-    * @param localPart
-    * @param cause
-    */
-
-   /**
     * Instanciation de {@link AxisFault#AxisFault}
     * 
     * <code>faultCode</code>:
@@ -31,14 +25,15 @@ public class CaptureAxisFault extends AxisFault {
     * 
     * @param localPart
     *           localPart du code du SOAPFault
+    * @param message
+    *           message de l'exception
     * @param cause
     *           exception levée qui génère la SOAPFault
     */
-   public CaptureAxisFault(String localPart, Throwable cause) {
+   public CaptureAxisFault(String localPart, String message, Throwable cause) {
 
-      super("Une erreur interne à l'application est survenue dans la capture.",
-            SoapFaultCodeFactory.createSoapFaultCode("urn:sae:faultcodes",
-                  localPart, "sae"), cause);
+      super(message, SoapFaultCodeFactory.createSoapFaultCode(
+            "urn:sae:faultcodes", localPart, "sae"), cause);
 
    }
 
