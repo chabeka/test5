@@ -572,7 +572,7 @@
     <defaultConsultable>true</defaultConsultable>
     <searchable>false</searchable>
     <internal>true</internal>
-    <archivable>false</archivable>
+    <archivable>true</archivable>
     <label>Nom du fichier</label>
     <description>Nom du fichier physique avec extension lié au document</description>
   </metaDataReference>
