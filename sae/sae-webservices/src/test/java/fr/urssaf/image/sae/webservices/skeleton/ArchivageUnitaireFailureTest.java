@@ -29,6 +29,8 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadata
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -279,6 +281,41 @@ public class ArchivageUnitaireFailureTest {
       } catch (AxisFault axisFault) {
 
          assertAxisFault(axisFault, "CaptureMetadonneesInterdites");
+      }
+   }
+
+   @Test
+   public void archivageUnitaire_failure_UnknownCodeRndEx() {
+
+      mockThrowable(new UnknownCodeRndEx(null));
+
+      try {
+
+         callService();
+
+         Assert.fail(FAIL_MSG);
+
+      } catch (AxisFault axisFault) {
+
+         assertAxisFault(axisFault, "CaptureCodeRndInterdit");
+      }
+   }
+
+   @Test
+   public void archivageUnitaire_failure_ReferentialRndException() {
+
+      mockThrowable(new ReferentialRndException(null));
+
+      try {
+
+         callService();
+
+         Assert.fail(FAIL_MSG);
+
+      } catch (AxisFault axisFault) {
+
+         assertAxisFault(axisFault, "ErreurInterne",
+               "Erreur interne à l'application est survenue.");
       }
    }
 

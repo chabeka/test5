@@ -21,6 +21,8 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadata
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
@@ -117,6 +119,15 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
          throw new CaptureAxisFault("CaptureMetadonneesArchivageObligatoire", e
                .getMessage(), e);
+
+      } catch (ReferentialRndException e) {
+
+         throw new CaptureAxisFault("ErreurInterne",
+               "Erreur interne à l'application est survenue.", e);
+
+      } catch (UnknownCodeRndEx e) {
+
+         throw new CaptureAxisFault("CaptureCodeRndInterdit", e.getMessage(), e);
 
       } catch (NotArchivableMetadataEx e) {
 
