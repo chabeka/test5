@@ -73,7 +73,7 @@ public class SAEEnrichmentMetadataServiceImpl implements
 
    @Override
    public final void enrichmentMetadata(SAEDocument saeDoc)
-         throws SAEEnrichmentEx {
+         throws SAEEnrichmentEx, ReferentialRndException,UnknownCodeRndEx {
       List<SAEMetadata> saeMetadatas = saeDoc.getMetadatas();
 
       String rndValue = SAEMetatadaFinderUtils.codeMetadataFinder(saeMetadatas,
@@ -83,9 +83,9 @@ public class SAEEnrichmentMetadataServiceImpl implements
             completedMetadatas(saeDoc, rndValue);
          }
       } catch (ReferentialRndException e) {
-         throw new SAEEnrichmentEx(e.getMessage(), e);
+         throw new ReferentialRndException(e.getMessage(), e);
       } catch (UnknownCodeRndEx e) {
-         throw new SAEEnrichmentEx(e.getMessage(), e);
+         throw new UnknownCodeRndEx(e.getMessage(), e);
       } catch (ParseException e) {
          throw new SAEEnrichmentEx(e.getMessage(), e);
       } catch (ReferentialException e) {

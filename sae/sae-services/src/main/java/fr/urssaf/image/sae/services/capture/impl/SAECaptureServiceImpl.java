@@ -34,7 +34,9 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
@@ -95,13 +97,15 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    /**
     * {@inheritDoc}
+    * @throws UnknownCodeRndEx 
+    * @throws ReferentialRndException 
     */
    @Override
    public final UUID capture(Map<String, String> metadatas, URI ecdeURL)
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, NotArchivableMetadataEx {
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       // chargement du document de l'ECDE
       File ecdeFile = loadEcdeFile(ecdeURL);
@@ -117,10 +121,6 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          storageDoc = commonsService
                .buildStorageDocumentForCapture(untypedDocument);
       } catch (SAEEnrichmentEx e) {
-         throw new SAECaptureServiceEx(e);
-      } catch (MappingFromReferentialException e) {
-         throw new SAECaptureServiceEx(e);
-      } catch (InvalidSAETypeException e) {
          throw new SAECaptureServiceEx(e);
       } catch (UnknownHashCodeEx e) {
          throw new SAECaptureServiceEx(e);

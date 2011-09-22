@@ -27,7 +27,9 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 /**
  * Classe permettant de tester le service de contrôle.
@@ -210,7 +212,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test
    public final void checkSaeMetadataForStorage()
          throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
-         ParseException, SAEEnrichmentEx {
+         ParseException, SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
       SAEDocument saeDocument = getSAEDocumentMockData();
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
       saeControlesCaptureService.checkSaeMetadataForStorage(saeDocument);
@@ -256,7 +258,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test(expected = RequiredStorageMetadataEx.class)
    public final void requiredStorageMetadataFailed()
          throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
-         ParseException, SAEEnrichmentEx {
+         ParseException, SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
       SAEDocument saeDocument = getSAEDocumentMockData();
       SAEMetadata saeMetadataToRemove = null;
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);

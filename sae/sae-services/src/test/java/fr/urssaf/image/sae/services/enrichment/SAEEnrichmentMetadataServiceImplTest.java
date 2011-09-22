@@ -17,7 +17,9 @@ import fr.urssaf.image.sae.services.CommonsServices;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
    @Autowired
@@ -66,7 +68,7 @@ public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
    @Test
    public final void enrichmentMetadata() throws SAECaptureServiceEx,
          IOException, ParseException, SAEEnrichmentEx, InvalidSAETypeException,
-         MappingFromReferentialException {
+         MappingFromReferentialException, ReferentialRndException, UnknownCodeRndEx {
       SAEDocument saeDocument = mappingService
             .untypedDocumentToSaeDocument(getUntypedDocumentMockData());
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
@@ -78,9 +80,9 @@ public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
     * {@link fr.urssaf.image.sae.services.enrichment.impl.SAEEnrichmentMetadataServiceImpl#enrichmentMetadata(SAEDocument)}
     * .
     */
-   @Test(expected = SAEEnrichmentEx.class)
+   @Test(expected = UnknownCodeRndEx.class)
    public final void enrichmentMetadataFailed() throws SAECaptureServiceEx,
-         IOException, ParseException, SAEEnrichmentEx {
+         IOException, ParseException, SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
       SAEDocument saeDocument = getSAEDocumentMockData();
       for (SAEMetadata saeMetadata : saeDocument.getMetadatas()) {
          if (saeMetadata.getLongCode().equals(

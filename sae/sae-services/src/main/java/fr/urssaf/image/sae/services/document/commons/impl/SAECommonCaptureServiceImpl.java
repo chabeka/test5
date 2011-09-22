@@ -15,13 +15,16 @@ import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
-import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
+import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
 /**
@@ -58,20 +61,28 @@ public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
    public final StorageDocument buildStorageDocumentForCapture(
          UntypedDocument untypedDocument) throws RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
-         DuplicatedMetadataEx, NotArchivableMetadataEx,
-         NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, SAEEnrichmentEx,
-         MappingFromReferentialException, InvalidSAETypeException, UnknownHashCodeEx {
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, SAEEnrichmentEx, UnknownHashCodeEx,
+         ReferentialRndException, UnknownCodeRndEx, SAECaptureServiceEx {
       SAEDocument saeDocument = new SAEDocument();
-      cntrolesService.checkUntypedDocument(untypedDocument);
-      cntrolesService.checkUntypedMetadata(untypedDocument);
-      saeDocument = mappingService
-            .untypedDocumentToSaeDocument(untypedDocument);
-      cntrolesService.checkSaeMetadataForCapture(saeDocument);
-      cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
-      enrichmentService.enrichmentMetadata(saeDocument);
-      cntrolesService.checkSaeMetadataForStorage(saeDocument);
-      return mappingService.saeDocumentToStorageDocument(saeDocument);  
+      StorageDocument storageDocument = new StorageDocument();
+      try {
+         cntrolesService.checkUntypedDocument(untypedDocument);
+         cntrolesService.checkUntypedMetadata(untypedDocument);
+         saeDocument = mappingService
+               .untypedDocumentToSaeDocument(untypedDocument);
+         cntrolesService.checkSaeMetadataForCapture(saeDocument);
+         cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
+         enrichmentService.enrichmentMetadata(saeDocument);
+         cntrolesService.checkSaeMetadataForStorage(saeDocument);
+         storageDocument = mappingService
+               .saeDocumentToStorageDocument(saeDocument);
+      } catch (InvalidSAETypeException e) {
+         throw new SAECaptureServiceEx(e);
+      } catch (MappingFromReferentialException e) {
+         throw new SAECaptureServiceEx(e);
+      }
+      return storageDocument;
 
    }
 

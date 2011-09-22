@@ -22,7 +22,9 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 /***
  * Classe de test pour le service commun de capture en masse et capture
@@ -59,7 +61,7 @@ public class SAECommonCaptureServiceImplTest extends CommonsServices {
          DuplicatedMetadataEx, NotArchivableMetadataEx,
          NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, MappingFromReferentialException,
-         InvalidSAETypeException, UnknownHashCodeEx {
+         InvalidSAETypeException, UnknownHashCodeEx, ReferentialRndException, UnknownCodeRndEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       saeCommonCaptureService.buildStorageDocumentForCapture(untypedDocument);
    }

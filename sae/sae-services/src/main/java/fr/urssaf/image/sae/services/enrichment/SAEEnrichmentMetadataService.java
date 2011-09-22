@@ -1,7 +1,9 @@
 package fr.urssaf.image.sae.services.enrichment;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 /**
  * Service d’enrichissement des métadonnées.
@@ -16,6 +18,11 @@ public interface SAEEnrichmentMetadataService {
     *           Classe représentant un document de type {@link SAEDocument}.
     * @throws SAEEnrichmentEx
     *            {@link SAEEnrichmentEx}
+   * @throws ReferentialRndException
+    *            {@link ReferentialRndException}
+   * @throws UnknownCodeRndEx
+    *            {@link UnknownCodeRndEx}
     */
-   void enrichmentMetadata(SAEDocument saeDoc) throws SAEEnrichmentEx;
+   void enrichmentMetadata(SAEDocument saeDoc) throws SAEEnrichmentEx,
+         ReferentialRndException, UnknownCodeRndEx;
 }

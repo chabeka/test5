@@ -36,7 +36,9 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -91,7 +93,7 @@ public class SAECaptureServiceTest {
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
          EmptyDocumentEx, RequiredArchivableMetadataEx,
          MappingFromReferentialException, InvalidSAETypeException,
-         UnknownHashCodeEx, NotArchivableMetadataEx {
+         UnknownHashCodeEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       File srcFile = new File(
             "src/test/resources/doc/attestation_consultation.pdf");

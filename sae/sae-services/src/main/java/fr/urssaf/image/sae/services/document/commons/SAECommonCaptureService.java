@@ -10,9 +10,12 @@ import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 
 /**
@@ -55,19 +58,18 @@ public interface SAECommonCaptureService {
     *            {@link RequiredArchivableMetadataEx}.
     * @throws SAEEnrichmentEx
     *            {@link SAEEnrichmentEx}.
-    * @throws MappingFromReferentialException
-    *            {@link MappingFromReferentialException}.
-    * @throws InvalidSAETypeException
-    *            {@link InvalidSAETypeException}.
     * @throws UnknownHashCodeEx
     *            {@link UnknownHashCodeEx}.
+    * @throws UnknownCodeRndEx
+    *            {@link UnknownCodeRndEx}.
+    * @throws ReferentialRndException
+    *            {@link ReferentialRndException}.
+    * @throws SAECaptureServiceEx @link SAECaptureServiceEx}.
     */
    StorageDocument buildStorageDocumentForCapture(
          UntypedDocument untypedDocument) throws RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
-         DuplicatedMetadataEx, NotArchivableMetadataEx,
-         NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, SAEEnrichmentEx,
-         MappingFromReferentialException, InvalidSAETypeException,
-         UnknownHashCodeEx;
+         DuplicatedMetadataEx, NotArchivableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, SAEEnrichmentEx, UnknownHashCodeEx,
+         ReferentialRndException, UnknownCodeRndEx, NotSpecifiableMetadataEx, SAECaptureServiceEx;
 }

@@ -25,6 +25,8 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadata
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
+import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
@@ -65,7 +67,7 @@ public class SAECaptureServiceValidationTest {
    public void capture_success() throws SAECaptureServiceEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
-         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx {
+         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       try {
          service.capture(metadatas, ecdeURL);
@@ -80,7 +82,7 @@ public class SAECaptureServiceValidationTest {
    public void capture_failure_metadatas_null() throws SAECaptureServiceEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
-         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx {
+         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       assertCapture_failure_metadatas(service, null);
       assertCapture_failure_metadatas(service, new HashMap<String, String>());
@@ -92,7 +94,7 @@ public class SAECaptureServiceValidationTest {
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, NotArchivableMetadataEx {
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       try {
 
@@ -111,7 +113,7 @@ public class SAECaptureServiceValidationTest {
    public void capture_failure_ecdeUrl_null() throws SAECaptureServiceEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
-         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx {
+         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       try {
 
