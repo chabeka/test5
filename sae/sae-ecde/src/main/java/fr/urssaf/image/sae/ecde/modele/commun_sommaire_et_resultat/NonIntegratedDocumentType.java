@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Définition d'un document non archivé
+ * DÃ©finition d'un document non archivÃ©
  * 
  * <p>Java class for nonIntegratedDocumentType complex type.
  * 

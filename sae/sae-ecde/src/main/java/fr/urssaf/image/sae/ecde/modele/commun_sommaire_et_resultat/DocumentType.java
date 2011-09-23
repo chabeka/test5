@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Définition d'un document à archiver
+ * DÃ©finition d'un document Ã  archiver
  * 
  * <p>Java class for documentType complex type.
  * 

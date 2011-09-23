@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Définition d'un fichier
+ * DÃ©finition d'un fichier
  * 
  * <p>Java class for fichierType complex type.
  * 

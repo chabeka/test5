@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Une erreur, définie par un code et un libellé
+ * Une erreur, dÃ©finie par un code et un libellÃ©
  * 
  * <p>Java class for erreurType complex type.
  * 
