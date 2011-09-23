@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
@@ -93,10 +95,9 @@ public final class BeanMapper {
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    private static List<StorageMetadata> storageMetaDatasFromCriterions(
          final Document document, final List<StorageMetadata> desiredMetaData) {
-      List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
-      StorageMetadata storageMetadata = null;
+      final Set<StorageMetadata> metadatas = new HashSet<StorageMetadata>();
       if (document != null) {
-         List<Criterion> criterions = document.getAllCriterions();
+         final List<Criterion> criterions = document.getAllCriterions();
          // dans le cas de l'insertion d'un document
          if (desiredMetaData == null) {
             for (Criterion criterion : Utils.nullSafeIterable(criterions)) {
@@ -112,13 +113,10 @@ public final class BeanMapper {
                for (Criterion criterion : Utils.nullSafeIterable(criterions)) {
                   if (criterion.getCategoryName().equalsIgnoreCase(
                         metadata.getShortCode())) {
-                     storageMetadata = new StorageMetadata(metadata
-                           .getShortCode(), criterion.getWord());
-                     if (!metadatas.contains(storageMetadata)) {
-                        metadatas.add(storageMetadata);
-                        found = true;
-                        break;
-                     }
+                     metadatas.add(new StorageMetadata(metadata.getShortCode(),
+                           criterion.getWord()));
+                     found = true;
+                     break;
                   }
                }
                // si les métadonnées ne sont pas dans DFCE on vérifie si
@@ -132,7 +130,7 @@ public final class BeanMapper {
 
          }
       }
-      return metadatas;
+      return new ArrayList<StorageMetadata>(metadatas);
    }
 
    /**
