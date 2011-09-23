@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.services;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 import junit.framework.Assert;
@@ -68,16 +69,47 @@ public class SAEServiceTestProvider {
     */
    public final Document searchDocument(UUID uuid) throws ConnectionServiceEx {
 
-      serviceProvider.getStorageConnectionService().openConnection();
+      try {
 
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(
-            connection.getStorageBase().getBaseName());
-      Document document = ServiceProvider.getSearchService().getDocumentByUUID(
-            base, uuid);
+         serviceProvider.getStorageConnectionService().openConnection();
 
-      serviceProvider.getStorageConnectionService().closeConnexion();
+         Base base = ServiceProvider.getBaseAdministrationService().getBase(
+               connection.getStorageBase().getBaseName());
+         return ServiceProvider.getSearchService()
+               .getDocumentByUUID(base, uuid);
 
-      return document;
+      } finally {
+
+         serviceProvider.getStorageConnectionService().closeConnexion();
+
+      }
+
+   }
+
+   /**
+    * Permet de retrouver le contenu d'un document archivé dans le SAE
+    * 
+    * @param doc
+    *           document dans le SAE
+    * @return contenu du document
+    * @throws ConnectionServiceEx
+    *            une exception est levée lors de l'ouverture de la connexion
+    */
+   public final InputStream loadDocumentFile(Document doc)
+         throws ConnectionServiceEx {
+
+      try {
+
+         serviceProvider.getStorageConnectionService().openConnection();
+
+         return ServiceProvider.getStoreService().getDocumentFile(doc);
+
+      } finally {
+
+         serviceProvider.getStorageConnectionService().closeConnexion();
+
+      }
+
    }
 
    /**
@@ -94,11 +126,17 @@ public class SAEServiceTestProvider {
     */
    public final void deleteDocument(UUID uuid) throws ConnectionServiceEx {
 
-      serviceProvider.getStorageConnectionService().openConnection();
+      try {
 
-      ServiceProvider.getStoreService().deleteDocument(uuid);
+         serviceProvider.getStorageConnectionService().openConnection();
 
-      serviceProvider.getStorageConnectionService().closeConnexion();
+         ServiceProvider.getStoreService().deleteDocument(uuid);
+
+      } finally {
+
+         serviceProvider.getStorageConnectionService().closeConnexion();
+
+      }
 
    }
 }
