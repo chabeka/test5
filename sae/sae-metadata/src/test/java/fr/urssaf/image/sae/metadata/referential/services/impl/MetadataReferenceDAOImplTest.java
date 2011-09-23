@@ -191,9 +191,9 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	 */
 	@Test
 	public void getByShortCode() throws IOException, ReferentialException {
-		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("RND") != null);
-		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("RND")
-				.getShortCode().equalsIgnoreCase("RND"));
+		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("rnd") != null);
+		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("rnd")
+				.getShortCode().equalsIgnoreCase("rnd"));
 	}
 
 }
