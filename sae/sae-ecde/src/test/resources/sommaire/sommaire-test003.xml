@@ -20,7 +20,7 @@
       <!-- Document no 1 -->
       <somres:document>
          <somres:objetNumerique>
-            <somres:cheminEtNomDuFichier>repertoire\testunitaire.txt</somres:cheminEtNomDuFichier>
+            <somres:cheminEtNomDuFichier>repertoire/testunitaire.txt</somres:cheminEtNomDuFichier>
             <somres:hashValeur>541f9db389ff2d4b70dd25917277daafea1e7ba6</somres:hashValeur>
             <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>
@@ -47,7 +47,7 @@
       <!-- Document virtuel no 1 -->
       <somres:documentVirtuel>
          <somres:objetNumerique>
-            <somres:cheminEtNomDuFichier>repertoire\testunitaire.txt</somres:cheminEtNomDuFichier>
+            <somres:cheminEtNomDuFichier>repertoire/testunitaire.txt</somres:cheminEtNomDuFichier>
             <somres:hashValeur>777f9db389ff2d4b70dd25917277daafea1dfb68</somres:hashValeur>
             <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>

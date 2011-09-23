@@ -141,16 +141,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
             chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile.getPath());
             StringUtils.replaceChars(chemin, '/', separateurFichier);
             StringUtils.replaceChars(chemin, '\\', separateurFichier);
-  //            file = new File(chemin);
-  //            // verification si objetNumerique du sommaire represente un document
-  //            if (!file.isFile()) {
-  //                  throw new FileNotFoundException(MessageRessourcesUtils
-  //                                                  .recupererMessage("objetnum.notexist.error", chemin));
-  //            } 
-               // creation d'un untypedDocument
-               //UntypedDocument untypedDoc = new UntypedDocument();
-               //untypedDoc.setFilePath(file.getAbsolutePath()); // ou en d'autre terme "chemin"
-               //untypedDoc.setContent(Utils.getArrayByteFromFile(file));
+  
             untypedDoc.setFilePath(exists(chemin).getAbsolutePath()); // ou en d'autre terme "chemin"
             untypedDoc.setContent(FileUtils.readFileToByteArray(exists(chemin)));
                            
