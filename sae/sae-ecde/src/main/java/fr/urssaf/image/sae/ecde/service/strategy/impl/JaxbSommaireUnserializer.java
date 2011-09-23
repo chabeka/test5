@@ -137,8 +137,10 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
          ResultatsType resultats = objFactory.createResultatsType();
 
          try {
-            File chemEtNomFile = new File(docType.getObjetNumerique().getCheminEtNomDuFichier());
-            chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile.getPath());
+            //File chemEtNomFile = new File(docType.getObjetNumerique().getCheminEtNomDuFichier());
+            String chemEtNomFile = docType.getObjetNumerique().getCheminEtNomDuFichier();
+            //chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile.getPath());
+            chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile);
             StringUtils.replaceChars(chemin, '/', separateurFichier);
             StringUtils.replaceChars(chemin, '\\', separateurFichier);
   
