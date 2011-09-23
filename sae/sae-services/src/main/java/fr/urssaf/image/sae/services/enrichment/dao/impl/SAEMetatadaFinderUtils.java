@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.services.enrichment.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -43,13 +44,13 @@ public final class SAEMetatadaFinderUtils {
     *           : Le code long de la métadonnée.
     * @return Valeur du code long.
     */
-   private static String valueMetadataFinder(SAEMetadata metadata,
+   private static Object valueMetadataFinder(SAEMetadata metadata,
          String codeLong) {
-      String codeRndValue = null;
+      Object codeRndValue = null;
       final SAEArchivalMetadatas technical = metadataFinder(metadata
             .getLongCode());
       if (codeLong.equals(technical.getLongCode())) {
-         codeRndValue = (String) metadata.getValue();
+         codeRndValue = (Object) metadata.getValue();
       }
       return codeRndValue;
    }
@@ -85,7 +86,29 @@ public final class SAEMetatadaFinderUtils {
       String metadataValue = null;
       for (SAEMetadata saeMetadata : saeMetadatas) {
          if (StringUtils.isEmpty(metadataValue)) {
-            metadataValue = valueMetadataFinder(saeMetadata, codeLong);
+            metadataValue = (String) valueMetadataFinder(saeMetadata, codeLong);
+         } else {
+            break;
+         }
+      }
+      return metadataValue;
+   }
+
+   /**
+    * Récupére la valeur de la métadonnée.
+    * 
+    * @param saeMetadatas
+    *           : liste des métadonnées.
+    * @param codeLong
+    *           : Code long.
+    * @return Valeur de la métadonnée.
+    */
+   public static Date dateMetadataFinder(List<SAEMetadata> saeMetadatas,
+         String codeLong) {
+      Date metadataValue = null;
+      for (SAEMetadata saeMetadata : saeMetadatas) {
+         if (metadataValue == null) {
+            metadataValue = (Date) valueMetadataFinder(saeMetadata, codeLong);
          } else {
             break;
          }

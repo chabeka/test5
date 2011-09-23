@@ -98,7 +98,16 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       }
       return activityCode;
    }
-
+   @Override
+   public final TypeDocument getTypeDocument(String codeRnd)  
+         throws ReferentialRndException, UnknownCodeRndEx {
+      TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
+      if (typeDoc == null) {
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.code.rnd.interdit",
+               codeRnd));
+      }
+      return typeDoc;
+   }
    @Override
    public final String getFonctionCodeByRnd(String codeRnd)
          throws ReferentialRndException, UnknownCodeRndEx {

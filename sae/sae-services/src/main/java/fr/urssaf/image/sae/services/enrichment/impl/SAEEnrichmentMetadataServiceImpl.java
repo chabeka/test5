@@ -73,7 +73,7 @@ public class SAEEnrichmentMetadataServiceImpl implements
 
    @Override
    public final void enrichmentMetadata(SAEDocument saeDoc)
-         throws SAEEnrichmentEx, ReferentialRndException,UnknownCodeRndEx {
+         throws SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
       List<SAEMetadata> saeMetadatas = saeDoc.getMetadatas();
 
       String rndValue = SAEMetatadaFinderUtils.codeMetadataFinder(saeMetadatas,
@@ -148,11 +148,15 @@ public class SAEEnrichmentMetadataServiceImpl implements
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case DATEDEBUTCONSERVATION:
-            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.DATEDEBUTCONSERVATION.getLongCode())
-                  .getShortCode());
-            saeMetadata.setValue(Utils.dateToString(new Date()));
-            saeDocument.getMetadatas().add(saeMetadata);
+            if (SAEMetatadaFinderUtils.dateMetadataFinder(saeDocument
+                  .getMetadatas(), SAEArchivalMetadatas.DATEDEBUTCONSERVATION
+                  .getLongCode()) == null) {
+               saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                     SAEArchivalMetadatas.DATEDEBUTCONSERVATION.getLongCode())
+                     .getShortCode());
+               saeMetadata.setValue(Utils.dateToString(new Date()));
+               saeDocument.getMetadatas().add(saeMetadata);
+            }
             break;
          case DATEFINCONSERVATION:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
@@ -180,6 +184,7 @@ public class SAEEnrichmentMetadataServiceImpl implements
          case TYPE:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
                   SAEArchivalMetadatas.TYPE.getLongCode()).getShortCode());
+            // FIXME attente de spécification.
             saeMetadata.setValue("PDF");
             saeDocument.getMetadatas().add(saeMetadata);
             break;
@@ -190,6 +195,18 @@ public class SAEEnrichmentMetadataServiceImpl implements
             // FIXME attente de spécification.
             saeMetadata.setValue("ATT_PROD_001");
             saeDocument.getMetadatas().add(saeMetadata);
+            break;
+         case VERSIONRND:
+            if (SAEMetatadaFinderUtils.codeMetadataFinder(saeDocument
+                  .getMetadatas(), SAEArchivalMetadatas.VERSIONRND
+                  .getLongCode()) == null) {
+               saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                     SAEArchivalMetadatas.VERSIONRND.getLongCode())
+                     .getShortCode());
+               saeMetadata.setValue(rndReferenceDAO.getTypeDocument(rndCode)
+                     .getVersionRnd());
+               saeDocument.getMetadatas().add(saeMetadata);
+            }
             break;
          default:
             break;

@@ -30,7 +30,9 @@ public enum SAEArchivalMetadatas {
    CONTRATDESERVICE("ContratDeService"),
    // pas de valeur
    NOVALUE(""),
-   //
+   // Version RND
+   VERSIONRND("VersionRND"),
+   // Hash
    HASHDOC("Hash");
 
    // Le code long de la métadonnée.

@@ -4,7 +4,7 @@ import java.util.List;
 
 import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.exception.SAESearchServiceEx;
+import fr.urssaf.image.sae.services.exception.SAESearchServiceEx;
 
 
 /**

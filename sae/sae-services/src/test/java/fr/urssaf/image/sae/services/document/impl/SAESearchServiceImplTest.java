@@ -5,8 +5,8 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
-import fr.urssaf.image.sae.exception.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.CommonsServices;
+import fr.urssaf.image.sae.services.exception.SAESearchServiceEx;
 
 public class SAESearchServiceImplTest extends CommonsServices {
    /**

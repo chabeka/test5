@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.exception;
+package fr.urssaf.image.sae.services.exception;
 
 /**
  * Exception à utiliser pour les erreurs de dans la partie recherche.<BR/>

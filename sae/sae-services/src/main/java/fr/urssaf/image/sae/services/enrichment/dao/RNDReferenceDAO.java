@@ -24,7 +24,8 @@ public interface RNDReferenceDAO {
    /**
     * Récupère le code activité à partir du code RND.
     * 
-    * @param codeRnd Code RND
+    * @param codeRnd
+    *           Code RND
     * @return Code activité
     * @throws ReferentialRndException
     *            {@link ReferentialRndException}
@@ -33,11 +34,12 @@ public interface RNDReferenceDAO {
     */
    String getActivityCodeByRnd(String codeRnd) throws ReferentialRndException,
          UnknownCodeRndEx;
-   
+
    /**
     * Récupère le code fonction à partir du code RND.
     * 
-    * @param codeRnd Code RND
+    * @param codeRnd
+    *           Code RND
     * @return Code fonction
     * @throws ReferentialRndException
     *            {@link ReferentialRndException}
@@ -46,10 +48,12 @@ public interface RNDReferenceDAO {
     */
    String getFonctionCodeByRnd(String codeRnd) throws ReferentialRndException,
          UnknownCodeRndEx;
+
    /**
     * Récupère la durée de conservation à partir du code RND.
     * 
-    * @param codeRnd Code RND
+    * @param codeRnd
+    *           Code RND
     * @return Durée de conservation.
     * @throws ReferentialRndException
     *            {@link ReferentialRndException}
@@ -58,5 +62,28 @@ public interface RNDReferenceDAO {
     */
    int getStorageDurationByRnd(String codeRnd) throws ReferentialRndException,
          UnknownCodeRndEx;
-   
+
+   /**
+    * Récupère un objet avec l'ensemble des valeurs :
+    * <ul>
+    * <br>
+    * <li>CodeActivite</li>
+    * <li>CodeFonction</li><br>
+    * <li>LibelleRND</li><br>
+    * <li>DureeConservation</li><br>
+    * <li>VersionRND</li><br>
+    * <ul>
+    * <br>
+    * 
+    * @param codeRnd
+    *           Code RND
+    * @return {@TypeDocument}
+    * @throws ReferentialRndException
+    *            {@link ReferentialRndException}
+    * @throws UnknownCodeRndEx
+    *            {@link UnknownCodeRndEx}
+    */
+   TypeDocument getTypeDocument(String codeRnd) throws ReferentialRndException,
+         UnknownCodeRndEx;
+
 }

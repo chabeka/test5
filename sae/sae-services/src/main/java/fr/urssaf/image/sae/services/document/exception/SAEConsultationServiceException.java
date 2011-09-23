@@ -1,6 +1,6 @@
 package fr.urssaf.image.sae.services.document.exception;
 
-import fr.urssaf.image.sae.exception.SAEServiceException;
+import fr.urssaf.image.sae.services.exception.SAEServiceException;
 
 /**
  * Exception levée dans le service de consultation

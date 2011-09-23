@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.exception;
+package fr.urssaf.image.sae.services.exception;
 
 /**
  * Super classe des exceptions correspondant à des cas d'erreur <b>

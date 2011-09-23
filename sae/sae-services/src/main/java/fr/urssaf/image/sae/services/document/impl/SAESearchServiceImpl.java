@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.exception.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.document.SAESearchService;
+import fr.urssaf.image.sae.services.exception.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.contants.Constants;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;

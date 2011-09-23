@@ -29,6 +29,8 @@ public class TypeDocument {
    private String rndDescription;
    @XStreamAlias("DureeConservation")
    private int storageDuration;
+   @XStreamAlias("VersionRND")
+   private String versionRnd;
 
    /**
     * @return Référentiel National de Documents
@@ -103,6 +105,21 @@ public class TypeDocument {
     */
    public final void setStorageDuration(int storageDuration) {
       this.storageDuration = storageDuration;
+   }
+
+   /**
+    * @return La version du Rnd.
+    */
+   public final String getVersionRnd() {
+      return versionRnd;
+   }
+
+   /**
+    * @param versionRnd
+    *           : La version du Rnd.
+    */
+   public final void setVersionRnd(String versionRnd) {
+      this.versionRnd = versionRnd;
    }
 
 }
