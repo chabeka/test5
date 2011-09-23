@@ -20,7 +20,7 @@ import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
+@ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
 @SuppressWarnings({"PMD.MethodNamingConventions"})
 public class ResultatsXmlServiceValidataionTest {
    

@@ -27,7 +27,7 @@ import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
+@ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
 @SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod"})
 public class SommaireXmlServiceImplTest {
 

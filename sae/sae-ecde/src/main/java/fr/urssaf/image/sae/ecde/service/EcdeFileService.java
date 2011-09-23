@@ -89,4 +89,29 @@ public interface EcdeFileService {
     *  
     */
     File convertURIToFile (URI ecdeURL, EcdeSource... sources) throws EcdeBadURLException, EcdeBadURLFormatException;
+    
+    /**
+     * Conversion d'une URL sommaire vers un chemin absolu de fichier dans l'ECDE correspondant
+     * 
+     * <br>
+     * Cette methode prend donc en parametre une URI (verifiant bien le format decrit en entete de classe)  et une liste 
+     * d'ECDESource pour la convertir en Fichier.
+     * <br>
+     * Exemples :
+     *        <br><u>succes :</u><ul><li> uri = ecde://ecde.cer69.recouv/DCL01/19991231/3/sommaire.xml
+     *        <br>
+     *                          et la liste ecdeSource {(ecde.hoth.recouv,/ecde/ecde_hoth/);(ecde.cer69.recouv,/ecde/ecde_lyon/);(ecde.toto.recouv,/ecde/ecde_toto)}<br>
+     *                          <b>resultat</b> la conversion donnera :  /ecde/ecde_lyon/DCL01/19991231/3/sommaire.xml
+     *        </li>
+     *  
+     * @param sommaireURL URL sommaire à convertir en chemin de fichier dans son ECDE correspondant
+     * @param sources Liste des ECDE
+     *   
+     * @throws EcdeBadURLException mauvaise url 
+     * @throws EcdeBadURLFormatException mauvais format d'url
+     * 
+     * @return Chemin du fichier dans ECDE correspondant
+     *  
+     */
+    File convertSommaireToFile(URI sommaireURL, EcdeSource... sources) throws EcdeBadURLException, EcdeBadURLFormatException;
 }

@@ -31,6 +31,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
     */
    private static final String ECDE = "ecde";
    private static final String EXPR_REG = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/documents/.+";
+   private static final String EXPR_REG_SOM = "ecde://.*/.*/(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])/.*/sommaire.xml";
    
    /**
     * Implémentation de la méthode convertFileToURI
@@ -86,6 +87,7 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       return uriRetournee;
    }
 
+   
    /**
     * Implémentation de la méthode convertURIToFile
     * 
@@ -128,13 +130,65 @@ public class EcdeFileServiceImpl implements EcdeFileService {
             trouve = true;
          }
       }
-      
       // levée d'exception car uri non trouve dans sources
       if ( !trouve ){
          throw new EcdeBadURLException(MessageRessourcesUtils.recupererMessage("ecdeBadUrlException.message", ecdeURL));
       }
       // Construire le chemin absolu du fichier
       return new File(basePath.concat(ecdeURL.getPath()));
+   }
+   
+   
+   
+   
+   /**
+    * Implémentation de la méthode convertURIToFile
+    * 
+    * @param sommaireURL
+    *           url a convertir<br>
+    *           Cette URL doit verifier le format {@value #EXPR_REG_SOM}
+    * @param sources
+    *           liste des ecdes
+    *           
+    * @throws EcdeBadURLException mauvaise url 
+    * @throws EcdeBadURLFormatException mauvais format d'url
+    * 
+    * @return File file converti
+    */
+   @Override
+   public final File convertSommaireToFile(URI sommaireURL, EcdeSource... sources)
+         throws EcdeBadURLException, EcdeBadURLFormatException {
+
+      // basePath recuperer a partir de ecdeSource
+      String basePath = "";
+      // boolean pour signaler que authority de l'uri bien trouvé dans sources
+      boolean trouve = false;
+      // pour la copie du bean
+      EcdeSource ecdeSource = new EcdeSource("", new File(""));
+
+      // Il faut commencer par vérifier que le sommaireURL respecte le format URL ECDE
+      // ecde://ecde.cer69.recouv/numeroCS/dateTraitement/idTraitement/sommaire.xml
+      if ( ! validateURL(sommaireURL, EXPR_REG_SOM) ) {
+         throw new EcdeBadURLFormatException(MessageRessourcesUtils.recupererMessage("sommaireBadUrlFormatException.message", sommaireURL));
+      }
+      
+      // il faut maintenant venir parcourir la liste sources afin de recuperer l'ECDE correspondant
+      // Parcours donc de la liste sources
+      for (EcdeSource variable : sources) {
+         // copie du bean
+         org.springframework.beans.BeanUtils.copyProperties(variable, ecdeSource);
+         if ( sommaireURL.getAuthority().equals(ecdeSource.getHost()) ) {
+             //concordance entre uri et ecdesource donné en paramètre
+            basePath = ecdeSource.getBasePath().getPath();
+            trouve = true;
+         }
+      }
+      // levée d'exception car uri non trouve dans sources
+      if ( !trouve ){
+         throw new EcdeBadURLException(MessageRessourcesUtils.recupererMessage("sommaireBadUrlException.message", sommaireURL));
+      }
+      // Construire le chemin absolu du fichier
+      return new File(basePath.concat(sommaireURL.getPath()));
    }
    
    /**

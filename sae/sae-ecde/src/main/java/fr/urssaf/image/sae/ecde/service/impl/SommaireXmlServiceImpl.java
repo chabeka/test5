@@ -8,6 +8,7 @@ import java.net.URL;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
@@ -28,6 +29,7 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
  * 
  */
 @Service
+@Qualifier("somXmlService")
 public class SommaireXmlServiceImpl implements SommaireXmlService {
 
    /**

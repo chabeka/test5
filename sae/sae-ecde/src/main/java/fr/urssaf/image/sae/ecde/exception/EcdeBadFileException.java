@@ -19,5 +19,15 @@ public class EcdeBadFileException extends EcdeGeneralException {
    public EcdeBadFileException(String message) {
       super(message);
    }
+   
+   /**
+    * Constructor
+    * 
+    * @param message message
+    * @param throwable cause
+    */
+   public EcdeBadFileException(String message, Throwable throwable) {
+      super(message, throwable);
+   }
 
 }

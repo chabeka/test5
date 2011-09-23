@@ -7,6 +7,16 @@
                         http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+   <!--
+   <bean id="ecdeSourcesList"
+      class="fr.urssaf.image.sae.ecde.EcdeSourceManagerImpl"
+      factory-method="load2">
+
+      <constructor-arg value="/ecde/ecdeSources.xml" />
+   
+   </bean>
+   -->
+   
    <context:component-scan base-package="fr.urssaf.image.sae.ecde" />
 
    <bean id="messageSource_sae_ecde"
@@ -19,5 +29,38 @@
       </property>
       <property name="cacheSeconds" value="0" />
    </bean>
+   
+   
+   
+   <bean id="ecdeSourceManager"
+      class="fr.urssaf.image.sae.ecde.EcdeSourceManagerImpl" />
+      
 
+
+   <bean id="ecdeSources"
+    factory-bean="ecdeSourceManager"
+    factory-method="load">
+      <constructor-arg>
+         <value>ecde\ecdeSources.xml</value>
+      </constructor-arg>
+    </bean>
+
+  <!--   A definir
+  <bean id="saeProperties"
+      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+      <property name="location"
+         value="/hawai/conf/sae.properties" />   
+   </bean>
+
+
+
+   <bean id="ecdeSources" factory-bean="ecdeSourceManager" factory-method="load">
+      <constructor-arg>
+         <value>{$sae.ecde.sources.path}</value> 
+      </constructor-arg>
+    </bean>
+    --> 
+   
+    
+   
 </beans>
