@@ -17,7 +17,7 @@
     <description>Titre du document</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>PER</shortCode>
+    <shortCode>per</shortCode>
     <longCode>Periode</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -33,7 +33,7 @@
     <description>Correspond à la période V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>SRN</shortCode>
+    <shortCode>srn</shortCode>
     <longCode>Siren</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -49,7 +49,7 @@
     <description>Numéro de SIREN V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NNE</shortCode>
+    <shortCode>nne</shortCode>
     <longCode>NniEmployeur</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -65,7 +65,7 @@
     <description>Numéro National d'Identification ou Numéro de sécurité sociale de l'Employeur</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NPE</shortCode>
+    <shortCode>npe</shortCode>
     <longCode>NumeroPersonne</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -81,7 +81,7 @@
     <description>Numéro de personne (V2)</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DEN</shortCode>
+    <shortCode>den</shortCode>
     <longCode>Denomination</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -97,7 +97,7 @@
     <description>Dénomination du compte (provient de la raison sociale V2)</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>CV2</shortCode>
+    <shortCode>cv2</shortCode>
     <longCode>CodeCategorieV2</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -113,7 +113,7 @@
     <description>Code catégorie V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>SCV</shortCode>
+    <shortCode>scv</shortCode>
     <longCode>CodeSousCategorieV2</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -129,7 +129,7 @@
     <description>Code sous catégorie V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NCI</shortCode>
+    <shortCode>nci</shortCode>
     <longCode>NumeroCompteInterne</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -145,7 +145,7 @@
     <description>Numéro de compte interne V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NCE</shortCode>
+    <shortCode>nce</shortCode>
     <longCode>NumeroCompteExterne</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -161,7 +161,7 @@
     <description>Numéro de compte externe V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>SRT</shortCode>
+    <shortCode>srt</shortCode>
     <longCode>Siret</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -177,7 +177,7 @@
     <description>Numéro de Siret V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>PSI</shortCode>
+    <shortCode>psi</shortCode>
     <longCode>PseudoSiret</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -193,7 +193,7 @@
     <description>Numéro de Pseudo Siret V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NST </shortCode>
+    <shortCode>nst</shortCode>
     <longCode>NumeroStructure</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -225,7 +225,7 @@
     <description>Numéro de recours</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NIC</shortCode>
+    <shortCode>nic</shortCode>
     <longCode>NumeroIntControle</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -257,7 +257,7 @@
     <description>Date de création du document au niveau de l'application émettrice</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DRE </shortCode>
+    <shortCode>dre</shortCode>
     <longCode>DateReception</longCode>
     <type>Date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -273,7 +273,7 @@
     <description>Date à laquelle le document a été reçu pour un courrier par exemple</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>APR</shortCode>
+    <shortCode>apr</shortCode>
     <longCode>ApplicationProductrice</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -289,7 +289,7 @@
     <description>Code de l'application qui a produit le document (pour un document WATT issu du scan, ce sera la chaine d'acquisition)</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>ATR </shortCode>
+    <shortCode>atr</shortCode>
     <longCode>ApplicationTraitement</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -305,7 +305,7 @@
     <description>Code de la dernière application qui a fait des traitements sur le document avant archivage c'est-à-dire celle qui a versé le document</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>COP</shortCode>
+    <shortCode>cop</shortCode>
     <longCode>CodeOrganismeProprietaire</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -321,7 +321,7 @@
     <description>Code organisme propriétaire du document Cf. Liste des organismes</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>COG</shortCode>
+    <shortCode>cog</shortCode>
     <longCode>CodeOrganismeGestionnaire</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -337,7 +337,7 @@
     <description>Code organisme gestionnaire de la pièce Cf. Liste des organismes</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>SAC</shortCode>
+    <shortCode>sac</shortCode>
     <longCode>SiteAcquisition</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -353,7 +353,7 @@
     <description>Code site du lieu d'acquisition dans le cas d'une numérisation Cf. Liste des organismes</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>RND</shortCode>
+    <shortCode>rnd</shortCode>
     <longCode>CodeRND</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -369,7 +369,7 @@
     <description>Code issu d'un référentiel permettant de typer nationalement un document</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>VRN</shortCode>
+    <shortCode>vrn</shortCode>
     <longCode>VersionRND</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -385,7 +385,7 @@
     <description>Numéro permettant d'identifier la version de provenance du code RND renseigné précédemment</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DOM</shortCode>
+    <shortCode>dom</shortCode>
     <longCode>CodeFonction</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -401,7 +401,7 @@
     <description>Code de la fonction/domaine RFP</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>ACT</shortCode>
+    <shortCode>act</shortCode>
     <longCode>CodeActivite</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -417,7 +417,7 @@
     <description>Code de l'activité RFP</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DCO</shortCode>
+    <shortCode>dco</shortCode>
     <longCode>DureeConservation</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
@@ -433,7 +433,7 @@
     <description>Durée de conservation de l'archive au terme duquel l'archive n'est plus accessible en jours</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DDC</shortCode>
+    <shortCode>ddc</shortCode>
     <longCode>DateDebutConservation</longCode>
     <type>Date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -449,7 +449,7 @@
     <description>Date de début de la durée de conservation.</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DFC</shortCode>
+    <shortCode>dfc</shortCode>
     <longCode>DateFinConservation</longCode>
     <type>date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -465,7 +465,7 @@
     <description>Date de fin de la durée de conservation</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>GEL</shortCode>
+    <shortCode>gel</shortCode>
     <longCode>Gel</longCode>
     <type>Boolean</type>
     <requiredForArchival>false</requiredForArchival>
@@ -481,7 +481,7 @@
     <description>Gel de l'archive permettant de ne pas détruire l'archive </description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>TPA</shortCode>
+    <shortCode>tpa</shortCode>
     <longCode>TracabilitrePreArchivage</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -497,7 +497,7 @@
     <description>Traçabilité en amont du SAE, surtout utilisée dans le cas de la chaine d'acquisition</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>TOA</shortCode>
+    <shortCode>toa</shortCode>
     <longCode>TracabilitePostArchivage</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -545,7 +545,7 @@
     <description>Identifiant de l'algorithme de hachage utilisé pour calculer le Hash du fichier</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NBP</shortCode>
+    <shortCode>nbp</shortCode>
     <longCode>NbPages</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
@@ -561,7 +561,7 @@
     <description>Nombre de pages du document</description>
   </metaDataReference>
    <metaDataReference>
-    <shortCode>NFI</shortCode>
+    <shortCode>nfi</shortCode>
     <longCode>NomFichier</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -577,7 +577,7 @@
     <description>Nom du fichier physique avec extension lié au document</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>FFI</shortCode>
+    <shortCode>ffi</shortCode>
     <longCode>FormatFichier</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -625,7 +625,7 @@
     <description>Extension du fichier sur 3 caractères</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>ITI</shortCode>
+    <shortCode>iti</shortCode>
     <longCode>IdTraitementMasseInterne</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -641,7 +641,7 @@
     <description>Identifiant permettant de gérer le rollback sur les traitements de masse</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>ITM</shortCode>
+    <shortCode>itm</shortCode>
     <longCode>IdTraitementMasse</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -657,7 +657,7 @@
     <description>Identifiant permettant de gérer les traitements de masse pour l'application cliente</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>OTY</shortCode>
+    <shortCode>oty</shortCode>
     <longCode>ObjectType</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -785,7 +785,7 @@
     <description>Numéro de la version consultée du document</description>
   </metaDataReference>
  <metaDataReference>
-    <shortCode>DMO</shortCode>
+    <shortCode>dmo</shortCode>
     <longCode>DateModification</longCode>
     <type>Date</type>
     <requiredForArchival>false</requiredForArchival>
