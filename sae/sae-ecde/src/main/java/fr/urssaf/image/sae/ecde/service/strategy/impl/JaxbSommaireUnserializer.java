@@ -10,6 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,6 +60,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
    private static final String DOCUMENTS = "documents";
    private static final String TOUT_OU_RIEN = "TOUT_OU_RIEN";
    private static final String SEPARATOR_FILE = System.getProperty("file.separator"); 
+   private static char separateurFichier = System.getProperty("file.separator").charAt(0);
    
    private final ObjectFactory objFactory = new ObjectFactory();
    
@@ -137,6 +139,8 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
          try {
             File chemEtNomFile = new File(docType.getObjetNumerique().getCheminEtNomDuFichier());
             chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile.getPath());
+            StringUtils.replaceChars(chemin, '/', separateurFichier);
+            StringUtils.replaceChars(chemin, '\\', separateurFichier);
   //            file = new File(chemin);
   //            // verification si objetNumerique du sommaire represente un document
   //            if (!file.isFile()) {
