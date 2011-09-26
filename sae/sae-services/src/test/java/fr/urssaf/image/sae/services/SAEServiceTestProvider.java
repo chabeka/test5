@@ -1,14 +1,21 @@
 package fr.urssaf.image.sae.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
-
+import net.docubase.toolkit.exception.ged.TagControlException;
+import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
+import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -132,6 +139,65 @@ public class SAEServiceTestProvider {
 
          ServiceProvider.getStoreService().deleteDocument(uuid);
 
+      } finally {
+
+         serviceProvider.getStorageConnectionService().closeConnexion();
+
+      }
+
+   }
+
+   /**
+    * 
+    * Permet d'insérer un document dans le SAE<br>
+    * <br>
+    * Cette méthode peut s'avérer utile pour les tests unitaires pour consulter
+    * ou recherche un document du SAE
+    * 
+    * @param content
+    *           contenu du document à archiver
+    * @param metadatas
+    *           liste des métadonnées
+    * @param title
+    *           titre du document
+    * @param type
+    *           type du document
+    * @param creationDate
+    *           date de création du document
+    * @return UUID du document dans le SAE
+    * @throws ConnectionServiceEx
+    *            une exception est levée lors de l'ouverture de la connexion
+    */
+   public final UUID captureDocument(byte[] content,
+         Map<String, Object> metadatas, String title, String type,
+         Date creationDate) throws ConnectionServiceEx {
+
+      try {
+
+         serviceProvider.getStorageConnectionService().openConnection();
+
+         Base base = ServiceProvider.getBaseAdministrationService().getBase(
+               connection.getStorageBase().getBaseName());
+
+         Document document = ToolkitFactory.getInstance().createDocumentTag(
+               base);
+
+         document.setCreationDate(creationDate);
+         document.setTitle(title);
+         document.setType(type);
+
+         for (Entry<String, Object> entry : metadatas.entrySet()) {
+            BaseCategory baseCategory = base.getBaseCategory(entry.getKey());
+            document.addCriterion(baseCategory, entry.getValue());
+
+         }
+
+         InputStream docContent = new ByteArrayInputStream(content);
+         return ServiceProvider.getStoreService().storeDocument(document,
+               docContent).getUuid();
+
+      } catch (TagControlException e) {
+         throw new NestableRuntimeException(e);
       } finally {
 
          serviceProvider.getStorageConnectionService().closeConnexion();

@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.services.consultation.SAEConsultationService;
+import fr.urssaf.image.sae.services.consultation.impl.SAEConsultationServiceImpl;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
-import fr.urssaf.image.sae.services.document.SAEConsultationService;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
 import fr.urssaf.image.sae.services.document.SAESearchService;
-import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
 import fr.urssaf.image.sae.services.exception.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
 
 /**

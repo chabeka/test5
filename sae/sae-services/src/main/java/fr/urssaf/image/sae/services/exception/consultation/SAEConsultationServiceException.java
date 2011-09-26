@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.document.exception;
+package fr.urssaf.image.sae.services.exception.consultation;
 
 import fr.urssaf.image.sae.services.exception.SAEServiceException;
 

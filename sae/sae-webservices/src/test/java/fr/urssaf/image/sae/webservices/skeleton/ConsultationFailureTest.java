@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.Consultation;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
-import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 

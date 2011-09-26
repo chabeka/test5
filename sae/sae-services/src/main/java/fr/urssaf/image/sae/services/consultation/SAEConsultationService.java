@@ -1,9 +1,9 @@
-package fr.urssaf.image.sae.services.document;
+package fr.urssaf.image.sae.services.consultation;
 
 import java.util.UUID;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 
 /**
  * Ensemble des services de consultation du SAE

@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.document.validation;
+package fr.urssaf.image.sae.services.consultation.validation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -12,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.services.document.SAEConsultationService;
-import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.consultation.SAEConsultationService;
+import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })

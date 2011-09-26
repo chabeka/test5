@@ -14,7 +14,7 @@ import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
-import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;

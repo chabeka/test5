@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.services.document;
 
+import fr.urssaf.image.sae.services.consultation.SAEConsultationService;
+
 /**
  * Fournit l’ensemble des services : <br>
  * <li>{@link SAECaptureService Capture}</li><br>

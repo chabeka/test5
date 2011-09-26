@@ -14,7 +14,7 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
  * Implementation de capture unitaire et en masse,</li>
  * <li>{@link fr.urssaf.image.sae.services.document.SAESearchService Recherche}
  * : Implementation de recherche,</li>
- * <li>{@link fr.urssaf.image.sae.services.document.SAEConsultationService
+ * <li>{@link fr.urssaf.image.sae.services.consultation.SAEConsultationService
  * Consultation} : Implementation de la consultation.</li>
  * </ul>
  * 

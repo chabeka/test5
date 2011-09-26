@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.document.impl;
+package fr.urssaf.image.sae.services.consultation.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,10 @@ import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
-import fr.urssaf.image.sae.services.document.SAEConsultationService;
-import fr.urssaf.image.sae.services.document.exception.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.consultation.SAEConsultationService;
+import fr.urssaf.image.sae.services.document.impl.AbstractSAEServices;
+import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.factory.SAEStorageFactory;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
@@ -33,22 +35,25 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCrit
 public class SAEConsultationServiceImpl extends AbstractSAEServices implements
       SAEConsultationService {
 
-   private final MetadataReferenceDAO metadataReferenceDAO;
+   private final MetadataReferenceDAO referenceDAO;
 
-   private final MappingDocumentService mappingDocumentService;
+   private final MappingDocumentService mappingService;
 
    /**
     * attribution des paramètres de l'implémentation
     * 
-    * @param servicesConverter
-    *           instance du service de conversion
+    * @param referenceDAO
+    *           instance du service des métadonnées de référence
+    * @param mappingService
+    *           instance du service de mapping du SAE
+    * 
     */
    @Autowired
-   public SAEConsultationServiceImpl(MetadataReferenceDAO metadataReferenceDAO,
-         MappingDocumentService mappingDocumentService) {
+   public SAEConsultationServiceImpl(MetadataReferenceDAO referenceDAO,
+         MappingDocumentService mappingService) {
       super();
-      this.metadataReferenceDAO = metadataReferenceDAO;
-      this.mappingDocumentService = mappingDocumentService;
+      this.referenceDAO = referenceDAO;
+      this.mappingService = mappingService;
    }
 
    /**
@@ -67,18 +72,17 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
          try {
 
-            List<StorageMetadata> consultableMetadatas = new ArrayList<StorageMetadata>();
+            List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
 
-            for (Entry<String, MetadataReference> reference : this.metadataReferenceDAO
+            for (Entry<String, MetadataReference> reference : this.referenceDAO
                   .getDefaultConsultableMetadataReferences().entrySet()) {
 
-               consultableMetadatas.add(new StorageMetadata(reference
+               metadatas.add(SAEStorageFactory.createStorageMetadata(reference
                      .getValue().getShortCode()));
 
             }
 
-            UUIDCriteria uuidCriteria = new UUIDCriteria(idArchive,
-                  consultableMetadatas);
+            UUIDCriteria uuidCriteria = new UUIDCriteria(idArchive, metadatas);
 
             StorageDocument storageDocument = this.getStorageServiceProvider()
                   .getStorageDocumentService().retrieveStorageDocumentByUUID(
@@ -88,7 +92,7 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
             if (storageDocument != null) {
 
-               untypedDocument = this.mappingDocumentService
+               untypedDocument = this.mappingService
                      .storageDocumentToUntypedDocument(storageDocument);
 
             }

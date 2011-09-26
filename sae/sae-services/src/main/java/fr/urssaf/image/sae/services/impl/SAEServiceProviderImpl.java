@@ -35,7 +35,7 @@ public class SAEServiceProviderImpl implements SAEServiceProvider {
     *         <li>
     *         {@link fr.urssaf.image.sae.services.document.impl.SAESearchServiceImpl
     *         Recherche}</li><li>
-    *         {@link fr.urssaf.image.sae.services.document.impl.SAEConsultationServiceImpl
+    *         {@link fr.urssaf.image.sae.services.consultation.impl.SAEConsultationServiceImpl
     *         Consultation}</li>
     *         <ul>
     */
