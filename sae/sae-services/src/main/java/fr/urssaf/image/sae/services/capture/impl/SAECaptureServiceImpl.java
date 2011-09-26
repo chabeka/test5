@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.services.capture.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -15,13 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.building.services.BuildService;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
-import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
-import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
@@ -56,8 +54,6 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    private final EcdeFileService ecdeFileService;
 
-   private final BuildService buildService;
-
    private final SAECommonCaptureService commonsService;
 
    /**
@@ -69,8 +65,6 @@ public class SAECaptureServiceImpl implements SAECaptureService {
     *           configuration de la connexion à DFCE
     * @param ecdeFileService
     *           service de l'ECDE
-    * @param buildService
-    *           service d'instanciation des BO
     * @param commonsService
     *           service commun de la capture
     */
@@ -78,34 +72,31 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    public SAECaptureServiceImpl(
          @Qualifier("storageServiceProvider") StorageServiceProvider serviceProvider,
          @Qualifier("storageConnectionParameter") StorageConnectionParameter connectionParam,
-         EcdeFileService ecdeFileService, BuildService buildService,
+         EcdeFileService ecdeFileService,
          SAECommonCaptureService commonsService) {
 
       Assert.notNull(serviceProvider);
       Assert.notNull(connectionParam);
       Assert.notNull(ecdeFileService);
-      Assert.notNull(buildService);
       Assert.notNull(commonsService);
 
       this.ecdeFileService = ecdeFileService;
       this.serviceProvider = serviceProvider;
       this.connectionParam = connectionParam;
-
-      this.buildService = buildService;
       this.commonsService = commonsService;
    }
 
    /**
     * {@inheritDoc}
-    * @throws UnknownCodeRndEx 
-    * @throws ReferentialRndException 
+    * 
     */
    @Override
-   public final UUID capture(Map<String, String> metadatas, URI ecdeURL)
+   public final UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         ReferentialRndException, UnknownCodeRndEx {
 
       // chargement du document de l'ECDE
       File ecdeFile = loadEcdeFile(ecdeURL);
@@ -137,8 +128,9 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    }
 
-   private UntypedDocument createUntypedDocument(Map<String, String> metadatas,
-         File ecdeFile) throws SAECaptureServiceEx {
+   private UntypedDocument createUntypedDocument(
+         List<UntypedMetadata> metadatas, File ecdeFile)
+         throws SAECaptureServiceEx {
 
       // TODO vérification que le fichier extrait de l'url ECDE existe bien!
 
@@ -152,8 +144,8 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
       // instanciation de la classe UntypedDocument avec la liste des
       // métadonnées et le contenu du document à archiver
-      UntypedDocument untypedDocument = buildService.buildUntypedDocument(
-            fileContent, metadatas);
+      UntypedDocument untypedDocument = new UntypedDocument(fileContent,
+            metadatas);
 
       return untypedDocument;
    }

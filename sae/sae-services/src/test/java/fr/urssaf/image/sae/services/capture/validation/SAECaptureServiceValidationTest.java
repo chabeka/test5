@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
@@ -35,7 +36,7 @@ public class SAECaptureServiceValidationTest {
 
    private SAECaptureService service;
 
-   private static Map<String, String> metadatas;
+   private static List<UntypedMetadata> metadatas;
 
    private static URI ecdeURL;
 
@@ -45,8 +46,8 @@ public class SAECaptureServiceValidationTest {
       ecdeURL = URI
             .create("ecde://cer69-ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
 
-      metadatas = new HashMap<String, String>();
-      metadatas.put("test", "test");
+      metadatas = new ArrayList<UntypedMetadata>();
+      metadatas.add(new UntypedMetadata("test", "test"));
 
    }
 
@@ -56,7 +57,7 @@ public class SAECaptureServiceValidationTest {
       service = new SAECaptureService() {
 
          @Override
-         public UUID capture(Map<String, String> metadatas, URI ecdeURL) {
+         public UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL) {
 
             return null;
          }
@@ -67,7 +68,8 @@ public class SAECaptureServiceValidationTest {
    public void capture_success() throws SAECaptureServiceEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
-         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         EmptyDocumentEx, RequiredArchivableMetadataEx,
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       try {
          service.capture(metadatas, ecdeURL);
@@ -82,19 +84,21 @@ public class SAECaptureServiceValidationTest {
    public void capture_failure_metadatas_null() throws SAECaptureServiceEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
-         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         EmptyDocumentEx, RequiredArchivableMetadataEx,
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       assertCapture_failure_metadatas(service, null);
-      assertCapture_failure_metadatas(service, new HashMap<String, String>());
+      assertCapture_failure_metadatas(service, new ArrayList<UntypedMetadata>());
 
    }
 
    private static void assertCapture_failure_metadatas(
-         SAECaptureService service, Map<String, String> metadatas)
+         SAECaptureService service, List<UntypedMetadata> metadatas)
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         ReferentialRndException, UnknownCodeRndEx {
 
       try {
 
@@ -113,7 +117,8 @@ public class SAECaptureServiceValidationTest {
    public void capture_failure_ecdeUrl_null() throws SAECaptureServiceEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
-         EmptyDocumentEx, RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         EmptyDocumentEx, RequiredArchivableMetadataEx,
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
 
       try {
 

@@ -1,12 +1,13 @@
 package fr.urssaf.image.sae.services.capture.validation;
 
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 
-import org.apache.commons.collections.MapUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.util.CollectionUtils;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 
 /**
@@ -32,14 +33,14 @@ public class SAECaptureServiceValidation {
     * 
     */
    @Before(CAPTURE_METHOD)
-   public final void capture(Map<String, String> metadatas, URI ecdeURL) {
+   public final void capture(List<UntypedMetadata> metadatas, URI ecdeURL) {
 
       if (ecdeURL == null) {
          throw new IllegalArgumentException(ResourceMessagesUtils.loadMessage(
                "argument.required", "ecdeURL"));
       }
 
-      if (MapUtils.isEmpty(metadatas)) {
+      if (CollectionUtils.isEmpty(metadatas)) {
          throw new IllegalArgumentException(ResourceMessagesUtils.loadMessage(
                "argument.required", "metadatas"));
       }

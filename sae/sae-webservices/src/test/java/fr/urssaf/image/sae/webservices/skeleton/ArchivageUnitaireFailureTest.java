@@ -1,8 +1,8 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamReader;
 
@@ -11,7 +11,6 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
@@ -48,21 +48,7 @@ public class ArchivageUnitaireFailureTest {
    @Autowired
    private SAECaptureService captureService;
 
-   private URI ecdeURL;
-
-   private Map<String, String> metadatas;
-
-   @Before
-   public void before() {
-
-      ecdeURL = URI
-            .create("ecde://cer69-ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
-      metadatas = new HashMap<String, String>();
-
-      metadatas.put("code_test_1", "value_test_1");
-      metadatas.put("code_test_2", "value_test_2");
-   }
-
+ 
    @After
    public void after() {
       EasyMock.reset(captureService);
@@ -119,9 +105,14 @@ public class ArchivageUnitaireFailureTest {
 
    private void mockThrowable(Throwable expectedThrowable) {
 
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
+      metadatas.add(EasyMock.anyObject(UntypedMetadata.class));
+
       try {
-         EasyMock.expect(captureService.capture(metadatas, ecdeURL)).andThrow(
-               expectedThrowable);
+         EasyMock
+               .expect(
+                     captureService.capture(metadatas, EasyMock
+                           .anyObject(URI.class))).andThrow(expectedThrowable);
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }

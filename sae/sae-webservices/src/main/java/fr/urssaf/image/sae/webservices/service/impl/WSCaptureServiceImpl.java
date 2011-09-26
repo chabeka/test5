@@ -1,8 +1,8 @@
 package fr.urssaf.image.sae.webservices.service.impl;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.MetadonneeType;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
@@ -58,13 +59,12 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       URI ecdeURL = URI.create(request.getArchivageUnitaire().getEcdeUrl()
             .getEcdeUrlType().toString());
 
-      Map<String, String> metadatas = new HashMap<String, String>();
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
 
       for (MetadonneeType metadonnee : request.getArchivageUnitaire()
             .getMetadonnees().getMetadonnee()) {
 
-         metadatas.put(metadonnee.getCode().getMetadonneeCodeType(), metadonnee
-               .getValeur().getMetadonneeValeurType());
+         metadatas.add(createUntypedMetadata(metadonnee));
       }
 
       UUID uuid = capture(metadatas, ecdeURL);
@@ -75,7 +75,13 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       return response;
    }
 
-   private UUID capture(Map<String, String> metadatas, URI ecdeURL)
+   private UntypedMetadata createUntypedMetadata(MetadonneeType metadonnee) {
+
+      return new UntypedMetadata(metadonnee.getCode().getMetadonneeCodeType(),
+            metadonnee.getValeur().getMetadonneeValeurType());
+   }
+
+   private UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
          throws CaptureAxisFault {
 
       try {

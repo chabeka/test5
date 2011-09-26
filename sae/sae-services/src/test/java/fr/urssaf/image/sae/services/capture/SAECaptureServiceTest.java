@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
@@ -124,14 +126,14 @@ public class SAECaptureServiceTest {
       URI ecdeURL = URI
             .create("ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
 
-      Map<String, String> metadatas = new HashMap<String, String>();
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
 
-      metadatas.put("ApplicationProductrice", "ADELAIDE");
+      metadatas.add(new UntypedMetadata("ApplicationProductrice", "ADELAIDE"));
 
-      metadatas.put("CodeOrganismeProprietaire", "CER69");
-      metadatas.put("CodeOrganismeGestionnaire", "UR750");
-      metadatas.put("CodeRND", "2.3.1.1.12");
-      metadatas.put("VersionRND", "11.1");
+      metadatas.add(new UntypedMetadata("CodeOrganismeProprietaire", "CER69"));
+      metadatas.add(new UntypedMetadata("CodeOrganismeGestionnaire", "UR750"));
+      metadatas.add(new UntypedMetadata("CodeRND", "2.3.1.1.12"));
+      metadatas.add(new UntypedMetadata("VersionRND", "11.1"));
 
       // metadatas.put("CodeFonction", "2");
       // metadatas.put("CodeActivite", "3");
@@ -140,15 +142,15 @@ public class SAECaptureServiceTest {
       // metadatas.put("DateFinConservation", "2012-01-01");
       // metadatas.put("Gel", "false");
 
-      metadatas.put("NbPages", "2");
-      metadatas.put("NomFichier", "attestation.pdf");
-      metadatas.put("FormatFichier", "fmt/1354");
-      metadatas.put("DateCreation", "2012-01-01");
-      metadatas.put("Titre", "Attestation de vigilance");
-      metadatas.put("TypeHash", "SHA-1");
+      metadatas.add(new UntypedMetadata("NbPages", "2"));
+      metadatas.add(new UntypedMetadata("NomFichier", "attestation.pdf"));
+      metadatas.add(new UntypedMetadata("FormatFichier", "fmt/1354"));
+      metadatas.add(new UntypedMetadata("DateCreation", "2012-01-01"));
+      metadatas.add(new UntypedMetadata("Titre", "Attestation de vigilance"));
+      metadatas.add(new UntypedMetadata("TypeHash", "SHA-1"));
 
       String hash = DigestUtils.shaHex(new FileInputStream(srcFile));
-      metadatas.put("Hash", hash);
+      metadatas.add(new UntypedMetadata("Hash", hash));
 
       // metadatas.put("type", "PDF");
       // metadatas.put("ObjectType", "autonomous");

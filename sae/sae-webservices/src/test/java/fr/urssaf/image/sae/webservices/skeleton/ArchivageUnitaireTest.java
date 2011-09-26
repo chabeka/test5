@@ -1,8 +1,8 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.xml.stream.XMLStreamReader;
@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponseType;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
@@ -58,11 +59,17 @@ public class ArchivageUnitaireTest {
 
    }
 
-   private void mockReturn(URI ecdeURL, Map<String, String> metadatas) {
+   private void createMock() {
+
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
+      metadatas.add(EasyMock.anyObject(UntypedMetadata.class));
 
       try {
-         EasyMock.expect(captureService.capture(metadatas, ecdeURL)).andReturn(
-               UUID.fromString("110E8400-E29B-11D4-A716-446655440000"));
+         EasyMock
+               .expect(
+                     captureService.capture(metadatas, EasyMock
+                           .anyObject(URI.class))).andReturn(
+                     UUID.fromString("110E8400-E29B-11D4-A716-446655440000"));
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
@@ -73,14 +80,7 @@ public class ArchivageUnitaireTest {
    @Test
    public void archivageUnitaire_success() throws CaptureAxisFault {
 
-      URI ecdeURL = URI
-            .create("ecde://cer69-ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
-      Map<String, String> metadatas = new HashMap<String, String>();
-
-      metadatas.put("code_test_1", "value_test_1");
-      metadatas.put("code_test_2", "value_test_2");
-
-      mockReturn(ecdeURL, metadatas);
+      createMock();
 
       ArchivageUnitaire request = createArchivageMasseResponse("src/test/resources/request/archivageUnitaire_success.xml");
 

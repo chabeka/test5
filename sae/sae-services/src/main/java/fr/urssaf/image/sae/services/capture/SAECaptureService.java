@@ -1,9 +1,10 @@
 package fr.urssaf.image.sae.services.capture;
 
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -54,12 +55,15 @@ public interface SAECaptureService {
     *            Le fichier à archiver est vide
     * @throws NotArchivableMetadataEx
     *            les métadonnées ne sont pas archivables
-    * @throws UnknownCodeRndEx {@link UnknownCodeRndEx}
-    * @throws ReferentialRndException {@link ReferentialRndException}
+    * @throws UnknownCodeRndEx
+    *            {@link UnknownCodeRndEx}
+    * @throws ReferentialRndException
+    *            {@link ReferentialRndException}
     */
-   UUID capture(Map<String, String> metadatas, URI ecdeURL)
+   UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
-         RequiredArchivableMetadataEx, NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx;
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         ReferentialRndException, UnknownCodeRndEx;
 }
