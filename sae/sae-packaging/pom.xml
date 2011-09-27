@@ -16,6 +16,7 @@
    <modules>
 
       <module>../sae-parent</module>
+      <module>../sae-ecde</module>
       <module>../sae-vi</module>
       <module>../sae-saml</module>
       <module>../sae-igc</module>
@@ -23,8 +24,11 @@
       <module>../sae-metadata</module>
       <module>../sae-storage</module>
       <module>../sae-storage-dfce</module>
+      <module>../sae-mapping</module>
       <module>../sae-services</module>
       <module>../sae-webservices</module>
+
+
 
    </modules>
 
