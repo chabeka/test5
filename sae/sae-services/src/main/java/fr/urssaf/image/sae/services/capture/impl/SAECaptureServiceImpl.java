@@ -72,8 +72,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    public SAECaptureServiceImpl(
          @Qualifier("storageServiceProvider") StorageServiceProvider serviceProvider,
          @Qualifier("storageConnectionParameter") StorageConnectionParameter connectionParam,
-         EcdeFileService ecdeFileService,
-         SAECommonCaptureService commonsService) {
+         EcdeFileService ecdeFileService, SAECommonCaptureService commonsService) {
 
       Assert.notNull(serviceProvider);
       Assert.notNull(connectionParam);
@@ -146,6 +145,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       // métadonnées et le contenu du document à archiver
       UntypedDocument untypedDocument = new UntypedDocument(fileContent,
             metadatas);
+      untypedDocument.setFilePath(ecdeFile.getName());
 
       return untypedDocument;
    }
@@ -157,6 +157,9 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       // par défaut un seul point de montage de l'ECDE se fait sur le répertoire
       // temporaire de l'OS dans le sous répertoire 'ecde', le DNS de l'ECDE est
       // ecde.cer69.recouv
+
+      // TODO intégrer du service de ECDE 003 pour convertir une URL ECDE en
+      // chemin de fichier
 
       File basePath = new File(FilenameUtils.concat(SystemUtils
             .getJavaIoTmpDir().getAbsolutePath(), "ecde"));
