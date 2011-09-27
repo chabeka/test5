@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.webservices;
+package fr.urssaf.image.sae.webservices.soap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

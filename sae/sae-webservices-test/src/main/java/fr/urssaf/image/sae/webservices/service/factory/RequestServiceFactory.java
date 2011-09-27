@@ -1,8 +1,7 @@
-package fr.urssaf.image.sae.webservices.service;
+package fr.urssaf.image.sae.webservices.service.factory;
 
 import java.net.URI;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Collection;
 
 import org.apache.axis2.databinding.utils.ConverterUtil;
 
@@ -24,6 +23,7 @@ import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.Recherche;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RechercheRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RequeteRechercheType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.UuidType;
+import fr.urssaf.image.sae.webservices.service.model.Metadata;
 
 /**
  * Classe d'instanciation des requêtes pour consommer les différents web
@@ -124,11 +124,10 @@ public final class RequestServiceFactory {
     * @return instance de {@link ArchivageUnitaire}
     */
    public static ArchivageUnitaire createArchivageUnitaire(URI url,
-         Map<String, String> metadonnees) {
+         Collection<Metadata> metadonnees) {
 
       ArchivageUnitaire request = createArchivageUnitaire(metadonnees);
 
-     
       // instanciation de EcdeUrlType
       EcdeUrlType ecdeURL = new EcdeUrlType();
       ecdeURL
@@ -140,7 +139,7 @@ public final class RequestServiceFactory {
    }
 
    private static ArchivageUnitaire createArchivageUnitaire(
-         Map<String, String> metadonnees) {
+         Collection<Metadata> metadonnees) {
 
       ArchivageUnitaire request = new ArchivageUnitaire();
 
@@ -148,19 +147,16 @@ public final class RequestServiceFactory {
 
       ListeMetadonneeType listeMetadonnee = new ListeMetadonneeType();
 
-      for (Entry<String, String> entry : metadonnees.entrySet()) {
-
-         String code = entry.getKey();
-         String valeur = entry.getValue();
+      for (Metadata metadonnee : metadonnees) {
 
          MetadonneeType type = ObjectModeleFactory.createMetadonneeType();
 
          MetadonneeCodeType codeType = ObjectModeleFactory
-               .createMetadonneeCodeType(code);
+               .createMetadonneeCodeType(metadonnee.getCode());
          type.setCode(codeType);
 
          MetadonneeValeurType valeurType = ObjectModeleFactory
-               .createMetadonneeValeurType(valeur);
+               .createMetadonneeValeurType(metadonnee.getValue());
          type.setValeur(valeurType);
 
          listeMetadonnee.addMetadonnee(type);

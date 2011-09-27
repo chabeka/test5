@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.webservices;
+package fr.urssaf.image.sae.webservices.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,30 +9,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.webservices.configuration.SecurityConfiguration;
-import fr.urssaf.image.sae.webservices.modele.SaeServiceStub;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.MetadonneeType;
-import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.Recherche;
-import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RechercheResponse;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.RechercheResponseType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ResultatRechercheType;
-import fr.urssaf.image.sae.webservices.service.RequestServiceFactory;
-import fr.urssaf.image.sae.webservices.util.ADBBeanUtils;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/applicationContext-sae-webservices.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
-public class RechercheSecureTest {
+public class RechercheTest {
 
-   private SaeServiceStub service;
-
-   private static final Logger LOG = Logger
-         .getLogger(RechercheSecureTest.class);
-
-   // private static final String UUID_META = "UUID";
+   @Autowired
+   private RechercheService service;
 
    private static final String CODE_RND_META = "CodeRND";
 
@@ -44,16 +40,10 @@ public class RechercheSecureTest {
 
    private static final String ORGANISME_META = "CodeOrganisme";
 
-   @Before
-   public final void before() {
-
-      service = SecurityConfiguration.before();
-   }
-
    @After
    public final void after() {
 
-      SecurityConfiguration.after();
+      SecurityConfiguration.cleanSecurityContext();
    }
 
    @Test
@@ -61,15 +51,11 @@ public class RechercheSecureTest {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
-      Recherche request = RequestServiceFactory.createRecherche("typeRequete");
+      String lucene = "lucene";
+      String[] codes = new String[] {};
+      RechercheResponseType response = service.recherche(lucene, codes);
 
-      RechercheResponse response = service.recherche(request);
-
-      String xml = ADBBeanUtils.print(response);
-      LOG.debug(xml);
-
-      ResultatRechercheType[] resultats = response.getRechercheResponse()
-            .getResultats().getResultat();
+      ResultatRechercheType[] resultats = response.getResultats().getResultat();
 
       assertEquals("nombre de resultats inattendu", 3, resultats.length);
 
