@@ -119,7 +119,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_EmptyDocumentException()
+   public void archivageUnitaire_failure_CaptureFichierVide()
          throws IOException {
 
       // appel du service archivage unitaire
@@ -134,7 +134,7 @@ public class ArchivageUnitaireFailureTest {
       } catch (AxisFault fault) {
 
          SoapTestUtils.assertAxisFault(fault,
-               "Le fichier attestation_vide.txt à archiver est vide.",
+               "Le fichier à archiver est vide (attestation_vide.txt)",
                "CaptureFichierVide", SoapTestUtils.SAE_NAMESPACE,
                SoapTestUtils.SAE_PREFIX);
 
@@ -143,7 +143,8 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_UnknownMetadataEx() throws IOException {
+   public void archivageUnitaire_failure_CaptureMetadonneesInconnu()
+         throws IOException {
 
       // appel du service archivage unitaire
 
@@ -163,8 +164,8 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Les métadonnées [metadonnee_inconnu_1, metadonnee_inconnu_2] n'existent pas dans le référentiel des métadonnées.",
-                     "CaptureMetaDonneesInconnu", SoapTestUtils.SAE_NAMESPACE,
+                     "La ou les métadonnées suivantes n'existent pas dans le référentiel des métadonnées : metadonnee_inconnu_1, metadonnee_inconnu_2",
+                     "CaptureMetadonneesInconnu", SoapTestUtils.SAE_NAMESPACE,
                      SoapTestUtils.SAE_PREFIX);
 
       }
@@ -172,7 +173,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_DuplicatedMetadataEx()
+   public void archivageUnitaire_failure_CaptureMetadonneesDoublon()
          throws IOException {
 
       @SuppressWarnings("unchecked")
@@ -195,7 +196,7 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Les des métadonnées [CodeOrganismeGestionnaire, VersionRND] sont en double.",
+                     "La ou les métadonnées suivantes sont renseignées plusieurs fois : CodeOrganismeGestionnaire, VersionRND",
                      "CaptureMetadonneesDoublon", SoapTestUtils.SAE_NAMESPACE,
                      SoapTestUtils.SAE_PREFIX);
 
@@ -204,7 +205,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_InvalidValueAndFormatEx()
+   public void archivageUnitaire_failure_CaptureMetadonneesFormatTypeNonValide()
          throws IOException {
 
       putMetadata("DateCreation", "01/01/2012");
@@ -221,7 +222,7 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Le type ou le format des métadonnées [DateCreation, Gel] n'est pas valides.",
+                     "Le type ou le format des métadonnées suivantes n'est pas valide : DateCreation, Gel",
                      "CaptureMetadonneesFormatTypeNonValide",
                      SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
 
@@ -230,7 +231,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_NoSpecifiableMetadataEx()
+   public void archivageUnitaire_failure_CaptureMetadonneesInterdites()
          throws IOException {
 
       putMetadata("DureeConservation", "1825");
@@ -247,7 +248,7 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Les métadonnées [DureeConservation, Gel] ne sont pas autorisées à l'archivage.",
+                     "La ou les métadonnées suivantes ne sont pas autorisées à l'archivage : DureeConservation, Gel",
                      "CaptureMetadonneesInterdites",
                      SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
 
@@ -256,7 +257,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_RequiredArchivableMetadataEx()
+   public void archivageUnitaire_failure_CaptureMetadonneesArchivageObligatoire()
          throws IOException {
 
       metadatasRef.remove("ApplicationProductrice");
@@ -273,7 +274,7 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Les métadonnées suivantes [ApplicationProductrice, CodeRND], obligatoires lors de l'archivage, sont absentes.",
+                     "La ou les métadonnées suivantes, obligatoires lors de l'archivage, ne sont pas renseignées : ApplicationProductrice, CodeRND",
                      "CaptureMetadonneesArchivageObligatoire",
                      SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
 
@@ -282,7 +283,8 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_UnknownCodeRndEx() throws IOException {
+   public void archivageUnitaire_failure_CaptureCodeRndInterdit()
+         throws IOException {
 
       putMetadata("CodeRND", "toto");
 
@@ -295,7 +297,7 @@ public class ArchivageUnitaireFailureTest {
       } catch (AxisFault fault) {
 
          SoapTestUtils.assertAxisFault(fault,
-               "Le code RND toto n'est pas autorisé à l'archivage.",
+               "Le type de document toto n'est pas autorisé à l'archivage.",
                "CaptureCodeRndInterdit", SoapTestUtils.SAE_NAMESPACE,
                SoapTestUtils.SAE_PREFIX);
 
@@ -304,7 +306,8 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_UnknownHashCodeEx() throws IOException {
+   public void archivageUnitaire_failure_ErreurInterneCapture_Hash()
+         throws IOException {
 
       putMetadata("Hash", "toto");
 
@@ -319,7 +322,7 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Une erreur interne à l'application est survenue dans la capture.",
+                     "Une erreur interne à l'application est survenue lors de la capture.",
                      "ErreurInterneCapture", SoapTestUtils.SAE_NAMESPACE,
                      SoapTestUtils.SAE_PREFIX);
 
@@ -328,7 +331,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_FileNotFoundException()
+   public void archivageUnitaire_failure_ErreurInterneCapture_FileNotFound()
          throws IOException {
 
       try {
@@ -346,7 +349,7 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Une erreur interne à l'application est survenue dans la capture.",
+                     "Une erreur interne à l'application est survenue lors de la capture.",
                      "ErreurInterneCapture", SoapTestUtils.SAE_NAMESPACE,
                      SoapTestUtils.SAE_PREFIX);
 
@@ -368,9 +371,8 @@ public class ArchivageUnitaireFailureTest {
       } catch (AxisFault fault) {
 
          SoapTestUtils.assertAxisFault(fault,
-               "Archivage impossible. La liste des métadonnées est vide.",
-               "CaptureMetaDonneesVide", SoapTestUtils.SAE_NAMESPACE,
-               SoapTestUtils.SAE_PREFIX);
+               "La liste des métadonnées est vide.", "CaptureMetadonneesVide",
+               SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
 
       }
    }

@@ -50,7 +50,7 @@ public class ConsultationFailureTest {
    }
 
    @Test
-   public void consultation_failure_uuidNotFound() throws RemoteException {
+   public void consultation_failure_ArchiveNonTrouve() throws RemoteException {
       try {
 
          service.consultation("a08addbb-f948-4489-a8a4-70fcb19feb9f");
