@@ -29,7 +29,7 @@ import fr.urssaf.image.sae.services.XmlMockDataService;
 @Service
 @Qualifier("xmlMockDataService")
 public class XmlMockDataServiceImpl implements XmlMockDataService {
-
+   // CHECKSTYLE:OFF
    /**
     * {@inheritDoc}
     */
@@ -66,8 +66,10 @@ public class XmlMockDataServiceImpl implements XmlMockDataService {
 
       return XStreamHelper.newXStream(xstrClass);
    }
-
-   public UntypedDocumentMockData untypedDocumentDocumentReader(
+   /**
+    * Désérailise un UntypedDocumentMockData
+    */
+   public final UntypedDocumentMockData untypedDocumentDocumentReader(
          InputStream xmlInputStream) throws FileNotFoundException {
       return XStreamHelper.parse(new InputStreamReader(xmlInputStream),
             Constants.ENCODING, UntypedDocumentMockData.class,
@@ -75,10 +77,11 @@ public class XmlMockDataServiceImpl implements XmlMockDataService {
    }
 
    @Override
-   public SAEDocumentMockData saeDocumentReader(InputStream xmlInputStream)
+   public final SAEDocumentMockData saeDocumentReader(InputStream xmlInputStream)
          throws FileNotFoundException {
       return XStreamHelper.parse(new InputStreamReader(xmlInputStream),
             Constants.ENCODING, SAEDocumentMockData.class,
             buildReadingXStream(SAEDocumentMockData.class));
    }
+   // CHECKSTYLE:ON
 }

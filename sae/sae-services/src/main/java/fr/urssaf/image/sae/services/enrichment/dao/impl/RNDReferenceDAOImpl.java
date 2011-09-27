@@ -25,6 +25,8 @@ import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 @Service
 @Qualifier("rndReferenceDAO")
 public class RNDReferenceDAOImpl implements RNDReferenceDAO {
+   private static final String CODE_RND_INTERDIT = "capture.code.rnd.interdit"; //NOPDM
+
    @Autowired
    @Qualifier("xmlRndDataService")
    private XmlRndDataService xmlDataService;
@@ -88,7 +90,8 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       String activityCode = StringUtils.EMPTY;
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.code.rnd.interdit",
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
+               CODE_RND_INTERDIT,
                codeRnd));
       }
       activityCode = typeDoc.getActivityCode();
@@ -103,7 +106,7 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
          throws ReferentialRndException, UnknownCodeRndEx {
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.code.rnd.interdit",
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(CODE_RND_INTERDIT,
                codeRnd));
       }
       return typeDoc;
@@ -114,7 +117,7 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       String fonctionCode = StringUtils.EMPTY;
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.code.rnd.interdit",
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(CODE_RND_INTERDIT,
                codeRnd));
       }
       fonctionCode = typeDoc.getFonctionCode();
@@ -131,7 +134,7 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       int storageDuration = -1;
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.code.rnd.interdit",
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(CODE_RND_INTERDIT,
                codeRnd));
       }
       storageDuration = typeDoc.getStorageDuration();

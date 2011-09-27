@@ -3,9 +3,14 @@ package fr.urssaf.image.sae.model;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-
+/**
+ * Classe qui représente un document mock test
+ * 
+ *@@author Rhofir
+ */
 @XStreamAlias("document")
 public class SAEDocumentMockData {
+   // CHECKSTYLE:OFF
    @XStreamAlias("metadatas")
    private List<SAEMockMetadata> metadatas;
    // Les attributs
@@ -68,5 +73,5 @@ public class SAEDocumentMockData {
    public final void setType(String type) {
       this.type = type;
    }
-
+   // CHECKSTYLE:ON
 }

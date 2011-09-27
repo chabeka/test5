@@ -14,7 +14,6 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.model.SAEDocumentMockData;
 import fr.urssaf.image.sae.model.SAEMockMetadata;
-import fr.urssaf.image.sae.model.SaeDocument;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 
 /**
@@ -23,7 +22,9 @@ import fr.urssaf.image.sae.storage.dfce.utils.Utils;
  * {@link SaeDocument}.
  * 
  */
+@SuppressWarnings( { "PMD.LongVariable" })
 public final class BeanTestDocumentMapper {
+   // CHECKSTYLE:OFF
    /**
     * Permet de convertir les données du document XML vers {@link SAEDocument}.<br/>
     * 
@@ -72,7 +73,7 @@ public final class BeanTestDocumentMapper {
     * @throws IOException
     * @throws ParseException
     */
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   @SuppressWarnings( { "PMD.AvoidInstantiatingObjectsInLoops" })
    public static UntypedDocument saeMockDocumentXmlToUntypedDocument(
          SAEDocumentMockData saeDocumentMockData) throws IOException,
          ParseException {
@@ -101,4 +102,5 @@ public final class BeanTestDocumentMapper {
    private BeanTestDocumentMapper() {
       assert false;
    }
+   // CHECKSTYLE:ON
 }

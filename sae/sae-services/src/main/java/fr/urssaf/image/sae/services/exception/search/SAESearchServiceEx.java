@@ -1,9 +1,9 @@
-package fr.urssaf.image.sae.services.exception;
+package fr.urssaf.image.sae.services.exception.search;
 
 /**
  * Exception à utiliser pour les erreurs de dans la partie recherche.<BR/>
  */
-public class SAESearchServiceEx extends SAEServiceException {
+public class SAESearchServiceEx extends Exception {
 
    /**
     * L'identifiant unique de l'exception
@@ -18,8 +18,8 @@ public class SAESearchServiceEx extends SAEServiceException {
    }
 
    /**
-    * Construit une nouvelle {@link SAESearchServiceEx } avec un message et une cause
-    * données.
+    * Construit une nouvelle {@link SAESearchServiceEx } avec un message et une
+    * cause données.
     * 
     * @param message
     *           : Message de l'erreur
@@ -38,22 +38,5 @@ public class SAESearchServiceEx extends SAEServiceException {
     */
    public SAESearchServiceEx(final String message) {
       super(message);
-   }
-
-   /**
-    * Construit une nouvelle {@link SAESearchServiceEx } avec un message ,une cause
-    * données et un code erreur donné .
-    * 
-    * @param message
-    *           : Le message d'erreur
-    * @param cause
-    *           : La cause de l'erreur
-    * @param codeErreur
-    *           : Le code d'erreur
-    */
-   public SAESearchServiceEx(final String codeErreur, final String message,
-         final Throwable cause) {
-      super(message, cause);
-      setCodeError(codeErreur);
    }
 }

@@ -30,7 +30,7 @@ import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
  */
 @Service
 @Qualifier("saeEnrichmentMetadataService")
-@SuppressWarnings("PMD.CyclomaticComplexity")
+@SuppressWarnings( { "PMD.CyclomaticComplexity", "PMD.LongVariable" })
 public class SAEEnrichmentMetadataServiceImpl implements
       SAEEnrichmentMetadataService {
    @Autowired
@@ -106,8 +106,8 @@ public class SAEEnrichmentMetadataServiceImpl implements
     * @throws ReferentialException
     */
    // CHECKSTYLE:OFF
-   @SuppressWarnings( { "PMD.CyclomaticComplexity",
-         "PMD.AvoidInstantiatingObjectsInLoops" })
+   @SuppressWarnings( { "PMD.AvoidInstantiatingObjectsInLoops",
+         "PMD.ExcessiveMethodLength" })
    private void completedMetadatas(SAEDocument saeDocument, String rndCode)
          throws ReferentialRndException, UnknownCodeRndEx, ParseException,
          ReferentialException {

@@ -12,7 +12,7 @@ import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
  * Fournit la façade des implementations des services :<br>
  * <lu><br>
  * <li>{@link SAECaptureServiceImpl Capture}</li> <br>
- * <li>{@link SAESearchServiceImpl Recherche}</li><li>
+ * <li>{@link SAESearchServiceImplOld Recherche}</li><li>
  * {@link SAEConsultationServiceImpl Consultation}</li>
  * <ul>
  * 
@@ -33,7 +33,7 @@ public class SAEServiceProviderImpl implements SAEServiceProvider {
     *         {@link fr.urssaf.image.sae.services.document.impl.SAECaptureServiceImpl
     *         Capture}</li> <br>
     *         <li>
-    *         {@link fr.urssaf.image.sae.services.document.impl.SAESearchServiceImpl
+    *         {@link fr.urssaf.image.sae.services.document.impl.SAESearchServiceImplOld
     *         Recherche}</li><li>
     *         {@link fr.urssaf.image.sae.services.consultation.impl.SAEConsultationServiceImpl
     *         Consultation}</li>
@@ -47,7 +47,7 @@ public class SAEServiceProviderImpl implements SAEServiceProvider {
     * @param saeDocumentService
     *           : La façade des services :<lu><br>
     *           <li>{@link SAECaptureServiceImpl Capture}</li> <br>
-    *           <li>{@link SAESearchServiceImpl Recherche}</li><li>
+    *           <li>{@link SAESearchServiceImplOld Recherche}</li><li>
     *           {@link SAEConsultationServiceImpl Consultation}</li>
     *           <ul>
     */

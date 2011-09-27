@@ -15,9 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
-import fr.urssaf.image.sae.metadata.messages.MetadataMessageHandler;
 import fr.urssaf.image.sae.model.SAEDocumentMockData;
-import fr.urssaf.image.sae.services.SAEServiceProvider;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.mapping.BeanTestDocumentMapper;
 
@@ -27,9 +25,9 @@ import fr.urssaf.image.sae.services.mapping.BeanTestDocumentMapper;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
-@SuppressWarnings( { "PMD.ExcessiveImports", "PMD.LongVariable",
-      "AbstractClassWithoutAbstractMethod" })
+@SuppressWarnings("all")
 public class CommonsServices {
+   // CHECKSTYLE:OFF
    @Autowired
    @Qualifier("saeServiceProvider")
    private SAEServiceProvider sAEServiceProvider;
@@ -86,6 +84,7 @@ public class CommonsServices {
 
    /**
     * Initialisation des tests. <br>
+    * @return SAEDocument {@link SAEDocument}
     */
 
    public final SAEDocument getSAEDocumentMockData() throws IOException,
@@ -108,6 +107,7 @@ public class CommonsServices {
 
    /**
     * Initialisation des tests. <br>
+    * @return UntypedDocument {@link UntypedDocument}
     */
 
    public final UntypedDocument getUntypedDocumentMockData()
@@ -141,4 +141,5 @@ public class CommonsServices {
    public final void setSaeServiceProvider(SAEServiceProvider sAEServiceProvider) {
       this.sAEServiceProvider = sAEServiceProvider;
    }
+   // CHECKSTYLE:ON
 }

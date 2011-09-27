@@ -15,7 +15,6 @@ import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.CommonsServices;
-import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
@@ -36,6 +35,7 @@ import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
  * 
  * @author Rhofir
  */
+@SuppressWarnings("all")
 public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Autowired
    @Qualifier("saeControlesCaptureService")
@@ -212,7 +212,8 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test
    public final void checkSaeMetadataForStorage()
          throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
-         ParseException, SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
+         ParseException, SAEEnrichmentEx, ReferentialRndException,
+         UnknownCodeRndEx {
       SAEDocument saeDocument = getSAEDocumentMockData();
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
       saeControlesCaptureService.checkSaeMetadataForStorage(saeDocument);
@@ -250,6 +251,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
       SAEDocument saeDocument = getSAEDocumentMockData();
       saeControlesCaptureService.checkHashCodeMetadataForStorage(saeDocument);
    }
+
    /**
     * Test de la méthode
     * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkSaeMetadataForStorage(fr.urssaf.image.sae.bo.model.bo.SAEDocument)}
@@ -258,7 +260,8 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test(expected = RequiredStorageMetadataEx.class)
    public final void requiredStorageMetadataFailed()
          throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
-         ParseException, SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
+         ParseException, SAEEnrichmentEx, ReferentialRndException,
+         UnknownCodeRndEx {
       SAEDocument saeDocument = getSAEDocumentMockData();
       SAEMetadata saeMetadataToRemove = null;
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);

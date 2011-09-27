@@ -49,7 +49,7 @@ public class SAEControlesCaptureServiceImpl implements
     * #checkSaeMetadataForCapture(fr.urssaf.image.sae.bo.model.bo.SAEDocument)
     */
    @Override
-   public void checkSaeMetadataForCapture(SAEDocument saeDocument)
+   public final void checkSaeMetadataForCapture(SAEDocument saeDocument)
          throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx {
       List<MetadataError> errorsList = metadataCS
             .checkArchivableMetadata(saeDocument);
@@ -71,7 +71,7 @@ public class SAEControlesCaptureServiceImpl implements
     * {@inheritDoc}
     */
    @Override
-   public void checkSaeMetadataForStorage(SAEDocument sAEDocument)
+   public final void checkSaeMetadataForStorage(SAEDocument sAEDocument)
          throws RequiredStorageMetadataEx {
       List<MetadataError> errorsList = metadataCS
             .checkRequiredForStorageMetadata(sAEDocument);
@@ -86,7 +86,7 @@ public class SAEControlesCaptureServiceImpl implements
     * {@inheritDoc}
     */
    @Override
-   public void checkHashCodeMetadataForStorage(SAEDocument saeDocument)
+   public final void checkHashCodeMetadataForStorage(SAEDocument saeDocument)
          throws UnknownHashCodeEx {
       String hashCodeValue = SAEMetatadaFinderUtils.codeMetadataFinder(saeDocument
             .getMetadatas(), SAEArchivalMetadatas.HASHDOC.getLongCode());
@@ -100,7 +100,7 @@ public class SAEControlesCaptureServiceImpl implements
     * {@inheritDoc}
     */
    @Override
-   public void checkUntypedDocument(UntypedDocument untypedDocument)
+   public final void checkUntypedDocument(UntypedDocument untypedDocument)
          throws EmptyDocumentEx {
       if (untypedDocument.getContent() == null
             || untypedDocument.getContent().length == 0) {
@@ -114,7 +114,7 @@ public class SAEControlesCaptureServiceImpl implements
     * {@inheritDoc}
     */
    @Override
-   public void checkUntypedMetadata(UntypedDocument untypedDocument)
+   public final void checkUntypedMetadata(UntypedDocument untypedDocument)
          throws UnknownMetadataEx, DuplicatedMetadataEx,
          InvalidValueTypeAndFormatMetadataEx {
       List<MetadataError> errorsList = metadataCS

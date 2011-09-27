@@ -10,7 +10,7 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
  * Classe abstraite contenant les attributs communs de toutes les
  * implementations:
  * <ul>
- * <li>{@link fr.urssaf.image.sae.services.document.SAECaptureService Capture} :
+ * <li>{@link fr.urssaf.image.sae.services.document.SAEBulkCaptureService Capture} :
  * Implementation de capture unitaire et en masse,</li>
  * <li>{@link fr.urssaf.image.sae.services.document.SAESearchService Recherche}
  * : Implementation de recherche,</li>

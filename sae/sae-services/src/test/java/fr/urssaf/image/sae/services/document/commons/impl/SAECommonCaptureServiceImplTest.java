@@ -32,6 +32,7 @@ import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
  * 
  * @author Rhofir
  */
+@SuppressWarnings("all")
 public class SAECommonCaptureServiceImplTest extends CommonsServices {
    @Autowired
    @Qualifier("saeCommonCaptureService")

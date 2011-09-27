@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.services.exception.enrichment;
 import fr.urssaf.image.sae.metadata.exceptions.ControlException;
 
 /**
- *Exception est levée s’il y a des erreurs lors de l'enrechissement des métadonnées.
+ *Exception est levée s’il y a des erreurs lors de l'enrichissement des métadonnées.
  * 
  */
 public class SAEEnrichmentEx extends ControlException {

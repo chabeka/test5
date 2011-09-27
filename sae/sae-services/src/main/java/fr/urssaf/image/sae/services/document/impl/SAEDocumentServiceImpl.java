@@ -7,27 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.services.capture.impl.SAECaptureServiceImpl;
 import fr.urssaf.image.sae.services.consultation.SAEConsultationService;
 import fr.urssaf.image.sae.services.consultation.impl.SAEConsultationServiceImpl;
-import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
 import fr.urssaf.image.sae.services.document.SAESearchService;
-import fr.urssaf.image.sae.services.exception.SAESearchServiceEx;
-import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
+import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToConsultEx;
+import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToSearchEx;
+import fr.urssaf.image.sae.services.exception.search.SAESearchServiceEx;
+import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
+import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
 
 /**
  * Fournit la façade des implementations des services :<br>
  * <lu><br>
  * <li>{@link SAECaptureServiceImpl Capture}</li> <br>
- * <li>{@link SAESearchServiceImpl Recherche}</li><li>
+ * <li>{@link SAESearchServiceImplOld Recherche}</li><li>
  * {@link SAEConsultationServiceImpl Consultation}</li>
  * <ul>
  * 
- * @author akenore,rhofir.
+ * @author akenore,rhofir, lbaadj.
  */
 @Service
 @Qualifier("saeDocumentService")
@@ -36,9 +39,9 @@ import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
       SAEConsultationServiceImpl.class, SAESearchServiceImpl.class }, comment = "Fournit les services des classes participantes")
 public class SAEDocumentServiceImpl implements SAEDocumentService {
 
-   //@Autowired
-   //@Qualifier("saeCaptureService")
-   private SAECaptureService saeCaptureService;
+   // @Autowired
+   // @Qualifier("saeCaptureService")
+   // private SAECaptureService saeCaptureService;
    @Autowired
    @Qualifier("saeConsultationService")
    private SAEConsultationService saeConsultationService;
@@ -49,17 +52,11 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
    /**
     * {@inheritDoc}
     */
-   public final void bulkCapture(final String urlEcde)
-         throws SAECaptureServiceEx {
-      saeCaptureService.bulkCapture(urlEcde);
-   }
-
-   /**
-    * {@inheritDoc}
-    */
-   public final List<UntypedDocument> search(
-         final SAELuceneCriteria sAELuceneCriteria) throws SAESearchServiceEx {
-      return saeSearchService.search(sAELuceneCriteria);
+   public final List<UntypedDocument> search(final String requete,
+         final List<String> listMetaDesired) throws SAESearchServiceEx,
+         MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
+         UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
+      return saeSearchService.search(requete, listMetaDesired);
    }
 
    /**
@@ -70,5 +67,4 @@ public class SAEDocumentServiceImpl implements SAEDocumentService {
          throws SAEConsultationServiceException {
       return saeConsultationService.consultation(idArchive);
    }
-
 }
