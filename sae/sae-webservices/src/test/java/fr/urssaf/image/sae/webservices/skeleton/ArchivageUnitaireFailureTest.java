@@ -134,7 +134,7 @@ public class ArchivageUnitaireFailureTest {
       } catch (AxisFault axisFault) {
 
          assertAxisFault(axisFault, "ErreurInterneCapture",
-               "Une erreur interne à l'application est survenue dans la capture.");
+               "Une erreur interne à l'application est survenue lors de la capture.");
       }
    }
 

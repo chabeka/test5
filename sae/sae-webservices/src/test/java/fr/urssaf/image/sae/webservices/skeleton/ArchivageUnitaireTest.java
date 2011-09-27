@@ -107,9 +107,8 @@ public class ArchivageUnitaireTest {
       } catch (AxisFault axisFault) {
 
          Assert.assertEquals(FAIL_SOAPFAULT,
-               "Archivage impossible. La liste des métadonnées est vide.",
-               axisFault.getMessage());
-         Assert.assertEquals(FAIL_SOAPFAULT, "CaptureMetaDonneesVide",
+               "La liste des métadonnées est vide.", axisFault.getMessage());
+         Assert.assertEquals(FAIL_SOAPFAULT, "CaptureMetadonneesVide",
                axisFault.getFaultCode().getLocalPart());
          Assert.assertEquals(FAIL_SOAPFAULT, "sae", axisFault.getFaultCode()
                .getPrefix());

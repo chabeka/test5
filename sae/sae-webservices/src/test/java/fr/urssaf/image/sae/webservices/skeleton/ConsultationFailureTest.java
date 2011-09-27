@@ -114,8 +114,9 @@ public class ConsultationFailureTest {
 
       } catch (ConsultationAxisFault fault) {
 
-         assertAxisFault(fault, "Une exception a eu lieu dans la consultation",
-               "ConsultationServiceError", "sae");
+         assertAxisFault(fault,
+               "Une erreur s'est produite lors de la consultation",
+               "ConsultationErreur", "sae");
 
       }
    }

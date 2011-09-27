@@ -50,8 +50,8 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       // vérification que la liste des métadonnées n'est pas vide
       if (request.getArchivageUnitaire().getMetadonnees().getMetadonnee() == null) {
 
-         throw new CaptureAxisFault("CaptureMetaDonneesVide",
-               "Archivage impossible. La liste des métadonnées est vide.");
+         throw new CaptureAxisFault("CaptureMetadonneesVide",
+               "La liste des métadonnées est vide.");
       }
 
       ArchivageUnitaireResponse response;
@@ -90,7 +90,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
          throw new CaptureAxisFault(
                "ErreurInterneCapture",
-               "Une erreur interne à l'application est survenue dans la capture.",
+               "Une erreur interne à l'application est survenue lors de la capture.",
                e);
 
       } catch (RequiredStorageMetadataEx e) {
