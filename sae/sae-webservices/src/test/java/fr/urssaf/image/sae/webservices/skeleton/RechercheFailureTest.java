@@ -39,6 +39,7 @@ public class RechercheFailureTest {
    
    private static final String VIDE = "";
    private static final String TITRE = "Titre";
+   private static final String SAE = "sae";
 
    @After
    public void after() {
@@ -104,7 +105,7 @@ public class RechercheFailureTest {
 
       } catch (RechercheAxis2Fault fault) {
          assertAxisFault(fault, "La ou les m\u00E9tadonn\u00E9es suivantes, utilis\u00E9es dans la requ\u00EAte de recherche, ne sont pas autoris\u00E9s comme crit\u00E8res de recherche : " + listMetaDesired +".", 
-                         "RechercheMetadonneesInterdite", "sae");
+                         "RechercheMetadonneesInterdite", SAE);
       } 
    }
      
@@ -147,7 +148,7 @@ public class RechercheFailureTest {
       } catch (RechercheAxis2Fault fault) {
          assertAxisFault(fault, 
                          "La requête de recherche n'est pas renseignée.",
-                         "RequeteLuceneVideOuNull", "sae");
+                         "RequeteLuceneVideOuNull", SAE);
       } 
    }
    /**
@@ -190,7 +191,7 @@ public class RechercheFailureTest {
       } catch (RechercheAxis2Fault fault) {
          assertAxisFault(fault, 
                          "La syntaxe de la requête de recherche n'est pas valide." ,
-                         "SyntaxeLuceneNonValide", "sae");
+                         "SyntaxeLuceneNonValide", SAE);
       } 
    }
    
@@ -237,7 +238,7 @@ public class RechercheFailureTest {
                "utilis\u00E9es dans la requ\u00EAte de recherche, " +
                "n'existent pas dans le r\u00E9f\u00E9rentiel des m\u00E9tadonn\u00E9es : "
                + listMetaDesired +".", 
-               "RechercheMetadonneesInconnues", "sae");
+               "RechercheMetadonneesInconnues", SAE);
       } 
    }
     
