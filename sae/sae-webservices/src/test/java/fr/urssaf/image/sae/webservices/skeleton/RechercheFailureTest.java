@@ -90,8 +90,8 @@ public class RechercheFailureTest {
       try {
          // valeur attendu est MetaDataUnauthorizedToSearchEx via andThrow
          EasyMock.expect(documentService.search(requete, listMetaDesired)).andThrow(new MetaDataUnauthorizedToSearchEx(
-                                                                                    "Les métadonnées : " + listMetaDesired + " ne sont pas autorisées a la recherche."
-                                                                                    ));
+                                                                                    "La ou les m\u00E9tadonn\u00E9es suivantes, utilis\u00E9es dans la requ\u00EAte de recherche, ne sont pas autoris\u00E9s comme crit\u00E8res de recherche : "
+                                                                                    + listMetaDesired +"."));
          
          EasyMock.replay(documentService);
          
@@ -103,7 +103,8 @@ public class RechercheFailureTest {
                .fail("le test doit échouer à cause de la levée d'une exception de type " + SAESearchServiceEx.class);
 
       } catch (RechercheAxis2Fault fault) {
-         assertAxisFault(fault, "Les métadonnées : " + listMetaDesired + " ne sont pas autorisées a la recherche.", "RechercheMetadonneesInterdite", "sae");
+         assertAxisFault(fault, "La ou les m\u00E9tadonn\u00E9es suivantes, utilis\u00E9es dans la requ\u00EAte de recherche, ne sont pas autoris\u00E9s comme crit\u00E8res de recherche : " + listMetaDesired +".", 
+                         "RechercheMetadonneesInterdite", "sae");
       } 
    }
      
@@ -132,7 +133,7 @@ public class RechercheFailureTest {
       
       try {
          // valeur attendu est SAESearchServiceEx via andThrow
-         EasyMock.expect(documentService.search(requete, listMetaDesired)).andThrow(new SAESearchServiceEx("La recherche est interrompue. La requete lucene est vide ou nulle."));
+         EasyMock.expect(documentService.search(requete, listMetaDesired)).andThrow(new SAESearchServiceEx("La requête de recherche n'est pas renseignée."));
          
          EasyMock.replay(documentService);
          
@@ -145,7 +146,7 @@ public class RechercheFailureTest {
 
       } catch (RechercheAxis2Fault fault) {
          assertAxisFault(fault, 
-                         "La recherche est interrompue. La requete Lucene est vide ou nulle.",
+                         "La requête de recherche n'est pas renseignée.",
                          "RequeteLuceneVideOuNull", "sae");
       } 
    }
@@ -174,8 +175,7 @@ public class RechercheFailureTest {
       
       try {
          // valeur attendu est SyntaxLuceneEx via andThrow
-         EasyMock.expect(documentService.search(requete, listMetaDesired)).andThrow(new SyntaxLuceneEx("Erreur de syntaxe de la requete Lucene : "
-                                                                                                          + requete));
+         EasyMock.expect(documentService.search(requete, listMetaDesired)).andThrow(new SyntaxLuceneEx("La syntaxe de la requête de recherche n'est pas valide."));
          
          EasyMock.replay(documentService);
          
@@ -189,8 +189,55 @@ public class RechercheFailureTest {
 
       } catch (RechercheAxis2Fault fault) {
          assertAxisFault(fault, 
-                         "Erreur de syntaxe de la requete Lucene : " + requete,
+                         "La syntaxe de la requête de recherche n'est pas valide." ,
                          "SyntaxeLuceneNonValide", "sae");
+      } 
+   }
+   
+   /**
+    * Test qui echoue car la liste des metadonnées n'est pas presente dans le réferentiel des métadonnées.
+    * @throws SAESearchServiceEx 
+    * @throws SyntaxLuceneEx 
+    * @throws UnknownLuceneMetadataEx 
+    * @throws UnknownDesiredMetadataEx 
+    * @throws MetaDataUnauthorizedToConsultEx 
+    * @throws MetaDataUnauthorizedToSearchEx 
+    */ 
+   @Test
+   public void searchFailureMetaDataNotExist() throws SAESearchServiceEx, 
+                                                        MetaDataUnauthorizedToSearchEx, 
+                                                        MetaDataUnauthorizedToConsultEx, 
+                                                        UnknownDesiredMetadataEx, 
+                                                        UnknownLuceneMetadataEx, 
+                                                        SyntaxLuceneEx {
+            
+      String requete = TITRE+":NOTIFICATIONS";
+      List<String> listMetaDesired = new ArrayList<String>();
+      listMetaDesired.add("Metadata");
+
+      try {
+         // valeur attendu est MetaDataUnauthorizedToSearchEx via andThrow
+         EasyMock.expect(documentService.search(requete, listMetaDesired)).andThrow(new UnknownLuceneMetadataEx(
+                                                                                        "La ou les m\u00E9tadonn\u00E9e(s) suivantes, " +
+                                                                                        "utilis\u00E9es dans la requ\u00EAte de recherche, " +
+                                                                                        "n'existent pas dans le r\u00E9f\u00E9rentiel des m\u00E9tadonn\u00E9es : "
+                                                                                        + listMetaDesired +"."));
+         
+         EasyMock.replay(documentService);
+         
+         Recherche request = createSearchType("src/test/resources/recherche/recherche_failure_02.xml");
+
+         skeleton.rechercheSecure(request).getRechercheResponse();
+         
+         Assert
+               .fail("le test doit échouer à cause de la levée d'une exception de type " + SAESearchServiceEx.class);
+
+      } catch (RechercheAxis2Fault fault) {
+         assertAxisFault(fault, "La ou les m\u00E9tadonn\u00E9e(s) suivantes, " +
+               "utilis\u00E9es dans la requ\u00EAte de recherche, " +
+               "n'existent pas dans le r\u00E9f\u00E9rentiel des m\u00E9tadonn\u00E9es : "
+               + listMetaDesired +".", 
+               "RechercheMetadonneesInconnues", "sae");
       } 
    }
     
