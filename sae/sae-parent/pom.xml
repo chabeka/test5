@@ -120,12 +120,18 @@
       ==========================================
       -->
       <org.hibernate.version>3.2.6.ga</org.hibernate.version>
+      <org.hibernate-core.version>3.6.7.Final</org.hibernate-core.version>
       
       <!-- Modèles de dépendance :
       <dependency>
          <groupId>org.hibernate</groupId>
          <artifactId>hibernate</artifactId>
          <version>${org.hibernate.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.hibernate</groupId>
+         <artifactId>hibernate-core</artifactId>
+         <version>{org.hibernate-core.version}</version>
       </dependency>
       -->
       
