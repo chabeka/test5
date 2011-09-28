@@ -6,7 +6,6 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,10 +58,8 @@ public class WSRechercheServiceImpl implements WSRechercheService {
          List<String> listMDDesired = recupererListMDDesired(recupererListMDSearch(request));
          List<UntypedDocument> untypedDocuments = documentService.search(
                requeteLucene, listMDDesired);
-         if (CollectionUtils.isNotEmpty(untypedDocuments)) {
-            if (untypedDocuments.size() >= maxResult + 1) {
-               resultatTronque = true;
-            }
+         if (untypedDocuments.size() >= maxResult + 1) {
+            resultatTronque = true;
          }
          response = createRechercheResponse(untypedDocuments, resultatTronque);
 
@@ -80,8 +77,6 @@ public class WSRechercheServiceImpl implements WSRechercheService {
          throw new RechercheAxis2Fault(except.getMessage(), "SyntaxeLuceneNonValide");
       } catch (RechercheAxis2Fault except) {
          throw new RechercheAxis2Fault(except.getMessage(), "RequeteLuceneVideOuNull");
-      } catch (Exception except) {
-         throw new RechercheAxis2Fault(MessageRessourcesUtils.recupererMessage("erreur.interne", null), "ErreurInterne");
       }
       return response;
    }
