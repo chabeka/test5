@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 
-import fr.urssaf.image.sae.webservices.context.ServicesApplicationContext;
+import fr.urssaf.image.sae.webservices.context.WebServicesApplicationContext;
 
 
 /**
@@ -26,7 +26,7 @@ public final class MessageRessourcesUtils {
    private static MessageSource messageSource;
    static {
 
-      messageSource = ServicesApplicationContext.getApplicationContext()
+      messageSource = WebServicesApplicationContext.getApplicationContext()
             .getBean("messageSource_sae_webservices", MessageSource.class);
    }
    
