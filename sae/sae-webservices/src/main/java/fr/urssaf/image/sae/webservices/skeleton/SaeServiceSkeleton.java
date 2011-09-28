@@ -29,8 +29,10 @@ import fr.urssaf.image.sae.webservices.SaeService;
 import fr.urssaf.image.sae.webservices.SaeStorageService;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
+import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
+import fr.urssaf.image.sae.webservices.service.WSRechercheService;
 
 /**
  * Skeleton du web service coté serveur<br>
@@ -76,6 +78,14 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    private final SaeStorageService storageService;
 
+   @Autowired
+   private WSConsultationService consultation;
+
+   @Autowired
+   private WSRechercheService search;
+   @Autowired
+   private WSCaptureService capture;
+
    /**
     * Instanciation du service {@link SaeService}
     * 
@@ -94,12 +104,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       this.service = service;
       this.storageService = storageService;
    }
-
-   @Autowired
-   private WSConsultationService consultation;
-
-   @Autowired
-   private WSCaptureService capture;
 
    /**
     * {@inheritDoc}
@@ -152,11 +156,14 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    /**
     * {@inheritDoc}
+    * 
+    * @throws RechercheAxis2Fault
     */
    @Override
-   public final RechercheResponse rechercheSecure(Recherche request) {
+   public final RechercheResponse rechercheSecure(Recherche request)
+         throws RechercheAxis2Fault {
 
-      return this.storageService.search(request);
+      return this.search.search(request);
 
    }
 

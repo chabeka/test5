@@ -18,7 +18,7 @@
       <!-- on repète le n° de version pour les plugins  'org.apache.axis2' -->
       <axis2.version>1.5.4</axis2.version>
    </properties>
-
+  
    <profiles>
       <profile>
          <id>generateSkeleton</id>

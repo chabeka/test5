@@ -20,6 +20,18 @@
 
    <bean id="documentService" factory-method="loadSAEDocumentService"
       factory-bean="SAEServiceManager" />
+      
+   <bean id="messageSource_sae_webservices"
+      class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+      <property name="basenames">
+         <list>
+            <value>/properties/validationMessages_sae_webservices</value>
+            <value>/properties/exceptionMessages_sae_webservices</value>
+            <value>/properties/constantes_sae_webservices</value>
+         </list>
+      </property>
+      <property name="cacheSeconds" value="0" />
+   </bean>   
 
 
 </beans>

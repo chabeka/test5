@@ -1,15 +1,18 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.axis2.AxisFault;
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.easymock.EasyMock;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,110 +23,285 @@ import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponseType;
 import fr.cirtil.www.saeservice.ResultatRechercheType;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.services.document.SAEDocumentService;
+import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToConsultEx;
+import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToSearchEx;
+import fr.urssaf.image.sae.services.exception.search.SAESearchServiceEx;
+import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
+import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml"})
-@SuppressWarnings( { "PMD.MethodNamingConventions" })
+@RunWith(SpringJUnit4ClassRunner.class)  
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml" })
+@SuppressWarnings({"PMD.ExcessiveImports"})
 public class RechercheTest {
 
    @Autowired
-   private SaeServiceSkeletonInterface skeleton;
+   private SaeServiceSkeleton skeleton;
+   @Autowired
+   private SAEDocumentService documentService;
+   
+   private static final String NB_MD_INATTENDU = "nombre de metadatas inattendu";
+   private static final String MD_ATTENDU = "Des métadonnées sont attendues";
+   private static final String DATECREATION = "dateCreation";
+   private static final String DATE = "01012011";
 
-   private Recherche createRecherche(String filePath) {
-
+   private Recherche createSearchType(String filePath) {
       try {
-
-         XMLStreamReader reader = XMLStreamUtils
-               .createXMLStreamReader(filePath);
+         XMLStreamReader reader = XMLStreamUtils.createXMLStreamReader(filePath);
          return Recherche.Factory.parse(reader);
-
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
-
    }
 
-   private static final String CODE_RND_META = "CodeRND";
+   // insertion de metadonnée
+   private static void assertMetadata(MetadonneeType metadata, Map<String, Object> expectedMetadatas) {
+      Assert.assertTrue("la metadonnée '"
+            + metadata.getCode().getMetadonneeCodeType() + "' "
+            + "est inattendue", expectedMetadatas.containsKey(metadata
+            .getCode().getMetadonneeCodeType()));
 
-   private static final String COTISANT_META = "NumeroCotisant";
+      expectedMetadatas.remove(metadata.getCode().getMetadonneeCodeType());
+   }
 
-   private static final String SIRET_META = "Siret";
-
-   private static final String COMPTE_META = "DenominationCompte";
-
-   private static final String ORGANISME_META = "CodeOrganisme";
+   // Toujours present lorsqu'on travaille avec des Mocks.
+   @After
+   public void after() {
+      EasyMock.reset(documentService);
+   }
 
    @Test
-   public void recherche_success() throws AxisFault {
+   public void searchSuccess() throws IOException, SAESearchServiceEx,
+         MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx, UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
 
-      Recherche request = createRecherche("src/test/resources/request/recherche_success.xml");
+      UntypedDocument document1 = new UntypedDocument();
+      UntypedDocument document2 = new UntypedDocument();
 
-      RechercheResponseType response = skeleton.rechercheSecure(request)
-            .getRechercheResponse();
+      List<UntypedDocument> listUntyp = new ArrayList<UntypedDocument>();
+      List<UntypedMetadata> untypedMetadatas1 = new ArrayList<UntypedMetadata>();
+      List<UntypedMetadata> untypedMetadatas2 = new ArrayList<UntypedMetadata>();
+
+      UntypedMetadata metadata1 = new UntypedMetadata();
+      metadata1.setLongCode("CodeActivite");
+      metadata1.setValue("2");
+      untypedMetadatas1.add(metadata1);
+
+      UntypedMetadata metadata2 = new UntypedMetadata();
+      metadata2.setLongCode("ContratDeService");
+      metadata2.setValue("CS1");
+      untypedMetadatas2.add(metadata2);
+
+      document1.setUMetadatas(untypedMetadatas1);
+      UUID uuidDoc = UUID.fromString("cc4a5ec1-788d-4b41-baa8-d349947865bf");
+      document1.setUuid(uuidDoc);
+      
+      document2.setUuid(uuidDoc);
+      document2.setUMetadatas(untypedMetadatas2);
+ 
+      listUntyp.add(document1);
+      listUntyp.add(document2);
+ 
+      String requete = "Titre:NOTIFICATIONS";
+      List<String> listMetaDesired = new ArrayList<String>();
+      listMetaDesired.add("CodeActivite");
+      listMetaDesired.add("ContratDeService");
+      listMetaDesired.add("Titre");
+
+      // valeur attendu est listUntyp via andReturn
+      EasyMock.expect(documentService.search(requete, listMetaDesired)).andReturn(listUntyp);
+      // permet de sauvegarder l'enregistrement
+      EasyMock.replay(documentService);
+
+      Recherche request = createSearchType("src/test/resources/recherche/recherche_success_01.xml");
+
+      // recuper le type de reponse de la recherche
+      RechercheResponseType response = skeleton.rechercheSecure(request).getRechercheResponse();
 
       ResultatRechercheType[] resultats = response.getResultats().getResultat();
 
-      assertEquals("nombre de resultats inattendu", 3, resultats.length);
+      Assert.assertEquals(NB_MD_INATTENDU, 2, resultats.length);
 
-      Map<String, String> metas1 = new HashMap<String, String>();
-      // metas1.put(UUID_META, "110E8400-E29B-11D4-A716-446655440000");
-      metas1.put(CODE_RND_META, "3.1.3.1.1");
-      metas1.put(COTISANT_META, "704815");
-      metas1.put(SIRET_META, "49980055500017");
-      metas1.put(COMPTE_META, "SPOHN ERWAN MARIE MAX");
-      metas1.put(ORGANISME_META, "UR030");
-      // metas1.put("DateOrigine", "2011-06-03");
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
 
-      assertResultatRechercheType(resultats[0],
-            "110E8400-E29B-11D4-A716-446655440000", metas1);
+      expectedMetadatas.put("CodeActivite", "2");
+      expectedMetadatas.put("ContratDeService", "CS1");
 
-      Map<String, String> metas2 = new HashMap<String, String>();
-      // metas2.put(UUID_META, "510E8200-E29B-18C4-A716-446677440120");
-      metas2.put(CODE_RND_META, "1.A.X.X.X");
-      metas2.put(COTISANT_META, "723804");
-      metas2.put(SIRET_META, "07413151710009");
-      metas2.put(COMPTE_META, "CHEVENIER ANDRE");
-      metas2.put(ORGANISME_META, "UR030");
+       assertMetadata(resultats[0].getMetadonnees().getMetadonnee()[0], expectedMetadatas);
+       assertMetadata(resultats[1].getMetadonnees().getMetadonnee()[0], expectedMetadatas);
 
-      assertResultatRechercheType(resultats[1],
-            "510E8200-E29B-18C4-A716-446677440120", metas2);
-
-      Map<String, String> metas3 = new HashMap<String, String>();
-      // metas3.put(UUID_META, "48758200-A29B-18C4-B616-455677840120");
-      metas3.put(CODE_RND_META, "1.2.3.3.1");
-      metas3.put(COTISANT_META, "719900");
-      metas3.put(SIRET_META, "07412723410007");
-      metas3.put(COMPTE_META, "COUTURIER GINETTE");
-      metas3.put(ORGANISME_META, "UR030");
-
-      assertResultatRechercheType(resultats[2],
-            "48758200-A29B-18C4-B616-455677840120", metas3);
+      Assert.assertTrue(MD_ATTENDU, expectedMetadatas.isEmpty());
 
    }
 
-   private static void assertResultatRechercheType(
-         ResultatRechercheType resultat, String uuid,
-         Map<String, String> metadonnees) {
+   @Test
+   public void searchSuccessAndOr() throws IOException, SAESearchServiceEx, MetaDataUnauthorizedToSearchEx, 
+                                          MetaDataUnauthorizedToConsultEx, UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
 
-      assertEquals("nombre de resultats inattendu", uuid, resultat
-            .getIdArchive().getUuidType());
-
-      MetadonneeType[] metas = resultat.getMetadonnees().getMetadonnee();
-
-      for (MetadonneeType metadonnee : metas) {
-
-         String code = metadonnee.getCode().getMetadonneeCodeType();
-
-         assertTrue("la métadonnée '" + code + "' n'est pas présente dans "
-               + uuid, metadonnees.containsKey(code));
-         assertEquals("la valeur de la métadonnée '" + code
-               + "' est incorrecte dans " + uuid, metadonnees.get(code),
-               metadonnee.getValeur().getMetadonneeValeurType());
-      }
-
-      assertEquals("nombre de metadonnees inattendu", metadonnees.size(),
-            metas.length);
-
+      UntypedDocument document1 = new UntypedDocument();
+      
+      List<UntypedDocument> listUntyp = new ArrayList<UntypedDocument>();
+      List<UntypedMetadata> untypedMetadatas1 = new ArrayList<UntypedMetadata>();
+      
+      UntypedMetadata metadata1 = new UntypedMetadata();
+      metadata1.setLongCode(DATECREATION);
+      metadata1.setValue(DATE);
+      untypedMetadatas1.add(metadata1);
+      
+      document1.setUMetadatas(untypedMetadatas1);
+      UUID uuidDoc = UUID.fromString("21-3-1-131-121");
+      document1.setUuid(uuidDoc);
+      
+      listUntyp.add(document1);
+            
+      String requete = "_uuid:21-3-1-131-121 and dateCreation:01012011 or itm :99999";
+      List<String> listMetaDesired = new ArrayList<String>();
+      listMetaDesired.add(DATECREATION);
+      
+      // valeur attendu est listUntyp via andReturn
+      EasyMock.expect(documentService.search(requete, listMetaDesired)).andReturn(listUntyp);
+      // permet de sauvegarder l'enregistrement
+      EasyMock.replay(documentService);
+      
+      Recherche request = createSearchType("src/test/resources/recherche/recherche_success_02.xml");
+      
+      // recuperer le type de reponse de la recherche
+      RechercheResponseType response = skeleton.rechercheSecure(request).getRechercheResponse();
+      
+      ResultatRechercheType[] resultats = response.getResultats().getResultat();
+      
+      Assert.assertEquals(NB_MD_INATTENDU, 1, resultats.length);
+      
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
+      
+      expectedMetadatas.put(DATECREATION, DATE);
+      
+       assertMetadata(resultats[0].getMetadonnees().getMetadonnee()[0], expectedMetadatas);
+      
+      Assert.assertTrue(MD_ATTENDU, expectedMetadatas.isEmpty());
+      
    }
+
+   @Test
+   public void searchSuccessDate() throws IOException, SAESearchServiceEx, MetaDataUnauthorizedToSearchEx, 
+         MetaDataUnauthorizedToConsultEx, UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
+      
+      UntypedDocument document1 = new UntypedDocument();
+      
+      List<UntypedDocument> listUntyp = new ArrayList<UntypedDocument>();
+      List<UntypedMetadata> untypedMetadatas1 = new ArrayList<UntypedMetadata>();
+      
+      UntypedMetadata metadata1 = new UntypedMetadata();
+      metadata1.setLongCode(DATECREATION);
+      metadata1.setValue(DATE);
+      untypedMetadatas1.add(metadata1);
+      
+      document1.setUMetadatas(untypedMetadatas1);
+      UUID uuidDoc = UUID.fromString("21-3-1-131-121");
+      document1.setUuid(uuidDoc);
+      
+      listUntyp.add(document1);
+      
+      String requete = "_uuid:2131131121 dateCreation:[01012011 TO 01122011]";
+      List<String> listMetaDesired = new ArrayList<String>();
+      listMetaDesired.add(DATECREATION);
+      
+      // valeur attendu est listUntyp via andReturn
+      EasyMock.expect(documentService.search(requete, listMetaDesired)).andReturn(listUntyp);
+      // permet de sauvegarder l'enregistrement
+      EasyMock.replay(documentService);
+      
+      Recherche request = createSearchType("src/test/resources/recherche/recherche_success_03.xml");
+      
+      // recuperer le type de reponse de la recherche
+      RechercheResponseType response = skeleton.rechercheSecure(request).getRechercheResponse();
+      
+      ResultatRechercheType[] resultats = response.getResultats().getResultat();
+      
+      Assert.assertEquals(NB_MD_INATTENDU, 1, resultats.length);
+      
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
+      
+      expectedMetadatas.put(DATECREATION, DATE);
+      
+      assertMetadata(resultats[0].getMetadonnees().getMetadonnee()[0], expectedMetadatas);
+      
+      Assert.assertTrue(MD_ATTENDU, expectedMetadatas.isEmpty());
+      
+   }
+
+   
+   /**
+    * Test avec liste meta donnees desiree vide.
+    * Logiquement cette liste est remplie par defaut par les metadonnees consultables.
+    */
+   @Test
+   public void searchSuccesMetadataVide() throws IOException, SAESearchServiceEx, MetaDataUnauthorizedToSearchEx, 
+                                                 MetaDataUnauthorizedToConsultEx, UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, 
+                                                 SyntaxLuceneEx {
+      
+      UntypedDocument document1 = new UntypedDocument();
+      
+      List<UntypedDocument> listUntyp = new ArrayList<UntypedDocument>();
+      List<UntypedMetadata> untypedMetadatas1 = new ArrayList<UntypedMetadata>();
+      
+      UntypedMetadata metadata1 = new UntypedMetadata();
+      metadata1.setLongCode(DATECREATION);
+      metadata1.setValue(DATE);
+      untypedMetadatas1.add(metadata1);
+      
+      document1.setUMetadatas(untypedMetadatas1);
+      UUID uuidDoc = UUID.fromString("21-3-1-131-121");
+      document1.setUuid(uuidDoc);
+      
+      listUntyp.add(document1);
+      
+      String requete = "_uuid:2131131121 dateCreation:[01012011 TO 01122011]";
+      List<String> listMetaDesired = new ArrayList<String>();
+      
+      // valeur attendu est listUntyp via andReturn
+      EasyMock.expect(documentService.search(requete, listMetaDesired)).andReturn(listUntyp);
+      // permet de sauvegarder l'enregistrement
+      EasyMock.replay(documentService);
+      
+      Recherche request = createSearchType("src/test/resources/recherche/recherche_success_04.xml");
+      
+      // recuperer le type de reponse de la recherche
+      RechercheResponseType response = skeleton.rechercheSecure(request).getRechercheResponse();
+      
+      ResultatRechercheType[] resultats = response.getResultats().getResultat();
+      
+      Assert.assertEquals(NB_MD_INATTENDU, 1, resultats.length);
+      
+      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
+      
+      expectedMetadatas.put(DATECREATION, DATE);
+      
+      assertMetadata(resultats[0].getMetadonnees().getMetadonnee()[0], expectedMetadatas);
+      
+      Assert.assertTrue(MD_ATTENDU, expectedMetadatas.isEmpty());
+     
+   }
+   
+   
+   
+   /**
+    * @return : saeServiceSkeleton
+    */
+   public final SaeServiceSkeleton getSaeServiceSkeleton() {
+      return skeleton;
+   }
+
+   /**
+    * @param saeServiceSkeleton
+    *           : saeServiceSkeleton
+    */
+   public final void setSaeServiceSkeleton(SaeServiceSkeleton saeSkeleton) {
+      this.skeleton = saeSkeleton;
+   }
+
+
 }
