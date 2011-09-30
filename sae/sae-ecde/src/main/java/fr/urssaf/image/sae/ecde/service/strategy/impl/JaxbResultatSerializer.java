@@ -8,6 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.bo.model.MetadataError;
 import fr.urssaf.image.sae.bo.model.SAEError;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocumentOnError;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
@@ -85,8 +86,8 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
      
       for (UntypedDocumentOnError untypedDocumentOnError : untypedDError) {
          // affectations des erreurs
-         List<SAEError> saeErrors = untypedDocumentOnError.getErrors();
-         ListeErreurType erreursType = convertSaeErrors(saeErrors);
+         List<MetadataError> metadataErrors = untypedDocumentOnError.getErrors();
+         ListeErreurType erreursType = convertSaeErrors(metadataErrors);
          nonIntegratedDoc.setErreurs(erreursType);
          nonIntegratedDoc.setObjetNumerique(affectObjetNumToUntypedDoc(untypedDocumentOnError));
          nonIntegratedDocs.getNonIntegratedDocument().add(nonIntegratedDoc);
@@ -95,10 +96,10 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
       return nonIntegratedDocs;
    }
    // convertion des SAEErrors en ErreurType
-   private ListeErreurType convertSaeErrors(List<SAEError> saeErrors) {
+   private ListeErreurType convertSaeErrors(List<MetadataError> metadataErrors) {
       ListeErreurType erreursType = new ListeErreurType();
       ErreurType erreur = new ErreurType();
-      for (SAEError saeError : saeErrors) {
+      for (SAEError saeError : metadataErrors) {
          erreur.setCode(saeError.getCode());
          erreur.setLibelle(saeError.getMessage());
          erreursType.getErreur().add(erreur);

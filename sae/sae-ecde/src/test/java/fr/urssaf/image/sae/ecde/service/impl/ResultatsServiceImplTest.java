@@ -17,7 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.urssaf.image.sae.bo.model.SAEError;
+import fr.urssaf.image.sae.bo.model.MetadataError;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocumentOnError;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
@@ -126,14 +126,14 @@ public class ResultatsServiceImplTest {
       metadatas.add(metadata);
       metadatas.add(metadata2);
       
-      SAEError saeError = new SAEError("testError", "doc1 en error");
-      List<SAEError> err = new ArrayList<SAEError>();
-      err.add(saeError);
+      MetadataError error = new MetadataError("testError", "doc1 en error","");
+      List<MetadataError> err = new ArrayList<MetadataError>();
+      err.add(error);
       
-      UntypedDocumentOnError error = new UntypedDocumentOnError(content, metadatas, err);
-      error.setFilePath(somCopy1.getAbsolutePath());
+      UntypedDocumentOnError uError = new UntypedDocumentOnError(content, metadatas, err);
+      uError.setFilePath(somCopy1.getAbsolutePath());
       List<UntypedDocumentOnError> listError = new ArrayList<UntypedDocumentOnError>();
-      listError.add(error);
+      listError.add(uError);
       
       
       resultat.setNonIntegratedDocuments(listError);
@@ -160,18 +160,18 @@ public class ResultatsServiceImplTest {
       List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
       metadatas.add(metadata);
       metadatas.add(metadata2);
+      MetadataError error = new MetadataError("testError", "doc2 en error","");
+      List<MetadataError> err = new ArrayList<MetadataError>();
+      err.add(error);
       
-      SAEError saeError = new SAEError("testError", "doc1 en error");
-      List<SAEError> err = new ArrayList<SAEError>();
-      err.add(saeError);
+      MetadataError error2 = new MetadataError("testError2", "doc1 en error","");
       
-      SAEError saeError2 = new SAEError("testError2", "doc2 en error");
-      err.add(saeError2);
+      err.add(error2);
       
-      UntypedDocumentOnError error = new UntypedDocumentOnError(content, metadatas, err);
-      error.setFilePath(somCopy1.getAbsolutePath());
+      UntypedDocumentOnError uError = new UntypedDocumentOnError(content, metadatas, err);
+      uError.setFilePath(somCopy1.getAbsolutePath());
       List<UntypedDocumentOnError> listError = new ArrayList<UntypedDocumentOnError>();
-      listError.add(error);
+      listError.add(uError);
       
       
       resultat.setNonIntegratedDocuments(listError);
