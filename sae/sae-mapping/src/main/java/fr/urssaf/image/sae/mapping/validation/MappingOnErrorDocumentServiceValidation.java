@@ -30,17 +30,21 @@ public class MappingOnErrorDocumentServiceValidation {
 	@Before(value = "execution(fr.urssaf.image.sae.bo.model.untyped.UntypedDocumentOnError  fr.urssaf.image.sae.mapping.services.MappingDocumentOnErrorService.saeDocumentOnErrorToUntypedDocumentOnError(..)) && args(saeDocOnError)")
 	public final void saeDocumentOnErrorToUntypedDocumentOnErrorValidation(
 			final SAEDocumentOnError saeDocOnError) {
-		Validate.notNull(saeDocOnError, MappingMessageHandler.getMessage(
-				"mapping.document.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(saeDocOnError.getErrors(), MappingMessageHandler.getMessage(
-				"mapping.document.errors.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(saeDocOnError.getMetadatas(), MappingMessageHandler.getMessage(
-				"mapping.document.metadata.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(saeDocOnError.getContent(), MappingMessageHandler.getMessage(
-				"mapping.document.content.required", SAEDocumentOnError.class.getName()));
-		
+		Validate.notNull(saeDocOnError,
+				MappingMessageHandler.getMessage("mapping.document.required",
+						SAEDocumentOnError.class.getName()));
+		Validate.notNull(saeDocOnError.getErrors(), MappingMessageHandler
+				.getMessage("mapping.document.errors.required",
+						SAEDocumentOnError.class.getName()));
+		Validate.notNull(saeDocOnError.getMetadatas(), MappingMessageHandler
+				.getMessage("mapping.document.metadata.required",
+						SAEDocumentOnError.class.getName()));
+		Validate.notNull(saeDocOnError.getContent(), MappingMessageHandler
+				.getMessage("mapping.document.content.required",
+						SAEDocumentOnError.class.getName()));
+
 	}
-	
+
 	/**
 	 * 
 	 * Valide l'argument de la méthode
@@ -53,19 +57,10 @@ public class MappingOnErrorDocumentServiceValidation {
 	@Before(value = "execution(fr.urssaf.image.sae.bo.model.bo.SAEDocumentOnError  fr.urssaf.image.sae.mapping.services.MappingDocumentOnErrorService.storageDocumentOnErrorToSaeDocumentOnError(..)) && args(storageOnError)")
 	public final void storageDocumentOnErrorToSaeDocumentOnErrorErrorValidation(
 			final StorageDocumentOnError storageOnError) {
-		Validate.notNull(storageOnError, MappingMessageHandler.getMessage(
-				"mapping.document.required", StorageDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getCodeError(), MappingMessageHandler.getMessage(
-				"mapping.document.errors.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getMessageError(), MappingMessageHandler.getMessage(
-				"mapping.document.message.error.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getMetadatas(), MappingMessageHandler.getMessage(
-				"mapping.document.metadata.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getContent(), MappingMessageHandler.getMessage(
-				"mapping.document.content.required", SAEDocumentOnError.class.getName()));
-		
+		validateStorageDocumentOnError(storageOnError);
+
 	}
-	
+
 	/**
 	 * 
 	 * Valide l'argument de la méthode
@@ -78,16 +73,33 @@ public class MappingOnErrorDocumentServiceValidation {
 	@Before(value = "execution(fr.urssaf.image.sae.bo.model.untyped.UntypedDocumentOnError  fr.urssaf.image.sae.mapping.services.MappingDocumentOnErrorService.storageDocumentOnErrorToUntypedDocumentOnError(..)) && args(storageOnError)")
 	public final void storageDocumentOnErrorToUntypedDocumentOnErrorValidation(
 			final StorageDocumentOnError storageOnError) {
+		validateStorageDocumentOnError(storageOnError);
+
+	}
+
+	/**
+	 * Permet de valider le paramètre d'entrée
+	 * 
+	 * @param storageOnError
+	 *            : Le document de stockage en erreur.
+	 */
+	private void validateStorageDocumentOnError(
+			final StorageDocumentOnError storageOnError) {
 		Validate.notNull(storageOnError, MappingMessageHandler.getMessage(
-				"mapping.document.required", StorageDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getCodeError(), MappingMessageHandler.getMessage(
-				"mapping.document.errors.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getMessageError(), MappingMessageHandler.getMessage(
-				"mapping.document.message.error.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getMetadatas(), MappingMessageHandler.getMessage(
-				"mapping.document.metadata.required", SAEDocumentOnError.class.getName()));
-		Validate.notNull(storageOnError.getContent(), MappingMessageHandler.getMessage(
-				"mapping.document.content.required", SAEDocumentOnError.class.getName()));
-		
+				"mapping.document.required",
+				StorageDocumentOnError.class.getName()));
+		Validate.notNull(storageOnError.getCodeError(), MappingMessageHandler
+				.getMessage("mapping.document.errors.required",
+						SAEDocumentOnError.class.getName()));
+		Validate.notNull(storageOnError.getMessageError(),
+				MappingMessageHandler.getMessage(
+						"mapping.document.message.error.required",
+						SAEDocumentOnError.class.getName()));
+		Validate.notNull(storageOnError.getMetadatas(), MappingMessageHandler
+				.getMessage("mapping.document.metadata.required",
+						SAEDocumentOnError.class.getName()));
+		Validate.notNull(storageOnError.getContent(), MappingMessageHandler
+				.getMessage("mapping.document.content.required",
+						SAEDocumentOnError.class.getName()));
 	}
 }
