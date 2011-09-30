@@ -77,8 +77,7 @@ public final class MappingDataProviderUtils {
 	 */
 	private static MappingMockMetadatas getMetadataFormTestFile(final File xmlFile)
 			throws FileNotFoundException {
-		return XStreamHelper.parse(xmlFile, Constants.ENCODING,
-				MappingMockMetadatas.class, buildReadingXStream(MappingMockMetadatas.class));
+		return XStreamHelper.parse(xmlFile, Constants.ENCODING,	MappingMockMetadatas.class, buildReadingXStream(MappingMockMetadatas.class));
 	}
 
 	/**
