@@ -1,54 +1,60 @@
 package fr.urssaf.image.sae.storage.dfce.model;
 
+import com.docubase.dfce.core.utils.FieldName;
+
 /**
- * Énumération contenant la listes des codes courts des métadonnées techniques
- * considéré comme attributs.<br/>
- * Ces métadonnées sont à exclure des la liste des métadonnées du
- * {@link SAEDocument}.
+ * Énumération contenant la listes des couples (code long ,code court) des
+ * métadonnées gérées par DFCE.
+ * 
  * 
  * @author akenore
  * 
  */
 public enum StorageTechnicalMetadatas {
-	// Date creation
-	DATECREATION("DateCreation", "_creationDate"),
 	// Titre du document
-	TITRE("Titre", "_titre"),
-	// type
-	TYPE("type", "_type"),
-	// Le type hash
-	TYPEHASH("TypeHash", "version.1.digest.alogorithm"),
-	// Le hash
-	HASH("Hash", "version.1.digest"),
-	// referenceUUID
-	REFERENCEUUID("referenceUUID", "version.1.virtual.ref.uuid"),
-	// DateArchivage
-	DATEARCHIVE("DateArchivage", "_archivageDate"),
-	// currentVersionNumber
-	CURRENTVERSIONNUMBER("currentVersionNumber", "_versionNb"),
-	// version number
-	VERSIONNUMBER("versionNumber", "version.1"),
-	// startPage
-	STARTPAGE("startPage", "version.1.virtual.start.page"),
-	// endPage
-	ENDPAGE("endPage", "version.1.virtual.end.page"),
-	// ObjectType
-	OBJECTTYPE("ObjectType", "OTY"),
-	// Gel
-	GEL("Gel", "GEL"),
+	TITRE("Titre", FieldName.SM_TITLE.toString()),
+	// Date de création du document
+	DATE_CREATION("DateCreation", FieldName.SM_CREATION_DATE.toString()),
+	// Le type du document c'est à dire le code RND
+	TYPE("CodeRND", FieldName.SM_DOCUMENT_TYPE.toString()),
+	// Durée de conservation
+	DUREE_CONSERVATION("DureeConservation", "dco"),
+	// Date de début de conservation 
+	DATE_DEBUT_CONSERVATION("DateDebutConservation",
+			FieldName.SM_LIFE_CYCLE_REFERENCE_DATE.toString()),
+			
+	// Date de fin de conservation
+	DATE_FIN_CONSERVATION("DateFinConservation", ""),
+	// Gel du document
+	GEL("Gel", "gel"),
 	// TracabilitePostArchivage
-	TRACABILITEPOSTARCHIVAGE("TracabilitePostArchivage", "TOA"),
+	TRACABILITE_POST_ARCHIVAGE("TracabilitePostArchivage", "toa"),
+	// Le hash
+	HASH("Hash", FieldName.SM_DIGEST.toString()),
+	// Le type hash
+	TYPE_HASH("TypeHash", FieldName.SM_DIGEST_ALGORITHM.toString()),
+	// NomFichier
+	NOM_FICHIER("NomFichier", "nfi"),
 	// TailleFichier
-	TAILLEFICHIER("TailleFichier", "version.1.size"),
-	// DureeConservation
-	DUREECONSERVATION("DureeConservation", "DCO"),
-	//NomFichier 
-	NOMFICHIER("NomFichier","NFI"),
-	//DateModification
-	DATEMODIFICATION("DateModification" ,"DMO"),
-	// pas de valeur
+	TAILLE_FICHIER("TailleFichier", FieldName.SM_SIZE.toString()),
+	// L'extension du fichier.
+	EXTENSION_FICHIER("ExtensionFichierDFCE", FieldName.SM_EXTENSION
+			.toString()),
+	// ObjectType
+	OBJECT_TYPE("ObjectType", FieldName.SM_VIRTUAL.toString()),
+	// startPage
+	START_PAGE("StartPage", FieldName.SM_START_PAGE.toString()),
+	// endPage
+	END_PAGE("EndPage", FieldName.SM_END_PAGE.toString()),
+	// DateArchivage
+	DATE_ARCHIVE("DateArchivage", FieldName.SM_ARCHIVAGE_DATE.toString()),
+	// version number
+	VERSION_NUMBER("VersionNumber", FieldName.SM_VERSION.toString()),
+	// DateModification
+	DATE_MODIFICATION("DateModification", FieldName.SM_MODIFICATION_DATE
+			.toString()),
+	// Pas de valeur
 	NOVALUE("", "");
-
 	// Le code court de la métadonnée.
 	private String shortCode;
 

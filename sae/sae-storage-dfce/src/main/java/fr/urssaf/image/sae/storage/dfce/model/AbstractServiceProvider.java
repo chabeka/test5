@@ -1,6 +1,9 @@
 package fr.urssaf.image.sae.storage.dfce.model;
 
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 
 /**
  * Classe abstraite contient les attributs communs à toutes les implementations
@@ -16,47 +19,25 @@ import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
  * 
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
-public abstract class AbstractServiceProvider {
+public abstract class AbstractServiceProvider extends AbstractServices {
+	@SuppressWarnings("PMD.LongVariable")
+	@Autowired
+	@Qualifier("dfceServicesManager")
+	private DFCEServicesManager dfceServicesManager;
+	/**
+	 * 
+	 * @param dfceServices
+	 *            : Les services DFCE
+	 */
+	public final void setDfceServicesManager(final DFCEServicesManager dfceServices) {
+		this.dfceServicesManager = dfceServices;
+	}
 
-   @SuppressWarnings("PMD.LongVariable")
-   private StorageConnectionParameter storageConnectionParameter;
-
-   /**
-    * 
-    * @return  Les paramètres de connexion à la base de stockage
-    */
-   public final StorageConnectionParameter getStorageConnectionParameter() {
-      return storageConnectionParameter;
-   }
-
-   /**
-    * 
-    * @param storageConnectionParameter
-    *           : Initialise les paramètres de connexion à la base de stockage
-    */
-   @SuppressWarnings("PMD.LongVariable")
-   public final void setStorageConnectionParameter(
-         final StorageConnectionParameter storageConnectionParameter) {
-      this.storageConnectionParameter = storageConnectionParameter;
-   }
-
-   /**
-    * Construit un {@link AbstractServiceProvider}
-    * 
-    * @param storageConnectionParameter
-    *           : Les paramètres de connexion à la base de stockage
-    */
-   @SuppressWarnings("PMD.LongVariable")
-   public AbstractServiceProvider(
-         final StorageConnectionParameter storageConnectionParameter) {
-      this.storageConnectionParameter = storageConnectionParameter;
-   }
-
-   /**
-    * Construit par défaut un {@link AbstractServiceProvider}
-    */
-   public AbstractServiceProvider() {
-      // Ici on ne fait rien
-   }
-
+	/**
+	 * 
+	 * @return Les services DFCE
+	 */
+	public final DFCEServicesManager getDfceServicesManager() {
+		return dfceServicesManager;
+	}
 }

@@ -2,7 +2,8 @@ package fr.urssaf.image.sae.storage.dfce.model;
 
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.service.ServiceProvider;
-import fr.urssaf.image.sae.storage.model.connection.StorageBase;
+import org.springframework.beans.factory.annotation.Autowired;
+import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 
 /**
  * Classe abstraite contenant les attributs communs de toutes les
@@ -23,54 +24,55 @@ import fr.urssaf.image.sae.storage.model.connection.StorageBase;
  * </ul>
  * 
  * @author akenore,rhofir.
- *
+ * 
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractServices {
 
-   private StorageBase storageBase;
+	
+	private ServiceProvider dfceService;
 
-   /**
-    * Initialise la base de stockage
-    * 
-    * @param storageBase
-    *           : La base de stockage
-    */
-   public final void setStorageBase(final StorageBase storageBase) {
-      this.storageBase = storageBase;
-   }
+	@Autowired
+	private StorageConnectionParameter cnxParameters;
+	/**
+	 * @param dfceService
+	 *            : Les services DFCE.
+	 */
+	public final void setDfceService(final ServiceProvider dfceService) {
+		this.dfceService = dfceService;
+	}
 
-   /**
-    * 
-    * @return Retourne la base de stockage.
-    */
-   public final StorageBase getStorageBase() {
-      return storageBase;
-   }
+	/**
+	 * @return Les services DFCE.
+	 */
+	public final ServiceProvider getDfceService() {
+		return dfceService;
+	}
 
-   /**
-    * Construit un {@link AbstractServices}
-    * 
-    * @param storageBase
-    *           : La base de stockage
-    */
-   public AbstractServices(final StorageBase storageBase) {
-      this.storageBase = storageBase;
-   }
+	
 
-   /**
-    * Construit par défaut un {@link AbstractServices}
-    */
-   public AbstractServices() {
-      // ici on fait rien
-   }
+	/**
+	 * @return Les paramètres de connection
+	 */
+	public final StorageConnectionParameter getCnxParameters() {
+		return cnxParameters;
+	}
 
-   /**
-    * @return Une occurrence de la base DFCE.
-    */
-   public final Base getBaseDFCE() {
-      return ServiceProvider.getBaseAdministrationService().getBase(
-            storageBase.getBaseName());
-   }
+	/**
+	 * @param cnxParameters
+	 *            Les paramètres de connection
+	 */
+	public final void setCnxParameters(
+			final StorageConnectionParameter cnxParameters) {
+		this.cnxParameters = cnxParameters;
+	}
+	
+	 /**
+	    * @return Une occurrence de la base DFCE.
+	    */
+	   public final Base getBaseDFCE() {
+	      return dfceService.getBaseAdministrationService().getBase(
+	    		  cnxParameters.getStorageBase().getBaseName());
+	   }
 
 }
