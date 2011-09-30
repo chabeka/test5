@@ -79,7 +79,7 @@ public class MappingDocumentOnErrorServiceTest extends AbstractMappingService {
 			if (metadata.getLongCode().equals("DateCreation")) {
 				Assert.assertTrue(metadata.getValue().equals("2011-06-03"));
 			}
-			if (metadata.getLongCode().equals("versionNumber")) {
+			if (metadata.getLongCode().equals("VersionNumber")) {
 				Assert.assertTrue(metadata.getValue().equals("120"));
 			}
 			if (metadata.getLongCode().equals("CodeRND")) {

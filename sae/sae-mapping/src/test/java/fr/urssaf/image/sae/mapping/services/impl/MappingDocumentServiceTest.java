@@ -97,7 +97,7 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 			if (metadata.getLongCode().equals("DateCreation")) {
 				Assert.assertTrue(metadata.getValue().equals("2011-06-03"));
 			}
-			if (metadata.getLongCode().equals("versionNumber")) {
+			if (metadata.getLongCode().equals("VersionNumber")) {
 				Assert.assertTrue(metadata.getValue().equals("120"));
 			}
 			if (metadata.getLongCode().equals("CodeRND")) {
@@ -130,7 +130,7 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 				.saeDocumentToStorageDocument(saeDoc);
 		Assert.assertNotNull(storageDoc);
 		Assert.assertNotNull(storageDoc.getMetadatas());
-		Assert.assertTrue(storageDoc.getMetadatas().size() == 6);
+		Assert.assertTrue(storageDoc.getMetadatas().size() == 5);
 
 	}
 	
@@ -158,16 +158,16 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 		saeDoc = getMappingService().storageDocumentToSaeDocument(storageDoc);
 		Assert.assertNotNull(saeDoc);
 		Assert.assertNotNull(saeDoc.getMetadatas());
-		Assert.assertTrue(saeDoc.getMetadatas().size() == 6);
+		Assert.assertTrue(saeDoc.getMetadatas().size() == 5);
 		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc
 				.getMetadatas())) {
 			if (metadata.getLongCode().equals("DateArchivage")) {
 				Assert.assertTrue(metadata.getValue().getClass()
 						.getSimpleName().equals("Date"));
 			}
-			if (metadata.getLongCode().equals("versionNumber")) {
+			if (metadata.getLongCode().equals("VersionNumber")) {
 				Assert.assertTrue(metadata.getValue().getClass()
-						.getSimpleName().equals("Integer"));
+						.getSimpleName().equals("String"));
 			}
 			if (metadata.getLongCode().equals("CodeRND")) {
 				Assert.assertTrue(metadata.getValue().getClass()
@@ -201,13 +201,13 @@ public class MappingDocumentServiceTest extends AbstractMappingService {
 				storageDoc);
 		Assert.assertNotNull(untyped);
 		Assert.assertNotNull(untyped.getUMetadatas());
-		Assert.assertTrue(untyped.getUMetadatas().size() == 6);
+		Assert.assertTrue(untyped.getUMetadatas().size() == 5);
 		for (UntypedMetadata metadata : Utils.nullSafeIterable(untyped
 				.getUMetadatas())) {
 			if (metadata.getLongCode().equals("DateArchivage")) {
 				Assert.assertTrue(metadata.getValue().equals("2011-06-03"));
 			}
-			if (metadata.getLongCode().equals("versionNumber")) {
+			if (metadata.getLongCode().equals("VersionNumber")) {
 				Assert.assertTrue(metadata.getValue().equals("120"));
 			}
 			if (metadata.getLongCode().equals("CodeRND")) {
