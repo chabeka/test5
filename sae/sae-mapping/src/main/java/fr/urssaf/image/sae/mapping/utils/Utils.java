@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.Map;
 
 import fr.urssaf.image.sae.bo.model.SAEMetadataType;
-import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.mapping.constants.Constants;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 
