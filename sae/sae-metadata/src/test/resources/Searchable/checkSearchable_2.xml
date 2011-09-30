@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadatas>
-	<metadata>
-		<longCode>referenceUUID</longCode>
-		<shortCode>_referenceUUID</shortCode>
+<metadata>
+		<longCode>StartPage</longCode>
+		<shortCode>sm_start_page</shortCode>
 	</metadata>
 	<metadata>
 		<longCode>IdTraitementMasse</longCode>
-		<shortCode>ITM</shortCode>
+		<shortCode>itm</shortCode>
 	</metadata>
 	<metadata>
 		<longCode>NumeroIntControle</longCode>
-		<shortCode>NIC</shortCode>
-	</metadata>
-	<metadata>
-		<longCode>type</longCode>
-		<shortCode>_type</shortCode>
+		<shortCode>nic</shortCode>
 	</metadata>
 </metadatas>

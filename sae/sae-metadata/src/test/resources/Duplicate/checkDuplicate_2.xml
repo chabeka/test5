@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadatas>
 	<metadata>
-		<longCode>referenceUUID</longCode>
-		<shortCode>_referenceUUID</shortCode>
-	</metadata>
-	<metadata>
 		<longCode>IdTraitementMasse</longCode>
-		<shortCode>ITM</shortCode>
+		<shortCode>itm</shortCode>
 	</metadata>
 	<metadata>
 		<longCode>NumeroIntControle</longCode>
-		<shortCode>NIC</shortCode>
+		<shortCode>nic</shortCode>
 	</metadata>
 	<metadata>
 		<longCode>IdTraitementMasse</longCode>
-		<shortCode>ITM</shortCode>
+		<shortCode>itm</shortCode>
 	</metadata>
 	<metadata>
 		<longCode>NumeroIntControle</longCode>
-		<shortCode>NIC</shortCode>
+		<shortCode>nic</shortCode>
 	</metadata>
 </metadatas>

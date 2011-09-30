@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <referentiel>
   <metaDataReference>
-    <shortCode>_titre</shortCode>
+    <shortCode>sm_title</shortCode>
     <longCode>Titre</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -209,7 +209,7 @@
     <description>Numéro de structure V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>NRE </shortCode>
+    <shortCode>nre </shortCode>
     <longCode>NumeroRecours</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -241,7 +241,7 @@
     <description>Numéro interne contrôle</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>_creationDate</shortCode>
+    <shortCode>sm_creation_date</shortCode>
     <longCode>DateCreation</longCode>
     <type>Date</type>
     <requiredForArchival>true</requiredForArchival>
@@ -353,7 +353,7 @@
     <description>Code site du lieu d'acquisition dans le cas d'une numérisation Cf. Liste des organismes</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>rnd</shortCode>
+    <shortCode>sm_document_type</shortCode>
     <longCode>CodeRND</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -417,7 +417,7 @@
     <description>Code de l'activité RFP</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>dco</shortCode>
+    <shortCode>DCO</shortCode>
     <longCode>DureeConservation</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
@@ -433,7 +433,7 @@
     <description>Durée de conservation de l'archive au terme duquel l'archive n'est plus accessible en jours</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>ddc</shortCode>
+    <shortCode>sm_life_cycle_reference_date</shortCode>
     <longCode>DateDebutConservation</longCode>
     <type>Date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -449,7 +449,7 @@
     <description>Date de début de la durée de conservation.</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>dfc</shortCode>
+    <shortCode>sm_final_date</shortCode>
     <longCode>DateFinConservation</longCode>
     <type>date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -513,7 +513,7 @@
     <description>Traçabilité contenue dans le système d'archive, lié à la vie de l'archive</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>version.1.digest</shortCode>
+    <shortCode>sm_digest</shortCode>
     <longCode>Hash</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -529,7 +529,7 @@
     <description>Hash du fichier</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>version.1.digest.alogorithm</shortCode>
+    <shortCode>sm_digest_alogorithm</shortCode>
     <longCode>TypeHash</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -593,7 +593,7 @@
     <description>Identifiant PRONOM (Cf. Référentiel PRONOM)</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>version.1.size</shortCode>
+    <shortCode>sm_size</shortCode>
     <longCode>TailleFichier</longCode>
     <type>Long</type>
     <requiredForArchival>false</requiredForArchival>
@@ -609,8 +609,8 @@
     <description>Taille du fichier en ko</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>_type</shortCode>
-    <longCode>type</longCode>
+    <shortCode>sm_extension</shortCode>
+    <longCode>ExtensionFichier</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>true</requiredForStorage>
@@ -621,7 +621,7 @@
     <searchable>false</searchable>
     <internal>true</internal>
     <archivable>false</archivable>
-    <label>type (DFCE)</label>
+    <label>Extension (DFCE)</label>
     <description>Extension du fichier sur 3 caractères</description>
   </metaDataReference>
   <metaDataReference>
@@ -657,7 +657,7 @@
     <description>Identifiant permettant de gérer les traitements de masse pour l'application cliente</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>oty</shortCode>
+    <shortCode>sm_virtual</shortCode>
     <longCode>ObjectType</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -689,8 +689,8 @@
     <description>Pour un document virtuel, il s'agit de l'uuid du document container</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>version.1.virtual.start.page</shortCode>
-    <longCode>startPage</longCode>
+    <shortCode>sm_start_page</shortCode>
+    <longCode>StartPage</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>false</requiredForStorage>
@@ -705,8 +705,8 @@
     <description>Pour un document virtuel, il s'agit de la page de départ dans le document container</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>version.1.virtual.end.page</shortCode>
-    <longCode>endPage</longCode>
+    <shortCode>sm_end_page</shortCode>
+    <longCode>EndPage</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>false</requiredForStorage>
@@ -721,7 +721,7 @@
     <description>Pour un document virtuel, il s'agit de la page de fin dans le document container</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>CSE</shortCode>
+    <shortCode>cse</shortCode>
     <longCode>ContratDeService</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
@@ -737,7 +737,7 @@
     <description>Identifiant du contrat de service utilisé pour archiver le document</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>_archivageDate</shortCode>
+    <shortCode>sm_archivage_date</shortCode>
     <longCode>DateArchivage</longCode>
     <type>Date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -753,25 +753,9 @@
     <description>Date à laquelle le document a été archivé dans le SAE</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>_ versionNb</shortCode>
-    <longCode>currentVersionNumber</longCode>
-    <type>Integer</type>
-    <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>false</requiredForStorage>
-    <length>-1</length>
-    <pattern>   </pattern>
-    <consultable>false</consultable>
-    <defaultConsultable>false</defaultConsultable>
-    <searchable>false</searchable>
-    <internal>true</internal>
-    <archivable>false</archivable>
-    <label>Numéro de la version courante</label>
-    <description>Numéro de la version actuelle du document</description>
-  </metaDataReference>
-  <metaDataReference>
-    <shortCode>version.1</shortCode>
-    <longCode>versionNumber</longCode>
-    <type>Integer</type>
+    <shortCode>sm_version</shortCode>
+    <longCode>VersionNumber</longCode>
+    <type>String</type>
     <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>false</requiredForStorage>
     <length>-1</length>
@@ -785,7 +769,7 @@
     <description>Numéro de la version consultée du document</description>
   </metaDataReference>
  <metaDataReference>
-    <shortCode>dmo</shortCode>
+    <shortCode>sm_modification_date</shortCode>
     <longCode>DateModification</longCode>
     <type>Date</type>
     <requiredForArchival>false</requiredForArchival>

@@ -2,17 +2,17 @@
 <metadatas>
 	<metadata>
 		<longCode>CodeActivite</longCode>
-		<shortCode>ATC</shortCode>
+		<shortCode>atc</shortCode>
 		<value>1</value>
 	</metadata>
 	<metadata>
 		<longCode>CodeRND</longCode>
-		<shortCode>RND</shortCode>
+		<shortCode>sm_document_type</shortCode>
 		<value>1.1.1.1.1</value>
 	</metadata>
 	<metadata>
-		<longCode>type</longCode>
-		<shortCode>_type</shortCode>
-		<value>PDF</value>
+		<longCode>VersionRND</longCode>
+		<shortCode>vrn</shortCode>
+		<value>11.2</value>
 	</metadata>
 </metadatas>

@@ -30,7 +30,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getAllMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO().getAllMetadataReferences()
-				.size() == 50);
+				.size() == 49);
 	}
 
 	/**
@@ -191,9 +191,9 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	 */
 	@Test
 	public void getByShortCode() throws IOException, ReferentialException {
-		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("rnd") != null);
-		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("rnd")
-				.getShortCode().equalsIgnoreCase("rnd"));
+		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("sm_document_type") != null);
+		Assert.assertTrue(getMetadataReferenceDAO().getByShortCode("sm_document_type")
+				.getShortCode().equalsIgnoreCase("sm_document_type"));
 	}
 
 }
