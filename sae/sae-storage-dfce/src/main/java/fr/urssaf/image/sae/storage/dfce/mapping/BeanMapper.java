@@ -89,7 +89,6 @@ public final class BeanMapper {
 		return new StorageDocument(metaDatas);
 	}
 
-<<<<<<< .mine
 	/**
 	 * Construit la liste des {@link StorageMetadata} à partir de la liste des
 	 * {@link Criterion}.
@@ -142,66 +141,11 @@ public final class BeanMapper {
 								serviceDFCE));
 					}
 				}
-=======
-   /**
-    * Construit la liste des {@link StorageMetadata} à partir de la liste des
-    * {@link Criterion}.
-    * 
-    * @param document
-    *           : Le document DFCE.
-    * @param desiredMetaData
-    *           : La liste des métadonnées souhaitées.
-    * @return La liste des {@link StorageMetadata} à partir de la liste des
-    *         {@link Criterion}.
-    */
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-   private static List<StorageMetadata> storageMetaDatasFromCriterions(
-         final Document document, final List<StorageMetadata> desiredMetaData) {
-      final Set<StorageMetadata> metadatas = new HashSet<StorageMetadata>();
-      if (document != null) {
-         final List<Criterion> criterions = document.getAllCriterions();
-         // dans le cas de l'insertion d'un document
-         if (desiredMetaData == null) {
-            for (Criterion criterion : Utils.nullSafeIterable(criterions)) {
-               metadatas.add(new StorageMetadata(criterion.getCategoryName(),
-                     criterion.getWord()));
-            }
-         } else {
-            // Traitement pour filtrer sur la liste des métadonnées
-            // souhaitées.
-            for (StorageMetadata metadata : Utils
-                  .nullSafeIterable(desiredMetaData)) {
-               boolean found = false;
-               for (Criterion criterion : Utils.nullSafeIterable(criterions)) {
-                  if (criterion.getCategoryName().equalsIgnoreCase(
-                        metadata.getShortCode())) {
-                     metadatas.add(new StorageMetadata(metadata.getShortCode(),
-                           criterion.getWord()));
-                     found = true;
-                     break;
-                  }
-               }
-               // si les métadonnées ne sont pas dans DFCE on vérifie si
-               // ces
-               // métadonnées sont des métadonnées techniques sinon on les
-               // retourne avec la valeur vide
-               if (!found) {
-                  metadatas.add(completedMetadatas(document, metadata));
-               }
-            }
->>>>>>> .r1251
 
-<<<<<<< .mine
 			}
 		}
 		return new ArrayList<StorageMetadata>(metadatas);
 	}
-=======
-         }
-      }
-      return new ArrayList<StorageMetadata>(metadatas);
-   }
->>>>>>> .r1251
 
 	/**
 	 * @param shortCode
