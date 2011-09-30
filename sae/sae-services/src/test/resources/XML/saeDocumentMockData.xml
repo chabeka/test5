@@ -56,5 +56,9 @@
          <code>CodeOrganismeGestionnaire</code>
          <value>UR030</value>
       </metadata>
+      <metadata>
+         <code>ExtensionFichier</code>
+         <value>PDF</value>
+      </metadata>
    </metadatas>
 </document>

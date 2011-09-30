@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cassandra.thrift.Cassandra.system_add_column_family_args;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,9 @@ public class SAEEnrichmentMetadataServiceImpl implements
          saeMetadata.setLongCode(metadata.getLongCode());
          metadata = SAEMetatadaFinderUtils
                .metadtaFinder(metadata.getLongCode());
+         System.out.println(metadata);
          switch (metadata) {
+         
          case CODEACTIVITE:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
                   SAEArchivalMetadatas.CODEACTIVITE.getLongCode())
@@ -181,13 +184,13 @@ public class SAEEnrichmentMetadataServiceImpl implements
             saeMetadata.setValue("autonomous");
             saeDocument.getMetadatas().add(saeMetadata);
             break;
-         case TYPE:
-            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.TYPE.getLongCode()).getShortCode());
-            // FIXME attente de spécification.
-            saeMetadata.setValue("PDF");
-            saeDocument.getMetadatas().add(saeMetadata);
-            break;
+//         case TYPE:
+//            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+//                  SAEArchivalMetadatas.TYPE.getLongCode()).getShortCode());
+//            // FIXME attente de spécification.
+//            saeMetadata.setValue("PDF");
+//            saeDocument.getMetadatas().add(saeMetadata);
+//            break;
          case CONTRATDESERVICE:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
                   SAEArchivalMetadatas.CONTRATDESERVICE.getLongCode())

@@ -24,8 +24,8 @@ public enum SAEArchivalMetadatas {
    GEL("Gel"),
    // ObjectType
    OBJECTTYPE("ObjectType"),
-   // type
-   TYPE("type"),
+//   // type
+//   TYPE("type"),
    // ContratDeService
    CONTRATDESERVICE("ContratDeService"),
    // pas de valeur
