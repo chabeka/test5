@@ -15,16 +15,15 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
-import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
 import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
+import fr.urssaf.image.sae.storage.dfce.model.StorageTechnicalMetadatas;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
-import fr.urssaf.image.sae.storage.model.connection.StorageBase;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentOnError;
@@ -65,23 +64,6 @@ public class InsertionServiceImpl extends AbstractServices implements
 	}
 
 	/**
-	 * Construit un {@link InsertionServiceImpl}.
-	 * 
-	 * @param storageBase
-	 *            : La base de stockage
-	 */
-	public InsertionServiceImpl(final StorageBase storageBase) {
-		super(storageBase);
-	}
-
-	/**
-	 * Construit un {@link InsertionServiceImpl} par défaut.
-	 **/
-	public InsertionServiceImpl() {
-		super();
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * 
 	 * @throws InsertionServiceEx
@@ -99,7 +81,8 @@ public class InsertionServiceImpl extends AbstractServices implements
 		for (StorageDocument storageDocument : Utils
 				.nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
 			try {
-				storageDocument.setUuid(insertStorageDocument(storageDocument).getUuid());
+				storageDocument.setUuid(insertStorageDocument(storageDocument)
+						.getUuid());
 				storageDocDone.add(storageDocument);
 			} catch (InsertionServiceEx insertExcp) {
 				if (storageDocument != null) {
@@ -136,6 +119,7 @@ public class InsertionServiceImpl extends AbstractServices implements
 		for (StorageDocument strDocument : Utils
 				.nullSafeIterable(storageDocDone)) {
 			try {
+				deletionService.setDeletionServiceParameter(getDfceService());
 				deletionService.deleteStorageDocument(new UUIDCriteria(
 						strDocument.getUuid(), null));
 			} catch (DeletionServiceEx delSerEx) {
@@ -168,12 +152,18 @@ public class InsertionServiceImpl extends AbstractServices implements
 		try {
 			Document docDfce = BeanMapper.storageDocumentToDfceDocument(
 					getBaseDFCE(), storageDocument);
-			InputStream docContent = new ByteArrayInputStream(
+			final InputStream docContent = new ByteArrayInputStream(
 					storageDocument.getContent());
-			return BeanMapper
-					.dfceDocumentToStorageDocument(
-							ServiceProvider.getStoreService().storeDocument(
-									docDfce, docContent), null);
+			final String fileName = BeanMapper.findFileNameAndExtension(
+					storageDocument,
+					StorageTechnicalMetadatas.NOM_FICHIER.getShortCode().toString());
+			final String extension = BeanMapper.findFileNameAndExtension(
+					storageDocument,
+					StorageTechnicalMetadatas.EXTENSION_FICHIER.getShortCode().toString());
+			docDfce = getDfceService().getStoreService().storeDocument(docDfce,
+					fileName, extension, docContent);
+			return BeanMapper.dfceDocumentToStorageDocument(docDfce, null,
+					getDfceService());
 		} catch (TagControlException tagCtrlEx) {
 			throw new InsertionServiceEx(
 					StorageMessageHandler.getMessage(Constants.INS_CODE_ERROR),
@@ -188,10 +178,8 @@ public class InsertionServiceImpl extends AbstractServices implements
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setInsertionServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		setStorageBase(storageConnectionParameter.getStorageBase());
+	public final <T> void setInsertionServiceParameter(final T parameter) {
+		setDfceService((ServiceProvider) parameter);
 
 	}
 

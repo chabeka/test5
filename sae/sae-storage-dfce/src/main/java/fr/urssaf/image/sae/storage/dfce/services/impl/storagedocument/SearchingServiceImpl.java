@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
-import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
 import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
@@ -22,8 +22,6 @@ import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.exception.StorageException;
-import fr.urssaf.image.sae.storage.model.connection.StorageBase;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCriteria;
@@ -40,22 +38,7 @@ import fr.urssaf.image.sae.storage.services.storagedocument.SearchingService;
 @Qualifier("searchingService")
 public class SearchingServiceImpl extends AbstractServices implements
       SearchingService {
-   /**
-    * Construit un {@link SearchingServiceImpl }.
-    * 
-    * @param storageBase
-    *           : La base de stockage
-    */
-   public SearchingServiceImpl(final StorageBase storageBase) {
-      super(storageBase);
-   }
-
-   /**
-    * Construit un {@link SearchingServiceImpl } par défaut.
-    **/
-   public SearchingServiceImpl() {
-      super();
-   }
+  
 
    /**
     * {@inheritDoc}
@@ -64,15 +47,16 @@ public class SearchingServiceImpl extends AbstractServices implements
    @ServiceChecked
    public final StorageDocuments searchStorageDocumentByLuceneCriteria(
          final LuceneCriteria luceneCriteria) throws SearchingServiceEx {
-      List<StorageDocument> storageDocuments = new ArrayList<StorageDocument>();
+    final  List<StorageDocument> storageDocuments = new ArrayList<StorageDocument>();
       try {
-         final SearchResult searchResult = ServiceProvider.getSearchService()
+         final SearchResult searchResult = getDfceService().getSearchService()
                .search(luceneCriteria.getLuceneQuery(),
                      luceneCriteria.getLimit(), getBaseDFCE());
          for (Document document : Utils.nullSafeIterable(searchResult
                .getDocuments())) {
+        	
             storageDocuments.add(BeanMapper.dfceDocumentToStorageDocument(
-                  document, luceneCriteria.getDesiredStorageMetadatas()));
+                  document, luceneCriteria.getDesiredStorageMetadatas(),getDfceService()));
          }
       } catch (StorageException srcSerEx) {
          throw new SearchingServiceEx(StorageMessageHandler
@@ -102,14 +86,14 @@ public class SearchingServiceImpl extends AbstractServices implements
    public final StorageDocument searchStorageDocumentByUUIDCriteria(
          final UUIDCriteria uUIDCriteria) throws SearchingServiceEx {
       try {
-         Document docDfce = ServiceProvider.getSearchService()
+     final    Document docDfce = getDfceService().getSearchService()
                .getDocumentByUUID(getBaseDFCE(), uUIDCriteria.getUuid());
 
          StorageDocument storageDoc = null;
 
          if (docDfce != null) {
             storageDoc = BeanMapper.dfceDocumentToStorageDocument(docDfce,
-                  uUIDCriteria.getDesiredStorageMetadatas());
+                  uUIDCriteria.getDesiredStorageMetadatas(),getDfceService());
          }
 
          return storageDoc;
@@ -129,26 +113,18 @@ public class SearchingServiceImpl extends AbstractServices implements
       }
    }
 
-   /**
-    * {@inheritDoc}
-    */
-   @SuppressWarnings("PMD.LongVariable")
-   public final void setSearchingServiceParameter(
-         final StorageConnectionParameter storageConnectionParameter) {
-      setStorageBase(storageConnectionParameter.getStorageBase());
-   }
-
+  
    /**
     * {@inheritDoc}
     */
    @ServiceChecked
-   public final StorageDocument searchMetaDatasByUUIDCriteria(
+   public final StorageDocument searchMetaDatasByUUIDCriteria(final
          UUIDCriteria uuidCriteria) throws SearchingServiceEx {
       try {
-         Document docDfce = ServiceProvider.getSearchService()
+        final Document docDfce = getDfceService().getSearchService()
                .getDocumentByUUID(getBaseDFCE(), uuidCriteria.getUuid());
          return BeanMapper.dfceMetaDataToStorageDocument(docDfce, uuidCriteria
-               .getDesiredStorageMetadatas());
+               .getDesiredStorageMetadatas(),getDfceService());
       } catch (StorageException srcSerEx) {
          throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), srcSerEx.getMessage(),
@@ -163,5 +139,13 @@ public class SearchingServiceImpl extends AbstractServices implements
                except);
       }
    }
+
+   /**
+    * {@inheritDoc}
+    */
+public final <T> void setSearchingServiceParameter(final T parameter) {
+	setDfceService((ServiceProvider) parameter);
+	
+}
 
 }

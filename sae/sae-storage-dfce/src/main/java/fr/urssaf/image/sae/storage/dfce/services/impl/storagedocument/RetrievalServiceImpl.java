@@ -14,14 +14,12 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
-import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
 import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
-import fr.urssaf.image.sae.storage.model.connection.StorageBase;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
@@ -37,114 +35,99 @@ import fr.urssaf.image.sae.storage.services.storagedocument.SearchingService;
 @Service
 @Qualifier("retrievalService")
 public class RetrievalServiceImpl extends AbstractServices implements
-      RetrievalService {
-   @Autowired
-   @Qualifier("searchingService")
-   private SearchingService searchingService;
+		RetrievalService {
+	@Autowired
+	@Qualifier("searchingService")
+	private SearchingService searchingService;
 
-   /**
-    * Construit un {@link RetrievalServiceImpl }.
-    * 
-    * @param storageBase
-    *           : La base de stockage
-    */
-   public RetrievalServiceImpl(final StorageBase storageBase) {
-      super(storageBase);
-   }
 
-   /**
-    * Construit un {@link RetrievalServiceImpl } par défaut.
-    **/
-   public RetrievalServiceImpl() {
-      super();
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Loggable(LogLevel.TRACE)
+	@ServiceChecked
+	public final StorageDocument retrieveStorageDocumentByUUID(
+			final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+		try {
+			searchingService.setSearchingServiceParameter(getDfceService());
+			return searchingService
+					.searchStorageDocumentByUUIDCriteria(uUIDCriteria);
+		} catch (SearchingServiceEx srcSerEx) {
+			throw new RetrievalServiceEx(
+					StorageMessageHandler.getMessage(Constants.RTR_CODE_ERROR),
+					srcSerEx.getMessage(), srcSerEx);
+		} catch (Exception exc) {
+			throw new RetrievalServiceEx(
+					StorageMessageHandler.getMessage(Constants.RTR_CODE_ERROR),
+					exc.getMessage(), exc);
+		}
+	}
 
-   /**
-    * {@inheritDoc}
-    */
-   @Loggable(LogLevel.TRACE)
-   @ServiceChecked
-   public final StorageDocument retrieveStorageDocumentByUUID(
-         final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
-      try {
-         return searchingService
-               .searchStorageDocumentByUUIDCriteria(uUIDCriteria);
-      } catch (SearchingServiceEx srcSerEx) {
-         throw new RetrievalServiceEx(StorageMessageHandler
-               .getMessage(Constants.RTR_CODE_ERROR), srcSerEx.getMessage(),
-               srcSerEx);
-      } catch (Exception exc) {
-         throw new RetrievalServiceEx(StorageMessageHandler
-               .getMessage(Constants.RTR_CODE_ERROR), exc.getMessage(), exc);
-      }
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Loggable(LogLevel.TRACE)
+	@ServiceChecked
+	public final byte[] retrieveStorageDocumentContentByUUID(
+			final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+		try {
+			final Document docDfce = getDfceService().getSearchService()
+					.getDocumentByUUID(getBaseDFCE(), uUIDCriteria.getUuid());
+			final InputStream docContent = getDfceService().getStoreService()
+					.getDocumentFile(docDfce);
+			return IOUtils.toByteArray(docContent);
+		} catch (IOException except) {
+			throw new RetrievalServiceEx(
+					StorageMessageHandler.getMessage(Constants.RTR_CODE_ERROR),
+					except.getMessage(), except);
+		} catch (Exception except) {
+			throw new RetrievalServiceEx(
+					StorageMessageHandler.getMessage(Constants.SRH_CODE_ERROR),
+					except.getMessage(), except);
+		}
+	}
 
-   /**
-    * {@inheritDoc}
-    */
-   @Loggable(LogLevel.TRACE)
-   @ServiceChecked
-   public final byte[] retrieveStorageDocumentContentByUUID(
-         final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
-      try {
-         Document docDfce = ServiceProvider.getSearchService()
-               .getDocumentByUUID(getBaseDFCE(), uUIDCriteria.getUuid());
-         InputStream docContent = ServiceProvider.getStoreService()
-               .getDocumentFile(docDfce);
-         return IOUtils.toByteArray(docContent);
-      } catch (IOException except) {
-         throw new RetrievalServiceEx(StorageMessageHandler
-               .getMessage(Constants.RTR_CODE_ERROR), except.getMessage(),
-               except);
-      } catch (Exception except) {
-         throw new RetrievalServiceEx(StorageMessageHandler
-               .getMessage(Constants.SRH_CODE_ERROR), except.getMessage(),
-               except);
-      }
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Loggable(LogLevel.TRACE)
+	@ServiceChecked
+	public final List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
+			final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
+		try {
+			searchingService.setSearchingServiceParameter(getDfceService());
+			return searchingService.searchMetaDatasByUUIDCriteria(uUIDCriteria)
+					.getMetadatas();
+		} catch (SearchingServiceEx srcSerEx) {
+			throw new RetrievalServiceEx(srcSerEx.getMessage(), srcSerEx);
+		} catch (Exception except) {
+			throw new RetrievalServiceEx(
+					StorageMessageHandler.getMessage(Constants.RTR_CODE_ERROR),
+					except.getMessage(), except);
+		}
+	}
 
-   /**
-    * {@inheritDoc}
-    */
-   @Loggable(LogLevel.TRACE)
-   @ServiceChecked
-   public final List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
-         final UUIDCriteria uUIDCriteria) throws RetrievalServiceEx {
-      try {
-         return searchingService.searchMetaDatasByUUIDCriteria(uUIDCriteria)
-               .getMetadatas();
-      } catch (SearchingServiceEx srcSerEx) {
-         throw new RetrievalServiceEx(srcSerEx.getMessage(), srcSerEx);
-      } catch (Exception except) {
-         throw new RetrievalServiceEx(StorageMessageHandler
-               .getMessage(Constants.RTR_CODE_ERROR), except.getMessage(),
-               except);
-      }
-   }
+	/**
+	 * @param searchingService
+	 *            the searchingService to set
+	 */
+	public final void setSearchingService(
+			final SearchingService searchingService) {
+		this.searchingService = searchingService;
+	}
 
-   /**
-    * {@inheritDoc}
-    */
-   @SuppressWarnings("PMD.LongVariable")
-   public final void setRetrievalServiceParameter(
-         final StorageConnectionParameter storageConnectionParameter) {
-      setStorageBase(storageConnectionParameter.getStorageBase());
-      searchingService.setSearchingServiceParameter(storageConnectionParameter);
-   }
+	/**
+	 * @return the searchingService
+	 */
+	public final SearchingService getSearchingService() {
+		return searchingService;
+	}
 
-   /**
-    * @param searchingService
-    *           the searchingService to set
-    */
-   public final void setSearchingService(final SearchingService searchingService) {
-      this.searchingService = searchingService;
-   }
-
-   /**
-    * @return the searchingService
-    */
-   public final SearchingService getSearchingService() {
-      return searchingService;
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	public final <T> void setRetrievalServiceParameter(final T parameter) {
+		setDfceService((ServiceProvider) parameter);
+	}
 
 }
