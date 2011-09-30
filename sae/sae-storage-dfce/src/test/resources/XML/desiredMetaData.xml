@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <desiredMetaDatas>
-   <code>ACT</code>
-   <code>RND</code>
-   <code>_titre</code>
+   <code>act</code>
+   <code>sm_document_type</code>
+   <code>sm_title</code>
 </desiredMetaDatas>

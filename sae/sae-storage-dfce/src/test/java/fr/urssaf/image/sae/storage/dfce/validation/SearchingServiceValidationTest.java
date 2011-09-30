@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
+import fr.urssaf.image.sae.storage.dfce.services.StorageServices;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCriteria;
@@ -18,7 +18,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCr
  */
 
 public class SearchingServiceValidationTest extends
-      CommonServicesImpl {
+      StorageServices {
    /**
     * {@link fr.urssaf.image.sae.storage.dfce.SearchingServiceValidation#searchStorageDocumentByUUIDCriteriaValidation(UUIDCriteria)}
     * <br>

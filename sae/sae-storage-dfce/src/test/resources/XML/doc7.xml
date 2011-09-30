@@ -7,135 +7,121 @@
 		<typeDoc>PDF</typeDoc>
 		<categories>
 			<category>
-				<name>_titre</name>
-				<value>SUIVI DES CONTRATS EXONERATION du 40099704500044</value>
+				<name>sm_title</name>
+				<value>SUIVI DES CONTRATS EXONERATION </value>
 			</category>
 			<category>
-				<name>_type</name>
+				<name>sm_extension</name>
 				<value>PDF</value>
 			</category>
 			<category>
-				<name>_creationDate</name>
+				<name>sm_creation_date</name>
 				<value>2010-12-01</value>
 			</category>
 			<category>
-				<name>RND</name>
+				<name>nfi</name>
+				<value>doc7.PDF</value>
+			</category>
+			<category>
+				<name>sm_document_type</name>
 				<value>2.2.3.2</value>
 			</category>
 			<category>
-				<name>VRN</name>
+				<name>vrn</name>
 				<value>12.1</value>
 			</category>
 			<category>
-				<name>DDC</name>
+				<name>sm_life_cycle_reference_date</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
-				<name>DFC</name>
-				<value>2011-12-01</value>
-			</category>
-			<category>
-				<name>ITM</name>
+				<name>itm</name>
 				<value>999999</value>
 			</category>
 			<category>
-				<name>DOM</name>
+				<name>dom</name>
 				<value>2</value>
 			</category>
 			<category>
-				<name>ACT</name>
+				<name>act</name>
 				<value>2</value>
 			</category>
+			
 			<category>
-				<name>DCO</name>
-				<value>12</value>
-			</category>
-			<category>
-				<name>TPA</name>
+				<name>tpa</name>
 				<value>P</value>
 			</category>
 			<category>
-				<name>CSE</name>
+				<name>cse</name>
 				<value>CS1</value>
 			</category>
 			<category>
-				<name>APR</name>
+				<name>apr</name>
 				<value>GED</value>
 			</category>
 			<category>
-				<name>SAC</name>
+				<name>sac</name>
 				<value>AC750</value>
 			</category>
+			
 			<category>
-				<name>OTY</name>
-				<value>autonome</value>
-			</category>
-			<category>
-				<name>NFI</name>
-				<value>doc1.pdf</value>
-			</category>
-			<category>
-				<name>FFI</name>
+				<name>ffi</name>
 				<value>fmt/18</value>
 			</category>
 			<category>
-				<name>version.1.size</name>
-				<value>56587</value>
-			</category>
-			<category>
-				<name>NBP</name>
+				<name>nbp</name>
 				<value>2</value>
 			</category>
 			<category>
-				<name>COP</name>
+				<name>cop</name>
 				<value>UR030</value>
 			</category>
 			<category>
-				<name>COG</name>
+				<name>cog</name>
 				<value>UR030</value>
 			</category>
 			<category>
-				<name>SRN</name>
+				<name>srn</name>
 				<value>418820502</value>
 			</category>
 			<category>
-				<name>NNE</name>
+				<name>nne</name>
 				<value>1730899208055</value>
 			</category>
 			<category>
-				<name>NPE</name>
+				<name>npe</name>
 				<value>1</value>
 			</category>
 			<category>
-				<name>DEN</name>
+				<name>den</name>
 				<value>MR YALCIN KEREM</value>
 			</category>
 			<category>
-				<name>CV2</name>
+				<name>cv2</name>
 				<value>1</value>
 			</category>
 			<category>
-				<name>SCV</name>
+				<name>scv</name>
 				<value>1</value>
 			</category>
 			<category>
-				<name>NCI</name>
+				<name>nci</name>
 				<value>103543</value>
 			</category>
 			<category>
-				<name>NCE</name>
+				<name>nce</name>
 				<value>030000000111995101</value>
 			</category>
 			<category>
-				<name>SRT</name>
+				<name>srt</name>
 				<value>41882050200023</value>
 			</category>
 			<category>
-				<name>PSI</name>
+				<name>psi</name>
 				<value>AA</value>
 			</category>
 			<category>
-				<name>PER</name>
+				<name>per</name>
 				<value>P</value>
 			</category>
 		</categories>

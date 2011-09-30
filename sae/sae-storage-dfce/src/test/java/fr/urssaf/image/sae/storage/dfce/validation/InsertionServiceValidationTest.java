@@ -2,7 +2,7 @@ package fr.urssaf.image.sae.storage.dfce.validation;
 
 import org.junit.Test;
 
-import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
+import fr.urssaf.image.sae.storage.dfce.services.StorageServices;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 
@@ -13,7 +13,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
  * 
  */
 public class InsertionServiceValidationTest extends
-      CommonServicesImpl {
+      StorageServices {
    /**
     * {@link fr.urssaf.image.sae.storage.dfce.InsertionServiceValidation#insertStorageDocumentValidation(fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument)}
     * <br>

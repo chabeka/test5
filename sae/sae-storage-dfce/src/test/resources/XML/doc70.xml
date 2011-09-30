@@ -7,135 +7,122 @@
 		<typeDoc>PDF</typeDoc>
 		<categories>
 			<category>
-				<name>_titre</name>
+				<name>sm_title</name>
 				<value>RADIATION AUTO ENTREPRENEUR du 0115683S02</value>
 			</category>
 			<category>
-				<name>_type</name>
+				<name>sm_extension</name>
 				<value>PDF</value>
 			</category>
 			<category>
-				<name>_creationDate</name>
+				<name>sm_creation_date</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
-				<name>RND</name>
+				<name>sm_document_type</name>
 				<value>1.2.3.1.4</value>
 			</category>
 			<category>
-				<name>VRN</name>
-				<value>11.1</value>
-			</category>
-			<category>
-				<name>DDC</name>
-				<value>2011-12-01</value>
-			</category>
-			<category>
-				<name>ITM</name>
-				<value>999999</value>
-			</category>
-			<category>
-				<name>DOM</name>
-				<value>1</value>
-			</category>
-			<category>
-				<name>ACT</name>
-				<value>2</value>
-			</category>
-			<category>
-				<name>DFC</name>
-				<value>2011-12-01</value>
-			</category>
-			<category>
-				<name>DCO</name>
-				<value>24</value>
-			</category>
-			<category>
-				<name>TPA</name>
-				<value>P</value>
-			</category>
-			<category>
-				<name>CSE</name>
-				<value>CS1</value>
-			</category>
-			<category>
-				<name>APR</name>
-				<value>ADELAIDE</value>
-			</category>
-			<category>
-				<name>SAC</name>
-				<value>AC750</value>
-			</category>
-			<category>
-				<name>OTY</name>
-				<value>autonome</value>
-			</category>
-			<category>
-				<name>NFI</name>
+				<name>nfi</name>
 				<value>doc70.PDF</value>
 			</category>
 			<category>
-				<name>FFI</name>
-				<value>fmt/18</value>
+				<name>vrn</name>
+				<value>11.1</value>
 			</category>
 			<category>
-				<name>version.1.size</name>
-				<value>47308</value>
+				<name>sm_life_cycle_reference_date</name>
+				<value>2011-12-01</value>
 			</category>
 			<category>
-				<name>NBP</name>
+				<name>itm</name>
+				<value>999999</value>
+			</category>
+			<category>
+				<name>dom</name>
 				<value>1</value>
 			</category>
 			<category>
-				<name>COP</name>
+				<name>act</name>
+				<value>2</value>
+			</category>
+			
+			
+			<category>
+				<name>tpa</name>
+				<value>P</value>
+			</category>
+			<category>
+				<name>cse</name>
+				<value>CS1</value>
+			</category>
+			<category>
+				<name>apr</name>
+				<value>ADELAIDE</value>
+			</category>
+			<category>
+				<name>sac</name>
+				<value>AC750</value>
+			</category>
+			<category>
+				<name>ffi</name>
+				<value>fmt/18</value>
+			</category>
+			
+			<category>
+				<name>nbp</name>
+				<value>1</value>
+			</category>
+			<category>
+				<name>cop</name>
 				<value>UR030</value>
 			</category>
 			<category>
-				<name>COG</name>
+				<name>cog</name>
 				<value>UR030</value>
 			</category>
 			<category>
-				<name>SRN</name>
+				<name>srn</name>
 				<value>418820502</value>
 			</category>
 			<category>
-				<name>NNE</name>
+				<name>nne</name>
 				<value>1550499350689</value>
 			</category>
 			<category>
-				<name>NPE</name>
+				<name>npe</name>
 				<value>0115683</value>
 			</category>
 			<category>
-				<name>DEN</name>
+				<name>den</name>
 				<value>MR MICHAUD GERALD GABRIEL</value>
 			</category>
 			<category>
-				<name>CV2</name>
+				<name>cv2</name>
 				<value>3</value>
 			</category>
 			<category>
-				<name>SCV</name>
+				<name>scv</name>
 				<value>4</value>
 			</category>
 			<category>
-				<name>NCI</name>
+				<name>nci</name>
 				<value>155128</value>
 			</category>
 			<category>
-				<name>NCE</name>
+				<name>nce</name>
 				<value>030000000000715546</value>
 			</category>
 			<category>
-				<name>SRT</name>
+				<name>srt</name>
 				<value>0115683S02</value>
 			</category>
 			<category>
-				<name>PSI</name>
+				<name>psi</name>
 				<value>PP</value>
 			</category>
 			<category>
-				<name>PER</name>
+				<name>per</name>
 				<value>AA</value>
 			</category>
 		</categories>
