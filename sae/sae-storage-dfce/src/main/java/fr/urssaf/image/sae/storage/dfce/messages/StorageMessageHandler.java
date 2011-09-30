@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.storage.dfce.messages;
 
 import org.springframework.context.MessageSource;
 
-import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.context.StorageApplicationContext;
 
 /**
