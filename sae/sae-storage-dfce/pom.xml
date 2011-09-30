@@ -23,10 +23,11 @@
       </developer>
    </developers>
    <properties>
-      <dfce.serialization>0.9.3</dfce.serialization>
-      <dfce.toolkit.client>0.9.3</dfce.toolkit.client>
-      <dfce.toolkit.pojo>0.9.3</dfce.toolkit.pojo>
-      <dfce.toolkit.service>0.9.3</dfce.toolkit.service>
+      <dfce.serialization>1.0.0-alpha-01</dfce.serialization>
+		<dfce.toolkit.client>1.0.0-alpha-01</dfce.toolkit.client>
+		<dfce.toolkit.pojo>1.0.0-alpha-01</dfce.toolkit.pojo>
+		<dfce.pojo>1.0.0-alpha-01</dfce.pojo>
+		<dfce.toolkit.service>1.0.0-alpha-01</dfce.toolkit.service>
    </properties>
    <!-- Ajout des dependances -->
    <dependencies>
@@ -102,27 +103,32 @@
          <artifactId>jcip-annotations</artifactId>
          <version>1.0</version>
       </dependency>
-      <!-- DFCE dépendances -->
-      <dependency>
-         <groupId>com.docubase</groupId>
-         <artifactId>dfce-serialization</artifactId>
-         <version>${dfce.serialization}</version>
-      </dependency>
-      <dependency>
-         <groupId>com.docubase</groupId>
-         <artifactId>dfce-toolkit-client</artifactId>
-         <version>${dfce.toolkit.client}</version>
-      </dependency>
-      <dependency>
-         <groupId>com.docubase</groupId>
-         <artifactId>dfce-toolkit-pojo</artifactId>
-         <version>${dfce.toolkit.pojo}</version>
-      </dependency>
-      <dependency>
-         <groupId>com.docubase</groupId>
-         <artifactId>dfce-toolkit-service</artifactId>
-         <version>${dfce.toolkit.service}</version>
-      </dependency>
+     <!-- DFCE dépendances -->
+		<dependency>
+			<groupId>net.docubase</groupId>
+			<artifactId>dfce-serialization</artifactId>
+			<version>${dfce.serialization}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.docubase</groupId>
+			<artifactId>dfce-pojo</artifactId>
+			<version>${dfce.pojo}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.docubase</groupId>
+			<artifactId>dfce-toolkit-client</artifactId>
+			<version>${dfce.toolkit.client}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.docubase</groupId>
+			<artifactId>dfce-toolkit-pojo</artifactId>
+			<version>${dfce.toolkit.pojo}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.docubase</groupId>
+			<artifactId>dfce-toolkit-service</artifactId>
+			<version>${dfce.toolkit.service}</version>
+		</dependency>
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
