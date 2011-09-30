@@ -58,7 +58,9 @@ public class MetadataError extends SAEError {
 		this.longCode = lCode;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);

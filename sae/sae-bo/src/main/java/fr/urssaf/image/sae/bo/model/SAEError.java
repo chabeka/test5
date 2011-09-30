@@ -73,8 +73,9 @@ public class SAEError {
 		this.message = message;
 	}
 
-	
-
+	/**
+	 * {@inheritDoc}
+	 */
 	//CHECKSTYLE:OFF -- car la méthode toString peut être surchargée
 	public  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,

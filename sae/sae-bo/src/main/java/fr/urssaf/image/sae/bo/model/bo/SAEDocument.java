@@ -73,7 +73,9 @@ public class SAEDocument extends AbstractDocument {
 		super(content,filePath);
 		this.metadatas = saeMetadatas;
 	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	// CHECKSTYLE:OFF
 	public String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,

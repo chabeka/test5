@@ -101,7 +101,9 @@ public class SAELuceneCriteria extends AbstractSAECriteria {
 
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);

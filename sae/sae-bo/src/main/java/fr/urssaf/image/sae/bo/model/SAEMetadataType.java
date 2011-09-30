@@ -43,7 +43,10 @@ public enum SAEMetadataType {
 	public String getType() {
 		return type;
 	}
-
+/**
+ * Construit un {@link SAEMetadataType}
+ * @param type :Le type.
+ */
 	SAEMetadataType(final String type) {
 		this.type = type;
 	}

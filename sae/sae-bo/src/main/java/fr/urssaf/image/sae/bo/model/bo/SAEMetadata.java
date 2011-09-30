@@ -89,7 +89,9 @@ public class SAEMetadata extends AbstractMetadata {
 		this.value = value;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);

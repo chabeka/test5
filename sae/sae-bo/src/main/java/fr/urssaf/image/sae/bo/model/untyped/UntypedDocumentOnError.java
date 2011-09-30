@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import fr.urssaf.image.sae.bo.model.SAEError;
+import fr.urssaf.image.sae.bo.model.MetadataError;
 
 /**
  * Classe qui réprésente un document non typé en erreur.<br/>
@@ -19,20 +19,20 @@ import fr.urssaf.image.sae.bo.model.SAEError;
 public class UntypedDocumentOnError extends UntypedDocument {
 
 	/** La liste des erreurs. */
-	private List<SAEError> errors;
+	private List<MetadataError> errors;
 
 	/**
 	 * @param err
 	 *            : La liste des erreurs.
 	 */
-	public final void setErrors(final List<SAEError> err) {
+	public final void setErrors(final List<MetadataError> err) {
 		this.errors = err;
 	}
 
 	/**
 	 * @return La liste des erreurs.
 	 */
-	public final List<SAEError> getErrors() {
+	public final List<MetadataError> getErrors() {
 		return errors;
 	}
 
@@ -47,7 +47,7 @@ public class UntypedDocumentOnError extends UntypedDocument {
 	 *            : La liste des erreurs.
 	 */
 	public UntypedDocumentOnError(final byte[] content,
-			final List<UntypedMetadata> metadatas, final List<SAEError> err) {
+			final List<UntypedMetadata> metadatas, final List<MetadataError> err) {
 		super(content, metadatas);
 		this.errors = err;
 	}
@@ -64,7 +64,7 @@ public class UntypedDocumentOnError extends UntypedDocument {
 			}
 		}
 		if (errors != null) {
-			for (SAEError error : errors) {
+			for (MetadataError error : errors) {
 				toStrBuilder.append(error.toString());
 			}
 		}

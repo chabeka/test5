@@ -40,7 +40,6 @@ public class SAEDocumentOnError extends SAEDocument {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public  final String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);

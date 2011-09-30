@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-
 import fr.urssaf.image.sae.bo.model.AbstractDocument;
 
 /**

@@ -69,7 +69,9 @@ public class SAEUuidCriteria extends AbstractSAECriteria {
 		this.uuid = uuid;
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
 				ToStringStyle.MULTI_LINE_STYLE);
