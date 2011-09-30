@@ -4,17 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServiceProvider;
-import fr.urssaf.image.sae.storage.dfce.services.impl.connection.StorageConnectionServiceImpl;
-import fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument.StorageDocumentServiceImpl;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
+import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
-import fr.urssaf.image.sae.storage.services.connection.StorageConnectionService;
 import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentService;
 
 /**
- * Fournit la façade des implementations des services : 
+ * Fournit la façade des implementations des services :
  * {@link StorageDocumentServiceImpl } , {@link StorageConnectionServiceImpl}.<BR />
  * Elle contient les attributs :
  * <ul>
@@ -31,36 +27,19 @@ import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentServi
 @Service
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @Qualifier("storageServiceProvider")
-@FacadePattern(participants = { StorageDocumentServiceImpl.class,
-		StorageConnectionServiceImpl.class }, comment = "Fournit les services des classes participantes")
-public class StorageServiceProviderImpl extends AbstractServiceProvider implements StorageServiceProvider {
+public class StorageServiceProviderImpl extends AbstractServiceProvider
+		implements StorageServiceProvider {
 	@SuppressWarnings("PMD.LongVariable")
 	@Autowired
 	@Qualifier("storageDocumentService")
 	private StorageDocumentService storageDocumentService;
-
-	@SuppressWarnings("PMD.LongVariable")
-	@Autowired
-	@Qualifier("storageConnectionService")
-	private StorageConnectionService storageConnectionService;
 
 	/**
 	 * @return Les services d'insertion ,de recherche, de suppression,de
 	 *         récupération
 	 */
 	public final StorageDocumentService getStorageDocumentService() {
-		storageDocumentService
-		.setStorageDocumentServiceParameter(getStorageConnectionParameter());
 		return storageDocumentService;
-	}
-
-	/**
-	 * @return L'interface des services de connexion
-	 */
-	public final StorageConnectionService getStorageConnectionService() {
-		storageConnectionService
-		.setStorageConnectionServiceParameter(getStorageConnectionParameter());
-		return storageConnectionService;
 	}
 
 	/**
@@ -77,25 +56,21 @@ public class StorageServiceProviderImpl extends AbstractServiceProvider implemen
 	}
 
 	/**
-	 * Initialise les services de connexion
-	 * 
-	 * @param storageConnectionService
-	 *            : L'interface des services de connexion
+	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setStorageConnectionService(
-			final StorageConnectionService storageConnectionService) {
-		this.storageConnectionService = storageConnectionService;
+	public final void openConnexion() throws ConnectionServiceEx {
+		getDfceServicesManager().getConnection();
+		storageDocumentService
+				.setStorageDocumentServiceParameter(getDfceServicesManager()
+						.getDFCEService());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	public final void setStorageServiceProviderParameter(
-			final StorageConnectionParameter storageConnectionParameter) {
-		setStorageConnectionParameter(storageConnectionParameter);
-
+	public final void closeConnexion() {
+		getDfceServicesManager().closeConnection();
+		
 	}
 
 }
