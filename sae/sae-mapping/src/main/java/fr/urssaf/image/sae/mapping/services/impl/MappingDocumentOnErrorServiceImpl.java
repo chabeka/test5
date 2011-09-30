@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.bo.model.MetadataError;
 import fr.urssaf.image.sae.bo.model.SAEError;
 import fr.urssaf.image.sae.bo.model.bo.SAEDocumentOnError;
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
@@ -49,7 +50,6 @@ public final class MappingDocumentOnErrorServiceImpl implements
 		final List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
 		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDocOnError
 				.getMetadatas())) {
-
 			try {
 				final MetadataReference reference = referenceDAO
 						.getByLongCode(metadata.getLongCode());
@@ -61,8 +61,16 @@ public final class MappingDocumentOnErrorServiceImpl implements
 				throw new MappingFromReferentialException(refExcpt);
 			}
 		}
+		final List<MetadataError> errors = new ArrayList<MetadataError>();
+		for (SAEError saeError : Utils.nullSafeIterable(saeDocOnError
+				.getErrors())) {
+				MetadataError error = new MetadataError();
+				error.setCode(saeError.getCode());
+				error.setMessage(saeError.getMessage());
+				errors.add(error);
+				}
 		return new UntypedDocumentOnError(saeDocOnError.getContent(),
-				metadatas, saeDocOnError.getErrors());
+				metadatas, errors);
 	}
 
 	/**
