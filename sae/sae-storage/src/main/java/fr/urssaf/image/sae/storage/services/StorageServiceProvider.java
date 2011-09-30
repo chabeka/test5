@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.storage.services;
 
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
-import fr.urssaf.image.sae.storage.services.connection.StorageConnectionService;
+import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentService;
 
 /**
@@ -11,25 +10,28 @@ import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentServi
  * 
  */
 public interface StorageServiceProvider {
-	/**
-	 * Permet d'initialiser les paramètres dont le service aura besoin
-	 * 
-	 * @param storageConnectionParameter
-	 *            : Les paramètres de connexion à la base de stockage.
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	void setStorageServiceProviderParameter(
-			final StorageConnectionParameter storageConnectionParameter);
-
+	
 	/**
 	 * 
 	 * @return les services d'insertion ,de recherche,récupération.
 	 */
 	StorageDocumentService getStorageDocumentService();
 
+	
 	/**
+	 * Permet d'ouvrir une connexion
 	 * 
-	 * @return l'interface des services de connexion.
+	 * @throws ConnectionServiceEx
+	 *             Exception liée à la connection.
 	 */
-	StorageConnectionService getStorageConnectionService();
+
+	void openConnexion() throws ConnectionServiceEx;
+	/**
+	 * Permet de fermer la  connexion
+	 * 
+	 * 
+	 */
+	void closeConnexion();
+		
+	
 }

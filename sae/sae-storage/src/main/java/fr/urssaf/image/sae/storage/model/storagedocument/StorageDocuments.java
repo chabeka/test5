@@ -14,8 +14,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @SuppressWarnings("PMD.LongVariable")
 public class StorageDocuments {
-   
-	private List<StorageDocument> allStorageDocuments; 
+
+	private List<StorageDocument> allStorageDocuments;
 
 	/**
 	 * Retourne la liste des documents
@@ -58,12 +58,14 @@ public class StorageDocuments {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+
 	public final String toString() {
 		final StringBuffer stringBuffer = new StringBuffer();
-		if (allStorageDocuments != null) {
+		if (!allStorageDocuments.isEmpty()) {
 			for (StorageDocument storageDocument : allStorageDocuments) {
-				stringBuffer.append(storageDocument.toString());
+				if (storageDocument != null) {
+					stringBuffer.append(storageDocument.toString());
+				}
 			}
 		}
 		return new ToStringBuilder(this).append("storageDocuments",

@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.storage.services.storagedocument;
 
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
 
 /**
@@ -30,21 +29,11 @@ public interface DeletionService {
 	void deleteStorageDocument(final UUIDCriteria uuidCriteria)
 			throws DeletionServiceEx;
 
-	/**
-	 * Permet d'initialiser les paramètres dont le service aura besoin
-	 * 
-	 * @param storageConnectionParameter
-	 *            : Les paramètres de connexion à la base de stockage
-	 */
-	@SuppressWarnings("PMD.LongVariable")
-	void setDeletionServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter);
-	
-	
+		
 
 	/**
 	 * Permet de faire un rollback à partir d'un identifiant de traitement. 
-	 * ».
+	 * 
 	 * 
 	 * @param processId
 	 *            : L'identifiant du traitement
@@ -57,6 +46,11 @@ public interface DeletionService {
 
 	void rollBack(final String processId)
 			throws DeletionServiceEx;
-
+	/**
+	 * 
+	 * @param <T> : Le type générique.
+	 * @param parameter : Le paramètre du service {@link DeletionService}
+	 */
+	 <T> void setDeletionServiceParameter(T parameter);
 
 }

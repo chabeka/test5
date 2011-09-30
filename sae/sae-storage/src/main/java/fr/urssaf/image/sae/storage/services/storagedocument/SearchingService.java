@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.storage.services.storagedocument;
 
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCriteria;
@@ -30,7 +29,7 @@ public interface SearchingService {
 	 * @return Les résultats de la recherche
 	 * 
 	 * @throws SearchingServiceEx
-	 *             Une exception runtime
+	 *             Exception lévée lorsque la recherche ne se déroule pas bien.
 	 */
 
 	StorageDocuments searchStorageDocumentByLuceneCriteria(
@@ -45,7 +44,7 @@ public interface SearchingService {
 	 * @return un strorageDocument
 	 * 
 	 * @throws SearchingServiceEx
-	 *             Une exception runtime
+	 *              Exception lévée lorsque la recherche ne se déroule pas bien.
 	 */
 	StorageDocument searchStorageDocumentByUUIDCriteria(
 			final UUIDCriteria uuidCriteria) throws SearchingServiceEx;
@@ -59,22 +58,17 @@ public interface SearchingService {
 	 * @return Le resultat de la recherche
 	 * 
 	 * @throws SearchingServiceEx
-	 *             Une exception runtime
+	 *              Exception lévée lorsque la recherche ne se déroule pas bien.
 	 */
 	StorageDocument searchMetaDatasByUUIDCriteria(
 			final UUIDCriteria uuidCriteria) throws SearchingServiceEx;
 	
-	
-	
-
 	/**
-	 * Permet d'initialiser les paramètres dont le service aura besoin
 	 * 
-	 * @param storageConnectionParameter
-	 *            : Les paramètres de connexion à la base de stockage
+	 * @param <T> : Le type générique.
+	 * @param parameter : Le paramètre du service {@link SearchingService}
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	void setSearchingServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter);
+	 <T> void setSearchingServiceParameter(T parameter);
+	
 
 }

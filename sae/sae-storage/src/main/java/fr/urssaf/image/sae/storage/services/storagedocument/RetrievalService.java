@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.storage.services.storagedocument;
 import java.util.List;
 
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
@@ -31,8 +30,8 @@ public interface RetrievalService {
 	 * 
 	 * @return Le contenu du document
 	 * 
-	 * @throws RetrievalServiceEx
-	 *             Runtime exception
+	 * @throws RetrievalServiceEx Exception lévée lorsque la consultation ne se déroule pas bien
+	 *             
 	 */
 
 	byte[] retrieveStorageDocumentContentByUUID(final UUIDCriteria uuidCriteria)
@@ -48,7 +47,7 @@ public interface RetrievalService {
 	 * @return Une liste de metadonnées
 	 * 
 	 * @throws RetrievalServiceEx
-	 *             Runtime exception
+	 *             Exception lévée lorsque la consultation ne se déroule pas bien
 	 */
 	List<StorageMetadata> retrieveStorageDocumentMetaDatasByUUID(
 			final UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
@@ -59,22 +58,18 @@ public interface RetrievalService {
 	 * @param uuidCriteria
 	 *            : L'identifiant universel unique du document
 	 * 
-	 * @return Le document et ses métas données
+	 * @return Le document et ses métadonnées
 	 * 
 	 * @throws RetrievalServiceEx
-	 *             Runtime exception
+	 *             Exception lévée lorsque la consultation ne se déroule pas bien.
 	 */
 	StorageDocument retrieveStorageDocumentByUUID(
 			final UUIDCriteria uuidCriteria) throws RetrievalServiceEx;
-
 	/**
-	 * Permet d'initialiser les paramètres dont le service aura besoin
 	 * 
-	 * @param storageConnectionParameter
-	 *            : Les paramètres de connexion à la base de stockage
+	 * @param <T> : Le type générique.
+	 * @param parameter : Le paramètre du service {@link RetrievalService}
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	void setRetrievalServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter);
+	 <T> void setRetrievalServiceParameter(T parameter);
 
 }

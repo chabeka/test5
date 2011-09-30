@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.storage.services.storagedocument;
 
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -27,7 +26,7 @@ public interface InsertionService {
 	 * @return  Le document
 	 * 
 	 * @throws InsertionServiceEx
-	 *             Runtime exception typée
+	 *             Exception lévée lorsque l'insertion d'un document ne se déroule pas bien.
 	 */
 	StorageDocument insertStorageDocument(StorageDocument storageDocument)
 			throws InsertionServiceEx;
@@ -42,19 +41,17 @@ public interface InsertionService {
 	 *            tout ou rien
 	 * @return Le résultat des insertions réussies et échouées
 	 * @throws InsertionServiceEx
-	 *             : une exception est levée à l'inssertion en masse.
+	 *             : Exception lévée lors de l'insertion en masse.
 	 */
 	BulkInsertionResults bulkInsertStorageDocument(
 			StorageDocuments storageDocuments, final boolean allOrNothing)
 			throws InsertionServiceEx;
-
+	
 	/**
-	 * Permet d'initialiser les paramètres dont le service aura besoin
 	 * 
-	 * @param storageConnectionParameter
-	 *            : Les paramètres de connexion à la base de stockage
+	 * @param <T> : Le type générique.
+	 * @param parameter : Le paramètre du service {@link InsertionService}
 	 */
-	@SuppressWarnings("PMD.LongVariable")
-	void setInsertionServiceParameter(
-			final StorageConnectionParameter storageConnectionParameter);
+	 <T> void setInsertionServiceParameter(T parameter);
+
 }
