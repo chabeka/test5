@@ -82,7 +82,7 @@ public class XmlDataBaseModelServiceTest {
 	// On vérifie l'identifiant de la base est conforme à celle attendu.
 	@Test
 	public void getBaseID() {
-		Assert.assertEquals("SAE-TEST", getDataBaseModel()
+		Assert.assertEquals("SAE-TEST-1", getDataBaseModel()
 				.getBase().getBaseId().trim());
 	}
 }
