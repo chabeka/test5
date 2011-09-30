@@ -20,12 +20,8 @@ public class InsertionServiceProviderTest extends CommonsServicesProvider {
    @Test
    public final void insertion() throws ConnectionServiceEx, InsertionServiceEx {
       int insertOcuurences = 10;
-
-      // initialise les paramètres de connexion
-      getServiceProvider().setStorageServiceProviderParameter(
-            getStorageConnectionParameter());
       // On récupère la connexion
-      getServiceProvider().getStorageConnectionService().openConnection();
+      getServiceProvider().openConnexion();
       for (int ocuurrence = 0; ocuurrence < insertOcuurences; ocuurrence++)
       // on insert le document.
       {
@@ -34,7 +30,6 @@ public class InsertionServiceProviderTest extends CommonsServicesProvider {
                getServiceProvider().getStorageDocumentService()
                      .insertStorageDocument(getStorageDocument()));
       }
-      // on ferme la connection
-      getServiceProvider().getStorageConnectionService().closeConnexion();
+     
    }
 }

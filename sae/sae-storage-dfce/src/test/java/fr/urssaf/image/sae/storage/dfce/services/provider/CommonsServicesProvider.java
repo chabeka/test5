@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import fr.urssaf.image.sae.storage.dfce.data.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.data.model.SaeDocument;
-import fr.urssaf.image.sae.storage.dfce.data.test.constants.Constants;
-import fr.urssaf.image.sae.storage.dfce.mapping.BeanTestDocumentMapper;
+import fr.urssaf.image.sae.storage.dfce.mapping.DocumentForTestMapper;
 import fr.urssaf.image.sae.storage.dfce.services.CommonsServices;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
@@ -105,7 +105,7 @@ public class CommonsServicesProvider extends CommonsServices {
             .saeDocumentsReader(files);
       // Mapping entre les fichiers de tests et les StorageDocument
       for (SaeDocument saeDocument : Utils.nullSafeIterable(saeDocuments)) {
-         storageDoc.add(BeanTestDocumentMapper
+         storageDoc.add(DocumentForTestMapper
                .saeDocumentXmlToStorageDocument(saeDocument));
       }
       StorageDocuments storDocuments = new StorageDocuments(storageDoc);
@@ -140,7 +140,7 @@ public class CommonsServicesProvider extends CommonsServices {
          ParseException {
       final SaeDocument saeDocument = getXmlDataService().saeDocumentReader(
             new File(Constants.XML_PATH_DOC_WITHOUT_ERROR[0]));
-      return BeanTestDocumentMapper.saeDocumentXmlToStorageDocument(saeDocument);
+      return DocumentForTestMapper.saeDocumentXmlToStorageDocument(saeDocument);
    }
 
    /**

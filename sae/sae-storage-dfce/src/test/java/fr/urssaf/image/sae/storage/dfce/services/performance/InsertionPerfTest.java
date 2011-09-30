@@ -22,13 +22,13 @@ public class InsertionPerfTest extends CommonsServicesProvider {
     */
    @SuppressWarnings("PMD.JUnit4SuitesShouldUseSuiteAnnotation")
    public static Test suite() {
-      long maxElapsedTime = 37000;
-      int users = 1;
+      long maxElapsedTime = 50000000000L;
+      int users = 15;
       InsertionPerfFactory factory = new InsertionPerfFactory(
             InsertionServiceProviderTest.class);
       TestSuite testCase = factory.makeTestSuite();
       Test loadTest = new LoadTest(testCase, users);
-      return new TimedTest(loadTest, maxElapsedTime);
+      return new TimedTest(loadTest, maxElapsedTime,false);
    }
 
    /**

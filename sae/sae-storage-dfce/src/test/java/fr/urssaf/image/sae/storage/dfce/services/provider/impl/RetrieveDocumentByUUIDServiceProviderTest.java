@@ -23,11 +23,9 @@ public class RetrieveDocumentByUUIDServiceProviderTest extends
 	@Test
 	public final void retrieveDocument() throws ConnectionServiceEx,
 			RetrievalServiceEx, InsertionServiceEx {
-		// initialise les paramètres de connexion
-		getServiceProvider().setStorageServiceProviderParameter(
-				getStorageConnectionParameter());
+		
 		// On récupère la connexion
-		getServiceProvider().getStorageConnectionService().openConnection();
+		getServiceProvider().openConnexion();
 		// on insert le document.
 		StorageDocument document  = getServiceProvider().getStorageDocumentService()
 				.insertStorageDocument(getStorageDocument());
@@ -40,7 +38,6 @@ public class RetrieveDocumentByUUIDServiceProviderTest extends
 		Assert.assertNotNull(storageDocument.getContent());
 		// ici on vérifie qu'on a bien des métadonnées
 		Assert.assertTrue(storageDocument.getMetadatas().size() > 3);
-		// on ferme la connection
-		getServiceProvider().getStorageConnectionService().closeConnexion();
+		
 	}
 }

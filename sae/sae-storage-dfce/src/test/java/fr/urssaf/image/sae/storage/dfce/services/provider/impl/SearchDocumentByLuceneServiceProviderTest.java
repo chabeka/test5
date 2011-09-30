@@ -26,25 +26,21 @@ public class SearchDocumentByLuceneServiceProviderTest extends
    @Test
    public final void searchDocument() throws ConnectionServiceEx,
          SearchingServiceEx, InsertionServiceEx {
-      // initialise les paramètres de connexion
-      getServiceProvider().setStorageServiceProviderParameter(
-            getStorageConnectionParameter());
+     
       // On récupère la connexion
-      getServiceProvider().getStorageConnectionService().openConnection();
+      getServiceProvider().openConnexion();
       // On insert le document.
       StorageDocument document= getServiceProvider().getStorageDocumentService()
             .insertStorageDocument(getStorageDocument());
       // On test ici si on a un UUID
       Assert.assertNotNull(document.getUuid());
-      final String lucene = String.format("%s:%s", "_uuid", document.getUuid().toString());
+      final String lucene = String.format("%s:%s", "apr", "GED");
       StorageDocuments strDocuments = getServiceProvider()
             .getStorageDocumentService().searchStorageDocumentByLuceneCriteria(
-                  new LuceneCriteria(lucene, 1, null));
+                  new LuceneCriteria(lucene, 10, null));
       // ici on vérifie qu'on a bien des documents
       Assert.assertNotNull(strDocuments.getAllStorageDocuments());
       // ici on vérifie que le nombre de document est bien supérieur à 1
       Assert.assertTrue(strDocuments.getAllStorageDocuments().size() >= 1);
-      // on ferme la connection
-      getServiceProvider().getStorageConnectionService().closeConnexion();
    }
 }

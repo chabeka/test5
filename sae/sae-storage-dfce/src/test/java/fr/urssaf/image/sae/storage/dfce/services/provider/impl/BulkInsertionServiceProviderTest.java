@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.storage.dfce.services.provider.impl;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.storage.dfce.services.provider.CommonsServicesProvider;
@@ -22,22 +23,20 @@ public class BulkInsertionServiceProviderTest extends CommonsServicesProvider {
     * Ici on test l'insertion en masse.
     */
    @Test
+   @Ignore("Pour eviter que la base soit corrompue")
    @SuppressWarnings("PMD.LongVariable")
    public final void bulkInsertion() throws ConnectionServiceEx,
          InsertionServiceEx {
-      // initialise les paramètres de connexion
-      getServiceProvider().setStorageServiceProviderParameter(
-            getStorageConnectionParameter());
+      
       // On récupère la connexion
-      getServiceProvider().getStorageConnectionService().openConnection();
+      getServiceProvider().openConnexion();
       // on insert en mass les documents.
       BulkInsertionResults bulkInsertionResults = getServiceProvider()
             .getStorageDocumentService().bulkInsertStorageDocument(
                   getStorageDocuments(), false);
       // on test ici si on a bien inséré les 7 documents.
       Assert.assertTrue(bulkInsertionResults.getUuids().size() > 1);
-      // on ferme la connection
-      getServiceProvider().getStorageConnectionService().closeConnexion();
+      
    }
 
 }

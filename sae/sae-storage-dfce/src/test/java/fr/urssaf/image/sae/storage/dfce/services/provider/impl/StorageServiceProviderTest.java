@@ -21,8 +21,7 @@ public class StorageServiceProviderTest extends CommonsServicesProvider {
 	@Test(expected = IllegalArgumentException.class)
 	public final void storageServiceProvider() throws ConnectionServiceEx,
 			InsertionServiceEx {
-		getServiceProvider().setStorageServiceProviderParameter(
-				getStorageConnectionParameter());
+		getServiceProvider().openConnexion();
 		getServiceProvider().getStorageDocumentService().insertStorageDocument(
 				null);
 	}

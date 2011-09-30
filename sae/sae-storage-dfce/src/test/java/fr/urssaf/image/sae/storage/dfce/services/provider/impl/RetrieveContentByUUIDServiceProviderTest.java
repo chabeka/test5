@@ -23,11 +23,9 @@ public class RetrieveContentByUUIDServiceProviderTest extends
 	@Test
 	public final void retrieveContent() throws ConnectionServiceEx,
 			RetrievalServiceEx, InsertionServiceEx {
-		// initialise les paramètres de connexion
-		getServiceProvider().setStorageServiceProviderParameter(
-				getStorageConnectionParameter());
+		
 		// On récupère la connexion
-		getServiceProvider().getStorageConnectionService().openConnection();
+		getServiceProvider().openConnexion();
 		// on insert le document.
 		StorageDocument document  = getServiceProvider().getStorageDocumentService()
 				.insertStorageDocument(getStorageDocument());
@@ -38,7 +36,5 @@ public class RetrieveContentByUUIDServiceProviderTest extends
 						new UUIDCriteria(document.getUuid(), null));
 		// ici on vérifie qu'on a bien un contenu
 		Assert.assertNotNull(content);
-		// on ferme la connection
-		getServiceProvider().getStorageConnectionService().closeConnexion();
 	}
 }

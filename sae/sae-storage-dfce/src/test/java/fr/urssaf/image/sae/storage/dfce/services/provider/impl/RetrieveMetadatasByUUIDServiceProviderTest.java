@@ -28,11 +28,8 @@ public class RetrieveMetadatasByUUIDServiceProviderTest extends
 	@Test
 	public final void retrieveMetadatas() throws ConnectionServiceEx,
 			RetrievalServiceEx, InsertionServiceEx {
-		// initialise les paramètres de connexion
-		getServiceProvider().setStorageServiceProviderParameter(
-				getStorageConnectionParameter());
 		// On récupère la connexion
-		getServiceProvider().getStorageConnectionService().openConnection();
+		getServiceProvider().openConnexion();
 		// on insert le document.
 		StorageDocument document= getServiceProvider().getStorageDocumentService()
 				.insertStorageDocument(getStorageDocument());
@@ -44,7 +41,5 @@ public class RetrieveMetadatasByUUIDServiceProviderTest extends
 						new UUIDCriteria(document.getUuid(), null));
 		// ici on vérifie qu'on a bien des métadonnées
 		Assert.assertTrue(metadatas.size() > 3);
-		// on ferme la connection
-		getServiceProvider().getStorageConnectionService().closeConnexion();
 	}
 }
