@@ -18,7 +18,7 @@ public class ExceptionDispatcher {
    /**
     * @return Premier handler de la chaine
     */
-   private ExceptionHandler handler;
+   private AbstractExceptionHandler handler;
 
    /**
     * Dispatche l'exception au travers d'une chaine de responsabilité
@@ -37,7 +37,7 @@ public class ExceptionDispatcher {
    /**
     * @return Premier handler de la chaine
     */
-   public ExceptionHandler getHandler() {
+   public AbstractExceptionHandler getHandler() {
       return this.handler;
    }
 
@@ -47,7 +47,7 @@ public class ExceptionDispatcher {
     * @param handler
     *           Premier handler de la chaine
     */
-   public void setHandler(ExceptionHandler handler) {
+   public void setHandler(AbstractExceptionHandler handler) {
       this.handler = handler;
    }
 

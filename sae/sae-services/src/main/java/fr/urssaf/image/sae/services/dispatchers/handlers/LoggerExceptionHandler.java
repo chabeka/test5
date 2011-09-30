@@ -2,25 +2,22 @@ package fr.urssaf.image.sae.services.dispatchers.handlers;
 
 import org.apache.log4j.Logger;
 
-import fr.urssaf.image.sae.services.dispatchers.ExceptionHandler;
+import fr.urssaf.image.sae.services.dispatchers.AbstractExceptionHandler;
 
 /**
- * Logger d'exception pour la chaine de responsabilité utilisée
- * par le {@link fr.urssaf.image.sae.services.dispatchers.ExceptionDispatcher dispatcher d'exception}.
+ * Logger d'exception pour la chaine de responsabilité utilisée par le
+ * {@link fr.urssaf.image.sae.services.dispatchers.ExceptionDispatcher
+ * dispatcher d'exceptions}.
  */
-public class LoggerExceptionHandler extends ExceptionHandler {
-   
-   private Logger logger = Logger.getLogger(getClass());
-   
-   public LoggerExceptionHandler() {
+public class LoggerExceptionHandler extends AbstractExceptionHandler {
 
-   }
+   static final private Logger LOGGER = Logger.getLogger(LoggerExceptionHandler.class);
 
    /**
-    * 
-    * @param exception
+    * Log l'exception reçue en paramètre
     */
+   @Override
    public <T extends Exception> void handleException(T exception) throws T {
-      logger.error(exception);
+      LOGGER.error(exception);
    }
 }

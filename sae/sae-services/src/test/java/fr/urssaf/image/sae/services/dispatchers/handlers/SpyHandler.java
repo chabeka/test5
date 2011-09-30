@@ -1,6 +1,6 @@
 package fr.urssaf.image.sae.services.dispatchers.handlers;
 
-import fr.urssaf.image.sae.services.dispatchers.ExceptionHandler;
+import fr.urssaf.image.sae.services.dispatchers.AbstractExceptionHandler;
 
 /**
  * Handler espion pour les tests unitaires. 
@@ -9,7 +9,7 @@ import fr.urssaf.image.sae.services.dispatchers.ExceptionHandler;
  * <li><c>callNext</c> spécifie si le handler suivant doit être appelé</li>
  * </ul>
  */
-public class SpyHandler extends ExceptionHandler {
+public class SpyHandler extends AbstractExceptionHandler {
    /**
     * Indique si le handler à été appelé
     */
