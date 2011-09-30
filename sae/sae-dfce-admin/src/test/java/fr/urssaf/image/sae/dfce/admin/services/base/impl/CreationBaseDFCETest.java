@@ -31,7 +31,6 @@ public class CreationBaseDFCETest extends AbstractComponents {
 	public void createBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException,
 			MalformedURLException {
-		getBaseAdmiService().openConnection();
 		final DataBaseModel dataModel = getBaseAdmiService().getDataBaseModel(
 				BaseUtils.BASE_XML_FILE, getXmlDBModelService());
 		getBaseAdmiService().openConnection();
@@ -45,5 +44,6 @@ public class CreationBaseDFCETest extends AbstractComponents {
 				.getBaseAdministrationService().getBase(baseSae.trim())
 				.getBaseId());
 		service.disconnect();
+		
 	}
 }

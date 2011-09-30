@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <docuBase>
 	<base>
-		<baseId>SAE-TEST</baseId>
+		<baseId>SAE-TEST-1</baseId>
 		<baseDescription>Systeme Archivage Electronique</baseDescription>
 		<categories>
 			<!-- Période -->
 			<category>
 				<descriptif>Periode</descriptif>
-				<name>PER</name>
+				<name>per</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -18,7 +18,7 @@
 			<!-- Siren -->
 			<category>
 				<descriptif>Siren</descriptif>
-				<name>SRN</name>
+				<name>srn</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -29,7 +29,7 @@
 			<!-- NNI employeur -->
 			<category>
 				<descriptif>NniEmployeur</descriptif>
-				<name>NNE</name>
+				<name>nne</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -40,7 +40,7 @@
 			<!-- Numéro de personne -->
 			<category>
 				<descriptif>NumeroPersonne</descriptif>
-				<name>NPE</name>
+				<name>npe</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -51,7 +51,7 @@
 			<!-- Dénomination du compte -->
 			<category>
 				<descriptif>Denomination</descriptif>
-				<name>DEN</name>
+				<name>den</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -62,7 +62,7 @@
 			<!-- Code catégorie V2 -->
 			<category>
 				<descriptif>CodeCategorieV2</descriptif>
-				<name>CV2</name>
+				<name>cv2</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -73,7 +73,7 @@
 			<!-- Code sous catégorie V2 -->
 			<category>
 				<descriptif>CodeSousCategorieV2</descriptif>
-				<name>SCV</name>
+				<name>scv</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -84,7 +84,7 @@
 			<!-- Numéro de compte interne -->
 			<category>
 				<descriptif>NumeroCompteInterne</descriptif>
-				<name>NCI</name>
+				<name>nci</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -95,7 +95,7 @@
 			<!-- Numéro de compte externe -->
 			<category>
 				<descriptif>NumeroCompteExterne</descriptif>
-				<name>NCE</name>
+				<name>nce</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -106,7 +106,7 @@
 			<!-- Numéro de siret -->
 			<category>
 				<descriptif>Siret</descriptif>
-				<name>SRT</name>
+				<name>srt</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -117,7 +117,7 @@
 			<!-- Numéro de pseudosiret -->
 			<category>
 				<descriptif>PseudoSiret</descriptif>
-				<name>PSI</name>
+				<name>psi</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -128,7 +128,7 @@
 			<!-- Numéro de structure -->
 			<category>
 				<descriptif>NumeroStructure</descriptif>
-				<name>NST</name>
+				<name>nst</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -139,7 +139,7 @@
 			<!-- Numéro de recours -->
 			<category>
 				<descriptif>NumeroRecours</descriptif>
-				<name>NRE</name>
+				<name>nre</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -150,7 +150,7 @@
 			<!-- Numéro interne contrôle -->
 			<category>
 				<descriptif>NumeroIntControle</descriptif>
-				<name>NIC</name>
+				<name>nic</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -161,7 +161,7 @@
 			<!-- Date réception -->
 			<category>
 				<descriptif>DateReception</descriptif>
-				<name>DRE</name>
+				<name>dre</name>
 				<dataType>Date</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -172,7 +172,7 @@
 			<!-- Application Productrice du document -->
 			<category>
 				<descriptif>ApplicationProductrice</descriptif>
-				<name>APR</name>
+				<name>apr</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>1</minimumValues>
@@ -183,7 +183,7 @@
 			<!-- Application traitant le document -->
 			<category>
 				<descriptif>ApplicationTraitement</descriptif>
-				<name>ATR</name>
+				<name>atr</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -194,7 +194,7 @@
 			<!-- Code organisme propriétaire -->
 			<category>
 				<descriptif>CodeOrganismeProprietaire</descriptif>
-				<name>COP</name>
+				<name>cop</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>1</minimumValues>
@@ -205,7 +205,7 @@
 			<!-- Code organisme gestionnaire -->
 			<category>
 				<descriptif>CodeOrganismeGestionnaire</descriptif>
-				<name>COG</name>
+				<name>cog</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>1</minimumValues>
@@ -216,7 +216,7 @@
 			<!-- Site acquisition -->
 			<category>
 				<descriptif>SiteAcquisition</descriptif>
-				<name>SAC</name>
+				<name>sac</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -224,21 +224,10 @@
 				<single>false</single>
 				<enableDictionary>false</enableDictionary>
 			</category>
-			<!-- Code référentiel nationale de document-->
-			<category>
-				<descriptif>CodeRND</descriptif>
-				<name>RND</name>
-				<dataType>String</dataType>
-				<index>true</index>
-				<minimumValues>1</minimumValues>
-				<maximumValues>1</maximumValues>
-				<single>false</single>
-				<enableDictionary>false</enableDictionary>
-			</category>
 			<!-- Version de Code RND -->
 			<category>
 				<descriptif>VersionRND</descriptif>
-				<name>VRN</name>
+				<name>vrn</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>1</minimumValues>
@@ -249,7 +238,7 @@
 			<!-- Code fonction RFP -->
 			<category>
 				<descriptif>CodeFonction</descriptif>
-				<name>DOM</name>
+				<name>dom</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>1</minimumValues>
@@ -260,30 +249,8 @@
 			<!-- Code Activité RFP -->
 			<category>
 				<descriptif>CodeActivite</descriptif>
-				<name>ACT</name>
+				<name>act</name>
 				<dataType>String</dataType>
-				<index>true</index>
-				<minimumValues>1</minimumValues>
-				<maximumValues>1</maximumValues>
-				<single>false</single>
-				<enableDictionary>false</enableDictionary>
-			</category>
-			<!-- Date début conservation -->
-			<category>
-				<descriptif>DateDebutConservation</descriptif>
-				<name>DDC</name>
-				<dataType>Date</dataType>
-				<index>true</index>
-				<minimumValues>1</minimumValues>
-				<maximumValues>1</maximumValues>
-				<single>false</single>
-				<enableDictionary>false</enableDictionary>
-			</category>
-			<!-- Date fin conservation -->
-			<category>
-				<descriptif>DateFinConservation</descriptif>
-				<name>DFC</name>
-				<dataType>Date</dataType>
 				<index>true</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
@@ -293,7 +260,7 @@
 			<!-- Traçabilité pré archivage -->
 			<category>
 				<descriptif>TracabilitePreArchivage</descriptif>
-				<name>TPA</name>
+				<name>tpa</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>0</minimumValues>
@@ -304,7 +271,7 @@
 			<!-- Nombre de pages -->
 			<category>
 				<descriptif>NbPages</descriptif>
-				<name>NBP</name>
+				<name>nbp</name>
 				<dataType>Integer</dataType>
 				<index>false</index>
 				<minimumValues>1</minimumValues>
@@ -315,7 +282,7 @@
 			<!-- Format de fichier -->
 			<category>
 				<descriptif>FormatFichier</descriptif>
-				<name>FFI</name>
+				<name>ffi</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>1</minimumValues>
@@ -326,7 +293,7 @@
 			<!-- Identifiant interne du traitement de masse -->
 			<category>
 				<descriptif>IdTraitementMasseInterne</descriptif>
-				<name>ITI</name>
+				<name>iti</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -337,7 +304,7 @@
 			<!-- Identifiant client du traitement de masse -->
 			<category>
 				<descriptif>IdTraitementMasse</descriptif>
-				<name>ITM</name>
+				<name>itm</name>
 				<dataType>String</dataType>
 				<index>true</index>
 				<minimumValues>0</minimumValues>
@@ -348,7 +315,7 @@
 			<!-- Contrat de Service -->
 			<category>
 				<descriptif>ContratDeService</descriptif>
-				<name>CSE</name>
+				<name>cse</name>
 				<dataType>String</dataType>
 				<index>false</index>
 				<minimumValues>1</minimumValues>
@@ -359,6 +326,6 @@
 		</categories>
 	</base>
 	<indexComposites>
-		<indexComposite>COP,RND</indexComposite>
+		<indexComposite>cop,sm_document_type</indexComposite>
 	</indexComposites>
 </docuBase>

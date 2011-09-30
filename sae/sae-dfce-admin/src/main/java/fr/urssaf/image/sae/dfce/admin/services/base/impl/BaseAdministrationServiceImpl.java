@@ -59,12 +59,12 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 	 * 
 	 * 
 	 */
-	@SuppressWarnings("PMD.LongVariable")
+	@SuppressWarnings({"PMD.LongVariable","DataflowAnomalyAnalysis"})
 	public final void createBase(final DataBaseModel dataBaseModel,
 			final XmlDataService xmlDataService)
 			throws BaseAdministrationServiceEx, FileNotFoundException {
 		try {
-			ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
+			final ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
 			LOGGER.info(MessageHandler.getMessage("database.initialization",
 					dataBaseModel.toString()));
 			// Instantiation d'une base

@@ -120,6 +120,7 @@ public final class BaseUtils {
 	 * @return True si l'index définie par l'utilisateur existe dans les
 	 *         catégories
 	 */
+	@SuppressWarnings("DataflowAnomalyAnalysis")
 	private static boolean indexCompositeFinder(final String index,
 			final DataBaseModel dataBaseModel) {
 		boolean find = false;
@@ -163,28 +164,32 @@ public final class BaseUtils {
 				categories[position] = category;
 				position++;
 			}
-			serviceProvider.getStorageAdministrationService()
-					.findOrCreateCompositeIndex(categories);
+			if (categories.length > 0) {
+				serviceProvider.getStorageAdministrationService()
+						.findOrCreateCompositeIndex(categories);
+			}
 		}
 	}
-	
+
 	/**
-	 * @param cnxParameter : Les paramètres de connexion.
+	 * @param cnxParameter
+	 *            : Les paramètres de connexion.
 	 * @return L'url de connection
 	 * @throws MalformedURLException
 	 *             : L'exception lorsque la construction de l'url ne s'est pas
 	 *             bien construite
 	 */
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public  static String buildUrlForConnection(final ConnectionParameter cnxParameter) throws MalformedURLException {
+	public static String buildUrlForConnection(
+			final ConnectionParameter cnxParameter)
+			throws MalformedURLException {
 
-	URL urlConnection = new URL("http", cnxParameter.getHost()
+		URL urlConnection = new URL("http", cnxParameter.getHost()
 				.getHostName(), cnxParameter.getHost().getHostPort(),
 				cnxParameter.getHost().getContextRoot());
 		if (cnxParameter.getHost().isSecure()) {
 			urlConnection = new URL("https", cnxParameter.getHost()
-					.getHostName(),
-					cnxParameter.getHost().getHostPort(),
+					.getHostName(), cnxParameter.getHost().getHostPort(),
 					cnxParameter.getHost().getContextRoot());
 		}
 		return urlConnection.toString();
