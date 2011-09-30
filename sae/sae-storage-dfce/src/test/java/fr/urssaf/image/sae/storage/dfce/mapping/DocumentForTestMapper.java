@@ -11,12 +11,12 @@ import org.junit.Assert;
 
 import com.google.common.io.Files;
 
+import fr.urssaf.image.sae.storage.dfce.data.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.data.model.DesiredMetaData;
 import fr.urssaf.image.sae.storage.dfce.data.model.SaeBase;
 import fr.urssaf.image.sae.storage.dfce.data.model.SaeCategories;
 import fr.urssaf.image.sae.storage.dfce.data.model.SaeCategory;
 import fr.urssaf.image.sae.storage.dfce.data.model.SaeDocument;
-import fr.urssaf.image.sae.storage.dfce.data.test.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
@@ -27,7 +27,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
  * } et des objets et les objets {@link SaeDocument}
  * 
  */
-public final class BeanTestDocumentMapper {
+public final class DocumentForTestMapper {
    /**
     * Permet de convertir les données du document XML vers
     * {@link StorageDocument}.<br/>
@@ -62,6 +62,9 @@ public final class BeanTestDocumentMapper {
         	   if (Constants.TEC_METADATAS[1].equals(codeMetaData)) {
    	      		value =  Utils.formatStringToDate((String)value);
          } 
+        	   if (Constants.TEC_METADATAS[2].equals(codeMetaData)) {
+      	      		value =  Boolean.valueOf((String)value);
+            } 
             metadatas.add(new StorageMetadata(codeMetaData, value));
                }
       storageDocument.setMetadatas(metadatas);
@@ -147,7 +150,7 @@ public final class BeanTestDocumentMapper {
    }
 
    /** Cette classe n'est pas faite pour être instanciée. */
-   private BeanTestDocumentMapper() {
+   private DocumentForTestMapper() {
       assert false;
    }
 }

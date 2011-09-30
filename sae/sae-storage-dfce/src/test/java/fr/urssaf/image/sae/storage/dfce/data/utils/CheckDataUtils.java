@@ -125,8 +125,8 @@ public final class CheckDataUtils {
     *           : Le deuxième Objet
     * @return true si les deux objets sont identiques.
     */
-   private static boolean compareTwoObjects(Object firstObject,
-         Object secondObject) {
+   private static boolean compareTwoObjects(final Object firstObject,
+		   final  Object secondObject) {
       boolean isSame = true;
       if (firstObject instanceof Integer) {
          if (firstObject.hashCode() != Integer.valueOf((String) secondObject)

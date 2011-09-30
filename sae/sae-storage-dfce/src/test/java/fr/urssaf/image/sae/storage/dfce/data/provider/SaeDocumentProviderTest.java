@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import fr.urssaf.image.sae.storage.dfce.data.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.data.model.DesiredMetaData;
 import fr.urssaf.image.sae.storage.dfce.data.model.SaeDocument;
-import fr.urssaf.image.sae.storage.dfce.data.test.constants.Constants;
-import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
+import fr.urssaf.image.sae.storage.dfce.services.StorageServices;
 
 /**
  * Cette clase contient les tests des services de gestion du fichier xml contenant les
@@ -20,7 +20,7 @@ import fr.urssaf.image.sae.storage.dfce.services.CommonServicesImpl;
  * @author akenore, rhofir.
  * 
  */
-public class SaeDocumentProviderTest extends CommonServicesImpl {
+public class SaeDocumentProviderTest extends StorageServices {
    @Test
    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops","PMD.DataflowAnomalyAnalysis"})
    public void getSaeDocumentsFromXML() throws FileNotFoundException {
