@@ -3,7 +3,7 @@ package fr.urssaf.image.sae.services.document.impl;
 import fr.urssaf.image.sae.services.document.SAECaptureService;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
-import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -25,10 +25,8 @@ public class SAECaptureServiceImpl extends AbstractSAEServices implements
     */
    public final void bulkCapture(String urlEcde) throws SAECaptureServiceEx {
       try {
-         getStorageServiceProvider().setStorageServiceProviderParameter(
-               getStorageConnectionParameter());
-         getStorageServiceProvider().getStorageConnectionService()
-               .openConnection();
+         
+         getStorageServiceProvider().openConnexion();
          getStorageServiceProvider().getStorageDocumentService()
                .bulkInsertStorageDocument(new StorageDocuments(), true);
       } catch (ConnectionServiceEx except) {
@@ -40,8 +38,7 @@ public class SAECaptureServiceImpl extends AbstractSAEServices implements
                .getMessage(Constants.CNT_CODE_ERROR), except.getMessage(),
                except);
       } finally {
-         getStorageServiceProvider().getStorageConnectionService()
-               .closeConnexion();
+         getStorageServiceProvider().closeConnexion();
       }
    }
 

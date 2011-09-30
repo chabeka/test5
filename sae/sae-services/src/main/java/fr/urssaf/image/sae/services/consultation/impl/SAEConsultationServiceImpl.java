@@ -63,12 +63,9 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
    public final UntypedDocument consultation(UUID idArchive)
          throws SAEConsultationServiceException {
 
-      this.getStorageServiceProvider().setStorageServiceProviderParameter(
-            this.getStorageConnectionParameter());
-
+     
       try {
-         this.getStorageServiceProvider().getStorageConnectionService()
-               .openConnection();
+         this.getStorageServiceProvider().openConnexion();
 
          try {
 
@@ -117,8 +114,7 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
          } finally {
 
-            this.getStorageServiceProvider().getStorageConnectionService()
-                  .closeConnexion();
+            this.getStorageServiceProvider().closeConnexion();
          }
 
       } catch (ConnectionServiceEx e) {

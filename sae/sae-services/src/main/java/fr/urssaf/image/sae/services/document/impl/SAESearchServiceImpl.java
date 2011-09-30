@@ -394,10 +394,8 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          LuceneCriteria luceneCriteria = buildService
                .buildStorageLuceneCriteria(luceneQuery, maxResult,
                      listeDesiredMetadata);
-         getStorageServiceProvider().setStorageServiceProviderParameter(
-               getStorageConnectionParameter());
-         getStorageServiceProvider().getStorageConnectionService()
-               .openConnection();
+         
+         getStorageServiceProvider().openConnexion();
 
          StorageDocuments storageDocuments = getStorageServiceProvider()
                .getStorageDocumentService()
@@ -409,11 +407,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
       } catch (SearchingServiceEx except) {
          throw new SAESearchServiceEx(except.getMessage(), except);
       } finally {
-         if (getStorageServiceProvider().getStorageConnectionService()
-               .isActive()) {
-            getStorageServiceProvider().getStorageConnectionService()
-                  .closeConnexion();
-         }
+        
+            getStorageServiceProvider().closeConnexion();
+         
       }
       return allStorageDocuments;
    }

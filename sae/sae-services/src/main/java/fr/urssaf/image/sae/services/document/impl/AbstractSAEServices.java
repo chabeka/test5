@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.services.document.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 
 /**
@@ -27,9 +26,6 @@ public abstract class AbstractSAEServices {
    @Autowired
    @Qualifier("storageServiceProvider")
    private StorageServiceProvider storageServiceProvider;
-   @Autowired
-   @Qualifier("storageConnectionParameter")
-   private StorageConnectionParameter storageConnectionParameter;
 
    /**
     * @return La façade de services Storage DFCE.
@@ -47,20 +43,5 @@ public abstract class AbstractSAEServices {
       this.storageServiceProvider = storageServiceProvider;
    }
 
-   /**
-    * @return Les paramètres de connexion
-    */
-   public final StorageConnectionParameter getStorageConnectionParameter() {
-      return storageConnectionParameter;
-   }
-
-   /**
-    * @param storageConnectionParameter
-    *           : Les paramètres de connexion
-    */
-   public final void setStorageConnectionParameter(
-         StorageConnectionParameter storageConnectionParameter) {
-      this.storageConnectionParameter = storageConnectionParameter;
-   }
 
 }

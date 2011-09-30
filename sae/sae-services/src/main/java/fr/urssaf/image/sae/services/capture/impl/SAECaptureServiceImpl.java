@@ -50,7 +50,6 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    private final StorageServiceProvider serviceProvider;
 
-   private final StorageConnectionParameter connectionParam;
 
    private final EcdeFileService ecdeFileService;
 
@@ -81,7 +80,6 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
       this.ecdeFileService = ecdeFileService;
       this.serviceProvider = serviceProvider;
-      this.connectionParam = connectionParam;
       this.commonsService = commonsService;
    }
 
@@ -178,10 +176,8 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    private UUID insererStorageDocument(StorageDocument storageDoc)
          throws SAECaptureServiceEx {
 
-      // ouverture de la connexion DFCE
-      serviceProvider.setStorageServiceProviderParameter(connectionParam);
       try {
-         serviceProvider.getStorageConnectionService().openConnection();
+         serviceProvider.openConnexion();
       } catch (ConnectionServiceEx e) {
          throw new SAECaptureServiceEx(e);
       }
@@ -195,7 +191,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       } catch (InsertionServiceEx e) {
          throw new SAECaptureServiceEx(e);
       } finally {
-         serviceProvider.getStorageConnectionService().closeConnexion();
+         serviceProvider.closeConnexion();
       }
 
       return uuid;

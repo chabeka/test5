@@ -16,7 +16,7 @@ import fr.urssaf.image.sae.services.enrichment.xml.model.RndReference;
 import fr.urssaf.image.sae.services.enrichment.xml.model.TypeDocument;
 import fr.urssaf.image.sae.services.enrichment.xml.services.XmlRndDataService;
 import fr.urssaf.image.sae.services.util.XStreamHelper;
-import fr.urssaf.image.sae.storage.dfce.contants.Constants;
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 
 /**
  * Fournit des méthodes de désérialisation
