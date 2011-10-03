@@ -215,5 +215,21 @@ public class MetadataReferenceDAOImpl implements MetadataReferenceDAO {
 		}
 		return reqMetaDatas;
 	}
-
+	/**
+	 * Construit un objet de type {@link MetadataReferenceDAOImpl}
+	 * @param xmlDataService :  Le service de serialization des fichiers xml.
+	 * @param context : Le context applicatif. 
+	 */
+	public MetadataReferenceDAOImpl(final XmlDataService xmlDataService,
+			final ApplicationContext context) {
+		this.xmlDataService = xmlDataService;
+		this.context = context;
+	}
+	/**
+	 * Construit un objet de type {@link MetadataReferenceDAOImpl}
+	 */
+	public MetadataReferenceDAOImpl() {
+		//ici on ne fait rien
+	}
+	
 }

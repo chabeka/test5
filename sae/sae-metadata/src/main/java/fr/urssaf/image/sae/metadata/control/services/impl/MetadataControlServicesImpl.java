@@ -35,6 +35,10 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 	@Autowired
 	@Qualifier("ruleFactory")
 	private MetadataRuleFactory ruleFactory;
+	
+	
+	
+
 	@Autowired
 	@Qualifier("metadataReferenceDAO")
 	private MetadataReferenceDAO referenceDAO;
@@ -384,5 +388,22 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 		}
 		return errors;
 	}
-
+	
+	/**
+	 * Construit un objet de type {@link MetadataControlServicesImpl }
+	 * @param ruleFactory : La factory des règles
+	 * @param referenceDAO : Le dao du référentiel des métadonnées.
+	 */
+	public MetadataControlServicesImpl(final MetadataRuleFactory ruleFactory,
+			final MetadataReferenceDAO referenceDAO) {
+		this.ruleFactory = ruleFactory;
+		this.referenceDAO = referenceDAO;
+	}
+	/**
+	 * Construit un objet de type {@link MetadataControlServicesImpl }
+	 */
+	public MetadataControlServicesImpl() {
+		//ici on ne fait rien
+	}
+	
 }
