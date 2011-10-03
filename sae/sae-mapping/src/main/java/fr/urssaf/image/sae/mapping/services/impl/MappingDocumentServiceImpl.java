@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
 import fr.urssaf.image.sae.mapping.utils.Utils;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
-import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
@@ -32,10 +30,8 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 @Service
 @Qualifier("mappingDocumentService")
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public final class MappingDocumentServiceImpl implements MappingDocumentService {
-   @Autowired
-   @Qualifier("metadataReferenceDAO")
-   private MetadataReferenceDAO referenceDAO;
+public final class MappingDocumentServiceImpl extends AbstractMappingDocumentService  implements MappingDocumentService {
+ 
 
    /**
     * {@inheritDoc}
@@ -72,7 +68,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
       for (StorageMetadata sMetadata : Utils.nullSafeIterable(storageDoc
             .getMetadatas())) {
          try {
-            final MetadataReference reference = referenceDAO
+            final MetadataReference reference = getReferenceDAO()
                   .getByShortCode(sMetadata.getShortCode());
             metadatas.add(new SAEMetadata(reference.getLongCode(), reference
                   .getShortCode(), sMetadata.getValue()));
@@ -97,7 +93,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
 
       for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc.getMetadatas())) {
          try {
-            final MetadataReference reference = referenceDAO
+            final MetadataReference reference = getReferenceDAO()
                   .getByLongCode(metadata.getLongCode());
 
             metadatas.add(new UntypedMetadata(metadata.getLongCode(), Utils
@@ -124,7 +120,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
       for (UntypedMetadata metadata : Utils.nullSafeIterable(untyped
             .getUMetadatas())) {
          try {
-            final MetadataReference reference = referenceDAO
+            final MetadataReference reference = getReferenceDAO()
                   .getByLongCode(metadata.getLongCode());
             metadatas.add(new SAEMetadata(reference.getLongCode(), reference
                   .getShortCode(), Utils.conversionToObject(
@@ -140,21 +136,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
             metadatas);
    }
 
-   /**
-    * @param referenceDAO
-    *           : Le service du référentiel
-    */
-   public void setReferenceDAO(final MetadataReferenceDAO referenceDAO) {
-      this.referenceDAO = referenceDAO;
-   }
-
-   /**
-    * @return Le service du référentiel
-    */
-   public MetadataReferenceDAO getReferenceDAO() {
-      return referenceDAO;
-   }
-
+ 
    /**
     * {@inheritDoc}
     * 
@@ -167,7 +149,7 @@ public final class MappingDocumentServiceImpl implements MappingDocumentService 
       for (StorageMetadata metadata : Utils.nullSafeIterable(storage
             .getMetadatas())) {
          try {
-            final MetadataReference reference = referenceDAO
+            final MetadataReference reference = getReferenceDAO()
                   .getByShortCode(metadata.getShortCode());
             metadatas.add(new UntypedMetadata(reference.getLongCode(), Utils
                   .convertToString(metadata.getValue(), reference)));

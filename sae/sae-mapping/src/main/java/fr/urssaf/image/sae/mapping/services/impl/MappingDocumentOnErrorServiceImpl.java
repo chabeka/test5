@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import fr.urssaf.image.sae.mapping.services.MappingDocumentOnErrorService;
 import fr.urssaf.image.sae.mapping.utils.Utils;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
-import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentOnError;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
@@ -34,11 +32,8 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 @Service
 @Qualifier("mappingDocumentOnErrorService")
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
-public final class MappingDocumentOnErrorServiceImpl implements
-		MappingDocumentOnErrorService {
-	@Autowired
-	@Qualifier("metadataReferenceDAO")
-	private MetadataReferenceDAO referenceDAO;
+public final class MappingDocumentOnErrorServiceImpl extends
+		AbstractMappingDocumentService implements MappingDocumentOnErrorService {
 
 	/**
 	 * {@inheritDoc}
@@ -51,7 +46,7 @@ public final class MappingDocumentOnErrorServiceImpl implements
 		for (SAEMetadata metadata : Utils.nullSafeIterable(saeDocOnError
 				.getMetadatas())) {
 			try {
-				final MetadataReference reference = referenceDAO
+				final MetadataReference reference = getReferenceDAO()
 						.getByLongCode(metadata.getLongCode());
 				metadatas.add(new UntypedMetadata(metadata.getLongCode(), Utils
 						.convertToString(metadata.getValue(), reference)));
@@ -64,11 +59,11 @@ public final class MappingDocumentOnErrorServiceImpl implements
 		final List<MetadataError> errors = new ArrayList<MetadataError>();
 		for (SAEError saeError : Utils.nullSafeIterable(saeDocOnError
 				.getErrors())) {
-				MetadataError error = new MetadataError();
-				error.setCode(saeError.getCode());
-				error.setMessage(saeError.getMessage());
-				errors.add(error);
-				}
+			MetadataError error = new MetadataError();
+			error.setCode(saeError.getCode());
+			error.setMessage(saeError.getMessage());
+			errors.add(error);
+		}
 		return new UntypedDocumentOnError(saeDocOnError.getContent(),
 				metadatas, errors);
 	}
@@ -77,7 +72,8 @@ public final class MappingDocumentOnErrorServiceImpl implements
 	 * {@inheritDoc}
 	 * 
 	 */
-	@SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops","PMD.DataflowAnomalyAnalysis"})
+	@SuppressWarnings({ "PMD.AvoidInstantiatingObjectsInLoops",
+			"PMD.DataflowAnomalyAnalysis" })
 	public SAEDocumentOnError storageDocumentOnErrorToSaeDocumentOnError(
 			final StorageDocumentOnError storageDocOnError)
 			throws InvalidSAETypeException, MappingFromReferentialException {
@@ -89,14 +85,14 @@ public final class MappingDocumentOnErrorServiceImpl implements
 				storageDocOnError.getMessageError()));
 		saeDocOnError.setErrors(errors);
 		try {
-		for (StorageMetadata sMetadata : Utils
-				.nullSafeIterable(storageDocOnError.getMetadatas())) {
-			
-			final MetadataReference	reference = referenceDAO
-				.getByShortCode(sMetadata.getShortCode());
-			metadatas.add(new SAEMetadata(reference.getLongCode(), sMetadata.getShortCode(),
-					sMetadata.getValue()));
-		}
+			for (StorageMetadata sMetadata : Utils
+					.nullSafeIterable(storageDocOnError.getMetadatas())) {
+
+				final MetadataReference reference = getReferenceDAO()
+						.getByShortCode(sMetadata.getShortCode());
+				metadatas.add(new SAEMetadata(reference.getLongCode(),
+						sMetadata.getShortCode(), sMetadata.getValue()));
+			}
 		} catch (ReferentialException refExcpt) {
 			throw new MappingFromReferentialException(refExcpt);
 		}
@@ -116,7 +112,7 @@ public final class MappingDocumentOnErrorServiceImpl implements
 		for (StorageMetadata metadata : Utils
 				.nullSafeIterable(storageDocOnError.getMetadatas())) {
 			try {
-				final MetadataReference reference = referenceDAO
+				final MetadataReference reference = getReferenceDAO()
 						.getByShortCode(metadata.getShortCode());
 				metadatas.add(new UntypedMetadata(metadata.getShortCode(),
 						Utils.convertToString(metadata.getValue(), reference)));
@@ -129,21 +125,6 @@ public final class MappingDocumentOnErrorServiceImpl implements
 
 		return new UntypedDocumentOnError(storageDocOnError.getContent(),
 				metadatas, null);
-	}
-
-	/**
-	 * @param referenceDAO
-	 *            : Le service du référentiel
-	 */
-	public void setReferenceDAO(final MetadataReferenceDAO referenceDAO) {
-		this.referenceDAO = referenceDAO;
-	}
-
-	/**
-	 * @return Le service du référentiel
-	 */
-	public MetadataReferenceDAO getReferenceDAO() {
-		return referenceDAO;
 	}
 
 }
