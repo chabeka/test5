@@ -22,13 +22,17 @@ import fr.urssaf.image.sae.dfce.admin.model.SaeCategory;
  * @author akenore
  * 
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public final class BaseUtils {
 	/** le répertoire de base */
-	private static final String BASE_DIR = "src/main/resources/saeBase/";
+	private static final String BASE_DIR = "src/main/resources/";
 
 	/** le fichier xml de la base */
-	public static final File BASE_XML_FILE = new File(BASE_DIR + "saeBase.xml");
+	public static final File BASE_XML_FILE = new File(BASE_DIR + "saeBase/"
+			+ "saeBase.xml");
+
+	/** le fichier xml des durée de conservation */
+	public static final File CYCLE_XML_FILE = new File(BASE_DIR
+			+ "LifeCycleRule/" + "lifeCycleRule.xml");
 
 	/**
 	 * @param base

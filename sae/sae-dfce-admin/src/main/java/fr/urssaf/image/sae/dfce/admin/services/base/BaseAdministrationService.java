@@ -22,12 +22,12 @@ import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
  * 
  */
 public interface BaseAdministrationService {
-	
+
 	/**
 	 * Ouvre la connection
 	 * 
 	 * @throws ConnectionServiceEx
-	 *             Lorsqu'un problème survient lors de la connxion
+	 *             Lorsqu'un problème survient lors de la connexion
 	 */
 	void openConnection() throws ConnectionServiceEx;
 
@@ -35,6 +35,7 @@ public interface BaseAdministrationService {
 	 * Ferme la connection
 	 */
 	void closeConnection();
+
 	/**
 	 * Service de création de la base.
 	 * 
@@ -58,6 +59,8 @@ public interface BaseAdministrationService {
 	 *            : un modèle de base de donnée
 	 */
 	void deleteBase(final DataBaseModel dataBaseModel);
+
+	
 
 	/**
 	 * 

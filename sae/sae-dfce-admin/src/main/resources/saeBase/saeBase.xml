@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <docuBase>
 	<base>
-		<baseId>SAE-TEST-1</baseId>
+		<baseId>SAE-TEST</baseId>
 		<baseDescription>Systeme Archivage Electronique</baseDescription>
 		<categories>
 			<!-- Période -->

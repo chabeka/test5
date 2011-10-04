@@ -13,6 +13,7 @@ import fr.urssaf.image.sae.dfce.admin.model.Applications;
 import fr.urssaf.image.sae.dfce.admin.model.Codes;
 import fr.urssaf.image.sae.dfce.admin.model.Contrats;
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
+import fr.urssaf.image.sae.dfce.admin.model.LifeCycleRule;
 import fr.urssaf.image.sae.dfce.admin.model.Objects;
 import fr.urssaf.image.sae.dfce.admin.model.Organismes;
 import fr.urssaf.image.sae.dfce.admin.services.xml.XmlDataService;
@@ -113,5 +114,19 @@ public class XmlDataServiceImpl implements XmlDataService {
 
 		return XStreamHelper.parse(xmlFile, ENCODING, Codes.class,
 				buildReadingXStream(Codes.class));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws FileNotFoundException
+	 *             Lorsque le fichier n'existe pas
+	 */
+	public final LifeCycleRule lifeCycleRuleReader(final File xmlFile)
+			throws FileNotFoundException {
+		
+		
+		return XStreamHelper.parse(xmlFile, ENCODING, LifeCycleRule.class,
+				buildReadingXStream(LifeCycleRule.class));
 	}
 }

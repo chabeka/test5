@@ -7,6 +7,7 @@ import fr.urssaf.image.sae.dfce.admin.model.Applications;
 import fr.urssaf.image.sae.dfce.admin.model.Codes;
 import fr.urssaf.image.sae.dfce.admin.model.Contrats;
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
+import fr.urssaf.image.sae.dfce.admin.model.LifeCycleRule;
 import fr.urssaf.image.sae.dfce.admin.model.Objects;
 import fr.urssaf.image.sae.dfce.admin.model.Organismes;
 /**
@@ -61,4 +62,11 @@ public interface XmlDataService {
 	 * @throws FileNotFoundException Lorsque le fichier n'est pas présent
 	 */
 	Codes rndReader(final File xmlFile) throws FileNotFoundException;
+	/**
+	 * 
+	 * @param xmlFile : Le fichier xml contenant les données
+	 * @return Le cycle de vies des documents du sae.
+	 * @throws FileNotFoundException Lorsque le fichier n'est pas présent
+	 */
+	LifeCycleRule lifeCycleRuleReader(final File xmlFile) throws FileNotFoundException;
 }

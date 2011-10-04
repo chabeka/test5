@@ -2,10 +2,12 @@ package fr.urssaf.image.sae.dfce.admin.services.base.impl;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
+
 import junit.framework.Assert;
 import net.docubase.toolkit.service.ServiceProvider;
-import org.junit.Ignore;
+
 import org.junit.Test;
+
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
 import fr.urssaf.image.sae.dfce.admin.services.AbstractComponents;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
@@ -22,7 +24,7 @@ public class DeletionBaseDFCETest extends AbstractComponents {
 	 * @throws MalformedURLException Exception levée
 	 */
 	@Test
-	@Ignore
+	//@Ignore
 	public void deleteBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException, MalformedURLException {
 		
@@ -33,8 +35,7 @@ public class DeletionBaseDFCETest extends AbstractComponents {
 		final ServiceProvider service = ServiceProvider.newServiceProvider();
 		service.connect(getConnectionParameter().getUser().getLogin(),
 				getConnectionParameter().getUser().getPassword(),BaseUtils.buildUrlForConnection(getConnectionParameter()));
-		Assert.assertNull( service
-				.getBaseAdministrationService().getBase(baseSae.trim()));
+		Assert.assertNull( service.getBaseAdministrationService().getBase(baseSae.trim()));
 	}
 	
 	

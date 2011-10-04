@@ -9,6 +9,7 @@ import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
+import net.docubase.toolkit.model.reference.LifeCycleLengthUnit;
 import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.log4j.Logger;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.dfce.admin.messages.MessageHandler;
 import fr.urssaf.image.sae.dfce.admin.model.ConnectionParameter;
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
+import fr.urssaf.image.sae.dfce.admin.model.LifeCycleRule;
+import fr.urssaf.image.sae.dfce.admin.model.TypeDocument;
 import fr.urssaf.image.sae.dfce.admin.services.AbstractService;
 import fr.urssaf.image.sae.dfce.admin.services.base.BaseAdministrationService;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
@@ -59,7 +62,7 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 	 * 
 	 * 
 	 */
-	@SuppressWarnings({"PMD.LongVariable","DataflowAnomalyAnalysis"})
+	@SuppressWarnings({ "PMD.LongVariable", "DataflowAnomalyAnalysis" })
 	public final void createBase(final DataBaseModel dataBaseModel,
 			final XmlDataService xmlDataService)
 			throws BaseAdministrationServiceEx, FileNotFoundException {
@@ -84,12 +87,12 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 			final List<BaseCategory> baseCategories = BaseUtils
 					.initBaseCategories(dataBaseModel, getServiceProvider());
 			LOGGER.info(MessageHandler
-					.getMessage("database.dictionnary.creation"));
+					.getMessage("database.base.categories.creation"));
 			for (BaseCategory baseCategory : Utils
 					.nullSafeIterable(baseCategories)) {
 				base.addBaseCategory(baseCategory);
 			}
-			LOGGER.info(MessageHandler.getMessage("database.creation"));
+			LOGGER.info(MessageHandler.getMessage("database.creation",dataBaseModel.getBase().getBaseId()));
 			// Création de la base
 			getServiceProvider().getBaseAdministrationService()
 					.createBase(base);
@@ -99,6 +102,9 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 			BaseUtils.createIndexComposite(dataBaseModel, getServiceProvider());
 			// on démarre la base
 			getServiceProvider().getBaseAdministrationService().startBase(base);
+			//Alimentation de la colonne famille LifeCycleRule
+			createNewLifeCycleRule(xmlDataService);
+			
 
 		} catch (ObjectAlreadyExistsException objAlreadyExistsEx) {
 			throw new BaseAdministrationServiceEx(
@@ -187,5 +193,35 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 	public final void setConnectionParameter(
 			final ConnectionParameter cnxParameter) {
 		this.connectionParameter = cnxParameter;
+	}
+
+	/**
+	 * Service permettant de créer le cycle de vie d'un document.
+	 * 
+	 * @param xmlDataService
+	 *            : Le service de désérialisation des flux xml
+	 * @throws FileNotFoundException
+	 *             Lorsque le fichier n'existe pas
+	 * @throws ConnectionServiceEx
+	 *             Lorsqu'un problème survient lors de la connexion.
+	 */
+	private  void createNewLifeCycleRule(
+			final XmlDataService xmlDataService) throws FileNotFoundException {
+		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.initialization"));
+		final LifeCycleRule lifeCycles = xmlDataService
+				.lifeCycleRuleReader(BaseUtils.CYCLE_XML_FILE);
+		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.create"));
+		for (TypeDocument rule : lifeCycles.getTypeDocuments()) {
+			try {
+				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.document",rule.getRndCode()));
+				getServiceProvider().getStorageAdministrationService()
+						.createNewLifeCycleRule(rule.getRndCode(),
+								rule.getStorageDuration(),
+								LifeCycleLengthUnit.DAY);
+			} catch (ObjectAlreadyExistsException objectExist) {
+				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.already.exist" ,rule.getRndCode()));
+			}
+		}
+		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.initialization"));
 	}
 }
