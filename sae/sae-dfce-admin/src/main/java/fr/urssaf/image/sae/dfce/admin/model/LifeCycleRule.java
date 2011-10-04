@@ -12,21 +12,21 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  */
 @XStreamAlias("LifeCycleRule")
 public class LifeCycleRule {
-   @XStreamImplicit(itemFieldName = "TypeDocument")
-   private List<TypeDocument> typeDocuments;
+   @XStreamImplicit(itemFieldName = "Rule")
+   private List<Rule> rules;
 
    /**
-    * @return Liste de type {@link TypeDocument}
+    * @return Liste de type {@link Rule}
     */
-   public final List<TypeDocument> getTypeDocuments() {
-      return typeDocuments;
+   public final List<Rule> getRules() {
+      return rules;
    }
 
    /**
-    * @param typeDocuments
-    *           : Liste de type {@link TypeDocument}.
+    * @param rules
+    *           : Liste de type {@link Rule}.
     */
-   public final void setTypeDocuments(final List<TypeDocument> typeDocuments) {
-      this.typeDocuments = typeDocuments;
+   public final void setTypeDocuments(final List<Rule> rules) {
+      this.rules = rules;
    }
 }
