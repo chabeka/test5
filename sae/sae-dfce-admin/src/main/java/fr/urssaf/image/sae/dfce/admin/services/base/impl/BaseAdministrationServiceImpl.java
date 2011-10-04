@@ -21,7 +21,7 @@ import fr.urssaf.image.sae.dfce.admin.messages.MessageHandler;
 import fr.urssaf.image.sae.dfce.admin.model.ConnectionParameter;
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
 import fr.urssaf.image.sae.dfce.admin.model.LifeCycleRule;
-import fr.urssaf.image.sae.dfce.admin.model.TypeDocument;
+import fr.urssaf.image.sae.dfce.admin.model.Rule;
 import fr.urssaf.image.sae.dfce.admin.services.AbstractService;
 import fr.urssaf.image.sae.dfce.admin.services.base.BaseAdministrationService;
 import fr.urssaf.image.sae.dfce.admin.services.exceptions.BaseAdministrationServiceEx;
@@ -211,15 +211,15 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 		final LifeCycleRule lifeCycles = xmlDataService
 				.lifeCycleRuleReader(BaseUtils.CYCLE_XML_FILE);
 		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.create"));
-		for (TypeDocument rule : lifeCycles.getTypeDocuments()) {
+		for (Rule documentRule : lifeCycles.getRules()) {
 			try {
-				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.document",rule.getRndCode()));
+				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.document",documentRule.getRndCode()));
 				getServiceProvider().getStorageAdministrationService()
-						.createNewLifeCycleRule(rule.getRndCode(),
-								rule.getStorageDuration(),
+						.createNewLifeCycleRule(documentRule.getRndCode(),
+								documentRule.getStorageDuration(),
 								LifeCycleLengthUnit.DAY);
 			} catch (ObjectAlreadyExistsException objectExist) {
-				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.already.exist" ,rule.getRndCode()));
+				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.already.exist" ,documentRule.getRndCode()));
 			}
 		}
 	}
