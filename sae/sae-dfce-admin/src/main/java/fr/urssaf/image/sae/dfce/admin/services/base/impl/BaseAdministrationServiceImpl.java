@@ -222,6 +222,5 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.already.exist" ,rule.getRndCode()));
 			}
 		}
-		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.initialization"));
 	}
 }
