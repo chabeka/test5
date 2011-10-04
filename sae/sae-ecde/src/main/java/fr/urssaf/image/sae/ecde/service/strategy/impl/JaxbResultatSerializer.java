@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.bo.model.MetadataError;
 import fr.urssaf.image.sae.bo.model.SAEError;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocumentOnError;
-import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.BatchModeType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ErreurType;
@@ -110,20 +109,7 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
    // affecter hashValeur, hashAlgo et cheminEtnomDuFichier a un untypedDocumentOnError
    private FichierType affectObjetNumToUntypedDoc(UntypedDocumentOnError udocOnError) {
       
-      List<UntypedMetadata> untypedMetadatas = udocOnError.getUMetadatas();
-      
       FichierType fichierType = new FichierType();
-      
-      for (UntypedMetadata untypedMetadata : untypedMetadatas) {
-         if ( "TypeHash".equals(untypedMetadata.getLongCode()) ) {
-            // affectation de l'objet Numerique
-            fichierType.setHashAlgo(untypedMetadata.getValue());
-         }
-         if ( "Hash".equals(untypedMetadata.getLongCode()) ) {
-            // affectation de l'objet Numerique
-            fichierType.setHashValeur(untypedMetadata.getValue());
-         }
-      }
       fichierType.setCheminEtNomDuFichier(getCheminAbsolu(udocOnError.getFilePath()));
       return fichierType;
    }

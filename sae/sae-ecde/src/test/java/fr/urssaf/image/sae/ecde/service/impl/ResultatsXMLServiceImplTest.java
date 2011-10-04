@@ -44,7 +44,7 @@ import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext-sae-ecde.xml")
+@ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
 @SuppressWarnings({"PMD.MethodNamingConventions","PMD.NcssMethodCount","PMD.ExcessiveMethodLength", "PMD.ExcessiveImports"})
 public class ResultatsXMLServiceImplTest {
 
@@ -64,12 +64,9 @@ public class ResultatsXMLServiceImplTest {
    // declaration d'un répertoire dans le repertoire temp de l'os
    private static final String REPERTOIRE = FilenameUtils.concat(REPERTORY, resultatsEcde);
    
-   private static final String SHA1 = "SHA-1";
    private static final String VALEUR = "La valeur";
    private static final String META1 = "CODE_METADONNEE_1";
    private static final String META2 = "CODE_METADONNEE_2";
-   
-   private static String hashValeur = "hashValeur";
    
    @BeforeClass
    public static void init() throws IOException {
@@ -98,8 +95,6 @@ public class ResultatsXMLServiceImplTest {
       // objet num
       FichierType objetNum = new FichierType();
       objetNum.setCheminEtNomDuFichier("repertoire/fichier1.pdf");
-      objetNum.setHashValeur("541f9db389ff2d4b70dd25917277daafea1e7ba6");
-      objetNum.setHashAlgo(SHA1);
       doc1.setObjetNumerique(objetNum);
       
       // erreurs
@@ -122,8 +117,6 @@ public class ResultatsXMLServiceImplTest {
       // objet num
       FichierType objetNum2 = new FichierType();
       objetNum2.setCheminEtNomDuFichier("repertoire/fichier2.pdf");
-      objetNum2.setHashValeur("541f9db389ff2d4b70dd25917277daafea1dfb98");
-      objetNum2.setHashAlgo(SHA1);
       doc2.setObjetNumerique(objetNum2);
       
       // erreurs
@@ -151,8 +144,6 @@ public class ResultatsXMLServiceImplTest {
       DocumentVirtuelType docVirtuel = new DocumentVirtuelType();
       FichierType objNumVir = new FichierType();
       objNumVir.setCheminEtNomDuFichier("repertoire/fichier3.pdf");
-      objNumVir.setHashValeur("777f9db389ff2d4b70dd25917277daafea1dfb98");
-      objNumVir.setHashAlgo(SHA1);
       docVirtuel.setObjetNumerique(objNumVir);
       
       ComposantDocumentVirtuelType composant = new ComposantDocumentVirtuelType();
@@ -193,8 +184,6 @@ public class ResultatsXMLServiceImplTest {
       DocumentVirtuelType docVirtuel2 = new DocumentVirtuelType();
       FichierType objNumVir2 = new FichierType();
       objNumVir2.setCheminEtNomDuFichier("repertoire/fichier4.pdf");
-      objNumVir2.setHashValeur("888f9db389ff2d4b70dd25917277daafea1dfb98");
-      objNumVir2.setHashAlgo(SHA1);
       docVirtuel2.setObjetNumerique(objNumVir2);
       
       ComposantDocumentVirtuelType composant3 = new ComposantDocumentVirtuelType();
@@ -246,8 +235,6 @@ public class ResultatsXMLServiceImplTest {
       // objet num
       FichierType objetNum = new FichierType();
       objetNum.setCheminEtNomDuFichier("repertoire/fichier1.pdf");
-      objetNum.setHashValeur("541f9db389ff2d4b70dd25917277daafea1e7ba6");
-      objetNum.setHashAlgo(SHA1);
       doc1.setObjetNumerique(objetNum);
       
       // erreurs
@@ -274,8 +261,6 @@ public class ResultatsXMLServiceImplTest {
       DocumentVirtuelType docVirtuel = new DocumentVirtuelType();
       FichierType objNumVir = new FichierType();
       objNumVir.setCheminEtNomDuFichier("repertoire/fichier6.pdf");
-      objNumVir.setHashValeur(hashValeur);
-      objNumVir.setHashAlgo(SHA1);
       docVirtuel.setObjetNumerique(objNumVir);
       
       ComposantDocumentVirtuelType composant = new ComposantDocumentVirtuelType();
@@ -326,7 +311,7 @@ public class ResultatsXMLServiceImplTest {
       }
       assertEquals("fichier non existant", true, exist);
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu), Sha-1 calculé via un logiciel externe
-      String fsumAttendu = "a42547557eb45cb374a8335cb7df08d1f87bdbd1";
+      String fsumAttendu = "24f9c9ae38b4059a9a4f29b43f28875fbd51654c";
       String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
       
       assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
@@ -339,7 +324,7 @@ public class ResultatsXMLServiceImplTest {
       service.writeResultatsXml(resultats, output);
       
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu), Sha-1 calculé via un logiciel externe
-      String fsumAttendu = "a42547557eb45cb374a8335cb7df08d1f87bdbd1";
+      String fsumAttendu = "24f9c9ae38b4059a9a4f29b43f28875fbd51654c";
       String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
       
       assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);

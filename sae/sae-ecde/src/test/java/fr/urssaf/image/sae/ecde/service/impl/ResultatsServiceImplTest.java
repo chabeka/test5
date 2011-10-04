@@ -65,7 +65,6 @@ public class ResultatsServiceImplTest {
    
    private void createAbo() throws URISyntaxException, IOException {
       
-      ecdeSources.getSources();
       for (EcdeSource ecde : ecdeSources.getSources()) {
          if (TEST_UNIT.equals(ecde.getHost())) {
             repertoireTemp = ecde.getBasePath();

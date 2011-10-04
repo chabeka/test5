@@ -79,6 +79,14 @@ public class EcdeFileServiceImpl implements EcdeFileService {
       }
       // Construction de l'URI adequate
       try {
+         //TODO
+         /**
+          * private static char separateurFichier = System.getProperty("file.separator").charAt(0);
+          * 
+          * chemin = StringUtils.replaceChars(chemin, '/', separateurFichier);
+            chemin = StringUtils.replaceChars(chemin, '\\', separateurFichier);
+          * 
+          * */
          String fichier = nomFichier.replace("\\", "/");
          uriRetournee = new URI(ECDE, host, fichier, null);
       } catch (URISyntaxException e) {

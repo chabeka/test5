@@ -18,8 +18,6 @@
       <somres:document>
          <somres:objetNumerique>
             <somres:cheminEtNomDuFichier>repertoire/fichier1.pdf</somres:cheminEtNomDuFichier>
-            <somres:hashValeur>541f9db389ff2d4b70dd25917277daafea1e7ba6</somres:hashValeur>
-            <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>
          <somres:metadonnees>
             <somres:metadonnee>
@@ -29,6 +27,14 @@
             <somres:metadonnee>
                <somres:code>CODE_METADONNEE_2</somres:code>
                <somres:valeur>La valeur</somres:valeur>
+            </somres:metadonnee>
+            <somres:metadonnee>
+               <somres:code>Hash</somres:code>
+               <somres:valeur>541f9db389ff2d4b70dd25917277daafea1e7ba6</somres:valeur>
+            </somres:metadonnee>
+            <somres:metadonnee>
+               <somres:code>TypeHash</somres:code>
+               <somres:valeur>SHA-1</somres:valeur>
             </somres:metadonnee>
          </somres:metadonnees>
          <somres:numeroPageDebut>1</somres:numeroPageDebut>
@@ -39,8 +45,6 @@
       <somres:document>
          <somres:objetNumerique>
             <somres:cheminEtNomDuFichier>repertoire/fichier2.pdf</somres:cheminEtNomDuFichier>
-            <somres:hashValeur>541f9db389ff2d4b70dd25917277daafea1dfb98</somres:hashValeur>
-            <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>
          <somres:metadonnees>
             <somres:metadonnee>
@@ -50,6 +54,14 @@
             <somres:metadonnee>
                <somres:code>CODE_METADONNEE_2</somres:code>
                <somres:valeur>La valeur</somres:valeur>
+            </somres:metadonnee>
+            <somres:metadonnee>
+               <somres:code>Hash</somres:code>
+               <somres:valeur>541f9db389ff2d4b70dd25917277daafea1dfb98</somres:valeur>
+            </somres:metadonnee>
+            <somres:metadonnee>
+               <somres:code>TypeHash</somres:code>
+               <somres:valeur>SHA-1</somres:valeur>
             </somres:metadonnee>
          </somres:metadonnees>
       </somres:document>
@@ -64,8 +76,6 @@
       <somres:documentVirtuel>
          <somres:objetNumerique>
             <somres:cheminEtNomDuFichier>repertoire/fichier3.pdf</somres:cheminEtNomDuFichier>
-            <somres:hashValeur>777f9db389ff2d4b70dd25917277daafea1dfb98</somres:hashValeur>
-            <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>
          <somres:composants>
             
@@ -78,6 +88,14 @@
                   <somres:metadonnee>
                      <somres:code>CODE_METADONNEE_2</somres:code>
                      <somres:valeur>La valeur</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                     <somres:code>Hash</somres:code>
+                     <somres:valeur>777f9db389ff2d4b70dd25917277daafea1dfb98</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                     <somres:code>TypeHash</somres:code>
+                     <somres:valeur>SHA-1</somres:valeur>
                   </somres:metadonnee>
                </somres:metadonnees>
                <somres:numeroPageDebut>1</somres:numeroPageDebut>
@@ -94,6 +112,14 @@
                      <somres:code>CODE_METADONNEE_2</somres:code>
                      <somres:valeur>La valeur</somres:valeur>
                   </somres:metadonnee>
+                  <somres:metadonnee>
+                  <somres:code>Hash</somres:code>
+                     <somres:valeur>777f9db389ff2d4b70dd25917277daafea1dfb98</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                  <somres:code>TypeHash</somres:code>
+                  <somres:valeur>SHA-1</somres:valeur>
+               </somres:metadonnee>
                </somres:metadonnees>
                <somres:numeroPageDebut>2</somres:numeroPageDebut>
                <somres:nombreDePages>2</somres:nombreDePages>
@@ -107,8 +133,6 @@
       <somres:documentVirtuel>
          <somres:objetNumerique>
             <somres:cheminEtNomDuFichier>repertoire/fichier4.pdf</somres:cheminEtNomDuFichier>
-            <somres:hashValeur>888f9db389ff2d4b70dd25917277daafea1dfb98</somres:hashValeur>
-            <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>
          <somres:composants>
             
@@ -121,6 +145,14 @@
                   <somres:metadonnee>
                      <somres:code>CODE_METADONNEE_2</somres:code>
                      <somres:valeur>La valeur</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                     <somres:code>Hash</somres:code>
+                     <somres:valeur>777f9db389ff2d4b70dd25917277daafea1dfb98</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                     <somres:code>TypeHash</somres:code>
+                     <somres:valeur>SHA-1</somres:valeur>
                   </somres:metadonnee>
                </somres:metadonnees>
                <somres:numeroPageDebut>1</somres:numeroPageDebut>
@@ -136,6 +168,14 @@
                   <somres:metadonnee>
                      <somres:code>CODE_METADONNEE_2</somres:code>
                      <somres:valeur>La valeur</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                     <somres:code>Hash</somres:code>
+                     <somres:valeur>777f9db389ff2d4b70dd25917277daafea1dfb98</somres:valeur>
+                  </somres:metadonnee>
+                  <somres:metadonnee>
+                     <somres:code>TypeHash</somres:code>
+                     <somres:valeur>SHA-1</somres:valeur>
                   </somres:metadonnee>
                </somres:metadonnees>
                <somres:numeroPageDebut>2</somres:numeroPageDebut>

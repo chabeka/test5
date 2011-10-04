@@ -20,7 +20,9 @@ public final class MessageRessourcesUtils {
    private MessageRessourcesUtils() {
    }
    // Recupération du contexte pour les fichiers properties
-   private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde.xml");
+   // private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde.xml");
+   private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde-messages.xml");
+   
    private static final MessageSource MESSAGESOURCES = (MessageSource) CONTEXT.getBean("messageSource_sae_ecde");
 
    private static final String NONRENSEIGNE = "ecdeFileAttributNonRenseigne";

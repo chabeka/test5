@@ -6,6 +6,9 @@
 
    <Environment name="SAE_Fichier_Configuration_DFCE" type="java.lang.String"
       value="/appl/sae/sae-dfce-config.properties" />
+      
+   <Environment name="SAE_Fichier_Configuration" type="java.lang.String"
+      value="/appl/sae/sae.properties" />
 
 
 </Context>

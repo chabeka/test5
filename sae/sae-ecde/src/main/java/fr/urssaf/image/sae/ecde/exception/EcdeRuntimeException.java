@@ -29,5 +29,15 @@ public class EcdeRuntimeException extends RuntimeException {
    public EcdeRuntimeException(String message, Throwable throwable) {
       super(message, throwable);
    }
+   
+   
+   /**
+    * Constructeur
+    *  
+    * @param message le message de l'exception
+    */
+   public EcdeRuntimeException(String message) {
+      super(message);
+   }
 
 }

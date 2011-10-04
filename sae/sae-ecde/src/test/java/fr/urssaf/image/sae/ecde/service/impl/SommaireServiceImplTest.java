@@ -50,8 +50,7 @@ public class SommaireServiceImplTest {
    private static final String BATCH_MODE = "TOUT_OU_RIEN";
    private static final String SOM = "/sommaire.xml";
    
-   private static File repertoireTemp = new File("");
-   private static File repertoireFinal = new File("");
+   private static File repertoireTemp = new File(""), repertoireFinal = new File("");
    
    
    private static String getSommaire() {
@@ -78,6 +77,7 @@ public class SommaireServiceImplTest {
       }
       repertoireFinal = new File(repertoireTemp.getAbsolutePath() + "/1/20110101/3/");
       FileUtils.forceMkdir(repertoireFinal);
+      repertoireFinal.exists();
    }
    
    private static void createSom(String sommaire, String som) throws URISyntaxException, IOException {
@@ -88,6 +88,7 @@ public class SommaireServiceImplTest {
       FileUtils.copyFile(sommaire1, somCopy1);
       
       somCopy1.createNewFile();
+      somCopy1.exists();
    }
    
    private static void createFileTemp() throws URISyntaxException, IOException {
@@ -97,12 +98,13 @@ public class SommaireServiceImplTest {
      
       File rep = new File(repertoireFinal.getAbsolutePath() + System.getProperty("file.separator") + "documents" + System.getProperty("file.separator") + "repertoire");
       FileUtils.forceMkdir(rep);
-      
+      rep.exists();
       
       File somCopy1 = new File(rep.getAbsolutePath() + System.getProperty("file.separator") + "testunitaire.txt");
+      somCopy1.createNewFile();
       FileUtils.copyFile(sommaire1, somCopy1);
-      
-      somCopy1.createNewFile();      
+               
+      somCopy1.exists();
    }
    
 // Le test doit echouer car notre objet numérique a un fichier qui n'existe pas d'ou fichier introuvable
@@ -129,16 +131,31 @@ public class SommaireServiceImplTest {
    }
    
    
+   
+   
 // Verification que l'objet resultat cree est correct.
    @Test
    public void fetchSommaireByUriSuccess() throws EcdeGeneralException, URISyntaxException, IOException  {
-      uri2 = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      
+      
       createAbo();
+      
       createSom(FILE_SOM3, SOM);
+      
+      uri2 = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      
+      
       createFileTemp();
+      
+      
       Sommaire sommaire = sommaireService.fetchSommaireByUri(uri2);
+      
       assertEquals(INATTENDU, BATCH_MODE, sommaire.getBatchMode());
    }
+   
+   
+   
+   
 // Le sommaire XMl n'a pas son batchMode a TOUT ou RIEN
 // Erreur genéré SAXParseException : non respect de l'enumeration TOUT_OU_RIEN ou PARTIEL 
 // Cette exception est catché et genere une exception de type EcdeBadSummaryException dans le code   

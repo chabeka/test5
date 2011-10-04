@@ -21,8 +21,6 @@
       <somres:document>
          <somres:objetNumerique>
             <somres:cheminEtNomDuFichier>repertoire\testunitaire.txt</somres:cheminEtNomDuFichier>
-            <somres:hashValeur>541f9db389ff2d4b70dd25917277daafea1e7ba6</somres:hashValeur>
-            <somres:hashAlgo>SHA-1</somres:hashAlgo>
          </somres:objetNumerique>
          <somres:metadonnees>
             <somres:metadonnee>
@@ -32,6 +30,14 @@
             <somres:metadonnee>
                <somres:code>CODE_METADONNEE_2</somres:code>
                <somres:valeur>La valeur</somres:valeur>
+            </somres:metadonnee>
+            <somres:metadonnee>
+               <somres:code>Hash</somres:code>
+               <somres:valeur>541f9db389ff2d4b70dd25917277daafea1e7ba6</somres:valeur>
+            </somres:metadonnee>
+            <somres:metadonnee>
+               <somres:code>TypeHash</somres:code>
+               <somres:valeur>SHA-1</somres:valeur>
             </somres:metadonnee>
          </somres:metadonnees>
          <somres:numeroPageDebut>1</somres:numeroPageDebut>

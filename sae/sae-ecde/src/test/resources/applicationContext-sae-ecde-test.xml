@@ -21,13 +21,15 @@
    </bean>
    
    
-   <bean id="ecdeSourceManagerTest"
-      class="fr.urssaf.image.sae.ecde.managertest.EcdeSourceManagerTestImpl" />
-   
+   <bean id="ecdeTestConfig"
+      class="fr.urssaf.image.sae.ecde.util.test.EcdeTestConfig" />
    
    <bean id="ecdeSources"
-    factory-bean="ecdeSourceManagerTest"
-    factory-method="load">
-    </bean>
+         factory-bean="ecdeTestConfig"
+         factory-method="load">
+   </bean>
+   
+   <bean id="ecdeTestTools"
+      class="fr.urssaf.image.sae.ecde.util.test.EcdeTestTools" />
     
 </beans>

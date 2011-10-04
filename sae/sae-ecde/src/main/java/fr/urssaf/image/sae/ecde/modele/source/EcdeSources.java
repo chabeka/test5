@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.ecde.modele.source;
 
-import org.springframework.stereotype.Component;
 
 
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
  * <br> à savoir EcdeSource[]
  *
  */
-@Component
 @SuppressWarnings({"PMD.MethodReturnsInternalArray", "PMD.ArrayIsStoredDirectly"})
 public class EcdeSources {
    

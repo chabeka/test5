@@ -60,7 +60,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
    private static final String DOCUMENTS = "documents";
    private static final String TOUT_OU_RIEN = "TOUT_OU_RIEN";
    private static final String SEPARATOR_FILE = System.getProperty("file.separator"); 
-   private static char separateurFichier = System.getProperty("file.separator").charAt(0);
+   //private static char separateurFichier = System.getProperty("file.separator").charAt(0);
    
    private final ObjectFactory objFactory = new ObjectFactory();
    
@@ -114,61 +114,46 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
     */
    private Sommaire mapToUntypedDoc(SommaireType sommaireType, String ecdeDirectory) throws EcdeGeneralException, IOException{
       
+      // Objet Sommaire à retourner
       Sommaire sommaire = new Sommaire();
       sommaire.setBatchMode(sommaireType.getBatchMode().toString());
       sommaire.setDescription(sommaireType.getDescription());
       sommaire.setDateCreation(convertXMLGregorianCalendarToDate(sommaireType.getDateCreation()));
+      sommaire.setEcdeDirectory(ecdeDirectory);
+      
       List<UntypedMetadata> listUM = new ArrayList<UntypedMetadata>();
       List<UntypedDocument> listUDocSom = new ArrayList<UntypedDocument>();
          
       List<DocumentType> listDocsType = sommaireType.getDocuments().getDocument();
+      
       String repDocs = ecdeDirectory.concat(SEPARATOR_FILE).concat(DOCUMENTS);
          
       UntypedDocument untypedDoc = new UntypedDocument();
       UntypedMetadata untypedMetadata = new UntypedMetadata();
-      UntypedMetadata untypedMetadata2 = new UntypedMetadata();
-      UntypedMetadata untypedMetadata3 = new UntypedMetadata();
       
-      File outputFile = new File(FilenameUtils.concat(ecdeDirectory,"resultats.xml"));
+      File outputFile = new File(ecdeDirectory,"resultats.xml");      
       ErreurType erreurType = new ErreurType();
-         
+
       for (DocumentType docType : listDocsType) {
          String chemin = "";
          ResultatsType resultats = objFactory.createResultatsType();
 
          try {
-            //File chemEtNomFile = new File(docType.getObjetNumerique().getCheminEtNomDuFichier());
-            String chemEtNomFile = docType.getObjetNumerique().getCheminEtNomDuFichier();
-            //chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile.getPath());
+            String chemEtNomFile = StringUtils.trim(docType.getObjetNumerique().getCheminEtNomDuFichier());
             chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile);
-            StringUtils.replaceChars(chemin, '/', separateurFichier);
-            StringUtils.replaceChars(chemin, '\\', separateurFichier);
-  
-            untypedDoc.setFilePath(exists(chemin).getAbsolutePath()); // ou en d'autre terme "chemin"
-            untypedDoc.setContent(FileUtils.readFileToByteArray(exists(chemin)));
+            
+            // test pour vérifier si le cheminEtNomDuFichier de l'objet numérique existe 
+            exist(untypedDoc, chemin);
                            
             List<MetadonneeType> metaDataType = docType.getMetadonnees().getMetadonnee();
-                           
             listUM.clear();
-            //UntypedMetadata untypedMetadata = new UntypedMetadata();
                
             for (MetadonneeType metadonneeType : metaDataType) {
                untypedMetadata.setLongCode(metadonneeType.getCode());
                untypedMetadata.setValue(metadonneeType.getValeur());
                listUM.add(untypedMetadata);
-            }
-            // recupération de HASH et TYPEHASH au metaDonnees
-            //UntypedMetadata untypedMetadata2 = new UntypedMetadata();
-            untypedMetadata2.setLongCode("HASH");
-            untypedMetadata2.setValue(docType.getObjetNumerique().getHashValeur());
-            listUM.add(untypedMetadata2);
-            //UntypedMetadata untypedMetadata3 = new UntypedMetadata();
-            untypedMetadata3.setLongCode("TypeHash");
-            untypedMetadata3.setValue(docType.getObjetNumerique().getHashAlgo());
-            listUM.add(untypedMetadata3);
-               
+            }               
             untypedDoc.setUMetadatas(listUM);
-               
             listUDocSom.add(untypedDoc);
          } catch (Exception except) {
             
@@ -201,14 +186,43 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
     * @throws FileNotFoundException 
     */
    private File exists(String chemin) throws IOException {
-      File file = new File(chemin);
+      File fichier = new File(chemin);
       // verification si objetNumerique du sommaire represente un document
-      if (!file.isFile()) {  
+      if (!fichier.isFile()) {  
             throw new IOException(MessageRessourcesUtils
                                              .recupererMessage("objetnum.notexist.error", chemin));
       }
-      return file;
+      return fichier;
    }
+   
+   /**
+    * Verification de l'existance d'un fichier
+    * @throws IOException 
+    * 
+    */
+  private void exist(UntypedDocument untypedDoc, String chemin) throws IOException {
+      
+     File fichier = new File(chemin);
+      
+      // verification si objetNumerique du sommaire represente un document
+      // si oui alors remplissement du untypedDocument
+      if (fichier.isFile()) {
+         untypedDoc.setFilePath(chemin); 
+         untypedDoc.setContent(FileUtils.readFileToByteArray(exists(chemin)));
+      }// sinon rejeté une exception
+      else  {  
+            throw new IOException(MessageRessourcesUtils
+                                             .recupererMessage("objetnum.notexist.error", chemin));
+      }     
+   }
+   
+//   private String replace(String chemin) {
+//      chemin = StringUtils.replaceChars(chemin, '/', separateurFichier);
+//      chemin = StringUtils.replaceChars(chemin, '\\', separateurFichier);
+//      
+//      return chemin;
+//   }
+   
    /**
     * Affectation resultatsOnError
     * 

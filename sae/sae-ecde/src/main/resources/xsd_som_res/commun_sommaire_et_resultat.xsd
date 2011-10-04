@@ -306,30 +306,6 @@
             </xsd:simpleType>
          </xsd:element>
          
-         <!-- Valeur du hash -->
-         <xsd:element name="hashValeur" minOccurs="1" maxOccurs="1">
-            <xsd:annotation>
-               <xsd:documentation>La valeur du hash du fichier</xsd:documentation>
-            </xsd:annotation>
-            <xsd:simpleType>
-               <xsd:restriction base="xsd:string">
-                  <xsd:minLength value="1"/>
-               </xsd:restriction>
-            </xsd:simpleType>
-         </xsd:element>
-         
-         <!-- Algo du hash -->
-         <xsd:element name="hashAlgo" minOccurs="1" maxOccurs="1">
-            <xsd:annotation>
-               <xsd:documentation>L'algorithme avec lequel le hash a été calculé</xsd:documentation>
-            </xsd:annotation>
-            <xsd:simpleType>
-               <xsd:restriction base="xsd:string">
-                  <xsd:enumeration value="SHA-1" />
-               </xsd:restriction>
-            </xsd:simpleType>
-         </xsd:element>
-      
       </xsd:sequence>
    </xsd:complexType>
    
