@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.storage.dfce.services.provider.impl;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.storage.dfce.services.provider.CommonsServicesProvider;
@@ -24,6 +25,7 @@ public class SearchDocumentByLuceneServiceProviderTest extends
 
    // Ici on test la recherche d'un document
    @Test
+   @Ignore
    public final void searchDocument() throws ConnectionServiceEx,
          SearchingServiceEx, InsertionServiceEx {
      

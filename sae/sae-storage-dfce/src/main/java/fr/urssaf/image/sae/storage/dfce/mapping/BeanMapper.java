@@ -16,6 +16,7 @@ import net.docubase.toolkit.model.document.Criterion;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -157,7 +158,7 @@ public final class BeanMapper {
 	 *             Exception lévée lorsque le parsing du nom du fichier ne se
 	 *             passe pas bien.
 	 */
-	public static String findFileNameAndExtension(
+	public static String[] findFileNameAndExtension(
 			final StorageDocument storageDocument, final String shortCode)
 			throws ParseException {
 		String value = null;
@@ -170,7 +171,9 @@ public final class BeanMapper {
 				break;
 			}
 		}
-		return value;
+
+		return new String[] { FilenameUtils.getBaseName(value),
+				FilenameUtils.getExtension(value) };
 	}
 
 	/**
@@ -216,7 +219,7 @@ public final class BeanMapper {
 	 */
 	// CHECKSTYLE:OFF
 	public static Document storageDocumentToDfceDocument(final Base baseDFCE,
-				final StorageDocument storageDocument) throws ParseException {
+			final StorageDocument storageDocument) throws ParseException {
 		BaseCategory baseCategory = null;
 		Date dateCreation = new Date();
 		final Document document = ToolkitFactory.getInstance()
@@ -259,7 +262,7 @@ public final class BeanMapper {
 				case TYPE_HASH:
 				case NOM_FICHIER:
 				case TAILLE_FICHIER:
-				case OBJECT_TYPE:
+				case DOCUMENT_VIRTUEL:
 				case START_PAGE:
 				case END_PAGE:
 				case DATE_ARCHIVE:
@@ -362,9 +365,9 @@ public final class BeanMapper {
 			break;
 		case NOM_FICHIER:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
-					document.getFilename());
+					document.getFilename().concat(".").concat( document.getExtension()));
 			break;
-		case OBJECT_TYPE:
+		case DOCUMENT_VIRTUEL:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
 					document.isVirtual());
 			break;

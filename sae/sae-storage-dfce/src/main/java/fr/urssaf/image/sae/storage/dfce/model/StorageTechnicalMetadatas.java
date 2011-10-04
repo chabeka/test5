@@ -18,13 +18,12 @@ public enum StorageTechnicalMetadatas {
 	// Le type du document c'est à dire le code RND
 	TYPE("CodeRND", FieldName.SM_DOCUMENT_TYPE.toString()),
 	// Durée de conservation
-	DUREE_CONSERVATION("DureeConservation", "dco"),
+	DUREE_CONSERVATION("DureeConservation","lifeCycleLength"),
 	// Date de début de conservation 
 	DATE_DEBUT_CONSERVATION("DateDebutConservation",
 			FieldName.SM_LIFE_CYCLE_REFERENCE_DATE.toString()),
-			
 	// Date de fin de conservation
-	DATE_FIN_CONSERVATION("DateFinConservation", ""),
+	DATE_FIN_CONSERVATION("DateFinConservation", FieldName.SM_FINAL_DATE.toString()),
 	// Gel du document
 	GEL("Gel", "gel"),
 	// TracabilitePostArchivage
@@ -41,7 +40,7 @@ public enum StorageTechnicalMetadatas {
 	EXTENSION_FICHIER("ExtensionFichierDFCE", FieldName.SM_EXTENSION
 			.toString()),
 	// ObjectType
-	OBJECT_TYPE("ObjectType", FieldName.SM_VIRTUAL.toString()),
+	DOCUMENT_VIRTUEL("DocumentVirtuel", FieldName.SM_VIRTUAL.toString()),
 	// startPage
 	START_PAGE("StartPage", FieldName.SM_START_PAGE.toString()),
 	// endPage

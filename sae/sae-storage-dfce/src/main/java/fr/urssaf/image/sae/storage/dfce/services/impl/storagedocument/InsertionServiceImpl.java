@@ -154,14 +154,11 @@ public class InsertionServiceImpl extends AbstractServices implements
 					getBaseDFCE(), storageDocument);
 			final InputStream docContent = new ByteArrayInputStream(
 					storageDocument.getContent());
-			final String fileName = BeanMapper.findFileNameAndExtension(
+			final String[] file = BeanMapper.findFileNameAndExtension(
 					storageDocument,
 					StorageTechnicalMetadatas.NOM_FICHIER.getShortCode().toString());
-			final String extension = BeanMapper.findFileNameAndExtension(
-					storageDocument,
-					StorageTechnicalMetadatas.EXTENSION_FICHIER.getShortCode().toString());
 			docDfce = getDfceService().getStoreService().storeDocument(docDfce,
-					fileName, extension, docContent);
+					file[0], file[1], docContent);
 			return BeanMapper.dfceDocumentToStorageDocument(docDfce, null,
 					getDfceService());
 		} catch (TagControlException tagCtrlEx) {
