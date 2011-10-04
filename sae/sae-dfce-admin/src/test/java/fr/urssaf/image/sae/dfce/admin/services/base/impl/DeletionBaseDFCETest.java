@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import junit.framework.Assert;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.dfce.admin.model.DataBaseModel;
@@ -24,7 +25,7 @@ public class DeletionBaseDFCETest extends AbstractComponents {
 	 * @throws MalformedURLException Exception levée
 	 */
 	@Test
-	//@Ignore
+	@Ignore
 	public void deleteBase() throws ConnectionServiceEx,
 			BaseAdministrationServiceEx, FileNotFoundException, MalformedURLException {
 		
