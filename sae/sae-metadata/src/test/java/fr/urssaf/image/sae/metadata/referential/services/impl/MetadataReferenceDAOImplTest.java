@@ -90,7 +90,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getRequiredForArchivalMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO()
-				.getRequiredForArchivalMetadataReferences().size() == 8);
+				.getRequiredForArchivalMetadataReferences().size() == 9);
 		
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
 				getMetadataReferenceDAO()
