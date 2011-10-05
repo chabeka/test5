@@ -21,6 +21,7 @@ import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
@@ -141,6 +142,8 @@ public class WSCaptureServiceImpl implements WSCaptureService {
                "ErreurInterneCapture",
                "Une erreur interne à l'application est survenue dans la capture.",
                e);
+      }  catch (UnknownHashCodeEx e) {
+         throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
       }
    }
 
