@@ -40,11 +40,11 @@ public class EcdeTestConfig {
       
       // On construit un nom unique de répertoire pour le point
       // de montage d'un ECDE pour les tests unitaires
-      String ecdeUniqueDirectoryName = EcdeTestTools.getTemporaryFileName("ecde", null);
+      String ecdeUniqueRepName = EcdeTestTools.getTemporaryFileName("ecde", null);
       
       // On construit le chemin complet du point de montage de l'ECDE
       // pour les tests unitaires
-      File pointMontageEcde = new File(repTempOs,ecdeUniqueDirectoryName);
+      File pointMontageEcde = new File(repTempOs,ecdeUniqueRepName);
       
       // On créé le répertoire
       try {

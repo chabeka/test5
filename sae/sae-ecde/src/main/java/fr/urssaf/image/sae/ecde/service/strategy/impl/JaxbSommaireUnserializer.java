@@ -22,6 +22,7 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadResultException;
 import fr.urssaf.image.sae.ecde.exception.EcdeGeneralException;
 import fr.urssaf.image.sae.ecde.exception.EcdeInvalidBatchModeException;
 import fr.urssaf.image.sae.ecde.exception.EcdeInvalidDocumentException;
+import fr.urssaf.image.sae.ecde.exception.EcdeRuntimeException;
 import fr.urssaf.image.sae.ecde.exception.EcdeXsdException;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.DocumentType;
 import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ErreurType;
@@ -322,8 +323,16 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
    private void createFlag(String ecdeDirectory) throws IOException {
       try {
          File flag = new File(FilenameUtils.concat(ecdeDirectory,"fin_traitement.flag"));
-         flag.delete();
-         flag.createNewFile();
+         if (flag.exists()) {
+            boolean delete = flag.delete();
+            if (!delete) {
+               throw new EcdeRuntimeException("Erreur lors de la suppression du fichier flag!");
+            }
+         }   
+         boolean create = flag.createNewFile();
+         if (!create) {
+            throw new EcdeRuntimeException("Erreur lors de l'ecriture du fichier flag!");
+         }
       } catch (IOException except) {
          throw new IOException("Erreur de création du fichier flag.", except);
       }
