@@ -257,6 +257,17 @@
 				<single>false</single>
 				<enableDictionary>false</enableDictionary>
 			</category>
+			<!-- Date fin conservation -->
+			<category>
+				<descriptif>DateFinConservation</descriptif>
+				<name>dfc</name>
+				<dataType>Date</dataType>
+				<index>true</index>
+				<minimumValues>1</minimumValues>
+				<maximumValues>1</maximumValues>
+				<single>false</single>
+				<enableDictionary>false</enableDictionary>
+			</category>
 			<!-- Traçabilité pré archivage -->
 			<category>
 				<descriptif>TracabilitePreArchivage</descriptif>

@@ -92,7 +92,8 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 					.nullSafeIterable(baseCategories)) {
 				base.addBaseCategory(baseCategory);
 			}
-			LOGGER.info(MessageHandler.getMessage("database.creation",dataBaseModel.getBase().getBaseId()));
+			LOGGER.info(MessageHandler.getMessage("database.creation",
+					dataBaseModel.getBase().getBaseId()));
 			// Création de la base
 			getServiceProvider().getBaseAdministrationService()
 					.createBase(base);
@@ -102,9 +103,8 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 			BaseUtils.createIndexComposite(dataBaseModel, getServiceProvider());
 			// on démarre la base
 			getServiceProvider().getBaseAdministrationService().startBase(base);
-			//Alimentation de la colonne famille LifeCycleRule
+			// Alimentation de la colonne famille LifeCycleRule
 			createNewLifeCycleRule(xmlDataService);
-			
 
 		} catch (ObjectAlreadyExistsException objAlreadyExistsEx) {
 			throw new BaseAdministrationServiceEx(
@@ -135,9 +135,11 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 		if (base != null) {
 			LOGGER.info(MessageHandler.getMessage("database.stop"));
 			getServiceProvider().getBaseAdministrationService().stopBase(base);
+
 			getServiceProvider().getBaseAdministrationService()
 					.deleteBase(base);
-			LOGGER.info(MessageHandler.getMessage("database.stop"));
+			LOGGER.info(MessageHandler.getMessage("database.deleted",
+					dataBaseModel.getBase().getBaseId()));
 		}
 
 	}
@@ -205,21 +207,24 @@ public class BaseAdministrationServiceImpl extends AbstractService implements
 	 * @throws ConnectionServiceEx
 	 *             Lorsqu'un problème survient lors de la connexion.
 	 */
-	private  void createNewLifeCycleRule(
-			final XmlDataService xmlDataService) throws FileNotFoundException {
+	private void createNewLifeCycleRule(final XmlDataService xmlDataService)
+			throws FileNotFoundException {
 		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.initialization"));
 		final LifeCycleRule lifeCycles = xmlDataService
 				.lifeCycleRuleReader(BaseUtils.CYCLE_XML_FILE);
 		LOGGER.info(MessageHandler.getMessage("lifeCycleRule.create"));
 		for (Rule documentRule : lifeCycles.getRules()) {
 			try {
-				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.document",documentRule.getRndCode()));
+				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.document",
+						documentRule.getRndCode()));
 				getServiceProvider().getStorageAdministrationService()
 						.createNewLifeCycleRule(documentRule.getRndCode(),
 								documentRule.getStorageDuration(),
 								LifeCycleLengthUnit.DAY);
 			} catch (ObjectAlreadyExistsException objectExist) {
-				LOGGER.info(MessageHandler.getMessage("lifeCycleRule.already.exist" ,documentRule.getRndCode()));
+				LOGGER.info(MessageHandler.getMessage(
+						"lifeCycleRule.already.exist",
+						documentRule.getRndCode()));
 			}
 		}
 	}
