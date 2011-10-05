@@ -255,7 +255,6 @@ public final class BeanMapper {
 				// Pas de mutateur pour ces métadonnées ci-dessous par
 				// conséquent on ne va fait rien.
 				case GEL:
-				case DATE_FIN_CONSERVATION:
 				case DUREE_CONSERVATION:
 				case TRACABILITE_POST_ARCHIVAGE:
 				case HASH:
@@ -323,9 +322,6 @@ public final class BeanMapper {
 		case DATE_DEBUT_CONSERVATION:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
 					document.getLifeCycleReferenceDate());
-		case DATE_FIN_CONSERVATION:
-			metadataFound = new StorageMetadata(metadata.getShortCode(),
-					document.getFinalDate());
 		case DUREE_CONSERVATION:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
 					serviceDFCE.getStorageAdministrationService()

@@ -26,7 +26,7 @@ public final class Constants {
    /**
     * Liste des métadatas techniques
     */
-   public static final String TEC_METADATAS[] = { "sm_creation_date", "sm_life_cycle_reference_date", "gel" };
+   public static final String TEC_METADATAS[] = { "sm_creation_date", "sm_life_cycle_reference_date", "gel" ,"dfc"};
    /**
     * Chemin du fichier Xml des code fonction.
     */

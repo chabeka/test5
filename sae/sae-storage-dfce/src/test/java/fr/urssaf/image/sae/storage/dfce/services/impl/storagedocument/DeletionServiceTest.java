@@ -43,9 +43,6 @@ public class DeletionServiceTest extends StorageServices {
 		final StorageDocument storageDoc = getMockData(getInsertionService());
 		final UUIDCriteria uuidCriteria = new UUIDCriteria(
 				storageDoc.getUuid(), new ArrayList<StorageMetadata>());
-//		final UUIDCriteria uuidCriteria = new UUIDCriteria(UUID.fromString("8b77f531-372f-436a-994c-e18eb461a7db")
-//				, new ArrayList<StorageMetadata>());
-		
 		try {
 			getDeletionService().deleteStorageDocument(uuidCriteria);
 		} catch (DeletionServiceEx e) {
@@ -61,6 +58,7 @@ public class DeletionServiceTest extends StorageServices {
 	 * 
 	 * @throws ConnectionServiceEx
 	 */
+	@Test
 	@Ignore("Pour eviter que la base soit corrompue")
 	public void rollBack() throws InsertionServiceEx, IOException,
 			ParseException, DeletionServiceEx {

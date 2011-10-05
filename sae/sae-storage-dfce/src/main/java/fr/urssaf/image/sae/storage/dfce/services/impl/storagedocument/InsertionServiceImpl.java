@@ -157,7 +157,7 @@ public class InsertionServiceImpl extends AbstractServices implements
 			final String[] file = BeanMapper.findFileNameAndExtension(
 					storageDocument,
 					StorageTechnicalMetadatas.NOM_FICHIER.getShortCode().toString());
-			docDfce = getDfceService().getStoreService().storeDocument(docDfce,
+					docDfce = getDfceService().getStoreService().storeDocument(docDfce,
 					file[0], file[1], docContent);
 			return BeanMapper.dfceDocumentToStorageDocument(docDfce, null,
 					getDfceService());

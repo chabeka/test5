@@ -11,10 +11,6 @@
 				<value>NOTIFICATIONS DE REMBOURSEMENT du 41882050200025</value>
 			</category>
 			<category>
-				<name>sm_extension</name>
-				<value>PDF</value>
-			</category>
-			<category>
 				<name>sm_creation_date</name>
 				<value>2010-12-11</value>
 			</category>
@@ -62,7 +58,10 @@
 				<name>sac</name>
 				<value>AC750</value>
 			</category>
-			
+			<category>
+				<name>dfc</name>
+				<value>2012-12-01</value>
+			</category>
 			<category>
 				<name>nfi</name>
 				<value>doc1.pdf</value>

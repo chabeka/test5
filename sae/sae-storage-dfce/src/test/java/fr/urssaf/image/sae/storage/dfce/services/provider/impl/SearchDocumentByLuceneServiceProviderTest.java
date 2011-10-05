@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.storage.dfce.services.provider.impl;
 
 import junit.framework.Assert;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.storage.dfce.services.provider.CommonsServicesProvider;
@@ -25,8 +24,7 @@ public class SearchDocumentByLuceneServiceProviderTest extends
 
    // Ici on test la recherche d'un document
    @Test
-   @Ignore
-   public final void searchDocument() throws ConnectionServiceEx,
+     public final void searchDocument() throws ConnectionServiceEx,
          SearchingServiceEx, InsertionServiceEx {
      
       // On récupère la connexion
@@ -43,6 +41,6 @@ public class SearchDocumentByLuceneServiceProviderTest extends
       // ici on vérifie qu'on a bien des documents
       Assert.assertNotNull(strDocuments.getAllStorageDocuments());
       // ici on vérifie que le nombre de document est bien supérieur à 1
-      Assert.assertTrue(strDocuments.getAllStorageDocuments().size() >= 1);
+      Assert.assertTrue(strDocuments.getAllStorageDocuments().size() > 1);
    }
 }

@@ -22,8 +22,6 @@ public enum StorageTechnicalMetadatas {
 	// Date de début de conservation 
 	DATE_DEBUT_CONSERVATION("DateDebutConservation",
 			FieldName.SM_LIFE_CYCLE_REFERENCE_DATE.toString()),
-	// Date de fin de conservation
-	DATE_FIN_CONSERVATION("DateFinConservation", FieldName.SM_FINAL_DATE.toString()),
 	// Gel du document
 	GEL("Gel", "gel"),
 	// TracabilitePostArchivage

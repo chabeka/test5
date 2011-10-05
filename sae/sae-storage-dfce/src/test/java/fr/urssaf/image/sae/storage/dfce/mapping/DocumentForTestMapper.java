@@ -62,6 +62,9 @@ public final class DocumentForTestMapper {
         	   if (Constants.TEC_METADATAS[1].equals(codeMetaData)) {
    	      		value =  Utils.formatStringToDate((String)value);
          } 
+        	   if (Constants.TEC_METADATAS[3].equals(codeMetaData)) {
+   	      		value =  Utils.formatStringToDate((String)value);
+         } 
         	   if (Constants.TEC_METADATAS[2].equals(codeMetaData)) {
       	      		value =  Boolean.valueOf((String)value);
             } 
