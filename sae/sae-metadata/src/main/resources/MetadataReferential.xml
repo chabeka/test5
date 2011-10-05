@@ -276,7 +276,7 @@
     <shortCode>apr</shortCode>
     <longCode>ApplicationProductrice</longCode>
     <type>String</type>
-    <requiredForArchival>false</requiredForArchival>
+    <requiredForArchival>true</requiredForArchival>
     <requiredForStorage>true</requiredForStorage>
     <length>15</length>
     <pattern>   </pattern>
