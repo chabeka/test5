@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
+import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
 /**
  * Classe utilitaire pour la recherche des métadonnées à partir d'une liste de
@@ -88,6 +89,28 @@ public final class SAEMetatadaFinderUtils {
          if (StringUtils.isEmpty(metadataValue)) {
             metadataValue = (String) valueMetadataFinder(saeMetadata, codeLong);
          } else {
+            break;
+         }
+      }
+      return metadataValue;
+   }
+
+   /**
+    * Récupére la valeur de la métadonnée.
+    * 
+    * @param storageMetadatas
+    *           : liste des métadonnées.
+    * @param shortCode
+    *           : Code court.
+    * @return Valeur de la métadonnée.
+    */
+   public static String valueMetadataFinder(
+         List<StorageMetadata> storageMetadatas, String shortCode) {
+      String metadataValue = null;
+      for (StorageMetadata storageMetadata : storageMetadatas) {
+         if (StringUtils.isEmpty(metadataValue)
+               && shortCode.equals(storageMetadata.getShortCode())) {
+            metadataValue = (String) storageMetadata.getValue();
             break;
          }
       }

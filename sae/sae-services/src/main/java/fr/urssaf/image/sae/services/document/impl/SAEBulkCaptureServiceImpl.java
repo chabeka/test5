@@ -1,13 +1,14 @@
 package fr.urssaf.image.sae.services.document.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-/**
- * 
- */
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.ecde.service.EcdeServices;
+import fr.urssaf.image.sae.services.batch.BulkCaptureJobWrapper;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
-import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+
 /**
  * Fournit l'implémentation des services pour la capture.<BR />
  * 
@@ -16,14 +17,20 @@ import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 @Service
 @Qualifier("saeBulkCaptureService")
 public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
-   // CHECKSTYLE:OFF
+   @Autowired
+   private TaskExecutor taskExecutor;
+   @Autowired
+   @Qualifier("ecdeServices")
+   private EcdeServices ecdeServices;
+
    /**
     * {@inheritDoc}
+    * puisqu'on est dans une thread séparée
     */
-   @Override
-   public void bulkCapture(String urlSommaire) throws SAECaptureServiceEx {
-      // TODO Auto-generated method stub
-
+   public final void bulkCapture(String urlEcde) {
+      BulkCaptureJobWrapper bulkCaptureJob = new BulkCaptureJobWrapper(
+            urlEcde, ecdeServices);
+      taskExecutor.execute(bulkCaptureJob);
    }
-   // CHECKSTYLE:ON
+
 }

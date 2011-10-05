@@ -7,33 +7,36 @@ package fr.urssaf.image.sae.services.enrichment.xml.model;
  */
 public enum SAEArchivalMetadatas {
    // Code RND
-   CODERND("CodeRND"),
+   CODE_RND("CodeRND"),
    // Code fonction
-   CODEFONCTION("CodeFonction"),
+   CODE_FONCTION("CodeFonction"),
    // CodeActivite
-   CODEACTIVITE("CodeActivite"),
-   // DureeConservation
-   DUREECONSERVATION("DureeConservation"),
+   CODE_ACTIVITE("CodeActivite"),
    // DateArchivage
-   DATEARCHIVAGE("DateArchivage"),
+   DATE_ARCHIVAGE("DateArchivage"),
    // DateDebutConservation
-   DATEDEBUTCONSERVATION("DateDebutConservation"),
+   DATE_DEBUT_CONSERVATION("DateDebutConservation"),
    // DateFinConservation
-   DATEFINCONSERVATION("DateFinConservation"),
-   // Gel
-   GEL("Gel"),
-   // ObjectType
-   OBJECTTYPE("ObjectType"),
-//   // type
-//   TYPE("type"),
+   DATE_FIN_CONSERVATION("DateFinConservation"),
    // ContratDeService
-   CONTRATDESERVICE("ContratDeService"),
+   CONTRAT_DE_SERVICE("ContratDeService"),
    // pas de valeur
    NOVALUE(""),
    // Version RND
-   VERSIONRND("VersionRND"),
+   VERSION_RND("VersionRND"),
    // Hash
-   HASHDOC("Hash");
+   HASH_CODE("Hash"),
+   //TypeHash
+   TYPE_HASH("TypeHash"),
+   //APPLICATIONPRODUCTRICE
+   APPLICATION_PRODUCTRICE("ApplicationProductrice"),
+   //NBPAGES
+   NB_PAGES("NbPages"),
+   //NomFichier
+   NOM_FICHIER("NomFichier"),
+   //DocumentVirtuel
+   DOCUMENT_VIRTUEL("DocumentVirtuel");
+   
 
    // Le code long de la métadonnée.
    private String longCode;

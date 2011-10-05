@@ -63,19 +63,21 @@ public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, SAEEnrichmentEx, UnknownHashCodeEx,
          ReferentialRndException, UnknownCodeRndEx, SAECaptureServiceEx {
-      SAEDocument saeDocument = new SAEDocument();
-      StorageDocument storageDocument = new StorageDocument();
+      SAEDocument saeDocument = null;
+      StorageDocument storageDocument = null;
       try {
          cntrolesService.checkUntypedDocument(untypedDocument);
          cntrolesService.checkUntypedMetadata(untypedDocument);
          saeDocument = mappingService
                .untypedDocumentToSaeDocument(untypedDocument);
-         cntrolesService.checkSaeMetadataForCapture(saeDocument);
-         cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
-         enrichmentService.enrichmentMetadata(saeDocument);
-         cntrolesService.checkSaeMetadataForStorage(saeDocument);
-         storageDocument = mappingService
-               .saeDocumentToStorageDocument(saeDocument);
+         if (saeDocument != null) {
+            cntrolesService.checkSaeMetadataForCapture(saeDocument);
+            cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
+            enrichmentService.enrichmentMetadata(saeDocument);
+            cntrolesService.checkSaeMetadataForStorage(saeDocument);
+            storageDocument = mappingService
+                  .saeDocumentToStorageDocument(saeDocument);
+         }
       } catch (InvalidSAETypeException e) {
          throw new SAECaptureServiceEx(e);
       } catch (MappingFromReferentialException e) {

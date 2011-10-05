@@ -37,10 +37,6 @@
          <value>GED</value>
       </metadata>
       <metadata>
-         <code>NomFichier</code>
-         <value>doc1.pdf</value>
-      </metadata>
-      <metadata>
          <code>FormatFichier</code>
          <value>fmt/18</value>
       </metadata>
@@ -55,10 +51,6 @@
       <metadata>
          <code>CodeOrganismeGestionnaire</code>
          <value>UR030</value>
-      </metadata>
-      <metadata>
-         <code>ExtensionFichier</code>
-         <value>PDF</value>
       </metadata>
    </metadatas>
 </document>

@@ -389,7 +389,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          int maxResult, List<SAEMetadata> listeDesiredMetadata)
          throws SAESearchServiceEx {
 
-      List<StorageDocument> allStorageDocuments = new ArrayList<StorageDocument>();
+      List<StorageDocument> allStorageDocuments = null;
       try {
          LuceneCriteria luceneCriteria = buildService
                .buildStorageLuceneCriteria(luceneQuery, maxResult,

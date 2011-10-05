@@ -6,7 +6,6 @@ package fr.urssaf.image.sae.services.controles;
 import java.io.IOException;
 import java.text.ParseException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +29,7 @@ import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
+import fr.urssaf.image.sae.storage.dfce.model.StorageTechnicalMetadatas;
 
 /**
  * Classe permettant de tester le service de contrôle.
@@ -156,7 +156,6 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
     * .
     */
    @Test
-   @Ignore("correction lundi")
    public final void checkSaeMetadataForCapture()
          throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx,
          SAECaptureServiceEx, IOException, ParseException {
@@ -184,12 +183,20 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
     * .
     */
    @Test(expected = RequiredArchivableMetadataEx.class)
-   @Ignore("correction lundi")
    public final void requiredArchivableMetadataFailed()
          throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx,
          SAECaptureServiceEx, IOException, ParseException {
       SAEDocument saeDocument = getSAEDocumentMockData();
-      saeDocument.getMetadatas().remove(2);
+      SAEMetadata saeMetadata = null;
+      for (SAEMetadata metadata : saeDocument.getMetadatas()) {
+         if (StorageTechnicalMetadatas.TITRE.getLongCode().equals(
+               metadata.getLongCode())) {
+            saeMetadata = metadata;
+            break;
+         }
+      }
+      // Suppression de la métadonnée Titre.
+      saeDocument.getMetadatas().remove(saeMetadata);
       saeControlesCaptureService.checkSaeMetadataForCapture(saeDocument);
    }
 
@@ -213,7 +220,6 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
     * .
     */
    @Test
-   @Ignore("correction lundi")
    public final void checkSaeMetadataForStorage()
          throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
          ParseException, SAEEnrichmentEx, ReferentialRndException,
@@ -235,7 +241,27 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
       SAEDocument saeDocument = getSAEDocumentMockData();
       for (SAEMetadata saeMetadata : saeDocument.getMetadatas()) {
          if (saeMetadata.getLongCode().equals(
-               SAEArchivalMetadatas.HASHDOC.getLongCode())) {
+               SAEArchivalMetadatas.HASH_CODE.getLongCode())) {
+            saeMetadata.setValue("2121");
+            break;
+         }
+      }
+      saeControlesCaptureService.checkHashCodeMetadataForStorage(saeDocument);
+   }
+
+   /**
+    * Test de la méthode
+    * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkHashCodeMetadataForStorage(fr.urssaf.image.sae.bo.model.bo.SAEDocument)}
+    * .
+    */
+   @Test(expected = UnknownHashCodeEx.class)
+   public final void checkAlogoHashMetadataForStorageFailed()
+         throws SAECaptureServiceEx, IOException, ParseException,
+         UnknownHashCodeEx {
+      SAEDocument saeDocument = getSAEDocumentMockData();
+      for (SAEMetadata saeMetadata : saeDocument.getMetadatas()) {
+         if (saeMetadata.getLongCode().equals(
+               SAEArchivalMetadatas.TYPE_HASH.getLongCode())) {
             saeMetadata.setValue("2121");
             break;
          }
@@ -262,7 +288,6 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
     * .
     */
    @Test(expected = RequiredStorageMetadataEx.class)
-   @Ignore("correction lundi")
    public final void requiredStorageMetadataFailed()
          throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
          ParseException, SAEEnrichmentEx, ReferentialRndException,
@@ -272,7 +297,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
       for (SAEMetadata saeMetadata : saeDocument.getMetadatas()) {
          if (saeMetadata.getLongCode().equals(
-               SAEArchivalMetadatas.CODERND.getLongCode())) {
+               SAEArchivalMetadatas.CODE_RND.getLongCode())) {
             saeMetadataToRemove = saeMetadata;
             break;
          }

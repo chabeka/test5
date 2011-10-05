@@ -93,7 +93,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         ReferentialRndException, UnknownCodeRndEx {
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
 
       // chargement du document de l'ECDE
       File ecdeFile = loadEcdeFile(ecdeURL);
@@ -110,13 +110,11 @@ public class SAECaptureServiceImpl implements SAECaptureService {
                .buildStorageDocumentForCapture(untypedDocument);
       } catch (SAEEnrichmentEx e) {
          throw new SAECaptureServiceEx(e);
-      } catch (UnknownHashCodeEx e) {
-         throw new SAECaptureServiceEx(e);
-      }
+      } 
 
       // le type du document est obligatoire dans l'archivage DFCE
-      String typeDoc = FilenameUtils.getExtension(ecdeFile.getName());
-      storageDoc.setTypeDoc(typeDoc);
+//      String typeDoc = FilenameUtils.getExtension(ecdeFile.getName());
+//      storageDoc.setTypeDoc(typeDoc);
 
       // archivage du document dans DFCE
       UUID uuid = insererStorageDocument(storageDoc);

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,16 +14,22 @@ import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
 import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
 import fr.urssaf.image.sae.services.CommonsServices;
+import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
+import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
+
 @SuppressWarnings("all")
 public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
    @Autowired
    @Qualifier("saeEnrichmentMetadataService")
    SAEEnrichmentMetadataService saeEnrichmentMetadataService;
+   @Autowired
+   @Qualifier("saeControlesCaptureService")
+   SAEControlesCaptureService controlesCaptureService;
    @Autowired
    @Qualifier("mappingDocumentService")
    private MappingDocumentService mappingService;
@@ -66,14 +71,15 @@ public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
     * .
     */
    @Test
-   @Ignore("correction lundi")
    public final void enrichmentMetadata() throws SAECaptureServiceEx,
          IOException, ParseException, SAEEnrichmentEx, InvalidSAETypeException,
-         MappingFromReferentialException, ReferentialRndException, UnknownCodeRndEx {
+         MappingFromReferentialException, ReferentialRndException,
+         UnknownCodeRndEx, RequiredStorageMetadataEx {
       SAEDocument saeDocument = mappingService
             .untypedDocumentToSaeDocument(getUntypedDocumentMockData());
       saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
       Assert.assertNotNull(saeDocument);
+      controlesCaptureService.checkSaeMetadataForStorage(saeDocument);
    }
 
    /**
@@ -83,11 +89,12 @@ public class SAEEnrichmentMetadataServiceImplTest extends CommonsServices {
     */
    @Test(expected = UnknownCodeRndEx.class)
    public final void enrichmentMetadataFailed() throws SAECaptureServiceEx,
-         IOException, ParseException, SAEEnrichmentEx, ReferentialRndException, UnknownCodeRndEx {
+         IOException, ParseException, SAEEnrichmentEx, ReferentialRndException,
+         UnknownCodeRndEx {
       SAEDocument saeDocument = getSAEDocumentMockData();
       for (SAEMetadata saeMetadata : saeDocument.getMetadatas()) {
          if (saeMetadata.getLongCode().equals(
-               SAEArchivalMetadatas.CODERND.getLongCode())) {
+               SAEArchivalMetadatas.CODE_RND.getLongCode())) {
             saeMetadata.setValue("121212");
             break;
          }

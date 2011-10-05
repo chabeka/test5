@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.services.document.commons.impl;
 import java.io.IOException;
 import java.text.ParseException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,16 +54,21 @@ public class SAECommonCaptureServiceImplTest extends CommonsServices {
       this.saeCommonCaptureService = saeCommonCaptureService;
    }
 
+   /**
+    * Test de la méthode
+    * {@link fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService#buildStorageDocumentForCapture(UntypedDocument)}
+    * .
+    */
    @Test
-  @Ignore("correction lundi")
-   public final void testBuildStorageDocumentForCapture()
+   public final void buildStorageDocumentForCapture()
          throws SAECaptureServiceEx, IOException, ParseException,
          SAEEnrichmentEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotArchivableMetadataEx,
          NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, MappingFromReferentialException,
-         InvalidSAETypeException, UnknownHashCodeEx, ReferentialRndException, UnknownCodeRndEx {
+         InvalidSAETypeException, UnknownHashCodeEx, ReferentialRndException,
+         UnknownCodeRndEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       saeCommonCaptureService.buildStorageDocumentForCapture(untypedDocument);
    }

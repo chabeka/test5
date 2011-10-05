@@ -25,6 +25,7 @@ import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
@@ -69,7 +70,7 @@ public class SAECaptureServiceValidationTest {
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
          EmptyDocumentEx, RequiredArchivableMetadataEx,
-         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
 
       try {
          service.capture(metadatas, ecdeURL);
@@ -85,7 +86,7 @@ public class SAECaptureServiceValidationTest {
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
          EmptyDocumentEx, RequiredArchivableMetadataEx,
-         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
 
       assertCapture_failure_metadatas(service, null);
       assertCapture_failure_metadatas(service, new ArrayList<UntypedMetadata>());
@@ -98,7 +99,7 @@ public class SAECaptureServiceValidationTest {
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         ReferentialRndException, UnknownCodeRndEx {
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
 
       try {
 
@@ -118,7 +119,7 @@ public class SAECaptureServiceValidationTest {
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
          UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
          EmptyDocumentEx, RequiredArchivableMetadataEx,
-         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx {
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
 
       try {
 

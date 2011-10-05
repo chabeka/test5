@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.urssaf.image.sae.bo.model.bo.SAELuceneCriteria;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.model.SAEMockMetadata;
@@ -57,7 +57,6 @@ public class SAESearchServiceImplTest {
     * </lu>
     */
    @Test
-   @Ignore("correction lundi")
    public final void searchSuccess() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -83,7 +82,7 @@ public class SAESearchServiceImplTest {
     * test avec une requête non vide avec des métadonnées recherchable et des
     * opérateurs : AND OR Combinaisons des AND et OR [date1 to date2]
     */
-   @Test@Ignore("correction lundi")
+   @Test
    public final void searchSuccessOR() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -106,7 +105,6 @@ public class SAESearchServiceImplTest {
     * {@link fr.urssaf.image.sae.services.document.SAESearchService#search(SAELuceneCriteria)
     */
    @Test
-   @Ignore("correction lundi")
    public final void searchSuccessDate() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -118,7 +116,7 @@ public class SAESearchServiceImplTest {
             typeTest);
       List<UntypedDocument> untypedDocuments = saeSearchService.search(requete,
             listMetaDesiree);
-      Assert.assertFalse("Des UntypedDocuments sont attendues", untypedDocuments
+      Assert.assertFalse("Des UntypedDocuments sont attendues : requête :" +requete, untypedDocuments
             .isEmpty());
    }
 
@@ -129,7 +127,7 @@ public class SAESearchServiceImplTest {
     * Test qui echoue car la liste des metadonnées code court voulu n'est pas
     * consultable
     */
-   @Ignore //(expected = MetaDataUnauthorizedToConsultEx.class)
+   @Test
    public final void searchFailureListNonConsult() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {

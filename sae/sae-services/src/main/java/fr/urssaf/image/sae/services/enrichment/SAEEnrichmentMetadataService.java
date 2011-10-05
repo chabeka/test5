@@ -12,8 +12,18 @@ import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
  */
 public interface SAEEnrichmentMetadataService {
    /**
-    * Enrichie les métadonnées à partir du référentiel des codes RCND.
-    * 
+    * Enrichie les métadonnées à partir du référentiel RCND qui sont :
+    *  <ul>
+    * <li>VersionRND</li>
+    * <li>CodeFonction</li>
+    * <li>CodeActivite</li>
+    * <li>DateDebutConservation</li>
+    * <li>DateFinConservation</li>
+    * <li>NomFichier</li>
+    * <li>DocumentVirtuel</li>
+    * <li>ContratDeService</li>
+    * <li>DateArchivage</li>
+    * </ul>
     * @param saeDoc
     *           Classe représentant un document de type {@link SAEDocument}.
     * @throws SAEEnrichmentEx

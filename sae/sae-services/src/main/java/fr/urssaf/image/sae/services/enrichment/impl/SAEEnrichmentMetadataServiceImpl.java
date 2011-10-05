@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cassandra.thrift.Cassandra.system_add_column_family_args;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +78,7 @@ public class SAEEnrichmentMetadataServiceImpl implements
       List<SAEMetadata> saeMetadatas = saeDoc.getMetadatas();
 
       String rndValue = SAEMetatadaFinderUtils.codeMetadataFinder(saeMetadatas,
-            SAEArchivalMetadatas.CODERND.getLongCode());
+            SAEArchivalMetadatas.CODE_RND.getLongCode());
       try {
          if (!StringUtils.isEmpty(rndValue)) {
             completedMetadatas(saeDoc, rndValue);
@@ -95,7 +95,19 @@ public class SAEEnrichmentMetadataServiceImpl implements
    }
 
    /**
-    * Permet de compléter les métadonnées non specifiable
+    * Permet de compléter les métadonnées non specifiable qui sont :
+    * <ul>
+    * <li>VersionRND</li>
+    * <li>CodeFonction</li>
+    * <li>CodeActivite</li>
+    * <li>DateDebutConservation</li>
+    * <li>DateFinConservation</li>
+    * <li>NomFichier</li>
+    * <li>DocumentVirtuel</li>
+    * <li>ContratDeService</li>
+    * <li>DateArchivage</li>
+    * </ul>
+    * 
     * 
     * @param document
     *           : le document retourné par DFCE.
@@ -112,99 +124,85 @@ public class SAEEnrichmentMetadataServiceImpl implements
    private void completedMetadatas(SAEDocument saeDocument, String rndCode)
          throws ReferentialRndException, UnknownCodeRndEx, ParseException,
          ReferentialException {
-      SAEMetadata saeMetadata = new SAEMetadata();
+      SAEMetadata saeMetadata = null;
       for (SAEArchivalMetadatas metadata : SAEArchivalMetadatas.values()) {
          saeMetadata = new SAEMetadata();
          saeMetadata.setLongCode(metadata.getLongCode());
          metadata = SAEMetatadaFinderUtils
                .metadtaFinder(metadata.getLongCode());
-         System.out.println(metadata);
          switch (metadata) {
-         
-         case CODEACTIVITE:
+         case CODE_ACTIVITE:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.CODEACTIVITE.getLongCode())
+                  SAEArchivalMetadatas.CODE_ACTIVITE.getLongCode())
                   .getShortCode());
             saeMetadata.setValue(rndReferenceDAO.getActivityCodeByRnd(rndCode));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
-         case CODEFONCTION:
+         case CODE_FONCTION:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.CODEFONCTION.getLongCode())
+                  SAEArchivalMetadatas.CODE_FONCTION.getLongCode())
                   .getShortCode());
             saeMetadata.setValue(rndReferenceDAO.getFonctionCodeByRnd(rndCode));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
-         case DUREECONSERVATION:
+         case DATE_FIN_CONSERVATION:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.DUREECONSERVATION.getLongCode())
-                  .getShortCode());
-            saeMetadata.setValue(rndReferenceDAO
-                  .getStorageDurationByRnd(rndCode));
-            saeDocument.getMetadatas().add(saeMetadata);
-            break;
-         case DATEARCHIVAGE:
-            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.DATEARCHIVAGE.getLongCode())
-                  .getShortCode());
-            saeMetadata.setValue(Utils.dateToString(new Date()));
-            saeDocument.getMetadatas().add(saeMetadata);
-            break;
-         case DATEDEBUTCONSERVATION:
-            if (SAEMetatadaFinderUtils.dateMetadataFinder(saeDocument
-                  .getMetadatas(), SAEArchivalMetadatas.DATEDEBUTCONSERVATION
-                  .getLongCode()) == null) {
-               saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                     SAEArchivalMetadatas.DATEDEBUTCONSERVATION.getLongCode())
-                     .getShortCode());
-               saeMetadata.setValue(Utils.dateToString(new Date()));
-               saeDocument.getMetadatas().add(saeMetadata);
-            }
-            break;
-         case DATEFINCONSERVATION:
-            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.DATEFINCONSERVATION.getLongCode())
+                  SAEArchivalMetadatas.DATE_FIN_CONSERVATION.getLongCode())
                   .getShortCode());
             saeMetadata.setValue(Utils
                   .dateToString(DateUtils.addDays(new Date(), rndReferenceDAO
                         .getStorageDurationByRnd(rndCode))));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
-         case GEL:
+         case NOM_FICHIER:
+            saeMetadata
+                  .setShortCode(metadataReferenceDAO.getByLongCode(
+                        SAEArchivalMetadatas.NOM_FICHIER.getLongCode())
+                        .getShortCode());
+            saeMetadata.setValue(FilenameUtils.getName(FilenameUtils
+                  .separatorsToSystem(saeDocument.getFilePath())));
+            saeDocument.getMetadatas().add(saeMetadata);
+            break;
+         case DATE_ARCHIVAGE:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.GEL.getLongCode()).getShortCode());
+                  SAEArchivalMetadatas.DATE_ARCHIVAGE.getLongCode())
+                  .getShortCode());
+            saeMetadata.setValue(new Date());
+            saeDocument.getMetadatas().add(saeMetadata);
+            break;
+         case DATE_DEBUT_CONSERVATION:
+            if (SAEMetatadaFinderUtils.dateMetadataFinder(saeDocument
+                  .getMetadatas(), SAEArchivalMetadatas.DATE_DEBUT_CONSERVATION
+                  .getLongCode()) == null) {
+               saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                     SAEArchivalMetadatas.DATE_DEBUT_CONSERVATION.getLongCode())
+                     .getShortCode());
+               // La date DATEDEBUTCONSERVATION est égale à la date d'archivage.
+               saeMetadata.setValue(new Date());
+               saeDocument.getMetadatas().add(saeMetadata);
+            }
+            break;
+         case DOCUMENT_VIRTUEL:
+            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                  SAEArchivalMetadatas.DOCUMENT_VIRTUEL.getLongCode())
+                  .getShortCode());
             saeMetadata.setValue(false);
             saeDocument.getMetadatas().add(saeMetadata);
             break;
-         case OBJECTTYPE:
-            saeMetadata
-                  .setShortCode(metadataReferenceDAO.getByLongCode(
-                        SAEArchivalMetadatas.OBJECTTYPE.getLongCode())
-                        .getShortCode());
-            saeMetadata.setValue("autonomous");
-            saeDocument.getMetadatas().add(saeMetadata);
-            break;
-//         case TYPE:
-//            saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-//                  SAEArchivalMetadatas.TYPE.getLongCode()).getShortCode());
-//            // FIXME attente de spécification.
-//            saeMetadata.setValue("PDF");
-//            saeDocument.getMetadatas().add(saeMetadata);
-//            break;
-         case CONTRATDESERVICE:
+         case CONTRAT_DE_SERVICE:
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                  SAEArchivalMetadatas.CONTRATDESERVICE.getLongCode())
+                  SAEArchivalMetadatas.CONTRAT_DE_SERVICE.getLongCode())
                   .getShortCode());
             // FIXME attente de spécification.
             saeMetadata.setValue("ATT_PROD_001");
             saeDocument.getMetadatas().add(saeMetadata);
             break;
-         case VERSIONRND:
+         case VERSION_RND:
             if (SAEMetatadaFinderUtils.codeMetadataFinder(saeDocument
-                  .getMetadatas(), SAEArchivalMetadatas.VERSIONRND
+                  .getMetadatas(), SAEArchivalMetadatas.VERSION_RND
                   .getLongCode()) == null) {
                saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
-                     SAEArchivalMetadatas.VERSIONRND.getLongCode())
+                     SAEArchivalMetadatas.VERSION_RND.getLongCode())
                      .getShortCode());
                saeMetadata.setValue(rndReferenceDAO.getTypeDocument(rndCode)
                      .getVersionRnd());

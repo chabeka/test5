@@ -61,6 +61,7 @@ public final class BeanTestDocumentMapper {
       saeDocument.setMetadatas(metadatas);
       saeDocument.setContent(Files.toByteArray(new File(saeDocumentMockData
             .getFilePath())));
+      saeDocument.setFilePath(saeDocumentMockData.getFilePath());
       return saeDocument;
    }
 

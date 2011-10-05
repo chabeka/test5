@@ -13,6 +13,7 @@ import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
@@ -59,11 +60,12 @@ public interface SAECaptureService {
     *            {@link UnknownCodeRndEx}
     * @throws ReferentialRndException
     *            {@link ReferentialRndException}
+    * @throws UnknownHashCodeEx {@link UnknownHashCodeEx}
     */
    UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         ReferentialRndException, UnknownCodeRndEx;
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx;
 }

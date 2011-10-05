@@ -20,7 +20,6 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
-import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -61,13 +59,14 @@ public class SAEConsultationServiceTest {
       uuid = null;
    }
 
+   // FIXME Attente de la nouvelle api DFCE pour pouvoir supprimer.
    @After
-   public void after() throws ConnectionServiceEx, DeletionServiceEx {
+   public void after() throws ConnectionServiceEx {
 
       // suppression de l'insertion
       if (uuid != null) {
 
-         testProvider.deleteDocument(uuid);
+         // testProvider.deleteDocument(uuid);
       }
    }
 
@@ -80,30 +79,33 @@ public class SAEConsultationServiceTest {
       byte[] content = FileUtils.readFileToByteArray(srcFile);
 
       String[] parsePatterns = new String[] { "yyyy-MM-dd" };
-List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
+      List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
 
-		metadatas.add(new StorageMetadata("apr", "ADELAIDE"));
-		metadatas.add(new StorageMetadata("cop", "CER69"));
-		metadatas.add(new StorageMetadata("cog", "UR750"));
-		metadatas.add(new StorageMetadata("sm_document_type", "2.3.1.1.12"));
-		metadatas.add(new StorageMetadata("vrn", "11.1"));
-		metadatas.add(new StorageMetadata("dom", "2"));
-		metadatas.add(new StorageMetadata("act", "3"));
-		metadatas.add(new StorageMetadata("sm_life_cycle_reference_date", DateUtils.parseDate("2013-01-01", parsePatterns)));
-		metadatas.add(new StorageMetadata("nbp", "2"));
-		metadatas.add(new StorageMetadata("ffi", "fmt/1354"));
-		metadatas.add(new StorageMetadata("cse", "ATT_PROD_001"));
-		metadatas.add(new StorageMetadata("dre", DateUtils.parseDate("1999-12-30", parsePatterns)));
-		metadatas.add(new StorageMetadata("sm_title", "Attestation de vigilance"));
-		metadatas.add(new StorageMetadata("nfi", "attestation_consultation.pdf"));
-		metadatas.add(new StorageMetadata("sm_extension", "PDF"));
-		metadatas.add(new StorageMetadata("sm_creation_date", DateUtils.parseDate("2012-01-01", parsePatterns)));
+      metadatas.add(new StorageMetadata("apr", "ADELAIDE"));
+      metadatas.add(new StorageMetadata("cop", "CER69"));
+      metadatas.add(new StorageMetadata("cog", "UR750"));
+      metadatas.add(new StorageMetadata("sm_document_type", "2.3.1.1.12"));
+      metadatas.add(new StorageMetadata("vrn", "11.1"));
+      metadatas.add(new StorageMetadata("dom", "2"));
+      metadatas.add(new StorageMetadata("act", "3"));
+      metadatas.add(new StorageMetadata("sm_life_cycle_reference_date",
+            DateUtils.parseDate("2013-01-01", parsePatterns)));
+      metadatas.add(new StorageMetadata("nbp", "2"));
+      metadatas.add(new StorageMetadata("ffi", "fmt/1354"));
+      metadatas.add(new StorageMetadata("cse", "ATT_PROD_001"));
+      metadatas.add(new StorageMetadata("dre", DateUtils.parseDate(
+            "1999-12-30", parsePatterns)));
+      metadatas
+            .add(new StorageMetadata("sm_title", "Attestation de vigilance"));
+      metadatas.add(new StorageMetadata("nfi", "attestation_consultation.pdf"));
+      metadatas.add(new StorageMetadata("sm_extension", "PDF"));
+      metadatas.add(new StorageMetadata("sm_creation_date", DateUtils
+            .parseDate("2012-01-01", parsePatterns)));
 
       return testProvider.captureDocument(content, metadatas);
    }
 
    @Test
-   @Ignore("correction lundi")
    public void consultation_success() throws IOException,
          SAEConsultationServiceException, ConnectionServiceEx, ParseException {
 
@@ -128,7 +130,7 @@ List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
       expectedMetadatas.put("CodeOrganismeGestionnaire", "UR750");
       expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
       expectedMetadatas.put("CodeRND", "2.3.1.1.12");
-      expectedMetadatas.put("NomFichier", "");
+      expectedMetadatas.put("NomFichier", "attestation_consultation.pdf");
       expectedMetadatas.put("FormatFichier", "fmt/1354");
       expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
       expectedMetadatas.put("DateArchivage", "2012-01-01");

@@ -53,7 +53,7 @@ public class SAEServiceTestProvider {
 		Assert.assertNotNull(mappingService);
 
 		this.serviceProvider = serviceProvider;
-		this.setMappingService(mappingService);
+		this.mappingService= mappingService;
 	}
 
 	/**

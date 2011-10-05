@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,8 @@ import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 @Qualifier("saeControlesCaptureService")
 public class SAEControlesCaptureServiceImpl implements
       SAEControlesCaptureService {
-
+   private static final Logger LOGGER = Logger
+         .getLogger(SAEControlesCaptureServiceImpl.class);
    @Autowired
    @Qualifier("metadataControlServices")
    private MetadataControlServices metadataCS;
@@ -77,8 +79,10 @@ public class SAEControlesCaptureServiceImpl implements
             .checkRequiredForStorageMetadata(sAEDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
          List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new RequiredStorageMetadataEx(ResourceMessagesUtils.loadMessage(
+         LOGGER.error(ResourceMessagesUtils.loadMessage(
                "capture.metadonnees.stockage.obligatoire", codeLongErrors));
+         throw new RequiredStorageMetadataEx(ResourceMessagesUtils
+               .loadMessage("erreur.technique.capture.unitaire"));
       }
    }
 
@@ -88,8 +92,19 @@ public class SAEControlesCaptureServiceImpl implements
    @Override
    public final void checkHashCodeMetadataForStorage(SAEDocument saeDocument)
          throws UnknownHashCodeEx {
-      String hashCodeValue = SAEMetatadaFinderUtils.codeMetadataFinder(saeDocument
-            .getMetadatas(), SAEArchivalMetadatas.HASHDOC.getLongCode());
+      String hashCodeValue = SAEMetatadaFinderUtils.codeMetadataFinder(
+            saeDocument.getMetadatas(), SAEArchivalMetadatas.HASH_CODE
+                  .getLongCode());
+      String algoHashCode = SAEMetatadaFinderUtils.codeMetadataFinder(
+            saeDocument.getMetadatas(), SAEArchivalMetadatas.TYPE_HASH
+                  .getLongCode());
+      // FIXME vérifier que l'algorithme passer fait partie d'une liste
+      // pré-définit.
+      if (!"SHA-1".equals(algoHashCode)) {
+         throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
+               "capture.hash.erreur", saeDocument.getFilePath()));
+      }
+      // FIXME à partie de l'algorithme calculer le hashCode.
       if (!DigestUtils.shaHex(saeDocument.getContent()).equals(hashCodeValue)) {
          throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
                "capture.hash.erreur", saeDocument.getFilePath()));
