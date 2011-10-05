@@ -43,7 +43,7 @@
 
    <bean id="ecdeSources" factory-bean="ecdeSourceManager" factory-method="load">
       <constructor-arg>
-         <value>”${sae.ecde.cheminFichierConfig}”</value> 
+         <value>${sae.ecde.cheminFichierConfig}</value> 
       </constructor-arg>
    </bean>
    
