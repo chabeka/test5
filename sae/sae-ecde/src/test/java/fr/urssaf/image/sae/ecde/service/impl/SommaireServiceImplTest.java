@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,73 +29,68 @@ import fr.urssaf.image.sae.ecde.service.SommaireService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
 public class SommaireServiceImplTest {
 
    @Autowired
    public EcdeSources ecdeSources;
-   
-   private static final String ECDE = "ecde";
-   private static final String SOMMAIRE = getSommaire() + "sommaire.xml";
-   private static final String FILE_SOM1 = "/sommaire/sommaire-test001.xml";
-   private static final String FILE_SOM1_BIS = "/sommaire/sommaire-test001Bis.xml";
-   private static final String FILE_SOM3 = "/sommaire/sommaire-test003.xml";
-   private static final String FILE_SOM4 = "/sommaire/sommaire-test004.xml";
-   private static final String FILE_SOM5 = "/sommaire/sommaire-test005.xml";
-   private static final String FILE_TEMP = "/1/20110101/3/documents/repertoire/testunitaire.txt";
-   private static final String TEST_UNIT = "ecde.testunit.recouv";
-   
-   private static final String INATTENDU = "Message Inattendu";
-   private static final String BATCH_MODE = "TOUT_OU_RIEN";
-   private static final String SOM = "/sommaire.xml";
-   
-   private static File repertoireTemp = new File(""), repertoireFinal = new File("");
-   
-   
-   private static String getSommaire() {
-      return "/1/20110101/3/";
-   }
-   
-   private static URI uri, uri2, uri3, uri4;
+         
+   private static File repertoireFinal = new File("");
    
    @Autowired
    private SommaireService sommaireService;
    
-   
-   @BeforeClass
-   public static void init() {  
-   }
-   
+   /**
+    * Creation de l'arborescence dans le rep temp de l'OS
+    * 
+    * @throws URISyntaxException
+    * @throws IOException
+    */
    private void createAbo() throws URISyntaxException, IOException {
+      File repertoireTemp = new File("");
       
       ecdeSources.getSources();
       for (EcdeSource ecde : ecdeSources.getSources()) {
-         if (TEST_UNIT.equals(ecde.getHost())) {
+         if ("ecde.testunit.recouv".equals(ecde.getHost())) {
             repertoireTemp = ecde.getBasePath();
          }
       }
-      repertoireFinal = new File(repertoireTemp.getAbsolutePath() + "/1/20110101/3/");
+      repertoireFinal = new File(repertoireTemp, "/1/20110101/3/");
       FileUtils.forceMkdir(repertoireFinal);
-      repertoireFinal.exists();
    }
    
-   private static void createSom(String sommaire, String som) throws URISyntaxException, IOException {
+   /**
+    * Creation du chemin de fichier du sommaire.xml
+    * 
+    * @param sommaire
+    * @param som
+    * @throws URISyntaxException
+    * @throws IOException
+    */
+   private void createSom(String sommaire) throws URISyntaxException, IOException {
       ClassPathResource classPath = new ClassPathResource(sommaire);
       File sommaire1 = classPath.getFile();
       
-      File somCopy1 = new File(repertoireFinal.getAbsolutePath() + som);
+      File somCopy1 = new File(repertoireFinal, "sommaire.xml");
       FileUtils.copyFile(sommaire1, somCopy1);
       
       somCopy1.createNewFile();
       somCopy1.exists();
    }
    
-   private static void createFileTemp() throws URISyntaxException, IOException {
+   /**
+    * Creation du chemin de fichier du repertoire documents
+    * @param sommaire
+    * @param som
+    * @throws URISyntaxException
+    * @throws IOException
+    */
+   private void createFileTemp() throws URISyntaxException, IOException {
       
-      ClassPathResource classPath = new ClassPathResource(FILE_TEMP);
+      ClassPathResource classPath = new ClassPathResource("/1/20110101/3/documents/repertoire/testunitaire.txt");
       File sommaire1 = classPath.getFile();
      
-      File rep = new File(repertoireFinal.getAbsolutePath() + System.getProperty("file.separator") + "documents" + System.getProperty("file.separator") + "repertoire");
+      File rep = new File(repertoireFinal.getAbsolutePath() + System.getProperty("file.separator") + "documents" + System.getProperty("file.separator"), "repertoire");
       FileUtils.forceMkdir(rep);
       rep.exists();
       
@@ -112,25 +106,23 @@ public class SommaireServiceImplTest {
 // Ici le sommaire.xml contient plusieurs documents en erreur mais on s'arrete des la premiere erreur pour afficher l'erreur   
    @Test(expected = EcdeBadSummaryException.class)
    public void fetchSommaireByUriFailurePlsrFileNotFound() throws EcdeGeneralException, URISyntaxException, IOException  {
-      uri = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
-      createSom(FILE_SOM1, "/sommaire.xml");
+      createSom("/sommaire/sommaire-test001.xml");
       Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
-      assertEquals(INATTENDU, BATCH_MODE, sommaire.getBatchMode());
+      assertEquals("Les fichiers n'ont pas été retrouvés!", "TOUT_OU_RIEN", sommaire.getBatchMode());
    }
 // Le test doit echouer car notre objet numérique a un fichier qui n'existe pas d'ou fichier introuvable
 // Le fichier resultats.xml est généré mais contenant un message d'erreur.
 // Ici le sommaire.xml contient un document en erreur   
    @Test(expected = EcdeBadSummaryException.class)
    public void fetchSommaireByUriFailureOneFileNotFound() throws EcdeGeneralException, URISyntaxException, IOException  {
-      uri = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
-      createSom(FILE_SOM1_BIS, SOM);
+      createSom("/sommaire/sommaire-test001Bis.xml");
       Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
-      assertEquals(INATTENDU, BATCH_MODE, sommaire.getBatchMode());
+      assertEquals("Le fichier n'a pas été retrouvé!", "TOUT_OU_RIEN", sommaire.getBatchMode());
    }
-   
-   
    
    
 // Verification que l'objet resultat cree est correct.
@@ -140,44 +132,48 @@ public class SommaireServiceImplTest {
       
       createAbo();
       
-      createSom(FILE_SOM3, SOM);
+      createSom("/sommaire/sommaire-test003.xml");
       
-      uri2 = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       
+      createFileTemp();    
       
-      createFileTemp();
+      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
       
-      
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri2);
-      
-      assertEquals(INATTENDU, BATCH_MODE, sommaire.getBatchMode());
+      assertEquals("L'objet Sommaire n'a pas été crée.", "TOUT_OU_RIEN", sommaire.getBatchMode());
    }
-   
-   
-   
+  
    
 // Le sommaire XMl n'a pas son batchMode a TOUT ou RIEN
 // Erreur genéré SAXParseException : non respect de l'enumeration TOUT_OU_RIEN ou PARTIEL 
 // Cette exception est catché et genere une exception de type EcdeBadSummaryException dans le code   
    @Test(expected = EcdeBadSummaryException.class)
    public void fetchSommaireByUriFailureBM() throws EcdeGeneralException, URISyntaxException, IOException  {
-      uri3 = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
-      createSom(FILE_SOM4, SOM);
+      createSom("/sommaire/sommaire-test001Bis.xml");
       createFileTemp();
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri3);
-      assertEquals(INATTENDU, BATCH_MODE, sommaire.getBatchMode());
+      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
+      assertEquals("Le batch mode retournée n'est pas correct!", "TOUT_OU_RIEN", sommaire.getBatchMode());
    }
    
 // Le sommaire XML ne respecte pas la syntaxe XSD
 // Test doit echouer car erreur de structure  car manque nombreDePages 
    @Test(expected = EcdeBadSummaryException.class)
    public void fetchSommaireByUriFailureStructure() throws EcdeGeneralException, URISyntaxException, IOException  {
-      uri4 = new URI(ECDE, TEST_UNIT, SOMMAIRE, null);
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
-      createSom(FILE_SOM5, SOM);
+      createSom("/sommaire/sommaire-test001Bis.xml");
       createFileTemp();
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri4);
-      assertEquals(INATTENDU, BATCH_MODE, sommaire.getBatchMode());
+      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
+      assertEquals("Le fichier ne respecte pas la structure XSD", "TOUT_OU_RIEN", sommaire.getBatchMode());
    }
+
+   /**
+    * Recupere le chemain du fichier sommaire.xml
+    */
+   private static String getSommaire() {
+      return "/1/20110101/3/sommaire.xml";
+   }
+
 }
