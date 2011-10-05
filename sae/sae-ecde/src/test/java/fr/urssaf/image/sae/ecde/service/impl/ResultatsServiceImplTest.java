@@ -33,29 +33,20 @@ import fr.urssaf.image.sae.ecde.service.ResultatService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.TooManyMethods", "PMD.NcssMethodCount","PMD.ExcessiveMethodLength", "PMD.ExcessiveImports"})
+@SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.TooManyMethods"})
 public class ResultatsServiceImplTest {
 
    @Autowired
    private ResultatService resultatService;
    
-   public static Resultats resultat;
-   private static final String FILE_TEMP = "/1/20110101/3/documents/repertoire/testunitaire.txt";
-   
-   private static String ecdeDirectory = "";
-   private static final String RESULTAT = "resultats.xml";
-   private static final String FILE_NOT_EXSISTS = "Fichier non existant!";
-   
-   private static final String SEPARATOR = System.getProperty("file.separator");
-   
    @Autowired
    public EcdeSources ecdeSources;
    
-   private static final String TEST_UNIT = "ecde.testunit.recouv";
+   public static Resultats resultat;
    
-   private static File repertoireTemp = new File("");
-   private static File repertoireFinal = new File("");
-   private static File somCopy1 = new File("");
+   private static String ecdeDirectory = "";
+   
+   private static File repertoireTemp = new File(""), repertoireFinal = new File(""), somCopy1 = new File("");
    
    @BeforeClass
    public static void init() throws IOException {
@@ -66,7 +57,7 @@ public class ResultatsServiceImplTest {
    private void createAbo() throws URISyntaxException, IOException {
       
       for (EcdeSource ecde : ecdeSources.getSources()) {
-         if (TEST_UNIT.equals(ecde.getHost())) {
+         if ("ecde.testunit.recouv".equals(ecde.getHost())) {
             repertoireTemp = ecde.getBasePath();
          }
       }
@@ -77,14 +68,14 @@ public class ResultatsServiceImplTest {
    
    private static void createFileTemp() throws URISyntaxException, IOException {
       
-      ClassPathResource classPath = new ClassPathResource(FILE_TEMP);
+      ClassPathResource classPath = new ClassPathResource("/1/20110101/3/documents/repertoire/testunitaire.txt");
       File sommaire1 = classPath.getFile();
      
-      File rep = new File(repertoireFinal.getAbsolutePath() + SEPARATOR + "documents" + SEPARATOR + "repertoire");
+      File rep = new File(repertoireFinal.getAbsolutePath(), "documents" + System.getProperty("file.separator") + "repertoire");
       FileUtils.forceMkdir(rep);
       
       
-      somCopy1 = new File(rep.getAbsolutePath() + SEPARATOR + "testunitaire.txt");
+      somCopy1 = new File(rep, "testunitaire.txt");
       FileUtils.copyFile(sommaire1, somCopy1);
       
       somCopy1.createNewFile();      
@@ -202,8 +193,8 @@ public class ResultatsServiceImplTest {
       createAbo();
       initialiseResultats();
       resultatService.persistResultat(resultat);
-      File resultatXml = new File(repertoireFinal + SEPARATOR + RESULTAT);
-      assertEquals(FILE_NOT_EXSISTS, true, resultatXml.exists());
+      File resultatXml = new File(repertoireFinal, "resultats.xml");
+      assertEquals("Le resultat.xml n'a pas été crée!", true, resultatXml.exists());
    }
    // Test avec creation d'un document en erreur
    @Test
@@ -214,8 +205,8 @@ public class ResultatsServiceImplTest {
       initialiseResultatsOneError();
       resultatService.persistResultat(resultat);
       
-      File resultatXml = new File(repertoireFinal + SEPARATOR + RESULTAT);
-      assertEquals(FILE_NOT_EXSISTS, true, resultatXml.exists());
+      File resultatXml = new File(repertoireFinal, "resultats.xml");
+      assertEquals("Le resultat.xml n'a pas été crée suit à un document en erreur!", true, resultatXml.exists());
    }
    
    // Test avec creation de plusieurs documents en erreur
@@ -227,8 +218,8 @@ public class ResultatsServiceImplTest {
       initialiseResultatsPlsError();
       resultatService.persistResultat(resultat);
       
-      File resultatXml = new File(repertoireFinal + SEPARATOR + RESULTAT);
-      assertEquals(FILE_NOT_EXSISTS, true, resultatXml.exists());
+      File resultatXml = new File(repertoireFinal, "resultats.xml");
+      assertEquals("Le resultat.xml n'a pas été crée suit à plusieurs documents en erreur!", true, resultatXml.exists());
    }
    
    // Test avec bacthMode non TOUT_OU_RIEN
@@ -241,8 +232,8 @@ public class ResultatsServiceImplTest {
       initialiseResultatsBatchModeError();
       resultatService.persistResultat(resultat);
       
-      File resultatXml = new File(repertoireFinal + SEPARATOR + RESULTAT);
-      assertEquals(FILE_NOT_EXSISTS, true, resultatXml.exists());
+      File resultatXml = new File(repertoireFinal, "resultats.xml");
+      assertEquals("Le BATCH_MODE ne vaut pas TOUT_OU_RIEN", true, resultatXml.exists());
    }
    
    

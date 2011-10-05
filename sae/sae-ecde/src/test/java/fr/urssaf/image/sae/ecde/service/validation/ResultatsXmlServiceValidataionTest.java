@@ -21,13 +21,11 @@ import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions"})
+@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.AvoidDuplicateLiterals"})
 public class ResultatsXmlServiceValidataionTest {
    
    @Autowired
    private ResultatsXmlService service;
-   
-   private static final String MESSAGE_INATTENDU = "message inattendu";
    
    private static ResultatsType type1;
       
@@ -43,7 +41,7 @@ public class ResultatsXmlServiceValidataionTest {
          OutputStream output1 = null;
          service.writeResultatsXml(type1, output1);
       } catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE_INATTENDU, "L'argument 'output' doit être renseigné.", e.getMessage());
+         assertEquals("message inattendu", "L'argument 'output' doit être renseigné.", e.getMessage());
       }
    }   
    // file à null
@@ -53,7 +51,7 @@ public class ResultatsXmlServiceValidataionTest {
          File outputFile = null;
          service.writeResultatsXml(type1, outputFile);
       } catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE_INATTENDU, "L'argument 'output' doit être renseigné.", e.getMessage());
+         assertEquals("message inattendu", "L'argument 'output' doit être renseigné.", e.getMessage());
       }
    }
 }

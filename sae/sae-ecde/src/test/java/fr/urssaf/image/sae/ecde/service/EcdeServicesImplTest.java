@@ -49,8 +49,7 @@ public class EcdeServicesImplTest {
    private static final String SEPARATOR = "://";
    private static final String FILE_SEPARATOR = System.getProperty("file.separator");
    
-   private static File repertoireTemp = new File("");
-   private static File repertoireFinal = new File("");
+   private static File repertoireTemp = new File(""), repertoireFinal = new File("");
    private static final String FILE_SOM3 = "/sommaire/sommaire-test003.xml";
    private static final String BATCH_MODE = "TOUT_OU_RIEN";
    private static final String FILE_TEMP = "/1/20110101/3/documents/repertoire/testunitaire.txt";

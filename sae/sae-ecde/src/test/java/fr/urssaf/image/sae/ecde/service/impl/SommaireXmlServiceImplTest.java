@@ -28,13 +28,11 @@ import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod"})
+@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod", "PMD.AvoidDuplicateLiterals"})
 public class SommaireXmlServiceImplTest {
 
    @Autowired
    private SommaireXmlService service;
-   
-   private static final String MESSAGE_INATTENDU = "message inattendu"; 
    
    @BeforeClass
    public static void init() throws IOException {
@@ -45,10 +43,10 @@ public class SommaireXmlServiceImplTest {
       ClassPathResource classPath = new ClassPathResource("sommaire/sommaire-test001.xml");
       File file = classPath.getFile();
       SommaireType sommaire = service.readSommaireXml(file);
-      assertEquals(MESSAGE_INATTENDU, BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
-      assertEquals(MESSAGE_INATTENDU, "La description du traitement", sommaire.getDescription());
-      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocuments().getDocument().size());
-      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocumentsVirtuels().getDocumentVirtuel().size());
+      assertEquals("message inattendu", BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
+      assertEquals("message inattendu", "La description du traitement", sommaire.getDescription());
+      assertEquals("message inattendu", 2, sommaire.getDocuments().getDocument().size());
+      assertEquals("message inattendu", 2, sommaire.getDocumentsVirtuels().getDocumentVirtuel().size());
    }
    // Test avec succes -- lecture du fichier sommaire-test001.xml 
    @Test
@@ -56,10 +54,10 @@ public class SommaireXmlServiceImplTest {
       ClassPathResource classPath = new ClassPathResource("sommaire/sommaire-test001.xml");
       InputStream input = classPath.getInputStream();
       SommaireType sommaire = service.readSommaireXml(input);
-      assertEquals(MESSAGE_INATTENDU, BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
-      assertEquals(MESSAGE_INATTENDU, "La description du traitement", sommaire.getDescription());
-      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocuments().getDocument().size());
-      assertEquals(MESSAGE_INATTENDU, 2, sommaire.getDocumentsVirtuels().getDocumentVirtuel().size());
+      assertEquals("message inattendu", BatchModeType.TOUT_OU_RIEN, sommaire.getBatchMode());
+      assertEquals("message inattendu", "La description du traitement", sommaire.getDescription());
+      assertEquals("message inattendu", 2, sommaire.getDocuments().getDocument().size());
+      assertEquals("message inattendu", 2, sommaire.getDocumentsVirtuels().getDocumentVirtuel().size());
    }
    //------------------------ FAILURE
    // Erreur de strucutre dans sommaire.xml - absence de l'element batchMode par conséquent ne respecte pas sommaire.xsd
@@ -72,7 +70,7 @@ public class SommaireXmlServiceImplTest {
          SommaireType sommaire = service.readSommaireXml(file);
          fail("Une exception était attendue! " + EcdeXsdException.class);
       }catch (EcdeXsdException e) {
-         assertEquals(MESSAGE_INATTENDU,"Une erreur de structure a été détectée sur le 'sommaire.xml'.",e.getMessage());
+         assertEquals("message inattendu","Une erreur de structure a été détectée sur le 'sommaire.xml'.",e.getMessage());
       }
    }
    @Test
@@ -84,7 +82,7 @@ public class SommaireXmlServiceImplTest {
          SommaireType sommaire = service.readSommaireXml(input);
          fail("Une exception était attendue! " + EcdeXsdException.class);
       }catch (EcdeXsdException e) {
-         assertEquals(MESSAGE_INATTENDU,"Une erreur de structure a été détectée sur le 'sommaire.xml'.",e.getMessage());
+         assertEquals("message inattendu","Une erreur de structure a été détectée sur le 'sommaire.xml'.",e.getMessage());
       }
    }
 }

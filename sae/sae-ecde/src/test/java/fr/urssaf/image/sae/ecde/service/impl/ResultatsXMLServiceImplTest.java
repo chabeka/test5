@@ -14,7 +14,6 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,28 +44,15 @@ import fr.urssaf.image.sae.ecde.service.ResultatsXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions","PMD.NcssMethodCount","PMD.ExcessiveMethodLength", "PMD.ExcessiveImports"})
+@SuppressWarnings({"PMD.MethodNamingConventions","PMD.NcssMethodCount","PMD.ExcessiveMethodLength", "PMD.ExcessiveImports", "PMD.AvoidDuplicateLiterals"})
 public class ResultatsXMLServiceImplTest {
 
    @Autowired
    private ResultatsXmlService service;
    
-   private static ResultatsType resultats;
-   private static ResultatsType resultats2;
-    
-   private static final String MESSAGE_INATTENDU = "message inattendu"; 
-   
-   // Recupération repertoire temp
-   private static final String REPERTORY = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
-
-   // nom du répertoire creer dans le repertoire temp de l'os
-   private static String resultatsEcde = "resultatsEcde";
-   // declaration d'un répertoire dans le repertoire temp de l'os
-   private static final String REPERTOIRE = FilenameUtils.concat(REPERTORY, resultatsEcde);
-   
-   private static final String VALEUR = "La valeur";
-   private static final String META1 = "CODE_METADONNEE_1";
-   private static final String META2 = "CODE_METADONNEE_2";
+   private static ResultatsType resultats, resultats2;
+      
+   private static final File REPERTOIRE = new File (SystemUtils.getJavaIoTmpDir(), "resultatsEcde"); 
    
    @BeforeClass
    public static void init() throws IOException {
@@ -74,7 +60,7 @@ public class ResultatsXMLServiceImplTest {
       resultats2 = new ResultatsType();
       initialiseResultats();
       initialiseResultats2();
-      File rep = new File(REPERTOIRE); 
+      File rep = REPERTOIRE; 
       // creation d'un repertoire dans le rep temp de l'os
       FileUtils.forceMkdir(rep);
       //nettoyage du repertoire present dans le rep temp de l'os
@@ -148,11 +134,11 @@ public class ResultatsXMLServiceImplTest {
       
       ComposantDocumentVirtuelType composant = new ComposantDocumentVirtuelType();
       MetadonneeType meta5 = new MetadonneeType();
-      meta5.setCode(META1);
-      meta5.setValeur(VALEUR);
+      meta5.setCode("CODE_METADONNEE_1");
+      meta5.setValeur("La valeur");
       MetadonneeType meta6 = new MetadonneeType();
-      meta6.setCode(META2);
-      meta6.setValeur(VALEUR);
+      meta6.setCode("CODE_METADONNEE_2");
+      meta6.setValeur("La valeur");
       composant.setNumeroPageDebut(1);
       composant.setNombreDePages(2);
       ListeMetadonneeType listeM3 = new ListeMetadonneeType();
@@ -163,11 +149,11 @@ public class ResultatsXMLServiceImplTest {
             
       ComposantDocumentVirtuelType composant2 = new ComposantDocumentVirtuelType();
       MetadonneeType meta7 = new MetadonneeType();
-      meta7.setCode(META1);
-      meta7.setValeur(VALEUR);
+      meta7.setCode("CODE_METADONNEE_1");
+      meta7.setValeur("La valeur");
       MetadonneeType meta8 = new MetadonneeType();
-      meta8.setCode(META2);
-      meta8.setValeur(VALEUR);
+      meta8.setCode("CODE_METADONNEE_2");
+      meta8.setValeur("La valeur");
       composant2.setNumeroPageDebut(2);
       composant2.setNombreDePages(2);
       ListeMetadonneeType listeM4 = new ListeMetadonneeType();
@@ -188,11 +174,11 @@ public class ResultatsXMLServiceImplTest {
       
       ComposantDocumentVirtuelType composant3 = new ComposantDocumentVirtuelType();
       MetadonneeType meta9 = new MetadonneeType();
-      meta9.setCode(META1);
-      meta9.setValeur(VALEUR);
+      meta9.setCode("CODE_METADONNEE_1");
+      meta9.setValeur("La valeur");
       MetadonneeType meta10 = new MetadonneeType();
-      meta10.setCode(META2);
-      meta10.setValeur(VALEUR);
+      meta10.setCode("CODE_METADONNEE_2");
+      meta10.setValeur("La valeur");
       composant3.setNumeroPageDebut(1);
       composant3.setNombreDePages(2);
       ListeMetadonneeType listeM5 = new ListeMetadonneeType();
@@ -203,11 +189,11 @@ public class ResultatsXMLServiceImplTest {
             
       ComposantDocumentVirtuelType composant4 = new ComposantDocumentVirtuelType();
       MetadonneeType meta11 = new MetadonneeType();
-      meta11.setCode(META1);
-      meta11.setValeur(VALEUR);
+      meta11.setCode("CODE_METADONNEE_1");
+      meta11.setValeur("La valeur");
       MetadonneeType meta12 = new MetadonneeType();
-      meta12.setCode(META2);
-      meta12.setValeur(VALEUR);
+      meta12.setCode("CODE_METADONNEE_2");
+      meta12.setValeur("La valeur");
       composant4.setNumeroPageDebut(2);
       composant4.setNombreDePages(2);
       ListeMetadonneeType listeM6 = new ListeMetadonneeType();
@@ -265,11 +251,11 @@ public class ResultatsXMLServiceImplTest {
       
       ComposantDocumentVirtuelType composant = new ComposantDocumentVirtuelType();
       MetadonneeType meta5 = new MetadonneeType();
-      meta5.setCode(META1);
-      meta5.setValeur(VALEUR);
+      meta5.setCode("CODE_METADONNEE_1");
+      meta5.setValeur("La valeur");
       MetadonneeType meta6 = new MetadonneeType();
-      meta6.setCode(META2);
-      meta6.setValeur(VALEUR);
+      meta6.setCode("CODE_METADONNEE_2");
+      meta6.setValeur("La valeur");
       composant.setNumeroPageDebut(1);
       composant.setNombreDePages(2);
       ListeMetadonneeType listeM3 = new ListeMetadonneeType();
@@ -280,8 +266,8 @@ public class ResultatsXMLServiceImplTest {
             
       ComposantDocumentVirtuelType composant2 = new ComposantDocumentVirtuelType();
       MetadonneeType meta7 = new MetadonneeType();
-      meta7.setCode(META1);
-      meta7.setValeur(VALEUR);
+      meta7.setCode("CODE_METADONNEE_1");
+      meta7.setValeur("La valeur");
       composant2.setNumeroPageDebut(2);
       composant2.setNombreDePages(2);
       ListeMetadonneeType listeM4 = new ListeMetadonneeType();
@@ -303,7 +289,7 @@ public class ResultatsXMLServiceImplTest {
    // Test avec un fichier en deuxieme argument
    @Test
    public void writeResutatsXml_file_success() throws EcdeXsdException, IOException {
-      File outputFile = new File(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
+      File outputFile = new File(REPERTOIRE,"resultats_success_file.xml");
       service.writeResultatsXml(resultats, outputFile);
       boolean exist = false;
       if(outputFile.exists()) {
@@ -312,25 +298,25 @@ public class ResultatsXMLServiceImplTest {
       assertEquals("fichier non existant", true, exist);
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu), Sha-1 calculé via un logiciel externe
       String fsumAttendu = "24f9c9ae38b4059a9a4f29b43f28875fbd51654c";
-      String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
+      String checksumObtenu = sha(new File(REPERTOIRE,"resultats_success_file.xml"));
       
-      assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
+      assertEquals("Sha-1 calculé est incorrect!", fsumAttendu, checksumObtenu);
    }
    // Test simple avec un outputStream
    @Test
    public void writeResultatsXml_outputstream_success() throws EcdeXsdException, JAXBException, IOException {
-      File outputFile = new File(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
+      File outputFile = new File(REPERTOIRE,"resultats_success.xml");
       OutputStream output = new FileOutputStream(outputFile.getPath());
       service.writeResultatsXml(resultats, output);
       
       // Sha-1 du fichier resultats-test001.xml (c'est le fichier attendu), Sha-1 calculé via un logiciel externe
       String fsumAttendu = "24f9c9ae38b4059a9a4f29b43f28875fbd51654c";
-      String checksumObtenu = sha(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
+      String checksumObtenu = sha(new File(REPERTOIRE,"resultats_success.xml"));
       
-      assertEquals(MESSAGE_INATTENDU, fsumAttendu, checksumObtenu);
+      assertEquals("Sha-1 calculé est incorrect!", fsumAttendu, checksumObtenu);
    }
-   private static String sha(String path) throws IOException{
-      InputStream data = new FileInputStream(path);
+   private static String sha(File file) throws IOException{
+      InputStream data = new FileInputStream(file.getAbsolutePath());
       return DigestUtils.shaHex(data);
    }
    //--------------------------------------------
@@ -338,23 +324,23 @@ public class ResultatsXMLServiceImplTest {
    @Test
    public void writeResultatsXml_outputstream_failure() throws IOException {
       try{  
-         File outputFile = new File(FilenameUtils.concat(REPERTOIRE,"resultats_success.xml"));
+         File outputFile = new File(REPERTOIRE,"resultats_success.xml");
          OutputStream output = new FileOutputStream(outputFile.getPath());
          service.writeResultatsXml(resultats2, output);
          fail("Une exception était attendue! " + EcdeXsdException.class);
       }catch (EcdeXsdException e) {
-         assertEquals(MESSAGE_INATTENDU,"Une erreur de structure a été détectée sur le 'resultats.xml'.",e.getMessage());
+         assertEquals("Le message d'erreur n'est pas correct!","Une erreur de structure a été détectée sur le 'resultats.xml'.",e.getMessage());
       }
    }
    // Test failure avec resultats sans batchMode
    @Test
    public void writeResultatsXml_file_failure() throws IOException {
       try{  
-         File outputFile = new File(FilenameUtils.concat(REPERTOIRE,"resultats_success_file.xml"));
+         File outputFile = new File(REPERTOIRE,"resultats_success_file.xml");
          service.writeResultatsXml(resultats2, outputFile);
          fail("Une exception était attendue! " + EcdeXsdException.class);
       }catch (EcdeXsdException e) {
-         assertEquals(MESSAGE_INATTENDU,"Une erreur de structure a été détectée sur le 'resultats.xml'.",e.getMessage());
+         assertEquals("Le message d'erreur n'est pas correct!","Une erreur de structure a été détectée sur le 'resultats.xml'.",e.getMessage());
       }
    }
 }

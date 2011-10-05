@@ -23,13 +23,11 @@ import fr.urssaf.image.sae.ecde.service.SommaireXmlService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext-sae-ecde-test.xml")
-@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod"})
+@SuppressWarnings({"PMD.MethodNamingConventions", "PMD.UncommentedEmptyMethod","PMD.AvoidDuplicateLiterals"})
 public class SommaireXmlServiceValidationTest {
 
    @Autowired
    private SommaireXmlService service;
-   
-   private static final String MESSAGE_INATTENDU = "message inattendu";
    
    @BeforeClass
    public static void init() throws URISyntaxException, FileNotFoundException {
@@ -42,7 +40,7 @@ public class SommaireXmlServiceValidationTest {
          InputStream input1 = null;
          service.readSommaireXml(input1);
       }catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE_INATTENDU, "L'argument flux doit être renseigné.", e.getMessage());
+         assertEquals("message inattendu", "L'argument flux doit être renseigné.", e.getMessage());
       }
    }
    
@@ -53,7 +51,7 @@ public class SommaireXmlServiceValidationTest {
          File inputFile = null;
          service.readSommaireXml(inputFile);
       }catch (IllegalArgumentException e) {
-         assertEquals(MESSAGE_INATTENDU, "L'argument fichier doit être renseigné.", e.getMessage());
+         assertEquals("message inattendu", "L'argument fichier doit être renseigné.", e.getMessage());
       }
    }   
    
