@@ -449,7 +449,7 @@
     <description>Date de début de la durée de conservation.</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>sm_final_date</shortCode>
+    <shortCode>dfc</shortCode>
     <longCode>DateFinConservation</longCode>
     <type>date</type>
     <requiredForArchival>false</requiredForArchival>
@@ -607,22 +607,6 @@
     <archivable>true</archivable>
     <label>Taille du fichier</label>
     <description>Taille du fichier en ko</description>
-  </metaDataReference>
-  <metaDataReference>
-    <shortCode>sm_extension</shortCode>
-    <longCode>ExtensionFichier</longCode>
-    <type>String</type>
-    <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>false</requiredForStorage>
-    <length>20</length>
-    <pattern>   </pattern>
-    <consultable>false</consultable>
-    <defaultConsultable>false</defaultConsultable>
-    <searchable>false</searchable>
-    <internal>true</internal>
-    <archivable>false</archivable>
-    <label>Extension (DFCE)</label>
-    <description>Extension du fichier sur 3 caractères</description>
   </metaDataReference>
   <metaDataReference>
     <shortCode>iti</shortCode>

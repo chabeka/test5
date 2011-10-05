@@ -30,7 +30,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getAllMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO().getAllMetadataReferences()
-				.size() == 49);
+				.size() == 48);
 	}
 
 	/**
