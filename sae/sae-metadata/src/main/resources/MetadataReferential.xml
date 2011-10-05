@@ -421,7 +421,7 @@
     <longCode>DureeConservation</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>true</requiredForStorage>
+    <requiredForStorage>false</requiredForStorage>
     <length>-1</length>
     <pattern>   </pattern>
     <consultable>true</consultable>
@@ -453,7 +453,7 @@
     <longCode>DateFinConservation</longCode>
     <type>date</type>
     <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>true</requiredForStorage>
+    <requiredForStorage>false</requiredForStorage>
     <length>10</length>
     <pattern></pattern>
     <consultable>true</consultable>
@@ -469,7 +469,7 @@
     <longCode>Gel</longCode>
     <type>Boolean</type>
     <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>true</requiredForStorage>
+    <requiredForStorage>false</requiredForStorage>
     <length>-1</length>
     <pattern>true|false</pattern>
     <consultable>true</consultable>
@@ -529,7 +529,7 @@
     <description>Hash du fichier</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>sm_digest_alogorithm</shortCode>
+    <shortCode>sm_digest_algorithm</shortCode>
     <longCode>TypeHash</longCode>
     <type>String</type>
     <requiredForArchival>true</requiredForArchival>
@@ -564,7 +564,7 @@
     <shortCode>nfi</shortCode>
     <longCode>NomFichier</longCode>
     <type>String</type>
-    <requiredForArchival>true</requiredForArchival>
+    <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>true</requiredForStorage>
     <length>30</length>
     <pattern>   </pattern>
@@ -613,7 +613,7 @@
     <longCode>ExtensionFichier</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>true</requiredForStorage>
+    <requiredForStorage>false</requiredForStorage>
     <length>20</length>
     <pattern>   </pattern>
     <consultable>false</consultable>
@@ -658,11 +658,11 @@
   </metaDataReference>
   <metaDataReference>
     <shortCode>sm_virtual</shortCode>
-    <longCode>ObjectType</longCode>
-    <type>String</type>
+    <longCode>DocumentVirtuel</longCode>
+    <type>Boolean</type>
     <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>true</requiredForStorage>
-    <length>20</length>
+    <length>-1</length>
     <pattern>   </pattern>
     <consultable>false</consultable>
     <defaultConsultable>false</defaultConsultable>
