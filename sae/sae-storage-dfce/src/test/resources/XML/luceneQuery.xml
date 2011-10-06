@@ -27,19 +27,19 @@
 		<queryType>wildcard</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr:ge?</query>
+		<query>apr:ge*</query>
 		<desiredMetadata>vrn,dom,act</desiredMetadata>
 		<queryId>query-2</queryId>
 		<queryType>wildcard</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr:GE?</query>
+		<query>apr:GE*</query>
 		<desiredMetadata>vrn,dom,act</desiredMetadata>
 		<queryId>query-3</queryId>
 		<queryType>wildcard</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr :GE?</query>
+		<query>apr :GE*</query>
 		<desiredMetadata>vrn,dom,act</desiredMetadata>
 		<queryId>query-4</queryId>
 		<queryType>wildcard</queryType>
@@ -51,7 +51,7 @@
 		<queryType>wildcard</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>sm_document_type:2.3.1.1.?</query>
+		<query>sm_document_type:2.3.1.1.*</query>
 		<desiredMetadata>vrn,dom,act</desiredMetadata>
 		<queryId>query-5</queryId>
 		<queryType>wildcard</queryType>
@@ -77,25 +77,25 @@
 	</luceneQuery>
 	<!-- query AND -->
 	<luceneQuery>
-		<query>apr : ged AND sm_document_type:2.3.1.1.*</query>
+		<query>apr : GED AND sm_document_type:2.3.1.1.*</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-1</queryId>
 		<queryType>withOperatorAnd</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged AND sm_document_type : 2.3.1.1.?</query>
+		<query>apr : ged AND sm_document_type : 2.3.1.1.*</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-2</queryId>
 		<queryType>withOperatorAnd</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged AND sm_document_type:2.3.1.*.?</query>
+		<query>apr : ged AND sm_document_type:2.3.1.1.*</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-3</queryId>
 		<queryType>withOperatorAnd</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged &amp;&amp;  sm_document_type:2.3.1.*.?</query>
+		<query>apr : ged &amp;&amp;  sm_document_type:2.3.1.1.*</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-4</queryId>
 		<queryType>withOperatorAnd</queryType>
@@ -108,44 +108,44 @@
 	</luceneQuery>
 	<!--withOperatorOr  -->
 	<luceneQuery>
-		<query>apr : ged OR sm_document_type:2.3.1.1.?</query>
+		<query>apr : ged OR sm_document_type:2.3.1.1.*</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-1</queryId>
 		<queryType>withOperatorOr</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged OR sm_document_type:2.3.*.1.? </query>
+		<query>apr : ged OR sm_document_type:2.3.1.1.* </query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-2</queryId>
 		<queryType>withOperatorOr</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged || sm_document_type:2.3.1.1.? </query>
+		<query>apr : ged || sm_document_type:2.3.1.1.* </query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-3</queryId>
 		<queryType>withOperatorOr</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged OR sm_document_type:2.3.1.1.? || den : "MR YALCIN KENORE"</query>
+		<query>apr : ged OR sm_document_type:2.3.1.1.* || den : "MR YALCIN KENORE"</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-4</queryId>
 		<queryType>withOperatorOr</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>apr : ged || sm_document_type:2.3.1.1.? || den : "MR YALCIN KENORE"</query>
+		<query>apr : ged || sm_document_type:2.3.1.1.* || den : "MR YALCIN KENORE"</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-5</queryId>
 		<queryType>withOperatorOr</queryType>
 	</luceneQuery>
 <!--withOperatorAndOr  -->
 	<luceneQuery>
-		<query>apr : ged OR (sm_document_type:2.3.1.1.? AND den : "MR YALCIN KENORE")</query>
+		<query>apr : ged OR (sm_document_type:2.3.1.1.* AND den : "MR YALCIN KENORE")</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-1</queryId>
 		<queryType>withOperatorAndOr</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>sm_document_type:2.3.1.1.? OR (sm_life_cycle_reference_date : [20110905 TO 20111130] AND apr:ged)
+		<query>sm_document_type:2.3.1.1.* OR (sm_life_cycle_reference_date : [20110905 TO 20111130] AND apr:ged)
 		</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-2</queryId>
@@ -153,13 +153,13 @@
 	</luceneQuery>
 	<!--withOperatorNot  -->
 	<luceneQuery>
-		<query>sm_document_type:2.3.1.1.? - sm_document_type: 2.2.3.2.1</query>
+		<query>sm_document_type:2.3.1.1.* - sm_document_type: 2.2.3.2.1</query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-1</queryId>
 		<queryType>withOperatorNot</queryType>
 	</luceneQuery>
 	<luceneQuery>
-		<query>sm_document_type:2.3.1.1.? - sm_document_type: 2.3.1.1.12 </query>
+		<query>sm_document_type:2.3.1.1.* - sm_document_type: 2.3.1.1.12 </query>
 		<desiredMetadata>vrn,dom,act,sm_creation_date</desiredMetadata>
 		<queryId>query-2</queryId>
 		<queryType>withOperatorNot</queryType>
