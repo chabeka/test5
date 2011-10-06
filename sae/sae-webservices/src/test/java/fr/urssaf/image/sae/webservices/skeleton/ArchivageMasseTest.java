@@ -6,6 +6,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class ArchivageMasseTest {
    private SaeServiceSkeletonInterface skeleton;
 
    @Test
+   @Ignore
    public void archivageMasse_success() throws AxisFault {
 
       ArchivageMasse request = createArchivageMasse("src/test/resources/request/archivageMasse_success.xml");
