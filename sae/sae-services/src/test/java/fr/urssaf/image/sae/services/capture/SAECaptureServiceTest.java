@@ -29,7 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestDocument;
-import fr.urssaf.image.sae.ecde.util.test.EcdeTestSommaire;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
@@ -118,13 +117,13 @@ public class SAECaptureServiceTest {
 
       EcdeTestDocument ecde = ecdeTestTools.buildEcdeTestDocument("attestation_consultation.pdf");
       
-      File repertoireEcdeTraitement = ecde.getRepEcdeDocuments();
+      File repertoireEcde = ecde.getRepEcdeDocuments();
       URI urlEcdeDocument  = ecde.getUrlEcdeDocument ();
       
 
       LOG.debug("CAPTURE UNITAIRE ECDE TEMP: "
-            + repertoireEcdeTraitement.getAbsoluteFile());
-      File fileDoc = new File(repertoireEcdeTraitement,
+            + repertoireEcde.getAbsoluteFile());
+      File fileDoc = new File(repertoireEcde,
             "attestation_consultation.pdf");
       ClassPathResource resDoc = new ClassPathResource(
             "attestation_consultation.pdf");

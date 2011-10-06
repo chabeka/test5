@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
 import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
+import fr.urssaf.image.sae.services.dispatchers.SAEServiceDispatcher;
 import fr.urssaf.image.sae.services.enrichment.dao.impl.SAEMetatadaFinderUtils;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
@@ -36,138 +36,165 @@ import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 @Service
 @Qualifier("saeControlesCaptureService")
 public class SAEControlesCaptureServiceImpl implements
-      SAEControlesCaptureService {
-   private static final Logger LOGGER = Logger
-         .getLogger(SAEControlesCaptureServiceImpl.class);
-   @Autowired
-   @Qualifier("metadataControlServices")
-   private MetadataControlServices metadataCS;
+		SAEControlesCaptureService {
+	@Autowired
+	@Qualifier("metadataControlServices")
+	private MetadataControlServices metadataCS;
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see
-    * fr.urssaf.image.sae.services.document.controles.SAEControlesCaptureService
-    * #checkSaeMetadataForCapture(fr.urssaf.image.sae.bo.model.bo.SAEDocument)
-    */
-   @Override
-   public final void checkSaeMetadataForCapture(SAEDocument saeDocument)
-         throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx {
-      List<MetadataError> errorsList = metadataCS
-            .checkArchivableMetadata(saeDocument);
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new NotSpecifiableMetadataEx(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.interdites", codeLongErrors));
-      }
-      errorsList = metadataCS.checkRequiredForArchivalMetadata(saeDocument);
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new RequiredArchivableMetadataEx(ResourceMessagesUtils
-               .loadMessage("capture.metadonnees.archivage.obligatoire",
-                     codeLongErrors));
-      }
-   }
+	@Autowired
+	@Qualifier("saeServiceDispatcher")
+	private SAEServiceDispatcher serviceDispatcher;
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final void checkSaeMetadataForStorage(SAEDocument sAEDocument)
-         throws RequiredStorageMetadataEx {
-      List<MetadataError> errorsList = metadataCS
-            .checkRequiredForStorageMetadata(sAEDocument);
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         LOGGER.error(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.stockage.obligatoire", codeLongErrors));
-         throw new RequiredStorageMetadataEx(ResourceMessagesUtils
-               .loadMessage("erreur.technique.capture.unitaire"));
-      }
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void checkSaeMetadataForCapture(SAEDocument saeDocument)
+			throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx {
+		List<MetadataError> errorsList = metadataCS
+				.checkArchivableMetadata(saeDocument);
+		if (CollectionUtils.isNotEmpty(errorsList)) {
+			List<String> codeLongErrors = buildLongCodeError(errorsList);
+			throw new NotSpecifiableMetadataEx(
+					ResourceMessagesUtils.loadMessage(
+							"capture.metadonnees.interdites", codeLongErrors));
+		}
+		errorsList = metadataCS.checkRequiredForArchivalMetadata(saeDocument);
+		if (CollectionUtils.isNotEmpty(errorsList)) {
+			List<String> codeLongErrors = buildLongCodeError(errorsList);
+			serviceDispatcher.dispatch(new RequiredArchivableMetadataEx(
+					ResourceMessagesUtils.loadMessage(
+							"capture.metadonnees.archivage.obligatoire",
+							codeLongErrors)));
+		}
+	}
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final void checkHashCodeMetadataForStorage(SAEDocument saeDocument)
-         throws UnknownHashCodeEx {
-      String hashCodeValue = SAEMetatadaFinderUtils.codeMetadataFinder(
-            saeDocument.getMetadatas(), SAEArchivalMetadatas.HASH_CODE
-                  .getLongCode());
-      String algoHashCode = SAEMetatadaFinderUtils.codeMetadataFinder(
-            saeDocument.getMetadatas(), SAEArchivalMetadatas.TYPE_HASH
-                  .getLongCode());
-      // FIXME vérifier que l'algorithme passer fait partie d'une liste
-      // pré-définit.
-      if (!"SHA-1".equals(algoHashCode)) {
-         throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-               "capture.hash.erreur", saeDocument.getFilePath()));
-      }
-      // FIXME à partie de l'algorithme calculer le hashCode.
-      if (!DigestUtils.shaHex(saeDocument.getContent()).equals(hashCodeValue.trim())) {
-         throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-               "capture.hash.erreur", saeDocument.getFilePath()));
-      }
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void checkSaeMetadataForStorage(SAEDocument sAEDocument)
+			throws RequiredStorageMetadataEx {
+		List<MetadataError> errorsList = metadataCS
+				.checkRequiredForStorageMetadata(sAEDocument);
+		if (CollectionUtils.isNotEmpty(errorsList)) {
+			List<String> codeLongErrors = buildLongCodeError(errorsList);
+			serviceDispatcher
+					.dispatch(new RequiredStorageMetadataEx(
+							ResourceMessagesUtils.loadMessage(
+									"capture.metadonnees.stockage.obligatoire",
+									codeLongErrors)
+									+ ResourceMessagesUtils
+											.loadMessage("erreur.technique.capture.unitaire")));
+		}
+	}
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final void checkUntypedDocument(UntypedDocument untypedDocument)
-         throws EmptyDocumentEx {
-      if (untypedDocument.getContent() == null
-            || untypedDocument.getContent().length == 0) {
-         throw new EmptyDocumentEx(ResourceMessagesUtils.loadMessage(
-               "capture.fichier.vide", untypedDocument.getFilePath()));
-      }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void checkHashCodeMetadataForStorage(SAEDocument saeDocument)
+			throws UnknownHashCodeEx {
+		String hashCodeValue = SAEMetatadaFinderUtils.codeMetadataFinder(
+				saeDocument.getMetadatas(),
+				SAEArchivalMetadatas.HASH_CODE.getLongCode());
+		String algoHashCode = SAEMetatadaFinderUtils.codeMetadataFinder(
+				saeDocument.getMetadatas(),
+				SAEArchivalMetadatas.TYPE_HASH.getLongCode());
+		// FIXME vérifier que l'algorithme passer fait partie d'une liste
+		// pré-définit.
+		if (!"SHA-1".equals(algoHashCode)) {
+			serviceDispatcher
+			.dispatch(new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
+					"capture.hash.erreur", saeDocument.getFilePath())));
+		}
+		// FIXME à partie de l'algorithme calculer le hashCode.
+		if (!DigestUtils.shaHex(saeDocument.getContent()).equals(
+				hashCodeValue.trim())) {
+			serviceDispatcher
+			.dispatch( new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
+					"capture.hash.erreur", saeDocument.getFilePath())));
+		}
+	}
 
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void checkUntypedDocument(UntypedDocument untypedDocument)
+			throws EmptyDocumentEx {
+		if (untypedDocument.getContent() == null
+				|| untypedDocument.getContent().length == 0) {
+			serviceDispatcher
+			.dispatch(  new EmptyDocumentEx(ResourceMessagesUtils.loadMessage(
+					"capture.fichier.vide", untypedDocument.getFilePath())));
+		}
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final void checkUntypedMetadata(UntypedDocument untypedDocument)
-         throws UnknownMetadataEx, DuplicatedMetadataEx,
-         InvalidValueTypeAndFormatMetadataEx {
-      List<MetadataError> errorsList = metadataCS
-            .checkExistingMetadata(untypedDocument);
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new UnknownMetadataEx(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.inconnu", codeLongErrors));
-      }
-      errorsList = metadataCS.checkMetadataValueTypeAndFormat(untypedDocument);
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils
-               .loadMessage("capture.metadonnees.format.type.non.valide",
-                     codeLongErrors));
-      }
-      errorsList = metadataCS.checkDuplicateMetadata(untypedDocument
-            .getUMetadatas());
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new DuplicatedMetadataEx(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.doublon", codeLongErrors));
-      }
-   }
+	}
 
-   /**
-    * Construire une list de code long.
-    * 
-    * @param errorsList
-    *           : Liste de de type {@link MetadataError}
-    * @return Liste de code long à partir d'une liste de de type
-    *         {@link MetadataError}
-    */
-   private List<String> buildLongCodeError(List<MetadataError> errorsList) {
-      List<String> codeLongErrors = new ArrayList<String>();
-      for (MetadataError metadataError : Utils.nullSafeIterable(errorsList)) {
-         codeLongErrors.add(metadataError.getLongCode());
-      }
-      return codeLongErrors;
-   }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void checkUntypedMetadata(UntypedDocument untypedDocument)
+			throws UnknownMetadataEx, DuplicatedMetadataEx,
+			InvalidValueTypeAndFormatMetadataEx {
+		List<MetadataError> errorsList = metadataCS
+				.checkExistingMetadata(untypedDocument);
+		if (CollectionUtils.isNotEmpty(errorsList)) {
+			List<String> codeLongErrors = buildLongCodeError(errorsList);
+			throw new UnknownMetadataEx(ResourceMessagesUtils.loadMessage(
+					"capture.metadonnees.inconnu", codeLongErrors));
+		}
+		errorsList = metadataCS
+				.checkMetadataValueTypeAndFormat(untypedDocument);
+		if (CollectionUtils.isNotEmpty(errorsList)) {
+			List<String> codeLongErrors = buildLongCodeError(errorsList);
+			serviceDispatcher
+			.dispatch(  new InvalidValueTypeAndFormatMetadataEx(
+					ResourceMessagesUtils.loadMessage(
+							"capture.metadonnees.format.type.non.valide",
+							codeLongErrors)));
+		}
+		errorsList = metadataCS.checkDuplicateMetadata(untypedDocument
+				.getUMetadatas());
+		if (CollectionUtils.isNotEmpty(errorsList)) {
+			List<String> codeLongErrors = buildLongCodeError(errorsList);
+			serviceDispatcher
+			.dispatch(  new DuplicatedMetadataEx(ResourceMessagesUtils.loadMessage(
+					"capture.metadonnees.doublon", codeLongErrors)));
+		}
+	}
+
+	/**
+	 * Construire une list de code long.
+	 * 
+	 * @param errorsList
+	 *            : Liste de de type {@link MetadataError}
+	 * @return Liste de code long à partir d'une liste de de type
+	 *         {@link MetadataError}
+	 */
+	private List<String> buildLongCodeError(List<MetadataError> errorsList) {
+		List<String> codeLongErrors = new ArrayList<String>();
+		for (MetadataError metadataError : Utils.nullSafeIterable(errorsList)) {
+			codeLongErrors.add(metadataError.getLongCode());
+		}
+		return codeLongErrors;
+	}
+
+	/**
+	 * @param serviceDispatcher
+	 *            : Le dispatcher
+	 */
+	public final void setServiceDispatcher(
+			final SAEServiceDispatcher serviceDispatcher) {
+		this.serviceDispatcher = serviceDispatcher;
+	}
+
+	/**
+	 * @return Le dispatcher.
+	 */
+	public final SAEServiceDispatcher getSaeServiceDispatcher() {
+		return serviceDispatcher;
+	}
 }
