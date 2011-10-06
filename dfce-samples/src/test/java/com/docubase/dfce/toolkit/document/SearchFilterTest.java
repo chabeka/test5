@@ -2,6 +2,7 @@ package com.docubase.dfce.toolkit.document;
 
 import static junit.framework.Assert.*;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -94,7 +95,8 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testFilterAnd() throws ExceededSearchLimitException {
+    public void testFilterAnd() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
@@ -109,7 +111,8 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testFilterOr() throws ExceededSearchLimitException {
+    public void testFilterOr() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
@@ -124,7 +127,8 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testFilterAndNot() throws ExceededSearchLimitException {
+    public void testFilterAndNot() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
@@ -138,7 +142,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testNumericRangeFilterExclusive()
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory.getInstance()
 		.createChainedFilter()
 		.addIntRangeFilter(id.getFormattedName(), 7, 47, false, false);
@@ -150,7 +154,7 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testNumericRangeFilterInclusive()
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory.getInstance()
 		.createChainedFilter()
 		.addIntRangeFilter(id.getFormattedName(), 7, 47, true, true);
@@ -161,7 +165,8 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testMultipleFilter() throws ExceededSearchLimitException {
+    public void testMultipleFilter() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
@@ -180,7 +185,8 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testNumericRangeQuery() throws ExceededSearchLimitException {
+    public void testNumericRangeQuery() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	SearchResult result = serviceProvider.getSearchService().search(
 		owner.getFormattedName() + ":bob AND "
 			+ number.getFormattedName() + ":[1 TO 20]", 1000, base);

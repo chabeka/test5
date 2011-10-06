@@ -15,9 +15,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 
-public class BaseAdministrationServiceTest extends AbstractBaseTestCase {
+public class BaseAdministrationServiceTest extends AbstractTestBase {
 
     @BeforeClass
     public static void setUp() {
@@ -56,7 +56,7 @@ public class BaseAdministrationServiceTest extends AbstractBaseTestCase {
 	    serviceProvider.getBaseAdministrationService().createBase(newBase);
 	} catch (ObjectAlreadyExistsException e) {
 	    e.printStackTrace();
-	    fail("base : " + base.getBaseId() + " already exists");
+	    fail("base : " + newBase.getBaseId() + " already exists");
 	}
 
 	List<Base> allBasesAfterNewBase = serviceProvider

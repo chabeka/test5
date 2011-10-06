@@ -2,6 +2,7 @@ package com.docubase.dfce.toolkit.document;
 
 import static org.junit.Assert.*;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -9,6 +10,7 @@ import net.docubase.toolkit.model.document.Document;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -48,7 +50,7 @@ public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
 	    tag.addCriterion(c4, 10);
 
 	    // stockage
-	    storeDoc(tag, getFile("doc1.pdf", RichQueriesTest.class), true);
+	    storeDocument(tag, TestUtils.getFile("doc1.pdf"), true);
 	}
 
 	serviceProvider.getStorageAdministrationService()
@@ -56,25 +58,29 @@ public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testSimpleQuery() throws ExceededSearchLimitException {
+    public void testSimpleQuery() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":adulte";
 	assertEquals(40, searchLucene(query, 1000, null));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testLeadingWildcardQuery() throws ExceededSearchLimitException {
+    @Test(expected = SearchQueryParseException.class)
+    public void testLeadingWildcardQuery() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":*";
 	searchLucene(query, 1000, null);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testEmptyQuery() throws ExceededSearchLimitException {
+    @Test(expected = SearchQueryParseException.class)
+    public void testEmptyQuery() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":";
 	searchLucene(query, 1000, null);
     }
 
     @Test
-    public void testCompositeQuery() throws ExceededSearchLimitException {
+    public void testCompositeQuery() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = "(" + c1.getFormattedName() + ":adulte" + " AND "
 		+ c2.getFormattedName() + ":masculin" + ") OR ("
 		+ c1.getFormattedName() + ":enfant" + " AND "
@@ -83,21 +89,24 @@ public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testRange() throws ExceededSearchLimitException {
+    public void testRange() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":adulte" + " AND "
 		+ c2.getFormattedName() + ":[feminin TO masculin]";
 	assertEquals(40, searchLucene(query, 1000, null));
     }
 
     @Test(expected = ExceededSearchLimitException.class)
-    public void testExceededSearchLimit() throws ExceededSearchLimitException {
+    public void testExceededSearchLimit() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":adulte";
 	serviceProvider.getSearchService().search(query, 100, 0, base, null,
 		50000);
     }
 
     @Test
-    public void testAnd() throws ExceededSearchLimitException {
+    public void testAnd() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":adulte" + " AND "
 		+ c4.getFormattedName() + ":10";
 	assertEquals(40, searchLucene(query, 1000, null));

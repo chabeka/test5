@@ -19,6 +19,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class ExtractDocumentFileTest extends
@@ -32,7 +33,7 @@ public class ExtractDocumentFileTest extends
 		.createDocumentTag(base);
 	document.addCriterion(base.getBaseCategory(catNames[0]), "testExtract");
 
-	File file = getFile("48Pages.pdf", ExtractDocumentFileTest.class);
+	File file = TestUtils.getFile("48Pages.pdf");
 
 	Document documentStored = serviceProvider.getStoreService()
 		.storeDocument(document,

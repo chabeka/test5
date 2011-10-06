@@ -140,16 +140,6 @@ public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	checkPDF(documentFile, 3);
 
-	// Check reference document digest
-	// MessageDigest instance = MessageDigest.getInstance(document
-	// .getDigestAlgorithm());
-	// Document refDocument = serviceProvider.getSearchService()
-	// .getDocumentByUUID(base, document.isVirtual());
-	// InputStream refInputStream = serviceProvider.getStoreService()
-	// .getDocumentFile(refDocument);
-	// byte[] digest = instance.digest(IOUtils.toByteArray(refInputStream));
-	// assertEquals(Hex.encodeHexString(digest), document.getDigest());
-
 	logger.info("... end testVirtualDocument().");
 	documentFile.close();
     }
@@ -175,5 +165,21 @@ public class VirtualDocumentTest extends AbstractTestCaseCreateAndPrepareBase {
 	checkPDF(pdf, 7);
 
 	pdf.close();
+    }
+
+    @Test
+    public void testDelete() throws TagControlException,
+	    FrozenDocumentException, IOException {
+	Document documentToDelete = insertVirtualDocument(fileReference, 1, 3,
+		"dv1");
+	Document document = insertVirtualDocument(fileReference, 2, 4, "dv2");
+
+	serviceProvider.getStoreService().deleteDocument(
+		documentToDelete.getUuid());
+
+	InputStream documentFile = serviceProvider.getStoreService()
+		.getDocumentFile(document);
+
+	checkPDF(documentFile, 3);
     }
 }

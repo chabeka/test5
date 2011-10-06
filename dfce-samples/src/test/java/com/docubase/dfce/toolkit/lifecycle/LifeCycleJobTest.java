@@ -18,13 +18,13 @@ import net.docubase.toolkit.model.reference.LifeCycleRule;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
-import com.docubase.dfce.toolkit.document.RichGedTest;
 
 public class LifeCycleJobTest extends AbstractTestCaseCreateAndPrepareBase {
     private static LifeCycleRule lifeCycleRule1Year;
     private static LifeCycleRule lifeCycleRule2Years;
-    private Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     @BeforeClass
     public static void beforeClass() throws ObjectAlreadyExistsException {
@@ -53,9 +53,9 @@ public class LifeCycleJobTest extends AbstractTestCaseCreateAndPrepareBase {
 	    Date referenceDate, Date finalDate) throws FrozenDocumentException {
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "category0"
+	document.addCriterion(category0, "category0"
 		+ UUID.randomUUID().toString());
-	File file = getFile("doc1.pdf", RichGedTest.class);
+	File file = TestUtils.getFile("doc1.pdf");
 	document.setType(documentType);
 	document.setLifeCycleReferenceDate(referenceDate);
 

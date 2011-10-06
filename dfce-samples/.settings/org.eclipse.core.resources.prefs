@@ -1,6 +1,5 @@
-#Fri Sep 16 15:03:25 CEST 2011
+#Thu Oct 06 20:07:36 CEST 2011
 eclipse.preferences.version=1
-encoding//src/test/java/com/docubase/dfce/toolkit/base/AbstractBaseTestCase.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/base/AbstractTestCaseCreateAndPrepareBase.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/base/CategoryReferenceTest.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/base/DictionaryTest.java=ISO-8859-1
@@ -8,7 +7,6 @@ encoding//src/test/java/com/docubase/dfce/toolkit/base/IndexCompositeTest.java=I
 encoding//src/test/java/com/docubase/dfce/toolkit/base/IndexCounterTest.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/base/MultiDomainTest.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/base/MultibaseTest.java=ISO-8859-1
-encoding//src/test/java/com/docubase/dfce/toolkit/client/AbstractDFCEToolkitClientTest.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/client/administration/AccessControlClientTest.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/document/DocumentFreezeTest.java=ISO-8859-1
 encoding//src/test/java/com/docubase/dfce/toolkit/document/DocumentTagUpdateTest.java=ISO-8859-1

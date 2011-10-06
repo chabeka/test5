@@ -12,7 +12,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class CategoryReferenceTest extends AbstractBaseTestCase {
+import com.docubase.dfce.toolkit.AbstractTestBase;
+
+public class CategoryReferenceTest extends AbstractTestBase {
     private static final String CATEGORY_CODE1 = "CATEGORY_CODE1"
 	    + UUID.randomUUID();
     private static final String CATEGORY_CODE2 = "CATEGORY_CODE2"
@@ -23,13 +25,13 @@ public class CategoryReferenceTest extends AbstractBaseTestCase {
 	    + UUID.randomUUID();
 
     @BeforeClass
-    public static void beforeAll() {
-	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+    public static void setUp() {
+	connect();
     }
 
     @AfterClass
-    public static void afterAll() {
-	serviceProvider.disconnect();
+    public static void tearDown() {
+	disconnect();
     }
 
     /**

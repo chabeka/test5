@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -34,7 +35,7 @@ public class DocumentTagUpdateTest extends AbstractTestCaseCreateAndPrepareBase 
 
     @BeforeClass
     public static void beforeClass() {
-	file = getFile("48pages.pdf", DocumentTagUpdateTest.class);
+	file = TestUtils.getFile("48pages.pdf");
     }
 
     private final ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();

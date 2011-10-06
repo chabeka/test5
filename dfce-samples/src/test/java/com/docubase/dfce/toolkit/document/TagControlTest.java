@@ -18,6 +18,7 @@ import net.docubase.toolkit.model.document.Document;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -47,7 +48,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	categoryDecimal = base.getBaseCategory(catNames[5]);
 	categoryDate = base.getBaseCategory(catNames[6]);
 
-	newDoc = getFile("doc1.pdf", TagControlTest.class);
+	newDoc = TestUtils.getFile("doc1.pdf");
 
 	document = ToolkitFactory.getInstance().createDocumentTag(base);
     }
@@ -155,7 +156,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	Assert.assertNotNull(stored);
 
-	stored.deleteCriterion(baseCategory0);
+	stored.deleteCriterion(category0);
 	serviceProvider.getStoreService().updateDocument(stored);
     }
 
@@ -195,7 +196,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	String c0 = "Identifier" + UUID.randomUUID();
 	document.addCriterion(category0, c0);
 
-	newDoc = getFile("unsupportedExtension.dummy", this.getClass());
+	newDoc = TestUtils.getFile("unsupportedExtension.dummy");
 	storeDocument(document, newDoc);
     }
 
@@ -204,7 +205,7 @@ public class TagControlTest extends AbstractTestCaseCreateAndPrepareBase {
 	String c0 = "Identifier" + UUID.randomUUID();
 	document.addCriterion(category0, c0);
 
-	newDoc = getFile("note.txt", this.getClass());
+	newDoc = TestUtils.getFile("note.txt");
 	Document stored = storeDocument(document, newDoc);
 
 	Assert.assertNotNull(stored);

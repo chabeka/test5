@@ -2,17 +2,15 @@ package com.docubase.dfce.toolkit.jira;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.exception.ged.FrozenDocumentException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
-import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.FileReference;
 import net.docubase.toolkit.service.ged.SearchService;
@@ -20,29 +18,29 @@ import net.docubase.toolkit.service.ged.SearchService;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
-    private BaseCategory baseCategory1 = base.getBaseCategory(catNames[1]);
-    private ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
-    private SearchService searchService = serviceProvider.getSearchService();
-    private String c1Query = baseCategory1.getFormattedName() + ":index1";
+
+    private final ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
+    private final SearchService searchService = serviceProvider
+	    .getSearchService();
+    private final String c1Query = category1.getFormattedName() + ":index1";
     private InputStream inputStream;
 
     @Before
     public void beforeEach() throws FileNotFoundException {
-	File file = getFile("doc1.pdf", CTRL54Test.class);
-	inputStream = new FileInputStream(file);
+	inputStream = TestUtils.getInputStream("doc1.pdf");
     }
 
     @Test
     public void testDeindexDocument() throws ExceededSearchLimitException,
-	    FrozenDocumentException {
+	    FrozenDocumentException, SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
-	document = storeDoc(document, getFile("doc1.pdf", CTRL54Test.class),
-		true);
+	document.addCriterion(category0, "testDeindex");
+	document.addCriterion(category1, "index1");
+	document = storeDocument(document, TestUtils.getFile("doc1.pdf"), true);
 	assertNotNull(document.getUuid());
 
 	assertNotNull(searchService.getDocumentByUUID(base, document.getUuid()));
@@ -62,12 +60,12 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testUpdateDocument() throws ExceededSearchLimitException,
-	    FrozenDocumentException, TagControlException {
+	    FrozenDocumentException, TagControlException,
+	    SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
-	document = storeDoc(document, getFile("doc1.pdf", CTRL54Test.class),
-		true);
+	document.addCriterion(category0, "testDeindex");
+	document.addCriterion(category1, "index1");
+	document = storeDocument(document, TestUtils.getFile("doc1.pdf"), true);
 	assertNotNull(document.getUuid());
 
 	assertNotNull(searchService.getDocumentByUUID(base, document.getUuid()));
@@ -76,7 +74,7 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
 	assertEquals(1, docs.size());
 	assertEquals(document.getUuid(), docs.get(0).getUuid());
 
-	document.getFirstCriterion(baseCategory1).setWord("index2");
+	document.getFirstCriterion(category1).setWord("index2");
 	serviceProvider.getStoreService().updateDocument(document);
 	docs = searchService.search(c1Query, 10, base).getDocuments();
 	assertEquals(0, docs.size());
@@ -91,12 +89,12 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testDeindexDocumentMultiBase()
-	    throws ExceededSearchLimitException, FrozenDocumentException {
+	    throws ExceededSearchLimitException, FrozenDocumentException,
+	    SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
-	document = storeDoc(document, getFile("doc1.pdf", CTRL54Test.class),
-		true);
+	document.addCriterion(category0, "testDeindex");
+	document.addCriterion(category1, "index1");
+	document = storeDocument(document, TestUtils.getFile("doc1.pdf"), true);
 	assertNotNull(document.getUuid());
 
 	assertNotNull(searchService.getDocumentByUUIDMultiBase(document
@@ -117,17 +115,16 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testDeindexOneOutOfTwo() throws ExceededSearchLimitException,
-	    FrozenDocumentException {
+	    FrozenDocumentException, SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
-	document = storeDoc(document, getFile("doc1.pdf", CTRL54Test.class),
-		true);
+	document.addCriterion(category0, "testDeindex");
+	document.addCriterion(category1, "index1");
+	document = storeDocument(document, TestUtils.getFile("doc1.pdf"), true);
 
 	Document document2 = toolkitFactory.createDocumentTag(base);
-	document2.addCriterion(baseCategory0, "testDeindex2");
-	document2.addCriterion(baseCategory1, "index1");
-	document2 = storeDoc(document2, getFile("doc1.pdf", CTRL54Test.class),
+	document2.addCriterion(category0, "testDeindex2");
+	document2.addCriterion(category1, "index1");
+	document2 = storeDocument(document2, TestUtils.getFile("doc1.pdf"),
 		true);
 
 	assertNotNull(searchService.getDocumentByUUID(base, document.getUuid()));
@@ -153,10 +150,10 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testDeindexVirtualDocument()
 	    throws ExceededSearchLimitException, FrozenDocumentException,
-	    TagControlException {
+	    TagControlException, SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
+	document.addCriterion(category0, "testDeindexVirtualDocument");
+	document.addCriterion(category1, "index1");
 
 	FileReference fileReference = serviceProvider
 		.getStorageAdministrationService().createFileReference("doc1",
@@ -184,10 +181,10 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testUpdateVirtualDocument()
 	    throws ExceededSearchLimitException, FrozenDocumentException,
-	    TagControlException {
+	    TagControlException, SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
+	document.addCriterion(category0, "testDeindex");
+	document.addCriterion(category1, "index1");
 	FileReference fileReference = serviceProvider
 		.getStorageAdministrationService().createFileReference("doc1",
 			"pdf", inputStream);
@@ -202,7 +199,7 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
 	assertEquals(1, docs.size());
 	assertEquals(document.getUuid(), docs.get(0).getUuid());
 
-	document.getFirstCriterion(baseCategory1).setWord("index2");
+	document.getFirstCriterion(category1).setWord("index2");
 	serviceProvider.getStoreService().updateVirtualDocument(document, 1, 1);
 	docs = searchService.search(c1Query, 10, base).getDocuments();
 	assertEquals(0, docs.size());
@@ -218,10 +215,10 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testDeindexVirtualDocumentMultiBase()
 	    throws ExceededSearchLimitException, FrozenDocumentException,
-	    TagControlException {
+	    TagControlException, SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
+	document.addCriterion(category0, "testDeindex");
+	document.addCriterion(category1, "index1");
 	FileReference fileReference = serviceProvider
 		.getStorageAdministrationService().createFileReference("doc1",
 			"pdf", inputStream);
@@ -248,10 +245,10 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testDeindexOneOutOfTwoVirtuals()
 	    throws ExceededSearchLimitException, FrozenDocumentException,
-	    TagControlException {
+	    TagControlException, SearchQueryParseException {
 	Document document = toolkitFactory.createDocumentTag(base);
-	document.addCriterion(baseCategory0, "testDeindex");
-	document.addCriterion(baseCategory1, "index1");
+	document.addCriterion(category0, "testDeindexVirtualDocument");
+	document.addCriterion(category1, "index1");
 	FileReference fileReference = serviceProvider
 		.getStorageAdministrationService().createFileReference("doc1",
 			"pdf", inputStream);
@@ -259,8 +256,8 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
 		document, fileReference, 1, 1);
 
 	Document document2 = toolkitFactory.createDocumentTag(base);
-	document2.addCriterion(baseCategory0, "testDeindex2");
-	document2.addCriterion(baseCategory1, "index1");
+	document2.addCriterion(category0, "testDeindex2");
+	document2.addCriterion(category1, "index1");
 	FileReference fileReference2 = serviceProvider
 		.getStorageAdministrationService().createFileReference("doc1",
 			"pdf", inputStream);

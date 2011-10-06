@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.exception.ged.FrozenDocumentException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -30,7 +31,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class MultibaseTest extends AbstractBaseTestCase {
+import com.docubase.dfce.toolkit.AbstractTestBase;
+import com.docubase.dfce.toolkit.TestUtils;
+
+public class MultibaseTest extends AbstractTestBase {
     private static final String CATA = "MBCode Fournisseur";
     private static final String CATB = "MBNo Serie";
     private static final String CATC = "Prix Vente";
@@ -112,7 +116,8 @@ public class MultibaseTest extends AbstractBaseTestCase {
     }
 
     @Test
-    public void testSimple() throws ExceededSearchLimitException, IOException {
+    public void testSimple() throws ExceededSearchLimitException, IOException,
+	    SearchQueryParseException {
 
 	/*
 	 * On stocke le "même" doc sur BASE1 et BASE2.
@@ -187,7 +192,8 @@ public class MultibaseTest extends AbstractBaseTestCase {
     }
 
     @Test(expected = ExceededSearchLimitException.class)
-    public void testExceededSearchLimit() throws ExceededSearchLimitException {
+    public void testExceededSearchLimit() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 	Category category = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATA);
 	String query = category.getFormattedName() + ":Docubase";
@@ -213,9 +219,9 @@ public class MultibaseTest extends AbstractBaseTestCase {
 	    document.addCriterion(baseCategory, ent.getValue());
 	}
 
-	File newDoc = getFile("doc1.pdf", AbstractBaseTestCase.class); // le
+	File newDoc = TestUtils.getFile("doc1.pdf");
 
-	Document storeDoc = storeDoc(document, newDoc, true);
+	Document storeDoc = storeDocument(document, newDoc, true);
 	if (document != null) {
 	    storedDocs.add(storeDoc);
 	}
@@ -223,7 +229,7 @@ public class MultibaseTest extends AbstractBaseTestCase {
 
     private static List<Document> searchMono(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	SearchResult searchResult = serviceProvider.getSearchService().search(
 		queryTxt, limit, target, chainedFilter);
 	if (nbExpectedResults != null) {
@@ -234,19 +240,19 @@ public class MultibaseTest extends AbstractBaseTestCase {
 
     private static List<Document> searchMono(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults)
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	return searchMono(target, queryTxt, limit, nbExpectedResults, null);
     }
 
     private static List<Document> searchMulti(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults)
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	return searchMulti(target, queryTxt, limit, nbExpectedResults, null);
     }
 
     private static List<Document> searchMulti(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	SearchResult searchResult = serviceProvider.getSearchService()
 		.multiBaseSearch(queryTxt, limit, chainedFilter);
 	if (nbExpectedResults != null) {

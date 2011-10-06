@@ -16,6 +16,7 @@ import net.docubase.toolkit.model.document.Document;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.recordmanager.AbstractEventTest;
 
 public class InjectorTest extends AbstractEventTest {
@@ -48,9 +49,9 @@ public class InjectorTest extends AbstractEventTest {
     }
 
     public File createFile() throws IOException {
-	File file1 = getFile("doc1.pdf", InjectorTest.class);
-	File file2 = getFile("doc2.pdf", InjectorTest.class);
-	File file3 = getFile("doc3.pdf", InjectorTest.class);
+	File file1 = TestUtils.getFile("doc1.pdf");
+	File file2 = TestUtils.getFile("doc2.pdf");
+	File file3 = TestUtils.getFile("doc3.pdf");
 
 	String doc1path = file1.getAbsolutePath().replace("\\", "/");
 	String doc2path = file2.getAbsolutePath().replace("\\", "/");

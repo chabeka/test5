@@ -17,6 +17,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
+
 public class DictionaryTest extends AbstractTestCaseCreateAndPrepareBase {
     private static BaseCategory baseCategory;
     private File newDoc;
@@ -44,12 +46,12 @@ public class DictionaryTest extends AbstractTestCaseCreateAndPrepareBase {
 	serviceProvider.getStorageAdministrationService().addDictionaryTerm(
 		baseCategory, "10");
 
-	newDoc = getFile("doc1.pdf", DictionaryTest.class);
+	newDoc = TestUtils.getFile("doc1.pdf");
 	Assert.assertTrue(newDoc.exists());
 
 	document = ToolkitFactory.getInstance().createDocumentTag(base);
 	String identifier = "Identifier" + UUID.randomUUID() + base.getBaseId();
-	document.addCriterion(baseCategory0, identifier);
+	document.addCriterion(category0, identifier);
 
 	// Date de création du document (à priori avant son entrée dans la
 	// GED, on retranche une heure)

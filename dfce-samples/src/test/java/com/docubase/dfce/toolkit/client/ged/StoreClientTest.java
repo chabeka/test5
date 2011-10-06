@@ -15,14 +15,26 @@ import net.docubase.toolkit.service.administration.BaseAdministrationService;
 import net.docubase.toolkit.service.ged.StoreService;
 
 import org.apache.commons.io.FilenameUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 
-public class StoreClientTest extends AbstractDFCEToolkitClientTest {
+public class StoreClientTest extends AbstractTestBase {
     private final StoreService storeService = serviceProvider.getStoreService();
     private final BaseAdministrationService baseAdministrationService = serviceProvider
 	    .getBaseAdministrationService();
+
+    @BeforeClass
+    public static void setUp() {
+	connect();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+	disconnect();
+    }
 
     @Test
     public void testStoreDocument() throws IOException, TagControlException {
@@ -41,7 +53,8 @@ public class StoreClientTest extends AbstractDFCEToolkitClientTest {
 
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
-	File file = new File(this.getClass().getResource("doc1.pdf").getPath());
+	File file = new File(ClassLoader.getSystemResource("doc1.pdf")
+		.getPath());
 	Document storeDocument = storeService.storeDocument(document,
 		FilenameUtils.getBaseName(file.getName()),
 		FilenameUtils.getExtension(file.getName()),

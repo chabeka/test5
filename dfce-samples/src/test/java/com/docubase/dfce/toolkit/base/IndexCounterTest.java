@@ -19,6 +19,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
+
 public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Before
@@ -38,7 +40,7 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	long deb = System.currentTimeMillis();
 	for (int x = 0; x < nbDocuments; x++) {
-	    File newDoc = getFile("doc1.pdf", IndexCounterTest.class);
+	    File newDoc = TestUtils.getFile("doc1.pdf");
 
 	    assertTrue(newDoc.exists());
 

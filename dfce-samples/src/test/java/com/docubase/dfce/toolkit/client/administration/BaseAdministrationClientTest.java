@@ -6,13 +6,25 @@ import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.service.administration.BaseAdministrationService;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 
-public class BaseAdministrationClientTest extends AbstractDFCEToolkitClientTest {
-    private BaseAdministrationService baseAdministrationService = serviceProvider
+public class BaseAdministrationClientTest extends AbstractTestBase {
+    private final BaseAdministrationService baseAdministrationService = serviceProvider
 	    .getBaseAdministrationService();
+
+    @BeforeClass
+    public static void setUp() {
+	connect();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+	disconnect();
+    }
 
     @Test
     public void testCreateBase() {

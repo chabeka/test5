@@ -14,23 +14,21 @@ import net.docubase.toolkit.model.user.UserPermission;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
-import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 
-public class UserAdministrationClientTest extends AbstractDFCEToolkitClientTest {
+public class UserAdministrationClientTest extends AbstractTestBase {
     private String GROUP_NAME = "groupName" + UUID.randomUUID();
     private User user;
     private UserGroup userGroup;
-    private String userNameRandom = "userName" + UUID.randomUUID();
-    private String password = "password";
-    private Set<String> baseNames = new HashSet<String>();
+    private final String userNameRandom = "userName" + UUID.randomUUID();
+    private final String password = "password";
+    private final Set<String> baseNames = new HashSet<String>();
 
     @Before
     public void before() throws ObjectAlreadyExistsException {
 	serviceProvider.disconnect();
-	serviceProvider.connect(AbstractBaseTestCase.ADM_LOGIN,
-		AbstractBaseTestCase.ADM_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
+	serviceProvider.connect(AbstractTestBase.ADM_LOGIN,
+		AbstractTestBase.ADM_PASSWORD, AbstractTestBase.SERVICE_URL);
 
 	Set<UserPermission> permissions = new HashSet<UserPermission>();
 	permissions.add(UserPermission.BASE_CREATE);
@@ -47,7 +45,7 @@ public class UserAdministrationClientTest extends AbstractDFCEToolkitClientTest 
 	assertNotNull(user);
 	assertEquals(userNameRandom, user.getLogin());
 	serviceProvider.connect(userNameRandom, password,
-		AbstractBaseTestCase.SERVICE_URL);
+		AbstractTestBase.SERVICE_URL);
 	assertTrue(serviceProvider.isSessionActive());
     }
 
@@ -102,7 +100,7 @@ public class UserAdministrationClientTest extends AbstractDFCEToolkitClientTest 
 		"newPassword");
 	serviceProvider.disconnect();
 	serviceProvider.connect(userNameRandom, "newPassword",
-		AbstractBaseTestCase.SERVICE_URL);
+		AbstractTestBase.SERVICE_URL);
 	assertTrue(serviceProvider.isSessionActive());
     }
 }

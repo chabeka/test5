@@ -11,40 +11,37 @@ import net.docubase.toolkit.service.ged.SearchService.DateFormat;
 
 import org.junit.Test;
 
-import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class SecurityTest extends AbstractTestCaseCreateAndPrepareBase {
-    private ServiceProvider serviceProvider = ServiceProvider
+    private final ServiceProvider serviceProvider = ServiceProvider
 	    .newServiceProvider();
 
     @Test(expected = RuntimeException.class)
     public void testWrongLogin() {
-	serviceProvider.connect(AbstractBaseTestCase.ADM_LOGIN + "wrongLogin",
-		AbstractBaseTestCase.ADM_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
+	serviceProvider.connect(AbstractTestBase.ADM_LOGIN + "wrongLogin",
+		AbstractTestBase.ADM_PASSWORD, AbstractTestBase.SERVICE_URL);
     }
 
     @Test(expected = RuntimeException.class)
     public void testMalformedURL() {
-	serviceProvider.connect(AbstractBaseTestCase.ADM_LOGIN,
-		AbstractBaseTestCase.ADM_PASSWORD, "malformed"
-			+ AbstractBaseTestCase.SERVICE_URL);
+	serviceProvider.connect(AbstractTestBase.ADM_LOGIN,
+		AbstractTestBase.ADM_PASSWORD, "malformed"
+			+ AbstractTestBase.SERVICE_URL);
     }
 
     @Test(expected = RuntimeException.class)
     public void testRoleUserOperationAdmin() {
-	serviceProvider.connect(AbstractBaseTestCase.SIMPLE_USER_NAME,
-		AbstractBaseTestCase.SIMPLE_USER_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
+	serviceProvider.connect(SIMPLE_USER_NAME, SIMPLE_USER_PASSWORD,
+		AbstractTestBase.SERVICE_URL);
 	serviceProvider.getBaseAdministrationService().getAllBases();
     }
 
     @Test
     public void testRoleAdminOperationAdmin() {
-	serviceProvider.connect(AbstractBaseTestCase.ADM_LOGIN,
-		AbstractBaseTestCase.ADM_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
+	serviceProvider.connect(AbstractTestBase.ADM_LOGIN,
+		AbstractTestBase.ADM_PASSWORD, AbstractTestBase.SERVICE_URL);
 	List<Base> allBases = serviceProvider.getBaseAdministrationService()
 		.getAllBases();
 	assertNotNull(allBases);
@@ -52,9 +49,8 @@ public class SecurityTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testRoleUserOperationUser() {
-	serviceProvider.connect(AbstractBaseTestCase.SIMPLE_USER_NAME,
-		AbstractBaseTestCase.SIMPLE_USER_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
+	serviceProvider.connect(SIMPLE_USER_NAME, SIMPLE_USER_PASSWORD,
+		AbstractTestBase.SERVICE_URL);
 	String formatDate = serviceProvider.getSearchService().formatDate(
 		new Date(), DateFormat.DATE);
 	assertNotNull(formatDate);

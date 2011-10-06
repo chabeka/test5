@@ -28,6 +28,7 @@ import net.docubase.toolkit.service.ged.StoreService;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class ArchiveClientTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -55,9 +56,9 @@ public class ArchiveClientTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	Document documentTag = ToolkitFactory.getInstance().createDocumentTag(
 		base);
-	documentTag.addCriterion(baseCategory0, UUID.randomUUID().toString());
-	File file = getFile("doc1.pdf", ArchiveClientTest.class);
-	storeDoc(documentTag, file, true);
+	documentTag.addCriterion(category0, UUID.randomUUID().toString());
+	File file = TestUtils.getFile("doc1.pdf");
+	storeDocument(documentTag, file, true);
 
 	archiveService.createNextDocumentLogsArchive();
 

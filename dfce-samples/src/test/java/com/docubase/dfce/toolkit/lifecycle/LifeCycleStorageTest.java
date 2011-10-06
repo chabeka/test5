@@ -18,13 +18,13 @@ import net.docubase.toolkit.model.reference.LifeCycleLengthUnit;
 
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
-import com.docubase.dfce.toolkit.document.RichGedTest;
 
 public class LifeCycleStorageTest extends AbstractTestCaseCreateAndPrepareBase {
 
     private File createTestFile() {
-	return getFile("doc1.pdf", RichGedTest.class);
+	return TestUtils.getFile("doc1.pdf");
     }
 
     @Test
@@ -197,8 +197,8 @@ public class LifeCycleStorageTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	assertEquals("DEFAULT_DOCUMENT_TYPE", document.getType());
 
-	serviceProvider.getStoreService().updateDocumentType(
-		document, documentType);
+	serviceProvider.getStoreService().updateDocumentType(document,
+		documentType);
 
 	document = serviceProvider.getSearchService().getDocumentByUUID(base,
 		document.getUuid());

@@ -4,16 +4,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
-import com.docubase.dfce.toolkit.client.AbstractDFCEToolkitClientTest;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 
-public class AccessControlClientTest extends AbstractDFCEToolkitClientTest {
+public class AccessControlClientTest extends AbstractTestBase {
     @Before
     public void before() {
 	if (!serviceProvider.isSessionActive()) {
-	    serviceProvider.connect(AbstractBaseTestCase.ADM_LOGIN,
-		    AbstractBaseTestCase.ADM_PASSWORD,
-		    AbstractBaseTestCase.SERVICE_URL);
+	    serviceProvider
+		    .connect(AbstractTestBase.ADM_LOGIN,
+			    AbstractTestBase.ADM_PASSWORD,
+			    AbstractTestBase.SERVICE_URL);
 	}
     }
 

@@ -5,6 +5,7 @@ import static junit.framework.Assert.*;
 import java.util.List;
 
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -13,6 +14,8 @@ import net.docubase.toolkit.model.reference.CompositeIndex;
 import net.docubase.toolkit.model.search.SearchResult;
 
 import org.junit.Test;
+
+import com.docubase.dfce.toolkit.TestUtils;
 
 public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
 
@@ -57,7 +60,8 @@ public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void testCompositeSearch() throws ExceededSearchLimitException {
+    public void testCompositeSearch() throws ExceededSearchLimitException,
+	    SearchQueryParseException {
 
 	ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
 	BaseCategory baseCategory0 = base.getBaseCategory(catNames[0]);
@@ -78,8 +82,7 @@ public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
 	    document.addCriterion(baseCategory2, "Joker" + i);
 
 	    // stockage
-	    storeDoc(document, getFile("doc1.pdf", IndexCompositeTest.class),
-		    true);
+	    storeDocument(document, TestUtils.getFile("doc1.pdf"), true);
 	}
 
 	Category category1 = serviceProvider.getStorageAdministrationService()

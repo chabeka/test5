@@ -14,6 +14,7 @@ import java.util.UUID;
 import junit.framework.TestCase;
 import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -28,14 +29,17 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class MultiDomainTest extends AbstractBaseTestCase {
+import com.docubase.dfce.toolkit.AbstractTestBase;
+import com.docubase.dfce.toolkit.TestUtils;
+
+public class MultiDomainTest extends AbstractTestBase {
     private static final Map<String, String> catValues = new HashMap<String, String>();
 
     private static final Logger LOGGER = Logger
 	    .getLogger(MultiDomainTest.class);
 
-    private static final String URL = AbstractBaseTestCase.SERVICE_URL;
-    private static final String URL2 = AbstractBaseTestCase.SERVICE_URL;
+    private static final String URL = AbstractTestBase.SERVICE_URL;
+    private static final String URL2 = AbstractTestBase.SERVICE_URL_2;
 
     private static final String CATA = "MBCode Fournisseur";
     private static final String CATB = "MBNo Serie";
@@ -276,9 +280,9 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 	    document.addCriterion(baseCategory, ent.getValue());
 	}
 
-	File newDoc = getFile("doc1.pdf", AbstractBaseTestCase.class); // le
+	File newDoc = TestUtils.getFile("doc1.pdf");
 
-	Document storeDoc = storeDoc(document, newDoc, true);
+	Document storeDoc = storeDocument(document, newDoc, true);
 	if (document != null) {
 	    storedDocs.add(storeDoc);
 	}
@@ -287,13 +291,13 @@ public class MultiDomainTest extends AbstractBaseTestCase {
 
     private static List<Document> searchMulti(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults)
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	return searchMulti(target, queryTxt, limit, nbExpectedResults, null);
     }
 
     private static List<Document> searchMulti(Base target, String queryTxt,
 	    int limit, Integer nbExpectedResults, ChainedFilter chainedFilter)
-	    throws ExceededSearchLimitException {
+	    throws ExceededSearchLimitException, SearchQueryParseException {
 	SearchResult searchResult = serviceProvider.getSearchService()
 		.multiBaseSearch(queryTxt, limit, chainedFilter);
 	if (nbExpectedResults != null) {

@@ -7,10 +7,10 @@
    <name>Tests unitaires fournis par Docubase</name>
 
    <properties>
-      <dfce.serialization>1.0.0-alpha-01</dfce.serialization>
-      <dfce.toolkit.client>1.0.0-alpha-01</dfce.toolkit.client>
-      <dfce.toolkit.pojo>1.0.0-alpha-01</dfce.toolkit.pojo>
-      <dfce.toolkit.service>1.0.0-alpha-01</dfce.toolkit.service>
+      <dfce.serialization>1.0.0-alpha-02</dfce.serialization>
+      <dfce.toolkit.client>1.0.0-alpha-02</dfce.toolkit.client>
+      <dfce.toolkit.pojo>1.0.0-alpha-02</dfce.toolkit.pojo>
+      <dfce.toolkit.service>1.0.0-alpha-02</dfce.toolkit.service>
    </properties>
 
    <build>
@@ -43,14 +43,18 @@
       </plugins>
    </build>
 
-   <dependencies>
-      <dependency>
-         <groupId>com.docubase</groupId>
-         <artifactId>dfce-pojo</artifactId>
-         <version>${dfce.toolkit.pojo}</version>
-      </dependency>
-
-      <dependency>
+	<dependencies>
+		<dependency>
+			<groupId>com.docubase</groupId>
+			<artifactId>dfce-pojo</artifactId>
+			<version>${dfce.toolkit.pojo}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.6</version>
+		</dependency>
+	<dependency>
          <groupId>net.docubase</groupId>
          <artifactId>dfce-serialization</artifactId>
          <version>${dfce.serialization}</version>

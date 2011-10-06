@@ -28,6 +28,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.linkedin.util.concurrent.ThreadPerTaskExecutor;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 /**
@@ -69,7 +70,7 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 		.createDocumentTag(base);
 	BaseCategory baseCategory = base.getBaseCategory(catNames[0]);
 	document.addCriterion(baseCategory, appliSource);
-	File file = getFile("doc1.pdf", this.getClass());
+	File file = TestUtils.getFile("doc1.pdf");
 
 	Document storeDocument = serviceProvider.getStoreService()
 		.storeDocument(document,
@@ -109,8 +110,7 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 	@Override
 	public File call() throws Exception {
 	    try {
-		localServiceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
-			SERVICE_URL);
+		localServiceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
 
 	    } catch (Throwable e) {
 		e.printStackTrace();

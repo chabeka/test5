@@ -3,12 +3,12 @@ package com.docubase.dfce.toolkit.jira;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.service.ServiceProvider;
 
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.docubase.dfce.toolkit.base.AbstractBaseTestCase;
+import com.docubase.dfce.toolkit.AbstractTestBase;
 
 @RunWith(JUnit4.class)
 public class CTRL37Test {
@@ -23,7 +23,7 @@ public class CTRL37Test {
     @Test
     public void getBaseMultiThread() {
 	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
+		AbstractTestBase.SERVICE_URL);
 	Base base = serviceProvider.getBaseAdministrationService().getBase(
 		BASE_ID);
 
@@ -37,25 +37,12 @@ public class CTRL37Test {
 	    };
 	};
 	t.start();
-	serviceProvider.disconnect();
-    }
-
-    @Test
-    public void getBaseMultiThreadWithAuth() {
-	serviceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
-		AbstractBaseTestCase.SERVICE_URL);
-	Base base = serviceProvider.getBaseAdministrationService().getBase(
-		BASE_ID);
-	System.out.println(base + " " + Thread.currentThread().getName());
-
-	Thread t = new Thread() {
-	    @Override
-	    public void run() {
-		System.out.println(Thread.currentThread().getName());
-		serviceProvider.getBaseAdministrationService().getBase(BASE_ID);
-	    };
-	};
-	t.start();
+	try {
+	    t.join();
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	    Assert.fail(e.getMessage());
+	}
 	serviceProvider.disconnect();
     }
 }

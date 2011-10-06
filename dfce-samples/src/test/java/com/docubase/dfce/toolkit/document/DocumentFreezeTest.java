@@ -15,6 +15,7 @@ import net.docubase.toolkit.model.document.Document;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class DocumentFreezeTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -28,7 +29,7 @@ public class DocumentFreezeTest extends AbstractTestCaseCreateAndPrepareBase {
 
     private Document createDocument() {
 	Document document = createTestDocument();
-	File file = getFile("doc1.pdf", DocumentFreezeTest.class);
+	File file = TestUtils.getFile("doc1.pdf");
 	try {
 	    return serviceProvider.getStoreService().storeDocument(document,
 		    "doc1.pdf", "pdf", new FileInputStream(file));

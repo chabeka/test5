@@ -78,7 +78,7 @@ public class BasesPermissionsTest extends AbstractTestCaseCreateAndPrepareBase {
     public void testGetBaseRestricted() throws TagControlException {
 	Document document = ToolkitFactory.getInstance()
 		.createDocumentTag(base);
-	document.addCriterion(baseCategory0, UUID.randomUUID().toString());
+	document.addCriterion(category0, UUID.randomUUID().toString());
 
 	InputStream inputStream = new ByteArrayInputStream(
 		"doc1.pdf".getBytes());

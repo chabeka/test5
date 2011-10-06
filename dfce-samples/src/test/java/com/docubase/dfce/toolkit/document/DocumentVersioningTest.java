@@ -14,7 +14,6 @@ import java.util.UUID;
 import junit.framework.Assert;
 import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.exception.ged.TagControlException;
-import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
 
 import org.apache.commons.codec.binary.Hex;
@@ -23,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class DocumentVersioningTest extends
@@ -37,7 +37,7 @@ public class DocumentVersioningTest extends
 
     @BeforeClass
     public static void beforeClass() {
-	file = getFile("48pages.pdf", DocumentVersioningTest.class);
+	file = TestUtils.getFile("48pages.pdf");
     }
 
     /**
@@ -78,8 +78,7 @@ public class DocumentVersioningTest extends
      * @throws TagControlException
      */
     private Document storeDocument() throws TagControlException {
-	Document document = ToolkitFactory.getInstance()
-		.createDocumentTag(base);
+	Document document = toolkitFactory.createDocumentTag(base);
 	document.setCreationDate(generateCreationDate());
 	document.addCriterion(base.getBaseCategory(catNames[0]), "FileRef_"
 		+ System.currentTimeMillis());

@@ -24,6 +24,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -32,7 +33,7 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Before
     public void setUpEach() throws FileNotFoundException {
-	file = getFile("48Pages.pdf", DocumentEventLogTest.class);
+	file = TestUtils.getFile("48Pages.pdf");
 	inputStream = new FileInputStream(file);
     }
 

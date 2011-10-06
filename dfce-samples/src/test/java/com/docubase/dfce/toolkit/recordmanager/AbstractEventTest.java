@@ -20,6 +20,7 @@ import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 
+import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public abstract class AbstractEventTest extends
@@ -96,7 +97,7 @@ public abstract class AbstractEventTest extends
 	document.setCreationDate(Calendar.getInstance().getTime());
 	document.addCriterion(base.getBaseCategory(catNames[0]), "FileRef");
 
-	File file = getFile(filename, ArchiveClientTest.class);
+	File file = TestUtils.getFile(filename);
 	Document stored = serviceProvider.getStoreService().storeDocument(
 		document, FilenameUtils.getBaseName(file.getName()),
 		FilenameUtils.getExtension(file.getName()),
