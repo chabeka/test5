@@ -26,94 +26,89 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
  */
 @Component
 @Qualifier("bulkCaptureJob")
-@SuppressWarnings({ "PMD.LongVariable" })
+@SuppressWarnings( { "PMD.LongVariable" })
 public class BulkCaptureJob {
 
-	@Autowired
-	@Qualifier("storageServiceProvider")
-	private StorageServiceProvider storageServiceProvider;
+   @Autowired
+   @Qualifier("storageServiceProvider")
+   private StorageServiceProvider storageServiceProvider;
 
-	@Autowired
-	@Qualifier("bulkCaptureHelper")
-	private BulkCaptureHelper bulkCaptureHelper;
-	
+   @Autowired
+   @Qualifier("bulkCaptureHelper")
+   private BulkCaptureHelper bulkCaptureHelper;
 
-	// private ExceptionDispatcher dispatcher = new ExceptionDispatcher();
+   // private ExceptionDispatcher dispatcher = new ExceptionDispatcher();
 
-	/**
-	 * Service pour l'opération <b>capture en Masse</b>.
-	 * 
-	 * @param sommaire
-	 *            Un objet de type {@link Sommaire}.
-	 * @return Resultats Un objet résultat de type {@link Resultats}.
-	 */
-	public final Resultats bulkCapture(Sommaire sommaire) {
-		Resultats resultats = null;
-		boolean hasError = false;
-		BulkInsertionResults bulkInsertionResults = null;
-		List<UntypedDocument> untypedDocs = sommaire.getDocuments();
-		// Construire un ensemble de StorageDocument
-		List<StorageDocument> storageDocs = bulkCaptureHelper
-				.buildStorageDocuments(untypedDocs);
-		// Cas lors qu'il y a un problème lors de la construction de la liste
-		// StorageDocument
-		if (!CollectionUtils.isEmpty(bulkCaptureHelper
-				.getUntypedDocumentsOnError())) {
-			resultats = bulkCaptureHelper.buildResultatsError(
-					untypedDocs.size(), sommaire,
-					bulkCaptureHelper.getUntypedDocumentsOnError());
-			hasError = true;
-		}
-		if (resultats == null) {
-			// Enrichissement des SAEMetadata par un Id traitement en masse
-			storageDocs = bulkCaptureHelper
-					.addIdTreatementToStorageDoc(storageDocs);
-			StorageDocuments storageDocuments = new StorageDocuments(
-					storageDocs);
-			bulkInsertionResults = bulkCaptureInsert(storageDocuments);
-		}
-		// Cas lors qu'il y a un problème lors de l'insetion dans DFCE.
-		if (!CollectionUtils.isEmpty(bulkCaptureHelper
-				.getUntypedDocumentsOnError()) && !hasError) {
-			resultats = bulkCaptureHelper.buildResultatsError(
-					untypedDocs.size(), sommaire,
-					bulkCaptureHelper.getUntypedDocumentsOnError());
-		}
-		if (resultats == null) {
-			resultats = bulkCaptureHelper.buildResultatsSuccess(
-					bulkInsertionResults, untypedDocs.size(), sommaire);
-		}
-		return resultats;
-	}
+   /**
+    * Service pour l'opération <b>capture en Masse</b>.
+    * 
+    * @param sommaire
+    *           Un objet de type {@link Sommaire}.
+    * @return Resultats Un objet résultat de type {@link Resultats}.
+    */
+   public final Resultats bulkCapture(Sommaire sommaire) {
+      Resultats resultats = null;
+      boolean hasError = false;
+      BulkInsertionResults bulkInsertionResults = null;
+      List<UntypedDocument> untypedDocs = sommaire.getDocuments();
+      // Construire un ensemble de StorageDocument
+      List<StorageDocument> storageDocs = bulkCaptureHelper
+            .buildStorageDocuments(untypedDocs);
+      // Cas lors qu'il y a un problème lors de la construction de la liste
+      // StorageDocument
+      if (!CollectionUtils.isEmpty(bulkCaptureHelper
+            .getUntypedDocumentsOnError())) {
+         resultats = bulkCaptureHelper.buildResultatsError(untypedDocs.size(),
+               sommaire, bulkCaptureHelper.getUntypedDocumentsOnError());
+         hasError = true;
+      }
+      if (resultats == null) {
+         // Enrichissement des SAEMetadata par un Id traitement en masse
+         storageDocs = bulkCaptureHelper
+               .addIdTreatementToStorageDoc(storageDocs);
+         StorageDocuments storageDocuments = new StorageDocuments(storageDocs);
+         bulkInsertionResults = bulkCaptureInsert(storageDocuments);
+      }
+      // Cas lors qu'il y a un problème lors de l'insetion dans DFCE.
+      if (!CollectionUtils.isEmpty(bulkCaptureHelper
+            .getUntypedDocumentsOnError())
+            && !hasError) {
+         resultats = bulkCaptureHelper.buildResultatsError(untypedDocs.size(),
+               sommaire, bulkCaptureHelper.getUntypedDocumentsOnError());
+      }
+      if (resultats == null) {
+         resultats = bulkCaptureHelper.buildResultatsSuccess(
+               bulkInsertionResults, untypedDocs.size(), sommaire);
+      }
+      return resultats;
+   }
 
-	/**
-	 * Lancer l'archivage en masse.
-	 * 
-	 * @param storageDocuments
-	 *            : Document de type {@link StorageDocument}
-	 * @throws ConnectionServiceEx
-	 *             Exception de type {@link ConnectionServiceEx}
-	 * @throws InsertionServiceEx
-	 *             Exception de type {@link InsertionServiceEx}
-	 */
-	private BulkInsertionResults bulkCaptureInsert(
-			StorageDocuments storageDocuments) {
-		BulkInsertionResults bulkInsertionResults = null;
-		try {
-			storageServiceProvider.openConnexion();
-			bulkInsertionResults = storageServiceProvider
-					.getStorageDocumentService().bulkInsertStorageDocument(
-							storageDocuments, true);
-			storageServiceProvider.closeConnexion();
-		} catch (ConnectionServiceEx except) {
-			bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
-		} catch (InsertionServiceEx except) {
-			bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
-		} catch (Exception except) {
-			bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
-		}
-		return bulkInsertionResults;
-	}
-
-	
+   /**
+    * Lancer l'archivage en masse.
+    * 
+    * @param storageDocuments
+    *           : Document de type {@link StorageDocument}
+    * @throws ConnectionServiceEx
+    *            Exception de type {@link ConnectionServiceEx}
+    * @throws InsertionServiceEx
+    *            Exception de type {@link InsertionServiceEx}
+    */
+   private BulkInsertionResults bulkCaptureInsert(
+         StorageDocuments storageDocuments) {
+      BulkInsertionResults bulkInsertionResults = null;
+      try {
+                storageServiceProvider.openConnexion();
+         bulkInsertionResults = storageServiceProvider
+               .getStorageDocumentService().bulkInsertStorageDocument(
+                     storageDocuments, true);
+         storageServiceProvider.closeConnexion();
+      } catch (ConnectionServiceEx except) {
+         bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
+      } catch (InsertionServiceEx except) {
+         bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
+      } catch (Exception except) {
+         bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
+      }
+      return bulkInsertionResults;
+   }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import junit.framework.Assert;
+import net.docubase.toolkit.model.document.Document;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class SAEServiceTestProvider {
 	 * 
 	 * @param serviceProvider
 	 *            façade des services de sae-storage
-	 * @param mappingService
-	 *            service de mapping.
+	 * @param connection
+	 *            connection à DFCE
 	 */
 	@Autowired
 	public SAEServiceTestProvider(
@@ -52,7 +53,7 @@ public class SAEServiceTestProvider {
 		Assert.assertNotNull(mappingService);
 
 		this.serviceProvider = serviceProvider;
-		this.mappingService = mappingService;
+		this.mappingService= mappingService;
 	}
 
 	/**
@@ -85,6 +86,8 @@ public class SAEServiceTestProvider {
 		}
 
 	}
+
+
 
 	/**
 	 * Permet de supprimer un document dans le SAE à partir de son identifiant
@@ -129,6 +132,12 @@ public class SAEServiceTestProvider {
 	 *            contenu du document à archiver
 	 * @param metadatas
 	 *            liste des métadonnées
+	 * @param title
+	 *            titre du document
+	 * @param type
+	 *            type du document
+	 * @param creationDate
+	 *            date de création du document
 	 * @return UUID du document dans le SAE
 	 * @throws ConnectionServiceEx
 	 *             une exception est levée lors de l'ouverture de la connexion
@@ -141,8 +150,7 @@ public class SAEServiceTestProvider {
 			serviceProvider.openConnexion();
 			StorageDocument doc = new StorageDocument(metadatas, content);
 
-			return serviceProvider.getStorageDocumentService()
-					.insertStorageDocument(doc).getUuid();
+			return serviceProvider.getStorageDocumentService().insertStorageDocument(doc).getUuid();
 		} catch (InsertionServiceEx e) {
 			throw new NestableRuntimeException(e);
 		} finally {
@@ -156,14 +164,14 @@ public class SAEServiceTestProvider {
 	 * @param mappingService
 	 *            the mappingService to set
 	 */
-	public final void setMappingService(final MappingDocumentService mappingService) {
+	public void setMappingService(MappingDocumentService mappingService) {
 		this.mappingService = mappingService;
 	}
 
 	/**
 	 * @return the mappingService
 	 */
-	public final  MappingDocumentService getMappingService() {
+	public MappingDocumentService getMappingService() {
 		return mappingService;
 	}
 }

@@ -30,7 +30,7 @@ public class QueriesReferenceDAOImpl implements QueriesReferenceDAO {
    // CHECKSTYLE:OFF
    @Autowired
    @Qualifier("xmlQueryDataService")
-   private XmlQueryDataService xmlQueryDataService; 
+   private XmlQueryDataService xmlQueryDataService; // NOPMD
 
    @Autowired
    private ApplicationContext context;

@@ -1,7 +1,6 @@
 package fr.urssaf.image.sae.services.dispatchers.handlers;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import fr.urssaf.image.sae.services.dispatchers.AbstractExceptionHandler;
 
@@ -10,24 +9,15 @@ import fr.urssaf.image.sae.services.dispatchers.AbstractExceptionHandler;
  * {@link fr.urssaf.image.sae.services.dispatchers.ExceptionDispatcher
  * dispatcher d'exceptions}.
  */
-@Component
 public class LoggerExceptionHandler extends AbstractExceptionHandler {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(LoggerExceptionHandler.class);
+   static final private Logger LOGGER = Logger.getLogger(LoggerExceptionHandler.class);
 
-	/**
-	 * Log l'exception reçue en paramètre * @param exception Exception à
-	 * dispatcher, elle sera traitée par les handlers concrets.
-	 * 
-	 * @param <T>
-	 *            : Le type générique.
-	 * @throws T
-	 *             exception levée
-	 */
-	@Override
-	public final <T extends Exception> void handleException(T exception)
-			throws T {
-		LOGGER.error(exception);
-	}
+   /**
+    * Log l'exception reçue en paramètre
+    */
+   @Override
+   public <T extends Exception> void handleException(T exception) throws T {
+      LOGGER.error(exception);
+   }
 }

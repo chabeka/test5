@@ -180,12 +180,12 @@ public class BulkCaptureHelper {
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
          String filePath = storageDocument.getFilePath();
-         untypedMetadatas.add(new UntypedMetadata("TypeHash",
-               SAEMetatadaFinderUtils.valueMetadataFinder(storageDocument
-                     .getMetadatas(), "TypeHash")));
-         untypedMetadatas.add(new UntypedMetadata("Hash",
-               SAEMetatadaFinderUtils.valueMetadataFinder(storageDocument
-                     .getMetadatas(), "version.1.digest")));
+//         untypedMetadatas.add(new UntypedMetadata("TypeHash",
+//               SAEMetatadaFinderUtils.valueMetadataFinder(storageDocument
+//                     .getMetadatas(), "TypeHash")));
+//         untypedMetadatas.add(new UntypedMetadata("Hash",
+//               SAEMetatadaFinderUtils.valueMetadataFinder(storageDocument
+//                     .getMetadatas(), "version.1.digest")));
          buildSaeErros(exception, filePath, SAEBulkErrors.TECHNICAL_ERROR);
          untypedDocumentsOnError.add(new UntypedDocumentOnError(storageDocument
                .getContent(), untypedMetadatas, errors));

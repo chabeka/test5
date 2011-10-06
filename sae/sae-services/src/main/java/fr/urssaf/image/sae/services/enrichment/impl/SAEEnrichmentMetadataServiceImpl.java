@@ -16,7 +16,6 @@ import fr.urssaf.image.sae.bo.model.bo.SAEMetadata;
 import fr.urssaf.image.sae.mapping.utils.Utils;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
-import fr.urssaf.image.sae.services.dispatchers.SAEServiceDispatcher;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.dao.RNDReferenceDAO;
 import fr.urssaf.image.sae.services.enrichment.dao.impl.SAEMetatadaFinderUtils;
@@ -41,9 +40,7 @@ public class SAEEnrichmentMetadataServiceImpl implements
    @Autowired
    @Qualifier("metadataReferenceDAO")
    private MetadataReferenceDAO metadataReferenceDAO;
-   @Autowired
-	@Qualifier("saeServiceDispatcher")
-	private SAEServiceDispatcher serviceDispatcher;
+
    /**
     * @return Le service RND reference.
     */
@@ -87,13 +84,13 @@ public class SAEEnrichmentMetadataServiceImpl implements
             completedMetadatas(saeDoc, rndValue);
          }
       } catch (ReferentialRndException e) {
-    	  serviceDispatcher.dispatch( new ReferentialRndException(e.getMessage(), e));
+         throw new ReferentialRndException(e.getMessage(), e);
       } catch (UnknownCodeRndEx e) {
-    	  serviceDispatcher.dispatch( new UnknownCodeRndEx(e.getMessage(), e));
+         throw new UnknownCodeRndEx(e.getMessage(), e);
       } catch (ParseException e) {
-    	  serviceDispatcher.dispatch( new SAEEnrichmentEx(e.getMessage(), e));
+         throw new SAEEnrichmentEx(e.getMessage(), e);
       } catch (ReferentialException e) {
-    	  serviceDispatcher.dispatch( new SAEEnrichmentEx(e.getMessage(), e));
+         throw new SAEEnrichmentEx(e.getMessage(), e);
       }
    }
 
@@ -218,19 +215,4 @@ public class SAEEnrichmentMetadataServiceImpl implements
       }
    }
    // CHECKSTYLE:ON
-   /**
-	 * @param serviceDispatcher
-	 *            : Le dispatcher
-	 */
-	public final void setServiceDispatcher(
-			final SAEServiceDispatcher serviceDispatcher) {
-		this.serviceDispatcher = serviceDispatcher;
-	}
-
-	/**
-	 * @return Le dispatcher.
-	 */
-	public final SAEServiceDispatcher getSaeServiceDispatcher() {
-		return serviceDispatcher;
-	}
 }

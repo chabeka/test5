@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJob;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJobWrapper;
-import fr.urssaf.image.sae.services.dispatchers.SAEServiceDispatcher;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 
 /**
@@ -25,24 +24,23 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    private EcdeServices ecdeServices;
    @Autowired
    @Qualifier("bulkCaptureJob")
-   private BulkCaptureJob bulkCaptureJob;
-   @Autowired
-   @Qualifier("saeServiceDispatcher")
-   private SAEServiceDispatcher serviceDispatcher;
+   BulkCaptureJob bulkCaptureJob;
 
    /**
     * 
-    * @param taskExecutor : Job.
+    * @param taskExecutor
+    *           : un objet de type {@link ThreadPoolTaskExecutor}
     */
-   public final void setTaskExecutor(final ThreadPoolTaskExecutor taskExecutor) {
+   public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
       this.taskExecutor = taskExecutor;
    }
 
    /**
     * 
-    * @return taskExecutor Job.
+    * @param taskExecutor
+    *           : un objet de type {@link ThreadPoolTaskExecutor}
     */
-   public final ThreadPoolTaskExecutor getTaskExecutor() {
+   public ThreadPoolTaskExecutor getTaskExecutor() {
       return taskExecutor;
    }
 
@@ -50,10 +48,11 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
     * {@inheritDoc} puisqu'on est dans une thread séparée
     */
    public final void bulkCapture(String urlEcde) {
-      BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(
-            urlEcde, ecdeServices, bulkCaptureJob,serviceDispatcher);
+      BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(urlEcde,
+            ecdeServices, bulkCaptureJob);
       taskExecutor.execute(bulkWrapper);
       taskExecutor.shutdown();
+
    }
 
 }

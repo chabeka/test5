@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.services.dispatchers;
 
-import org.springframework.stereotype.Component;
-
 /**
  * Dispatcher d'exceptions.
  * 
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Component;
  * {@link fr.urssaf.image.sae.services.dispatchers.handlers.SpyHandler}
  * </p>
  */
-@Component
 public class ExceptionDispatcher {
 
    /**
@@ -23,18 +20,15 @@ public class ExceptionDispatcher {
     */
    private AbstractExceptionHandler handler;
 
-	/**
-	 * Dispatche l'exception au travers d'une chaine de responsabilité
-	 * 
-	 * @param exception
-	 *            Exception à dispatcher, elle sera traitée par les handlers
-	 *            concrets.
-	 * @param <T>
-	 *            : Le type générique.
-	 * @throws T
-	 *             exception levée
-	 */
-   public final <T extends Exception> void dispatch(T exception) throws T {
+   /**
+    * Dispatche l'exception au travers d'une chaine de responsabilité
+    * 
+    * @param exception
+    *           Exception à dispatcher, elle sera traitée par les handlers
+    *           concrets.
+    * @throws Exception
+    */
+   public <T extends Exception> void dispatch(T exception) throws T {
       if (handler != null) {
          handler.handle(exception);
       }
@@ -43,7 +37,7 @@ public class ExceptionDispatcher {
    /**
     * @return Premier handler de la chaine
     */
-   public final AbstractExceptionHandler getHandler() {
+   public AbstractExceptionHandler getHandler() {
       return this.handler;
    }
 
@@ -53,7 +47,7 @@ public class ExceptionDispatcher {
     * @param handler
     *           Premier handler de la chaine
     */
-   public final void setHandler(final AbstractExceptionHandler handler) {
+   public void setHandler(AbstractExceptionHandler handler) {
       this.handler = handler;
    }
 
