@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.ecde.service.strategy.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -66,6 +67,9 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
       resultatsType.setNonIntegratedVirtualDocuments(new ListeDocumentsVirtuelsType());
       
       List<UntypedDocumentOnError> untypedsDError = resultat.getNonIntegratedDocuments();
+      if (untypedsDError == null) {
+         untypedsDError = new ArrayList<UntypedDocumentOnError>();
+      }
       // Mapping des objets metiers UntypedDocumentOnError en objet JAXB
       ListeNonIntegratedDocumentsType listNIDType = mapToNonIntegratedDType(untypedsDError);
       resultatsType.setNonIntegratedDocuments(listNIDType);

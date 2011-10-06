@@ -129,13 +129,14 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
       
       String repDocs = ecdeDirectory.concat(SEPARATOR_FILE).concat(DOCUMENTS);
          
-      UntypedDocument untypedDoc = new UntypedDocument();
       UntypedMetadata untypedMetadata = new UntypedMetadata();
       
       File outputFile = new File(ecdeDirectory,"resultats.xml");      
       ErreurType erreurType = new ErreurType();
 
       for (DocumentType docType : listDocsType) {
+         UntypedDocument untypedDoc = new UntypedDocument();
+         
          String chemin = "";
          ResultatsType resultats = objFactory.createResultatsType();
 
