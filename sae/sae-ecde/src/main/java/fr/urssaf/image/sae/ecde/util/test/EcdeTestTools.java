@@ -97,6 +97,75 @@ public class EcdeTestTools {
    }
    
    
+   /**
+    * Methode qui renvoi un objet EcdeTestSommaire
+    * <br>afin d'indiquer l'URL ECDE ainsi que l'arborescence complète 
+    * <br>du répertoire où se trouve le fichier sommaire.xml
+    * <br>
+    * exemple de valeur renvoyées :<br>
+    * ecde://ecde.testunitaire.recouv/1/20110101/25469444564/repertoire/attestation.pdf<br>
+    * et<br>
+    * C:/Documents ans Settings/User/Local Settings/temp/1/20110101/25469444564/documents/<br>
+    * 
+    * @param nomDuFichierDocument nom du fichier du document
+    * @return EcdeTestSommaire ecdeTestSommaire
+    */
+   public final EcdeTestDocument buildEcdeTestDocument(String nomDuFichierDocument) {
+
+      // Récupération du point de montage de l'ECDE pour les TU
+      File pointMontageTu = null;
+      for (EcdeSource ecde : ecdeSources.getSources()) {
+         if (EcdeTestConfig.DNS_ECDE_TU.equals(ecde.getHost())) {
+            pointMontageTu = ecde.getBasePath();
+         }
+      }
+      if (pointMontageTu==null) {
+         throw new EcdeRuntimeException(
+               "Impossible de retrouver le point de montage de l'ECDE " + 
+               EcdeTestConfig.DNS_ECDE_TU);
+      }
+      
+      // Création du répertoire unique de traitement
+      String sousRepTraitement = "/1/20110101/".concat(buildRandom());
+      File repTrait = new File(
+            pointMontageTu, 
+            sousRepTraitement);
+      try {
+         FileUtils.forceMkdir(repTrait);
+      } catch (IOException e) {
+         throw new EcdeRuntimeException(e);
+      }
+      
+      // Création du sous-répertoire documents
+      File repDoc = new File(repTrait,"documents");
+      try {
+         FileUtils.forceMkdir(repDoc);
+      } catch (IOException e) {
+         throw new EcdeRuntimeException(e);
+      }
+      
+      // Construction de l'URL ECDE pointant vers le chemin du fichier document
+      URI uri;
+      try {
+         uri = new URI(
+               "ecde", 
+               EcdeTestConfig.DNS_ECDE_TU, 
+               sousRepTraitement.concat("/documents/").concat(nomDuFichierDocument), 
+               null);
+      } catch (URISyntaxException e) {
+         throw new EcdeRuntimeException(e);
+      }
+      
+      // Valeur de retour
+      EcdeTestDocument ecdeTestDocument = new EcdeTestDocument();
+      ecdeTestDocument.setRepEcdeDocuments(repDoc);
+      ecdeTestDocument.setUrlEcdeDocument(uri);
+      return ecdeTestDocument;
+      
+   }
+   
+   
+   
    
    /**
     * Construit un nom unique de fichier temporaire
