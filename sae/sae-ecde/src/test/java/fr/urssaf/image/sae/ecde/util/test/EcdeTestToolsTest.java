@@ -24,7 +24,7 @@ public class EcdeTestToolsTest {
    
    
    @Test
-   public void getUrlEcdeSucces() throws IOException, URISyntaxException {
+   public void getUrlEcdeSuccess() throws IOException, URISyntaxException {
       
       EcdeTestSommaire ecdeTestSommaire = ecdeTestTools.buildEcdeTestSommaire();
       
@@ -32,6 +32,22 @@ public class EcdeTestToolsTest {
             "Erreur lors de la mise en place des TU pour l'ECDE", 
             true, 
             ecdeTestSommaire.getRepEcde().exists());
+      
+   }
+   
+   @Test
+   public void getUrlEcdeDocumentSuccess() throws IOException, URISyntaxException {
+      
+      String nomDuFichierDocument = "attestation.pdf";
+      EcdeTestDocument ecdeTestDocument = ecdeTestTools.buildEcdeTestDocument(nomDuFichierDocument);
+      
+      System.out.println(ecdeTestDocument.getRepEcdeDocuments());
+      System.out.println(ecdeTestDocument.getUrlEcdeDocument());
+      
+      assertEquals(
+            "Erreur lors de la mise en place des TU pour l'ECDE", 
+            true, 
+            ecdeTestDocument.getRepEcdeDocuments().exists());
       
    }
    
