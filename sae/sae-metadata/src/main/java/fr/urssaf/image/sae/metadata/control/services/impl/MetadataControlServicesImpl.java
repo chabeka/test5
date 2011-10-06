@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,6 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 	@Autowired
 	@Qualifier("ruleFactory")
 	private MetadataRuleFactory ruleFactory;
-	
-	
-	
 
 	@Autowired
 	@Qualifier("metadataReferenceDAO")
@@ -118,6 +116,13 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 			try {
 				final MetadataReference reference = referenceDAO
 						.getByLongCode(metadata.getLongCode());
+				if ( StringUtils.isEmpty(metadata.getValue().trim())) {
+					errors.add(new MetadataError(MetadataMessageHandler
+							.getMessage("metadata.control.value.required"),
+							metadata.getLongCode(), MetadataMessageHandler
+									.getMessage("metadata.value.required",
+											metadata.getLongCode())));
+				}
 				if (!ruleFactory.getValueTypeRule().isSatisfiedBy(metadata,
 						reference)) {
 					errors.add(new MetadataError(MetadataMessageHandler
@@ -388,22 +393,26 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 		}
 		return errors;
 	}
-	
+
 	/**
 	 * Construit un objet de type {@link MetadataControlServicesImpl }
-	 * @param ruleFactory : La factory des règles
-	 * @param referenceDAO : Le dao du référentiel des métadonnées.
+	 * 
+	 * @param ruleFactory
+	 *            : La factory des règles
+	 * @param referenceDAO
+	 *            : Le dao du référentiel des métadonnées.
 	 */
 	public MetadataControlServicesImpl(final MetadataRuleFactory ruleFactory,
 			final MetadataReferenceDAO referenceDAO) {
 		this.ruleFactory = ruleFactory;
 		this.referenceDAO = referenceDAO;
 	}
+
 	/**
 	 * Construit un objet de type {@link MetadataControlServicesImpl }
 	 */
 	public MetadataControlServicesImpl() {
-		//ici on ne fait rien
+		// ici on ne fait rien
 	}
-	
+
 }
