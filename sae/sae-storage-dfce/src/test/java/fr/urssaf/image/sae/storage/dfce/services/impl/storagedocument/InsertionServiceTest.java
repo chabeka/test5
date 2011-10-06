@@ -105,7 +105,6 @@ public class InsertionServiceTest extends StorageServices {
 	 * @throws ConnectionServiceEx
 	 */
 	@Test
-	@Ignore("Pour eviter que la base soit corrompue")
 	public void bulkInsertAll() throws IOException, ParseException,
 			InsertionServiceEx, RetrievalServiceEx, ConnectionServiceEx {
 		final BulkInsertionResults insertionResults = buildBlukStorageDocument(

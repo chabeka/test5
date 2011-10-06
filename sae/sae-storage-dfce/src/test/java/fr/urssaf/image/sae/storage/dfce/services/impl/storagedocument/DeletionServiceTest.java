@@ -35,7 +35,6 @@ public class DeletionServiceTest extends StorageServices {
 	 * @throws RetrievalServiceEx 
 	 */
 	@Test
-	@Ignore("Pour eviter que la base soit corrompue")
 	public void deleteStorageDocument() throws InsertionServiceEx, IOException,
 			ParseException,  RetrievalServiceEx {
 		
@@ -59,7 +58,6 @@ public class DeletionServiceTest extends StorageServices {
 	 * @throws ConnectionServiceEx
 	 */
 	@Test
-	@Ignore("Pour eviter que la base soit corrompue")
 	public void rollBack() throws InsertionServiceEx, IOException,
 			ParseException, DeletionServiceEx {
 		getMockData(getInsertionService());

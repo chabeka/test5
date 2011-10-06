@@ -12,6 +12,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.storage.dfce.data.constants.Constants;
@@ -43,6 +44,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * @throws InsertionServiceEx
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithWildcard() throws SearchingServiceEx,
 			IOException, ParseException, InsertionServiceEx {
 		createStorageDocument();
@@ -128,6 +130,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 *             Exception lévée
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorAnd() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException {
 		createStorageDocument();
@@ -151,6 +154,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 *             Exception lévée
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorOr() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException {
 		createStorageDocument();
@@ -174,6 +178,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 *             Exception lévée
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorAndOr() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException {
 		createStorageDocument();
@@ -196,6 +201,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 *             Exception lévée
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorNot() throws SearchingServiceEx, InsertionServiceEx, IOException, ParseException {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("withOperatorNot");

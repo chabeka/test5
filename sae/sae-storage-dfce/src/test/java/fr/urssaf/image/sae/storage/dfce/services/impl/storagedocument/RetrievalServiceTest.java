@@ -102,11 +102,6 @@ public class RetrievalServiceTest extends StorageServices {
 				.retrieveStorageDocumentContentByUUID(uuidCriteria);
 		Assert.assertNotNull(
 				"Le contenue du document récupérer doit être non null", content);
-		// Vérification que les deux Hash code document initial et document
-		// récupérer sont identique
-		// Assert.assertTrue("Les deux SHA1 doivent être identique", DigestUtils
-		// .shaHex(storageDocument.getContent()).equals(getRetrievalService().retrieveStorageDocumentByUUID(uuidCriteria).getDigest()));
-		// Suppression du document insert
 		destroyMockTest(document.getUuid(), getDeletionService());
 	}
 

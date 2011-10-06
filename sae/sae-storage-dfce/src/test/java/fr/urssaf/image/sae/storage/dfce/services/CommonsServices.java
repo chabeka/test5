@@ -92,9 +92,8 @@ public class CommonsServices {
 	public final void destroyMockTest(final UUID uuid,
 			final DeletionService deletionService) throws DeletionServiceEx {
 		final List<StorageMetadata> desiredStorageMetadatas = new ArrayList<StorageMetadata>();
-		@SuppressWarnings("unused")
 		final UUIDCriteria uuidCriteria = new UUIDCriteria(uuid,
 				desiredStorageMetadatas);
-		//deletionService.deleteStorageDocument(uuidCriteria);
+		deletionService.deleteStorageDocument(uuidCriteria);
 	}
 }
