@@ -107,10 +107,10 @@ public class EcdeTestTools {
     * et<br>
     * C:/Documents ans Settings/User/Local Settings/temp/1/20110101/25469444564/documents/<br>
     * 
-    * @param nomDuFichierDocument nom du fichier du document
+    * @param nomDuFichierDoc nom du fichier du document
     * @return EcdeTestSommaire ecdeTestSommaire
     */
-   public final EcdeTestDocument buildEcdeTestDocument(String nomDuFichierDocument) {
+   public final EcdeTestDocument buildEcdeTestDocument(String nomDuFichierDoc) {
 
       // Récupération du point de montage de l'ECDE pour les TU
       File pointMontageTu = null;
@@ -150,7 +150,7 @@ public class EcdeTestTools {
          uri = new URI(
                "ecde", 
                EcdeTestConfig.DNS_ECDE_TU, 
-               sousRepTraitement.concat("/documents/").concat(nomDuFichierDocument), 
+               sousRepTraitement.concat("/documents/").concat(nomDuFichierDoc), 
                null);
       } catch (URISyntaxException e) {
          throw new EcdeRuntimeException(e);

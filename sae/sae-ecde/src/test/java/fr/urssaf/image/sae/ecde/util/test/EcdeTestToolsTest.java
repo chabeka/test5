@@ -38,11 +38,8 @@ public class EcdeTestToolsTest {
    @Test
    public void getUrlEcdeDocumentSuccess() throws IOException, URISyntaxException {
       
-      String nomDuFichierDocument = "attestation.pdf";
-      EcdeTestDocument ecdeTestDocument = ecdeTestTools.buildEcdeTestDocument(nomDuFichierDocument);
-      
-      System.out.println(ecdeTestDocument.getRepEcdeDocuments());
-      System.out.println(ecdeTestDocument.getUrlEcdeDocument());
+      String nomDuFichierDoc = "attestation.pdf";
+      EcdeTestDocument ecdeTestDocument = ecdeTestTools.buildEcdeTestDocument(nomDuFichierDoc);
       
       assertEquals(
             "Erreur lors de la mise en place des TU pour l'ECDE", 
