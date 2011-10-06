@@ -82,7 +82,7 @@ public class DFCEServicesManagerImpl implements DFCEServicesManager {
 	public final void getConnection() throws ConnectionServiceEx {
 		try {
 			// ici on synchronise l'appel de la méthode connect.
-			synchronized (this) {
+			synchronized (this.dfceService) {
 				if (!isDFCEServiceValid()) {
 					dfceService = ServiceProvider.newServiceProvider();
 					dfceService.connect(cnxParameters.getStorageUser()
