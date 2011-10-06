@@ -6,13 +6,18 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.cirtil.www.saeservice.ArchivageMasse;
+import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
+import fr.cirtil.www.saeservice.EcdeUrlSommaireType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
+import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -26,6 +31,7 @@ import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
+import fr.urssaf.image.sae.webservices.impl.factory.ObjectStorageResponseFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
 
@@ -39,6 +45,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
    @Autowired
    private SAECaptureService captureService;
+   private SAEBulkCaptureService saeBulkCaptureService;
 
    /**
     * {@inheritDoc}
@@ -88,7 +95,6 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       try {
          return captureService.capture(metadatas, ecdeURL);
       } catch (SAECaptureServiceEx e) {
-
          throw new CaptureAxisFault(
                "ErreurInterneCapture",
                "Une erreur interne à l'application est survenue lors de la capture.",
@@ -142,9 +148,24 @@ public class WSCaptureServiceImpl implements WSCaptureService {
                "ErreurInterneCapture",
                "Une erreur interne à l'application est survenue dans la capture.",
                e);
-      }  catch (UnknownHashCodeEx e) {
+      } catch (UnknownHashCodeEx e) {
          throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
       }
    }
 
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public ArchivageMasseResponse archivageEnMasse(ArchivageMasse request) {
+      EcdeUrlSommaireType ecdeUrlWs = request.getArchivageMasse()
+            .getUrlSommaire();
+      String ecdeUrl = ecdeUrlWs.getEcdeUrlSommaireType().toString();
+      // Appel du service, celui-ci doit rendre la main rapidement
+      // (traitement dans un autre thread)
+      saeBulkCaptureService.bulkCapture(ecdeUrl);
+      // On prend acte de la demande,
+      // le retour se fera via le fichier resultats.xml de l'ECDE
+      return ObjectStorageResponseFactory.createArchivageMasseResponse();
+   }
 }

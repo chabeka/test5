@@ -113,7 +113,6 @@ public final class ObjectStorageResponseFactory {
       ArchivageMasseResponse response = new ArchivageMasseResponse();
       ArchivageMasseResponseType responseType = new ArchivageMasseResponseType();
       response.setArchivageMasseResponse(responseType);
-
       return response;
    }
 

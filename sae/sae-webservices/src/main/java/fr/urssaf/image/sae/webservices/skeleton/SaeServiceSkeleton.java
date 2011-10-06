@@ -85,6 +85,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    private WSRechercheService search;
    @Autowired
    private WSCaptureService capture;
+   
 
    /**
     * Instanciation du service {@link SaeService}
@@ -149,9 +150,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ArchivageMasseResponse archivageMasseSecure(
          ArchivageMasse request) {
-
-      return this.storageService.bulkCapture(request);
-
+      return  this.capture.archivageEnMasse(request);
    }
 
    /**
