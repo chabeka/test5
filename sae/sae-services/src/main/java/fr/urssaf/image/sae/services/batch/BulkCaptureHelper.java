@@ -329,6 +329,7 @@ public class BulkCaptureHelper {
       resultats.setEcdeDirectory(sommaire.getEcdeDirectory());
       resultats.setNonIntegratedVirtualDocumentsCount(0);
       resultats.setNonIntegratedDocuments(untypedDocumentsOnError);
+      resultats.setNonIntegratedDocumentsCount(initialDocumentsCount);
       return resultats;
    }
 

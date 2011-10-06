@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,11 +27,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.ecde.util.test.EcdeTestDocument;
+import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
@@ -39,6 +44,8 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SAEConsultationServiceTest {
+   @Autowired
+   private EcdeTestTools ecdeTestTools;
 
    private static final Logger LOG = Logger
          .getLogger(SAEConsultationServiceTest.class);
@@ -73,7 +80,6 @@ public class SAEConsultationServiceTest {
 
    private UUID capture() throws IOException, ConnectionServiceEx,
          ParseException {
-
       File srcFile = new File(
             "src/test/resources/doc/attestation_consultation.pdf");
 
@@ -102,12 +108,13 @@ public class SAEConsultationServiceTest {
       metadatas.add(new StorageMetadata("sm_extension", "PDF"));
       metadatas.add(new StorageMetadata("sm_creation_date", DateUtils
             .parseDate("2012-01-01", parsePatterns)));
+      metadatas.add(new StorageMetadata("dfc", DateUtils.parseDate(
+            "2012-01-01", parsePatterns)));
 
       return testProvider.captureDocument(content, metadatas);
    }
 
    @Test
-   @Ignore
    public void consultation_success() throws IOException,
          SAEConsultationServiceException, ConnectionServiceEx, ParseException {
 

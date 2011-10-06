@@ -29,6 +29,7 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    /**
     * 
     * @param taskExecutor
+    *           : un objet de type {@link ThreadPoolTaskExecutor}
     */
    public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
       this.taskExecutor = taskExecutor;
@@ -37,6 +38,7 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    /**
     * 
     * @param taskExecutor
+    *           : un objet de type {@link ThreadPoolTaskExecutor}
     */
    public ThreadPoolTaskExecutor getTaskExecutor() {
       return taskExecutor;
@@ -46,9 +48,9 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
     * {@inheritDoc} puisqu'on est dans une thread séparée
     */
    public final void bulkCapture(String urlEcde) {
-      BulkCaptureJobWrapper bulkCaptureJobWrapper = new BulkCaptureJobWrapper(
-            urlEcde, ecdeServices, bulkCaptureJob);
-      taskExecutor.execute(bulkCaptureJobWrapper);
+      BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(urlEcde,
+            ecdeServices, bulkCaptureJob);
+      taskExecutor.execute(bulkWrapper);
       taskExecutor.shutdown();
 
    }

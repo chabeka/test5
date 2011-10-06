@@ -13,7 +13,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -21,7 +20,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.ecde.util.test.EcdeTestDocument;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestSommaire;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
@@ -108,7 +107,6 @@ public class SAECaptureServiceTest {
    }
 
    @Test
-   @Ignore
    public void capture_success() throws ConnectionServiceEx,
          SAECaptureServiceEx, IOException, SAEEnrichmentEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
@@ -117,30 +115,24 @@ public class SAECaptureServiceTest {
          MappingFromReferentialException, InvalidSAETypeException,
          UnknownHashCodeEx, NotArchivableMetadataEx, ReferentialRndException,
          UnknownCodeRndEx, SearchingServiceEx {
+
+      EcdeTestDocument ecde = ecdeTestTools.buildEcdeTestDocument("attestation_consultation.pdf");
       
-      ecdeTestTools.buildEcdeTestSommaire();
-      EcdeTestSommaire ecde = ecdeTestTools.buildEcdeTestSommaire();
-      File repertoireEcdeTraitement = ecde.getRepEcde();
+      File repertoireEcdeTraitement = ecde.getRepEcdeDocuments();
+      URI urlEcdeDocument  = ecde.getUrlEcdeDocument ();
       
+
       LOG.debug("CAPTURE UNITAIRE ECDE TEMP: "
             + repertoireEcdeTraitement.getAbsoluteFile());
-      String urlEcdeEcde = ecde.getUrlEcde().toString();
-      urlEcdeEcde = urlEcdeEcde.replace("sommaire.xml", "attestation_consultation.pdf");
-      URI ecdeURL = URI.create(urlEcdeEcde);
-      File fileDoc = new File(repertoireEcdeTraitement, "attestation_consultation.pdf");
-      ClassPathResource resDoc = new ClassPathResource("attestation_consultation.pdf");
+      File fileDoc = new File(repertoireEcdeTraitement,
+            "attestation_consultation.pdf");
+      ClassPathResource resDoc = new ClassPathResource(
+            "attestation_consultation.pdf");
       FileOutputStream fos = new FileOutputStream(fileDoc);
       IOUtils.copy(resDoc.getInputStream(), fos);
-      
-      
+
       File srcFile = new File(
             "src/test/resources/doc/attestation_consultation.pdf");
-//      File destFile = new File(ecdeRepertory.getAbsolutePath(),
-//            "DCL001/19991231/3/documents/attestation.pdf");
-//      FileUtils.copyFile(srcFile, destFile);
-
-//      URI ecdeURL = URI
-//            .create("ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
 
       List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
 
@@ -161,7 +153,7 @@ public class SAECaptureServiceTest {
       String hash = DigestUtils.shaHex(new FileInputStream(srcFile));
       metadatas.add(new UntypedMetadata("Hash", hash));
 
-      uuid = service.capture(metadatas, ecdeURL);
+      uuid = service.capture(metadatas, urlEcdeDocument);
       LOG.debug("document archivé dans DFCE:" + uuid);
 
       StorageDocument doc = testProvider.searchDocument(uuid);

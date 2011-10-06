@@ -17,6 +17,7 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
+import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
@@ -47,7 +48,8 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    private final StorageServiceProvider serviceProvider;
 
-   private final EcdeFileService ecdeFileService;
+   //private final EcdeFileService ecdeFileService;
+   private final EcdeServices ecdeServices;
 
    private final SAECommonCaptureService commonsService;
 
@@ -67,14 +69,14 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    public SAECaptureServiceImpl(
          @Qualifier("storageServiceProvider") StorageServiceProvider serviceProvider,
          @Qualifier("storageConnectionParameter") StorageConnectionParameter connectionParam,
-         EcdeFileService ecdeFileService, SAECommonCaptureService commonsService) {
+         EcdeServices ecdeServices, SAECommonCaptureService commonsService) {
 
       Assert.notNull(serviceProvider);
       Assert.notNull(connectionParam);
-      Assert.notNull(ecdeFileService);
+      Assert.notNull(ecdeServices);
       Assert.notNull(commonsService);
 
-      this.ecdeFileService = ecdeFileService;
+      this.ecdeServices = ecdeServices;
       this.serviceProvider = serviceProvider;
       this.commonsService = commonsService;
    }
@@ -148,7 +150,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
     */
    private File loadEcdeFile(URI ecdeURL) throws SAECaptureServiceEx {
       try {
-         return ecdeFileService.convertURIToFile(ecdeURL);
+         return ecdeServices.convertURIToFile(ecdeURL);
       } catch (EcdeBadURLException e) {
          throw new SAECaptureServiceEx(e);
       } catch (EcdeBadURLFormatException e) {
