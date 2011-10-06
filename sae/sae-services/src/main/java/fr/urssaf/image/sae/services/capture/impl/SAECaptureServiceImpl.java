@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
-import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.service.EcdeFileService;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
@@ -49,7 +46,6 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 public class SAECaptureServiceImpl implements SAECaptureService {
 
    private final StorageServiceProvider serviceProvider;
-
 
    private final EcdeFileService ecdeFileService;
 
@@ -110,11 +106,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
                .buildStorageDocumentForCapture(untypedDocument);
       } catch (SAEEnrichmentEx e) {
          throw new SAECaptureServiceEx(e);
-      } 
-
-      // le type du document est obligatoire dans l'archivage DFCE
-//      String typeDoc = FilenameUtils.getExtension(ecdeFile.getName());
-//      storageDoc.setTypeDoc(typeDoc);
+      }
 
       // archivage du document dans DFCE
       UUID uuid = insererStorageDocument(storageDoc);
@@ -122,7 +114,12 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       return uuid;
 
    }
-
+   /**
+    * @param metadatas
+    * @param ecdeFile
+    * @return UntypedDocument
+    * @throws SAECaptureServiceEx {@link SAECaptureServiceEx}
+    */
    private UntypedDocument createUntypedDocument(
          List<UntypedMetadata> metadatas, File ecdeFile)
          throws SAECaptureServiceEx {
@@ -136,33 +133,22 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       } catch (IOException e) {
          throw new SAECaptureServiceEx(e);
       }
-
       // instanciation de la classe UntypedDocument avec la liste des
       // métadonnées et le contenu du document à archiver
       UntypedDocument untypedDocument = new UntypedDocument(fileContent,
             metadatas);
-      untypedDocument.setFilePath(ecdeFile.getName());
-
+      untypedDocument.setFilePath(ecdeFile.getAbsolutePath());
       return untypedDocument;
    }
-
+   /**
+    * 
+    * @param ecdeURL
+    * @return File.
+    * @throws SAECaptureServiceEx {@link SAECaptureServiceEx}
+    */
    private File loadEcdeFile(URI ecdeURL) throws SAECaptureServiceEx {
-
-      // CODE TEMPORAIRE
-      // vérification que ecdeURL respecte bien le format d'une URL ECDE
-      // par défaut un seul point de montage de l'ECDE se fait sur le répertoire
-      // temporaire de l'OS dans le sous répertoire 'ecde', le DNS de l'ECDE est
-      // ecde.cer69.recouv
-
-      // TODO intégrer du service de ECDE 003 pour convertir une URL ECDE en
-      // chemin de fichier
-
-      File basePath = new File(FilenameUtils.concat(SystemUtils
-            .getJavaIoTmpDir().getAbsolutePath(), "ecde"));
-      EcdeSource source = new EcdeSource("ecde.cer69.recouv", basePath);
-
       try {
-         return ecdeFileService.convertURIToFile(ecdeURL, source);
+         return ecdeFileService.convertURIToFile(ecdeURL);
       } catch (EcdeBadURLException e) {
          throw new SAECaptureServiceEx(e);
       } catch (EcdeBadURLFormatException e) {
@@ -170,28 +156,28 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       }
 
    }
-
+   /**
+    * @param storageDoc
+    * @return UUID
+    * @throws SAECaptureServiceEx {@link SAECaptureServiceEx}
+    */
    private UUID insererStorageDocument(StorageDocument storageDoc)
          throws SAECaptureServiceEx {
-
-      try {
-         serviceProvider.openConnexion();
-      } catch (ConnectionServiceEx e) {
-         throw new SAECaptureServiceEx(e);
-      }
-
       // insertion du document à archiver dans DFCE puis fermeture de la
       // connexion DFCE
       UUID uuid;
       try {
+         serviceProvider.openConnexion();
          uuid = serviceProvider.getStorageDocumentService()
                .insertStorageDocument(storageDoc).getUuid();
+
+      } catch (ConnectionServiceEx e) {
+         throw new SAECaptureServiceEx(e);
       } catch (InsertionServiceEx e) {
          throw new SAECaptureServiceEx(e);
       } finally {
          serviceProvider.closeConnexion();
       }
-
       return uuid;
    }
 }

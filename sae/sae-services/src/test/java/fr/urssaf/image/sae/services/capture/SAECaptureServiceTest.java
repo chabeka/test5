@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.services.capture;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.UUID;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -18,13 +21,17 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.ecde.util.test.EcdeTestSommaire;
+import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
@@ -50,7 +57,8 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions", "PMD.ExcessiveImports" })
 public class SAECaptureServiceTest {
-
+   @Autowired
+   private EcdeTestTools ecdeTestTools;
    private static final Logger LOG = Logger
          .getLogger(SAECaptureServiceTest.class);
 
@@ -93,13 +101,14 @@ public class SAECaptureServiceTest {
    @After
    public void after() throws ConnectionServiceEx, DeletionServiceEx {
       // suppression de l'insertion
-      //FIXME Attente de la nouvelle version de DFCE
+      // FIXME Attente de la nouvelle version de DFCE
       if (uuid != null) {
-        // testProvider.deleteDocument(uuid);
+         // testProvider.deleteDocument(uuid);
       }
    }
 
    @Test
+   @Ignore
    public void capture_success() throws ConnectionServiceEx,
          SAECaptureServiceEx, IOException, SAEEnrichmentEx,
          RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
@@ -108,15 +117,30 @@ public class SAECaptureServiceTest {
          MappingFromReferentialException, InvalidSAETypeException,
          UnknownHashCodeEx, NotArchivableMetadataEx, ReferentialRndException,
          UnknownCodeRndEx, SearchingServiceEx {
-
+      
+      ecdeTestTools.buildEcdeTestSommaire();
+      EcdeTestSommaire ecde = ecdeTestTools.buildEcdeTestSommaire();
+      File repertoireEcdeTraitement = ecde.getRepEcde();
+      
+      LOG.debug("CAPTURE UNITAIRE ECDE TEMP: "
+            + repertoireEcdeTraitement.getAbsoluteFile());
+      String urlEcdeEcde = ecde.getUrlEcde().toString();
+      urlEcdeEcde = urlEcdeEcde.replace("sommaire.xml", "attestation_consultation.pdf");
+      URI ecdeURL = URI.create(urlEcdeEcde);
+      File fileDoc = new File(repertoireEcdeTraitement, "attestation_consultation.pdf");
+      ClassPathResource resDoc = new ClassPathResource("attestation_consultation.pdf");
+      FileOutputStream fos = new FileOutputStream(fileDoc);
+      IOUtils.copy(resDoc.getInputStream(), fos);
+      
+      
       File srcFile = new File(
             "src/test/resources/doc/attestation_consultation.pdf");
-      File destFile = new File(ecdeRepertory.getAbsolutePath(),
-            "DCL001/19991231/3/documents/attestation.pdf");
-      FileUtils.copyFile(srcFile, destFile);
+//      File destFile = new File(ecdeRepertory.getAbsolutePath(),
+//            "DCL001/19991231/3/documents/attestation.pdf");
+//      FileUtils.copyFile(srcFile, destFile);
 
-      URI ecdeURL = URI
-            .create("ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
+//      URI ecdeURL = URI
+//            .create("ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
 
       List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
 
@@ -138,7 +162,6 @@ public class SAECaptureServiceTest {
       metadatas.add(new UntypedMetadata("Hash", hash));
 
       uuid = service.capture(metadatas, ecdeURL);
-
       LOG.debug("document archivé dans DFCE:" + uuid);
 
       StorageDocument doc = testProvider.searchDocument(uuid);

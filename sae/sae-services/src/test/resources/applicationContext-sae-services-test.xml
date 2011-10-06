@@ -15,6 +15,6 @@
    <import resource="applicationContext-sae-metadata.xml" />
    <import resource="applicationContext-sae-ecde.xml" />
    <import resource="applicationContext-sae-mapping.xml" />
-   
+   <import resource="applicationContext-sae-ecde-test.xml" />
 
 </beans>

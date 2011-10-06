@@ -13,26 +13,32 @@ import fr.urssaf.image.sae.ecde.exception.EcdeGeneralException;
 import fr.urssaf.image.sae.ecde.modele.resultats.Resultats;
 import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
-import fr.urssaf.image.sae.services.context.ServicesApplicationContext;
 
 /**
+ * Wrapper pour les jobs de capture en masse.
  * 
- * 
+ * @author Rhofir
  */
 public class BulkCaptureJobWrapper implements Runnable {
-   private static final  Logger LOGGER = Logger
+   private static final Logger LOGGER = Logger
          .getLogger(BulkCaptureJobWrapper.class);
    private String ecdeUrl;
    private final EcdeServices ecdeServices;
+   private final BulkCaptureJob bulkCaptureJob;
+
    /**
     * Constructeur.
-    * @param urlEcde : Url du somaire.xml
-    * @param ecdeServices : Le service ECDE.
+    * 
+    * @param urlEcde
+    *           : Url du somaire.xml
+    * @param ecdeServices
+    *           : Le service ECDE.
     */
    public BulkCaptureJobWrapper(final String urlEcde,
-         final EcdeServices ecdeServices) {
+         final EcdeServices ecdeServices, final BulkCaptureJob bulkCaptureJob) {
       this.ecdeUrl = urlEcde;
       this.ecdeServices = ecdeServices;
+      this.bulkCaptureJob = bulkCaptureJob;
    }
 
    /**
@@ -42,17 +48,11 @@ public class BulkCaptureJobWrapper implements Runnable {
       // Appeler le service ECDE de récupération du sommaire.xml à partir de
       // l'URL
       try {
-
          URI ecdeUri = new URI(ecdeUrl);
          Sommaire sommaireEcde = ecdeServices.fetchSommaireByUri(ecdeUri);
-
          // Début traitement par BOB
-         BulkCaptureJob bulkCaptureJob = (BulkCaptureJob) ServicesApplicationContext
-               .getApplicationContext().getBean("bulkCaptureJob");
-         // BulkCaptureJob bulkCaptureJob = new BulkCaptureJob();
          Resultats resultatEcde = bulkCaptureJob.bulkCapture(sommaireEcde);
          // Fin traitement par BOB
-
          // Appeler le service ECDE de persistance du résultat
          ecdeServices.persistResultat(resultatEcde);
       } catch (URISyntaxException except) {

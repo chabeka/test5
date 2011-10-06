@@ -79,7 +79,7 @@ public class BulkCaptureHelper {
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(storageDocs)) {
          storageDocument.getMetadatas().add(
-               new StorageMetadata("itm", idtreatement));
+               new StorageMetadata("itm", idtreatement.toString()));
       }
       return storageDocs;
    }

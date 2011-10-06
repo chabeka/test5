@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.services.document;
 
+
 /**
  * Fournit le service :<BR/>
  * <li>Capture en masse.</li> </lu>

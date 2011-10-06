@@ -28,6 +28,7 @@ import fr.urssaf.image.sae.services.mapping.BeanTestDocumentMapper;
 @SuppressWarnings("all")
 public class CommonsServices {
    // CHECKSTYLE:OFF
+
    @Autowired
    @Qualifier("saeServiceProvider")
    private SAEServiceProvider sAEServiceProvider;

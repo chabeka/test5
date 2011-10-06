@@ -105,7 +105,7 @@ public class SAEControlesCaptureServiceImpl implements
                "capture.hash.erreur", saeDocument.getFilePath()));
       }
       // FIXME à partie de l'algorithme calculer le hashCode.
-      if (!DigestUtils.shaHex(saeDocument.getContent()).equals(hashCodeValue)) {
+      if (!DigestUtils.shaHex(saeDocument.getContent()).equals(hashCodeValue.trim())) {
          throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
                "capture.hash.erreur", saeDocument.getFilePath()));
       }
