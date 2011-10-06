@@ -15,8 +15,6 @@ import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
  * 
  * @author rhofir.
  */
-@Service
-@Qualifier("saeBulkCaptureService")
 public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    private ThreadPoolTaskExecutor taskExecutor;
    @Autowired
