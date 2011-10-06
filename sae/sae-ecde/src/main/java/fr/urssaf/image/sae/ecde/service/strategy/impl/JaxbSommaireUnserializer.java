@@ -64,7 +64,6 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
    //private static char separateurFichier = System.getProperty("file.separator").charAt(0);
    
    private final ObjectFactory objFactory = new ObjectFactory();
-   
    /**
     * {@inheritDoc}
     * @throws EcdeGeneralException 
@@ -139,7 +138,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
          
          String chemin = "";
          ResultatsType resultats = objFactory.createResultatsType();
-
+         
          try {
             String chemEtNomFile = StringUtils.trim(docType.getObjetNumerique().getCheminEtNomDuFichier());
             chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile);
@@ -217,14 +216,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
                                              .recupererMessage("objetnum.notexist.error", chemin));
       }     
    }
-   
-//   private String replace(String chemin) {
-//      chemin = StringUtils.replaceChars(chemin, '/', separateurFichier);
-//      chemin = StringUtils.replaceChars(chemin, '\\', separateurFichier);
-//      
-//      return chemin;
-//   }
-   
+    
    /**
     * Affectation resultatsOnError
     * 
@@ -270,8 +262,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
       resultats.setInitialVirtualDocumentsCount(sommaireType.getDocumentsVirtuels().getDocumentVirtuel().size());
       resultats.setIntegratedDocumentsCount(0);
       resultats.setIntegratedVirtualDocumentsCount(0);
-      
-      
+           
       
       ListeNonIntegratedDocumentsType nonDocsIntegrated = new ListeNonIntegratedDocumentsType();
       // etant donné erreur alors recup tous les documents du sommaire.xml et les integrer à 
@@ -279,10 +270,10 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
       List<DocumentType> docsType = sommaireType.getDocuments().getDocument();
       ListeErreurType erreursType = new ListeErreurType();
       erreursType.getErreur().add(erreurType);
-      NonIntegratedDocumentType nonInteg = new NonIntegratedDocumentType();
+      
       ListeErreurType listeErreurType = new ListeErreurType();
       for (DocumentType documentType : docsType) {
-         //NonIntegratedDocumentType nonInteg = new NonIntegratedDocumentType();
+         NonIntegratedDocumentType nonInteg = new NonIntegratedDocumentType();
          nonInteg.setObjetNumerique(documentType.getObjetNumerique());
          nonInteg.setNombreDePages(documentType.getNombreDePages());
          nonInteg.setNumeroPageDebut(documentType.getNumeroPageDebut());

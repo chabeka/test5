@@ -151,7 +151,7 @@ public class SommaireServiceImplTest {
    public void fetchSommaireByUriFailureBM() throws EcdeGeneralException, URISyntaxException, IOException  {
       URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
-      createSom("/sommaire/sommaire-test001Bis.xml");
+      createSom("/sommaire/sommaire-test001BM.xml");
       createFileTemp();
       Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
       assertEquals("Le batch mode retournée n'est pas correct!", "TOUT_OU_RIEN", sommaire.getBatchMode());
