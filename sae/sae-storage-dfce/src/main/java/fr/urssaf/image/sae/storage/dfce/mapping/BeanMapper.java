@@ -322,6 +322,7 @@ public final class BeanMapper {
 		case DATE_DEBUT_CONSERVATION:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
 					document.getLifeCycleReferenceDate());
+			break;
 		case DUREE_CONSERVATION:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
 					serviceDFCE.getStorageAdministrationService()
