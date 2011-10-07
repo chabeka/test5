@@ -76,14 +76,18 @@
    </build>
 
    <properties>
-      <dfce.serialization>0.9.3</dfce.serialization>
-      <dfce.toolkit.client>0.9.3</dfce.toolkit.client>
-      <dfce.toolkit.pojo>0.9.3</dfce.toolkit.pojo>
-      <dfce.toolkit.service>0.9.3</dfce.toolkit.service>
+      <dfce.serialization>1.0.0-alpha-02</dfce.serialization>
+      <dfce.pojo>1.0.0-alpha-02</dfce.pojo>
+      <dfce.toolkit.client>1.0.0-alpha-02</dfce.toolkit.client>
+      <dfce.toolkit.pojo>1.0.0-alpha-02</dfce.toolkit.pojo>
+      <dfce.toolkit.service>1.0.0-alpha-02</dfce.toolkit.service>
+      <apache.commons-lang.version>2.6</apache.commons-lang.version>
    </properties>
 
 
    <dependencies>
+
+      <!-- Axis2 -->
 
       <dependency>
          <groupId>org.apache.axis2</groupId>
@@ -106,23 +110,42 @@
          <scope>runtime</scope>
       </dependency>
 
-      <dependency>
-         <groupId>com.docubase</groupId>
-         <artifactId>dfce-toolkit-service</artifactId>
-         <version>${dfce.toolkit.service}</version>
-      </dependency>
+      <!-- DFCE -->
 
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-serialization</artifactId>
          <version>${dfce.serialization}</version>
       </dependency>
-
       <dependency>
          <groupId>com.docubase</groupId>
+         <artifactId>dfce-pojo</artifactId>
+         <version>${dfce.pojo}</version>
+      </dependency>
+      <dependency>
+         <groupId>net.docubase</groupId>
+         <artifactId>dfce-toolkit-client</artifactId>
+         <version>${dfce.toolkit.client}</version>
+      </dependency>
+      <dependency>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-pojo</artifactId>
          <version>${dfce.toolkit.pojo}</version>
       </dependency>
+      <dependency>
+         <groupId>net.docubase</groupId>
+         <artifactId>dfce-toolkit-service</artifactId>
+         <version>${dfce.toolkit.service}</version>
+      </dependency>
+      
+      
+      <!-- Apache commons -->
+      <dependency>
+         <groupId>commons-lang</groupId>
+         <artifactId>commons-lang</artifactId>
+         <version>${apache.commons-lang.version}</version>
+      </dependency>
+      
 
    </dependencies>
 
