@@ -326,7 +326,7 @@ public final class BeanMapper {
 		case DUREE_CONSERVATION:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
 					serviceDFCE.getStorageAdministrationService()
-							.getLifeCycleRule(document.getType()));
+							.getLifeCycleRule(document.getType()).getLifeCycleLength());
 			break;
 		case TITRE:
 			metadataFound = new StorageMetadata(metadata.getShortCode(),
