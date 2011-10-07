@@ -58,6 +58,7 @@ public class DeletionServiceTest extends StorageServices {
 	 * @throws ConnectionServiceEx
 	 */
 	@Test
+	@Ignore("034c37dd-7b45-4b11-be63-fe639d90df68 car ce document est gele A revoir")
 	public void rollBack() throws InsertionServiceEx, IOException,
 			ParseException, DeletionServiceEx {
 		getMockData(getInsertionService());
