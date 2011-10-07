@@ -143,7 +143,7 @@ public class SAECaptureServiceTest {
       metadatas.add(new UntypedMetadata("VersionRND", "11.1"));
 
       metadatas.add(new UntypedMetadata("NbPages", "2"));
-      metadatas.add(new UntypedMetadata("NomFichier", "attestation.pdf"));
+      //metadatas.add(new UntypedMetadata("NomFichier", "attestation.pdf"));
       metadatas.add(new UntypedMetadata("FormatFichier", "fmt/1354"));
       metadatas.add(new UntypedMetadata("DateCreation", "2012-01-01"));
       metadatas.add(new UntypedMetadata("Titre", "Attestation de vigilance"));

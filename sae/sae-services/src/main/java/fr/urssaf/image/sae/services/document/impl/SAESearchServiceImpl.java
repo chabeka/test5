@@ -117,7 +117,6 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             checkSearchableLuceneMetadata(listCodCourt);
             checkExistingMetadataDesired(listMetaDesired);
             recupererListCodCourtDefault(listMetaDesired);
-            // checkExistingMetadataDesired(listLongCodeDesired);
             checkConsultableMetadataDesired(listCodCourtConsult,
                   isFromRefrentiel);
             List<StorageDocument> listStorageDocument = searchStorageDocuments(
@@ -335,7 +334,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          throws SAESearchServiceEx {
       // si liste metadonnées désirée est vide alors recup la liste par default
       // des métadonnées consultables
-      SAEMetadata saeM = new SAEMetadata();
+      SAEMetadata saeM = null;
       try {
          if (listMetaDesired.isEmpty()) {
             listCodCourtConsult = new ArrayList<SAEMetadata>();
@@ -356,6 +355,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          // MetaDataReference associée
          for (String codeLong : listMetaDesired) {
             MetadataReference metaDataRef = metaRefD.getByLongCode(codeLong);
+            saeM = new SAEMetadata();
             saeM.setLongCode(codeLong);
             saeM.setShortCode(metaDataRef.getShortCode());
             saeM.setValue("");
@@ -394,7 +394,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          LuceneCriteria luceneCriteria = buildService
                .buildStorageLuceneCriteria(luceneQuery, maxResult,
                      listeDesiredMetadata);
-         
+
          getStorageServiceProvider().openConnexion();
 
          StorageDocuments storageDocuments = getStorageServiceProvider()
@@ -407,9 +407,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
       } catch (SearchingServiceEx except) {
          throw new SAESearchServiceEx(except.getMessage(), except);
       } finally {
-        
-            getStorageServiceProvider().closeConnexion();
-         
+
+         getStorageServiceProvider().closeConnexion();
+
       }
       return allStorageDocuments;
    }

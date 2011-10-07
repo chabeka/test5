@@ -6,9 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,18 +20,15 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
-import fr.urssaf.image.sae.ecde.util.test.EcdeTestDocument;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
@@ -143,6 +138,9 @@ public class SAEConsultationServiceTest {
       expectedMetadatas.put("FormatFichier", "fmt/1354");
       expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
       expectedMetadatas.put("DateArchivage", "2012-01-01");
+      expectedMetadatas.put("TailleFichier", "73791");
+      expectedMetadatas.put("Hash", "4bf2ddbd82d5fd38e821e6aae434ac989972a043");
+
 
       for (UntypedMetadata metadata : metadatas) {
          assertMetadata(metadata, expectedMetadatas);
