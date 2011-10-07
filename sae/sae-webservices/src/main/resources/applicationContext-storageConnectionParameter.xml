@@ -11,18 +11,6 @@
         http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
 
 
-   <!--Chargement du fichier de properties de l'application -->
-   <bean id="dfceConfigResource" class="org.springframework.core.io.FileSystemResource">
-      <constructor-arg>
-          <jee:jndi-lookup id="DFCE_Config"
-            jndi-name="java:comp/env/SAE_Fichier_Configuration_DFCE" />
-      </constructor-arg>
-   </bean>
-
-   <bean id="applicationProperties"
-      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-      <property name="location" ref="dfceConfigResource"/>
-   </bean>
    <!--Instantiation du bean de connexion à la base DFCE -->
    <bean id="storageBase"
       class="fr.urssaf.image.sae.storage.model.connection.StorageBase">

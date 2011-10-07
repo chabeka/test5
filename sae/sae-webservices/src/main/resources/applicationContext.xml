@@ -10,6 +10,11 @@
       http://www.springframework.org/schema/jee 
       http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
 
+
+   <!-- Chargement des properties -->
+   <import resource="applicationContext-properties.xml"/>
+
+
    <bean id="applicationContext"
       class="org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder" />
 
@@ -37,15 +42,22 @@
       <property name="location" ref="saeConfigResource"/>             
    </bean>
  
-   <!-- Ajout du bean de chargement des EcdesSources -->
+   
+   
+   <!-- Chargement de la configuration ECDE -->
+   
    <bean id="ecdeSourceManager"
          class="fr.urssaf.image.sae.ecde.EcdeSourceManagerImpl" />
 
-   <bean id="ecdeSources" factory-bean="ecdeSourceManager" factory-method="load">
-      <constructor-arg>
-         <value>${sae.ecde.cheminFichierConfig}</value> 
-      </constructor-arg>
+   <bean id="ecdeConfigFile" class="java.io.File">
+      <constructor-arg value="${sae.ecde.cheminFichierConfig}" />
    </bean>
+
+   <bean id="ecdeSources" factory-bean="ecdeSourceManager" factory-method="load">
+      <constructor-arg ref="ecdeConfigFile" />
+   </bean>
+   
+   
    
 
 
