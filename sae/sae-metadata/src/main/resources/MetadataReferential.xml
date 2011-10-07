@@ -521,7 +521,7 @@
     <length>-1</length>
     <pattern>   </pattern>
     <consultable>true</consultable>
-    <defaultConsultable>false</defaultConsultable>
+    <defaultConsultable>true</defaultConsultable>
     <searchable>false</searchable>
     <internal>true</internal>
     <archivable>true</archivable>
@@ -548,7 +548,7 @@
     <shortCode>nbp</shortCode>
     <longCode>NbPages</longCode>
     <type>Integer</type>
-    <requiredForArchival>false</requiredForArchival>
+    <requiredForArchival>true</requiredForArchival>
     <requiredForStorage>true</requiredForStorage>
     <length>-1</length>
     <pattern>   </pattern>
@@ -565,14 +565,14 @@
     <longCode>NomFichier</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>true</requiredForStorage>
+    <requiredForStorage>false</requiredForStorage>
     <length>30</length>
     <pattern>   </pattern>
     <consultable>true</consultable>
     <defaultConsultable>true</defaultConsultable>
     <searchable>false</searchable>
     <internal>true</internal>
-    <archivable>true</archivable>
+    <archivable>false</archivable>
     <label>Nom du fichier</label>
     <description>Nom du fichier physique avec extension lié au document</description>
   </metaDataReference>
@@ -601,10 +601,10 @@
     <length>-1</length>
     <pattern>   </pattern>
     <consultable>true</consultable>
-    <defaultConsultable>false</defaultConsultable>
+    <defaultConsultable>true</defaultConsultable>
     <searchable>false</searchable>
     <internal>true</internal>
-    <archivable>true</archivable>
+    <archivable>false</archivable>
     <label>Taille du fichier</label>
     <description>Taille du fichier en ko</description>
   </metaDataReference>
@@ -616,7 +616,7 @@
     <requiredForStorage>false</requiredForStorage>
     <length>20</length>
     <pattern>   </pattern>
-    <consultable>false</consultable>
+    <consultable>true</consultable>
     <defaultConsultable>false</defaultConsultable>
     <searchable>true</searchable>
     <internal>false</internal>

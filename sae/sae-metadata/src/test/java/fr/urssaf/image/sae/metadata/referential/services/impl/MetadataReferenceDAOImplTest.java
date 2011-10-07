@@ -46,7 +46,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getConsultableMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO()
-				.getConsultableMetadataReferences().size() == 42);
+				.getConsultableMetadataReferences().size() == 43);
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
 				getMetadataReferenceDAO().getConsultableMetadataReferences())
 				.entrySet()) {
@@ -67,7 +67,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getDefaultConsultableMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO()
-				.getDefaultConsultableMetadataReferences().size() == 10);
+				.getDefaultConsultableMetadataReferences().size() == 12);
 		
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
 				getMetadataReferenceDAO()
@@ -90,7 +90,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getRequiredForArchivalMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO()
-				.getRequiredForArchivalMetadataReferences().size() == 9);
+				.getRequiredForArchivalMetadataReferences().size() == 10);
 		
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
 				getMetadataReferenceDAO()
@@ -113,7 +113,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getRequiredForStorageMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO()
-				.getRequiredForStorageMetadataReferences().size() == 18);
+				.getRequiredForStorageMetadataReferences().size() == 17);
 		
 		for (Map.Entry<String, MetadataReference> metaData : Utils.nullSafeMap(
 				getMetadataReferenceDAO()
@@ -159,7 +159,7 @@ public class MetadataReferenceDAOImplTest extends AbstractService {
 	public void getArchivableMetadataReferences() throws IOException,
 			ReferentialException {
 		Assert.assertTrue(getMetadataReferenceDAO()
-				.getArchivableMetadataReferences().size() == 34);
+				.getArchivableMetadataReferences().size() == 32);
 	}
 
 
