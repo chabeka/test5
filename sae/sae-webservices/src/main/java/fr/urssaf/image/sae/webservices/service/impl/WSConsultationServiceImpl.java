@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,9 @@ public class WSConsultationServiceImpl implements WSConsultationService {
 
                String code = untypedMetadata.getLongCode();
                String valeur = untypedMetadata.getValue();
+               if (untypedMetadata.getValue() == null) {
+                  valeur = StringUtils.EMPTY;
+               }
                MetadonneeType metadonnee = ObjectTypeFactory
                      .createMetadonneeType(code, valeur);
 
