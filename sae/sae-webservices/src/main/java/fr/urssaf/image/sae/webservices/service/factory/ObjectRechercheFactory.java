@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.ListeResultatRechercheType;
@@ -27,6 +28,7 @@ public final class ObjectRechercheFactory {
 
    private ObjectRechercheFactory() {
    }
+
    /**
     * instanciation de {@link RechercheResponse}.<br>
     * Implementation de {@link RechercheResponseType}
@@ -63,10 +65,13 @@ public final class ObjectRechercheFactory {
 
          for (UntypedDocument storageDocument : untypedDocuments) {
 
-            ResultatRechercheType resultatRecherche = ObjectTypeFactory.createResultatRechercheType();
+            ResultatRechercheType resultatRecherche = ObjectTypeFactory
+                  .createResultatRechercheType();
 
-            resultatRecherche.setIdArchive(ObjectTypeFactory.createUuidType(storageDocument.getUuid()));
-            ListeMetadonneeType listeMetadonnee = ObjectTypeFactory.createListeMetadonneeType();
+            resultatRecherche.setIdArchive(ObjectTypeFactory
+                  .createUuidType(storageDocument.getUuid()));
+            ListeMetadonneeType listeMetadonnee = ObjectTypeFactory
+                  .createListeMetadonneeType();
 
             List<MetadonneeType> metadonnees = createListMetadonneeType(storageDocument);
 
@@ -86,6 +91,7 @@ public final class ObjectRechercheFactory {
 
       return response;
    }
+
    /**
     * instanciation d'une liste de {@link MetadonneeType} à partir des
     * {@link StorageMetadata} contenu dans une instance de
@@ -99,18 +105,22 @@ public final class ObjectRechercheFactory {
     *           instance de {@link StorageDocument} doit être non null
     * @return collection d'instance de {@link MetadonneeType}
     */
-   public static List<MetadonneeType> createListMetadonneeType(UntypedDocument untypedDocument) {
+   public static List<MetadonneeType> createListMetadonneeType(
+         UntypedDocument untypedDocument) {
 
       List<MetadonneeType> metadonnees = new ArrayList<MetadonneeType>();
-
-      for (UntypedMetadata untypedMetadata :untypedDocument.getUMetadatas()) {
-
+      String valeur = null;
+      for (UntypedMetadata untypedMetadata : untypedDocument.getUMetadatas()) {
          String code = untypedMetadata.getLongCode();
-         String valeur = untypedMetadata.getValue().toString();
-         MetadonneeType metadonnee = ObjectTypeFactory.createMetadonneeType(code, valeur);
-
+         if (untypedMetadata.getValue() != null) {
+            valeur = untypedMetadata.getValue().toString();
+         } else {
+            valeur = StringUtils.EMPTY;
+         }
+         MetadonneeType metadonnee = ObjectTypeFactory.createMetadonneeType(
+               code, valeur);
          metadonnees.add(metadonnee);
       }
       return metadonnees;
-   }   
+   }
 }

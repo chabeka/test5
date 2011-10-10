@@ -147,7 +147,7 @@ public class RechercheFailureTest {
 
       } catch (RechercheAxis2Fault fault) {
          assertAxisFault(fault, 
-                         "La requête de recherche n'est pas renseignée.",
+                         "La requête de recherche n'est pas renseignée",
                          "RequeteLuceneVideOuNull", SAE);
       } 
    }

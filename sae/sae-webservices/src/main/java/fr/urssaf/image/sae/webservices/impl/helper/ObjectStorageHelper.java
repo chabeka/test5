@@ -42,12 +42,10 @@ public final class ObjectStorageHelper {
 
       for (StorageMetadata storageMetadata : CollectionUtils
             .loadListNotNull(storageDocument.getMetadatas())) {
-
+         MetadonneeType metadonnee = new MetadonneeType();
          String code = storageMetadata.getShortCode();
          String valeur = storageMetadata.getValue().toString();
-         MetadonneeType metadonnee = ObjectTypeFactory.createMetadonneeType(
-               code, valeur);
-
+         metadonnee = ObjectTypeFactory.createMetadonneeType(code, valeur);
          metadonnees.add(metadonnee);
       }
 

@@ -55,10 +55,8 @@ public final class ObjectConsultationFactory {
 
       Assert.notNull(content, "content is required");
 
-      ConsultationResponse response = createConsultationResponse();
-      ConsultationResponseType responseType = response
-            .getConsultationResponse();
-
+      ConsultationResponse response = new ConsultationResponse();
+      ConsultationResponseType responseType = new ConsultationResponseType();
       ObjetNumeriqueConsultationType objetNumerique = ObjectTypeFactory
             .createObjetNumeriqueConsultationType(content);
 
@@ -74,11 +72,10 @@ public final class ObjectConsultationFactory {
          }
 
       }
-
+      
       responseType.setMetadonnees(listeMetadonnee);
-
+      response.setConsultationResponse(responseType);
       return response;
-
    }
 
    /**
