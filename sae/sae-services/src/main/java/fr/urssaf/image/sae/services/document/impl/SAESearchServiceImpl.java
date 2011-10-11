@@ -36,6 +36,7 @@ import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
 import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
 import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
+import fr.urssaf.image.sae.services.util.FormatUtils;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
@@ -77,8 +78,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
    // du referentiel
    private static final String SPLIT = "(\\w+)\\s*[:>]";
 
-   private final List<String> listLongCodeDesired = new ArrayList<String>();
-   private List<SAEMetadata> listCodCourtConsult = new ArrayList<SAEMetadata>();
+   // private final List<String> listLongCodeDesired = new ArrayList<String>();
+   // private List<SAEMetadata> listCodCourtConsult = new
+   // ArrayList<SAEMetadata>();
 
    /**
     * {@inheritDoc}
@@ -91,6 +93,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
       List<UntypedDocument> listUntypedDocument = new ArrayList<UntypedDocument>();
       // conversion code court
       List<SAEMetadata> listCodCourt = new ArrayList<SAEMetadata>();
+      List<SAEMetadata> listCodCourtConsult = new ArrayList<SAEMetadata>();
       try {
          List<String> longCodesReq = extractLongCodeFromQuery(requete);
          checkExistingLuceneMetadata(longCodesReq);
@@ -105,7 +108,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          // parcours de la map et remplissement d'une liste afin de verifier
          // plus tard si la liste
          // des codes courts est rechercheable : map <codeCourt, codeLong>
-         SAEMetadata saeM =null;
+         SAEMetadata saeM = null;
          for (Map.Entry<String, String> e : map.entrySet()) {
             saeM = new SAEMetadata();
             requeteVerif = requeteVerif.replace(e.getKey(), e.getValue());
@@ -116,10 +119,15 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          }
          checkConversion(requete, requeteVerif);
          if (checkLuceneQuery) {
-            checkSearchableLuceneMetadata(listCodCourt);
             checkExistingMetadataDesired(listMetaDesired);
-            recupererListCodCourtDefault(listMetaDesired);
-            checkConsultableMetadataDesired(listCodCourtConsult,
+            checkSearchableLuceneMetadata(listCodCourt);
+            if (listMetaDesired.isEmpty()) {
+               listCodCourtConsult = recupererListDefaultMetadatas();
+            }else
+            {
+               listCodCourtConsult = recupererListCodCourtByLongCode(listMetaDesired) ;
+            }
+            checkConsultableDesiredMetadata(listCodCourtConsult,
                   isFromRefrentiel);
             List<StorageDocument> listStorageDocument = searchStorageDocuments(
                   requeteFinal, Integer.parseInt(ServiceMessageHandler
@@ -139,7 +147,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
       } catch (MappingFromReferentialException except) {
          throw new SAESearchServiceEx(ResourceMessagesUtils
                .loadMessage("search.mapping.error"), except);
-      }catch (QueryParseServiceEx except) {
+      } catch (QueryParseServiceEx except) {
          throw new SyntaxLuceneEx(ResourceMessagesUtils
                .loadMessage("search.syntax.lucene.error"), except);
       }
@@ -151,7 +159,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
     * @param isFromRefrentiel
     * @throws MetaDataUnauthorizedToConsultEx
     */
-   private void checkConsultableMetadataDesired(
+   private void checkConsultableDesiredMetadata(
          List<SAEMetadata> listCodCourtConsult, boolean isFromRefrentiel)
          throws MetaDataUnauthorizedToConsultEx {
       // verification que la liste des codes courts est de type recherchable
@@ -165,7 +173,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             consultMetadataErrors.add(searchableMetadataError.getLongCode());
          }
          throw new MetaDataUnauthorizedToConsultEx(ResourceMessagesUtils
-               .loadMessage("search.notconsult.error", consultMetadataErrors));
+               .loadMessage("search.notconsult.error", FormatUtils.formattingDisplayList(consultMetadataErrors)));
       }
    }
 
@@ -208,7 +216,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          }
          throw new MetaDataUnauthorizedToSearchEx(ResourceMessagesUtils
                .loadMessage("search.notsearcheable.error",
-                     searchableMetadataErrors));
+                     FormatUtils.formattingDisplayList(searchableMetadataErrors)));
       }
    }
 
@@ -232,7 +240,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             listMetaDesiredErrors.add(metadataError.getLongCode());
          }
          throw new UnknownDesiredMetadataEx(ResourceMessagesUtils.loadMessage(
-               "search.notexist.metadata.desired.error", listMetaDesiredErrors));
+               "search.notexist.metadata.desired.error", FormatUtils.formattingDisplayList(listMetaDesiredErrors)));
       }
    }
 
@@ -256,7 +264,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             luceneMetadataErrors.add(metadataError.getLongCode());
          }
          throw new UnknownLuceneMetadataEx(ResourceMessagesUtils.loadMessage(
-               "search.notexist.lucene.metadata.error", luceneMetadataErrors));
+               "search.notexist.lucene.metadata.error", FormatUtils.formattingDisplayList(luceneMetadataErrors)));
       }
    }
 
@@ -335,27 +343,13 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
     * @throws SAESearchServiceEx
     */
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-   private void recupererListCodCourtDefault(List<String> listMetaDesired)
+   private List<SAEMetadata>  recupererListCodCourtByLongCode(List<String> listMetaDesired)
          throws SAESearchServiceEx {
       // si liste metadonnées désirée est vide alors recup la liste par default
       // des métadonnées consultables
       SAEMetadata saeM = null;
+      List<SAEMetadata> listCodCourtConsult = new ArrayList<SAEMetadata>();
       try {
-         if (listMetaDesired.isEmpty()) {
-            listCodCourtConsult = new ArrayList<SAEMetadata>();
-            isFromRefrentiel = true;
-            Map<String, MetadataReference> mapConsult = metaRefD
-                  .getDefaultConsultableMetadataReferences();
-            // parcours de la map pour recuperer tous les codes courts des
-            // MetaDataReference
-            for (Map.Entry<String, MetadataReference> metaDataRef : mapConsult
-                  .entrySet()) {
-               saeM = new SAEMetadata();
-               saeM.setLongCode(metaDataRef.getValue().getLongCode());
-               saeM.setShortCode(metaDataRef.getValue().getShortCode());
-               listCodCourtConsult.add(saeM);
-            }
-         }
          // si liste metadonnées non vide alors pour chaque code recup la
          // MetaDataReference associée
          for (String codeLong : listMetaDesired) {
@@ -365,12 +359,46 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             saeM.setShortCode(metaDataRef.getShortCode());
             saeM.setValue("");
             listCodCourtConsult.add(saeM);
-            listLongCodeDesired.add(codeLong);
          }
       } catch (ReferentialException except) {
          throw new SAESearchServiceEx(ResourceMessagesUtils
                .loadMessage("search.referentiel.error"), except);
       }
+      return listCodCourtConsult;
+   }
+
+   /**
+    * Recupération des codes courts et des codes longs pour la recherche
+    * 
+    * @throws ReferentialException
+    * @throws SAESearchServiceEx
+    */
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   private List<SAEMetadata> recupererListDefaultMetadatas()
+         throws SAESearchServiceEx {
+      // si liste metadonnées désirée est vide alors recup la liste par default
+      // des métadonnées consultables
+      SAEMetadata saeM = null;
+      List<SAEMetadata> listCodCourtConsult = null;
+      try {
+         listCodCourtConsult = new ArrayList<SAEMetadata>();
+         isFromRefrentiel = true;
+         Map<String, MetadataReference> mapConsult = metaRefD
+               .getDefaultConsultableMetadataReferences();
+         // parcours de la map pour recuperer tous les codes courts des
+         // MetaDataReference
+         for (Map.Entry<String, MetadataReference> metaDataRef : mapConsult
+               .entrySet()) {
+            saeM = new SAEMetadata();
+            saeM.setLongCode(metaDataRef.getValue().getLongCode());
+            saeM.setShortCode(metaDataRef.getValue().getShortCode());
+            listCodCourtConsult.add(saeM);
+         }
+      } catch (ReferentialException except) {
+         throw new SAESearchServiceEx(ResourceMessagesUtils
+               .loadMessage("search.referentiel.error"), except);
+      }
+      return listCodCourtConsult;
    }
 
    /**
@@ -384,9 +412,12 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
     * @param listeDesiredMetadata
     *           : Liste des métadonnées souhaitées.
     * @return Une liste de type {@link StorageDocument}
-    * @throws SAESearchServiceEx: Une exception de type {@link SAESearchServiceEx}
-    * @throws QueryParseServiceEx: Une exception de type {@link QueryParseServiceEx} 
-    * @throws QueryParseServiceEx : Une exception de type {@link QueryParseServiceEx}
+    * @throws SAESearchServiceEx
+    *            : Une exception de type {@link SAESearchServiceEx}
+    * @throws QueryParseServiceEx
+    *            : Une exception de type {@link QueryParseServiceEx}
+    * @throws QueryParseServiceEx
+    *            : Une exception de type {@link QueryParseServiceEx}
     * @throws ConnectionServiceEx
     *            : Une exception de type {@link ConnectionServiceEx}
     */
@@ -411,7 +442,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                .loadMessage("search.connection.error"), except);
       } catch (SearchingServiceEx except) {
          throw new SAESearchServiceEx(except.getMessage(), except);
-      }  finally {
+      } finally {
 
          getStorageServiceProvider().closeConnexion();
 

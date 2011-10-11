@@ -25,6 +25,7 @@ import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadata
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
+import fr.urssaf.image.sae.services.util.FormatUtils;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 
@@ -56,16 +57,14 @@ public class SAEControlesCaptureServiceImpl implements
       List<MetadataError> errorsList = metadataCS
             .checkArchivableMetadata(saeDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
          throw new NotSpecifiableMetadataEx(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.interdites", codeLongErrors));
+               "capture.metadonnees.interdites",buildLongCodeError(errorsList)));
       }
       errorsList = metadataCS.checkRequiredForArchivalMetadata(saeDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
          throw new RequiredArchivableMetadataEx(ResourceMessagesUtils
                .loadMessage("capture.metadonnees.archivage.obligatoire",
-                     codeLongErrors));
+                     buildLongCodeError(errorsList)));
       }
    }
 
@@ -78,9 +77,8 @@ public class SAEControlesCaptureServiceImpl implements
       List<MetadataError> errorsList = metadataCS
             .checkRequiredForStorageMetadata(sAEDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
          LOGGER.error(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.stockage.obligatoire", codeLongErrors));
+               "capture.metadonnees.stockage.obligatoire", buildLongCodeError(errorsList)));
          throw new RequiredStorageMetadataEx(ResourceMessagesUtils
                .loadMessage("erreur.technique.capture.unitaire"));
       }
@@ -136,23 +134,20 @@ public class SAEControlesCaptureServiceImpl implements
       List<MetadataError> errorsList = metadataCS
             .checkExistingMetadata(untypedDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
          throw new UnknownMetadataEx(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.inconnu", codeLongErrors));
+               "capture.metadonnees.inconnu", buildLongCodeError(errorsList)));
       }
       errorsList = metadataCS.checkDuplicateMetadata(untypedDocument
             .getUMetadatas());
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
          throw new DuplicatedMetadataEx(ResourceMessagesUtils.loadMessage(
-               "capture.metadonnees.doublon", codeLongErrors));
+               "capture.metadonnees.doublon", buildLongCodeError(errorsList)));
       }
       errorsList = metadataCS.checkMetadataValueTypeAndFormat(untypedDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
          throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils
                .loadMessage("capture.metadonnees.format.type.non.valide",
-                     codeLongErrors));
+                     buildLongCodeError(errorsList)));
       }
    }
 
@@ -164,11 +159,12 @@ public class SAEControlesCaptureServiceImpl implements
     * @return Liste de code long à partir d'une liste de de type
     *         {@link MetadataError}
     */
-   private List<String> buildLongCodeError(List<MetadataError> errorsList) {
+   private String buildLongCodeError(List<MetadataError> errorsList) {
       List<String> codeLongErrors = new ArrayList<String>();
       for (MetadataError metadataError : Utils.nullSafeIterable(errorsList)) {
          codeLongErrors.add(metadataError.getLongCode());
       }
-      return codeLongErrors;
+      
+      return FormatUtils.formattingDisplayList(codeLongErrors);
    }
 }
