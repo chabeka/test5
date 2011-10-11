@@ -139,7 +139,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       // métadonnées et le contenu du document à archiver
       UntypedDocument untypedDocument = new UntypedDocument(fileContent,
             metadatas);
-      untypedDocument.setFilePath(ecdeFile.getAbsolutePath());
+      untypedDocument.setFilePath(ecdeFile.getName());
       return untypedDocument;
    }
    /**
