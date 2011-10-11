@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
@@ -82,9 +83,10 @@ public interface StorageDocumentService {
 	 * 
 	 * @throws SearchingServiceEx
 	 *             Exception lévée lorsque la recherche ne se déroule pas bien.
+	 * @throws QueryParseServiceEx   Exception levée lorsque du parsing de la requête.
 	 */
 	StorageDocuments searchStorageDocumentByLuceneCriteria(
-			final LuceneCriteria luceneCriteria) throws SearchingServiceEx;
+			final LuceneCriteria luceneCriteria) throws SearchingServiceEx, QueryParseServiceEx;
 
 	/**
 	 * Permet de faire une recherche de document par UUID.

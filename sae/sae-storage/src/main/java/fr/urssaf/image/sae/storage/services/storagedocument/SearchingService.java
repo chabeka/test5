@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.storage.services.storagedocument;
 
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -30,10 +31,11 @@ public interface SearchingService {
 	 * 
 	 * @throws SearchingServiceEx
 	 *             Exception lévée lorsque la recherche ne se déroule pas bien.
+	 * @throws QueryParseServiceEx Exception levée lorsque du parsing de la requête.
 	 */
 
 	StorageDocuments searchStorageDocumentByLuceneCriteria(
-			final LuceneCriteria luceneCriteria) throws SearchingServiceEx;
+			final LuceneCriteria luceneCriteria) throws SearchingServiceEx, QueryParseServiceEx;
 
 	/**
 	 * Permet de faire une recherche de document par UUID.
