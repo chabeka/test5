@@ -657,22 +657,6 @@
     <description>Information permettant de savoir si le document est autonome container ou reference</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>version.1.virtual.ref.uuid</shortCode>
-    <longCode>referenceUUID</longCode>
-    <type>String</type>
-    <requiredForArchival>false</requiredForArchival>
-    <requiredForStorage>false</requiredForStorage>
-    <length>36</length>
-    <pattern>   </pattern>
-    <consultable>true</consultable>
-    <defaultConsultable>false</defaultConsultable>
-    <searchable>true</searchable>
-    <internal>true</internal>
-    <archivable>true</archivable>
-    <label>UUID de référence</label>
-    <description>Pour un document virtuel, il s'agit de l'uuid du document container</description>
-  </metaDataReference>
-  <metaDataReference>
     <shortCode>sm_start_page</shortCode>
     <longCode>StartPage</longCode>
     <type>Integer</type>
