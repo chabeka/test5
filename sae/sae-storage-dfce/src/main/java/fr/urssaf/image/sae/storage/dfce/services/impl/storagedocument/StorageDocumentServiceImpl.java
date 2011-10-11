@@ -12,6 +12,7 @@ import fr.urssaf.image.sae.storage.dfce.annotations.FacadePattern;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServiceProvider;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
@@ -113,7 +114,7 @@ public class StorageDocumentServiceImpl extends AbstractServiceProvider
 	 */
 
 	public final StorageDocuments searchStorageDocumentByLuceneCriteria(
-			final LuceneCriteria luceneCriteria) throws SearchingServiceEx {
+			final LuceneCriteria luceneCriteria) throws SearchingServiceEx, QueryParseServiceEx {
 		searchingService.setSearchingServiceParameter(getDfceService());
 		return searchingService
 				.searchStorageDocumentByLuceneCriteria(luceneCriteria);

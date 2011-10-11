@@ -7,6 +7,7 @@ import org.junit.Test;
 import fr.urssaf.image.sae.storage.dfce.services.provider.CommonsServicesProvider;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -25,7 +26,7 @@ public class SearchDocumentByLuceneServiceProviderTest extends
    // Ici on test la recherche d'un document
    @Test
      public final void searchDocument() throws ConnectionServiceEx,
-         SearchingServiceEx, InsertionServiceEx {
+         SearchingServiceEx, InsertionServiceEx, QueryParseServiceEx {
      
       // On récupère la connexion
       getServiceProvider().openConnexion();

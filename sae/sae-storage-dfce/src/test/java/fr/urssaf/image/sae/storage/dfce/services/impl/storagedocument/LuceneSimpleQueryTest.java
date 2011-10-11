@@ -22,6 +22,7 @@ import fr.urssaf.image.sae.storage.dfce.data.model.SaeDocument;
 import fr.urssaf.image.sae.storage.dfce.mapping.DocumentForTestMapper;
 import fr.urssaf.image.sae.storage.dfce.services.StorageServices;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
@@ -37,15 +38,10 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.LuceneCr
 public class LuceneSimpleQueryTest extends StorageServices {
 	/**
 	 * Test de recherche par requête Lucene.
-	 * 
-	 * @throws SearchingServiceEx
-	 * @throws ParseException
-	 * @throws IOException
-	 * @throws InsertionServiceEx
 	 */
 	@Test
 	public void luceneQueriesWithWildcard() throws SearchingServiceEx,
-			IOException, ParseException, InsertionServiceEx {
+			IOException, ParseException, InsertionServiceEx, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("wildcard");
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {
@@ -77,17 +73,10 @@ public class LuceneSimpleQueryTest extends StorageServices {
 
 	/**
 	 * Test de recherche par requête Lucene.
-	 * 
-	 * @throws IOException
-	 *             Exception lévée
-	 * @throws ParseException
-	 *             Exception lévée
-	 * @throws InsertionServiceEx
-	 *             Exception lévée
 	 */
 	@Test
 	public void luceneQueries() throws SearchingServiceEx, InsertionServiceEx,
-			IOException, ParseException {
+			IOException, ParseException, QueryParseServiceEx {
 		final Map<String, LuceneCriteria> queries = buildQueries("simple");
 		createStorageDocument();
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {
@@ -99,15 +88,10 @@ public class LuceneSimpleQueryTest extends StorageServices {
 
 	/**
 	 * Test de recherche par requête Lucene.
-	 * 
-	 * @throws SearchingServiceEx
-	 * @throws ParseException
-	 * @throws IOException
-	 * @throws InsertionServiceEx
 	 */
 	@Test
 	public void luceneQueriesWithRange() throws SearchingServiceEx,
-			InsertionServiceEx, IOException, ParseException {
+			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("range");
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {
@@ -119,18 +103,10 @@ public class LuceneSimpleQueryTest extends StorageServices {
 
 	/**
 	 * Test de recherche par requête Lucene.
-	 * 
-	 * @throws SearchingServiceEx
-	 * @throws IOException
-	 *             Exception lévée
-	 * @throws ParseException
-	 *             Exception lévée
-	 * @throws InsertionServiceEx
-	 *             Exception lévée
 	 */
 	@Test
 	public void luceneQueriesWithOperatorAnd() throws SearchingServiceEx,
-			InsertionServiceEx, IOException, ParseException {
+			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("withOperatorAnd");
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {
@@ -142,18 +118,10 @@ public class LuceneSimpleQueryTest extends StorageServices {
 
 	/**
 	 * Test de recherche par requête Lucene avec l'opérateur OR.
-	 * 
-	 * @throws SearchingServiceEx
-	 * @throws IOException
-	 *             Exception lévée
-	 * @throws ParseException
-	 *             Exception lévée
-	 * @throws InsertionServiceEx
-	 *             Exception lévée
 	 */
 	@Test
 	public void luceneQueriesWithOperatorOr() throws SearchingServiceEx,
-			InsertionServiceEx, IOException, ParseException {
+			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("withOperatorOr");
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {
@@ -165,18 +133,10 @@ public class LuceneSimpleQueryTest extends StorageServices {
 
 	/**
 	 * Test de recherche par requête Lucene avec l'opérateur OR.
-	 * 
-	 * @throws SearchingServiceEx
-	 * @throws IOException
-	 *             Exception lévée
-	 * @throws ParseException
-	 *             Exception lévée
-	 * @throws InsertionServiceEx
-	 *             Exception lévée
 	 */
 	@Test
 	public void luceneQueriesWithOperatorAndOr() throws SearchingServiceEx,
-			InsertionServiceEx, IOException, ParseException {
+			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("withOperatorAndOr");
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {
@@ -188,16 +148,9 @@ public class LuceneSimpleQueryTest extends StorageServices {
 
 	/**
 	 * Test de recherche par requête Lucene avec l'opérateur OR.
-	 * 
-	 @throws IOException
-	 *             Exception lévée
-	 * @throws ParseException
-	 *             Exception lévée
-	 * @throws InsertionServiceEx
-	 *             Exception lévée
 	 */
 	@Test
-	public void luceneQueriesWithOperatorNot() throws SearchingServiceEx, InsertionServiceEx, IOException, ParseException {
+	public void luceneQueriesWithOperatorNot() throws SearchingServiceEx, InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("withOperatorNot");
 		for (Map.Entry<String, LuceneCriteria> query : queries.entrySet()) {

@@ -16,6 +16,7 @@ import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
 import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -97,10 +98,14 @@ public class DeletionServiceImpl extends AbstractServices implements
 					StorageMessageHandler.getMessage(Constants.DEL_CODE_ERROR),
 					numberExcept.getMessage(), numberExcept);
 		} catch (SearchingServiceEx searchingExcept) {
-			throw new DeletionServiceEx(
+			 new DeletionServiceEx(
 					StorageMessageHandler.getMessage(Constants.DEL_CODE_ERROR),
 					searchingExcept.getMessage(), searchingExcept);
-		}
+		} catch (QueryParseServiceEx searchingExcept) {
+		   throw new DeletionServiceEx(
+               StorageMessageHandler.getMessage(Constants.DEL_CODE_ERROR),
+               searchingExcept.getMessage(), searchingExcept);
+      }
 	}
 
 	 /**
