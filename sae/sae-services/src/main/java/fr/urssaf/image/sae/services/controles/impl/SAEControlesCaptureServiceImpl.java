@@ -105,7 +105,8 @@ public class SAEControlesCaptureServiceImpl implements
                "capture.hash.erreur", saeDocument.getFilePath()));
       }
       // FIXME à partie de l'algorithme calculer le hashCode.
-      if (!DigestUtils.shaHex(saeDocument.getContent()).equals(hashCodeValue.trim())) {
+      if (!DigestUtils.shaHex(saeDocument.getContent()).equals(
+            hashCodeValue.trim())) {
          throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
                "capture.hash.erreur", saeDocument.getFilePath()));
       }
@@ -139,19 +140,19 @@ public class SAEControlesCaptureServiceImpl implements
          throw new UnknownMetadataEx(ResourceMessagesUtils.loadMessage(
                "capture.metadonnees.inconnu", codeLongErrors));
       }
-      errorsList = metadataCS.checkMetadataValueTypeAndFormat(untypedDocument);
-      if (CollectionUtils.isNotEmpty(errorsList)) {
-         List<String> codeLongErrors = buildLongCodeError(errorsList);
-         throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils
-               .loadMessage("capture.metadonnees.format.type.non.valide",
-                     codeLongErrors));
-      }
       errorsList = metadataCS.checkDuplicateMetadata(untypedDocument
             .getUMetadatas());
       if (CollectionUtils.isNotEmpty(errorsList)) {
          List<String> codeLongErrors = buildLongCodeError(errorsList);
          throw new DuplicatedMetadataEx(ResourceMessagesUtils.loadMessage(
                "capture.metadonnees.doublon", codeLongErrors));
+      }
+      errorsList = metadataCS.checkMetadataValueTypeAndFormat(untypedDocument);
+      if (CollectionUtils.isNotEmpty(errorsList)) {
+         List<String> codeLongErrors = buildLongCodeError(errorsList);
+         throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils
+               .loadMessage("capture.metadonnees.format.type.non.valide",
+                     codeLongErrors));
       }
    }
 
