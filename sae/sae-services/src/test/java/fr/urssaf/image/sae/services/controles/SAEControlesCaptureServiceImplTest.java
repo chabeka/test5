@@ -146,7 +146,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
          ParseException {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
-            new UntypedMetadata("DateCreation", "DateCreation-01-01"));
+            new UntypedMetadata("Siren", ""));
       saeControlesCaptureService.checkUntypedMetadata(untypedDocument);
    }
 
