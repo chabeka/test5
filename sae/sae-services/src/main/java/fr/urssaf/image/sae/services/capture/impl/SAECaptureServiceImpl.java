@@ -16,7 +16,6 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
-import fr.urssaf.image.sae.ecde.service.EcdeFileService;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
