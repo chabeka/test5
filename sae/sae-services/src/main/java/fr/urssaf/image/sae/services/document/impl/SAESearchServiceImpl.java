@@ -39,6 +39,7 @@ import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
+import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -104,8 +105,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          // parcours de la map et remplissement d'une liste afin de verifier
          // plus tard si la liste
          // des codes courts est rechercheable : map <codeCourt, codeLong>
-         SAEMetadata saeM = new SAEMetadata();
+         SAEMetadata saeM =null;
          for (Map.Entry<String, String> e : map.entrySet()) {
+            saeM = new SAEMetadata();
             requeteVerif = requeteVerif.replace(e.getKey(), e.getValue());
             saeM.setLongCode(e.getValue());
             saeM.setShortCode(e.getKey());
@@ -137,6 +139,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
       } catch (MappingFromReferentialException except) {
          throw new SAESearchServiceEx(ResourceMessagesUtils
                .loadMessage("search.mapping.error"), except);
+      }catch (QueryParseServiceEx except) {
+         throw new SyntaxLuceneEx(ResourceMessagesUtils
+               .loadMessage("search.syntax.lucene.error"), except);
       }
       return listUntypedDocument;
    }
@@ -379,15 +384,15 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
     * @param listeDesiredMetadata
     *           : Liste des métadonnées souhaitées.
     * @return Une liste de type {@link StorageDocument}
-    * @throws SAESearchServiceEx
-    * @throws SearchingServiceEx
-    *            : Une exception de type {@link SearchingServiceEx}
+    * @throws SAESearchServiceEx: Une exception de type {@link SAESearchServiceEx}
+    * @throws QueryParseServiceEx: Une exception de type {@link QueryParseServiceEx} 
+    * @throws QueryParseServiceEx : Une exception de type {@link QueryParseServiceEx}
     * @throws ConnectionServiceEx
     *            : Une exception de type {@link ConnectionServiceEx}
     */
    private List<StorageDocument> searchStorageDocuments(String luceneQuery,
          int maxResult, List<SAEMetadata> listeDesiredMetadata)
-         throws SAESearchServiceEx {
+         throws SAESearchServiceEx, QueryParseServiceEx {
 
       List<StorageDocument> allStorageDocuments = null;
       try {
@@ -406,7 +411,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                .loadMessage("search.connection.error"), except);
       } catch (SearchingServiceEx except) {
          throw new SAESearchServiceEx(except.getMessage(), except);
-      } finally {
+      }  finally {
 
          getStorageServiceProvider().closeConnexion();
 
