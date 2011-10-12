@@ -40,6 +40,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithWildcard() throws SearchingServiceEx,
 			IOException, ParseException, InsertionServiceEx, QueryParseServiceEx {
 		createStorageDocument();
@@ -75,6 +76,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueries() throws SearchingServiceEx, InsertionServiceEx,
 			IOException, ParseException, QueryParseServiceEx {
 		final Map<String, LuceneCriteria> queries = buildQueries("simple");
@@ -90,6 +92,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithRange() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
