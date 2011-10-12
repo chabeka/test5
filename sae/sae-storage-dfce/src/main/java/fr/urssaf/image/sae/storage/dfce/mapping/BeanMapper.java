@@ -226,6 +226,7 @@ public final class BeanMapper {
 				.createDocumentTag(baseDFCE);
 		for (StorageMetadata storageMetadata : Utils
 				.nullSafeIterable(storageDocument.getMetadatas())) {
+		   
 			// ici on exclut toutes les métadonnées techniques
 			if (!StringUtils.isEmpty(storageMetadata.getShortCode())
 					&& storageMetadata.getValue() != null) {
@@ -272,7 +273,7 @@ public final class BeanMapper {
 				// catégories.
 				case NOVALUE:
 					baseCategory = baseDFCE.getBaseCategory(storageMetadata
-							.getShortCode());
+							.getShortCode().trim());
 					document.addCriterion(baseCategory,
 							storageMetadata.getValue());
 					break;
