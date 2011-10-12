@@ -48,6 +48,7 @@ public class BulkCaptureJobWrapper implements Runnable {
       // Appeler le service ECDE de récupération du sommaire.xml à partir de
       // l'URL
       try {
+   	  
          URI ecdeUri = new URI(ecdeUrl);
          Sommaire sommaireEcde = ecdeServices.fetchSommaireByUri(ecdeUri);
          // Début traitement par BOB
