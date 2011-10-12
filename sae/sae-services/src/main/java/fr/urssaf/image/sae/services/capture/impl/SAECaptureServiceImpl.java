@@ -176,9 +176,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          throw new SAECaptureServiceEx(e);
       } catch (InsertionServiceEx e) {
          throw new SAECaptureServiceEx(e);
-      } finally {
-         serviceProvider.closeConnexion();
-      }
+      } 
       return uuid;
    }
 }

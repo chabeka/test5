@@ -112,11 +112,7 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
             throw new SAEConsultationServiceException(e);
 
-         } finally {
-
-            this.getStorageServiceProvider().closeConnexion();
-         }
-
+         } 
       } catch (ConnectionServiceEx e) {
 
          throw new SAEConsultationServiceException(e);

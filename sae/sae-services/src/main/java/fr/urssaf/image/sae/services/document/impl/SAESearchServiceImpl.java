@@ -442,11 +442,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                .loadMessage("search.connection.error"), except);
       } catch (SearchingServiceEx except) {
          throw new SAESearchServiceEx(except.getMessage(), except);
-      } finally {
-
-         getStorageServiceProvider().closeConnexion();
-
-      }
+      } 
       return allStorageDocuments;
    }
 }
