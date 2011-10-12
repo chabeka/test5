@@ -23,10 +23,10 @@ public class FormatUtils {
       int i = 0;
       for (String value : Utils.nullSafeIterable(listCodeErrors)) {
          builder.append(value);
-         i++;
          if (i < listCodeErrors.size() - 1) {
             builder.append(", ");
          }
+         i++;
       }
       return builder.toString();
 
