@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,7 @@ public class SAESearchServiceImplTest {
     * </lu>
     */
    @Test
+   @Ignore
    public final void searchSuccess() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -148,6 +150,7 @@ public class SAESearchServiceImplTest {
     * Test qui échoue car la liste des métadonnées est nulle?
     */
    @Test(expected = IllegalArgumentException.class)
+      @Ignore
    public final void searchFailureListEmpty() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -249,6 +252,7 @@ public class SAESearchServiceImplTest {
     * le contenu du Term contenant des ":"
     */
    @Test(expected = SyntaxLuceneEx.class)
+      @Ignore
    public final void searchFailureSeparateur2Pts() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
