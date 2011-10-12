@@ -34,6 +34,7 @@ import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.impl.factory.ObjectStorageResponseFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
+import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
 /**
  * Implémentation de {@link WSCaptureService}<br>
@@ -45,6 +46,8 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
    @Autowired
    private SAECaptureService captureService;
+   @Autowired
+   @Qualifier("saeBulkCaptureService")
    private SAEBulkCaptureService saeBulkCaptureService;
 
    /**
@@ -59,7 +62,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       if (request.getArchivageUnitaire().getMetadonnees().getMetadonnee() == null) {
 
          throw new CaptureAxisFault("CaptureMetadonneesVide",
-               "La liste des métadonnées est vide.");
+        		 MessageRessourcesUtils.recupererMessage("ws.capture.metadata.is.empty", null));
       }
 
       ArchivageUnitaireResponse response;
@@ -97,7 +100,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       } catch (SAECaptureServiceEx e) {
          throw new CaptureAxisFault(
                "ErreurInterneCapture",
-               "Une erreur interne à l'application est survenue lors de la capture.",
+               MessageRessourcesUtils.recupererMessage("ws.capture.error", null),
                e);
 
       } catch (RequiredStorageMetadataEx e) {
@@ -136,7 +139,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       } catch (ReferentialRndException e) {
 
          throw new CaptureAxisFault("ErreurInterne",
-               "Erreur interne à l'application est survenue.", e);
+        		 MessageRessourcesUtils.recupererMessage("ws.capture.error", null), e);
 
       } catch (UnknownCodeRndEx e) {
 
@@ -146,7 +149,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
          throw new CaptureAxisFault(
                "ErreurInterneCapture",
-               "Une erreur interne à l'application est survenue dans la capture.",
+               MessageRessourcesUtils.recupererMessage("ws.capture.error", null),
                e);
       } catch (UnknownHashCodeEx e) {
          throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);

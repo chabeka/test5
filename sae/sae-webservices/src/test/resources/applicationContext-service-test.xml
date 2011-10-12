@@ -8,9 +8,13 @@
       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
    <import resource="applicationContext-service.xml" />
-
+	<bean id="saeServiceProvider"
+      class="fr.urssaf.image.sae.webservices.service.SAEServiceProviderImpl">
+   </bean>
 
    <bean id="saeCaptureService" factory-bean="SAEServiceFactory"
       factory-method="createSAECaptureService" />
-
+      
+ 	<bean id="saeBulkCaptureService" factory-bean="SAEServiceFactory"
+      factory-method="createSAEBulkCaptureService" />
 </beans>
