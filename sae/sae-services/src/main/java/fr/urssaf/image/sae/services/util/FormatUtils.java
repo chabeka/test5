@@ -32,7 +32,7 @@ public class FormatUtils {
 
    }
 
-   /** Cette classe n'est pas con�ue pour �tre instanci�e. */
+   /** Cette classe n'est pas concue pour être instanciée. */
    private FormatUtils() {
       assert false;
    }
