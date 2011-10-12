@@ -9,7 +9,9 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -30,6 +32,22 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
 
    // pour la creation d'un object JAXBElement resultatsType
    private static ObjectFactory object = new ObjectFactory();
+   @Autowired
+   private ApplicationContext context;
+   /**
+    * @return Le context.
+    */
+   public final ApplicationContext getContext() {
+      return context;
+   }
+
+   /**
+    * @param context
+    *           . Le context Spring.
+    */
+   public final void setContext(ApplicationContext context) {
+      this.context = context;
+   }
    /**
     * Methode permettant l'ecriture du fichier resultats.xml
     * 
@@ -40,7 +58,7 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
    @Override
    public final void writeResultatsXml(ResultatsType resultatsXml, OutputStream output) throws EcdeXsdException {
       try {
-         ClassPathResource classPath = new ClassPathResource("xsd_som_res/resultats.xsd");
+         final Resource classPath = getContext().getResource("classpath:xsd_som_res/resultats.xsd");
          URL xsdSchema = classPath.getURL();
          JAXBElement<ResultatsType> resultats = object.createResultats(resultatsXml);
          

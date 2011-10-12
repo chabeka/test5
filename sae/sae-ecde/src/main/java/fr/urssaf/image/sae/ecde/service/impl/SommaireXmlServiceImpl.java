@@ -8,8 +8,10 @@ import java.net.URL;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -31,7 +33,22 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
 @Service
 @Qualifier("somXmlService")
 public class SommaireXmlServiceImpl implements SommaireXmlService {
+	   @Autowired
+	   private ApplicationContext context;
+	   /**
+	    * @return Le context.
+	    */
+	   public final ApplicationContext getContext() {
+	      return context;
+	   }
 
+	   /**
+	    * @param context
+	    *           . Le context Spring.
+	    */
+	   public final void setContext(ApplicationContext context) {
+	      this.context = context;
+	   }
    /**
     * Methode permettant la lecture du fichier sommaire.xml
     * <br>avec en entree un flux
@@ -45,10 +62,10 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
    public final SommaireType readSommaireXml(InputStream input) throws EcdeXsdException {
       
       try {
-         Class<SommaireType> docClass = SommaireType.class;
-         ClassPathResource classPath = new ClassPathResource("xsd_som_res/sommaire.xsd");
+         final Resource classPath = getContext().getResource("classpath:xsd_som_res/sommaire.xsd");
+//         ClassPathResource classPath = new ClassPathResource("xsd_som_res/sommaire.xsd");
          URL xsdSchema = classPath.getURL();
-         return JAXBUtils.unmarshal(docClass, input, xsdSchema);
+         return JAXBUtils.unmarshal( input, xsdSchema);
       } catch (JAXBException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "sommaire.xml"), e);
       } catch (SAXException e) {

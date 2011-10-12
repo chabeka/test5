@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 
 
 
+import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ObjectFactory;
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
 /**
  * Cette classe permet de pratiquer le marshalling et le unmarshalling
@@ -42,12 +43,12 @@ public final class JAXBUtils {
                                     URL xsdSchema) throws JAXBException, SAXException {
       
       // Création des objets nécessaires
-      JAXBContext context = JAXBContext.newInstance(rootElement.getDeclaredType().getPackage().getName());
+      JAXBContext context = JAXBContext.newInstance(new Class[] { fr.urssaf.image.sae.ecde.modele.resultats.ObjectFactory.class });
       Marshaller marshaller = context.createMarshaller();
       
       // Option pour indenter le XML en sortie
       marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-      marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new JAXBNamespaceMapper());
+    //  marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new JAXBNamespaceMapper());
       
       // Affectation du schéma XSD si spécifié
       if (xsdSchema!=null) {
@@ -60,7 +61,6 @@ public final class JAXBUtils {
    }
    /**
     * Méthode générique d'unmarshalling avec JAXB
-    * @param docClass la classe de l'élément racine 
     * @param input le flux depuis lequel lire le XML
     * @param xsdSchema le schéma XSD. Peut être null
     * @return l'élément racine
@@ -68,13 +68,12 @@ public final class JAXBUtils {
     * @throws SAXException en cas d'exception levée par le parser SAX
     */
    @SuppressWarnings("unchecked")
-   public static SommaireType unmarshal( Class<SommaireType> docClass,
-                                  InputStream input,
+   public static SommaireType unmarshal(InputStream input,
                                   URL xsdSchema) throws JAXBException, SAXException {
       
       // Création des objets nécessaires
-      String packageName = docClass.getPackage().getName();
-      JAXBContext context = JAXBContext.newInstance(packageName);
+      //String packageName = docClass.getPackage().getName();
+      JAXBContext context = JAXBContext.newInstance(new Class[] { fr.urssaf.image.sae.ecde.modele.sommaire.ObjectFactory.class });
       Unmarshaller unmarshaller = context.createUnmarshaller();
       
       // Affectation du schéma XSD si spécifié
