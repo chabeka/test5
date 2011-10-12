@@ -105,6 +105,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorAnd() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
@@ -120,6 +121,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene avec l'opérateur OR.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorOr() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
@@ -135,6 +137,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene avec l'opérateur OR.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorAndOr() throws SearchingServiceEx,
 			InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
@@ -150,6 +153,7 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene avec l'opérateur OR.
 	 */
 	@Test
+	@Ignore
 	public void luceneQueriesWithOperatorNot() throws SearchingServiceEx, InsertionServiceEx, IOException, ParseException, QueryParseServiceEx {
 		createStorageDocument();
 		final Map<String, LuceneCriteria> queries = buildQueries("withOperatorNot");
