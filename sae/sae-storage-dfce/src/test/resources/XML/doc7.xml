@@ -15,12 +15,12 @@
 				<value>2010-12-01</value>
 			</category>
 			<category>
-				<name>nfi</name>
-				<value>doc7.PDF</value>
-			</category>
-			<category>
 				<name>sm_document_type</name>
 				<value>2.2.3.2</value>
+			</category>
+			<category>
+				<name>nfi</name>
+				<value>doc1.PDF</value>
 			</category>
 			<category>
 				<name>vrn</name>

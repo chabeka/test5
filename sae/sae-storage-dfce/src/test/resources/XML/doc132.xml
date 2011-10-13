@@ -19,12 +19,12 @@
 				<value>2.2.3.2.2</value>
 			</category>
 			<category>
-				<name>nfi</name>
-				<value>doc132.PDF</value>
-			</category>
-			<category>
 				<name>vrn</name>
 				<value>11.1</value>
+			</category>
+			<category>
+				<name>nfi</name>
+				<value>doc1.PDF</value>
 			</category>
 			<category>
 				<name>sm_life_cycle_reference_date</name>

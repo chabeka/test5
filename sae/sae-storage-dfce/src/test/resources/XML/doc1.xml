@@ -14,10 +14,7 @@
 				<name>nfi</name>
 				<value>doc1.PDF</value>
 			</category>
-			<category>
-				<name>gel</name>
-				<value>true</value>
-			</category>
+		
 			<category>
 				<name>sm_document_type</name>
 				<value>2.3.1.1.12</value>
@@ -67,10 +64,6 @@
 			<category>
 				<name>ffi</name>
 				<value>fmt/18</value>
-			</category>
-			<category>
-				<name>sm_size</name>
-				<value>56587</value>
 			</category>
 			<category>
 				<name>nbp</name>

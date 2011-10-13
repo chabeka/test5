@@ -11,11 +11,6 @@
 				<value>NOTIFICATIONS DE REMBOURSEMENT du 41882050200023ECHEANCIER DE COTISATIONS du 53097842800015</value>
 			</category>
 			<category>
-				<name>nfi</name>
-				<value>doc11.PDF</value>
-			</category>
-			
-			<category>
 				<name>sm_document_type</name>
 				<value>2.2.3.2.1</value>
 			</category>
@@ -26,6 +21,10 @@
 			<category>
 				<name>sm_life_cycle_reference_date</name>
 				<value>2011-12-01</value>
+			</category>
+			<category>
+				<name>nfi</name>
+				<value>doc1.PDF</value>
 			</category>
 			<category>
 				<name>itm</name>
@@ -59,10 +58,6 @@
 			<category>
 				<name>ffi</name>
 				<value>fmt/18</value>
-			</category>
-			<category>
-				<name>sm_size</name>
-				<value>56587</value>
 			</category>
 			<category>
 				<name>nbp</name>
