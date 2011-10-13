@@ -67,8 +67,6 @@ public class RetrievalServiceTest extends StorageServices {
 		final StorageDocument document = getMockData(getInsertionService());
 		final UUIDCriteria uuidCriteria = new UUIDCriteria(document.getUuid(),
 				new ArrayList<StorageMetadata>());
-		
-
 		Assert.assertNotNull(
 				"Récupération d'un StorageDocument par uuid :",
 				getRetrievalService().retrieveStorageDocumentByUUID(

@@ -159,7 +159,7 @@ public class InsertionServiceImpl extends AbstractServices implements
          docDfce = getDfceService().getStoreService().storeDocument(docDfce,
                file[0], file[1], docContent);
          return BeanMapper.dfceDocumentToStorageDocument(docDfce, null,
-               getDfceService());
+               getDfceService(), false);
       } catch (TagControlException tagCtrlEx) {
          throw new InsertionServiceEx(StorageMessageHandler
                .getMessage(Constants.INS_CODE_ERROR), tagCtrlEx.getMessage(),

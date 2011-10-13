@@ -58,7 +58,7 @@ public class SearchingServiceImpl extends AbstractServices implements
 
             storageDocuments.add(BeanMapper.dfceDocumentToStorageDocument(
                   document, luceneCriteria.getDesiredStorageMetadatas(),
-                  getDfceService()));
+                  getDfceService(), false));
          }
       }catch (SearchQueryParseException except) {
          throw new QueryParseServiceEx(StorageMessageHandler
@@ -100,7 +100,7 @@ public class SearchingServiceImpl extends AbstractServices implements
 
          if (docDfce != null) {
             storageDoc = BeanMapper.dfceDocumentToStorageDocument(docDfce,
-                  uUIDCriteria.getDesiredStorageMetadatas(), getDfceService());
+                  uUIDCriteria.getDesiredStorageMetadatas(), getDfceService(), true);
          }
 
          return storageDoc;
