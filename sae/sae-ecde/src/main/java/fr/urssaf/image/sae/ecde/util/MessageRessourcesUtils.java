@@ -2,9 +2,9 @@ package fr.urssaf.image.sae.ecde.util;
 
 import java.util.Locale;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import fr.urssaf.image.sae.ecde.context.EcdeApplicationContext;
 
 
 /**
@@ -17,13 +17,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public final class MessageRessourcesUtils {
 
-   private MessageRessourcesUtils() {
-   }
-   // Recupération du contexte pour les fichiers properties
-   // private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde.xml");
-   private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext-sae-ecde-messages.xml");
    
-   private static final MessageSource MESSAGESOURCES = (MessageSource) CONTEXT.getBean("messageSource_sae_ecde");
+   private static final MessageSource MESSAGESOURCES;
+
+	static {
+		// Récupération du contexte pour les fichiers properties
+		MESSAGESOURCES = EcdeApplicationContext.getApplicationContext().getBean("messageSource_sae_ecde", MessageSource.class);
+	}
 
    private static final String NONRENSEIGNE = "ecdeFileAttributNonRenseigne";
    /**
@@ -57,5 +57,7 @@ public final class MessageRessourcesUtils {
     */
    public static String recupMessageNonRenseigneException(String valeur, int curseur) {
       return MESSAGESOURCES.getMessage(NONRENSEIGNE, new Object[] {valeur, curseur}, Locale.getDefault());
+   }
+   private MessageRessourcesUtils() {
    }
 }
