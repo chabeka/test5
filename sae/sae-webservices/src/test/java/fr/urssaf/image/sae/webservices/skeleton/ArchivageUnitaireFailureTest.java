@@ -187,7 +187,7 @@ public class ArchivageUnitaireFailureTest {
 
       } catch (AxisFault axisFault) {
 
-         assertAxisFault(axisFault, "CaptureMetaDonneesInconnu");
+         assertAxisFault(axisFault, "CaptureMetadonneesInconnu");
       }
    }
 

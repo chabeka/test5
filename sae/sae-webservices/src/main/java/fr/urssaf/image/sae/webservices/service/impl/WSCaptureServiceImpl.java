@@ -114,7 +114,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
       } catch (UnknownMetadataEx e) {
 
-         throw new CaptureAxisFault("CaptureMetaDonneesInconnu",
+         throw new CaptureAxisFault("CaptureMetadonneesInconnu",
                e.getMessage(), e);
 
       } catch (DuplicatedMetadataEx e) {
