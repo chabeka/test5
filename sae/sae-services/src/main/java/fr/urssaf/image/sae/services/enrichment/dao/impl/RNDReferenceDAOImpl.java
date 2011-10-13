@@ -17,15 +17,17 @@ import fr.urssaf.image.sae.services.enrichment.xml.services.XmlRndDataService;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
+
 /**
  * Classe représentant le DAO du référentiel des codes RND.
+ * 
  * @author Rhofir
- *
+ * 
  */
 @Service
 @Qualifier("rndReferenceDAO")
 public class RNDReferenceDAOImpl implements RNDReferenceDAO {
-   private static final String CODE_RND_INTERDIT = "capture.code.rnd.interdit"; //NOPDM
+   private static final String CODE_RND_INTERDIT = "capture.code.rnd.interdit"; // NOPDM
 
    @Autowired
    @Qualifier("xmlRndDataService")
@@ -33,6 +35,8 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
 
    @Autowired
    private ApplicationContext context;
+
+   private static Map<String, TypeDocument> ALL_RNDS;
 
    /**
     * @return Le service Xml.
@@ -74,9 +78,16 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
    @Override
    public final Map<String, TypeDocument> getAllRndCodes()
          throws ReferentialRndException {
-      final Resource referentiel = getContext().getResource("classpath:xml/RCND.xml");
+      final Resource referentiel = getContext().getResource(
+            "classpath:xml/RCND.xml");
       try {
-         return xmlDataService.rndReferenceReader(referentiel.getInputStream());
+         synchronized (this) {
+            if (ALL_RNDS == null) {
+               ALL_RNDS = xmlDataService.rndReferenceReader(referentiel
+                     .getInputStream());
+            }
+            return ALL_RNDS;
+         }
 
       } catch (IOException e) {
          throw new ReferentialRndException(MetadataMessageHandler.getMessage(
@@ -91,8 +102,7 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
          throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
-               CODE_RND_INTERDIT,
-               codeRnd));
+               CODE_RND_INTERDIT, codeRnd));
       }
       activityCode = typeDoc.getActivityCode();
       if (StringUtils.isEmpty(activityCode)) {
@@ -101,29 +111,31 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       }
       return activityCode;
    }
+
    @Override
-   public final TypeDocument getTypeDocument(String codeRnd)  
+   public final TypeDocument getTypeDocument(String codeRnd)
          throws ReferentialRndException, UnknownCodeRndEx {
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(CODE_RND_INTERDIT,
-               codeRnd));
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
+               CODE_RND_INTERDIT, codeRnd));
       }
       return typeDoc;
    }
+
    @Override
    public final String getFonctionCodeByRnd(String codeRnd)
          throws ReferentialRndException, UnknownCodeRndEx {
       String fonctionCode = StringUtils.EMPTY;
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(CODE_RND_INTERDIT,
-               codeRnd));
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
+               CODE_RND_INTERDIT, codeRnd));
       }
       fonctionCode = typeDoc.getFonctionCode();
       if (StringUtils.isEmpty(fonctionCode)) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.code.fonction.nonvalide",
-               codeRnd));
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
+               "capture.code.fonction.nonvalide", codeRnd));
       }
       return fonctionCode;
    }
@@ -134,13 +146,13 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
       int storageDuration = -1;
       TypeDocument typeDoc = getAllRndCodes().get(codeRnd);
       if (typeDoc == null) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(CODE_RND_INTERDIT,
-               codeRnd));
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
+               CODE_RND_INTERDIT, codeRnd));
       }
       storageDuration = typeDoc.getStorageDuration();
       if (storageDuration == -1) {
-         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage("capture.dureeconservation.nonvalide",
-               codeRnd));
+         throw new UnknownCodeRndEx(ResourceMessagesUtils.loadMessage(
+               "capture.dureeconservation.nonvalide", codeRnd));
       }
       return storageDuration;
    }
