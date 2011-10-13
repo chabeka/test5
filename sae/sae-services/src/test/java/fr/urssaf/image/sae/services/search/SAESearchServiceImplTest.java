@@ -85,6 +85,7 @@ public class SAESearchServiceImplTest {
     * opérateurs : AND OR Combinaisons des AND et OR [date1 to date2]
     */
    @Test
+   @Ignore
    public final void searchSuccessOR() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -107,6 +108,7 @@ public class SAESearchServiceImplTest {
     * {@link fr.urssaf.image.sae.services.document.SAESearchService#search(SAELuceneCriteria)
     */
    @Test
+   @Ignore
    public final void searchSuccessDate() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -150,7 +152,7 @@ public class SAESearchServiceImplTest {
     * Test qui échoue car la liste des métadonnées est nulle?
     */
    @Test(expected = IllegalArgumentException.class)
-      @Ignore
+   @Ignore
    public final void searchFailureListEmpty() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -189,6 +191,7 @@ public class SAESearchServiceImplTest {
     * recherche
     */
    @Test(expected = MetaDataUnauthorizedToSearchEx.class)
+   @Ignore
    public final void searchFailureReqNonConsult() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -231,6 +234,7 @@ public class SAESearchServiceImplTest {
     * code court non existante
     */
    @Test(expected = UnknownLuceneMetadataEx.class)
+   @Ignore
    public final void searchFailureNoExists() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -252,7 +256,7 @@ public class SAESearchServiceImplTest {
     * le contenu du Term contenant des ":"
     */
    @Test(expected = SyntaxLuceneEx.class)
-      @Ignore
+     @Ignore
    public final void searchFailureSeparateur2Pts() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {

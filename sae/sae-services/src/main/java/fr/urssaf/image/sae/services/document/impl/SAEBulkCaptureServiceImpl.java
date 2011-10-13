@@ -46,9 +46,7 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 	public final void bulkCapture(String urlEcde) {
 		BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(urlEcde,
 				ecdeServices, bulkCaptureJob);
-		
 		taskExecutor.execute(bulkWrapper);
-		taskExecutor.shutdown();
 
 	}
 
