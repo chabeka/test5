@@ -17,18 +17,6 @@
          <organization>Atos</organization>
       </developer>
    </developers>
-
-   <build>
-      <plugins>
-         <!-- COMPILATION ASPECT -->
-         <plugin>
-            <inherited>true</inherited>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>aspectj-maven-plugin</artifactId>
-         </plugin>
-
-      </plugins>
-   </build>
    <dependencies>
       <!-- SAE BO -->
       <dependency>
@@ -106,4 +94,5 @@
       </dependency>
 
    </dependencies>
+   
 </project>
