@@ -10,6 +10,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,7 @@ public class RechercheFailureTest {
     * @throws MetaDataUnauthorizedToSearchEx 
     */
    @Test
+   @Ignore
    public void searchFailureReqVide() throws SAESearchServiceEx, 
                                              MetaDataUnauthorizedToSearchEx, 
                                              MetaDataUnauthorizedToConsultEx, 
