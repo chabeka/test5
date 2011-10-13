@@ -451,7 +451,7 @@
   <metaDataReference>
     <shortCode>dfc</shortCode>
     <longCode>DateFinConservation</longCode>
-    <type>date</type>
+    <type>Date</type>
     <requiredForArchival>false</requiredForArchival>
     <requiredForStorage>false</requiredForStorage>
     <length>10</length>
