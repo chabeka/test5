@@ -131,7 +131,7 @@ public class SAEEnrichmentMetadataServiceImpl implements
          metadata = SAEMetatadaFinderUtils
                .metadtaFinder(metadata.getLongCode());
          switch (metadata) {
-         case CODE_ACTIVITE:
+         case CODE_ACTIVITE:   
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
                   SAEArchivalMetadatas.CODE_ACTIVITE.getLongCode())
                   .getShortCode());
@@ -149,9 +149,8 @@ public class SAEEnrichmentMetadataServiceImpl implements
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
                   SAEArchivalMetadatas.DATE_FIN_CONSERVATION.getLongCode())
                   .getShortCode());
-            saeMetadata.setValue(Utils
-                  .dateToString(DateUtils.addDays(new Date(), rndReferenceDAO
-                        .getStorageDurationByRnd(rndCode))));
+            saeMetadata.setValue(DateUtils.addDays(new Date(), rndReferenceDAO
+                        .getStorageDurationByRnd(rndCode)));
             saeDocument.getMetadatas().add(saeMetadata);
             break;
          case NOM_FICHIER:
