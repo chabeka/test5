@@ -2,11 +2,7 @@
    <query>
       <queryType>listNonConsult</queryType>
       <luceneQuery>Titre:"NOTIFICATIONS DE REMBOURSEMENT du
-         41882050200023"</luceneQuery>
-      <metadata>
-         <code>DateModification</code>
-         <value>10</value>
-      </metadata>
+         41882050200023"</luceneQuery>     
    </query>
    <query>
       <queryType>listEmpty</queryType>
