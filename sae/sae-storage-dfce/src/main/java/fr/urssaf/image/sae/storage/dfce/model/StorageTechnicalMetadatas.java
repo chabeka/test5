@@ -18,7 +18,7 @@ public enum StorageTechnicalMetadatas {
 	// Le type du document c'est à dire le code RND
 	TYPE("CodeRND", FieldName.SM_DOCUMENT_TYPE.toString()),
 	// Durée de conservation
-	DUREE_CONSERVATION("DureeConservation","lifeCycleLength"),
+	DUREE_CONSERVATION("DureeConservation","dco"),
 	// Date de début de conservation 
 	DATE_DEBUT_CONSERVATION("DateDebutConservation",
 			FieldName.SM_LIFE_CYCLE_REFERENCE_DATE.toString()),
