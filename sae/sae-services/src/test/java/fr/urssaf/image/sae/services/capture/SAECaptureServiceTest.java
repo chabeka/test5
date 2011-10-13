@@ -154,7 +154,6 @@ public class SAECaptureServiceTest {
 
       uuid = service.capture(metadatas, urlEcdeDocument);
       LOG.debug("document archivé dans DFCE:" + uuid);
-
       StorageDocument doc = testProvider.searchDocument(uuid);
 
       Assert.assertNotNull("l'UUID '" + uuid + "' doit exister dans le SAE",

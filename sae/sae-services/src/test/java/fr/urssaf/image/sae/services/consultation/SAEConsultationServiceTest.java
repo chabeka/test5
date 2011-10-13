@@ -29,7 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
-import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
@@ -39,8 +38,6 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class SAEConsultationServiceTest {
-   @Autowired
-   private EcdeTestTools ecdeTestTools;
 
    private static final Logger LOG = Logger
          .getLogger(SAEConsultationServiceTest.class);
@@ -100,7 +97,6 @@ public class SAEConsultationServiceTest {
       metadatas
             .add(new StorageMetadata("sm_title", "Attestation de vigilance"));
       metadatas.add(new StorageMetadata("nfi", "attestation_consultation.pdf"));
-      metadatas.add(new StorageMetadata("sm_extension", "PDF"));
       metadatas.add(new StorageMetadata("sm_creation_date", DateUtils
             .parseDate("2012-01-01", parsePatterns)));
       metadatas.add(new StorageMetadata("dfc", DateUtils.parseDate(
