@@ -417,7 +417,7 @@
     <description>Code de l'activité RFP</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>DCO</shortCode>
+    <shortCode>dco</shortCode>
     <longCode>DureeConservation</longCode>
     <type>Integer</type>
     <requiredForArchival>false</requiredForArchival>
