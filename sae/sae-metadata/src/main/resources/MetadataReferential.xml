@@ -209,7 +209,7 @@
     <description>Numéro de structure V2</description>
   </metaDataReference>
   <metaDataReference>
-    <shortCode>nre </shortCode>
+    <shortCode>nre</shortCode>
     <longCode>NumeroRecours</longCode>
     <type>String</type>
     <requiredForArchival>false</requiredForArchival>
