@@ -73,14 +73,8 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
    @Qualifier("mappingDocumentService")
    private MappingDocumentService mappingDocumentService;
 
-   private boolean checkLuceneQuery = false; // pour la verification
-   private boolean isFromRefrentiel = false; // pour savoir si la valeur vient
    // du referentiel
    private static final String SPLIT = "(\\w+)\\s*[:>]";
-
-   // private final List<String> listLongCodeDesired = new ArrayList<String>();
-   // private List<SAEMetadata> listCodCourtConsult = new
-   // ArrayList<SAEMetadata>();
 
    /**
     * {@inheritDoc}
@@ -89,6 +83,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
          List<String> listMetaDesired) throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
+	   boolean isFromRefrentiel = false;
       // liste de résultats à envoyer
       List<UntypedDocument> listUntypedDocument = new ArrayList<UntypedDocument>();
       // conversion code court
@@ -117,12 +112,12 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             // listCodCourt.add(new SAEMetadata(e.getValue(), e.getKey()));
             listCodCourt.add(saeM);
          }
-         checkConversion(requete, requeteVerif);
-         if (checkLuceneQuery) {
+         if (checkConversion(requete, requeteVerif)) {
             checkExistingMetadataDesired(listMetaDesired);
             checkSearchableLuceneMetadata(listCodCourt);
             if (listMetaDesired.isEmpty()) {
                listCodCourtConsult = recupererListDefaultMetadatas();
+               isFromRefrentiel = true;
             }else
             {
                listCodCourtConsult = recupererListCodCourtByLongCode(listMetaDesired) ;
@@ -139,6 +134,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                      .storageDocumentToUntypedDocument(storageDocument));
             }
          }
+         
       } catch (NumberFormatException except) {
          throw new SAESearchServiceEx(ResourceMessagesUtils
                .loadMessage("max.lucene.results.required"), except);
@@ -184,16 +180,18 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
     * 
     * @throws SAESearchServiceEx
     */
-   private void checkConversion(String requete, String requeteVerif)
+   private boolean checkConversion(String requete, String requeteVerif)
          throws SAESearchServiceEx {
       // la requete verif ainsi remplacée doit être la même que la requête de
       // départ.
+	   boolean checkLuceneQuery = false;
       if (requete.equals(requeteVerif)) {
-         checkLuceneQuery = true;
+        checkLuceneQuery = true;
       }
       if (!checkLuceneQuery) {
          throw new SAESearchServiceEx("search.analyse.lucene.error");
       }
+      return checkLuceneQuery;
    }
 
    /**
@@ -382,7 +380,6 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
       List<SAEMetadata> listCodCourtConsult = null;
       try {
          listCodCourtConsult = new ArrayList<SAEMetadata>();
-         isFromRefrentiel = true;
          Map<String, MetadataReference> mapConsult = metaRefD
                .getDefaultConsultableMetadataReferences();
          // parcours de la map pour recuperer tous les codes courts des
