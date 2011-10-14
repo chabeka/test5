@@ -126,7 +126,7 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                   isFromRefrentiel);
             List<StorageDocument> listStorageDocument = searchStorageDocuments(
                   requeteFinal, Integer.parseInt(ServiceMessageHandler
-                        .getMessage("max.lucene.results")),
+                        .getMessage("max.lucene.results") +1),
                   listCodCourtConsult);
             for (StorageDocument storageDocument : Utils
                   .nullSafeIterable(listStorageDocument)) {
