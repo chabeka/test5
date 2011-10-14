@@ -58,7 +58,7 @@ public class WSRechercheServiceImpl implements WSRechercheService {
          List<String> listMDDesired = recupererListMDDesired(recupererListMDSearch(request));
          List<UntypedDocument> untypedDocuments = documentService.search(
                requeteLucene, listMDDesired);
-         if (untypedDocuments.size() >= maxResult + 1) {
+         if (untypedDocuments.size() > maxResult) {
             resultatTronque = true;
          }
          response = createRechercheResponse(untypedDocuments, resultatTronque);
