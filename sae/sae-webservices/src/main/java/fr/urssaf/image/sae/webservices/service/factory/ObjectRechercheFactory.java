@@ -60,33 +60,38 @@ public final class ObjectRechercheFactory {
       response.setRechercheResponse(responseType);
 
       ListeResultatRechercheType resultatsType = new ListeResultatRechercheType();
-
+      untypedDocuments.size();
       if (CollectionUtils.isNotEmpty(untypedDocuments)) {
-
-         for (UntypedDocument storageDocument : untypedDocuments) {
-
-            ResultatRechercheType resultatRecherche = ObjectTypeFactory
-                  .createResultatRechercheType();
-
-            resultatRecherche.setIdArchive(ObjectTypeFactory
-                  .createUuidType(storageDocument.getUuid()));
-            ListeMetadonneeType listeMetadonnee = ObjectTypeFactory
-                  .createListeMetadonneeType();
-
-            List<MetadonneeType> metadonnees = createListMetadonneeType(storageDocument);
-
-            if (CollectionUtils.isNotEmpty(metadonnees)) {
-
-               for (MetadonneeType metaDonnee : metadonnees) {
-
-                  listeMetadonnee.addMetadonnee(metaDonnee);
-               }
-            }
-            resultatRecherche.setMetadonnees(listeMetadonnee);
-            resultatsType.addResultat(resultatRecherche);
+         int taille = untypedDocuments.size();
+         if (resultatTronque){
+            taille = untypedDocuments.size() - 1;
          }
+         for(int i = 0; i< taille ; i++) {
+            //for (UntypedDocument storageDocument : untypedDocuments) {
+               UntypedDocument storageDocument = untypedDocuments.get(i);
+               ResultatRechercheType resultatRecherche = ObjectTypeFactory
+                     .createResultatRechercheType();
+
+               resultatRecherche.setIdArchive(ObjectTypeFactory
+                     .createUuidType(storageDocument.getUuid()));
+               ListeMetadonneeType listeMetadonnee = ObjectTypeFactory
+                     .createListeMetadonneeType();
+
+               List<MetadonneeType> metadonnees = createListMetadonneeType(storageDocument);
+
+               if (CollectionUtils.isNotEmpty(metadonnees)) {
+
+                  for (MetadonneeType metaDonnee : metadonnees) {
+
+                     listeMetadonnee.addMetadonnee(metaDonnee);
+                  }
+               }
+               resultatRecherche.setMetadonnees(listeMetadonnee);
+               resultatsType.addResultat(resultatRecherche);
+            }
+
+         responseType.setResultats(resultatsType);
       }
-      responseType.setResultats(resultatsType);
       responseType.setResultatTronque(resultatTronque);
 
       return response;
