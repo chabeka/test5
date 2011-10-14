@@ -14,9 +14,6 @@ import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
-
-
-import fr.urssaf.image.sae.ecde.modele.commun_sommaire_et_resultat.ObjectFactory;
 import fr.urssaf.image.sae.ecde.modele.sommaire.SommaireType;
 /**
  * Cette classe permet de pratiquer le marshalling et le unmarshalling
