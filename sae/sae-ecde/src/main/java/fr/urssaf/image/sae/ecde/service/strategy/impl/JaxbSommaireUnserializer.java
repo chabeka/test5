@@ -216,7 +216,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
       // verification si objetNumerique du sommaire represente un document
       // si oui alors remplissement du untypedDocument
       if (fichier.isFile()) {
-         untypedDoc.setFilePath(fichier.getName());
+         untypedDoc.setFilePath(chemin);
          untypedDoc
                .setContent(FileUtils.readFileToByteArray(exists(chemin)));
       }// sinon rejeté une exception

@@ -63,6 +63,11 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
          JAXBElement<ResultatsType> resultats = object.createResultats(resultatsXml);
          
          JAXBUtils.marshal(resultats, output, xsdSchema);
+         //ici on force la libération des buffers
+         output.flush();
+         //ici on ferme
+         output.close();
+         
       } catch (SAXException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireresultatsexception.message", "resultats.xml"), e);
       } catch (JAXBException e) {
