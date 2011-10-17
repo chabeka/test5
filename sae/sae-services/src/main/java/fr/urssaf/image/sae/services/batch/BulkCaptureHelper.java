@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.services.batch;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,295 +51,316 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
  */
 @Component
 @Qualifier("bulkCaptureHelper")
-@SuppressWarnings( { "PMD.LongVariable", "PMD.ExcessiveImports",
-      "PMD.AvoidInstantiatingObjectsInLoops", "PMD.CyclomaticComplexity" })
+@SuppressWarnings({ "PMD.LongVariable", "PMD.ExcessiveImports",
+		"PMD.AvoidInstantiatingObjectsInLoops", "PMD.CyclomaticComplexity" })
 public class BulkCaptureHelper {
 
-   private static final String TOUT_OU_RIEN = "TOUT_OU_RIEN";
-   @Autowired
-   @Qualifier("saeCommonCaptureService")
-   private SAECommonCaptureService commonCapture;
-   @Autowired
-   @Qualifier("mappingDocumentOnErrorService")
-   private MappingDocumentOnErrorService mappingOnError;
+	private static final String TOUT_OU_RIEN = "TOUT_OU_RIEN";
+	@Autowired
+	@Qualifier("saeCommonCaptureService")
+	private SAECommonCaptureService commonCapture;
+	@Autowired
+	@Qualifier("mappingDocumentOnErrorService")
+	private MappingDocumentOnErrorService mappingOnError;
 
-   private List<UntypedDocumentOnError> untypedDocumentsOnError = new ArrayList<UntypedDocumentOnError>();
-   private final List<MetadataError> errors = new ArrayList<MetadataError>();
+	private List<UntypedDocumentOnError> untypedDocumentsOnError;
+	private List<MetadataError> errors;
 
-   /**
-    * Enrichissement des métadonnées avec un ID traitement.
-    * 
-    * @param storageDocs
-    *           : Une liste de type {@link StorageDocument}.
-    * @return Une liste de type {@link StorageDocument}.
-    */
-   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-   public final List<StorageDocument> addIdTreatementToStorageDoc(
-         List<StorageDocument> storageDocs) {
-      UUID idtreatement = UUID.randomUUID();
-      for (StorageDocument storageDocument : Utils
-            .nullSafeIterable(storageDocs)) {
-         storageDocument.getMetadatas().add(
-               new StorageMetadata("itm", idtreatement.toString()));
-      }
-      return storageDocs;
-   }
+	/**
+	 * Enrichissement des métadonnées avec un ID traitement.
+	 * 
+	 * @param storageDocs
+	 *            : Une liste de type {@link StorageDocument}.
+	 * @return Une liste de type {@link StorageDocument}.
+	 */
+	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+	public final List<StorageDocument> addIdTreatementToStorageDoc(
+			List<StorageDocument> storageDocs) {
+		UUID idtreatement = UUID.randomUUID();
+		for (StorageDocument storageDocument : Utils
+				.nullSafeIterable(storageDocs)) {
+			storageDocument.getMetadatas().add(
+					new StorageMetadata("itm", idtreatement.toString()));
+		}
+		return storageDocs;
+	}
 
-   /**
-    * Construit une liste de type {@link StorageDocument}.
-    * 
-    * @param untypedDocs
-    *           : Une liste de type {@link UntypedDocument}
-    * @return Une liste de type {@linkStorageDocument}
-    */
-   // CHECKSTYLE:OFF
-   public final List<StorageDocument> buildStorageDocuments(
-         List<UntypedDocument> untypedDocs) {
-      List<StorageDocument> storageDocs = new ArrayList<StorageDocument>();
-      UntypedDocument currentDocument = null;
-      try {
-         for (UntypedDocument untypedDoc : Utils.nullSafeIterable(untypedDocs)) {
-            currentDocument = untypedDoc;
-            storageDocs.add(commonCapture
-                  .buildStorageDocumentForCapture(untypedDoc));
-         }
-      } catch (SAEEnrichmentEx except) {
-         buildTechnicalErrors(currentDocument, except);
-      } catch (ReferentialRndException except) {
-         buildTechnicalErrors(currentDocument, except);
-      } catch (UnknownCodeRndEx except) {
-         buildErrors(currentDocument, except);
-      } catch (SAECaptureServiceEx except) {
-         buildTechnicalErrors(currentDocument, except);
-      } catch (RequiredStorageMetadataEx except) {
-         buildTechnicalErrors(currentDocument, except);
-      } catch (InvalidValueTypeAndFormatMetadataEx except) {
-         buildErrors(currentDocument, except);
-      } catch (UnknownMetadataEx except) {
-         buildErrors(currentDocument, except);
-      } catch (DuplicatedMetadataEx except) {
-         buildErrors(currentDocument, except);
-      } catch (NotArchivableMetadataEx except) {
-         buildErrors(currentDocument, except);
-      } catch (EmptyDocumentEx except) {
-         buildErrors(currentDocument, except);
-      } catch (RequiredArchivableMetadataEx except) {
-         buildErrors(currentDocument, except);
-      } catch (UnknownHashCodeEx except) {
-         buildErrors(currentDocument, except);
-      } catch (NotSpecifiableMetadataEx except) {
-         buildErrors(currentDocument, except);
-      }
-      return storageDocs;
-   }
-   // CHECKSTYLE:ON
+	/**
+	 * Construit une liste de type {@link StorageDocument}.
+	 * 
+	 * @param untypedDocs
+	 *            : Une liste de type {@link UntypedDocument}
+	 * @return Une liste de type {@linkStorageDocument}
+	 */
+	// CHECKSTYLE:OFF
+	public final List<StorageDocument> buildStorageDocuments(
+			List<UntypedDocument> untypedDocs) {
+		List<StorageDocument> storageDocs = new ArrayList<StorageDocument>();
+		UntypedDocument currentDocument = null;
+		untypedDocumentsOnError = new ArrayList<UntypedDocumentOnError>();
+		errors = new ArrayList<MetadataError>();
+		try {
+			for (UntypedDocument untypedDoc : Utils
+					.nullSafeIterable(untypedDocs)) {
+				currentDocument = untypedDoc;
+				storageDocs.add(commonCapture
+						.buildStorageDocumentForCapture(untypedDoc));
+			}
+		} catch (SAEEnrichmentEx except) {
+			buildTechnicalErrors(currentDocument, except);
+		} catch (ReferentialRndException except) {
+			buildTechnicalErrors(currentDocument, except);
+		} catch (UnknownCodeRndEx except) {
+			buildErrors(currentDocument, except);
+		} catch (SAECaptureServiceEx except) {
+			buildTechnicalErrors(currentDocument, except);
+		} catch (RequiredStorageMetadataEx except) {
+			buildTechnicalErrors(currentDocument, except);
+		} catch (InvalidValueTypeAndFormatMetadataEx except) {
+			buildErrors(currentDocument, except);
+		} catch (UnknownMetadataEx except) {
+			buildErrors(currentDocument, except);
+		} catch (DuplicatedMetadataEx except) {
+			buildErrors(currentDocument, except);
+		} catch (NotArchivableMetadataEx except) {
+			buildErrors(currentDocument, except);
+		} catch (EmptyDocumentEx except) {
+			buildErrors(currentDocument, except);
+		} catch (RequiredArchivableMetadataEx except) {
+			buildErrors(currentDocument, except);
+		} catch (UnknownHashCodeEx except) {
+			buildErrors(currentDocument, except);
+		} catch (NotSpecifiableMetadataEx except) {
+			buildErrors(currentDocument, except);
+		}
+		return storageDocs;
+	}
 
-   /**
-    * Construit une liste d'erreur.
-    * @param badDocument {@link StorageDocumentOnError}
-    * @param exception : {@link Exception}
-    * @return Une Liste de type {@link UntypedDocumentOnError}
-    */
-   public final List<UntypedDocumentOnError> buildErrors(
-         UntypedDocument badDocument, Exception exception) {
+	// CHECKSTYLE:ON
 
-      String filePath = badDocument.getFilePath();
-      // SAE-CA-BUL002
-      buildSaeErros(exception, filePath, SAEBulkErrors.FUNCTIONAL_ERROR);
-      UntypedDocumentOnError untypedDocumentOnError = new UntypedDocumentOnError(
-            null, badDocument.getUMetadatas(), errors);
-      untypedDocumentOnError.setFilePath(filePath);
-      untypedDocumentsOnError.add(untypedDocumentOnError);
-      return untypedDocumentsOnError;
-   }
+	/**
+	 * Construit une liste d'erreur.
+	 * 
+	 * @param badDocument
+	 *            {@link StorageDocumentOnError}
+	 * @param exception
+	 *            : {@link Exception}
+	 * @return Une Liste de type {@link UntypedDocumentOnError}
+	 */
+	public final List<UntypedDocumentOnError> buildErrors(
+			UntypedDocument badDocument, Exception exception) {
 
-   /**
-    * Construit une liste d'erreur.
-    * @param badDocument {@link StorageDocumentOnError}
-    * @param exception : {@link Exception}
-    * @return Une Liste de type {@link UntypedDocumentOnError}
-    */
-   public final List<UntypedDocumentOnError> buildTechnicalErrors(
-         UntypedDocument badDocument, Exception exception) {
-      String filePath = badDocument.getFilePath();
-      // SAE-CA-BUL001
-      buildSaeErros(exception, filePath, SAEBulkErrors.TECHNICAL_ERROR);
-      untypedDocumentsOnError.add(new UntypedDocumentOnError(badDocument
-            .getContent(), badDocument.getUMetadatas(), errors));
-      return untypedDocumentsOnError;
-   }
+		String filePath = badDocument.getFilePath();
+		// SAE-CA-BUL002
+		buildSaeErros(exception, filePath, SAEBulkErrors.FUNCTIONAL_ERROR);
+		UntypedDocumentOnError untypedDocumentOnError = new UntypedDocumentOnError(
+				null, badDocument.getUMetadatas(), errors);
+		untypedDocumentOnError.setFilePath(filePath);
+		untypedDocumentsOnError.add(untypedDocumentOnError);
+		return untypedDocumentsOnError;
+	}
 
-   /**
-    * Construit une liste d'erreur.
-    * @param storageDocuments {@link StorageDocuments}
-    * @param exception : {@link Exception}
-    * @return Une Liste de type {@link UntypedDocumentOnError}
-    */
-   public final List<UntypedDocumentOnError> buildTechnicalErrors(
-         StorageDocuments storageDocuments, Exception exception) {
-      List<UntypedMetadata> untypedMetadatas = new ArrayList<UntypedMetadata>();
-      for (StorageDocument storageDocument : Utils
-            .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
-         String filePath = storageDocument.getFilePath();
-         buildSaeErros(exception, filePath, SAEBulkErrors.TECHNICAL_ERROR);
-         untypedDocumentsOnError.add(new UntypedDocumentOnError(storageDocument
-               .getContent(), untypedMetadatas, errors));
-      }
-      return untypedDocumentsOnError;
-   }
+	/**
+	 * Construit une liste d'erreur.
+	 * 
+	 * @param badDocument
+	 *            {@link StorageDocumentOnError}
+	 * @param exception
+	 *            : {@link Exception}
+	 * @return Une Liste de type {@link UntypedDocumentOnError}
+	 */
+	public final List<UntypedDocumentOnError> buildTechnicalErrors(
+			UntypedDocument badDocument, Exception exception) {
+		String filePath = badDocument.getFilePath();
+		// SAE-CA-BUL001
+		buildSaeErros(exception, filePath, SAEBulkErrors.TECHNICAL_ERROR);
+		untypedDocumentsOnError.add(new UntypedDocumentOnError(badDocument
+				.getContent(), badDocument.getUMetadatas(), errors));
+		return untypedDocumentsOnError;
+	}
 
-   /**
-    * @param exception
-    * @param filePath
-    * @param errorType
-    */
-   private void buildSaeErros(Exception exception, String filePath,
-         SAEBulkErrors errorType) {
+	/**
+	 * Construit une liste d'erreur.
+	 * 
+	 * @param storageDocuments
+	 *            {@link StorageDocuments}
+	 * @param exception
+	 *            : {@link Exception}
+	 * @return Une Liste de type {@link UntypedDocumentOnError}
+	 */
+	public final List<UntypedDocumentOnError> buildTechnicalErrors(
+			StorageDocuments storageDocuments, Exception exception) {
+		List<UntypedMetadata> untypedMetadatas = new ArrayList<UntypedMetadata>();
+		for (StorageDocument storageDocument : Utils
+				.nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
+			String filePath = storageDocument.getFilePath();
+			buildSaeErros(exception, filePath, SAEBulkErrors.TECHNICAL_ERROR);
+			untypedDocumentsOnError.add(new UntypedDocumentOnError(
+					storageDocument.getContent(), untypedMetadatas, errors));
+		}
+		return untypedDocumentsOnError;
+	}
 
-      MetadataError error = new MetadataError();
-      error
-            .setCode(ResourceMessagesUtils
-                  .loadMessage(errorType.getErrorType()));
-      error.setMessage(ResourceMessagesUtils.loadMessage(
-            errorType.getMessage(), filePath, exception.getMessage()));
+	/**
+	 * @param exception
+	 * @param filePath
+	 * @param errorType
+	 */
+	private void buildSaeErros(Exception exception, String filePath,
+			SAEBulkErrors errorType) {
 
-      errors.add(error);
-   }
+		MetadataError error = new MetadataError();
+		error.setCode(ResourceMessagesUtils.loadMessage(errorType
+				.getErrorType()));
+		error.setMessage(ResourceMessagesUtils.loadMessage(
+				errorType.getMessage(), new File(filePath).getName(),
+				exception.getMessage()));
 
-   /**
-    * Construit une liste d'erreur.
-    * @param badDocument {@link StorageDocumentOnError}
-    * @param exception : {@link Exception}
-    * @return Une Liste de type {@link UntypedDocumentOnError}
-    */
-   public final List<UntypedDocumentOnError> buildErrors(
-         StorageDocumentOnError badDocument, Exception exception) {
-      String filePath = badDocument.getFilePath();
-      List<UntypedMetadata> untypedMetadatas = new ArrayList<UntypedMetadata>();
-      buildSaeErros(exception, filePath, SAEBulkErrors.FUNCTIONAL_ERROR);
-      untypedMetadatas.add(new UntypedMetadata("TypeHash",
-            SAEMetatadaFinderUtils.valueMetadataFinder(badDocument
-                  .getMetadatas(), "version.1.digest.alogorithm")));
-      untypedMetadatas.add(new UntypedMetadata("Hash",
-            SAEMetatadaFinderUtils.valueMetadataFinder(badDocument
-                  .getMetadatas(), "version.1.digest")));
-      untypedDocumentsOnError.add(new UntypedDocumentOnError(null,
-            untypedMetadatas, errors));
-      return untypedDocumentsOnError;
-   }
+		errors.add(error);
+	}
 
-   /**
-    * Construit un résultat du traitement de la capture en masse.
-    * 
-    * @param bulkInsertionResults
-    *           : Un objet de type {@link BulkInsertionResults}
-    * @param initialDocumentsCount
-    *           : le nombre de documents initial à archiver.
-    * @param sommaire
-    *           : Chemin de fichier sommaire.
-    * @return Un objet de type {@link Resultats}
-    */
-   public final Resultats buildResultatsSuccess(
-         BulkInsertionResults bulkInsertionResults, int initialDocumentsCount,
-         Sommaire sommaire) {
-      StorageDocumentOnError badDocumentError = null;
-      Resultats resultats = new Resultats();
-      resultats.setBatchMode(TOUT_OU_RIEN);
-      resultats.setInitialDocumentsCount(initialDocumentsCount);
-      resultats.setEcdeDirectory(sommaire.getEcdeDirectory());
-      resultats.setNonIntegratedVirtualDocumentsCount(0);
-      // Traitement archivage en masse a échoué.
-      List<StorageDocumentOnError> documentsErrorFromStorage = bulkInsertionResults
-            .getStorageDocumentsOnError().getStorageDocumentsOnError();
-      List<UntypedDocumentOnError> untypedDocmentsErrorFromStorage = new ArrayList<UntypedDocumentOnError>();
-      // Cas de la liste StorageDocumentOnError.
-      if (!CollectionUtils.isEmpty(documentsErrorFromStorage)) {
-         for (StorageDocumentOnError documentError : documentsErrorFromStorage) {
-            try {
-               badDocumentError = documentError;
-               untypedDocmentsErrorFromStorage
-                     .add(mappingOnError
-                           .storageDocumentOnErrorToUntypedDocumentOnError(documentError));
-            } catch (InvalidSAETypeException except) {
-               buildErrors(badDocumentError, except);
-            }
-         }
-         untypedDocmentsErrorFromStorage.addAll(getUntypedDocumentsOnError());
-         resultats
-               .setNonIntegratedDocumentsCount(untypedDocmentsErrorFromStorage
-                     .size());
+	/**
+	 * Construit une liste d'erreur.
+	 * 
+	 * @param badDocument
+	 *            {@link StorageDocumentOnError}
+	 * @param exception
+	 *            : {@link Exception}
+	 * @return Une Liste de type {@link UntypedDocumentOnError}
+	 */
+	public final List<UntypedDocumentOnError> buildErrors(
+			StorageDocumentOnError badDocument, Exception exception) {
+		String filePath = badDocument.getFilePath();
+		List<UntypedMetadata> untypedMetadatas = new ArrayList<UntypedMetadata>();
+		buildSaeErros(exception, filePath, SAEBulkErrors.FUNCTIONAL_ERROR);
+		untypedMetadatas.add(new UntypedMetadata("TypeHash",
+				SAEMetatadaFinderUtils.valueMetadataFinder(
+						badDocument.getMetadatas(),
+						"version.1.digest.alogorithm")));
+		untypedMetadatas.add(new UntypedMetadata("Hash", SAEMetatadaFinderUtils
+				.valueMetadataFinder(badDocument.getMetadatas(),
+						"version.1.digest")));
+		untypedDocumentsOnError.add(new UntypedDocumentOnError(null,
+				untypedMetadatas, errors));
+		return untypedDocumentsOnError;
+	}
 
-         resultats.setNonIntegratedDocuments(untypedDocmentsErrorFromStorage);
-         resultats.setIntegratedDocumentsCount(0);
-      }
-      // Traitement archivage en masse s'est bien passé.
-      List<StorageDocument> storageDocumentsFromStorage = bulkInsertionResults
-            .getStorageDocuments().getAllStorageDocuments();
-      if (!CollectionUtils.isEmpty(storageDocumentsFromStorage)) {
-         resultats.setIntegratedDocumentsCount(storageDocumentsFromStorage
-               .size());
-      }
-      return resultats;
-   }
+	/**
+	 * Construit un résultat du traitement de la capture en masse.
+	 * 
+	 * @param bulkInsertionResults
+	 *            : Un objet de type {@link BulkInsertionResults}
+	 * @param initialDocumentsCount
+	 *            : le nombre de documents initial à archiver.
+	 * @param sommaire
+	 *            : Chemin de fichier sommaire.
+	 * @return Un objet de type {@link Resultats}
+	 */
+	public final Resultats buildResultatsSuccess(
+			BulkInsertionResults bulkInsertionResults,
+			int initialDocumentsCount, Sommaire sommaire) {
+		StorageDocumentOnError badDocumentError = null;
+		Resultats resultats = new Resultats();
+		resultats.setBatchMode(TOUT_OU_RIEN);
+		resultats.setInitialDocumentsCount(initialDocumentsCount);
+		resultats.setEcdeDirectory(sommaire.getEcdeDirectory());
+		resultats.setNonIntegratedVirtualDocumentsCount(0);
+		// Traitement archivage en masse a échoué.
+		List<StorageDocumentOnError> documentsErrorFromStorage = bulkInsertionResults
+				.getStorageDocumentsOnError().getStorageDocumentsOnError();
+		List<UntypedDocumentOnError> untypedDocmentsErrorFromStorage = new ArrayList<UntypedDocumentOnError>();
+		// Cas de la liste StorageDocumentOnError.
+		if (!CollectionUtils.isEmpty(documentsErrorFromStorage)) {
+			for (StorageDocumentOnError documentError : documentsErrorFromStorage) {
+				try {
+					badDocumentError = documentError;
+					untypedDocmentsErrorFromStorage
+							.add(mappingOnError
+									.storageDocumentOnErrorToUntypedDocumentOnError(documentError));
+				} catch (InvalidSAETypeException except) {
+					buildErrors(badDocumentError, except);
+				}
+			}
+			untypedDocmentsErrorFromStorage
+					.addAll(getUntypedDocumentsOnError());
+			resultats
+					.setNonIntegratedDocumentsCount(untypedDocmentsErrorFromStorage
+							.size());
 
-   /**
-    * Construit un résultat erreur du traitement de la capture en masse.
-    * 
-    * @param initialDocumentsCount
-    *           : le nombre de documents initial à archiver.
-    * @param sommaire
-    *           : Chemin de fichier sommaire.
-    * @param untypedDocumentsOnError
-    *           : Une liste d'objet de type {@link UntypedDocumentsOnError}<br>
-    *           les cas d'erreur sont :
-    *           <ul>
-    *           <li>Enrichissement</li>
-    *           <li>Code RND non existant</li>
-    *           <li>Chargement du référentiel des codes RND</li>
-    *           <li>Lors du contrôle de présence des métadonnées obligatoires à
-    *           l'archivage</li>
-    *           <li>Lors de la vérification du type et le format</li>
-    *           <li>Lors de la vérification de l’existence des métadonnées</li>
-    *           <li>Lors de la vérification de duplication des métadonnées</li>
-    *           <li>Lors de la vérification des métadonnées archivables</li>
-    *           <li>Si la taille du document est égale à 0 octet</li>
-    *           <li>Lors du contrôle de présence des métadonnées obligatoires.</li>
-    *           <li>Lors de la vérification du hash code.</li>
-    *           <li>Lors de la vérification des métadonnées spécifiables sont
-    *           présentes</li>
-    *           <li>Lors du mapping
-    *           storageDocumentOnErrorToUntypedDocumentOnError</li>
-    *           <li>Lors de la connexion à DFCE.</li>
-    *           <li>Lors de l'insertion</li>
-    *           </ul>
-    * 
-    * @return Un objet de type {@link Resultats}
-    */
-   public final Resultats buildResultatsError(int initialDocumentsCount,
-         Sommaire sommaire, List<UntypedDocumentOnError> untypedDocumentsOnError) {
-      Resultats resultats = new Resultats();
-      resultats.setBatchMode(sommaire.getBatchMode());
-      resultats.setInitialDocumentsCount(initialDocumentsCount);
-      resultats.setEcdeDirectory(sommaire.getEcdeDirectory());
-      resultats.setNonIntegratedVirtualDocumentsCount(0);
-      resultats.setNonIntegratedDocuments(untypedDocumentsOnError);
-      resultats.setNonIntegratedDocumentsCount(initialDocumentsCount);
-      return resultats;
-   }
+			resultats
+					.setNonIntegratedDocuments(untypedDocmentsErrorFromStorage);
+			resultats.setIntegratedDocumentsCount(0);
+		}
+		// Traitement archivage en masse s'est bien passé.
+		List<StorageDocument> storageDocumentsFromStorage = bulkInsertionResults
+				.getStorageDocuments().getAllStorageDocuments();
+		if (!CollectionUtils.isEmpty(storageDocumentsFromStorage)) {
+			resultats.setIntegratedDocumentsCount(storageDocumentsFromStorage
+					.size());
+		}
+		return resultats;
+	}
 
-   /**
-    * @return Liste de type {@link UntypedDocumentsOnError}.
-    */
-   public final List<UntypedDocumentOnError> getUntypedDocumentsOnError() {
-      return untypedDocumentsOnError;
-   }
+	/**
+	 * Construit un résultat erreur du traitement de la capture en masse.
+	 * 
+	 * @param initialDocumentsCount
+	 *            : le nombre de documents initial à archiver.
+	 * @param sommaire
+	 *            : Chemin de fichier sommaire.
+	 * @param untypedDocumentsOnError
+	 *            : Une liste d'objet de type {@link UntypedDocumentsOnError}<br>
+	 *            les cas d'erreur sont :
+	 *            <ul>
+	 *            <li>Enrichissement</li>
+	 *            <li>Code RND non existant</li>
+	 *            <li>Chargement du référentiel des codes RND</li>
+	 *            <li>Lors du contrôle de présence des métadonnées obligatoires
+	 *            à l'archivage</li>
+	 *            <li>Lors de la vérification du type et le format</li>
+	 *            <li>Lors de la vérification de l’existence des métadonnées</li>
+	 *            <li>Lors de la vérification de duplication des métadonnées</li>
+	 *            <li>Lors de la vérification des métadonnées archivables</li>
+	 *            <li>Si la taille du document est égale à 0 octet</li>
+	 *            <li>Lors du contrôle de présence des métadonnées obligatoires.
+	 *            </li>
+	 *            <li>Lors de la vérification du hash code.</li>
+	 *            <li>Lors de la vérification des métadonnées spécifiables sont
+	 *            présentes</li>
+	 *            <li>Lors du mapping
+	 *            storageDocumentOnErrorToUntypedDocumentOnError</li>
+	 *            <li>Lors de la connexion à DFCE.</li>
+	 *            <li>Lors de l'insertion</li>
+	 *            </ul>
+	 * 
+	 * @return Un objet de type {@link Resultats}
+	 */
+	public final Resultats buildResultatsError(int initialDocumentsCount,
+			Sommaire sommaire,
+			List<UntypedDocumentOnError> untypedDocumentsOnError) {
+		Resultats resultats = new Resultats();
+		resultats.setBatchMode(sommaire.getBatchMode());
+		resultats.setInitialDocumentsCount(initialDocumentsCount);
+		resultats.setEcdeDirectory(sommaire.getEcdeDirectory());
+		resultats.setNonIntegratedVirtualDocumentsCount(0);
+		resultats.setNonIntegratedDocuments(untypedDocumentsOnError);
+		resultats.setNonIntegratedDocumentsCount(initialDocumentsCount);
+		return resultats;
+	}
 
-   /**
-    * @param untypedDocumentsOnError
-    *           : Liste de type {@link UntypedDocumentsOnError}.
-    */
-   public final void setUntypedDocumentsOnError(
-         List<UntypedDocumentOnError> untypedDocumentsOnError) {
-      this.untypedDocumentsOnError = untypedDocumentsOnError;
-   }
+	/**
+	 * @return Liste de type {@link UntypedDocumentsOnError}.
+	 */
+	public final List<UntypedDocumentOnError> getUntypedDocumentsOnError() {
+		return untypedDocumentsOnError;
+	}
+
+	/**
+	 * @param untypedDocumentsOnError
+	 *            : Liste de type {@link UntypedDocumentsOnError}.
+	 */
+	public final void setUntypedDocumentsOnError(
+			List<UntypedDocumentOnError> untypedDocumentsOnError) {
+		this.untypedDocumentsOnError = untypedDocumentsOnError;
+	}
 }
