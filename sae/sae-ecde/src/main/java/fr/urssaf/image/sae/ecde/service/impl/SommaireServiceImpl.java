@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeBadSummaryException;
 import fr.urssaf.image.sae.ecde.exception.EcdeGeneralException;
+import fr.urssaf.image.sae.ecde.exception.EcdeInvalidBatchModeException;
 import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSources;
@@ -50,9 +51,11 @@ public class SommaireServiceImpl implements SommaireService {
          
          return jaxbSomUnserial.unserializeSommaire(uriFile);
          
+      } catch (EcdeInvalidBatchModeException except) {    
+         throw new EcdeInvalidBatchModeException(MessageRessourcesUtils.recupererMessage("invalid.batchmode.error", null));
       } catch (Exception except) {
          throw new EcdeBadSummaryException(MessageRessourcesUtils.recupererMessage(UNSERIALIZE_ERROR, null), except);
-      }     
+      }   
    }
    
    

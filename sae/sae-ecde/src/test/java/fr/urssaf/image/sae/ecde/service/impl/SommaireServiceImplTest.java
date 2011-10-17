@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.ecde.exception.EcdeBadSummaryException;
 import fr.urssaf.image.sae.ecde.exception.EcdeGeneralException;
+import fr.urssaf.image.sae.ecde.exception.EcdeInvalidBatchModeException;
 import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSources;
@@ -147,7 +148,7 @@ public class SommaireServiceImplTest {
 // Le sommaire XMl n'a pas son batchMode a TOUT ou RIEN
 // Erreur genéré SAXParseException : non respect de l'enumeration TOUT_OU_RIEN ou PARTIEL 
 // Cette exception est catché et genere une exception de type EcdeBadSummaryException dans le code   
-   @Test(expected = EcdeBadSummaryException.class)
+   @Test(expected = EcdeInvalidBatchModeException.class)
    public void fetchSommaireByUriFailureBM() throws EcdeGeneralException, URISyntaxException, IOException  {
       URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();

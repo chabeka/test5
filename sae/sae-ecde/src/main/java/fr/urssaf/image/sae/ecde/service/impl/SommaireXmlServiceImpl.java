@@ -67,11 +67,17 @@ public class SommaireXmlServiceImpl implements SommaireXmlService {
          URL xsdSchema = classPath.getURL();
          return JAXBUtils.unmarshal( input, xsdSchema);
       } catch (JAXBException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "sommaire.xml"), e);
+         // Pour la gestion de l'erreur BATCH MODE
+         if (e.getLinkedException().getMessage().contains("[TOUT_OU_RIEN, PARTIEL]")) {
+            throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("invalid.batchmode.error", null), e);
+         }
+         else {
+            throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireresultatsexception.message", "sommaire.xml"), e);
+         }   
       } catch (SAXException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "sommaire.xml"), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireresultatsexception.message", "sommaire.xml"), e);
       } catch (IOException e) {
-         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("sommaireLectureException.message", null), e);
+         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("sommairelectureexception.message", null), e);
       }
    }
    /**

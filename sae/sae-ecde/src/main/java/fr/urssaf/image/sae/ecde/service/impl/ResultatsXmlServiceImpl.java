@@ -64,11 +64,11 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
          
          JAXBUtils.marshal(resultats, output, xsdSchema);
       } catch (SAXException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "resultats.xml"), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireresultatsexception.message", "resultats.xml"), e);
       } catch (JAXBException e) {
-         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireResultatsException.message", "resultats.xml"), e);
+         throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireresultatsexception.message", "resultats.xml"), e);
       } catch (IOException e) {
-         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("resultatsEcritureException.message", null), e);
+         throw new EcdeRuntimeException(MessageRessourcesUtils.recupererMessage("resultatsecritureexception.message", null), e);
       }
   }
   /**
