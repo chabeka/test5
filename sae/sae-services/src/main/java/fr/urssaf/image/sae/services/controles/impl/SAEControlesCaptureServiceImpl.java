@@ -143,6 +143,12 @@ public class SAEControlesCaptureServiceImpl implements
          throw new DuplicatedMetadataEx(ResourceMessagesUtils.loadMessage(
                "capture.metadonnees.doublon", buildLongCodeError(errorsList)));
       }
+      errorsList = metadataCS.checkMetadataRequiredValue(untypedDocument);
+      if (CollectionUtils.isNotEmpty(errorsList)) {
+         throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils
+               .loadMessage("capture.metadonnees.archivage.obligatoire",
+                     buildLongCodeError(errorsList)));
+      }
       errorsList = metadataCS.checkMetadataValueTypeAndFormat(untypedDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
          throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils

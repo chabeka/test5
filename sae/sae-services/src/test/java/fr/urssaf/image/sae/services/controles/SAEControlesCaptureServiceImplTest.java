@@ -146,7 +146,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
          ParseException {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
-            new UntypedMetadata("Siren", ""));
+            new UntypedMetadata("DateReception", "12121"));
       saeControlesCaptureService.checkUntypedMetadata(untypedDocument);
    }
 
@@ -304,6 +304,29 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
       }
       if (null != saeMetadataToRemove) {
          saeDocument.getMetadatas().remove(saeMetadataToRemove);
+      }
+      saeControlesCaptureService.checkSaeMetadataForStorage(saeDocument);
+   }
+   /**
+    * Test de la méthode
+    * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkSaeMetadataForStorage(fr.urssaf.image.sae.bo.model.bo.SAEDocument)}
+    * .
+    */
+   @Test(expected = RequiredStorageMetadataEx.class)
+   public final void requiredValueStorageMetadataFailed()
+         throws RequiredStorageMetadataEx, SAECaptureServiceEx, IOException,
+         ParseException, SAEEnrichmentEx, ReferentialRndException,
+         UnknownCodeRndEx {
+      SAEDocument saeDocument = getSAEDocumentMockData();
+      SAEMetadata saeMetadataToRemove = null;
+      saeEnrichmentMetadataService.enrichmentMetadata(saeDocument);
+      for (SAEMetadata saeMetadata : saeDocument.getMetadatas()) {
+         if (saeMetadata.getLongCode().equals(
+               SAEArchivalMetadatas.CODE_RND.getLongCode())) {
+            saeMetadataToRemove = saeMetadata;
+            saeMetadataToRemove.setValue(null);
+            break;
+         }
       }
       saeControlesCaptureService.checkSaeMetadataForStorage(saeDocument);
    }
