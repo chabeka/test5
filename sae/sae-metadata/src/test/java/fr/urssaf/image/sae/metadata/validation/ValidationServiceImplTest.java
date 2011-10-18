@@ -141,7 +141,15 @@ public class ValidationServiceImplTest {
 	public void checkSearchableMetadata() {
 		controlService.checkSearchableMetadata(null);
 	}
-
+   /**
+    * validation de l'argument du service
+    * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkMetadataRequiredValue(UntypedDocument)
+    * checkSearchableMetadata}
+    */
+   @Test(expected = IllegalArgumentException.class)
+   public void checkMetadataRequiredValue() {
+      controlService.checkMetadataRequiredValue(new UntypedDocument());
+   }
 	/**
 	 * @return Le service de contrôle des métadonnées.
 	 */

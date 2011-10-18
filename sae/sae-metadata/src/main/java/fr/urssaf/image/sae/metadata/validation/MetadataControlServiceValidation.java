@@ -133,7 +133,20 @@ public class MetadataControlServiceValidation {
 		validateUntypedDocument(untypedDoc);
 
 	}
+   /**
+    * Valide l'argument de la méthode
+    * {@link fr.urssaf.image.sae.metadata.control.services.MetadataControlServices#checkMetadataRequiredValue(fr.urssaf.image.sae.bo.model.bo.untyped.UntypedDocument)}
+    * checkMetadataValueTypeAndFormat}. <br>
+    * 
+    * @param untypedDoc
+    *            : un objet de type {@link UntypedDocument}
+    */
+   @Before(value = "execution( java.util.List<fr.urssaf.image.sae.bo.model.MetadataError>  fr.urssaf.image.sae.metadata.control.services.MetadataControlServices.checkMetadataRequiredValue(..)) && args(untypedDoc)")
+   public final void checkMetadataRequiredValue(
+         final UntypedDocument untypedDoc) {
+      validateUntypedDocument(untypedDoc);
 
+   }
 	/**
 	 * Valide l'argument de la méthode
 	 * {@link fr.urssaf.image.sae.metadata.control.services.MetadataControlServices#checkSearchableMetadata(java.util.List)}

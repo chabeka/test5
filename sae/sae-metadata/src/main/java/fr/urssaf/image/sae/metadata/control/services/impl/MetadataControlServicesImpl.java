@@ -393,7 +393,36 @@ public class MetadataControlServicesImpl implements MetadataControlServices {
 		}
 		return errors;
 	}
+	 /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   public final List<MetadataError> checkMetadataRequiredValue(
+         final UntypedDocument untypedDoc) {
+      final List<MetadataError> errors = new ArrayList<MetadataError>();
+      for (UntypedMetadata metadata : Utils.nullSafeIterable(untypedDoc
+            .getUMetadatas())) {
+         try {
+            final MetadataReference reference = referenceDAO
+                  .getByLongCode(metadata.getLongCode());
+            // ici on contrôler uniquement les metadonnées renseignées.
 
+            if (StringUtils.isEmpty(metadata.getValue().trim())&& reference.isRequiredForStorage()) {
+               errors.add(new MetadataError(MetadataMessageHandler
+                     .getMessage("metadata.control.value.required"), metadata
+                     .getLongCode(), MetadataMessageHandler.getMessage(
+                     "metadata.value.required", metadata.getLongCode())));
+            }
+         } catch (ReferentialException refExcept) {
+            errors.add(new MetadataError(MetadataMessageHandler
+                  .getMessage("metadata.referentiel.error"), metadata
+                  .getLongCode(), MetadataMessageHandler
+                  .getMessage("metadata.referentiel.retrieve")));
+         }
+
+      }
+      return errors;
+   }
 	/**
 	 * Construit un objet de type {@link MetadataControlServicesImpl }
 	 * 
