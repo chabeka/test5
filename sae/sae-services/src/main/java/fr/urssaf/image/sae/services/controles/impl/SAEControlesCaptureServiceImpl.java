@@ -125,12 +125,12 @@ public class SAEControlesCaptureServiceImpl implements
    }
 
    /**
-    * {@inheritDoc}
+    * {@inheritDoc} 
     */
    @Override
    public final void checkUntypedMetadata(UntypedDocument untypedDocument)
          throws UnknownMetadataEx, DuplicatedMetadataEx,
-         InvalidValueTypeAndFormatMetadataEx {
+         InvalidValueTypeAndFormatMetadataEx, RequiredArchivableMetadataEx {
       List<MetadataError> errorsList = metadataCS
             .checkExistingMetadata(untypedDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
@@ -145,7 +145,7 @@ public class SAEControlesCaptureServiceImpl implements
       }
       errorsList = metadataCS.checkMetadataRequiredValue(untypedDocument);
       if (CollectionUtils.isNotEmpty(errorsList)) {
-         throw new InvalidValueTypeAndFormatMetadataEx(ResourceMessagesUtils
+         throw new RequiredArchivableMetadataEx(ResourceMessagesUtils
                .loadMessage("capture.metadonnees.archivage.obligatoire",
                      buildLongCodeError(errorsList)));
       }

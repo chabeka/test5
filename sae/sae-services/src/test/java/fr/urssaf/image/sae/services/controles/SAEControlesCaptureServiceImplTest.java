@@ -99,7 +99,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test
    public final void checkUntypedMetadata() throws UnknownMetadataEx,
          DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx,
-         SAECaptureServiceEx, IOException, ParseException {
+         SAECaptureServiceEx, IOException, ParseException, RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       saeControlesCaptureService.checkUntypedMetadata(untypedDocument);
    }
@@ -112,7 +112,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test(expected = DuplicatedMetadataEx.class)
    public final void checkDuplicatedMetadataFailed() throws UnknownMetadataEx,
          DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx,
-         SAECaptureServiceEx, IOException, ParseException {
+         SAECaptureServiceEx, IOException, ParseException, RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
             new UntypedMetadata("DateCreation", "2012-01-01"));
@@ -127,7 +127,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test(expected = UnknownMetadataEx.class)
    public final void checkUnknownMetadataFailed() throws UnknownMetadataEx,
          DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx,
-         SAECaptureServiceEx, IOException, ParseException {
+         SAECaptureServiceEx, IOException, ParseException, RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
             new UntypedMetadata("DateCreat", "2012-01-01"));
@@ -143,7 +143,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    public final void checkInvalidValueTypeAndFormatMetadataFailed()
          throws UnknownMetadataEx, DuplicatedMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, SAECaptureServiceEx, IOException,
-         ParseException {
+         ParseException, RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
             new UntypedMetadata("DateReception", "12121"));

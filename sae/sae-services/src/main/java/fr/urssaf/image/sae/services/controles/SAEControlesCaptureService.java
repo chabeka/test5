@@ -40,6 +40,7 @@ public interface SAEControlesCaptureService {
     * <li>Vérifier l’existence des métadonnées.</li><br>
     * <li>Vérifier le type/format des métadonnées</li><br>
     * <li>Vérifier la duplication des métadonnées</li><br>
+    * <li>Vérifier que les valeurs des métadonnées obligatoire sont saisies.</li><br>
     * </ul>
     * 
     * @param untypedDocument
@@ -50,10 +51,11 @@ public interface SAEControlesCaptureService {
     *            {@link DuplicatedMetadataEx}
     * @throws InvalidValueTypeAndFormatMetadataEx
     *            {@link InvalidValueTypeAndFormatMetadataEx}
+    * @throws RequiredArchivableMetadataEx {@link RequiredArchivableMetadataEx} 
     */
    void checkUntypedMetadata(UntypedDocument untypedDocument)
          throws UnknownMetadataEx, DuplicatedMetadataEx,
-         InvalidValueTypeAndFormatMetadataEx;
+         InvalidValueTypeAndFormatMetadataEx, RequiredArchivableMetadataEx;
 
    /**
     * Cette méthode permet de faire les contrôles suivant :<br>
