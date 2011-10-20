@@ -35,116 +35,143 @@ import fr.urssaf.image.sae.ecde.service.strategy.ResultatSerializerStrategy;
 @Service
 public class JaxbResultatSerializer implements ResultatSerializerStrategy {
 
-   @Autowired
-   private ResultatsXmlService resultatsXmlS;
-   
-   // utilisé lors du formatage du cheminEtNomDeFichier
-   private String ecdeDirectory = "";
-   
-   private static final String DOCUMENTS = "documents";
-   private static final String FILE_SEPARATOR = System.getProperty("file.separator");
-   
-   /**
-    * {@inheritDoc}
-    * @throws EcdeXsdException 
-    * @throws IOException 
-    */
-   @Override
-   public final void serializeResultat(Resultats resultat) throws EcdeXsdException, IOException {
-      ecdeDirectory = resultat.getEcdeDirectory();
-      
-      ObjectFactory objFactory = new ObjectFactory();
-      ResultatsType resultatsType = objFactory.createResultatsType();
-      
-      resultatsType.setBatchMode(BatchModeType.fromValue(resultat.getBatchMode()));
-      resultatsType.setInitialDocumentsCount(resultat.getInitialDocumentsCount());
-      resultatsType.setInitialVirtualDocumentsCount(resultat.getInitialVirtualDocumentsCount());
-      resultatsType.setIntegratedDocumentsCount(resultat.getIntegratedDocumentsCount());
-      resultatsType.setIntegratedVirtualDocumentsCount(resultat.getIntegratedVirtualDocumentsCount());
-      resultatsType.setNonIntegratedDocumentsCount(resultat.getNonIntegratedDocumentsCount());
-      resultatsType.setNonIntegratedVirtualDocumentsCount(resultat.getNonIntegratedVirtualDocumentsCount());
-      // pour le moment pas de traitement sur les documents virtuels
-      resultatsType.setNonIntegratedVirtualDocuments(new ListeDocumentsVirtuelsType());
-      
-      List<UntypedDocumentOnError> untypedsDError = resultat.getNonIntegratedDocuments();
-      if (untypedsDError == null) {
-         untypedsDError = new ArrayList<UntypedDocumentOnError>();
-      }
-      // Mapping des objets metiers UntypedDocumentOnError en objet JAXB
-      ListeNonIntegratedDocumentsType listNIDType = mapToNonIntegratedDType(untypedsDError);
-      resultatsType.setNonIntegratedDocuments(listNIDType);
-      
-      resultatsType.setErreurBloquanteTraitement(null);
-      
-      resultatsXmlS.writeResultatsXml(resultatsType, new File(ecdeDirectory + FILE_SEPARATOR + "resultats.xml"));
-      
-      //creation du fichier drapeau.
-      createFlag(ecdeDirectory);
-   }
-   
-   // Mapping des objets metiers UntypedDocumentOnError en objet JAXB
-   private ListeNonIntegratedDocumentsType mapToNonIntegratedDType(List<UntypedDocumentOnError> untypedDError) {
-      
-      ListeNonIntegratedDocumentsType nonIntegratedDocs = new ListeNonIntegratedDocumentsType();
-      NonIntegratedDocumentType nonIntegratedDoc = new NonIntegratedDocumentType();
-     
-      for (UntypedDocumentOnError untypedDocumentOnError : untypedDError) {
-         // affectations des erreurs
-         List<MetadataError> metadataErrors = untypedDocumentOnError.getErrors();
-         ListeErreurType erreursType = convertSaeErrors(metadataErrors);
-         nonIntegratedDoc.setErreurs(erreursType);
-         nonIntegratedDoc.setObjetNumerique(affectObjetNumToUntypedDoc(untypedDocumentOnError));
-         nonIntegratedDocs.getNonIntegratedDocument().add(nonIntegratedDoc);
-      }
-      
-      return nonIntegratedDocs;
-   }
-   // convertion des SAEErrors en ErreurType
-   private ListeErreurType convertSaeErrors(List<MetadataError> metadataErrors) {
-      ListeErreurType erreursType = new ListeErreurType();
-      ErreurType erreur = new ErreurType();
-      for (SAEError saeError : metadataErrors) {
-         erreur.setCode(saeError.getCode());
-         erreur.setLibelle(saeError.getMessage());
-         erreursType.getErreur().add(erreur);
-      }
-      return erreursType;
-   }
+	@Autowired
+	private ResultatsXmlService resultatsXmlS;
 
-   // affecter hashValeur, hashAlgo et cheminEtnomDuFichier a un untypedDocumentOnError
-   private FichierType affectObjetNumToUntypedDoc(UntypedDocumentOnError udocOnError) {
-      
-      FichierType fichierType = new FichierType();
-      fichierType.setCheminEtNomDuFichier(getCheminAbsolu(udocOnError.getFilePath()));
-      return fichierType;
-   }
-   // recupération du chemin absolu a partir d'un chemin relatif.
-   private String getCheminAbsolu(String chemin) {
-      
-      String partieAEfface = ecdeDirectory + FILE_SEPARATOR + DOCUMENTS + FILE_SEPARATOR;
-      return chemin.substring(partieAEfface.length());
-      
-   }
-   
-   /**
-    * Création du fichier flag pour signaler la fin du traitement
-    * @throws IOException 
-    */
-   private void createFlag(String ecdeDirectory) throws IOException {
-      try {
-         File flag = new File(FilenameUtils.concat(ecdeDirectory,"fin_traitement.flag"));
-         if (flag.exists()) {
-            boolean delete = flag.delete();
-            if (!delete) {
-               throw new EcdeRuntimeException("Erreur lors de la suppression du fichier flag!");
-            }
-         }   
-         boolean create = flag.createNewFile();
-         if (!create) {
-            throw new EcdeRuntimeException("Erreur lors de l'ecriture du fichier flag!");
-         }
-      } catch (IOException except) {
-         throw new IOException("Erreur de création du fichier flag.", except);
-      }
-   }
+	// utilisé lors du formatage du cheminEtNomDeFichier
+	private String ecdeDirectory = "";
+
+	private static final String DOCUMENTS = "documents";
+	private static final String FILE_SEPARATOR = System
+			.getProperty("file.separator");
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws EcdeXsdException
+	 * @throws IOException
+	 */
+	@Override
+	public final void serializeResultat(Resultats resultat)
+			throws EcdeXsdException, IOException {
+		ecdeDirectory = resultat.getEcdeDirectory();
+
+		ObjectFactory objFactory = new ObjectFactory();
+		ResultatsType resultatsType = objFactory.createResultatsType();
+
+		resultatsType.setBatchMode(BatchModeType.fromValue(resultat
+				.getBatchMode()));
+		resultatsType.setInitialDocumentsCount(resultat
+				.getInitialDocumentsCount());
+		resultatsType.setInitialVirtualDocumentsCount(resultat
+				.getInitialVirtualDocumentsCount());
+		resultatsType.setIntegratedDocumentsCount(resultat
+				.getIntegratedDocumentsCount());
+		resultatsType.setIntegratedVirtualDocumentsCount(resultat
+				.getIntegratedVirtualDocumentsCount());
+		resultatsType.setNonIntegratedDocumentsCount(resultat
+				.getNonIntegratedDocumentsCount());
+		resultatsType.setNonIntegratedVirtualDocumentsCount(resultat
+				.getNonIntegratedVirtualDocumentsCount());
+		// pour le moment pas de traitement sur les documents virtuels
+		resultatsType
+				.setNonIntegratedVirtualDocuments(new ListeDocumentsVirtuelsType());
+
+		List<UntypedDocumentOnError> untypedsDError = resultat
+				.getNonIntegratedDocuments();
+		if (untypedsDError == null) {
+			untypedsDError = new ArrayList<UntypedDocumentOnError>();
+		}
+		// Mapping des objets metiers UntypedDocumentOnError en objet JAXB
+		ListeNonIntegratedDocumentsType listNIDType = mapToNonIntegratedDType(untypedsDError);
+		resultatsType.setNonIntegratedDocuments(listNIDType);
+
+		resultatsType.setErreurBloquanteTraitement(null);
+
+		resultatsXmlS.writeResultatsXml(resultatsType, new File(ecdeDirectory
+				+ FILE_SEPARATOR + "resultats.xml"));
+
+		// creation du fichier drapeau.
+		createFlag(ecdeDirectory);
+	}
+
+	// Mapping des objets metiers UntypedDocumentOnError en objet JAXB
+	private ListeNonIntegratedDocumentsType mapToNonIntegratedDType(
+			List<UntypedDocumentOnError> untypedDError) {
+
+		ListeNonIntegratedDocumentsType nonIntegratedDocs = new ListeNonIntegratedDocumentsType();
+		for (UntypedDocumentOnError untypedDocumentOnError : untypedDError) {
+			NonIntegratedDocumentType nonIntegratedDoc = new NonIntegratedDocumentType();
+			// affectations des erreurs
+			List<MetadataError> metadataErrors = untypedDocumentOnError
+					.getErrors();
+			ListeErreurType erreursType = convertSaeErrors(metadataErrors);
+			nonIntegratedDoc.setErreurs(erreursType);
+			nonIntegratedDoc
+					.setObjetNumerique(affectObjetNumToUntypedDoc(untypedDocumentOnError));
+			nonIntegratedDocs.getNonIntegratedDocument().add(nonIntegratedDoc);
+		}
+
+		return nonIntegratedDocs;
+	}
+
+	// convertion des SAEErrors en ErreurType
+	private ListeErreurType convertSaeErrors(List<MetadataError> metadataErrors) {
+		ListeErreurType erreursType = new ListeErreurType();
+		ErreurType erreur = new ErreurType();
+		if (metadataErrors != null) {
+			for (SAEError saeError : metadataErrors) {
+				erreur.setCode(saeError.getCode());
+				erreur.setLibelle(saeError.getMessage());
+				erreursType.getErreur().add(erreur);
+			}
+		}
+		return erreursType;
+	}
+
+	// affecter hashValeur, hashAlgo et cheminEtnomDuFichier a un
+	// untypedDocumentOnError
+	private FichierType affectObjetNumToUntypedDoc(
+			UntypedDocumentOnError udocOnError) {
+
+		FichierType fichierType = new FichierType();
+		fichierType.setCheminEtNomDuFichier(getCheminAbsolu(udocOnError
+				.getFilePath()));
+		return fichierType;
+	}
+
+	// recupération du chemin absolu a partir d'un chemin relatif.
+	private String getCheminAbsolu(String chemin) {
+
+		String partieAEfface = ecdeDirectory + FILE_SEPARATOR + DOCUMENTS
+				+ FILE_SEPARATOR;
+		return chemin.substring(partieAEfface.length());
+
+	}
+
+	/**
+	 * Création du fichier flag pour signaler la fin du traitement
+	 * 
+	 * @throws IOException
+	 */
+	private void createFlag(String ecdeDirectory) throws IOException {
+		try {
+			File flag = new File(FilenameUtils.concat(ecdeDirectory,
+					"fin_traitement.flag"));
+			if (flag.exists()) {
+				boolean delete = flag.delete();
+				if (!delete) {
+					throw new EcdeRuntimeException(
+							"Erreur lors de la suppression du fichier flag!");
+				}
+			}
+			boolean create = flag.createNewFile();
+			if (!create) {
+				throw new EcdeRuntimeException(
+						"Erreur lors de l'ecriture du fichier flag!");
+			}
+		} catch (IOException except) {
+			throw new IOException("Erreur de création du fichier flag.", except);
+		}
+	}
 }
