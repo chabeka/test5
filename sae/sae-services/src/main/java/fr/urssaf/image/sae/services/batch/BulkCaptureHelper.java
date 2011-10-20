@@ -343,7 +343,8 @@ public class BulkCaptureHelper {
 		resultats.setInitialDocumentsCount(initialDocumentsCount);
 		resultats.setEcdeDirectory(sommaire.getEcdeDirectory());
 		resultats.setNonIntegratedVirtualDocumentsCount(0);
-		resultats.setNonIntegratedDocuments(untypedDocumentsOnError);
+		resultats.setNonIntegratedDocuments(buildNoIntegratedDocuments(
+				sommaire, untypedDocumentsOnError));
 		resultats.setNonIntegratedDocumentsCount(initialDocumentsCount);
 		return resultats;
 	}
@@ -362,5 +363,130 @@ public class BulkCaptureHelper {
 	public final void setUntypedDocumentsOnError(
 			List<UntypedDocumentOnError> untypedDocumentsOnError) {
 		this.untypedDocumentsOnError = untypedDocumentsOnError;
+	}
+
+	/**
+	 * Permet de construire la liste des documents non intégrés suivant l'ordre
+	 * des dit documents du sommaire
+	 * 
+	 * @param sommaire
+	 *            : Le sommaire.
+	 * @param untypedDocumentsOnError
+	 *            : Le liste des documents.
+	 * @return
+	 */
+	private List<UntypedDocumentOnError> buildNoIntegratedDocuments(
+			final Sommaire sommaire,
+			final List<UntypedDocumentOnError> untypedDocumentsOnError) {
+		List<UntypedDocumentOnError> documentsOnError = new ArrayList<UntypedDocumentOnError>();
+		final List<UntypedDocument> untypedDocuments = sommaire.getDocuments();
+		for (UntypedDocument doc : untypedDocuments) {
+			UntypedDocumentOnError docOnError = findDocument(doc,
+					untypedDocumentsOnError);
+			if (docOnError == null) {
+				UntypedDocumentOnError newDocOnError = new UntypedDocumentOnError(
+						doc.getContent(), doc.getUMetadatas(), null);
+				newDocOnError.setFilePath(doc.getFilePath());
+				documentsOnError.add(newDocOnError);
+			} else {
+				documentsOnError.add(docOnError);
+			}
+		}
+
+		return documentsOnError;
+	}
+
+	/**
+	 * Permet de retrouver un document en erreur parmi la liste des documents en
+	 * erreurs
+	 * 
+	 * @param doc
+	 *            : Le document recherché
+	 * @param docsOnError
+	 *            : La liste des documents en erreurs
+	 * @return Le document en erreur
+	 */
+	private UntypedDocumentOnError findDocument(final UntypedDocument doc,
+			final List<UntypedDocumentOnError> docsOnError) {
+		UntypedDocumentOnError docFound = null;
+		for (UntypedDocumentOnError docOnError : docsOnError) {
+			if (compareDocument(doc, docOnError)) {
+				docFound = docOnError;
+				break;
+			}
+		}
+		return docFound;
+	}
+
+	/**
+	 * Permet de comparer deux liste d'objets de type {@link UntypedMetadata}
+	 * 
+	 * @param first
+	 *            : La première liste.
+	 * @param second
+	 *            : La deuxième liste.
+	 * @return True si les deux listes sont égale
+	 */
+	private boolean compareMetadatas(final List<UntypedMetadata> first,
+			final List<UntypedMetadata> second) {
+
+		if (first == null || second == null) {
+			return false;
+		}
+		if (first.size() != second.size()) {
+			return false;
+		}
+		return compareMetadataCodeAndValue(first, second);
+	}
+
+	/**
+	 * Permet de comparer deux liste de metadonnées.
+	 * 
+	 * @param first
+	 *            : La première liste.
+	 * @param second
+	 *            : La second liste.
+	 * @return True si les deux listes sont égaux.
+	 */
+	private boolean compareMetadataCodeAndValue(
+			final List<UntypedMetadata> first,
+			final List<UntypedMetadata> second) {
+		boolean find = true;
+		for (UntypedMetadata uMetadata : first) {
+			find = false;
+			for (UntypedMetadata vMetadata : second) {
+				if (uMetadata.getLongCode().equals(vMetadata.getLongCode())) {
+					if (uMetadata.getValue() == vMetadata.getValue()) {
+						find = true;
+						break;
+					}
+				}
+			}
+
+		}
+		return find;
+	}
+
+	/**
+	 * Permet de comparer un document de type UntypedDocument et un autre de
+	 * type UntypedDocumentOnError
+	 * 
+	 * @param doc
+	 *            : Le document de type UntypedDocument
+	 * @param docOnError
+	 *            : Le document de type UntypedDocumentOnError
+	 * @return True si les deux documents sont egaux.
+	 */
+	private boolean compareDocument(final UntypedDocument doc,
+			final UntypedDocumentOnError docOnError) {
+		boolean equal = true;
+
+		if ((!doc.getFilePath().equals(docOnError.getFilePath()))
+								|| (!compareMetadatas(doc.getUMetadatas(),
+						docOnError.getUMetadatas()))) {
+			equal = false;
+		}
+
+		return equal;
 	}
 }
