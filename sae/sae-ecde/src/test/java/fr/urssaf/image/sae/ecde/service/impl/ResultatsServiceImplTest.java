@@ -150,11 +150,11 @@ public class ResultatsServiceImplTest {
       List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
       metadatas.add(metadata);
       metadatas.add(metadata2);
-      MetadataError error = new MetadataError("testError", "doc2 en error","");
+      MetadataError error = new MetadataError("testError", "doc2 en error","doc2 en erreur");
       List<MetadataError> err = new ArrayList<MetadataError>();
       err.add(error);
       
-      MetadataError error2 = new MetadataError("testError2", "doc1 en error","");
+      MetadataError error2 = new MetadataError("testError2", "doc1 en error","doc1 en erreur");
       
       err.add(error2);
       

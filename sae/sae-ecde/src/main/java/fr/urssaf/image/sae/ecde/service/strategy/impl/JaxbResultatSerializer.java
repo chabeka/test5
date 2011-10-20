@@ -118,10 +118,10 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
 	// convertion des SAEErrors en ErreurType
 	private ListeErreurType convertSaeErrors(List<MetadataError> metadataErrors) {
 		ListeErreurType erreursType = new ListeErreurType();
-		ErreurType erreur = new ErreurType();
 		if (metadataErrors != null) {
 			for (SAEError saeError : metadataErrors) {
-				erreur.setCode(saeError.getCode());
+			   ErreurType erreur = new ErreurType();
+			   erreur.setCode(saeError.getCode());
 				erreur.setLibelle(saeError.getMessage());
 				erreursType.getErreur().add(erreur);
 			}
