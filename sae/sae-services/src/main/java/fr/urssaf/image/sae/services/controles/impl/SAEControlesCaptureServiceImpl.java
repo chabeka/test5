@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.services.controles.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,13 +101,13 @@ public class SAEControlesCaptureServiceImpl implements
       // pré-définit.
       if (!"SHA-1".equals(algoHashCode)) {
          throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-               "capture.hash.erreur", saeDocument.getFilePath()));
+               "capture.hash.erreur",  new File(saeDocument.getFilePath()).getName()));
       }
       // FIXME à partie de l'algorithme calculer le hashCode.
       if (!DigestUtils.shaHex(saeDocument.getContent()).equals(
             hashCodeValue.trim())) {
          throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-               "capture.hash.erreur", saeDocument.getFilePath()));
+               "capture.hash.erreur",  new File(saeDocument.getFilePath()).getName()));
       }
    }
 
@@ -119,7 +120,7 @@ public class SAEControlesCaptureServiceImpl implements
       if (untypedDocument.getContent() == null
             || untypedDocument.getContent().length == 0) {
          throw new EmptyDocumentEx(ResourceMessagesUtils.loadMessage(
-               "capture.fichier.vide", untypedDocument.getFilePath()));
+               "capture.fichier.vide", new File(untypedDocument.getFilePath()).getName()));
       }
 
    }
