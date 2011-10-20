@@ -286,7 +286,7 @@ public class RechercheTest {
      
    }
    
-   
+
    
    /**
     * @return : saeServiceSkeleton

@@ -57,17 +57,17 @@ public final class ObjectRechercheFactory {
 
       RechercheResponse response = new RechercheResponse();
       RechercheResponseType responseType = new RechercheResponseType();
-      response.setRechercheResponse(responseType);
-
+      
       ListeResultatRechercheType resultatsType = new ListeResultatRechercheType();
-      untypedDocuments.size();
+      
+      resultatsType.setResultat(new ResultatRechercheType[]{});
+      
       if (CollectionUtils.isNotEmpty(untypedDocuments)) {
          int taille = untypedDocuments.size();
          if (resultatTronque){
             taille = untypedDocuments.size() - 1;
          }
-         for(int i = 0; i< taille ; i++) {
-            //for (UntypedDocument storageDocument : untypedDocuments) {
+         for(int i = 0; i< taille ; i++) {            
                UntypedDocument storageDocument = untypedDocuments.get(i);
                ResultatRechercheType resultatRecherche = ObjectTypeFactory
                      .createResultatRechercheType();
@@ -90,10 +90,10 @@ public final class ObjectRechercheFactory {
                resultatsType.addResultat(resultatRecherche);
             }
 
-         responseType.setResultats(resultatsType);
       }
+      responseType.setResultats(resultatsType);
       responseType.setResultatTronque(resultatTronque);
-
+      response.setRechercheResponse(responseType);
       return response;
    }
 
