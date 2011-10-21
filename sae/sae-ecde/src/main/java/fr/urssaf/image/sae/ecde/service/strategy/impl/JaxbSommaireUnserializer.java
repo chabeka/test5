@@ -151,7 +151,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
 
             // test pour vérifier si le cheminEtNomDuFichier de l'objet
             // numérique existe
-            exist(untypedDoc, chemin);
+            exist(untypedDoc, chemin, chemEtNomFile);
             List<MetadonneeType> metaDataType = docType.getMetadonnees().getMetadonnee();
             List<UntypedMetadata> listUM = new ArrayList<UntypedMetadata>();
             for (MetadonneeType metadonneeType : metaDataType) {
@@ -190,12 +190,13 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
     * @throws IOException
     * @throws FileNotFoundException
     */
-   private File exists(String chemin) throws IOException {
+   private File exists(String chemin, String cheminEtNomFichier) throws IOException {
       File fichier = new File(chemin);
+      fichier.getName();
       // verification si objetNumerique du sommaire represente un document
       if (!fichier.isFile()) {
          throw new IOException(MessageRessourcesUtils.recupererMessage(
-               "objetnum.notexist.error", chemin));
+               "objetnum.notexist.error", cheminEtNomFichier));
       }
       return fichier;
    }
@@ -206,21 +207,20 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
     * @throws IOException
     * 
     */
-   private void exist(UntypedDocument untypedDoc, String chemin)
+   private void exist(UntypedDocument untypedDoc, String chemin, String cheminEtNomFichier)
          throws IOException {
 
       File fichier = new File(chemin);
-
       // verification si objetNumerique du sommaire represente un document
       // si oui alors remplissement du untypedDocument
       if (fichier.isFile()) {
          untypedDoc.setFilePath(chemin);
          untypedDoc
-               .setContent(FileUtils.readFileToByteArray(exists(chemin)));
+               .setContent(FileUtils.readFileToByteArray(exists(chemin, cheminEtNomFichier)));
       }// sinon rejeté une exception
       else {
          throw new IOException(MessageRessourcesUtils.recupererMessage(
-               "objetnum.notexist.error", chemin));
+               "objetnum.notexist.error", cheminEtNomFichier));
       }
    }
 
