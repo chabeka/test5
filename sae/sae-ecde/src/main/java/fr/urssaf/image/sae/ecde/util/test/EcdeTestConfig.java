@@ -24,6 +24,9 @@ public class EcdeTestConfig {
     */
    public static final String DNS_ECDE_TU = "ecde.testunit.recouv";
    
+   // On construit un nom unique de répertoire pour le point
+   // de montage d'un ECDE pour les tests unitaires
+   public static final String ECDE_UNIQUE = EcdeTestTools.getTemporaryFileName("ecde", null);
    
    /**
     * Mise en place d'une configuration ECDE pour les tests unitaires.<br>
@@ -38,13 +41,9 @@ public class EcdeTestConfig {
       // On récupère le répertoire temporaire de l'OS
       File repTempOs = SystemUtils.getJavaIoTmpDir();
       
-      // On construit un nom unique de répertoire pour le point
-      // de montage d'un ECDE pour les tests unitaires
-      String ecdeUniqueRepName = EcdeTestTools.getTemporaryFileName("ecde", null);
-      
       // On construit le chemin complet du point de montage de l'ECDE
       // pour les tests unitaires
-      File pointMontageEcde = new File(repTempOs,ecdeUniqueRepName);
+      File pointMontageEcde = new File(repTempOs,ECDE_UNIQUE);
       
       // On créé le répertoire
       try {
@@ -66,6 +65,10 @@ public class EcdeTestConfig {
             DNS_ECDE_TU, 
             pointMontageEcde);
       
+      EcdeSource ecde4 = new EcdeSource(
+            "ecde.testunitaire.recouv", 
+            new File("C:\\ecdeTestTU\\"));
+      
       EcdeSource ecde2 = new EcdeSource(
             "ecde.cer69.recouv", 
             new File("/ecde/ecde_lyon"));
@@ -74,7 +77,7 @@ public class EcdeTestConfig {
             "ecde.bidon2.recouv", 
             new File("/ecde/ECDE_PARIS/"));
       
-      EcdeSource[] source = new EcdeSource[]{ecde1, ecde2, ecde3};
+      EcdeSource[] source = new EcdeSource[]{ecde1, ecde2, ecde3, ecde4};
       ecdeSources.setSources(source);
       
       
