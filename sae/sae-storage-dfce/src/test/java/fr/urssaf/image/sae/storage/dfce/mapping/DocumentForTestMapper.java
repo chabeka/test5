@@ -71,6 +71,8 @@ public final class DocumentForTestMapper {
             metadatas.add(new StorageMetadata(codeMetaData, value));
                }
       storageDocument.setMetadatas(metadatas);
+      storageDocument.setFilePath(new File(saeDocument.getBase()
+            .getFilePath()).toString());
       storageDocument.setContent(Files.toByteArray(new File(saeDocument.getBase()
             .getFilePath())));
       return storageDocument;
