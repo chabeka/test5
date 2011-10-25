@@ -77,20 +77,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
          SAEControlesCaptureService saeControlesCaptureService) {
       this.saeControlesCaptureService = saeControlesCaptureService;
    }
-
-   /**
-    * Test de la méthode
-    * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkUntypedDocument(fr.urssaf.image.sae.bo.model.untyped.UntypedDocument)}
-    * .
-    */
-   @Test(expected = EmptyDocumentEx.class)
-   public final void checkEmptyUntypedDocumentFailed() throws EmptyDocumentEx,
-         SAECaptureServiceEx, IOException, ParseException {
-      UntypedDocument untypedDocument = getUntypedDocumentMockData();
-      untypedDocument.setContent(null);
-      saeControlesCaptureService.checkUntypedDocument(untypedDocument);
-   }
-
+   
    /**
     * Test de la méthode
     * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkUntypedMetadata(fr.urssaf.image.sae.bo.model.untyped.UntypedDocument)}
