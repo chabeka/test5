@@ -102,7 +102,7 @@ public class SAEConsultationServiceTest {
       metadatas.add(new StorageMetadata("dfc", DateUtils.parseDate(
             "2012-01-01", parsePatterns)));
 
-      return testProvider.captureDocument(content, metadatas);
+      return testProvider.captureDocument(content, metadatas,srcFile);
    }
 
    @Test

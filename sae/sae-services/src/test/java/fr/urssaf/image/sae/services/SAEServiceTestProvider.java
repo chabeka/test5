@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.services;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -143,12 +144,13 @@ public class SAEServiceTestProvider {
 	 *             une exception est levée lors de l'ouverture de la connexion
 	 */
 	public final UUID captureDocument(byte[] content,
-			List<StorageMetadata> metadatas) throws ConnectionServiceEx {
+			List<StorageMetadata> metadatas,File docFile) throws ConnectionServiceEx {
 
 		try {
 
 			serviceProvider.openConnexion();
 			StorageDocument doc = new StorageDocument(metadatas, content);
+			doc.setFilePath(docFile.toString());
 
 			return serviceProvider.getStorageDocumentService().insertStorageDocument(doc).getUuid();
 		} catch (InsertionServiceEx e) {
