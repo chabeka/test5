@@ -36,9 +36,9 @@ public class InsertionServiceValidation {
       Validate.notNull(storageDocument, StorageMessageHandler.getMessage(CODE_ERROR,
             "insertion.document.required", "insertion.impact",
             "insertion.action"));
-      Validate.notNull(storageDocument.getContent(), StorageMessageHandler.getMessage(
-            CODE_ERROR, "insertion.document.required", "insertion.impact",
-            "insertion.action"));
+//      Validate.notNull(storageDocument.getContent(), StorageMessageHandler.getMessage(
+//            CODE_ERROR, "insertion.document.required", "insertion.impact",
+//            "insertion.action"));
    }
 
    /**

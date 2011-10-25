@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -151,8 +153,10 @@ public class InsertionServiceImpl extends AbstractServices implements
       try {
          Document docDfce = BeanMapper.storageDocumentToDfceDocument(
                getBaseDFCE(), storageDocument);
+         //ici on récupère le chemin du fichier.
+        
          final InputStream docContent = new ByteArrayInputStream(
-               storageDocument.getContent());
+        		 FileUtils.readFileToByteArray(new File (storageDocument.getFilePath())));
          final String[] file = BeanMapper.findFileNameAndExtension(
                storageDocument, StorageTechnicalMetadatas.NOM_FICHIER
                      .getShortCode().toString());
