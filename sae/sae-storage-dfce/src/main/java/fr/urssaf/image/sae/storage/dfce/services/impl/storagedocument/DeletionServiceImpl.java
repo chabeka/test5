@@ -80,7 +80,7 @@ public class DeletionServiceImpl extends AbstractServices implements
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	@ServiceChecked
 	public final void rollBack(final String processId) throws DeletionServiceEx {
-		final String lucene = String.format("%s:%s", "itm", processId);
+		final String lucene = String.format("%s:%s", "iti", processId);
 		StorageDocuments storageDocuments;
 		try {
 			storageDocuments = searchingService
