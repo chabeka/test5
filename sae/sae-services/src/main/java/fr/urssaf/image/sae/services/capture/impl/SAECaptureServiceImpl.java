@@ -1,12 +1,10 @@
 package fr.urssaf.image.sae.services.capture.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -128,17 +126,11 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       // TODO vérification que le fichier extrait de l'url ECDE existe bien!
 
       // conversion du fichier extrait de l'url ECDE en bytes[]
-      byte[] fileContent;
-      try {
-         fileContent = FileUtils.readFileToByteArray(ecdeFile);
-      } catch (IOException e) {
-         throw new SAECaptureServiceEx(e);
-      }
       // instanciation de la classe UntypedDocument avec la liste des
       // métadonnées et le contenu du document à archiver
-      UntypedDocument untypedDocument = new UntypedDocument(fileContent,
+      UntypedDocument untypedDocument = new UntypedDocument(null,
             metadatas);
-      untypedDocument.setFilePath(ecdeFile.getName());
+      untypedDocument.setFilePath(ecdeFile.toString());
       return untypedDocument;
    }
    /**

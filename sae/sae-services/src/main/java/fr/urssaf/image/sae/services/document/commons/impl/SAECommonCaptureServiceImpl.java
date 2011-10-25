@@ -66,7 +66,8 @@ public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
       SAEDocument saeDocument = null;
       StorageDocument storageDocument = null;
       try {
-         cntrolesService.checkUntypedDocument(untypedDocument);
+    	  //on ne contrôle pas la taille du document
+       cntrolesService.checkUntypedDocument(untypedDocument);
          cntrolesService.checkUntypedMetadata(untypedDocument);
          saeDocument = mappingService
                .untypedDocumentToSaeDocument(untypedDocument);
