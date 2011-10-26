@@ -153,6 +153,8 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
 			ResultatsType resultats = objFactory.createResultatsType();
 			String chemEtNomFile = StringUtils.trim(docType.getObjetNumerique()
 					.getCheminEtNomDuFichier());
+			chemEtNomFile = StringUtils.replace(chemEtNomFile, "/", SEPARATOR_FILE);
+			chemEtNomFile = StringUtils.replace(chemEtNomFile, "\\", SEPARATOR_FILE);
 			try {
 				chemin = repDocs.concat(SEPARATOR_FILE).concat(chemEtNomFile);
 
@@ -175,8 +177,8 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
 				erreurType.setCode("SAE-EC-SOM002");
 				erreurType.setLibelle(MessageRessourcesUtils
 						.recupererMessage("ecde.invaliddoc.error",
-								chemEtNomFile).concat("\n")
-						.concat(" Détails : ").concat("\n")
+								chemEtNomFile)
+						.concat(" Détails : ")
 						.concat(except.getMessage()));
 				resultats = affectResultatsInvalidDoc(sommaireType, chemin,
 						erreurType, ecdeDirectory);
@@ -185,7 +187,7 @@ public class JaxbSommaireUnserializer implements SommaireUnserializerStrategy {
 				createFlag(ecdeDirectory);
 				throw new EcdeInvalidDocumentException(MessageRessourcesUtils
 						.recupererMessage("ecde.invaliddoc.error", chemin)
-						.concat("Détails : ").concat(except.getMessage()),
+						.concat(" Détails : ").concat(except.getMessage()),
 						except);
 			}
 		}

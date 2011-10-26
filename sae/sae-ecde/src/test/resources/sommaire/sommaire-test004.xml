@@ -6,9 +6,9 @@
    xsi:schemaLocation="http://www.cirtil.fr/sae/sommaireXml ..\sommaire.xsd">
 
    <!-- Type de traitement de masse -->
-   <som:batchMode>TOUT</som:batchMode>
+   <som:batchMode>TOUT_OU_RIEN</som:batchMode>
    
-   <!-- Date de cr�ation du sommaire.xml -->
+   <!-- Date de création du sommaire.xml -->
    <som:dateCreation>2011-07-12</som:dateCreation>
    
    <!-- Description du traitement -->
@@ -45,5 +45,7 @@
       </somres:document>
       
    </som:documents>
+   <som:documentsVirtuels>
+   </som:documentsVirtuels>
    
 </som:sommaire>

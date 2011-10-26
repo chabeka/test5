@@ -110,8 +110,7 @@ public class SommaireServiceImplTest {
       URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
       createSom("/sommaire/sommaire-test001.xml");
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
-      assertEquals("Les fichiers n'ont pas été retrouvés!", "TOUT_OU_RIEN", sommaire.getBatchMode());
+      sommaireService.fetchSommaireByUri(uri);
    }
 // Le test doit echouer car notre objet numérique a un fichier qui n'existe pas d'ou fichier introuvable
 // Le fichier resultats.xml est généré mais contenant un message d'erreur.
@@ -121,8 +120,7 @@ public class SommaireServiceImplTest {
       URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
       createAbo();
       createSom("/sommaire/sommaire-test001Bis.xml");
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
-      assertEquals("Le fichier n'a pas été retrouvé!", "TOUT_OU_RIEN", sommaire.getBatchMode());
+      sommaireService.fetchSommaireByUri(uri);
    }
    
    
@@ -154,8 +152,7 @@ public class SommaireServiceImplTest {
       createAbo();
       createSom("/sommaire/sommaire-test001BM.xml");
       createFileTemp();
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
-      assertEquals("Le batch mode retournée n'est pas correct!", "TOUT_OU_RIEN", sommaire.getBatchMode());
+      sommaireService.fetchSommaireByUri(uri);
    }
    
 // Le sommaire XML ne respecte pas la syntaxe XSD
@@ -166,8 +163,27 @@ public class SommaireServiceImplTest {
       createAbo();
       createSom("/sommaire/sommaire-test001Bis.xml");
       createFileTemp();
-      Sommaire sommaire = sommaireService.fetchSommaireByUri(uri);
-      assertEquals("Le fichier ne respecte pas la structure XSD", "TOUT_OU_RIEN", sommaire.getBatchMode());
+      sommaireService.fetchSommaireByUri(uri);
+   }
+   
+// Le sommaire XML contient un objet numérique avec une syntaxe de fichier en "\" -- séparateur de fichier Unix
+   @Test
+   public void fetchSommaireByUriSuccessFileObjetNum() throws EcdeGeneralException, URISyntaxException, IOException  {
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
+      createAbo();
+      createSom("/sommaire/sommaire-test004.xml");
+      createFileTemp();
+      sommaireService.fetchSommaireByUri(uri);
+   }
+   
+   // Resultats.xml crée mais avec trois fichiers en erreur
+   @Test(expected = EcdeBadSummaryException.class)
+   public void fetchSommaireByUriSuccessFilesOnError() throws EcdeGeneralException, URISyntaxException, IOException  {
+      URI uri = new URI("ecde", "ecde.testunit.recouv", getSommaire(), null);
+      createAbo();
+      createSom("/sommaire/sommaire-test007.xml");
+      createFileTemp();
+      sommaireService.fetchSommaireByUri(uri);
    }
 
    /**

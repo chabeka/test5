@@ -231,9 +231,6 @@ public class ResultatsServiceImplTest {
       
       initialiseResultatsBatchModeError();
       resultatService.persistResultat(resultat);
-      
-      File resultatXml = new File(repertoireFinal, "resultats.xml");
-      assertEquals("Le BATCH_MODE ne vaut pas TOUT_OU_RIEN", true, resultatXml.exists());
    }
    
    
