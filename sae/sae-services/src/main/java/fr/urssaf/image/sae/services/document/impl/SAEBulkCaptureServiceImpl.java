@@ -9,6 +9,7 @@ import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJob;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJobWrapper;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
+import fr.urssaf.image.sae.services.exception.capture.ServerBusyEx;
 
 /**
  * Fournit l'implémentation des services pour la capture.<BR />
@@ -46,7 +47,14 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 	public final void bulkCapture(String urlEcde) {
 		BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(urlEcde,
 				ecdeServices, bulkCaptureJob);
-		taskExecutor.execute(bulkWrapper);
+		// Ici on regarde si le thread a fini sa tâche avant d'en lancer une
+		// autre
+		if (taskExecutor.getActiveCount() == 0) {
+			taskExecutor.execute(bulkWrapper);
+		} else {
+			//sinon on lève une exception
+			throw new ServerBusyEx();
+		}
 
 	}
 
@@ -55,7 +63,7 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 			@Qualifier("ecdeServices") final EcdeServices ecdeServices,
 			@Qualifier("bulkCaptureJob") final BulkCaptureJob bulkCaptureJob,
 			final ThreadPoolTaskExecutor taskExecutor) {
-		
+
 		this.ecdeServices = ecdeServices;
 		this.bulkCaptureJob = bulkCaptureJob;
 		this.taskExecutor = taskExecutor;
