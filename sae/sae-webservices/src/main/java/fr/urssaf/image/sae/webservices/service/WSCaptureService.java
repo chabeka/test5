@@ -39,6 +39,7 @@ public interface WSCaptureService {
     * @param request
     *           Un objet qui contient l'URI du sommaire.xml
     * @return une objet de type {@link ArchivageMasseResponse}.
+ * @throws CaptureAxisFault Une exception est levée lors de l'archivage en masse.
     */
-   ArchivageMasseResponse archivageEnMasse(ArchivageMasse request);
+   ArchivageMasseResponse archivageEnMasse(ArchivageMasse request) throws CaptureAxisFault;
 }
