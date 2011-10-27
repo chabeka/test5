@@ -52,12 +52,22 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 		if (taskExecutor.getActiveCount() == 0) {
 			taskExecutor.execute(bulkWrapper);
 		} else {
-			//sinon on lève une exception
+			// sinon on lève une exception
 			throw new ServerBusyEx();
 		}
 
 	}
 
+	/**
+	 * Construit un objet de type {@link SAEBulkCaptureService}
+	 * 
+	 * @param ecdeServices
+	 *            : Le service Ecde
+	 * @param bulkCaptureJob
+	 *            : Le job de l'archivage en masse.
+	 * @param taskExecutor
+	 *            : Le pool de threads.
+	 */
 	@Autowired
 	public SAEBulkCaptureServiceImpl(
 			@Qualifier("ecdeServices") final EcdeServices ecdeServices,
