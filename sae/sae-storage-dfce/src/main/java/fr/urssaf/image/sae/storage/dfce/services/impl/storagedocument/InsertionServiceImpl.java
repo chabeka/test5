@@ -28,6 +28,8 @@ import fr.urssaf.image.sae.storage.dfce.model.StorageTechnicalMetadatas;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentOnError;
@@ -53,7 +55,9 @@ public class InsertionServiceImpl extends AbstractServices implements
    @Autowired
    @Qualifier("deletionService")
    private DeletionService deletionService;
-
+   private int jmxStorageIndex;
+	private int totalDocument;
+	private JmxIndicator indicator;
    /**
     * @return : Le service de suppression
     */
@@ -70,6 +74,21 @@ public class InsertionServiceImpl extends AbstractServices implements
    }
 
    /**
+	 * @param indicator
+	 *            : Les indicateurs de l'archivage de masse.
+	 */
+	public final void setIndicator(final JmxIndicator indicator) {
+		this.indicator = indicator;
+	}
+
+	/**
+	 * @return Les indicateurs de l'archivage de masse.
+	 */
+	public final JmxIndicator getIndicator() {
+		return indicator;
+	}
+
+   /**
     * {@inheritDoc}
     * 
     * @throws InsertionServiceEx
@@ -83,13 +102,23 @@ public class InsertionServiceImpl extends AbstractServices implements
          throws InsertionServiceEx {
       final List<StorageDocument> storageDocDone = new ArrayList<StorageDocument>();
       final List<StorageDocumentOnError> storageDocFailed = new ArrayList<StorageDocumentOnError>();
-
+      jmxStorageIndex = 0;
+		totalDocument = 0;
+		if (storageDocuments != null
+				&& storageDocuments.getAllStorageDocuments() != null) {
+			totalDocument = storageDocuments.getAllStorageDocuments().size();
+		}
+		indicator.setJmxCountDocument(totalDocument);
+		indicator.setJmxStorageIndex(jmxStorageIndex);
+		indicator.setJmxTreatmentState(BulkProgress.INSERTION_DOCUMENTS);
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
          try {
             storageDocument.setUuid(insertStorageDocument(storageDocument)
                   .getUuid());
             storageDocDone.add(storageDocument);
+            jmxStorageIndex++;
+			indicator.setJmxStorageIndex(jmxStorageIndex);
          } catch (InsertionServiceEx insertExcp) {
             if (storageDocument != null) {
                StorageDocumentOnError storageDocumentOnError = new StorageDocumentOnError(
@@ -123,11 +152,21 @@ public class InsertionServiceImpl extends AbstractServices implements
    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
    private void rollback(final List<StorageDocument> storageDocDone)
          throws InsertionServiceEx {
+	   jmxStorageIndex = 0;
+		totalDocument = 0;
+		if (storageDocDone != null) {
+			totalDocument = storageDocDone.size();
+		}
+		indicator.setJmxCountDocument(totalDocument);
+		indicator.setJmxStorageIndex(jmxStorageIndex);
+		indicator.setJmxTreatmentState(BulkProgress.DELETION_DOCUMENTS);
       for (StorageDocument strDocument : Utils.nullSafeIterable(storageDocDone)) {
          try {
             deletionService.setDeletionServiceParameter(getDfceService());
             deletionService.deleteStorageDocument(new UUIDCriteria(strDocument
                   .getUuid(), null));
+            jmxStorageIndex++;
+			indicator.setJmxStorageIndex(jmxStorageIndex);
          } catch (DeletionServiceEx delSerEx) {
             // FIXME: lever une exception plus parlante pour l'appelant
             // (par exemple : AllOrNothingRollbackException).
@@ -197,5 +236,48 @@ public class InsertionServiceImpl extends AbstractServices implements
       setDfceService((ServiceProvider) parameter);
 
    }
+   /**
+	 * @return L'indice du document stocké.
+	 */
+	public final int getJmxStorageIndex() {
+		return jmxStorageIndex;
+	}
 
+	/**
+	 * @param jmxStorageIndex
+	 *            : Indicateur jmx qui permet de retourner l'indice du document
+	 *            stocké.
+	 */
+	public final void setJmxStorageIndex(int jmxStorageIndex) {
+		this.jmxStorageIndex = jmxStorageIndex;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public JmxIndicator retrieveJmxStorageIndicator() {
+		return indicator;
+	}
+
+	/**
+	 * @param totalDocument
+	 *            : Le nombre total de document à insérer.
+	 */
+	public void setTotalDocument(int totalDocument) {
+		this.totalDocument = totalDocument;
+	}
+
+	/**
+	 * @return Le nombre total de document à insérer.
+	 */
+	public int getTotalDocument() {
+		return totalDocument;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setJmxIndicator(JmxIndicator indicator) {
+		setIndicator(indicator);
+	}
 }

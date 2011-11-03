@@ -15,6 +15,7 @@ import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -114,7 +115,8 @@ public class StorageDocumentServiceImpl extends AbstractServiceProvider
 	 */
 
 	public final StorageDocuments searchStorageDocumentByLuceneCriteria(
-			final LuceneCriteria luceneCriteria) throws SearchingServiceEx, QueryParseServiceEx {
+			final LuceneCriteria luceneCriteria) throws SearchingServiceEx,
+			QueryParseServiceEx {
 		searchingService.setSearchingServiceParameter(getDfceService());
 		return searchingService
 				.searchStorageDocumentByLuceneCriteria(luceneCriteria);
@@ -237,5 +239,22 @@ public class StorageDocumentServiceImpl extends AbstractServiceProvider
 	 */
 	public final <T> void setStorageDocumentServiceParameter(final T parameter) {
 		setDfceService((ServiceProvider) parameter);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public JmxIndicator retrieveJmxStorageIndicator() {
+		return insertionService.retrieveJmxStorageIndicator();
+	}
+
+	
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setJmxIndicator(JmxIndicator indicator) {
+		insertionService.setJmxIndicator(indicator);
+		
 	}
 }
