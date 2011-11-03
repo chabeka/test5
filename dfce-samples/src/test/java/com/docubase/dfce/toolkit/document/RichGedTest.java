@@ -25,7 +25,6 @@ import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.ChainedFilter.ChainedFilterOperator;
 import net.docubase.toolkit.model.search.SearchResult;
 import net.docubase.toolkit.service.ged.SearchService.DateFormat;
-import net.docubase.toolkit.service.ged.SearchService.MetaData;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -33,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import com.docubase.dfce.commons.indexation.SystemFieldName;
 import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
@@ -386,9 +386,10 @@ public class RichGedTest extends AbstractTestCaseCreateAndPrepareBase {
 	 * On recherche également par cet UUIDFourni Comme c'est un champs
 	 * statique du tag c'est dans LucRef.
 	 */
+
 	docs = serviceProvider
 		.getSearchService()
-		.search(MetaData.UUID.getFormattedName() + ":"
+		.search(SystemFieldName.SM_UUID.getFormattedName() + ":"
 			+ uuidFourni.toString(), 5, base).getDocuments();
 	assertTrue(docs != null && docs.size() == 1);
 	doc = docs.get(0);

@@ -33,7 +33,7 @@ public class DocumentEventLogTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Before
     public void setUpEach() throws FileNotFoundException {
-	file = TestUtils.getFile("48Pages.pdf");
+	file = TestUtils.getFile("48pages.pdf");
 	inputStream = new FileInputStream(file);
     }
 

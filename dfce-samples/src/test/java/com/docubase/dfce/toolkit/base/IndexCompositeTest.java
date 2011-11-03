@@ -95,13 +95,12 @@ public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	assertNotNull(compositeIndex);
 
-	String query = category1.getFormattedName()
-		+ category2.getFormattedName() + ":TestComposite10Joker10";
+	String query = category1.getFormattedName() + ":TestComposite10 AND "
+		+ category2.getFormattedName() + ":Joker10";
 
 	SearchResult search = serviceProvider.getSearchService().search(query,
 		10000, base);
 	assertEquals(1, search.getTotalHits());
-
     }
 
 }

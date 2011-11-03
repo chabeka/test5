@@ -33,7 +33,7 @@ public class ExtractDocumentFileTest extends
 		.createDocumentTag(base);
 	document.addCriterion(base.getBaseCategory(catNames[0]), "testExtract");
 
-	File file = TestUtils.getFile("48Pages.pdf");
+	File file = TestUtils.getFile("48pages.pdf");
 
 	Document documentStored = serviceProvider.getStoreService()
 		.storeDocument(document,

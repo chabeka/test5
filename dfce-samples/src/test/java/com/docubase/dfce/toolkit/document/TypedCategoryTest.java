@@ -15,6 +15,7 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.document.impl.DocumentImpl;
 import net.docubase.toolkit.service.ged.SearchService.DateFormat;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
@@ -93,6 +94,7 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testTypedDate() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
+	// Type DATE
 	GregorianCalendar calendar = new GregorianCalendar(2010, 12, 24);
 	calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
 	Date currDate = calendar.getTime();
@@ -114,7 +116,8 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 	assertEquals(0, searchLucene(c6FName + ":1975-01-01", 5));
 	Criterion dateCriterion = storeDoc.getFirstCriterion(dateBaseCategory);
 
-	assertEquals(currDate, dateCriterion.getWord());
+	assertEquals((new DateTime(currDate.getTime())).toDateMidnight()
+		.toDate(), dateCriterion.getWord());
 
 	assertCriterionsEquals(document, storeDoc);
 
@@ -176,8 +179,8 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 	Document storeDoc = storeDocument(document,
 		TestUtils.getFile("doc1.pdf"), true);
 
-	String query = "(" + booleanFN + ":true OR " + integerFN + ":10"
-		+ " OR " + decimalFN + ":3.14 AND " + dateTimeFN + ":"
+	String query = "((" + booleanFN + ":true OR " + integerFN + ":10"
+		+ " OR " + decimalFN + ":3.14) AND " + dateTimeFN + ":"
 		+ strDateTime + ")";
 
 	assertEquals(1, searchLucene(query, 10));

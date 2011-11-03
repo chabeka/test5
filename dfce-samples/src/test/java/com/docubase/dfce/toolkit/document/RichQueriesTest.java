@@ -100,8 +100,7 @@ public class RichQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
     public void testExceededSearchLimit() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
 	String query = c1.getFormattedName() + ":adulte";
-	serviceProvider.getSearchService().search(query, 100, 0, base, null,
-		50000);
+	serviceProvider.getSearchService().search(query, 100, 0, base, null, 5);
     }
 
     @Test

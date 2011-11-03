@@ -106,6 +106,26 @@ public class CTRL54_2Test extends AbstractTestBase {
     }
 
     @Test
+    public void testSimpleRange() throws ExceededSearchLimitException,
+	    FrozenDocumentException, SearchQueryParseException {
+
+	// Check that document have been properly stored in base1 and base2.
+	SearchResult search = serviceProvider.getSearchService().search(
+		name.getFormattedName() + ":[name000 TO name019]", 200, base1);
+	assertEquals(20, search.getTotalHits());
+    }
+
+    @Test
+    public void testSimpleStar() throws ExceededSearchLimitException,
+	    FrozenDocumentException, SearchQueryParseException {
+
+	// Check that document have been properly stored in base1 and base2.
+	SearchResult search = serviceProvider.getSearchService().search(
+		name.getFormattedName() + ":name*", 200, base1);
+	assertEquals(20, search.getTotalHits());
+    }
+
+    @Test
     public void testDeleteAll() throws TagControlException,
 	    ExceededSearchLimitException, FrozenDocumentException,
 	    SearchQueryParseException {

@@ -377,10 +377,8 @@ public class SearchSyntaxTest extends AbstractTestBase {
     public void testPlus() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
 	SearchResult searchResult = serviceProvider.getSearchService().search(
-		"rnd:2.2.3.2.2 + rnd:2.2.3.2.1", 100, searchSyntaxTestBase);
-	assertEquals(1, searchResult.getTotalHits());
-	assertEquals(DOC2_NAME, searchResult.getDocuments().get(0)
-		.getFilename());
+		"rnd:2.2.3.2.2 OR + rnd:2.2.3.2.1", 100, searchSyntaxTestBase);
+	assertEquals(2, searchResult.getTotalHits());
     }
 
     // ici, on préfixe les deux termes d'un '+', aucun document ne comporte les

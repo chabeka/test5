@@ -28,21 +28,26 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
     // trying to run system events clearing job on events that haven't
     // been archived yet -> Exception
     @Test(expected = UnsupportedOperationException.class)
-    public void testClearSystemEventsNotArchived() {
+    public void testClearSystemEventsNotArchived() throws InterruptedException {
 	RMSystemEvent rmSystemEvent = ToolkitFactory.getInstance()
 		.createRMSystemEvent();
 	rmSystemEvent.setEventDescription("eventDescription");
 	rmSystemEvent.setUsername("username");
 	rmSystemEvent = recordManagerService
 		.createCustomSystemEventLog(rmSystemEvent);
-
-	archiveService.clearSystemEventsTo(rmSystemEvent.getEventDate());
+	Thread.sleep(2000);
+	calendar = Calendar.getInstance();
+	calendar.add(Calendar.MILLISECOND, -500);
+	archiveService.clearSystemEventsTo(calendar.getTime());
     }
 
     // trying to run documents events clearing job on events that haven't
     // been archived yet -> Exception
+    @SuppressWarnings("static-access")
     @Test(expected = UnsupportedOperationException.class)
-    public void testClearDocumentEventsNotArchived() {
+    public void testClearDocumentEventsNotArchived()
+	    throws InterruptedException {
+	Thread.currentThread().sleep(1000);
 	RMDocEvent rmDocEvent = ToolkitFactory.getInstance().createRMDocEvent();
 	rmDocEvent.setEventType(DocEventLogType.DELETE_DOCUMENT);
 	rmDocEvent.setUsername("username");
@@ -50,11 +55,14 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 	rmDocEvent = recordManagerService
 		.createCustomDocumentEventLog(rmDocEvent);
 
+	Thread.sleep(1000);
 	archiveService.clearDocumentEventsTo(rmDocEvent.getEventDate());
     }
 
+    @SuppressWarnings("static-access")
     @Test
-    public void testClearSystemEvents() {
+    public void testClearSystemEvents() throws InterruptedException {
+	Thread.currentThread().sleep(1000);
 	// archiving system events
 	archiveService.createNextSystemLogsArchive();
 	Date lastSucessfulRunDate = archiveService
@@ -69,8 +77,11 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 	assertTrue(systemEventLogsByDates.isEmpty());
     }
 
+    @SuppressWarnings("static-access")
     @Test
-    public void testClearDocumentEvents() {
+    public void testClearDocumentEvents() throws InterruptedException {
+	Thread.currentThread().sleep(1000);
+
 	// archiving document events
 	archiveService.createNextDocumentLogsArchive();
 	Date lastSucessfulRunDate = archiveService
@@ -86,8 +97,10 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 
     }
 
+    @SuppressWarnings("static-access")
     @Test
-    public void testClearNotAllSystemEvents() {
+    public void testClearNotAllSystemEvents() throws InterruptedException {
+	Thread.currentThread().sleep(1000);
 	// archiving documents events
 	archiveService.createNextSystemLogsArchive();
 
@@ -100,7 +113,7 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	Date lastSucessfulRunDate = archiveService
 		.getLastSucessfulSystemLogsArchiveRunDate();
-	calendar.add(Calendar.SECOND, -1);
+	calendar.add(Calendar.SECOND, -500);
 	lastSucessfulRunDate = calendar.getTime();
 
 	// clearing event to job's last success (previous to custom event)
@@ -119,8 +132,10 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 	assertTrue(eventFound);
     }
 
+    @SuppressWarnings("static-access")
     @Test
-    public void testClearNotAllDocumentEvents() {
+    public void testClearNotAllDocumentEvents() throws InterruptedException {
+	Thread.currentThread().sleep(1000);
 	// archiving documents events
 	archiveService.createNextDocumentLogsArchive();
 

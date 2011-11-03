@@ -25,12 +25,12 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.model.search.ChainedFilter;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.ged.SearchService.MetaData;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.commons.indexation.SystemFieldName;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 import com.docubase.dfce.toolkit.TestUtils;
 
@@ -47,6 +47,7 @@ public class MultibaseTest extends AbstractTestBase {
     private static final String BASE2 = "BASE 2";
 
     private static List<Document> storedDocs;
+    private static Map<String, String> catValues;
 
     @BeforeClass
     public static void setUp() {
@@ -62,6 +63,17 @@ public class MultibaseTest extends AbstractTestBase {
 		CATC, CATB });
 	base2 = createBase(BASE2, "Base no 2 - dom1", new String[] { CATA,
 		CATB, CATC, CATD });
+
+	/*
+	 * On stocke le "même" doc sur BASE1 et BASE2.
+	 */
+	catValues = new HashMap<String, String>();
+	catValues.put(CATA, "Docubase");
+	catValues.put(CATB, "EE35");
+	catValues.put(CATC, "500Euros");
+
+	storeDoc(base1, "doc1", catValues);
+	storeDoc(base2, "doc2", catValues);
     }
 
     /**
@@ -120,17 +132,6 @@ public class MultibaseTest extends AbstractTestBase {
 	    SearchQueryParseException {
 
 	/*
-	 * On stocke le "même" doc sur BASE1 et BASE2.
-	 */
-	Map<String, String> catValues = new HashMap<String, String>();
-	catValues.put(CATA, "Docubase");
-	catValues.put(CATB, "EE35");
-	catValues.put(CATC, "500Euros");
-
-	storeDoc(base1, "doc1", catValues);
-	storeDoc(base2, "doc2", catValues);
-
-	/*
 	 * On vérifie qu'on les trouve individuellement en requête monobase.
 	 */
 	Category categoryA = serviceProvider.getStorageAdministrationService()
@@ -183,10 +184,11 @@ public class MultibaseTest extends AbstractTestBase {
 	 * On remarque que l'on peut revenir en requête monobase en précisant
 	 * explicitement la base dans les filtres
 	 */
+
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
-		.addTermFilter(MetaData.BASEUUID.getFormattedName(),
+		.addTermFilter(SystemFieldName.SM_BASE_UUID.name(),
 			base1.getUuid().toString());
 	docs = searchMulti(base1, query, 50, 1, chainedFilter);
     }
@@ -197,8 +199,8 @@ public class MultibaseTest extends AbstractTestBase {
 	Category category = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATA);
 	String query = category.getFormattedName() + ":Docubase";
-	serviceProvider.getSearchService().multiBaseSearch(query, 100, null,
-		50000);
+	SearchResult multiBaseSearch = serviceProvider.getSearchService()
+		.multiBaseSearch(query, 100, null, 1);
     }
 
     private static void storeDoc(Base target, String title,
