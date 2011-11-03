@@ -1,0 +1,47 @@
+<configuration>
+   <property name="LOGS_TO_COLLECT_FOLDER" value="${catalina.base}/logs-to-collect" />
+   <timestamp key="byDay" datePattern="yyyyMMdd" />
+   <property resource="saeLogVariables.properties" />
+   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+         <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSk} %-5level %logger
+            [%X{log_contexte_uuid}] - %msg%n</pattern>
+      </encoder>
+   </appender>
+
+   <appender name="FILE"
+      class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOGS_FOLDER}/sae-application.${byDay}.log</file>
+      <rollingPolicy
+         class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+         <fileNamePattern>${LOGS_FOLDER}/sae-application.log.%i.log
+         </fileNamePattern>
+         <maxIndex>10</maxIndex>
+      </rollingPolicy>
+      <triggeringPolicy
+         class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>1MB</maxFileSize>
+      </triggeringPolicy>
+      <encoder>
+         <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger
+            [%X{log_contexte_uuid}] - %msg%n</pattern>
+      </encoder>
+   </appender>
+   <!-- Type de log : DEBUG, ERROR,INFO, OFF,TRACE, WARN,   -->
+   <!-- Log de la partie sea-service -->
+   <logger name="fr.urssaf.image.sae.services" level="DEBUG">
+      <appender-ref ref="FILE" />
+   </logger>
+   <!-- Log de la partie sea-webservices -->
+   <logger name="fr.urssaf.image.sae.webservices.service" level="DEBUG">
+      <appender-ref ref="FILE" />
+   </logger>
+   <logger name="fr.urssaf.image.sae.webservices.skeleton" level="DEBUG">
+      <appender-ref ref="FILE" />
+   </logger>
+   <!-- Log de la partie sea-storage-dfce -->
+   <logger name="fr.urssaf.image.sae.storage.dfce.services"
+      level="DEBUG">
+      <appender-ref ref="FILE" />
+   </logger>
+</configuration>
