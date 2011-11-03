@@ -24,10 +24,10 @@
    </developers>
    <properties>
       <dfce.serialization>1.0.0-alpha-02</dfce.serialization>
-		<dfce.toolkit.client>1.0.0-alpha-02</dfce.toolkit.client>
-		<dfce.toolkit.pojo>1.0.0-alpha-02</dfce.toolkit.pojo>
-		<dfce.pojo>1.0.0-alpha-02</dfce.pojo>
-		<dfce.toolkit.service>1.0.0-alpha-02</dfce.toolkit.service>
+      <dfce.toolkit.client>1.0.0-alpha-02</dfce.toolkit.client>
+      <dfce.toolkit.pojo>1.0.0-alpha-02</dfce.toolkit.pojo>
+      <dfce.pojo>1.0.0-alpha-02</dfce.pojo>
+      <dfce.toolkit.service>1.0.0-alpha-02</dfce.toolkit.service>
    </properties>
    <!-- Ajout des dependances -->
    <dependencies>
@@ -35,6 +35,13 @@
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-storage</artifactId>
          <version>0.0.2-SNAPSHOT</version>
+
+         <exclusions>
+            <exclusion>
+               <groupId>log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
       <dependency>
          <groupId>com.thoughtworks.xstream</groupId>
@@ -88,47 +95,37 @@
          <version>${junit.version}</version>
          <scope>test</scope>
       </dependency>
-      <!--
-         Dépendance au framework de traces Log4j, utilisé dans tous les
-         composants
-      -->
-      <dependency>
-         <groupId>log4j</groupId>
-         <artifactId>log4j</artifactId>
-         <version>${log4j.version}</version>
-      </dependency>
-
       <dependency>
          <groupId>net.jcip</groupId>
          <artifactId>jcip-annotations</artifactId>
          <version>1.0</version>
       </dependency>
-     <!-- DFCE dépendances -->
-		<dependency>
-			<groupId>net.docubase</groupId>
-			<artifactId>dfce-serialization</artifactId>
-			<version>${dfce.serialization}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.docubase</groupId>
-			<artifactId>dfce-pojo</artifactId>
-			<version>${dfce.pojo}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.docubase</groupId>
-			<artifactId>dfce-toolkit-client</artifactId>
-			<version>${dfce.toolkit.client}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.docubase</groupId>
-			<artifactId>dfce-toolkit-pojo</artifactId>
-			<version>${dfce.toolkit.pojo}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.docubase</groupId>
-			<artifactId>dfce-toolkit-service</artifactId>
-			<version>${dfce.toolkit.service}</version>
-		</dependency>
+      <!-- DFCE dépendances -->
+      <dependency>
+         <groupId>net.docubase</groupId>
+         <artifactId>dfce-serialization</artifactId>
+         <version>${dfce.serialization}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.docubase</groupId>
+         <artifactId>dfce-pojo</artifactId>
+         <version>${dfce.pojo}</version>
+      </dependency>
+      <dependency>
+         <groupId>net.docubase</groupId>
+         <artifactId>dfce-toolkit-client</artifactId>
+         <version>${dfce.toolkit.client}</version>
+      </dependency>
+      <dependency>
+         <groupId>net.docubase</groupId>
+         <artifactId>dfce-toolkit-pojo</artifactId>
+         <version>${dfce.toolkit.pojo}</version>
+      </dependency>
+      <dependency>
+         <groupId>net.docubase</groupId>
+         <artifactId>dfce-toolkit-service</artifactId>
+         <version>${dfce.toolkit.service}</version>
+      </dependency>
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
@@ -200,11 +197,6 @@
          <version>2.0</version>
       </dependency>
       <dependency>
-         <groupId>com.googlecode.sli4j</groupId>
-         <artifactId>sli4j-slf4j-log4j</artifactId>
-         <version>2.0</version>
-      </dependency>
-      <dependency>
          <groupId>org.apache.zookeeper</groupId>
          <artifactId>zookeeper</artifactId>
          <version>3.3.3</version>
@@ -220,6 +212,10 @@
             <exclusion>
                <groupId>javax.jms</groupId>
                <artifactId>jms</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>log4j</groupId>
+               <artifactId>log4j</artifactId>
             </exclusion>
          </exclusions>
       </dependency>

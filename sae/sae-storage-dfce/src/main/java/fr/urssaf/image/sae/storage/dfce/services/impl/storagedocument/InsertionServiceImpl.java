@@ -11,6 +11,8 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,8 @@ import fr.urssaf.image.sae.storage.services.storagedocument.InsertionService;
 @SuppressWarnings("PMD.ExcessiveImports")
 public class InsertionServiceImpl extends AbstractServices implements
       InsertionService {
+   private static final Logger LOGGER = LoggerFactory
+         .getLogger(InsertionServiceImpl.class);
    @Autowired
    @Qualifier("deletionService")
    private DeletionService deletionService;
@@ -151,17 +155,28 @@ public class InsertionServiceImpl extends AbstractServices implements
    public final StorageDocument insertStorageDocument(
          final StorageDocument storageDocument) throws InsertionServiceEx {
       try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "insertStorageDocument()";
+         LOGGER.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
          Document docDfce = BeanMapper.storageDocumentToDfceDocument(
                getBaseDFCE(), storageDocument);
-         //ici on récupère le chemin du fichier.
-        
-         final InputStream docContent = new ByteArrayInputStream(
-        		 FileUtils.readFileToByteArray(new File (storageDocument.getFilePath())));
+         // ici on récupère le chemin du fichier.
+
+         final InputStream docContent = new ByteArrayInputStream(FileUtils
+               .readFileToByteArray(new File(storageDocument.getFilePath())));
          final String[] file = BeanMapper.findFileNameAndExtension(
                storageDocument, StorageTechnicalMetadatas.NOM_FICHIER
                      .getShortCode().toString());
+         LOGGER.debug("{} - Enrichissement des métadonnées : "
+               + "ajout de la métadonnée NomFichier valeur : {}.{}",
+               new Object[] { prefixeTrc, file[0], file[1] });
+         LOGGER.debug("{} - Début insertion du document dans DFCE", prefixeTrc);
          docDfce = getDfceService().getStoreService().storeDocument(docDfce,
                file[0], file[1], docContent);
+         LOGGER.debug("{} - Document inséré dans DFCE (UUID: {})", prefixeTrc,
+               docDfce.getUuid());
+         LOGGER.debug("{} - Fin insertion du document dans DFCE", prefixeTrc);
          return BeanMapper.dfceDocumentToStorageDocument(docDfce, null,
                getDfceService(), false);
       } catch (TagControlException tagCtrlEx) {

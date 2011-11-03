@@ -76,7 +76,6 @@ public class LuceneSimpleQueryTest extends StorageServices {
 	 * Test de recherche par requête Lucene.
 	 */
 	@Test
-	@Ignore
 	public void luceneQueries() throws SearchingServiceEx, InsertionServiceEx,
 			IOException, ParseException, QueryParseServiceEx {
 		final Map<String, LuceneCriteria> queries = buildQueries("simple");
