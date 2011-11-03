@@ -11,7 +11,7 @@
    <version>0.0.1-SNAPSHOT</version>
 
    <properties>
-      
+      <logback.version>0.9.30</logback.version>
       <!-- Encodage de caractères -->
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       
@@ -608,7 +608,23 @@
          <artifactId>log4j</artifactId>
          <version>${log4j.version}</version>
       </dependency>
-      
+       <!-- Log back -->
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-classic</artifactId>
+         <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-core</artifactId>
+         <version>${logback.version}</version>
+      </dependency>
+      <!-- slf4j -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${org.slf4j.version}</version>
+      </dependency>
    </dependencies>
 
 
