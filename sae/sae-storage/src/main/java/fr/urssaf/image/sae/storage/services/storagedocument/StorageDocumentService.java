@@ -7,6 +7,7 @@ import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
 import fr.urssaf.image.sae.storage.exception.QueryParseServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -83,10 +84,12 @@ public interface StorageDocumentService {
 	 * 
 	 * @throws SearchingServiceEx
 	 *             Exception lévée lorsque la recherche ne se déroule pas bien.
-	 * @throws QueryParseServiceEx   Exception levée lorsque du parsing de la requête.
+	 * @throws QueryParseServiceEx
+	 *             Exception levée lorsque du parsing de la requête.
 	 */
 	StorageDocuments searchStorageDocumentByLuceneCriteria(
-			final LuceneCriteria luceneCriteria) throws SearchingServiceEx, QueryParseServiceEx;
+			final LuceneCriteria luceneCriteria) throws SearchingServiceEx,
+			QueryParseServiceEx;
 
 	/**
 	 * Permet de faire une recherche de document par UUID.
@@ -159,8 +162,9 @@ public interface StorageDocumentService {
 	 * 
 	 * 
 	 * 
-	 *    @throws  DeletionServiceEx Exception lévée lorsque la suppression ne se
-	 *            réalise pas correctement
+	 * @throws DeletionServiceEx
+	 *             Exception lévée lorsque la suppression ne se réalise pas
+	 *             correctement
 	 */
 	void deleteStorageDocument(final UUIDCriteria uuidCriteria)
 			throws DeletionServiceEx;
@@ -189,4 +193,17 @@ public interface StorageDocumentService {
 	 */
 	<T> void setStorageDocumentServiceParameter(T parameter);
 
+	/**
+	 * @return Les indicateurs Jmx au niveau du stockage.
+	 */
+	JmxIndicator retrieveJmxStorageIndicator();
+
+	/**
+	 * Permet d'initialiser l'indicateur Jmx.
+	 * 
+	 * @param indicator
+	 *            : Les indicateurs du service de stockage.
+	 * 
+	 */
+	void setJmxIndicator(final JmxIndicator indicator);
 }

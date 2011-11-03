@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.storage.services.storagedocument;
 
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
@@ -23,10 +24,11 @@ public interface InsertionService {
 	 * @param storageDocument
 	 *            : Le document à stocker
 	 * 
-	 * @return  Le document
+	 * @return Le document
 	 * 
 	 * @throws InsertionServiceEx
-	 *             Exception lévée lorsque l'insertion d'un document ne se déroule pas bien.
+	 *             Exception lévée lorsque l'insertion d'un document ne se
+	 *             déroule pas bien.
 	 */
 	StorageDocument insertStorageDocument(StorageDocument storageDocument)
 			throws InsertionServiceEx;
@@ -46,12 +48,25 @@ public interface InsertionService {
 	BulkInsertionResults bulkInsertStorageDocument(
 			StorageDocuments storageDocuments, final boolean allOrNothing)
 			throws InsertionServiceEx;
-	
+
 	/**
 	 * 
-	 * @param <T> : Le type générique.
-	 * @param parameter : Le paramètre du service {@link InsertionService}
+	 * @param <T>
+	 *            : Le type générique.
+	 * @param parameter
+	 *            : Le paramètre du service {@link InsertionService}
 	 */
-	 <T> void setInsertionServiceParameter(T parameter);
+	<T> void setInsertionServiceParameter(T parameter);
 
+	/**
+	 * @return Les indicateurs Jmx au niveau du stockage .
+	 */
+	JmxIndicator retrieveJmxStorageIndicator();
+
+	/**
+	 * Permet d'initialiser l'indicateur Jmx.
+	 * 
+	 * @param indicator
+	 */
+	void setJmxIndicator(final JmxIndicator indicator);
 }
