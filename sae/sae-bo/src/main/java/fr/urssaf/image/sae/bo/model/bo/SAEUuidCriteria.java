@@ -74,7 +74,7 @@ public class SAEUuidCriteria extends AbstractSAECriteria {
 	 */
 	public final  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
-				ToStringStyle.MULTI_LINE_STYLE);
+				ToStringStyle.SHORT_PREFIX_STYLE);
 		toStrBuilder.append("uuid", uuid);
 		if (getDesiredSAEMetadatas() != null) {
 			for (SAEMetadata metadata : getDesiredSAEMetadatas()) {

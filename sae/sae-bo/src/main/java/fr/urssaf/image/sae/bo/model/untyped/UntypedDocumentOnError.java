@@ -57,7 +57,7 @@ public class UntypedDocumentOnError extends UntypedDocument {
 	 */
 	public final String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
-				ToStringStyle.MULTI_LINE_STYLE);
+				ToStringStyle.SHORT_PREFIX_STYLE);
 		if (getUMetadatas() != null) {
 			for (UntypedMetadata uMetadata : getUMetadatas()) {
 				toStrBuilder.append(uMetadata.toString());

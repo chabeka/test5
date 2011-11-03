@@ -79,7 +79,7 @@ public class UntypedDocument extends AbstractDocument {
 	// CHECKSTYLE:OFF
 	public String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
-				ToStringStyle.MULTI_LINE_STYLE);
+				ToStringStyle.SHORT_PREFIX_STYLE);
 		toStrBuilder.append("chemin du fichier",getFilePath());
 		if (uMetadatas != null) {
 			for (UntypedMetadata uMetadata : uMetadatas) {

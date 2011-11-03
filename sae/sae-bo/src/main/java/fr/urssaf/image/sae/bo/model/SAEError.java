@@ -79,7 +79,7 @@ public class SAEError {
 	//CHECKSTYLE:OFF -- car la méthode toString peut être surchargée
 	public  String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
-				ToStringStyle.MULTI_LINE_STYLE);
+				ToStringStyle.SHORT_PREFIX_STYLE);
 		toStrBuilder.append("code erreur", getCode());
 		toStrBuilder.append("message", getMessage());
 

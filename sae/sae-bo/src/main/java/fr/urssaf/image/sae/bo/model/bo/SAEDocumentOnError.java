@@ -42,7 +42,7 @@ public class SAEDocumentOnError extends SAEDocument {
 	 */
 	public  final String toString() {
 		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
-				ToStringStyle.MULTI_LINE_STYLE);
+				ToStringStyle.SHORT_PREFIX_STYLE);
 		if (getMetadatas() != null) {
 			for (SAEMetadata metadata : getMetadatas()) {
 				toStrBuilder.append(metadata.toString());
