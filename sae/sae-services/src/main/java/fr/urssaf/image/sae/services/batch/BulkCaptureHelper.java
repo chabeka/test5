@@ -34,8 +34,11 @@ import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.SAEEnrichmentEx;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
+import fr.urssaf.image.sae.services.jmx.CommonIndicator;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
+import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 import fr.urssaf.image.sae.storage.model.storagedocument.BulkInsertionResults;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentOnError;
@@ -53,7 +56,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 @Qualifier("bulkCaptureHelper")
 @SuppressWarnings({ "PMD.LongVariable", "PMD.ExcessiveImports",
 		"PMD.AvoidInstantiatingObjectsInLoops", "PMD.CyclomaticComplexity" })
-public class BulkCaptureHelper {
+public class BulkCaptureHelper extends CommonIndicator {
 
 	private static final String TOUT_OU_RIEN = "TOUT_OU_RIEN";
 	@Autowired
@@ -62,9 +65,11 @@ public class BulkCaptureHelper {
 	@Autowired
 	@Qualifier("mappingDocumentOnErrorService")
 	private MappingDocumentOnErrorService mappingOnError;
-
 	private List<UntypedDocumentOnError> untypedDocumentsOnError;
 	private List<MetadataError> errors;
+	private int jmxControlIndex;
+	private int totalDocument;
+	
 
 	/**
 	 * Enrichissement des métadonnées avec un ID traitement.
@@ -99,12 +104,23 @@ public class BulkCaptureHelper {
 		UntypedDocument currentDocument = null;
 		untypedDocumentsOnError = new ArrayList<UntypedDocumentOnError>();
 		errors = new ArrayList<MetadataError>();
+		jmxControlIndex = 0;
+		totalDocument = 0;
+		if (untypedDocs != null) {
+			totalDocument = untypedDocs.size();
+		}
+		getIndicator().setJmxCountDocument(totalDocument);
+		getIndicator().setJmxControlIndex(jmxControlIndex);
+		getIndicator().setJmxTreatmentState(BulkProgress.CONTROL_DOCUMENTS);
 		try {
 			for (UntypedDocument untypedDoc : Utils
 					.nullSafeIterable(untypedDocs)) {
 				currentDocument = untypedDoc;
 				storageDocs.add(commonCapture
 						.buildStorageDocumentForCapture(untypedDoc));
+				jmxControlIndex++;
+				getIndicator().setJmxControlIndex(jmxControlIndex);
+
 			}
 		} catch (SAEEnrichmentEx except) {
 			buildTechnicalErrors(currentDocument, except);
@@ -482,11 +498,50 @@ public class BulkCaptureHelper {
 		boolean equal = true;
 
 		if ((!doc.getFilePath().equals(docOnError.getFilePath()))
-								|| (!compareMetadatas(doc.getUMetadatas(),
+				|| (!compareMetadatas(doc.getUMetadatas(),
 						docOnError.getUMetadatas()))) {
 			equal = false;
 		}
 
 		return equal;
 	}
+
+	/**
+	 * @return l'indicateur du job de contrôle des documents.
+	 */
+	public JmxIndicator retrieveJmxControlIndicator(JmxIndicator indicator) {
+		return indicator;
+	}
+
+	/**
+	 * @param jmxControlIndex
+	 *            : L'indexe du document en cours de contrôle.
+	 */
+	public void setJmxControlIndex(int jmxControlIndex) {
+		this.jmxControlIndex = jmxControlIndex;
+	}
+
+	/**
+	 * @return L'indexe du document en cours de contrôle.
+	 */
+	public int getJmxControlIndex() {
+		return jmxControlIndex;
+	}
+
+	/**
+	 * @param totalDocument
+	 *            : Le nombre total de documents.
+	 */
+	public void setTotalDocument(int totalDocument) {
+		this.totalDocument = totalDocument;
+	}
+
+	/**
+	 * @return Le nombre total de documents.
+	 */
+	public int getTotalDocument() {
+		return totalDocument;
+	}
+
+	
 }

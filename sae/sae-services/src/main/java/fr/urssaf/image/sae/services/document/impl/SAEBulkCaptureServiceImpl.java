@@ -10,6 +10,7 @@ import fr.urssaf.image.sae.services.batch.BulkCaptureJob;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJobWrapper;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.ServerBusyEx;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 /**
  * Fournit l'implémentation des services pour la capture.<BR />
@@ -22,6 +23,7 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 	private ThreadPoolTaskExecutor taskExecutor;
 	private EcdeServices ecdeServices;
 	private BulkCaptureJob bulkCaptureJob;
+	private BulkCaptureJobWrapper jobWrapper;
 
 	/**
 	 * 
@@ -47,10 +49,13 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 	public final void bulkCapture(String urlEcde) {
 		BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(urlEcde,
 				ecdeServices, bulkCaptureJob);
+		jobWrapper = bulkWrapper;
+		bulkWrapper.setIndicator(new JmxIndicator());
 		// Ici on regarde si le thread a fini sa tâche avant d'en lancer une
 		// autre
 		if (taskExecutor.getActiveCount() == 0) {
 			taskExecutor.execute(bulkWrapper);
+
 		} else {
 			// sinon on lève une exception
 			throw new ServerBusyEx();
@@ -73,10 +78,24 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 			@Qualifier("ecdeServices") final EcdeServices ecdeServices,
 			@Qualifier("bulkCaptureJob") final BulkCaptureJob bulkCaptureJob,
 			final ThreadPoolTaskExecutor taskExecutor) {
-
 		this.ecdeServices = ecdeServices;
 		this.bulkCaptureJob = bulkCaptureJob;
 		this.taskExecutor = taskExecutor;
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public final JmxIndicator retrieveJmxSAEBulkCaptureIndicator() {
+		return jobWrapper.retrieveJmxBulkCaptureJobWrapperIndicator();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isActive() {
+		return taskExecutor.getActiveCount() != 0;
 
 	}
 
