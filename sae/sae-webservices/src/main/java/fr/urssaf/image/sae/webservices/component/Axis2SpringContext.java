@@ -21,7 +21,8 @@ package fr.urssaf.image.sae.webservices.component;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.engine.ServiceLifeCycle;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -56,7 +57,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class Axis2SpringContext implements ServiceLifeCycle {
 
-   private static final Logger LOG = Logger.getLogger(Axis2SpringContext.class);
+   private static final Logger LOG = LoggerFactory.getLogger(Axis2SpringContext.class);
 
    /**
     * initialisation du du fichier <code>applicationContext.xml</code>

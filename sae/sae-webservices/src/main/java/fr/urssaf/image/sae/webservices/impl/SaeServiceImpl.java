@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.webservices.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.security.RolesAllowed;
@@ -15,7 +16,7 @@ import fr.urssaf.image.sae.webservices.SaeService;
 @Service
 public class SaeServiceImpl implements SaeService {
 
-   private static final Logger LOG = Logger.getLogger(SaeServiceImpl.class);
+   private static final Logger LOG = LoggerFactory.getLogger(SaeServiceImpl.class);
    
    
    @Override

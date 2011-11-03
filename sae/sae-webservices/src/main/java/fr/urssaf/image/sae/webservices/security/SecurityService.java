@@ -4,7 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -30,7 +31,7 @@ import fr.urssaf.image.sae.webservices.security.spring.AuthenticationToken;
 @Service
 public class SecurityService {
 
-   private static final Logger LOG = Logger.getLogger(SecurityService.class);
+   private static final Logger LOG = LoggerFactory.getLogger(SecurityService.class);
 
    private final WebServiceVIService service;
 

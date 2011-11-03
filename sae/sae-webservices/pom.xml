@@ -18,7 +18,7 @@
       <!-- on repète le n° de version pour les plugins  'org.apache.axis2' -->
       <axis2.version>1.5.4</axis2.version>
    </properties>
-  
+
    <profiles>
       <profile>
          <id>generateSkeleton</id>
@@ -123,14 +123,11 @@
          <artifactId>sae-vi</artifactId>
          <version>0.0.1-SNAPSHOT</version>
          <exclusions>
-
             <exclusion>
-               <groupId>org.slf4j</groupId>
-               <artifactId>slf4j-log4j12</artifactId>
+               <groupId>log4j</groupId>
+               <artifactId>log4j</artifactId>
             </exclusion>
-
          </exclusions>
-
       </dependency>
 
       <!-- SAE IGC -->
@@ -139,15 +136,14 @@
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-igc</artifactId>
          <version>0.0.1-SNAPSHOT</version>
+         <exclusions>
+            <exclusion>
+               <groupId>log4j</groupId>
+               <artifactId>log4j</artifactId>
+            </exclusion>
+         </exclusions>
       </dependency>
 
-      <!-- SAE BO -->
-
-      <dependency>
-         <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-bo</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
 
       <!-- SAE SERVICES -->
 
@@ -156,27 +152,14 @@
          <artifactId>sae-services</artifactId>
          <version>0.0.1-SNAPSHOT</version>
          <exclusions>
-
             <exclusion>
-               <groupId>org.slf4j</groupId>
-               <artifactId>slf4j-api</artifactId>
+               <groupId>log4j</groupId>
+               <artifactId>log4j</artifactId>
             </exclusion>
-
-            <exclusion>
-               <groupId>org.slf4j</groupId>
-               <artifactId>slf4j-log4j12</artifactId>
-            </exclusion>
-
          </exclusions>
+
       </dependency>
 
-      <!-- SAE METADATA -->
-
-      <dependency>
-         <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-metadata</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
 
       <!--  AXIS 2 -->
 
@@ -191,37 +174,22 @@
          <artifactId>axis2-spring</artifactId>
          <version>${axis2.version}</version>
          <exclusions>
-
             <exclusion>
-
                <groupId>org.springframework</groupId>
                <artifactId>spring-web</artifactId>
-
             </exclusion>
-
-
             <exclusion>
-
                <groupId>org.springframework</groupId>
                <artifactId>spring-beans</artifactId>
-
             </exclusion>
-
             <exclusion>
-
                <groupId>org.springframework</groupId>
                <artifactId>spring-context</artifactId>
-
             </exclusion>
-
-
             <exclusion>
-
                <groupId>org.springframework</groupId>
                <artifactId>spring-core</artifactId>
-
             </exclusion>
-
          </exclusions>
       </dependency>
 

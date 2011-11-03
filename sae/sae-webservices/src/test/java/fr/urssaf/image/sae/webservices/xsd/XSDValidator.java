@@ -13,7 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -35,7 +36,7 @@ public final class XSDValidator {
 
    private static final String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
-   private static final Logger LOGGER = Logger.getLogger(XSDValidator.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(XSDValidator.class);
 
    /**
     * Type d'erreur dans une SAXParseExceptionType

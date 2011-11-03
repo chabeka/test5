@@ -11,7 +11,8 @@ import java.security.cert.CRLException;
 import java.security.cert.CertificateException;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class IgcServiceTest {
 
    private static final URL CERTIFICAT;
 
-   private static final Logger LOG = Logger.getLogger(IgcServiceTest.class);
+   private static final Logger LOG = LoggerFactory.getLogger(IgcServiceTest.class);
 
    private static final File CRL;
 

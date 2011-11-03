@@ -10,7 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import fr.urssaf.image.sae.webservices.xsd.XSDValidator.SAXParseExceptionType;
@@ -35,7 +36,7 @@ public class XsdTest {
     */
    private static final String REP_TESTS_XSD = "src/test/resources/tests_xsd/";
 
-   private static final Logger LOGGER = Logger.getLogger(XsdTest.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(XsdTest.class);
 
    /**
     * Donne le chemin du fichier XML

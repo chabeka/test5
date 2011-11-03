@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -41,7 +42,7 @@ import fr.urssaf.image.sae.webservices.util.ResourceUtils;
 @Service
 public class IgcService implements InitializingBean {
 
-   private static final Logger LOG = Logger.getLogger(IgcService.class);
+   private static final Logger LOG = LoggerFactory.getLogger(IgcService.class);
 
    private CertifsAndCrl certifsAndCrl;
 

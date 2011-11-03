@@ -8,7 +8,8 @@ import java.io.IOException;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -22,7 +23,7 @@ public class IgcFactoryTest {
 
    private static final String FAIL_MSG = "le test doit échouer";
 
-   private static final Logger LOG = Logger.getLogger(IgcFactoryTest.class);
+   private static final Logger LOG = LoggerFactory.getLogger(IgcFactoryTest.class);
 
    private static final String EXPT_EXPECTED = "Exception non attendue";
 

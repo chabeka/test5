@@ -9,6 +9,11 @@
  */
 package fr.urssaf.image.sae.webservices.skeleton;
 
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -33,6 +38,7 @@ import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
+import fr.urssaf.image.sae.webservices.service.impl.WSCaptureServiceImpl;
 
 /**
  * Skeleton du web service coté serveur<br>
@@ -74,109 +80,146 @@ import fr.urssaf.image.sae.webservices.service.WSRechercheService;
 @Component
 public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
-	private final SaeService service;
+   private final SaeService service;
+   private static final Logger LOG = LoggerFactory
+         .getLogger(WSCaptureServiceImpl.class);
 
-	private final SaeStorageService storageService;
+   private final SaeStorageService storageService;
 
-	@Autowired
-	private WSConsultationService consultation;
+   @Autowired
+   private WSConsultationService consultation;
 
-	@Autowired
-	private WSRechercheService search;
-	@Autowired
-	private WSCaptureService capture;
+   @Autowired
+   private WSRechercheService search;
+   @Autowired
+   private WSCaptureService capture;
 
-	/**
-	 * Instanciation du service {@link SaeService}
-	 * 
-	 * @param service
-	 *            implémentation des services web
-	 * @param storageService
-	 *            implémentation de {@link SaeStorageService}
-	 */
-	@Autowired
-	public SaeServiceSkeleton(SaeService service,
-			SaeStorageService storageService) {
+   /**
+    * Instanciation du service {@link SaeService}
+    * 
+    * @param service
+    *           implémentation des services web
+    * @param storageService
+    *           implémentation de {@link SaeStorageService}
+    */
+   @Autowired
+   public SaeServiceSkeleton(SaeService service,
+         SaeStorageService storageService) {
 
-		Assert.notNull(service, "service is required");
-		Assert.notNull(storageService, "storageService is required");
+      Assert.notNull(service, "service is required");
+      Assert.notNull(storageService, "storageService is required");
 
-		this.service = service;
-		this.storageService = storageService;
-	}
+      this.service = service;
+      this.storageService = storageService;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final PingResponse ping(PingRequest pingRequest) {
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final PingResponse ping(PingRequest pingRequest) {
 
-		PingResponse response = new PingResponse();
+      PingResponse response = new PingResponse();
 
-		response.setPingString(service.ping());
+      response.setPingString(service.ping());
 
-		return response;
-	}
+      return response;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final PingSecureResponse pingSecure(PingSecureRequest pingRequest) {
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final PingSecureResponse pingSecure(PingSecureRequest pingRequest) {
 
-		PingSecureResponse response = new PingSecureResponse();
+      PingSecureResponse response = new PingSecureResponse();
 
-		response.setPingString(service.pingSecure());
+      response.setPingString(service.pingSecure());
 
-		return response;
-	}
+      return response;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throws CaptureAxisFault
-	 */
-	@Override
-	public final ArchivageUnitaireResponse archivageUnitaireSecure(
-			ArchivageUnitaire request) throws CaptureAxisFault {
+   /**
+    * {@inheritDoc}
+    * 
+    * @throws CaptureAxisFault
+    */
+   @Override
+   public final ArchivageUnitaireResponse archivageUnitaireSecure(
+         ArchivageUnitaire request) throws CaptureAxisFault {
+      // Mise en place du contexte pour les traces
+      buildLogContext();
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "Opération archivageUnitaireSecure()";
+         LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+         ArchivageUnitaireResponse response = capture
+               .archivageUnitaire(request);
+         // Traces debug - sortie méthode
+         if (response != null
+               && response.getArchivageUnitaireResponse() != null) {
+            LOG.debug("{} - Valeur de retour : \"{}\"", prefixeTrc, response
+                  .getArchivageUnitaireResponse().getIdArchive());
+         } else {
+            LOG.debug("{} - Valeur de retour : null", prefixeTrc);
+         }
+         LOG.debug("{} - Sortie", prefixeTrc);
+         // Fin des traces debug - sortie méthode
+         return response;
+      } finally {
+         // Nettoyage du contexte pour les logs
+         clearLogContext();
+      }
+   }
 
-		return this.capture.archivageUnitaire(request);
+   /**
+    * {@inheritDoc}
+    * 
+    * @throws CaptureAxisFault
+    */
+   @Override
+   public final ArchivageMasseResponse archivageMasseSecure(
+         ArchivageMasse request) throws CaptureAxisFault {
+      return this.capture.archivageEnMasse(request);
+   }
 
-	}
+   /**
+    * {@inheritDoc}
+    * 
+    * @throws RechercheAxis2Fault
+    */
+   @Override
+   public final RechercheResponse rechercheSecure(Recherche request)
+         throws RechercheAxis2Fault {
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throws CaptureAxisFault
-	 */
-	@Override
-	public final ArchivageMasseResponse archivageMasseSecure(
-			ArchivageMasse request) throws CaptureAxisFault {
-		return this.capture.archivageEnMasse(request);
-	}
+      return this.search.search(request);
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throws RechercheAxis2Fault
-	 */
-	@Override
-	public final RechercheResponse rechercheSecure(Recherche request)
-			throws RechercheAxis2Fault {
+   }
 
-		return this.search.search(request);
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final ConsultationResponse consultationSecure(Consultation request)
+         throws ConsultationAxisFault {
 
-	}
+      return this.consultation.consultation(request);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final ConsultationResponse consultationSecure(Consultation request)
-			throws ConsultationAxisFault {
+   }
 
-		return this.consultation.consultation(request);
+   /**
+    * Mise en place du Log contexte.
+    */
+   private void buildLogContext() {
+      String contexteLog = UUID.randomUUID().toString();
+      MDC.put("log_contexte_uuid", contexteLog);
+   }
 
-	}
-
+   /**
+    * Nettoie le contexte pour le logback.
+    */
+   private void clearLogContext() {
+      MDC.clear();
+   }
 }

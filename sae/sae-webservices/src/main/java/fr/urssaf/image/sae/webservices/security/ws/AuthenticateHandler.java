@@ -7,7 +7,8 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.util.XMLUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.ws.security.WSConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -36,7 +37,7 @@ import fr.urssaf.image.sae.webservices.security.igc.exception.LoadCertifsAndCrlE
 @Component
 public class AuthenticateHandler {
 
-   private static final Logger LOG = Logger
+   private static final Logger LOG = LoggerFactory
          .getLogger(AuthenticateHandler.class);
 
    // private static final String SKELETON =
