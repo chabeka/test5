@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.services.document.commons.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -35,52 +37,79 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 @Service
 @Qualifier("saeCommonCaptureService")
 public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
+   private static final Logger LOGGER = LoggerFactory
+         .getLogger(SAECommonCaptureServiceImpl.class);
+   @Autowired
+   @Qualifier("saeControlesCaptureService")
+   private SAEControlesCaptureService cntrolesService;
 
-	@Autowired
-	@Qualifier("saeControlesCaptureService")
-	private SAEControlesCaptureService cntrolesService;
+   @Autowired
+   @Qualifier("mappingDocumentService")
+   private MappingDocumentService mappingService;
+   @Autowired
+   @Qualifier("saeEnrichmentMetadataService")
+   private SAEEnrichmentMetadataService enrichmentService;
 
-	@Autowired
-	@Qualifier("mappingDocumentService")
-	private MappingDocumentService mappingService;
-	@Autowired
-	@Qualifier("saeEnrichmentMetadataService")
-	private SAEEnrichmentMetadataService enrichmentService;
+   /**
+    * {@inheritDoc}
+    */
+   @SuppressWarnings("PMD.OnlyOneReturn")
+   @Override
+   public final StorageDocument buildStorageDocumentForCapture(
+         UntypedDocument untypedDocument) throws RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, SAEEnrichmentEx, UnknownHashCodeEx,
+         ReferentialRndException, UnknownCodeRndEx, SAECaptureServiceEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "buildStorageDocumentForCapture()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      SAEDocument saeDocument = null;
+      StorageDocument storageDocument = null;
+      try {
+         // on ne contrôle pas la taille du document
+         LOGGER
+               .debug(
+                     "{} - Début des contrôles sur (UntypedDocument et UntypedMetadata)",
+                     prefixeTrc);
+         cntrolesService.checkUntypedDocument(untypedDocument);
+         cntrolesService.checkUntypedMetadata(untypedDocument);
+         LOGGER
+               .debug(
+                     "{} - Fin des contrôles sur (UntypedDocument et UntypedMetadata)",
+                     prefixeTrc);
+         LOGGER.debug("{} - Début de la conversion de UntypedDocument vers SaeDocument",
+               prefixeTrc);
+         saeDocument = mappingService
+               .untypedDocumentToSaeDocument(untypedDocument);
+         LOGGER.debug("{} - Fin de la conversion de UntypedDocument vers SaeDocument",
+               prefixeTrc);
+         if (saeDocument != null) {
+            LOGGER.debug(
+                  "{} - Début des contrôles sur (SaeDocument  et SaeMetadata)",
+                  prefixeTrc);
+            cntrolesService.checkSaeMetadataForCapture(saeDocument);
+            cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
+            enrichmentService.enrichmentMetadata(saeDocument);
+            cntrolesService.checkSaeMetadataForStorage(saeDocument);
+            LOGGER.debug(
+                  "{} - Fin des contrôles sur (SaeDocument  et SaeMetadata)",
+                  prefixeTrc);
+            LOGGER.debug("{} - Début de la conversion de SaeDocument vers StorageDocument",
+                  prefixeTrc);
+            storageDocument = mappingService
+                  .saeDocumentToStorageDocument(saeDocument);
+            LOGGER.debug("{} - Fin de la conversion de SaeDocument vers StorageDocument",
+                  prefixeTrc);
+         }
+      } catch (InvalidSAETypeException e) {
+         throw new SAECaptureServiceEx(e);
+      } catch (MappingFromReferentialException e) {
+         throw new SAECaptureServiceEx(e);
+      }
+      return storageDocument;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("PMD.OnlyOneReturn")
-	@Override
-	public final StorageDocument buildStorageDocumentForCapture(
-			UntypedDocument untypedDocument) throws RequiredStorageMetadataEx,
-			InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
-			DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
-			RequiredArchivableMetadataEx, SAEEnrichmentEx, UnknownHashCodeEx,
-			ReferentialRndException, UnknownCodeRndEx, SAECaptureServiceEx {
-		SAEDocument saeDocument = null;
-		StorageDocument storageDocument = null;
-		try {
-			// on ne contrôle pas la taille du document
-			cntrolesService.checkUntypedDocument(untypedDocument);
-			cntrolesService.checkUntypedMetadata(untypedDocument);
-			saeDocument = mappingService
-					.untypedDocumentToSaeDocument(untypedDocument);
-			if (saeDocument != null) {
-				cntrolesService.checkSaeMetadataForCapture(saeDocument);
-				cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
-				enrichmentService.enrichmentMetadata(saeDocument);
-				cntrolesService.checkSaeMetadataForStorage(saeDocument);
-				storageDocument = mappingService
-						.saeDocumentToStorageDocument(saeDocument);
-			}
-		} catch (InvalidSAETypeException e) {
-			throw new SAECaptureServiceEx(e);
-		} catch (MappingFromReferentialException e) {
-			throw new SAECaptureServiceEx(e);
-		}
-		return storageDocument;
-
-	}
+   }
 
 }

@@ -2,9 +2,14 @@ package fr.urssaf.image.sae.services.capture.impl;
 
 import java.io.File;
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -42,10 +47,10 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
  */
 @Service
 public class SAECaptureServiceImpl implements SAECaptureService {
-
+   private static final Logger LOG = LoggerFactory
+         .getLogger(SAECaptureServiceImpl.class);
    private final StorageServiceProvider serviceProvider;
 
-   //private final EcdeFileService ecdeFileService;
    private final EcdeServices ecdeServices;
 
    private final SAECommonCaptureService commonsService;
@@ -89,6 +94,13 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
          ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "capture()";
+      LOG.debug("{} - Début", prefixeTrc);
+      LOG.debug("{} - Liste des métadonnées : \"{}\"", prefixeTrc,
+            buildMessageFromList(metadatas));
+      LOG.debug("{} - URI ECDE : \"{}\"", prefixeTrc, ecdeURL.toString());
+      // Fin des traces debug - entrée méthode
 
       // chargement du document de l'ECDE
       File ecdeFile = loadEcdeFile(ecdeURL);
@@ -109,15 +121,21 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
       // archivage du document dans DFCE
       UUID uuid = insererStorageDocument(storageDoc);
+      // Traces debug - sortie méthode
+      LOG.debug("{} - Valeur de retour archiveId: \"{}\"", prefixeTrc, uuid);
+      LOG.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
 
       return uuid;
 
    }
+
    /**
     * @param metadatas
     * @param ecdeFile
     * @return UntypedDocument
-    * @throws SAECaptureServiceEx {@link SAECaptureServiceEx}
+    * @throws SAECaptureServiceEx
+    *            {@link SAECaptureServiceEx}
     */
    private UntypedDocument createUntypedDocument(
          List<UntypedMetadata> metadatas, File ecdeFile)
@@ -168,7 +186,29 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          throw new SAECaptureServiceEx(e);
       } catch (InsertionServiceEx e) {
          throw new SAECaptureServiceEx(e);
-      } 
+      }
       return uuid;
+   }
+
+   /**
+    * Construit une chaîne qui comprends l'ensemble des objets à afficher dans
+    * les logs. <br>
+    * Exemple : "UntypedMetadata[code long:=Titre,value=Attestation],
+    * UntypedMetadata[code long:=DateCreation,value=2011-09-01],
+    * UntypedMetadata[code long:=ApplicationProductrice,value=ADELAIDE]"
+    * 
+    * @param <T>
+    *           le type d'objet
+    * @param list
+    *           : liste des objets à afficher.
+    * @return Une chaîne qui représente l'ensemble des objets à afficher.
+    */
+   private <T> String buildMessageFromList(Collection<T> list) {
+      final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
+            ToStringStyle.SIMPLE_STYLE);
+      for (T o : list) {
+         toStrBuilder.append(o.toString());
+      }
+      return toStrBuilder.toString();
    }
 }
