@@ -12,7 +12,7 @@
       value="/appl/sae/sae-dfce-config.properties" />
       
    <Environment name="SAE_Fichier_Configuration" type="java.lang.String"
-      value="/appl/sae/sae.properties" />
+      value="/appl/sae/sae-config.properties" />
 
    
       
@@ -20,8 +20,8 @@
    Configuration Windows (poste de developpeur) (exemple)
    -->
    
-   <!--
    
+   <!-- 
    <Environment name="SAE_Fichier_Configuration_IGC" type="java.lang.String"
       value="c:/appl/sae/sae-igc-config.xml" />
 
@@ -29,8 +29,8 @@
       value="c:/appl/sae/sae-dfce-config.properties" />
       
    <Environment name="SAE_Fichier_Configuration" type="java.lang.String"
-      value="c:/appl/sae/sae.properties" />
+      value="c:/appl/sae/sae-config.properties" />
 
-   -->
+  -->
 
 </Context>
