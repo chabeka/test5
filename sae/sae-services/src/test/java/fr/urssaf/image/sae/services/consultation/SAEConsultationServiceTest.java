@@ -126,7 +126,7 @@ public class SAEConsultationServiceTest {
 
       expectedMetadatas.put("Titre", "Attestation de vigilance");
       expectedMetadatas.put("DateCreation", "2012-01-01");
-      expectedMetadatas.put("DateReception", "1999-12-29");
+      expectedMetadatas.put("DateReception", "1999-12-30");
       expectedMetadatas.put("CodeOrganismeGestionnaire", "UR750");
       expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
       expectedMetadatas.put("CodeRND", "2.3.1.1.12");

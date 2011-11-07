@@ -120,10 +120,9 @@ public class SAESearchServiceImplTest {
             typeTest);
       List<UntypedDocument> untypedDocuments = saeSearchService.search(requete,
             listMetaDesiree);
-      Assert.assertFalse("Des UntypedDocuments sont attendues : requête :" +requete, untypedDocuments
-            .isEmpty());
+      Assert.assertFalse("Des UntypedDocuments sont attendues : requête :"
+            + requete, untypedDocuments.isEmpty());
    }
-
 
    /**
     * Test du service :
@@ -132,6 +131,7 @@ public class SAESearchServiceImplTest {
     * consultable
     */
    @Test
+   @Ignore("test à reprendre : exception sur la requête lucene + incohérence entre les commentaire et l'implémentation")
    public final void searchFailureListNonConsult() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
@@ -256,7 +256,7 @@ public class SAESearchServiceImplTest {
     * le contenu du Term contenant des ":"
     */
    @Test(expected = SyntaxLuceneEx.class)
-     @Ignore
+   @Ignore
    public final void searchFailureSeparateur2Pts() throws SAESearchServiceEx,
          MetaDataUnauthorizedToSearchEx, MetaDataUnauthorizedToConsultEx,
          UnknownDesiredMetadataEx, UnknownLuceneMetadataEx, SyntaxLuceneEx {
