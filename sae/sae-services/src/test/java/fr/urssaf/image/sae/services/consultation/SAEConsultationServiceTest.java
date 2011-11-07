@@ -9,9 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -102,7 +102,7 @@ public class SAEConsultationServiceTest {
       metadatas.add(new StorageMetadata("dfc", DateUtils.parseDate(
             "2012-01-01", parsePatterns)));
 
-      return testProvider.captureDocument(content, metadatas,srcFile);
+      return testProvider.captureDocument(content, metadatas, srcFile);
    }
 
    @Test
@@ -121,29 +121,40 @@ public class SAEConsultationServiceTest {
       List<UntypedMetadata> metadatas = untypedDocument.getUMetadatas();
 
       assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
+      assertEquals(
+            "la nombre de métadonnées consultables par défaut est inattendu",
+            12, metadatas.size());
 
-      Map<String, Object> expectedMetadatas = new HashMap<String, Object>();
+      // on trie les métadonnées non typés en fonction de leur code long
+      Comparator<UntypedMetadata> comparator = new Comparator<UntypedMetadata>() {
+         @Override
+         public int compare(UntypedMetadata untypedMetadata1,
+               UntypedMetadata untypedMetadata2) {
 
-      expectedMetadatas.put("Titre", "Attestation de vigilance");
-      expectedMetadatas.put("DateCreation", "2012-01-01");
-      expectedMetadatas.put("DateReception", "1999-12-30");
-      expectedMetadatas.put("CodeOrganismeGestionnaire", "UR750");
-      expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
-      expectedMetadatas.put("CodeRND", "2.3.1.1.12");
-      expectedMetadatas.put("NomFichier", "attestation_consultation.pdf");
-      expectedMetadatas.put("FormatFichier", "fmt/1354");
-      expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
-      expectedMetadatas.put("DateArchivage", "2012-01-01");
-      expectedMetadatas.put("TailleFichier", "73791");
-      expectedMetadatas.put("Hash", "4bf2ddbd82d5fd38e821e6aae434ac989972a043");
+            return untypedMetadata1.getLongCode().compareTo(
+                  untypedMetadata2.getLongCode());
 
+         }
+      };
+      Collections.sort(metadatas, comparator);
 
-      for (UntypedMetadata metadata : metadatas) {
-         assertMetadata(metadata, expectedMetadatas);
-      }
+      assertMetadata(metadatas.get(0), "CodeOrganismeGestionnaire", "UR750");
+      assertMetadata(metadatas.get(1), "CodeOrganismeProprietaire", "CER69");
+      assertMetadata(metadatas.get(2), "CodeRND", "2.3.1.1.12");
+      assertMetadata(metadatas.get(3), "ContratDeService", "ATT_PROD_001");
 
-      assertTrue("Des métadonnées '" + expectedMetadatas.keySet()
-            + "' sont attendues", expectedMetadatas.isEmpty());
+      assertEquals("le code de la metadonnée est inattendue dans cet ordre",
+            "DateArchivage", metadatas.get(4).getLongCode());
+
+      assertMetadata(metadatas.get(5), "DateCreation", "2012-01-01");
+      assertMetadata(metadatas.get(6), "DateReception", "1999-12-30");
+      assertMetadata(metadatas.get(7), "FormatFichier", "fmt/1354");
+      assertMetadata(metadatas.get(8), "Hash",
+            "4bf2ddbd82d5fd38e821e6aae434ac989972a043");
+      assertMetadata(metadatas.get(9), "NomFichier",
+            "attestation_consultation.pdf");
+      assertMetadata(metadatas.get(10), "TailleFichier", "73791");
+      assertMetadata(metadatas.get(11), "Titre", "Attestation de vigilance");
 
       File expectedContent = new File(
             "src/test/resources/doc/attestation_consultation.pdf");
@@ -154,17 +165,14 @@ public class SAEConsultationServiceTest {
    }
 
    private static void assertMetadata(UntypedMetadata metadata,
-         Map<String, Object> expectedMetadatas) {
+         String expectedCode, String expectedValue) {
 
-      assertTrue("la metadonnée '" + metadata.getLongCode()
-            + "' est inattendue", expectedMetadatas.containsKey(metadata
-            .getLongCode()));
+      assertEquals("le code de la metadonnée est inattendue dans cet ordre",
+            expectedCode, metadata.getLongCode());
 
       assertEquals("la valeur de la metadonnée '" + metadata.getLongCode()
-            + "'est inattendue", expectedMetadatas.get(metadata.getLongCode()),
-            metadata.getValue());
+            + "'est inattendue", expectedValue, metadata.getValue());
 
-      expectedMetadatas.remove(metadata.getLongCode());
    }
 
 }

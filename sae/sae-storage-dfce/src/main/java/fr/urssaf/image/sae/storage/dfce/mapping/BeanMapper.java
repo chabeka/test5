@@ -274,8 +274,7 @@ public final class BeanMapper {
          } else if (technical.getShortCode().equals(
                StorageTechnicalMetadatas.DOCUMENT_VIRTUEL.getShortCode())) {
             // On ne fait rien
-         }         
-         else {
+         } else {
             baseCategory = baseDFCE.getBaseCategory(storageMetadata
                   .getShortCode().trim());
             document.addCriterion(baseCategory, storageMetadata.getValue());
@@ -311,13 +310,23 @@ public final class BeanMapper {
             .technicalMetadataFinder(metadata.getShortCode());
 
       if (technical.getShortCode().equals(
-            StorageTechnicalMetadatas.DATE_MODIFICATION.getShortCode())
-            || (technical.getShortCode().equals(
-                  StorageTechnicalMetadatas.DATE_CREATION.getShortCode()) || (technical
-                  .getShortCode().equals(StorageTechnicalMetadatas.DATE_ARCHIVE
-                  .getShortCode())))) {
+            StorageTechnicalMetadatas.DATE_CREATION.getShortCode())) {
+
          metadataFound = new StorageMetadata(metadata.getShortCode(), document
                .getCreationDate());
+
+      } else if (technical.getShortCode().equals(
+            StorageTechnicalMetadatas.DATE_MODIFICATION.getShortCode())) {
+
+         metadataFound = new StorageMetadata(metadata.getShortCode(), document
+               .getModificationDate());
+
+      } else if (technical.getShortCode().equals(
+            StorageTechnicalMetadatas.DATE_ARCHIVE.getShortCode())) {
+
+         metadataFound = new StorageMetadata(metadata.getShortCode(), document
+               .getArchivageDate());
+
       } else if (technical.getShortCode().equals(
             StorageTechnicalMetadatas.DATE_DEBUT_CONSERVATION.getShortCode())) {
 
