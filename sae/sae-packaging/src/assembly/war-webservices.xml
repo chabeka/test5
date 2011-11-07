@@ -37,10 +37,13 @@
         <exclude>WEB-INF/services/sae-webservices.aar</exclude>
       </excludes>
     </fileSet>
-    <fileSet>
-      <directory>src/main/resources</directory>
-      <outputDirectory>/</outputDirectory>
-    </fileSet>
   </fileSets>
+  <files>
+    <file>
+      <source>src/main/resources/logback.xml</source>
+      <outputDirectory>WEB-INF/classes/</outputDirectory>
+    </file>
+  </files>
+  
 </assembly>
 
