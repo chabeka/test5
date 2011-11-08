@@ -27,6 +27,7 @@ import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatM
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceRuntimeException;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.util.FormatUtils;
@@ -194,8 +195,7 @@ public class SAEControlesCaptureServiceImpl implements
                            + "Equivalence entre le hash fourni en métadonnée et le hash recalculé à partir du fichier",
                      prefixeTrc);
       } catch (IOException e) {
-         throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-               "capture.hash.erreur", docFile.getName()));
+         throw new SAECaptureServiceRuntimeException(e);
       }
       // Traces debug - sortie méthode
       LOGGER.debug("{} - Sortie", prefixeTrc);

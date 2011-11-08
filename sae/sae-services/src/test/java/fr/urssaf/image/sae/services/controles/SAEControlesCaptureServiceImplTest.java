@@ -3,9 +3,11 @@
  */
 package fr.urssaf.image.sae.services.controles;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,12 +20,12 @@ import fr.urssaf.image.sae.services.CommonsServices;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
-import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceRuntimeException;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
@@ -77,7 +79,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
          SAEControlesCaptureService saeControlesCaptureService) {
       this.saeControlesCaptureService = saeControlesCaptureService;
    }
-   
+
    /**
     * Test de la méthode
     * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkUntypedMetadata(fr.urssaf.image.sae.bo.model.untyped.UntypedDocument)}
@@ -86,7 +88,8 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test
    public final void checkUntypedMetadata() throws UnknownMetadataEx,
          DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx,
-         SAECaptureServiceEx, IOException, ParseException, RequiredArchivableMetadataEx {
+         SAECaptureServiceEx, IOException, ParseException,
+         RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       saeControlesCaptureService.checkUntypedMetadata(untypedDocument);
    }
@@ -99,7 +102,8 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test(expected = DuplicatedMetadataEx.class)
    public final void checkDuplicatedMetadataFailed() throws UnknownMetadataEx,
          DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx,
-         SAECaptureServiceEx, IOException, ParseException, RequiredArchivableMetadataEx {
+         SAECaptureServiceEx, IOException, ParseException,
+         RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
             new UntypedMetadata("DateCreation", "2012-01-01"));
@@ -114,7 +118,8 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
    @Test(expected = UnknownMetadataEx.class)
    public final void checkUnknownMetadataFailed() throws UnknownMetadataEx,
          DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx,
-         SAECaptureServiceEx, IOException, ParseException, RequiredArchivableMetadataEx {
+         SAECaptureServiceEx, IOException, ParseException,
+         RequiredArchivableMetadataEx {
       UntypedDocument untypedDocument = getUntypedDocumentMockData();
       untypedDocument.getUMetadatas().add(
             new UntypedMetadata("DateCreat", "2012-01-01"));
@@ -269,6 +274,29 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
       saeControlesCaptureService.checkHashCodeMetadataForStorage(saeDocument);
    }
 
+   @Test
+   public final void checkHashCodeMetadataForStorage_failure_FileNotFound()
+         throws SAECaptureServiceEx, IOException, ParseException,
+         UnknownHashCodeEx {
+
+      try {
+
+         SAEDocument saeDocument = getSAEDocumentMockData();
+         saeDocument.setFilePath("src/test/resources/PDF/doc_inconnu.PDF");
+         saeControlesCaptureService
+               .checkHashCodeMetadataForStorage(saeDocument);
+
+         Assert
+               .fail("le test doit lever une exception de type SAECaptureServiceRuntimeException car le fichier à contrôler n'existe pas");
+
+      } catch (SAECaptureServiceRuntimeException e) {
+
+         Assert.assertEquals("Cause de l'exception non attendue",
+               FileNotFoundException.class, e.getCause().getClass());
+
+      }
+   }
+
    /**
     * Test de la méthode
     * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkSaeMetadataForStorage(fr.urssaf.image.sae.bo.model.bo.SAEDocument)}
@@ -294,6 +322,7 @@ public class SAEControlesCaptureServiceImplTest extends CommonsServices {
       }
       saeControlesCaptureService.checkSaeMetadataForStorage(saeDocument);
    }
+
    /**
     * Test de la méthode
     * {@link fr.urssaf.image.sae.services.controles.impl.SAEControlesCaptureServiceImpl#checkSaeMetadataForStorage(fr.urssaf.image.sae.bo.model.bo.SAEDocument)}

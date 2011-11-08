@@ -10,14 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
@@ -31,11 +30,9 @@ import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
-import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
-import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.ServerBusyEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
@@ -125,11 +122,6 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
       try {
          return captureService.capture(metadatas, ecdeURL);
-      } catch (SAECaptureServiceEx e) {
-         throw new CaptureAxisFault("ErreurInterneCapture",
-               MessageRessourcesUtils
-                     .recupererMessage("ws.capture.error", null), e);
-
       } catch (RequiredStorageMetadataEx e) {
 
          throw new CaptureAxisFault("ErreurInterneCapture", e.getMessage(), e);
@@ -172,13 +164,15 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
          throw new CaptureAxisFault("CaptureCodeRndInterdit", e.getMessage(), e);
 
-      } catch (NotArchivableMetadataEx e) {
-
+      } catch (UnknownHashCodeEx e) {
+         
+         throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
+      
+      }catch(Exception e){
+         
          throw new CaptureAxisFault("ErreurInterneCapture",
                MessageRessourcesUtils
                      .recupererMessage("ws.capture.error", null), e);
-      } catch (UnknownHashCodeEx e) {
-         throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
       }
    }
 
@@ -186,7 +180,7 @@ public class WSCaptureServiceImpl implements WSCaptureService {
     * {@inheritDoc}
     */
    @Override
-   public ArchivageMasseResponse archivageEnMasse(ArchivageMasse request)
+   public final ArchivageMasseResponse archivageEnMasse(ArchivageMasse request)
          throws CaptureAxisFault {
 
       try {
