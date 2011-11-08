@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
@@ -87,8 +88,6 @@ public class ArchivageUnitaireTest {
       metadatas.add(ObjectModelFactory.createMetadata("CodeRND", "2.3.1.1.12"));
       metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
       metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
-      metadatas.add(ObjectModelFactory.createMetadata("NomFichier",
-            "attestation.pdf"));
       metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
             "fmt/1354"));
       metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
@@ -120,14 +119,16 @@ public class ArchivageUnitaireTest {
 
       expectedMetadatas.put("Titre", "Attestation de vigilance");
       expectedMetadatas.put("DateCreation", "2012-01-01");
-      expectedMetadatas.put("DateReception", "1999-11-24");
+      expectedMetadatas.put("DateReception", "1999-11-25");
       expectedMetadatas.put("CodeOrganismeGestionnaire", "UR750");
       expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
       expectedMetadatas.put("CodeRND", "2.3.1.1.12");
-      expectedMetadatas.put("NomFichier", "");
+      expectedMetadatas.put("NomFichier", "attestation.pdf");
       expectedMetadatas.put("FormatFichier", "fmt/1354");
       expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
-      expectedMetadatas.put("DateArchivage", "2012-01-01");
+      expectedMetadatas.put("Hash", hash);
+      expectedMetadatas.put("TailleFichier", Long.toString(FileUtils
+            .sizeOf(srcFile)));
 
       ConsultationTest consultationTest = new ConsultationTest();
 
@@ -135,5 +136,4 @@ public class ArchivageUnitaireTest {
             expectedMetadatas, srcFile);
 
    }
-
 }

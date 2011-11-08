@@ -28,10 +28,21 @@ public class ConsultationTest {
 
       assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
 
+      boolean expectedDateArchivage = false;
+
       for (MetadonneeType metadata : metadatas) {
 
-         assertMetadata(metadata, expectedMetadatas);
+         if ("DateArchivage".equals(metadata.getCode().getMetadonneeCodeType())) {
+
+            expectedDateArchivage = true;
+
+         } else {
+            assertMetadata(metadata, expectedMetadatas);
+         }
       }
+
+      assertTrue("la métadonnée 'DateArchivage' est attendue",
+            expectedDateArchivage);
 
       DataHandler actualContent = response.getObjetNumerique()
             .getObjetNumeriqueConsultationTypeChoice_type0().getContenu();

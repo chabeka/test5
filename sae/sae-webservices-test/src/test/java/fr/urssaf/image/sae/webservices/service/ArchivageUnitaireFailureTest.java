@@ -97,7 +97,6 @@ public class ArchivageUnitaireFailureTest {
       putMetadata("CodeOrganismeGestionnaire", "UR750");
       putMetadata("VersionRND", "11.1");
       putMetadata("NbPages", "2");
-      putMetadata("NomFichier", "empty.pdf");
       putMetadata("FormatFichier", "fmt/1354");
       putMetadata("DateCreation", "2012-01-01");
       putMetadata("Titre", "Attestation de vigilance");
@@ -319,12 +318,10 @@ public class ArchivageUnitaireFailureTest {
 
       } catch (AxisFault fault) {
 
-         SoapTestUtils
-               .assertAxisFault(
-                     fault,
-                     "Une erreur interne à l'application est survenue lors de la capture.",
-                     "ErreurInterneCapture", SoapTestUtils.SAE_NAMESPACE,
-                     SoapTestUtils.SAE_PREFIX);
+         SoapTestUtils.assertAxisFault(fault,
+               "Le contrôle de l'intégrité du fichier a échoué.",
+               "CaptureHashErreur", SoapTestUtils.SAE_NAMESPACE,
+               SoapTestUtils.SAE_PREFIX);
 
       }
 
