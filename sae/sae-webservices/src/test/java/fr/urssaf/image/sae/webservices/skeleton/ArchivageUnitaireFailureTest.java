@@ -11,7 +11,6 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
+import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
@@ -49,7 +49,6 @@ public class ArchivageUnitaireFailureTest {
    @Autowired
    private SAECaptureService captureService;
 
- 
    @After
    public void after() {
       EasyMock.reset(captureService);
@@ -122,7 +121,6 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   @Ignore
    public void archivageUnitaire_failure_SAECaptureServiceEx() {
 
       mockThrowable(new SAECaptureServiceEx());
@@ -243,7 +241,6 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   @Ignore
    public void archivageUnitaire_failure_NotArchivableMetadataEx() {
 
       mockThrowable(new NotArchivableMetadataEx(null));
@@ -296,7 +293,23 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   @Ignore
+   public void archivageUnitaire_failure_UnknownHashCodeEx() {
+
+      mockThrowable(new UnknownHashCodeEx(null));
+
+      try {
+
+         callService();
+
+         Assert.fail(FAIL_MSG);
+
+      } catch (AxisFault axisFault) {
+
+         assertAxisFault(axisFault, "CaptureHashErreur");
+      }
+   }
+
+   @Test
    public void archivageUnitaire_failure_ReferentialRndException() {
 
       mockThrowable(new ReferentialRndException(null));
