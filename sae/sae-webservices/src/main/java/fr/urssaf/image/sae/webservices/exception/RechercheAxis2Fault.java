@@ -10,28 +10,33 @@ import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
  * 
  */
 public class RechercheAxis2Fault extends AxisFault {
-   
+
    private static final long serialVersionUID = 1L;
-   
+
    /**
     * Instanciation de {@link AxisFault#AxisFault}
     * 
     * <code>faultCode</code>:
     * <ul>
     * <li><code>namespaceURI</code>: urn:sae:faultcodes</li>
-    * <li><code>localPart</code>:RechercheServiceError</li>
+    * <li><code>localPart</code>:<code>localPart</code></li>
     * <li><code>prefix</code>:sae</li>
     * </ul>
     * 
-    * 
+    * @param message
+    *           message de l'exception
+    * @param localPart
+    *           localPart du code du SOAPFault
     * @param cause
-    *           cause de l'exception
+    *           exception levée qui génère la SOAPFault
     */
-   public RechercheAxis2Fault(Throwable cause) {
+   public RechercheAxis2Fault(String message, String localPart, Throwable cause) {
 
-      super("Une exception a eu lieu dans la recherche",
-            SoapFaultCodeFactory.createSoapFaultCode("urn:sae:faultcodes", "RechercheServiceError", "sae"), cause);
-   }   
+      super(message, SoapFaultCodeFactory.createSoapFaultCode(
+            "urn:sae:faultcodes", localPart, "sae"), cause);
+
+   }
+
    /**
     * Instanciation de {@link AxisFault#AxisFault}
     * 
@@ -48,6 +53,7 @@ public class RechercheAxis2Fault extends AxisFault {
     *           localPart du code du SOAPFault
     */
    public RechercheAxis2Fault(String message, String localPart) {
-      super(message, SoapFaultCodeFactory.createSoapFaultCode("urn:sae:faultcodes", localPart, "sae"));
+      super(message, SoapFaultCodeFactory.createSoapFaultCode(
+            "urn:sae:faultcodes", localPart, "sae"));
    }
 }

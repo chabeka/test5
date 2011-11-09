@@ -27,7 +27,6 @@ import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 /**
  * Classe concrète pour le service de recherche.
  */
-@SuppressWarnings("PMD.PreserveStackTrace")
 @Service
 public class WSRechercheServiceImpl implements WSRechercheService {
 
@@ -64,19 +63,26 @@ public class WSRechercheServiceImpl implements WSRechercheService {
          response = createRechercheResponse(untypedDocuments, resultatTronque);
 
       } catch (SAESearchServiceEx except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "ErreurInterneRecherche");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "ErreurInterneRecherche", except);
       } catch (MetaDataUnauthorizedToSearchEx except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "RechercheMetadonneesInterdite");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "RechercheMetadonneesInterdite", except);
       } catch (MetaDataUnauthorizedToConsultEx except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "ConsultationMetadonneesInterdite");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "ConsultationMetadonneesInterdite", except);
       } catch (UnknownDesiredMetadataEx except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "ConsultationMetadonneesInconnues");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "ConsultationMetadonneesInconnues", except);
       } catch (UnknownLuceneMetadataEx except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "RechercheMetadonneesInconnues");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "RechercheMetadonneesInconnues", except);
       } catch (SyntaxLuceneEx except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "SyntaxeLuceneNonValide");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "SyntaxeLuceneNonValide", except);
       } catch (RechercheAxis2Fault except) {
-         throw new RechercheAxis2Fault(except.getMessage(), "RequeteLuceneVideOuNull");
+         throw new RechercheAxis2Fault(except.getMessage(),
+               "RequeteLuceneVideOuNull", except);
       }
       return response;
    }
