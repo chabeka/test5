@@ -61,7 +61,7 @@ public final class EcdeManager {
          throws IOException {
 
       File destFile = new File(ECDE_REPERTORY.getAbsolutePath(), destFilename);
-      FileUtils.copyFile(srcFile, destFile);
+      FileUtils.copyFile(srcFile, destFile, false);
    }
 
 }

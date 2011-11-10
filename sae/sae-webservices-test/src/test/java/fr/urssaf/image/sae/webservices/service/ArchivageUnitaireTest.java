@@ -98,6 +98,8 @@ public class ArchivageUnitaireTest {
       metadatas.add(ObjectModelFactory.createMetadata("Hash", hash));
       metadatas.add(ObjectModelFactory.createMetadata("DateReception",
             "1999-11-25"));
+      metadatas.add(ObjectModelFactory.createMetadata("DateDebutConservation",
+            "2011-09-02"));
 
       URI urlEcde = URI
             .create("ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation.pdf");
@@ -108,7 +110,7 @@ public class ArchivageUnitaireTest {
       // récupération de l'uuid d'archivage
       String idArchive = archivageResponse.getIdArchive().getUuidType();
 
-      LOG.debug("UUID du document archivé: " + idArchive);
+      LOG.debug("UUID du document archivé: " + idArchive.toLowerCase());
 
       Assert.assertNotNull("L'identifiant d'archivage doit être renseigné",
             idArchive);
