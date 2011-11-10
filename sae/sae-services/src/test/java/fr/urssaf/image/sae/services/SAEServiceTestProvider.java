@@ -1,26 +1,29 @@
 package fr.urssaf.image.sae.services;
 
-import java.io.File;
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 
-import junit.framework.Assert;
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
+import net.docubase.toolkit.exception.ged.TagControlException;
+import net.docubase.toolkit.model.ToolkitFactory;
+import net.docubase.toolkit.model.base.Base;
+import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
+import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
+import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
-import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
-import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
-import fr.urssaf.image.sae.storage.exception.SearchingServiceEx;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
-import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCriteria;
-import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
+import fr.urssaf.image.sae.storage.model.connection.StorageConnectionParameter;
 
 /**
  * Service pour fournir des méthodes communes pour les tests de l'artefact<br>
@@ -32,148 +35,138 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 @Component
 public class SAEServiceTestProvider {
 
-	private final StorageServiceProvider serviceProvider;
-	@Autowired
-	@Qualifier("mappingDocumentService")
-	private MappingDocumentService mappingService;
+   private final ServiceProvider serviceProvider;
 
-	/**
-	 * initialise la façade des services de sae-storage
-	 * 
-	 * @param serviceProvider
-	 *            façade des services de sae-storage
-	 * @param connection
-	 *            connection à DFCE
-	 */
-	@Autowired
-	public SAEServiceTestProvider(
-			@Qualifier("storageServiceProvider") StorageServiceProvider serviceProvider,
-			@Qualifier("mappingDocumentService") MappingDocumentService mappingService) {
+   private final Base base;
 
-		Assert.assertNotNull(serviceProvider);
-		Assert.assertNotNull(mappingService);
+   /**
+    * initialise la façade des services de sae-storage
+    * 
+    * @param connection
+    *           connection à DFCE
+    * @throws ConnectionServiceEx
+    *            une exception est levée lors de l'ouverture de la connexion
+    */
+   @Autowired
+   public SAEServiceTestProvider(
+         @Qualifier("storageConnectionParameter") StorageConnectionParameter connection)
+         throws ConnectionServiceEx {
 
-		this.serviceProvider = serviceProvider;
-		this.mappingService= mappingService;
-	}
+      Assert.assertNotNull(connection);
 
-	/**
-	 * Permet de retrouver un document dans le SAE à partir de son identifiant
-	 * unique d'archivage<br>
-	 * <br>
-	 * Cette méthode peut s'avérer utile pour les tests unitaires simplement
-	 * pour vérifier qu'un document a bien été inséré dans le SAE
-	 * 
-	 * @param uuid
-	 *            identifiant unique du document à retrouver dans le SAE
-	 * @return instance du {@link Document} correspond au paramètre
-	 *         <code>uuid</code>
-	 * @throws ConnectionServiceEx
-	 *             une exception est levée lors de l'ouverture de la connexion
-	 * @throws SearchingServiceEx
-	 *             une exception est levée lors de la recherche
-	 */
-	public final StorageDocument searchDocument(UUID uuid)
-			throws ConnectionServiceEx, SearchingServiceEx {
+      this.serviceProvider = ServiceProvider.newServiceProvider();
 
-		try {
-			UUIDCriteria criteria = new UUIDCriteria(uuid, null);
-			serviceProvider.openConnexion();
-			return serviceProvider.getStorageDocumentService()
-					.searchStorageDocumentByUUIDCriteria(criteria);
+      this.serviceProvider.connect(connection.getStorageUser().getLogin(),
+            connection.getStorageUser().getPassword(), Utils
+                  .buildUrlForConnection(connection));
 
-		} finally {
-			serviceProvider.closeConnexion();
-		}
+      this.base = serviceProvider.getBaseAdministrationService().getBase(
+            connection.getStorageBase().getBaseName());
+   }
 
-	}
+   /**
+    * Permet de retrouver un document dans le SAE à partir de son identifiant
+    * unique d'archivage<br>
+    * <br>
+    * Cette méthode peut s'avérer utile pour les tests unitaires simplement pour
+    * vérifier qu'un document a bien été inséré dans le SAE
+    * 
+    * @param uuid
+    *           identifiant unique du document à retrouver dans le SAE
+    * @return instance du {@link Document} correspond au paramètre
+    *         <code>uuid</code>
+    */
+   public final Document searchDocument(UUID uuid) {
 
+      return serviceProvider.getSearchService().getDocumentByUUID(base, uuid);
 
+   }
 
-	/**
-	 * Permet de supprimer un document dans le SAE à partir de son identifiant
-	 * unique d'archivage<br>
-	 * <br>
-	 * Cette méthode peut s'avérer utile pour les tests unitaires simplement
-	 * pour supprimer un document du SAE qui vient d'être inséré et n'est plus
-	 * utile
-	 * 
-	 * @param uuid
-	 *            identifiant unique du document à supprimer SAE
-	 * @throws ConnectionServiceEx
-	 *             une exception est levée lors de l'ouverture de la connexion
-	 * @throws DeletionServiceEx
-	 *             une exception est levée lors de la suppression.
-	 */
-	public final void deleteDocument(UUID uuid) throws ConnectionServiceEx,
-			DeletionServiceEx {
+   /**
+    * Permet de retrouver le contenu d'un document archivé dans le SAE
+    * 
+    * @param doc
+    *           document dans le SAE
+    * @return contenu du document
+    */
+   public final InputStream loadDocumentFile(Document doc) {
 
-		try {
-			UUIDCriteria criteria = new UUIDCriteria(uuid, null);
-			serviceProvider.openConnexion();
-			serviceProvider.getStorageDocumentService().deleteStorageDocument(
-					criteria);
+      return serviceProvider.getStoreService().getDocumentFile(doc);
 
-		} finally {
+   }
 
-			serviceProvider.closeConnexion();
+   /**
+    * Permet de supprimer un document dans le SAE à partir de son identifiant
+    * unique d'archivage<br>
+    * <br>
+    * Cette méthode peut s'avérer utile pour les tests unitaires simplement pour
+    * supprimer un document du SAE qui vient d'être inséré et n'est plus utile
+    * 
+    * @param uuid
+    *           identifiant unique du document à supprimer SAE
+    */
+   public final void deleteDocument(UUID uuid) {
 
-		}
+      try {
+         serviceProvider.getStoreService().deleteDocument(uuid);
+      } catch (FrozenDocumentException e) {
+         throw new NestableRuntimeException(e);
+      }
 
-	}
+   }
 
-	/**
-	 * 
-	 * Permet d'insérer un document dans le SAE<br>
-	 * <br>
-	 * Cette méthode peut s'avérer utile pour les tests unitaires pour consulter
-	 * ou recherche un document du SAE
-	 * 
-	 * @param content
-	 *            contenu du document à archiver
-	 * @param metadatas
-	 *            liste des métadonnées
-	 * @param title
-	 *            titre du document
-	 * @param type
-	 *            type du document
-	 * @param creationDate
-	 *            date de création du document
-	 * @return UUID du document dans le SAE
-	 * @throws ConnectionServiceEx
-	 *             une exception est levée lors de l'ouverture de la connexion
-	 */
-	public final UUID captureDocument(byte[] content,
-			List<StorageMetadata> metadatas,File docFile) throws ConnectionServiceEx {
+   /**
+    * 
+    * Permet d'insérer un document dans le SAE<br>
+    * <br>
+    * Cette méthode peut s'avérer utile pour les tests unitaires pour consulter
+    * ou recherche un document du SAE
+    * 
+    * @param content
+    *           contenu du document à archiver
+    * @param metadatas
+    *           liste des métadonnées
+    * @param documentTitle
+    *           titre du document
+    * @param documentType
+    *           type du document
+    * @param dateCreation
+    *           date de création du document
+    * @param dateDebutConservation
+    *           date de début de conservation du document
+    * @param codeRND
+    *           codeRDN
+    * @param title
+    *           titre
+    * @return UUID du document dans le SAE
+    */
+   public final UUID captureDocument(byte[] content,
+         Map<String, Object> metadatas, String documentTitle,
+         String documentType, Date dateCreation, Date dateDebutConservation,
+         String codeRND, String title) {
 
-		try {
+      try {
+         Document document = ToolkitFactory.getInstance().createDocumentTag(
+               base);
 
-			serviceProvider.openConnexion();
-			StorageDocument doc = new StorageDocument(metadatas, content);
-			doc.setFilePath(docFile.toString());
+         document.setCreationDate(dateCreation);
+         document.setTitle(title);
+         document.setType(codeRND);
+         document.setLifeCycleReferenceDate(dateDebutConservation);
 
-			return serviceProvider.getStorageDocumentService().insertStorageDocument(doc).getUuid();
-		} catch (InsertionServiceEx e) {
-			throw new NestableRuntimeException(e);
-		} finally {
-			serviceProvider.closeConnexion();
+         for (Entry<String, Object> entry : metadatas.entrySet()) {
+            BaseCategory baseCategory = base.getBaseCategory(entry.getKey());
+            document.addCriterion(baseCategory, entry.getValue());
 
-		}
+         }
 
-	}
+         InputStream docContent = new ByteArrayInputStream(content);
+         return serviceProvider.getStoreService().storeDocument(document,
+               documentTitle, documentType, docContent).getUuid();
 
-	/**
-	 * @param mappingService
-	 *            the mappingService to set
-	 */
-	public void setMappingService(MappingDocumentService mappingService) {
-		this.mappingService = mappingService;
-	}
+      } catch (TagControlException e) {
+         throw new NestableRuntimeException(e);
+      }
 
-	/**
-	 * @return the mappingService
-	 */
-	public MappingDocumentService getMappingService() {
-		return mappingService;
-	}
+   }
 }

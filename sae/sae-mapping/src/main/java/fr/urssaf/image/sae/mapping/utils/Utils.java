@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
 import fr.urssaf.image.sae.bo.model.SAEMetadataType;
 import fr.urssaf.image.sae.mapping.constants.Constants;
@@ -64,7 +65,7 @@ public final class Utils {
    }
 
    /**
-    * Convertie une chaîne en Date
+    * Convertie une chaîne en Date UTC
     * 
     * @param date
     *           : La chaîne à convertir.
@@ -80,6 +81,7 @@ public final class Utils {
          SimpleDateFormat formatter = new SimpleDateFormat(
                Constants.DATE_PATTERN, Constants.DEFAULT_LOCAL);
          formatter.setLenient(false);
+         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
          newDate = formatter.parse(date);
          if (formatter.parse(date, new ParsePosition(0)) == null) {
             formatter = new SimpleDateFormat(Constants.DATE_PATTERN,

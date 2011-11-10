@@ -8,10 +8,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -32,7 +34,6 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
-import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-test.xml" })
@@ -59,14 +60,13 @@ public class SAEConsultationServiceTest {
       uuid = null;
    }
 
-   // FIXME Attente de la nouvelle api DFCE pour pouvoir supprimer.
    @After
    public void after() throws ConnectionServiceEx {
 
       // suppression de l'insertion
       if (uuid != null) {
 
-         // testProvider.deleteDocument(uuid);
+         testProvider.deleteDocument(uuid);
       }
    }
 
@@ -78,31 +78,29 @@ public class SAEConsultationServiceTest {
       byte[] content = FileUtils.readFileToByteArray(srcFile);
 
       String[] parsePatterns = new String[] { "yyyy-MM-dd" };
-      List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
+      Map<String, Object> metadatas = new HashMap<String, Object>();
 
-      metadatas.add(new StorageMetadata("apr", "ADELAIDE"));
-      metadatas.add(new StorageMetadata("cop", "CER69"));
-      metadatas.add(new StorageMetadata("cog", "UR750"));
-      metadatas.add(new StorageMetadata("sm_document_type", "2.3.1.1.12"));
-      metadatas.add(new StorageMetadata("vrn", "11.1"));
-      metadatas.add(new StorageMetadata("dom", "2"));
-      metadatas.add(new StorageMetadata("act", "3"));
-      metadatas.add(new StorageMetadata("sm_life_cycle_reference_date",
-            DateUtils.parseDate("2013-01-01", parsePatterns)));
-      metadatas.add(new StorageMetadata("nbp", "2"));
-      metadatas.add(new StorageMetadata("ffi", "fmt/1354"));
-      metadatas.add(new StorageMetadata("cse", "ATT_PROD_001"));
-      metadatas.add(new StorageMetadata("dre", DateUtils.parseDate(
-            "1999-12-30", parsePatterns)));
-      metadatas
-            .add(new StorageMetadata("sm_title", "Attestation de vigilance"));
-      metadatas.add(new StorageMetadata("nfi", "attestation_consultation.pdf"));
-      metadatas.add(new StorageMetadata("sm_creation_date", DateUtils
-            .parseDate("2012-01-01", parsePatterns)));
-      metadatas.add(new StorageMetadata("dfc", DateUtils.parseDate(
-            "2012-01-01", parsePatterns)));
+      metadatas.put("apr", "ADELAIDE");
+      metadatas.put("cop", "CER69");
+      metadatas.put("cog", "UR750");
+      metadatas.put("vrn", "11.1");
+      metadatas.put("dom", "2");
+      metadatas.put("act", "3");
+      metadatas.put("nbp", "2");
+      metadatas.put("ffi", "fmt/1354");
+      metadatas.put("cse", "ATT_PROD_001");
+      metadatas.put("dre", DateUtils.parseDate("1999-12-30", parsePatterns));
+      metadatas.put("dfc", DateUtils.parseDate("2012-01-01", parsePatterns));
 
-      return testProvider.captureDocument(content, metadatas, srcFile);
+      Date creationDate = DateUtils.parseDate("2012-01-01", parsePatterns);
+      Date dateDebutConservation = DateUtils.parseDate("2013-01-01",
+            parsePatterns);
+      String documentTitle = "attestation_consultation";
+      String documentType = "pdf";
+      String codeRND = "2.3.1.1.12";
+      String title = "Attestation de vigilance";
+      return testProvider.captureDocument(content, metadatas, documentTitle,
+            documentType, creationDate, dateDebutConservation, codeRND, title);
    }
 
    @Test
