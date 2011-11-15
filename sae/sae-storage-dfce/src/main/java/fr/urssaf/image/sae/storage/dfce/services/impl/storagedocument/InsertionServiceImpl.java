@@ -101,10 +101,16 @@ public class InsertionServiceImpl extends AbstractServices implements
 	public final BulkInsertionResults bulkInsertStorageDocument(
 			final StorageDocuments storageDocuments, final boolean allOrNothing)
 			throws InsertionServiceEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "bulkInsertStorageDocument()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      LOGGER.debug("{} - Début de la boucle d'insertion des documents dans DFCE", prefixeTrc);
+      // Fin des traces debug - entrée méthode
 		final List<StorageDocument> storageDocDone = new ArrayList<StorageDocument>();
 		final List<StorageDocumentOnError> storageDocFailed = new ArrayList<StorageDocumentOnError>();
 		jmxStorageIndex = 0;
 		totalDocument = 0;
+		int indexDocument = 0;
 		if (storageDocuments != null
 				&& storageDocuments.getAllStorageDocuments() != null) {
 			totalDocument = storageDocuments.getAllStorageDocuments().size();
@@ -117,6 +123,8 @@ public class InsertionServiceImpl extends AbstractServices implements
 		for (StorageDocument storageDocument : Utils
 				.nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
 			try {
+	         LOGGER.debug("{} - Stockage du document #{} ({})",
+	               new Object[]{prefixeTrc, ++indexDocument,storageDocument.getFilePath()});
 				storageDocument.setUuid(insertStorageDocument(storageDocument)
 						.getUuid());
 				storageDocDone.add(storageDocument);
@@ -142,6 +150,7 @@ public class InsertionServiceImpl extends AbstractServices implements
 					break;
 				}
 			}
+			LOGGER.debug("{} - Fin de la boucle d'insertion des documents dans DFCE", prefixeTrc);
 		}
 		return new BulkInsertionResults(new StorageDocuments(storageDocDone),
 				new StorageDocumentsOnError(storageDocFailed));
