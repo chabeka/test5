@@ -25,6 +25,7 @@ import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.EcdeUrlSommaireType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.metadata.utils.Utils;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
@@ -182,17 +183,21 @@ public class WSCaptureServiceImpl implements WSCaptureService {
    @Override
    public final ArchivageMasseResponse archivageEnMasse(ArchivageMasse request)
          throws CaptureAxisFault {
-
+      String prefixeTrc = "archivageEnMasse()";
+      LOG.debug("{} - Début", prefixeTrc);
       try {
          EcdeUrlSommaireType ecdeUrlWs = request.getArchivageMasse()
                .getUrlSommaire();
          String ecdeUrl = ecdeUrlWs.getEcdeUrlSommaireType().toString();
+         LOG.debug("{} - URI ECDE: {}", prefixeTrc, ecdeUrl);
          // Appel du service, celui-ci doit rendre la main rapidement
          // (traitement dans un autre thread)
          saeBulkCaptureService.bulkCapture(ecdeUrl);
       } catch (ServerBusyEx ex) {
          // ici on retourne un status 412 pour informer que le serveur est
          // occupé
+         LOG.debug("{} - {}", prefixeTrc, MessageRessourcesUtils
+               .recupererMessage("ws.bulk.capture.is.busy", null));
          HttpServletResponse resp = (HttpServletResponse) MessageContext
                .getCurrentMessageContext().getProperty(
                      HTTPConstants.MC_HTTP_SERVLETRESPONSE);
@@ -227,8 +232,10 @@ public class WSCaptureServiceImpl implements WSCaptureService {
    private <T> String buildMessageFromList(Collection<T> list) {
       final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
             ToStringStyle.SIMPLE_STYLE);
-      for (T o : list) {
-         toStrBuilder.append(o.toString());
+      for (T o : Utils.nullSafeIterable(list)) {
+         if (o != null) {
+            toStrBuilder.append(o.toString());
+         }
       }
       return toStrBuilder.toString();
    }

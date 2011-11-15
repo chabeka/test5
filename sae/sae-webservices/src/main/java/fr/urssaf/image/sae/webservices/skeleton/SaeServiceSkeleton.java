@@ -181,7 +181,21 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ArchivageMasseResponse archivageMasseSecure(
          ArchivageMasse request) throws CaptureAxisFault {
-      return this.capture.archivageEnMasse(request);
+      // Mise en place du contexte pour les traces
+      buildLogContext();
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "Opération archivageMasseSecure()";
+         LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+         ArchivageMasseResponse response = capture.archivageEnMasse(request);
+         LOG.debug("{} - Sortie", prefixeTrc);
+         // Fin des traces debug - sortie méthode         
+         return response;
+      } finally {
+         // Nettoyage du contexte pour les logs
+         clearLogContext();
+      }
    }
 
    /**
