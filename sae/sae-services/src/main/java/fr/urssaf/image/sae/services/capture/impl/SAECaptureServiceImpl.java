@@ -20,6 +20,7 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
 import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
+import fr.urssaf.image.sae.metadata.utils.Utils;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
@@ -146,11 +147,11 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       // conversion du fichier extrait de l'url ECDE en bytes[]
       // instanciation de la classe UntypedDocument avec la liste des
       // métadonnées et le contenu du document à archiver
-      UntypedDocument untypedDocument = new UntypedDocument(null,
-            metadatas);
+      UntypedDocument untypedDocument = new UntypedDocument(null, metadatas);
       untypedDocument.setFilePath(ecdeFile.toString());
       return untypedDocument;
    }
+
    /**
     * 
     * @param ecdeURL
@@ -167,6 +168,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       }
 
    }
+
    /**
     * @param storageDoc
     * @return UUID
@@ -206,8 +208,10 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    private <T> String buildMessageFromList(Collection<T> list) {
       final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
             ToStringStyle.SIMPLE_STYLE);
-      for (T o : list) {
-         toStrBuilder.append(o.toString());
+      for (T o : Utils.nullSafeIterable(list)) {
+         if (o != null) {
+            toStrBuilder.append(o.toString());
+         }
       }
       return toStrBuilder.toString();
    }

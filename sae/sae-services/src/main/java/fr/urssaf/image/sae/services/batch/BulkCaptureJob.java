@@ -1,10 +1,14 @@
 package fr.urssaf.image.sae.services.batch;
 
 import java.util.List;
+
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.ecde.modele.resultats.Resultats;
 import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
@@ -29,6 +33,8 @@ import fr.urssaf.image.sae.storage.services.storagedocument.StorageDocumentServi
 @Qualifier("bulkCaptureJob")
 @SuppressWarnings({ "PMD.LongVariable" })
 public class BulkCaptureJob extends  CommonIndicator{
+   private static final Logger LOGGER = LoggerFactory
+   .getLogger(BulkCaptureJob.class);
 	@Autowired
 	@Qualifier("storageServiceProvider")
 	private StorageServiceProvider storageServiceProvider;
@@ -43,6 +49,16 @@ public class BulkCaptureJob extends  CommonIndicator{
 	 * @return Résultats Un objet résultat de type {@link Résultats}.
 	 */
 	public final Resultats bulkCapture(Sommaire sommaire) {
+      String prefixeTrc = "bulkCapture()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      LOGGER
+      .debug(
+            "{} - Nombre de documents à archiver : {}",
+            prefixeTrc, sommaire.getDocuments().size());
+      LOGGER
+      .debug(
+            "{} - Mode de la capture de masse : {}",
+            prefixeTrc, sommaire.getBatchMode());
 		Resultats resultats = null;
 		boolean hasError = false;
 		BulkInsertionResults bulkInsertionResults = null;
@@ -79,6 +95,8 @@ public class BulkCaptureJob extends  CommonIndicator{
 			resultats = bulkCaptureHelper.buildResultatsSuccess(
 					bulkInsertionResults, untypedDocs.size(), sommaire);
 		}
+      LOGGER.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
 		return resultats;
 	}
 

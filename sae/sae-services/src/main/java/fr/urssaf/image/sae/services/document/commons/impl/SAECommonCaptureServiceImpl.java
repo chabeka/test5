@@ -41,7 +41,7 @@ public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
          .getLogger(SAECommonCaptureServiceImpl.class);
    @Autowired
    @Qualifier("saeControlesCaptureService")
-   private SAEControlesCaptureService cntrolesService;
+   private SAEControlesCaptureService controlesService;
 
    @Autowired
    @Qualifier("mappingDocumentService")
@@ -68,40 +68,47 @@ public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
       SAEDocument saeDocument = null;
       StorageDocument storageDocument = null;
       try {
-         // on ne contrôle pas la taille du document
+      // on ne contrôle pas la taille du document
          LOGGER
                .debug(
                      "{} - Début des contrôles sur (UntypedDocument et UntypedMetadata)",
                      prefixeTrc);
-         cntrolesService.checkUntypedDocument(untypedDocument);
-         cntrolesService.checkUntypedMetadata(untypedDocument);
+         controlesService.checkUntypedDocument(untypedDocument);
+         controlesService.checkUntypedMetadata(untypedDocument);
          LOGGER
                .debug(
                      "{} - Fin des contrôles sur (UntypedDocument et UntypedMetadata)",
                      prefixeTrc);
-         LOGGER.debug("{} - Début de la conversion de UntypedDocument vers SaeDocument",
-               prefixeTrc);
+         LOGGER
+               .debug(
+                     "{} - Début de la conversion de UntypedDocument vers SaeDocument",
+                     prefixeTrc);
          saeDocument = mappingService
                .untypedDocumentToSaeDocument(untypedDocument);
-         LOGGER.debug("{} - Fin de la conversion de UntypedDocument vers SaeDocument",
+         LOGGER.debug(
+               "{} - Fin de la conversion de UntypedDocument vers SaeDocument",
                prefixeTrc);
          if (saeDocument != null) {
             LOGGER.debug(
                   "{} - Début des contrôles sur (SaeDocument  et SaeMetadata)",
                   prefixeTrc);
-            cntrolesService.checkSaeMetadataForCapture(saeDocument);
-            cntrolesService.checkHashCodeMetadataForStorage(saeDocument);
+            controlesService.checkSaeMetadataForCapture(saeDocument);
+            controlesService.checkHashCodeMetadataForStorage(saeDocument);
             enrichmentService.enrichmentMetadata(saeDocument);
-            cntrolesService.checkSaeMetadataForStorage(saeDocument);
+            controlesService.checkSaeMetadataForStorage(saeDocument);
             LOGGER.debug(
                   "{} - Fin des contrôles sur (SaeDocument  et SaeMetadata)",
                   prefixeTrc);
-            LOGGER.debug("{} - Début de la conversion de SaeDocument vers StorageDocument",
-                  prefixeTrc);
+            LOGGER
+                  .debug(
+                        "{} - Début de la conversion de SaeDocument vers StorageDocument",
+                        prefixeTrc);
             storageDocument = mappingService
                   .saeDocumentToStorageDocument(saeDocument);
-            LOGGER.debug("{} - Fin de la conversion de SaeDocument vers StorageDocument",
-                  prefixeTrc);
+            LOGGER
+                  .debug(
+                        "{} - Fin de la conversion de SaeDocument vers StorageDocument",
+                        prefixeTrc);
          }
       } catch (InvalidSAETypeException e) {
          throw new SAECaptureServiceEx(e);

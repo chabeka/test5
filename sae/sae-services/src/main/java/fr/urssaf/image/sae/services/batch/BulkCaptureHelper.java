@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -57,7 +59,8 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
 @SuppressWarnings({ "PMD.LongVariable", "PMD.ExcessiveImports",
 		"PMD.AvoidInstantiatingObjectsInLoops", "PMD.CyclomaticComplexity" })
 public class BulkCaptureHelper extends CommonIndicator {
-
+   private static final Logger LOGGER = LoggerFactory
+   .getLogger(BulkCaptureHelper.class);
 	private static final String TOUT_OU_RIEN = "TOUT_OU_RIEN";
 	@Autowired
 	@Qualifier("saeCommonCaptureService")
@@ -81,12 +84,29 @@ public class BulkCaptureHelper extends CommonIndicator {
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	public final List<StorageDocument> addIdTreatementToStorageDoc(
 			List<StorageDocument> storageDocs) {
+      String prefixeTrc = "addIdTreatementToStorageDoc()";
+      LOGGER.debug("{} - Début", prefixeTrc);
 		UUID idtreatement = UUID.randomUUID();
+		LOGGER
+      .debug(
+            "{} - Début de l'ajout de la métadonnée IdTraitementMasseInterne",
+            prefixeTrc);
+		
+		LOGGER
+      .debug(
+            "{} - L'identifiant de traitement de masse interne pour le rollback est : {}",
+            prefixeTrc,idtreatement);
 		for (StorageDocument storageDocument : Utils
 				.nullSafeIterable(storageDocs)) {
 			storageDocument.getMetadatas().add(
 					new StorageMetadata("iti", idtreatement.toString()));
 		}
+      LOGGER
+      .debug(
+            "{} - Fin de l'ajout de la métadonnée IdTraitementMasseInterne",
+            prefixeTrc);
+      LOGGER.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
 		return storageDocs;
 	}
 
@@ -100,12 +120,16 @@ public class BulkCaptureHelper extends CommonIndicator {
 	// CHECKSTYLE:OFF
 	public final List<StorageDocument> buildStorageDocuments(
 			List<UntypedDocument> untypedDocs) {
+	   String prefixeTrc = "buildStorageDocuments()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      LOGGER.debug("{} - Début de la boucle de création des StorageDocument", prefixeTrc);
 		List<StorageDocument> storageDocs = new ArrayList<StorageDocument>();
 		UntypedDocument currentDocument = null;
 		untypedDocumentsOnError = new ArrayList<UntypedDocumentOnError>();
 		errors = new ArrayList<MetadataError>();
 		jmxControlIndex = 0;
 		totalDocument = 0;
+		int indexDocument = 0;
 		if (untypedDocs != null) {
 			totalDocument = untypedDocs.size();
 		}
@@ -115,13 +139,15 @@ public class BulkCaptureHelper extends CommonIndicator {
 		try {
 			for (UntypedDocument untypedDoc : Utils
 					.nullSafeIterable(untypedDocs)) {
-				currentDocument = untypedDoc;
+			   LOGGER.debug("{} - Contrôles du document #{} ({})", new Object[]{prefixeTrc,++indexDocument,
+			         untypedDoc.getFilePath()});
+				currentDocument = untypedDoc;				
 				storageDocs.add(commonCapture
 						.buildStorageDocumentForCapture(untypedDoc));
 				jmxControlIndex++;
 				getIndicator().setJmxControlIndex(jmxControlIndex);
-
 			}
+			LOGGER.debug("{} - Fin de la boucle de création des StorageDocument", prefixeTrc);
 		} catch (SAEEnrichmentEx except) {
 			buildTechnicalErrors(currentDocument, except);
 		} catch (ReferentialRndException except) {
@@ -166,7 +192,7 @@ public class BulkCaptureHelper extends CommonIndicator {
 	public final List<UntypedDocumentOnError> buildErrors(
 			UntypedDocument badDocument, Exception exception) {
 
-		String filePath = badDocument.getFilePath();
+		final String filePath = badDocument.getFilePath();
 		// SAE-CA-BUL002
 		buildSaeErros(exception, filePath, SAEBulkErrors.FUNCTIONAL_ERROR);
 		UntypedDocumentOnError untypedDocumentOnError = new UntypedDocumentOnError(
@@ -507,6 +533,7 @@ public class BulkCaptureHelper extends CommonIndicator {
 	}
 
 	/**
+	 * @param indicator {@link JmxIndicator}
 	 * @return l'indicateur du job de contrôle des documents.
 	 */
 	public JmxIndicator retrieveJmxControlIndicator(JmxIndicator indicator) {
