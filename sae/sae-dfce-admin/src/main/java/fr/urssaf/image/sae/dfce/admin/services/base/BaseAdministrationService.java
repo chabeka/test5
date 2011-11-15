@@ -53,14 +53,20 @@ public interface BaseAdministrationService {
 			throws BaseAdministrationServiceEx, FileNotFoundException;
 
 	/**
-	 * Service de suppression de la base.
+	 * Service de mise à jour des indexes de la base.
 	 * 
 	 * @param dataBaseModel
 	 *            : un modèle de base de donnée
 	 */
-	void deleteBase(final DataBaseModel dataBaseModel);
+	void updateAllIndexesUsage(final DataBaseModel dataBaseModel);
 
-	
+	  /**
+    * Service de suppression de la base.
+    * 
+    * @param dataBaseModel
+    *            : un modèle de base de donnée
+    */
+   void deleteBase(final DataBaseModel dataBaseModel);
 
 	/**
 	 * 
