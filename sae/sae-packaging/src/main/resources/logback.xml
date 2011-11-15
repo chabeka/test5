@@ -100,14 +100,15 @@
    -->
    
    
-   <!-- Pour tout le SAE, ou plus precisement pour le package de plus haut niveau -->
+   <!-- Pour tout le SAE, ou plus precisement pour le package de plus haut niveau-->
+   
    <!--
    <logger name="fr.urssaf.image.sae" level="DEBUG" additivity="false">
       <appender-ref ref="log-file" />
       <appender-ref ref="debug-file" />
    </logger>
+
    -->
-   
    
    <!-- Pour sae-webservices -->
    <!--
@@ -135,7 +136,13 @@
    </logger>
    -->
    
-   
+     <!-- Pour sea-ecde -->
+<!--
+   <logger name="fr.urssaf.image.sae.ecde" level="DEBUG" additivity="false">
+      <appender-ref ref="log-file" />
+      <appender-ref ref="debug-file" />
+   </logger>
+   -->
    
    <!-- Niveau general pour l'application -->
    <root level="WARN">
