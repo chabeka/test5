@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,8 @@ import fr.urssaf.image.sae.ecde.service.strategy.ResultatSerializerStrategy;
  */
 @Service
 public class JaxbResultatSerializer implements ResultatSerializerStrategy {
-
+   private static final Logger LOGGER = LoggerFactory
+   .getLogger(JaxbResultatSerializer.class);
 	@Autowired
 	private ResultatsXmlService resultatsXmlS;
 
@@ -156,6 +159,12 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
 	 */
 	private void createFlag(String ecdeDirectory) throws IOException {
 		try {
+	      String prefixeTrc = "createFlag()";
+	      LOGGER.debug("{} - Début", prefixeTrc);
+	      LOGGER
+	      .debug(
+	            "{} - Début de la génération du fichier fin_traitement.flag",
+	            prefixeTrc);
 			File flag = new File(FilenameUtils.concat(ecdeDirectory,
 					"fin_traitement.flag"));
 			if (flag.exists()) {
@@ -170,6 +179,10 @@ public class JaxbResultatSerializer implements ResultatSerializerStrategy {
 				throw new EcdeRuntimeException(
 						"Erreur lors de l'ecriture du fichier flag!");
 			}
+		   LOGGER
+	      .debug(
+	            "{} - Fin de la génération du fichier fin_traitement.flag",
+	            prefixeTrc);
 		} catch (IOException except) {
 			throw new IOException("Erreur de création du fichier flag.", except);
 		}

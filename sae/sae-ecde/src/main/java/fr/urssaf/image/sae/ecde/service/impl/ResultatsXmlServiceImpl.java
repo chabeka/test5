@@ -9,6 +9,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -29,7 +31,8 @@ import fr.urssaf.image.sae.ecde.util.MessageRessourcesUtils;
  */
 @Service
 public class ResultatsXmlServiceImpl implements ResultatsXmlService {
-
+   private static final Logger LOGGER = LoggerFactory
+   .getLogger(ResultatsXmlServiceImpl.class);
    // pour la creation d'un object JAXBElement resultatsType
    private static ObjectFactory object = new ObjectFactory();
    @Autowired
@@ -58,6 +61,12 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
    @Override
    public final void writeResultatsXml(ResultatsType resultatsXml, OutputStream output) throws EcdeXsdException {
       try {
+         String prefixeTrc = "writeResultatsXml()";
+         LOGGER.debug("{} - Début", prefixeTrc);
+         LOGGER
+         .debug(
+               "{} - Début de la génération du fichier resultats.xml",
+               prefixeTrc);
          final Resource classPath = getContext().getResource("classpath:xsd_som_res/resultats.xsd");
          URL xsdSchema = classPath.getURL();
          JAXBElement<ResultatsType> resultats = object.createResultats(resultatsXml);
@@ -67,6 +76,10 @@ public class ResultatsXmlServiceImpl implements ResultatsXmlService {
          output.flush();
          //ici on ferme
          output.close();
+         LOGGER
+         .debug(
+               "{} - Fin de la génération du fichier resultats.xml",
+               prefixeTrc);
          
       } catch (SAXException e) {
          throw new EcdeXsdException(MessageRessourcesUtils.recupererMessage("sommaireresultatsexception.message", "resultats.xml"), e);
