@@ -10,6 +10,8 @@ import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,8 @@ import fr.urssaf.image.sae.storage.services.storagedocument.SearchingService;
 @Qualifier("searchingService")
 public class SearchingServiceImpl extends AbstractServices implements
       SearchingService {
+   private static final Logger LOG = LoggerFactory
+         .getLogger(SearchingServiceImpl.class);
 
    /**
     * {@inheritDoc}
@@ -47,25 +51,39 @@ public class SearchingServiceImpl extends AbstractServices implements
    @Loggable(LogLevel.TRACE)
    @ServiceChecked
    public final StorageDocuments searchStorageDocumentByLuceneCriteria(
-         final LuceneCriteria luceneCriteria) throws SearchingServiceEx, QueryParseServiceEx {
+         final LuceneCriteria luceneCriteria) throws SearchingServiceEx,
+         QueryParseServiceEx {
       final List<StorageDocument> storageDocuments = new ArrayList<StorageDocument>();
       try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "searchStorageDocumentByLuceneCriteria()";
+         LOG.debug("{} - Début", prefixeTrc);
+         LOG.debug("{} - Requête de recherche : {} ", prefixeTrc,
+               luceneCriteria.getLuceneQuery());
+         LOG.debug("{} - Le maximum de documents à retourner : {} ",
+               prefixeTrc, luceneCriteria.getLimit());
+         LOG.debug("{} - Début de la recherche dans DFCE", prefixeTrc);
+         // Fin des traces debug - entrée méthode
          final SearchResult searchResult = getDfceService().getSearchService()
                .search(luceneCriteria.getLuceneQuery(),
                      luceneCriteria.getLimit(), getBaseDFCE());
+         LOG.debug("{} - Fin de la recherche dans DFCE", prefixeTrc);
+         LOG
+               .debug(
+                     "{} - Le nombre de résultats de recherche renvoyé par DFCE est {}",
+                     prefixeTrc, searchResult.getDocuments() == null ? 0
+                           : searchResult.getDocuments().size());
          for (Document document : Utils.nullSafeIterable(searchResult
                .getDocuments())) {
-
             storageDocuments.add(BeanMapper.dfceDocumentToStorageDocument(
                   document, luceneCriteria.getDesiredStorageMetadatas(),
                   getDfceService(), false));
          }
-      }catch (SearchQueryParseException except) {
+      } catch (SearchQueryParseException except) {
          throw new QueryParseServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), except.getMessage(),
                except);
-      }  
-      catch (StorageException srcSerEx) {
+      } catch (StorageException srcSerEx) {
          throw new SearchingServiceEx(StorageMessageHandler
                .getMessage(Constants.SRH_CODE_ERROR), srcSerEx.getMessage(),
                srcSerEx);
@@ -100,7 +118,8 @@ public class SearchingServiceImpl extends AbstractServices implements
 
          if (docDfce != null) {
             storageDoc = BeanMapper.dfceDocumentToStorageDocument(docDfce,
-                  uUIDCriteria.getDesiredStorageMetadatas(), getDfceService(), true);
+                  uUIDCriteria.getDesiredStorageMetadatas(), getDfceService(),
+                  true);
          }
 
          return storageDoc;
