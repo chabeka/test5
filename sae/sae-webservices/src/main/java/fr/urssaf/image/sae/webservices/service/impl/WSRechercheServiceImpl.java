@@ -6,6 +6,8 @@ import static org.apache.commons.lang.StringUtils.isEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,8 @@ import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
  */
 @Service
 public class WSRechercheServiceImpl implements WSRechercheService {
-
+   private static final Logger LOG = LoggerFactory
+         .getLogger(WSRechercheServiceImpl.class);
    private static final String VIDE = "";
 
    /**
@@ -45,9 +48,18 @@ public class WSRechercheServiceImpl implements WSRechercheService {
    @Override
    public final RechercheResponse search(Recherche request)
          throws RechercheAxis2Fault {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "search()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
 
       int maxResult = Integer.parseInt(MessageRessourcesUtils.recupererMessage(
             "max.lucene.results", null));
+      LOG
+            .debug(
+                  "{} - Le nombre maximum de documents à renvoyer dans les résultats de " +
+                  "recherche au niveau de la couche webservice est {}",
+                  prefixeTrc,maxResult );
       boolean resultatTronque = false;
       RechercheResponse response;
       String requeteLucene = VIDE;
@@ -59,7 +71,12 @@ public class WSRechercheServiceImpl implements WSRechercheService {
                requeteLucene, listMDDesired);
          if (untypedDocuments.size() > maxResult) {
             resultatTronque = true;
+            LOG
+                  .debug(
+                        "{} - Les résultats de recherche sont tronqués à {} résultats",
+                        prefixeTrc, maxResult);
          }
+
          response = createRechercheResponse(untypedDocuments, resultatTronque);
 
       } catch (SAESearchServiceEx except) {
@@ -84,6 +101,7 @@ public class WSRechercheServiceImpl implements WSRechercheService {
          throw new RechercheAxis2Fault(except.getMessage(),
                "RequeteLuceneVideOuNull", except);
       }
+      LOG.debug("{} - Sortie", prefixeTrc);
       return response;
    }
 
@@ -94,10 +112,23 @@ public class WSRechercheServiceImpl implements WSRechercheService {
     *            Une exception est levée lors de la recherche.
     */
    private void checkNotNull(String requeteLucene) throws RechercheAxis2Fault {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "checkNotNull()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      LOG
+            .debug(
+                  "{} - Début de la vérification : La requête de recherche est renseignée",
+                  prefixeTrc);
       if (isEmpty(requeteLucene.trim())) {
          throw new RechercheAxis2Fault(MessageRessourcesUtils.recupererMessage(
                "search.lucene.videornull", null), "RequeteLuceneVideOuNull");
       }
+      LOG
+            .debug(
+                  "{} - Fin de la vérification : La requête de recherche est renseignée",
+                  prefixeTrc);
+      LOG.debug("{} - Sortie", prefixeTrc);
    }
 
    /**

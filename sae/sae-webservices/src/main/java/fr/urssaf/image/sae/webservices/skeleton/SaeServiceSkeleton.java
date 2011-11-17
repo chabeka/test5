@@ -206,9 +206,22 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final RechercheResponse rechercheSecure(Recherche request)
          throws RechercheAxis2Fault {
-
-      return this.search.search(request);
-
+      // Mise en place du contexte pour les traces
+      buildLogContext();
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "Opération rechercheSecure()";
+         LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+         RechercheResponse response = search.search(request);
+         // Traces debug - sortie méthode
+         LOG.debug("{} - Sortie", prefixeTrc);
+         // Fin des traces debug - sortie méthode
+         return response;
+      } finally {
+         // Nettoyage du contexte pour les logs
+         clearLogContext();
+      }
    }
 
    /**
