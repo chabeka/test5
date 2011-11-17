@@ -19,74 +19,75 @@ import fr.urssaf.image.sae.bo.model.AbstractDocument;
  * 
  */
 public class UntypedDocument extends AbstractDocument {
-	private List<UntypedMetadata> uMetadatas;
+   private List<UntypedMetadata> uMetadatas;
 
-	/**
-	 * @return La liste des métadonnées métiers.
-	 */
-	public final List<UntypedMetadata> getUMetadatas() {
-		return uMetadatas;
-	}
+   /**
+    * @return La liste des métadonnées métiers.
+    */
+   public final List<UntypedMetadata> getUMetadatas() {
+      return uMetadatas;
+   }
 
-	/**
-	 * @param metadatas
-	 *            : La liste des métadonnées métiers.
-	 */
-	public final void setUMetadatas(final List<UntypedMetadata> metadatas) {
-		this.uMetadatas = metadatas;
-	}
+   /**
+    * @param metadatas
+    *           : La liste des métadonnées métiers.
+    */
+   public final void setUMetadatas(final List<UntypedMetadata> metadatas) {
+      this.uMetadatas = metadatas;
+   }
 
-	/**
-	 * Construit un objet de type {@link UntypedDocument}.
-	 */
-	public UntypedDocument() {
-		super();
-	}
+   /**
+    * Construit un objet de type {@link UntypedDocument}.
+    */
+   public UntypedDocument() {
+      super();
+   }
 
-	/**
-	 * Construit un objet de type {@link UntypedDocument}
-	 * 
-	 * @param content
-	 *            : Le contenu du document métier.
-	 * @param filePath
-	 *            : Le chemin du fichier.
-	 * @param metadatas
-	 *            : La liste des métadonnées non typés.
-	 */
-	public UntypedDocument(final String filePath, final byte[] content,
-			final List<UntypedMetadata> metadatas) {
-		super(content, filePath);
-		this.uMetadatas = metadatas;
-	}
+   /**
+    * Construit un objet de type {@link UntypedDocument}
+    * 
+    * @param content
+    *           : Le contenu du document métier.
+    * @param filePath
+    *           : Le chemin du fichier.
+    * @param metadatas
+    *           : La liste des métadonnées non typés.
+    */
+   public UntypedDocument(final String filePath, final byte[] content,
+         final List<UntypedMetadata> metadatas) {
+      super(content, filePath);
+      this.uMetadatas = metadatas;
+   }
 
-	/**
-	 * Construit un objet de type {@link UntypedDocument}
-	 * 
-	 * @param content
-	 *            : Le contenu du document métier.
-	 * @param metadatas
-	 *            : La liste des métadonnées non typés.
-	 */
-	public UntypedDocument(final byte[] content,
-			final List<UntypedMetadata> metadatas) {
-		super(content);
-		this.uMetadatas = metadatas;
-	}
+   /**
+    * Construit un objet de type {@link UntypedDocument}
+    * 
+    * @param content
+    *           : Le contenu du document métier.
+    * @param metadatas
+    *           : La liste des métadonnées non typés.
+    */
+   public UntypedDocument(final byte[] content,
+         final List<UntypedMetadata> metadatas) {
+      super(content);
+      this.uMetadatas = metadatas;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	// CHECKSTYLE:OFF
-	public String toString() {
-		final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
-		toStrBuilder.append("chemin du fichier",getFilePath());
-		if (uMetadatas != null) {
-			for (UntypedMetadata uMetadata : uMetadatas) {
-				toStrBuilder.append(uMetadata.toString());
-			}
-		}
-		return toStrBuilder.toString();
-	}
-	// CHECKSTYLE:ON
+   /**
+    * {@inheritDoc}
+    */
+   // CHECKSTYLE:OFF
+   public String toString() {
+      final ToStringBuilder toStrBuilder = new ToStringBuilder(this,
+            ToStringStyle.SHORT_PREFIX_STYLE);
+      toStrBuilder.append("chemin du fichier", getFilePath());
+      toStrBuilder.append("identifiant d'archivage ", getUuid());
+      if (uMetadatas != null) {
+         for (UntypedMetadata uMetadata : uMetadatas) {
+            toStrBuilder.append(uMetadata.toString());
+         }
+      }
+      return toStrBuilder.toString();
+   }
+   // CHECKSTYLE:ON
 }
