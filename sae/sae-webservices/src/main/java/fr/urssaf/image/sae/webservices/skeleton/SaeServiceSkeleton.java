@@ -190,7 +190,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          // Fin des traces debug - entrée méthode
          ArchivageMasseResponse response = capture.archivageEnMasse(request);
          LOG.debug("{} - Sortie", prefixeTrc);
-         // Fin des traces debug - sortie méthode         
+         // Fin des traces debug - sortie méthode
          return response;
       } finally {
          // Nettoyage du contexte pour les logs
@@ -230,9 +230,20 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ConsultationResponse consultationSecure(Consultation request)
          throws ConsultationAxisFault {
-
-      return this.consultation.consultation(request);
-
+      buildLogContext();
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "Opération consultationSecure()";
+         LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+         ConsultationResponse response = consultation.consultation(request);
+         LOG.debug("{} - Sortie", prefixeTrc);
+         // Fin des traces debug - sortie méthode
+         return response;
+      } finally {
+         // Nettoyage du contexte pour les logs
+         clearLogContext();
+      }
    }
 
    /**

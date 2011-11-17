@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,8 @@ import fr.urssaf.image.sae.webservices.util.CollectionUtils;
  */
 @Service
 public class WSConsultationServiceImpl implements WSConsultationService {
-
+   private static final Logger LOG = LoggerFactory
+         .getLogger(WSConsultationServiceImpl.class);
    @Autowired
    @Qualifier("documentService")
    private SAEDocumentService saeService;
@@ -42,15 +45,20 @@ public class WSConsultationServiceImpl implements WSConsultationService {
          throws ConsultationAxisFault {
 
       ConsultationResponse response;
-
+      // Traces debug - entrée méthode
+      String prefixeTrc = "Opération consultationSecure()";
+      LOG.debug("{} - Début", prefixeTrc);
       UUID uuid = UUID.fromString(request.getConsultation().getIdArchive()
             .getUuidType());
-
+      LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,uuid);
       try {
          UntypedDocument untypedDocument = saeService.consultation(uuid);
 
          if (untypedDocument == null) {
-
+            LOG
+                  .debug(
+                        "{} - L'archive demandée n'a pas été retrouvée dans le SAE ({})",
+                        prefixeTrc,uuid);
             throw new ConsultationAxisFault(
                   "Il n'existe aucun document pour l'identifiant d'archivage '"
                         + uuid + "'", "ArchiveNonTrouvee");
@@ -74,12 +82,21 @@ public class WSConsultationServiceImpl implements WSConsultationService {
             }
 
             byte[] content = untypedDocument.getContent();
-
+            //Trace à activer pour afficher le résultat de la consultation
+            // LOG
+            // .debug(
+            // "{} - Valeur de retour le contenue du document ({}) et la liste des métadonnés ({})",
+            // new Object[] {
+            // prefixeTrc,
+            // content,
+            // FormatUtils.buildMessageFromList(untypedDocument
+            // .getUMetadatas()) });
             response = ObjectConsultationFactory.createConsultationResponse(
                   content, metadatas);
 
          }
-
+         LOG.debug("{} - Sortie", prefixeTrc);
+         // Fin des traces debug - sortie méthode
       } catch (SAEConsultationServiceException e) {
          throw new ConsultationAxisFault(e);
       }
