@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.docubase.toolkit.exception.ged.FrozenDocumentException;
+import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.After;
 import org.junit.Before;
@@ -44,7 +45,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    public void createContext() {
       docs = new ArrayList<Document>();
       
-      base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      base = sp.getBaseAdministrationService().getBase(BASE_ID);
       docGen = new DocGen(base);      
       
       appliSourceCategory = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
@@ -58,9 +59,9 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    }
    
    @After
-   public void teardown() {
+   public void teardown() throws FrozenDocumentException {
       for (Document doc : DocGen.storedDocuments) {
-         ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
+         sp.getStoreService().deleteDocument(doc.getUuid());
       }
    }
    
@@ -78,16 +79,16 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       docGen.setRandomTitle("AQ1B").store();
       
       String lucene = String.format("%s:%s", intergerFName, 10);
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(2, result.getDocuments().size());
       
       lucene = String.format("%s:%s", appliSourceFName, titleA);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
 
       // SUT
       lucene = String.format("%s:%s AND %s:%s", intergerFName, 10, appliSourceFName, titleA);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
       assertDocumentEquals(docA, result.getDocuments().get(0));      
    }
@@ -104,7 +105,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
 
    
       String lucene = "Date>2011-12-31";
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
       assertDocumentEquals(docA, result.getDocuments().get(0));      
    }   
@@ -117,7 +118,7 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       // Document A
       String titleA = docGen.setRandomTitle("AQ2A").getTitle();
       docGen.put(Categories.INTEGER, 10);
-      //docGen.put(Categories.BOOLEAN, false);
+      docGen.put(Categories.BOOLEAN, false);
       Document docA = docGen.store();
       
       // Document B
@@ -126,40 +127,31 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       Document docB = docGen.store();                
       
       String lucene = String.format("%s:%s", intergerFName, 10);
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(2, result.getDocuments().size());
       
       lucene = String.format("%s:%s", appliSourceFName, titleA);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      result = sp.getSearchService().search(lucene, 100, base, null);
       Document d = result.getDocuments().get(0);
       assertEquals(1, result.getDocuments().size());      
 
       lucene = String.format("%s:%s OR %s:%s", intergerFName, 10, appliSourceFName, titleA);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(2, result.getDocuments().size()); 
       
       // SUT
       lucene = String.format("(%s:%s OR %s:%s) AND %s:%s", 
             intergerFName, 10, appliSourceFName, titleA, boolFName, true);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size()); 
       assertDocumentEquals(docB, result.getDocuments().get(0));
       
       // SUT
       lucene = String.format("(%s:%s OR %s:%s) AND %s:%s", 
             intergerFName, 10, appliSourceFName, titleA, boolFName, false);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base, null);
+      result = sp.getSearchService().search(lucene, 100, base, null);
       assertEquals(1, result.getDocuments().size());
       assertDocumentEquals(docA, result.getDocuments().get(0));
-   }
-   
-
-   /**
-    * Requête de type (c1=x OR c2=y) AND (c3 = z)
-    */
-   @Test @Ignore("TODO")
-   public void AQ3() {
-      
    }
 
    /**
@@ -172,17 +164,17 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       Document injectedDoc = docGen.setRandomTitle(firstPartTitle).store();      
       log.debug("AQ4, Doc inséré -> " + injectedDoc.getUuid().toString());
       
-      Document docbyUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(injectedDoc.getUuid());
+      Document docbyUUID = sp.getSearchService().getDocumentByUUIDMultiBase(injectedDoc.getUuid());
       assertDocumentEquals(injectedDoc, docbyUUID);
       
       String lucene = appliSourceFName + ":" + docGen.getTitle();
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 100, base);
+      SearchResult result = sp.getSearchService().search(lucene, 100, base);
       assertEquals(1, result.getDocuments().size());
       assertDocumentEquals(injectedDoc, result.getDocuments().get(0));
       
       // SUT
       lucene = String.format("%s:%s*", appliSourceFName, firstPartTitle);
-      result = ServiceProvider.getSearchService().search(lucene, 100, base);
+      result = sp.getSearchService().search(lucene, 100, base);
       assertEquals(1, result.getDocuments().size());
       
       // On obtient le bon nombre de documents mais est-ce ceux que l'on a inséré ?
@@ -203,15 +195,14 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
 
       int nbDocsB = 13;
       String appliSourceB = docGen.setRandomTitle("AQ5B").getTitle();
-      docGen.storeMany(nbDocsB);
-      // TODO : enlever la clause OR lorsque Docubase aura corrigé CRTL-45      
-      String lucene = String.format("%s:%s AND %s:%s OR 1:1", 
+      docGen.storeMany(nbDocsB);      
+      String lucene = String.format("%s:%s AND %s:%s", 
             appliSourceFName, appliSourceA, appliSourceFName, appliSourceB);
       // On fixe une limite de recherche plus grande pour voir si on ne ramène pas plus de
       // résultats que prévu
       int searchLimit = 2 * (nbDocsA + nbDocsB);
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, searchLimit, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, searchLimit, base, null);
       assertEquals(0, result.getDocuments().size());
    }
    
@@ -225,20 +216,21 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
       String lucene = String.format("%s:\"%s\"", appliSourceFName, appliSourceB);
       System.out.println(lucene);
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, 10, base, null);
       assertEquals(1, result.getDocuments().size());
    }
    
    /**
     * Teste le caractère joker mono caractère : "?"
+    * Lève une exception depuis la version 1.0.0 alpha de Docubase car non supporté
     */
-   @Test
+   @Test(expected=SearchQueryParseException.class)
    public void wildcard_mono() throws Exception {
       docGen.setTitle("azerty");
       docGen.store();
       String lucene = String.format("%s:az?rty", appliSourceFName);
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, 10, base, null);
       assertEquals(1, result.getDocuments().size());
       assertEquals(docGen.getTitle(), result.getDocuments().get(0).getFirstCriterion(appliSourceCategory).getWord());
    }   
@@ -247,14 +239,14 @@ public class AdvancedQueriesTest extends AbstractNcotiTest {
    /**
     * Teste qu'un wildcard est interdit en tant que premier caractère
     */
-   @Test(expected=RuntimeException.class)
+   @Test(expected=SearchQueryParseException.class)
    public void wildcard_first() throws Exception {
       docGen.setTitle("azerty");
       docGen.store();
       //String lucene = String.format("%s:az?rty", appliSourceFName);
       String lucene = String.format("%s:?????", appliSourceFName);
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 10, base, null);
+      SearchResult result = sp.getSearchService().search(lucene, 10, base, null);
       assertEquals(1, result.getDocuments().size());
       assertEquals(docGen.getTitle(), result.getDocuments().get(0).getFirstCriterion(appliSourceCategory).getWord());
    }     

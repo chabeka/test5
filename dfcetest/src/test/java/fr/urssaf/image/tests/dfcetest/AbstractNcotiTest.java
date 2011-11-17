@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
-import net.docubase.toolkit.service.Authentication;
+import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,13 +34,17 @@ public abstract class AbstractNcotiTest {
     */
    protected static final String BASE_ID = "NCOTI_99";// + System.nanoTime();
    protected static ToolkitFactory toolkit;
-   protected static final String ADM_LOGIN = "_ADMIN";
-   protected static final String ADM_PASSWORD = "DOCUBASE";
-   protected static final String AMF_URL = "http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/";
 
+   protected static ServiceProvider sp;
+   public static final String ADM_LOGIN = "_ADMIN";
+   public static final String ADM_PASSWORD = "DOCUBASE";
+   public static final String HESSIAN_HOST = "http://cer69imageint9.cer69.recouv:8080/dfce-webapp/toolkit/";
+
+   
    @BeforeClass
    public static void beforeClass() throws Exception {
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
+      sp = ServiceProvider.newServiceProvider();
+      sp.connect(ADM_LOGIN, ADM_PASSWORD, HESSIAN_HOST);
       NcotiHelper.createOrReplaceBase(BASE_ID);
       toolkit = ToolkitFactory.getInstance();
    }
@@ -49,8 +53,8 @@ public abstract class AbstractNcotiTest {
    public static void afterClass() {
       DocubaseHelper.dropBase(BASE_ID);
 
-      if (Authentication.isSessionActive()) {
-         Authentication.closeSession();
+      if (sp != null) {
+         sp.disconnect();
       }
    }
 

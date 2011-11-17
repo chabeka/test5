@@ -5,23 +5,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.Authentication;
-import net.docubase.toolkit.service.ServiceProvider;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -57,7 +51,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
       bases = new HashMap<Integer, Base>();
 
       for (int domId : domainIds) {
-         Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+         Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
          assertNotNull("La base " + BASE_ID + " est nulle", base);
          bases.put(domId, base);
       }
@@ -67,7 +61,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
    @After
    public void deleteDocuments() throws Exception {
       for (Document doc : this.docs) {
-         ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
+         sp.getStoreService().deleteDocument(doc.getUuid());
       }
    }
 
@@ -130,19 +124,19 @@ public class StressNcotiTest extends AbstractNcotiTest {
          // On recherche la partie commune à tous les domaines, on doit donc
          // trouver un nombre de document égal à : NB_DOCS x Nombre de domaines
          luceneQuery = String.format("%s:%s*", catAppliSourceFName, commonPart);
-         result = ServiceProvider.getSearchService().search(luceneQuery, 1000, base);
+         result = sp.getSearchService().search(luceneQuery, 1000, base);
 
          assertNotNull("Aucun document trouvé", result.getDocuments());
          assertEquals(this.domainIds.length * NB_DOCS, result.getDocuments().size());
 
          // On recherche la partie spécifique au domaine en cours
          luceneQuery = String.format("%s:%s", catAppliSourceFName, base2app.getValue());
-         result = ServiceProvider.getSearchService().search(luceneQuery, 1000, base);
+         result = sp.getSearchService().search(luceneQuery, 1000, base);
          assertEquals(NB_DOCS, result.getDocuments().size());
       }
       
-      Authentication.closeSession();
-      Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
+      sp.disconnect();
+      sp.connect(ADM_LOGIN, ADM_PASSWORD, HESSIAN_HOST);
       initObjects();
       
       Base base = this.bases.get(1);
@@ -151,7 +145,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
       // On recherche la partie commune à tous les domaines, on doit donc
       // trouver un nombre de document égal à : NB_DOCS x Nombre de domaines
       luceneQuery = String.format("%s:%s*", catAppliSourceFName, commonPart);
-      result = ServiceProvider.getSearchService().search(luceneQuery, 1000, base);
+      result = sp.getSearchService().search(luceneQuery, 1000, base);
 
       assertNotNull("Aucun document trouvé", result.getDocuments());
       assertEquals(this.domainIds.length * NB_DOCS, result.getDocuments().size());
@@ -183,7 +177,7 @@ public class StressNcotiTest extends AbstractNcotiTest {
             // base.getBaseDefinition().getDescription().getDomain().getId());
             try {
                //Document docFound = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(doc.getUuid());
-               Document docFound = ServiceProvider.getSearchService().getDocumentByUUID(base, doc.getUuid());
+               Document docFound = sp.getSearchService().getDocumentByUUID(base, doc.getUuid());
                // Là ce serait pas de chance
                assertEquals("Les UUID sont différents", doc.getUuid(), docFound.getUuid());
                // System.out.println("Trouvé");
@@ -207,14 +201,14 @@ public class StressNcotiTest extends AbstractNcotiTest {
       for (Document doc : this.docs) {
          // SUT
          log.debug("Suppression du doc " + doc.getUuid().toString());
-         ServiceProvider.getStoreService().deleteDocument(doc.getUuid());
+         sp.getStoreService().deleteDocument(doc.getUuid());
       }
       SearchResult result;
       String luceneQuery;
 
       for (Base base : this.bases.values()) {
          luceneQuery = String.format("%s:%s*", catAppliSourceFName, commonPart);
-         result = ServiceProvider.getSearchService().search(luceneQuery, 100, base);
+         result = sp.getSearchService().search(luceneQuery, 100, base);
          assertNull("Les documents sont censés avoir été supprimés", result.getDocuments());
       }
       // Pour ne pas faire planter le teardown
@@ -233,9 +227,9 @@ public class StressNcotiTest extends AbstractNcotiTest {
    @Test(expected = ExceededSearchLimitException.class)
    public void maxLimit() throws Exception {
       Base base = (Base) this.bases.values().toArray()[0];
-      int limit = 100000;
+      int limit = 100000000;
       String luceneQuery = String.format("%s:toto", catAppliSourceFName);
-      ServiceProvider.getSearchService().search(luceneQuery, limit, base);
+      sp.getSearchService().search(luceneQuery, limit, base);
    }
 
    @Test
@@ -272,13 +266,13 @@ public class StressNcotiTest extends AbstractNcotiTest {
    
    @Test
    public void getBaseMultiThread() {
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
       System.out.println("getBaseMultiThread: " + base  + " " + Thread.currentThread().getName());
       
       Thread t = new Thread() {
          public void run() {
             System.out.println(Thread.currentThread().getName());
-            Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+            Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
             System.out.println("getBaseMultiThread: " + base  + " " + Thread.currentThread().getName());
          };
       };
@@ -287,16 +281,16 @@ public class StressNcotiTest extends AbstractNcotiTest {
    
    @Test
    public void getBaseMultiThreadWithAuth() {
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
       System.out.println("getBaseMultiThreadWithAuth: " + base  + " " + Thread.currentThread().getName());
       
       Thread t = new Thread() {
          public void run() {
-            Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
+            sp.connect(ADM_LOGIN, ADM_PASSWORD, HESSIAN_HOST);
             System.out.println(Thread.currentThread().getName());
-            Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+            Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
             System.out.println("getBaseMultiThreadWithAuth: " + base  + " " + Thread.currentThread().getName());
-            Authentication.closeSession();
+            sp.disconnect();
          };
       };
       t.start();

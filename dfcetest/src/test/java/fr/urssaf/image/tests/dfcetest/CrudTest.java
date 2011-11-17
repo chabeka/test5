@@ -24,7 +24,6 @@ import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class CrudTest extends AbstractNcotiTest {
 
    @Before
    public void createContext() {
-      base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      base = sp.getBaseAdministrationService().getBase(BASE_ID);
       docGen = new DocGen(base);  
       
       appliSourceCategory = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
@@ -86,7 +85,7 @@ public class CrudTest extends AbstractNcotiTest {
       // résultats que prévu
       int searchLimit = nbDocs * 2;
       // SUT
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, searchLimit, base);
+      SearchResult result = sp.getSearchService().search(lucene, searchLimit, base);
       assertEquals("Le nombre de documents trouvés est incorrect", nbDocs, result.getTotalHits());
 
       for (Document docFound : result.getDocuments()) {
@@ -116,14 +115,19 @@ public class CrudTest extends AbstractNcotiTest {
 
       for (Document doc : docs) {
          doc.setCreationDate(newDate);
-         // TODO : lorsque Docubase aura implémenté la modification de valeur
-         // pour les index, il faudra le tester ici.
-         // doc.addCriterion(appliSourceCategory, newAppliSource);
-         ServiceProvider.getStoreService().updateDocument(doc);
+         // FIXME: est-ce bien comme cela que l'on est met à jour la valeur d'une catégorie ?
+         doc.updateCriterion(appliSourceCategory, newAppliSource);
+         doc = sp.getStoreService().updateDocument(doc);
       }
+      
+      sp.disconnect();
+      sp.connect(ADM_LOGIN, ADM_PASSWORD, HESSIAN_HOST);
 
-      result = ServiceProvider.getSearchService().search(lucene, searchLimit, base);
-      assertEquals("Le nombre de documents trouvés est incorrect", nbDocs, result.getTotalHits());
+      // On recherche avec la nouvelle appli source
+      lucene = appliSourceFName + ":" + newAppliSource;
+      result = sp.getSearchService().search(lucene, searchLimit, base);
+      assertEquals("Le nombre de documents trouvés est incorrect (hits total)", nbDocs, result.getTotalHits());
+      assertEquals("Le nombre de documents trouvés est incorrect (documents size)", nbDocs, result.getDocuments().size());
 
       for (Document docFound : result.getDocuments()) {
          uuidsFound.add(docFound.getUuid());
@@ -154,19 +158,19 @@ public class CrudTest extends AbstractNcotiTest {
       String luceneQuery = appliSourceFName + ":" + appliSource;
       
       // On teste la requête lucene avant de supprimer le document
-      SearchResult result = ServiceProvider.getSearchService().search(luceneQuery, 100, base);
+      SearchResult result = sp.getSearchService().search(luceneQuery, 100, base);
       List<Document> docs = result.getDocuments();
       assertEquals("La requête lucene aurait dû ramener le document", 1, docs.size());
       
       // SUT
-      ServiceProvider.getStoreService().deleteDocument(uuid);      
+      sp.getStoreService().deleteDocument(uuid);      
       
       // On s'assure que le document ne remonte plus via l'UUID
-      Document ghostDoc = ServiceProvider.getSearchService().getDocumentByUUID(base, uuid);
+      Document ghostDoc = sp.getSearchService().getDocumentByUUID(base, uuid);
       assertNull(ghostDoc);
       
       // On s'assure que les méta données du document n'existe plus
-      result = ServiceProvider.getSearchService().search(luceneQuery, 100, base);
+      result = sp.getSearchService().search(luceneQuery, 100, base);
       docs = result.getDocuments();
       assertEquals("Le document est censé avoir été supprimé", 0, docs.size());
    }
@@ -196,16 +200,25 @@ public class CrudTest extends AbstractNcotiTest {
       }
 
       // On doit bien retrouver le document avec son UUID non modifié
-      Document docFoundWithOldUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(
+      Document docFoundWithOldUUID = sp.getSearchService().getDocumentByUUIDMultiBase(
             uuid);
       assertNotNull(docFoundWithOldUUID);
 
       // Le nouvel UUID ne doit être affecté à aucun document
-      Document docFoundWithNewUUID = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(
+      Document docFoundWithNewUUID = sp.getSearchService().getDocumentByUUIDMultiBase(
             newUuid);
       assertNull(docFoundWithNewUUID);
    }
 
+   /**
+    * Test "border line" : on insère un document avec un UUID existant. 
+    * DFCE ne râle pas, ce qui est normal selon Docubase car ils ne veulent pas vérifier
+    * si l'UUID fixé est un doublon. 
+    * 
+    * Ce test est donc là pour mémoire.
+    * 
+    * @throws Exception
+    */
    @Test
    public void UUID_duplicate() throws Exception {
       String appliSource1 = "test_existingUUID" + System.nanoTime();
@@ -213,7 +226,7 @@ public class CrudTest extends AbstractNcotiTest {
       // On crée un document, puis on récupère l'UUID fourni par Docubase
       Document doc1 = DocubaseHelper.insertOneDoc(base, appliSource1);
       UUID existingUuid = doc1.getUuid();
-      InputStream file1 = ServiceProvider.getStoreService().getDocumentFile(doc1);
+      InputStream file1 = sp.getStoreService().getDocumentFile(doc1);
       String fileContent1 = file1.toString();
       log.debug("\nInsertion du document 1\nDocument UUID: {} => hash: {} (Algo={}), appliSource: {}", new Object[] { 
             doc1.getUuid(),
@@ -229,12 +242,10 @@ public class CrudTest extends AbstractNcotiTest {
       doc2.setUuid(existingUuid);
       doc2.setType("PDF");
       String appliSource2 = "test_existingUUID" + System.nanoTime();
-      Map<String, Object> metadata2 = DocubaseHelper.getCategoriesRandomValues(appliSource2);
-      Document stored = DocubaseHelper.storeThisDoc(base, doc2, metadata2);
-      // Il vaut mieux tester que l'on ne retrouve pas le document car on ne sait pas quand
-      // la méthode doit renvoyer faux, quand doit-elle lever une exception, etc.
-      //assertFalse("L'enregistrement du document aurait dû échoué car l'UUID existe déjà", stored);      
-      InputStream file2 = ServiceProvider.getStoreService().getDocumentFile(doc2);
+      Map<String, Object> metadata2 = DocubaseHelper.getCategoriesRandomValues(appliSource2); 
+      Document stored = DocubaseHelper.storeThisDoc(base, doc2, metadata2); 
+      assertEquals(doc2.getUuid(), stored.getUuid());
+      InputStream file2 = sp.getStoreService().getDocumentFile(stored);
       String fileContent2 = file2.toString();
       log.debug("\nContenu du fichier 2\n{}\n\n", fileContent2);
       
@@ -249,7 +260,7 @@ public class CrudTest extends AbstractNcotiTest {
       assertNotNull("Le document aurait dû être enregistré car son UUID est aléatoire", stored);
       
       // On recherche l'UUID doublon
-      Document docByUuid = ServiceProvider.getSearchService().getDocumentByUUIDMultiBase(existingUuid);
+      Document docByUuid = sp.getSearchService().getDocumentByUUIDMultiBase(existingUuid);
       log.debug("getDocumentByUUID({}) => UUID: {}, appliSource: {}", new Object[] { 
             existingUuid,
             docByUuid.getUuid(),
@@ -257,11 +268,11 @@ public class CrudTest extends AbstractNcotiTest {
       
       // On cherche le premier document : on doit le retrouver
       String lucene = appliSourceFName + ":" + appliSource1;
-      SearchResult result = ServiceProvider.getSearchService().search(lucene, 5, base);
+      SearchResult result = sp.getSearchService().search(lucene, 5, base);
       assertEquals(1, result.getDocuments().size());
       Document docFound = result.getDocuments().get(0);
       assertEquals(existingUuid, docFound.getUuid());  
-      InputStream fileFound = ServiceProvider.getStoreService().getDocumentFile(docFound);
+      InputStream fileFound = sp.getStoreService().getDocumentFile(docFound);
       String fileContentFound = fileFound.toString();
       log.debug("\nContenu du fichier trouvé\n{}\n\n", fileContentFound);
       assertEquals("L'application source a changée", 
@@ -275,7 +286,7 @@ public class CrudTest extends AbstractNcotiTest {
       
       // On cherche le deuxième document : il NE doit PAS exister
       lucene = appliSourceFName + ":" + appliSource2;
-      result = ServiceProvider.getSearchService().search(lucene, 5, base);
+      result = sp.getSearchService().search(lucene, 5, base);
       // assertEquals("Le document ne devrait pas exister", 0, result.getDocuments().size());
       if (result.getDocuments().size() > 0) {
          Document evilDocument = result.getDocuments().get(0);
@@ -289,7 +300,7 @@ public class CrudTest extends AbstractNcotiTest {
       
       // On cherche le troisième document : on doit le retrouver
       lucene = appliSourceFName + ":" + appliSource3;
-      result = ServiceProvider.getSearchService().search(lucene, 5, base);
+      result = sp.getSearchService().search(lucene, 5, base);
       assertEquals(1, result.getDocuments().size());
       docFound = result.getDocuments().get(0);
       assertEquals(doc3.getUuid(), docFound.getUuid());
@@ -299,7 +310,7 @@ public class CrudTest extends AbstractNcotiTest {
    @Test
    public void UUID_inexistant() throws Exception {
       UUID uuid = UUID.randomUUID();
-      Document doc = ServiceProvider.getSearchService().getDocumentByUUID(this.base, uuid);
+      Document doc = sp.getSearchService().getDocumentByUUID(this.base, uuid);
       assertNull(doc);
    }
  

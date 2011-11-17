@@ -1,7 +1,5 @@
 package fr.urssaf.image.tests.dfcetest.helpers;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,6 +24,7 @@ import net.docubase.toolkit.service.ServiceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.urssaf.image.tests.dfcetest.AbstractNcotiTest;
 import fr.urssaf.image.tests.dfcetest.Categories;
 import fr.urssaf.image.tests.dfcetest.NcotiCategories;
 
@@ -37,8 +36,14 @@ public final class DocubaseHelper {
 
    private static Random rand = new Random();
    private static final Logger LOGGER = LoggerFactory.getLogger(DocubaseHelper.class);
-
+   private static ServiceProvider sp;
+   
    private DocubaseHelper() {
+   }
+   
+   static {
+      sp = ServiceProvider.newServiceProvider();
+      sp.connect(AbstractNcotiTest.ADM_LOGIN, AbstractNcotiTest.ADM_PASSWORD, AbstractNcotiTest.HESSIAN_HOST);
    }
 
    public static Document insertOneDoc(Base base, String appliSource) {
@@ -100,7 +105,7 @@ public final class DocubaseHelper {
       }
       try {
          InputStream is = getAFile();
-         Document doc = ServiceProvider.getStoreService().storeDocument(document, is);
+         Document doc = sp.getStoreService().storeDocument(document, "txt", "txt", is);
          return doc;
       } catch (TagControlException e) {
          throw new RuntimeException(e);
@@ -344,8 +349,8 @@ public final class DocubaseHelper {
     */
    public static void dropBase(Base base) {
       if (base != null) {
-         ServiceProvider.getBaseAdministrationService().stopBase(base);
-         ServiceProvider.getBaseAdministrationService().deleteBase(base);
+         sp.getBaseAdministrationService().stopBase(base);
+         sp.getBaseAdministrationService().deleteBase(base);
       }
    }
 
@@ -354,12 +359,12 @@ public final class DocubaseHelper {
     */
    public static void startBase(Base base) {
       if (base != null) {
-         ServiceProvider.getBaseAdministrationService().startBase(base);
+         sp.getBaseAdministrationService().startBase(base);
       }
    }
 
    public static Base getBase(String baseId) {
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(baseId);
+      Base base = sp.getBaseAdministrationService().getBase(baseId);
 
       if (base == null) {
          throw new RuntimeException("Base " + baseId + " introuvable");

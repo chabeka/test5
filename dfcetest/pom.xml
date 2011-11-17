@@ -3,8 +3,9 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>fr.cirtil.test</groupId>
    <artifactId>dfcetest</artifactId>
-   <version>0.9.3</version>
-   <name>Tests unitaires réalisés par le CIRTIL pour tester Docubase DFCE</name>
+   <version>1.0.0-a3</version>
+   <name>Tests unitaires réalisés par le CIRTIL pour tester Docubase DFCE. 
+   Le versionning suit le versioning de DFCE.</name>
    
    <parent>
       <artifactId>sae-parent</artifactId>
@@ -13,90 +14,70 @@
    </parent>
 
    <properties>
-      <dfce.serialization>0.9.3</dfce.serialization>
-      <dfce.toolkit.client>0.9.3</dfce.toolkit.client>
-      <dfce.toolkit.pojo>0.9.3</dfce.toolkit.pojo>
-      <dfce.toolkit.service>0.9.3</dfce.toolkit.service>
+      <dfce.serialization>1.0.0-alpha-03</dfce.serialization>
+      <dfce.toolkit.client>1.0.0-alpha-03</dfce.toolkit.client>
+      <dfce.toolkit.pojo>1.0.0-alpha-03</dfce.toolkit.pojo>
+      <dfce.toolkit.service>1.0.0-alpha-03</dfce.toolkit.service>
    </properties>
+   
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+               <encoding>ISO-8859-1</encoding>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <configuration>
+               <!-- <encoding>ISO-8859-1</encoding> -->
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <argLine>-ea</argLine>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
 
    <dependencies>
-<!--       <dependency>
-         <groupId>org.aspectj</groupId>
-         <artifactId>aspectjrt</artifactId>
-         <version>${aspectj.version}</version>
-      </dependency> -->
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-core</artifactId>
-         <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-context</artifactId>
-         <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-test</artifactId>
-         <version>${spring.framework.version}</version>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.springframework</groupId>
-         <artifactId>spring-instrument</artifactId>
-         <version>${spring.framework.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>com.google.guava</groupId>
-         <artifactId>guava</artifactId>
-         <version>r09</version>
-      </dependency>
-
-      <dependency>
-         <groupId>commons-codec</groupId>
-         <artifactId>commons-codec</artifactId>
-         <version>1.5</version>
-      </dependency>
-      <!-- Dépendance au framework de tests unitaires JUnit, utilisé dans tous les composants -->
-      <dependency>
-         <groupId>junit</groupId>
-         <artifactId>junit</artifactId>
-         <version>${junit.version}</version>
-         <scope>test</scope>
-      </dependency>
-      <!-- Dépendance au framework de traces Log4j, utilisé dan tous les composants -->
-      <dependency>
-         <groupId>log4j</groupId>
-         <artifactId>log4j</artifactId>
-         <version>${log4j.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>net.jcip</groupId>
-         <artifactId>jcip-annotations</artifactId>
-         <version>1.0</version>
-      </dependency>
-      <!-- DFCE dépendances -->
       <dependency>
          <groupId>com.docubase</groupId>
+         <artifactId>dfce-pojo</artifactId>
+         <version>${dfce.toolkit.pojo}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-serialization</artifactId>
          <version>${dfce.serialization}</version>
       </dependency>
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-client</artifactId>
          <version>${dfce.toolkit.client}</version>
       </dependency>
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-pojo</artifactId>
          <version>${dfce.toolkit.pojo}</version>
       </dependency>
       <dependency>
-         <groupId>com.docubase</groupId>
+         <groupId>net.docubase</groupId>
          <artifactId>dfce-toolkit-service</artifactId>
          <version>${dfce.toolkit.service}</version>
       </dependency>
+
       <dependency>
          <groupId>commons-io</groupId>
          <artifactId>commons-io</artifactId>
@@ -116,6 +97,12 @@
          <groupId>org.apache.lucene</groupId>
          <artifactId>lucene-queryparser</artifactId>
          <version>2.9.1</version>
+      </dependency>
+
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.8.2</version>
       </dependency>
       <dependency>
          <groupId>me.prettyprint</groupId>
@@ -153,6 +140,16 @@
          <version>1.1</version>
       </dependency>
       <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-core</artifactId>
+         <version>3.0.5.RELEASE</version>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.security</groupId>
+         <artifactId>spring-security-core</artifactId>
+         <version>3.0.5.RELEASE</version>
+      </dependency>
+      <dependency>
          <groupId>com.googlecode.json-simple</groupId>
          <artifactId>json-simple</artifactId>
          <version>1.1</version>
@@ -162,17 +159,7 @@
          <artifactId>commons-codec</artifactId>
          <version>1.4</version>
       </dependency>
-<!--       <dependency>
-         <groupId>com.googlecode.sli4j</groupId>
-         <artifactId>sli4j-slf4j</artifactId>
-         <version>2.0</version>
-      </dependency>
-      <dependency>
-         <groupId>com.googlecode.sli4j</groupId>
-         <artifactId>sli4j-slf4j-log4j</artifactId>
-         <version>2.0</version>
-      </dependency> -->
-      <dependency>
+    <!--   <dependency>
          <groupId>org.apache.zookeeper</groupId>
          <artifactId>zookeeper</artifactId>
          <version>3.3.3</version>
@@ -190,7 +177,7 @@
                <artifactId>jms</artifactId>
             </exclusion>
          </exclusions>
-      </dependency>
+      </dependency> -->
       <dependency>
          <groupId>joda-time</groupId>
          <artifactId>joda-time</artifactId>
@@ -211,71 +198,5 @@
          <artifactId>commons-collections</artifactId>
          <version>3.2.1</version>
       </dependency>
-      <dependency>
-         <groupId>fr.urssaf.image.commons</groupId>
-         <artifactId>commons-util</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
-
    </dependencies>
-
-
-   <build>
-      <plugins>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>2.3.2</version>
-            <configuration>
-               <source>1.6</source>
-               <target>1.6</target>
-               <encoding>UTF-8</encoding>
-            </configuration>
-         </plugin>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-               <argLine>-da</argLine>
-            </configuration>
-         </plugin>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.1.2</version>
-            <executions>
-               <execution>
-                  <id>bind-sources</id>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-               </execution>
-            </executions>
-         </plugin>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>2.5</version>
-            <configuration>
-               <encoding>UTF-8</encoding>
-            </configuration>
-         </plugin>
-
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-pmd-plugin</artifactId>
-            <version>2.5</version>
-            <configuration>
-               <linkXref>false</linkXref>
-               <sourceEncoding>UTF-8</sourceEncoding>
-               <minimumTokens>100</minimumTokens>
-               <targetJdk>1.6</targetJdk>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
 </project>

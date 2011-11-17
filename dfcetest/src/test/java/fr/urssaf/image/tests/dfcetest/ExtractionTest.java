@@ -4,13 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
@@ -18,7 +15,6 @@ import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
-import net.docubase.toolkit.service.Authentication;
 import net.docubase.toolkit.service.ServiceProvider;
 
 import org.junit.Test;
@@ -60,19 +56,19 @@ public class ExtractionTest extends AbstractNcotiTest {
    @Test
    public void monoSearchExtraction() throws Exception {
       final String appliSource = "test_multiExtraction" + System.nanoTime();
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
       DocubaseHelper.storeOneDocWithRandomCategories(base, appliSource);
       
       BaseCategory cat = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
       String fname = cat.getFormattedName();
       String luceneQuery = String.format("%s:%s", fname, appliSource);
-      SearchResult result = ServiceProvider.getSearchService().search(luceneQuery, 10, base);
+      SearchResult result = sp.getSearchService().search(luceneQuery, 10, base);
       
       InputStream extractedDoc = null;
       if (result != null && result.getDocuments() != null) {
          assertEquals("Un seul document devrait être trouvé", 1, result.getDocuments().size());
          Document doc = result.getDocuments().get(0);
-         extractedDoc = ServiceProvider.getStoreService().getDocumentFile(doc);
+         extractedDoc = sp.getStoreService().getDocumentFile(doc);
       } else {
          fail("Impossible de trouver le document dont l'appli source est " + appliSource);
       }
@@ -90,7 +86,7 @@ public class ExtractionTest extends AbstractNcotiTest {
    @Test
    public void multiSearchExtraction() throws Exception {
       final String appliSource = "test_multiExtraction" + System.nanoTime();
-      final Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+      final Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
       DocubaseHelper.storeOneDocWithRandomCategories(base, appliSource);
       
       List<Future<InputStream>> futures = new ArrayList<Future<InputStream>>();
@@ -119,24 +115,25 @@ public class ExtractionTest extends AbstractNcotiTest {
       }
       
       public InputStream call() throws Exception {
-         Authentication.openSession(ADM_LOGIN, ADM_PASSWORD, AMF_URL);
-         Base base = ServiceProvider.getBaseAdministrationService().getBase(BASE_ID);
+         ServiceProvider sp = ServiceProvider.newServiceProvider();
+         sp.connect(ADM_LOGIN, ADM_PASSWORD, HESSIAN_HOST);
+         Base base = sp.getBaseAdministrationService().getBase(BASE_ID);
          BaseCategory cat = base.getBaseCategory(Categories.APPLI_SOURCE.toString());
          String catFName = cat.getFormattedName();          
          
          InputStream extractedDoc = null;
          String luceneQuery = String.format("%s:%s", catFName, docAppliSource);
-         SearchResult result = ServiceProvider.getSearchService().search(luceneQuery, 10, base);
+         SearchResult result = sp.getSearchService().search(luceneQuery, 10, base);
          
          if (result != null && result.getDocuments() != null) {
             assertEquals("Un seul document devrait être trouvé", 1, result.getDocuments().size());
             Document doc = result.getDocuments().get(0);
-            extractedDoc = ServiceProvider.getStoreService().getDocumentFile(doc);
+            extractedDoc = sp.getStoreService().getDocumentFile(doc);
          } else {
             fail("Impossible de trouver le document dont l'appli source est " + docAppliSource);
          }
          log.debug("{}, fichier : {}", Thread.currentThread().getName(), extractedDoc);
-         Authentication.closeSession();
+         sp.disconnect();
          return extractedDoc;
       } 
    }

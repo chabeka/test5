@@ -8,12 +8,12 @@ import java.util.List;
 
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
-import net.docubase.toolkit.model.base.Base.DocumentCreationDateConfiguration;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.reference.Category;
 import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.administration.StorageAdministrationService;
+import fr.urssaf.image.tests.dfcetest.AbstractNcotiTest;
 import fr.urssaf.image.tests.dfcetest.Categories;
 import fr.urssaf.image.tests.dfcetest.NcotiCategories;
 
@@ -23,16 +23,19 @@ import fr.urssaf.image.tests.dfcetest.NcotiCategories;
  */
 public class NcotiHelper {
    private static ToolkitFactory toolkit;
+   private static ServiceProvider sp;
 
    private NcotiHelper() {
    }
 
    static {
       toolkit = ToolkitFactory.getInstance();
+      sp = ServiceProvider.newServiceProvider();
+      sp.connect(AbstractNcotiTest.ADM_LOGIN, AbstractNcotiTest.ADM_PASSWORD, AbstractNcotiTest.HESSIAN_HOST);
    }
 
    public static Base createOrReplaceBase(String baseId) throws Exception {
-      Base base = ServiceProvider.getBaseAdministrationService().getBase(baseId);
+      Base base = sp.getBaseAdministrationService().getBase(baseId);
       
       if (base != null ) {
          DocubaseHelper.dropBase(base);
@@ -40,19 +43,6 @@ public class NcotiHelper {
       
       base = toolkit.createBase(baseId);
       base.setDescription("Base des cotisants");
-      // Déclare une date de création disponible mais optionnelle
-      base.setDocumentCreationDateConfiguration(DocumentCreationDateConfiguration.OPTIONAL);
-      // Pas de fond de page
-      base.setDocumentOverlayFormConfiguration(Base.DocumentOverlayFormConfiguration.NONE);
-      // Pas de groupe de document
-      base.setDocumentOwnerDefault(Base.DocumentOwnerType.PUBLIC);
-      // Le propriétaire d'un document n'est pas modifiable après son injection
-      base.setDocumentOwnerModify(false);
-      // Propriétés du titre
-      base.setDocumentTitleMask("C0+\" - \"+C1+\" - \"+C6+\" - \"+C2+\" - \"+C3+\" - \"+C4+\" - \"+C5+\" - \"+C7+\" - \"+C9");
-      base.setDocumentTitleSeparator("-");
-      base.setDocumentTitleMaxSize(255);
-      base.setDocumentTitleModify(false);
 
       for (BaseCategory baseCategory : createCategories()) {
          base.addBaseCategory(baseCategory);
@@ -63,14 +53,14 @@ public class NcotiHelper {
       ServiceProvider.getStorageAdministrationService().addDictionaryTerm(catWithDict, ".txt");
       ServiceProvider.getStorageAdministrationService().addDictionaryTerm(catWithDict, ".doc");*/
       
-      ServiceProvider.getBaseAdministrationService().createBase(base);
+      sp.getBaseAdministrationService().createBase(base);
       return base;
    }
    
    private static List<BaseCategory> createCategories() {
       List<BaseCategory> categories = new ArrayList<BaseCategory>();
 
-      StorageAdministrationService storageAdministrationService = ServiceProvider
+      StorageAdministrationService storageAdministrationService = sp
             .getStorageAdministrationService();
       
       Category TYPE_DOC_REF = storageAdministrationService.findOrCreateCategory(
@@ -145,7 +135,7 @@ public class NcotiHelper {
    private static List<BaseCategory> createNcotiCategories() {
       List<BaseCategory> categories = new ArrayList<BaseCategory>();
 
-      StorageAdministrationService storageAdministrationService = ServiceProvider
+      StorageAdministrationService storageAdministrationService = sp
             .getStorageAdministrationService();
 
       Category TYPE_DOC_REF = storageAdministrationService.findOrCreateCategory(
