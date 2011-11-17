@@ -55,26 +55,12 @@ public class SearchingServiceImpl extends AbstractServices implements
          QueryParseServiceEx {
       final List<StorageDocument> storageDocuments = new ArrayList<StorageDocument>();
       try {
-         // Traces debug - entrée méthode
-         String prefixeTrc = "searchStorageDocumentByLuceneCriteria()";
-         LOG.debug("{} - Début", prefixeTrc);
-         LOG.debug("{} - Requête de recherche : {} ", prefixeTrc,
-               luceneCriteria.getLuceneQuery());
-         LOG.debug("{} - Le maximum de documents à retourner : {} ",
-               prefixeTrc, luceneCriteria.getLimit());
-         LOG.debug("{} - Début de la recherche dans DFCE", prefixeTrc);
-         // Fin des traces debug - entrée méthode
          final SearchResult searchResult = getDfceService().getSearchService()
                .search(luceneCriteria.getLuceneQuery(),
                      luceneCriteria.getLimit(), getBaseDFCE());
-         LOG.debug("{} - Fin de la recherche dans DFCE", prefixeTrc);
-         LOG
-               .debug(
-                     "{} - Le nombre de résultats de recherche renvoyé par DFCE est {}",
-                     prefixeTrc, searchResult.getDocuments() == null ? 0
-                           : searchResult.getDocuments().size());
          for (Document document : Utils.nullSafeIterable(searchResult
                .getDocuments())) {
+
             storageDocuments.add(BeanMapper.dfceDocumentToStorageDocument(
                   document, luceneCriteria.getDesiredStorageMetadatas(),
                   getDfceService(), false));
@@ -111,9 +97,16 @@ public class SearchingServiceImpl extends AbstractServices implements
    public final StorageDocument searchStorageDocumentByUUIDCriteria(
          final UUIDCriteria uUIDCriteria) throws SearchingServiceEx {
       try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "searchStorageDocumentByUUIDCriteria()";
+         LOG.debug("{} - Début", prefixeTrc);
+         LOG.debug("{} - UUIDCriteria du document à consulter: {}", prefixeTrc,
+               uUIDCriteria.toString());
+         // Fin des traces debug - entrée méthode
+         LOG.debug("{} - Début de la recherche dans DFCE", prefixeTrc);
          final Document docDfce = getDfceService().getSearchService()
                .getDocumentByUUID(getBaseDFCE(), uUIDCriteria.getUuid());
-
+         LOG.debug("{} - Fin de la recherche dans DFCE", prefixeTrc);
          StorageDocument storageDoc = null;
 
          if (docDfce != null) {
@@ -121,7 +114,7 @@ public class SearchingServiceImpl extends AbstractServices implements
                   uUIDCriteria.getDesiredStorageMetadatas(), getDfceService(),
                   true);
          }
-
+         LOG.debug("{} - Sortie", prefixeTrc);
          return storageDoc;
 
       } catch (StorageException srcSerEx) {
