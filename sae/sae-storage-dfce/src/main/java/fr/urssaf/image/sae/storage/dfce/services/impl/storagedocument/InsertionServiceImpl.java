@@ -47,7 +47,7 @@ import fr.urssaf.image.sae.storage.services.storagedocument.InsertionService;
  */
 @Service
 @Qualifier("insertionService")
-@SuppressWarnings("PMD.ExcessiveImports")
+@SuppressWarnings({"PMD.ExcessiveImports", "PMD.CyclomaticComplexity"})
 public class InsertionServiceImpl extends AbstractServices implements
 		InsertionService {
 	private static final Logger LOGGER = LoggerFactory
@@ -97,7 +97,7 @@ public class InsertionServiceImpl extends AbstractServices implements
 	 */
 	@Loggable(LogLevel.TRACE)
 	@ServiceChecked
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+	@SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops","PMD.CyclomaticComplexity", "PMD.LongVariable"})
 	public final BulkInsertionResults bulkInsertStorageDocument(
 			final StorageDocuments storageDocuments, final boolean allOrNothing)
 			throws InsertionServiceEx {
@@ -136,21 +136,25 @@ public class InsertionServiceImpl extends AbstractServices implements
 				if (storageDocument != null) {
 					StorageDocumentOnError storageDocumentOnError = new StorageDocumentOnError(
 							storageDocument.getMetadatas(),
-							storageDocument.getContent(),
+							storageDocument.getContent() ==  null ? "DOCERROR!".getBytes() : storageDocument.getContent() ,
 							storageDocument.getFilePath(), "INSERROR : "
 									+ insertExcp.getMessage());
 					storageDocumentOnError.setMessageError("INSERROR");
 					storageDocFailed.add(storageDocumentOnError);
 				}
 				if (allOrNothing) {
+				   LOGGER.debug("{} - Déclenchement de la procédure de rollback", prefixeTrc);
 					rollback(storageDocDone);
 					// Les documents "rollbackés" ne doivent pas apparaitre dans
 					// BulkInsertionResults
+					
+					LOGGER.debug("{} - La procédure de rollback est terminée", prefixeTrc);
 					storageDocDone.clear();
 					break;
 				}
 			}
 			LOGGER.debug("{} - Fin de la boucle d'insertion des documents dans DFCE", prefixeTrc);
+			LOGGER.debug("{} - Sortie", prefixeTrc);
 		}
 		return new BulkInsertionResults(new StorageDocuments(storageDocDone),
 				new StorageDocumentsOnError(storageDocFailed));
@@ -167,8 +171,13 @@ public class InsertionServiceImpl extends AbstractServices implements
 	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
 	private void rollback(final List<StorageDocument> storageDocDone)
 			throws InsertionServiceEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "rollback()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
 		jmxStorageIndex = 0;
 		totalDocument = 0;
+		int indexDocument = 0;
 		if (storageDocDone != null) {
 			totalDocument = storageDocDone.size();
 		}
@@ -180,6 +189,8 @@ public class InsertionServiceImpl extends AbstractServices implements
 		for (StorageDocument strDocument : Utils
 				.nullSafeIterable(storageDocDone)) {
 			try {
+			   LOGGER.debug("{} - Rollback du document #{} ({})",
+                  new Object[]{prefixeTrc, ++indexDocument,strDocument.getUuid()});
 				deletionService.setDeletionServiceParameter(getDfceService());
 				deletionService.deleteStorageDocument(new UUIDCriteria(
 						strDocument.getUuid(), null));
@@ -199,12 +210,14 @@ public class InsertionServiceImpl extends AbstractServices implements
 				// L'appelant pourrait obtenir une liste des documents non
 				// rollbackés via un attribut
 				// de l'exception AllOrNothingRollbackException
+			   LOGGER.debug("{} - Une exception a été levée lors du rollback : {}", prefixeTrc,delSerEx.getMessage());
 				throw new InsertionServiceEx(
 						StorageMessageHandler
 								.getMessage(Constants.DEL_CODE_ERROR),
 						delSerEx.getMessage(), delSerEx);
 			}
 		}
+		LOGGER.debug("{} - Sortie", prefixeTrc);
 	}
 
 	/**
@@ -214,11 +227,11 @@ public class InsertionServiceImpl extends AbstractServices implements
 	@ServiceChecked
 	public final StorageDocument insertStorageDocument(
 			final StorageDocument storageDocument) throws InsertionServiceEx {
-		try {
-			// Traces debug - entrée méthode
-			String prefixeTrc = "insertStorageDocument()";
-			LOGGER.debug("{} - Début", prefixeTrc);
-			// Fin des traces debug - entrée méthode
+      // Traces debug - entrée méthode
+      String prefixeTrc = "insertStorageDocument()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+	   try {
 			Document docDfce = BeanMapper.storageDocumentToDfceDocument(
 					getBaseDFCE(), storageDocument);
 			// ici on récupère le chemin du fichier.
@@ -239,6 +252,7 @@ public class InsertionServiceImpl extends AbstractServices implements
 			LOGGER.debug("{} - Document inséré dans DFCE (UUID: {})",
 					prefixeTrc, docDfce.getUuid());
 			LOGGER.debug("{} - Fin insertion du document dans DFCE", prefixeTrc);
+	      LOGGER.debug("{} - Sortie", prefixeTrc);
 			return BeanMapper.dfceDocumentToStorageDocument(docDfce, null,
 					getDfceService(), false);
 		} catch (TagControlException tagCtrlEx) {

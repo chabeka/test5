@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import net.docubase.toolkit.exception.ged.FrozenDocumentException;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,8 @@ import fr.urssaf.image.sae.storage.services.storagedocument.SearchingService;
 @Qualifier("deletionService")
 public class DeletionServiceImpl extends AbstractServices implements
 		DeletionService {
+   private static final Logger LOGGER = LoggerFactory
+   .getLogger(DeletionServiceImpl.class);
 	@Autowired
 	@Qualifier("searchingService")
 	private SearchingService searchingService;
@@ -63,10 +67,19 @@ public class DeletionServiceImpl extends AbstractServices implements
 	@ServiceChecked
 	public final void deleteStorageDocument(final UUIDCriteria uuidCriteria)
 			throws DeletionServiceEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "deleteStorageDocument()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
 		try {
+	      LOGGER.debug("{} - UUID à supprimer : {}",
+               prefixeTrc, uuidCriteria.getUuid());
 			getDfceService().getStoreService().deleteDocument(
 					uuidCriteria.getUuid());
+	      LOGGER.debug("{} - Sortie", prefixeTrc);
 		} catch (FrozenDocumentException frozenExcept) {
+		   LOGGER.debug("{} - Une exception a été levée lors de la suppression du document : {}",
+               prefixeTrc, frozenExcept.getMessage());
 			throw new DeletionServiceEx(
 					StorageMessageHandler.getMessage(Constants.DEL_CODE_ERROR),
 					frozenExcept.getMessage(), frozenExcept);
