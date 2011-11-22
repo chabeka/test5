@@ -122,9 +122,10 @@ public final class MappingDocumentOnErrorServiceImpl extends
 				throw new InvalidSAETypeException(referentielExcept);
 			}
 		}
-
-		return new UntypedDocumentOnError(storageDocOnError.getContent(),
-				metadatas, null);
+		UntypedDocumentOnError untypedDocumentOnError = new UntypedDocumentOnError(storageDocOnError.getContent(),
+            metadatas, null);		
+		untypedDocumentOnError.setFilePath(storageDocOnError.getFilePath());
+		return untypedDocumentOnError;
 	}
 
 }
