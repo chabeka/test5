@@ -257,10 +257,23 @@ public class BulkCaptureHelper extends CommonIndicator {
 		error.setMessage(ResourceMessagesUtils.loadMessage(
 				errorType.getMessage(), new File(filePath).getName(),
 				exception.getMessage()));
-
 		errors.add(error);
 	}
-
+   /**
+    * @param exception
+    * @param filePath
+    * @param errorType
+    */
+   private void buildSaeErros(String exceptionMessage, String filePath,
+         SAEBulkErrors errorType) {
+      MetadataError error = new MetadataError();
+      error.setCode(ResourceMessagesUtils.loadMessage(errorType
+            .getErrorType()));
+      error.setMessage(ResourceMessagesUtils.loadMessage(
+            errorType.getMessage(), new File(filePath).getName(),
+            exceptionMessage));
+      errors.add(error);
+   }
 	/**
 	 * Construit une liste d'erreur.
 	 * 
@@ -302,6 +315,7 @@ public class BulkCaptureHelper extends CommonIndicator {
 			BulkInsertionResults bulkInsertionResults,
 			int initialDocumentsCount, Sommaire sommaire) {
 		StorageDocumentOnError badDocumentError = null;
+		UntypedDocumentOnError untypedDocumentOnError = null;
 		Resultats resultats = new Resultats();
 		resultats.setBatchMode(TOUT_OU_RIEN);
 		resultats.setInitialDocumentsCount(initialDocumentsCount);
@@ -316,21 +330,25 @@ public class BulkCaptureHelper extends CommonIndicator {
 			for (StorageDocumentOnError documentError : documentsErrorFromStorage) {
 				try {
 					badDocumentError = documentError;
+					untypedDocumentOnError = mappingOnError
+               .storageDocumentOnErrorToUntypedDocumentOnError(documentError);
+					buildSaeErros(documentError.getCodeError(), documentError.getFilePath(), SAEBulkErrors.FUNCTIONAL_ERROR); 
+					untypedDocumentOnError.setErrors(errors);
 					untypedDocmentsErrorFromStorage
-							.add(mappingOnError
-									.storageDocumentOnErrorToUntypedDocumentOnError(documentError));
+							.add(untypedDocumentOnError);
+					
 				} catch (InvalidSAETypeException except) {
 					buildErrors(badDocumentError, except);
 				}
+						   
 			}
 			untypedDocmentsErrorFromStorage
 					.addAll(getUntypedDocumentsOnError());
 			resultats
-					.setNonIntegratedDocumentsCount(untypedDocmentsErrorFromStorage
-							.size());
-
+					.setNonIntegratedDocumentsCount(initialDocumentsCount);
 			resultats
 					.setNonIntegratedDocuments(untypedDocmentsErrorFromStorage);
+			
 			resultats.setIntegratedDocumentsCount(0);
 		}
 		// Traitement archivage en masse s'est bien passé.
