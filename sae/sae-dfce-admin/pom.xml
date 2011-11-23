@@ -22,12 +22,12 @@
 		</developer>
 	</developers>
 	<properties>
-		<dfce.serialization>1.0.0-alpha-03</dfce.serialization>
-		<dfce.toolkit.client>1.0.0-alpha-03</dfce.toolkit.client>
-		<dfce.toolkit.pojo>1.0.0-alpha-03</dfce.toolkit.pojo>
-		<dfce.pojo>1.0.0-alpha-03</dfce.pojo>
-		<dfce.toolkit.service>1.0.0-alpha-03</dfce.toolkit.service>
-        <dfce.commons>1.0.0-alpha-03</dfce.commons>
+		<dfce.serialization>1.0.0-alpha-04</dfce.serialization>
+		<dfce.toolkit.client>1.0.0-alpha-04</dfce.toolkit.client>
+		<dfce.toolkit.pojo>1.0.0-alpha-04</dfce.toolkit.pojo>
+		<dfce.pojo>1.0.0-alpha-04</dfce.pojo>
+		<dfce.toolkit.service>1.0.0-alpha-04</dfce.toolkit.service>
+        <dfce.commons>1.0.0-alpha-04</dfce.commons>
 	</properties>
 	<build>
 		<plugins>
