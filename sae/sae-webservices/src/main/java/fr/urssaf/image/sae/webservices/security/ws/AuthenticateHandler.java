@@ -85,7 +85,7 @@ public class AuthenticateHandler {
          throw new SaeAccessDeniedAxisFault((AccessDeniedException) exception);
       }
 
-      LOG.debug("axis fault", exception);
+      // LOG.debug("axis fault", exception);
 
    }
 

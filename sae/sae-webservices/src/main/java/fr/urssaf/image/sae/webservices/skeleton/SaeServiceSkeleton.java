@@ -11,6 +11,7 @@ package fr.urssaf.image.sae.webservices.skeleton;
 
 import java.util.UUID;
 
+import org.apache.axis2.AxisFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -38,7 +39,6 @@ import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
-import fr.urssaf.image.sae.webservices.service.impl.WSCaptureServiceImpl;
 
 /**
  * Skeleton du web service coté serveur<br>
@@ -82,7 +82,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    private final SaeService service;
    private static final Logger LOG = LoggerFactory
-         .getLogger(WSCaptureServiceImpl.class);
+         .getLogger(SaeServiceSkeleton.class);
 
    private final SaeStorageService storageService;
 
@@ -167,6 +167,12 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          LOG.debug("{} - Sortie", prefixeTrc);
          // Fin des traces debug - sortie méthode
          return response;
+      } catch (CaptureAxisFault ex) {
+         logSoapFault(ex);
+         throw ex;
+      } catch (RuntimeException ex) {
+         logRuntimeException(ex);
+         throw ex;
       } finally {
          // Nettoyage du contexte pour les logs
          clearLogContext();
@@ -192,6 +198,12 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          LOG.debug("{} - Sortie", prefixeTrc);
          // Fin des traces debug - sortie méthode
          return response;
+      } catch (CaptureAxisFault ex) {
+         logSoapFault(ex);
+         throw ex;
+      } catch (RuntimeException ex) {
+         logRuntimeException(ex);
+         throw ex;
       } finally {
          // Nettoyage du contexte pour les logs
          clearLogContext();
@@ -218,6 +230,12 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          LOG.debug("{} - Sortie", prefixeTrc);
          // Fin des traces debug - sortie méthode
          return response;
+      } catch (RechercheAxis2Fault ex) {
+         logSoapFault(ex);
+         throw ex;
+      } catch (RuntimeException ex) {
+         logRuntimeException(ex);
+         throw ex;
       } finally {
          // Nettoyage du contexte pour les logs
          clearLogContext();
@@ -230,6 +248,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ConsultationResponse consultationSecure(Consultation request)
          throws ConsultationAxisFault {
+      // Mise en place du contexte pour les traces
       buildLogContext();
       try {
          // Traces debug - entrée méthode
@@ -240,6 +259,12 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          LOG.debug("{} - Sortie", prefixeTrc);
          // Fin des traces debug - sortie méthode
          return response;
+      } catch (ConsultationAxisFault ex) {
+         logSoapFault(ex);
+         throw ex;
+      } catch (RuntimeException ex) {
+         logRuntimeException(ex);
+         throw ex;
       } finally {
          // Nettoyage du contexte pour les logs
          clearLogContext();
@@ -259,5 +284,15 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
     */
    private void clearLogContext() {
       MDC.clear();
+   }
+   
+   
+   private void logSoapFault(AxisFault fault) {
+      LOG.warn("Une exception AxisFault a été levée",fault);
+   }
+   
+   
+   private void logRuntimeException(RuntimeException exception) {
+      LOG.warn("Une exception RuntimeException a été levée",exception);
    }
 }
