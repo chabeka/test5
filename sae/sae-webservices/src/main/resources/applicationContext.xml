@@ -30,20 +30,6 @@
       <property name="cacheSeconds" value="0" />
    </bean>
 
-   <!--Chargement du fichier de properties de l'application -->
-   <bean id="saeConfigResource" class="org.springframework.core.io.FileSystemResource">
-         <constructor-arg>
-            <jee:jndi-lookup id="SAE_Config"
-                             jndi-name="java:comp/env/SAE_Fichier_Configuration" />
-         </constructor-arg>
-   </bean>
-   <bean id="applicationProperties"      
-         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-      <property name="location" ref="saeConfigResource"/>             
-   </bean>
- 
-   
-   
    <!-- Chargement de la configuration ECDE -->
    
    <bean id="ecdeSourceManager"

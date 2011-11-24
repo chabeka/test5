@@ -23,26 +23,14 @@
    </bean>
    
    
-   
-   <!-- sae-dfce-config.properties -->
-   <bean id="dfceConfigResource" class="org.springframework.core.io.FileSystemResource">
-      <constructor-arg>
-          <jee:jndi-lookup id="DFCE_Config"
-                           jndi-name="java:comp/env/SAE_Fichier_Configuration_DFCE" />
-      </constructor-arg>
-   </bean>
-      
-   
-   
    <!-- Le PropertyPlaceholderConfigurer -->
-   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-      <property name="locations">
-         <list>
-            <ref bean="saeConfigResource"/>
-            <ref bean="dfceConfigResource"/>
-         </list>
-      </property>
+   
+   <bean id="propertiesFactory"
+         class="fr.urssaf.image.sae.webservices.factory.PropertiesFactory" />
+   <bean id="applicationProperties" 
+         factory-bean="propertiesFactory" 
+         factory-method="load">
+      <constructor-arg ref="saeConfigResource" />
    </bean>
- 
    
 </beans>
