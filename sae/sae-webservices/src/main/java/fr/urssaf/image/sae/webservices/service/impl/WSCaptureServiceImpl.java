@@ -28,6 +28,9 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -120,7 +123,6 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
    private UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
          throws CaptureAxisFault {
-
       try {
          return captureService.capture(metadatas, ecdeURL);
       } catch (RequiredStorageMetadataEx e) {
@@ -166,11 +168,16 @@ public class WSCaptureServiceImpl implements WSCaptureService {
          throw new CaptureAxisFault("CaptureCodeRndInterdit", e.getMessage(), e);
 
       } catch (UnknownHashCodeEx e) {
-         
+
          throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
-      
-      }catch(Exception e){
-         
+
+      } catch (CaptureBadEcdeUrlEx e) {
+         throw new CaptureAxisFault("CaptureUrlEcdeIncorrecte", e.getMessage(),
+               e);
+      } catch (CaptureEcdeUrlFileNotFoundEx e) {
+         throw new CaptureAxisFault("CaptureUrlEcdeFichierIntrouvable", e
+               .getMessage(), e);
+      } catch (Exception e) {
          throw new CaptureAxisFault("ErreurInterneCapture",
                MessageRessourcesUtils
                      .recupererMessage("ws.capture.error", null), e);
@@ -209,6 +216,15 @@ public class WSCaptureServiceImpl implements WSCaptureService {
                         "ws.bulk.capture.is.busy", null), ex);
          }
 
+      } catch (CaptureBadEcdeUrlEx e) {
+         throw new CaptureAxisFault("CaptureUrlEcdeIncorrecte", e.getMessage(),
+               e);
+      } catch (CaptureEcdeUrlFileNotFoundEx e) {
+         throw new CaptureAxisFault("CaptureUrlEcdeFichierIntrouvable", e
+               .getMessage(), e);
+      } catch (CaptureEcdeWriteFileEx e) {
+         throw new CaptureAxisFault("CaptureEcdeDroitEcriture", e.getMessage(),
+               e);
       }
       // On prend acte de la demande,
       // le retour se fera via le fichier resultats.xml de l'ECDE
