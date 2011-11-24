@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -60,12 +62,18 @@ public interface SAECaptureService {
     *            {@link UnknownCodeRndEx}
     * @throws ReferentialRndException
     *            {@link ReferentialRndException}
-    * @throws UnknownHashCodeEx {@link UnknownHashCodeEx}
+    * @throws UnknownHashCodeEx
+    *            {@link UnknownHashCodeEx}
+    * @throws CaptureEcdeUrlFileNotFoundEx
+    *            @link CaptureEcdeUrlFileNotFoundEx}
+    * @throws CaptureBadEcdeUrlEx
+    *            @link CaptureBadEcdeUrlEx}
     */
    UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
          throws SAECaptureServiceEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx;
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx,
+         CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx;
 }

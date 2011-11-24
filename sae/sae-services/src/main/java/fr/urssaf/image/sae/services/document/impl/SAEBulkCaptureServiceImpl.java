@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.services.document.impl;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -12,7 +11,11 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJob;
 import fr.urssaf.image.sae.services.batch.BulkCaptureJobWrapper;
+import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.ServerBusyEx;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
@@ -30,6 +33,10 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    private EcdeServices ecdeServices;
    private BulkCaptureJob bulkCaptureJob;
    private BulkCaptureJobWrapper jobWrapper;
+  
+   @Autowired
+   @Qualifier("saeControlesCaptureService")
+   private SAEControlesCaptureService controlesCaptureService;  
 
    /**
     * 
@@ -51,8 +58,12 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
 
    /**
     * {@inheritDoc} puisqu'on est dans une thread séparée
+    * @throws CaptureEcdeWriteFileEx {@link CaptureEcdeWriteFileEx}
+    * @throws CaptureEcdeUrlFileNotFoundEx {@link CaptureEcdeUrlFileNotFoundEx}
+    * @throws CaptureBadEcdeUrlEx {@link CaptureBadEcdeUrlEx}
     */
-   public final void bulkCapture(String urlEcde) {
+   public final void bulkCapture(String urlEcde) throws CaptureBadEcdeUrlEx,
+         CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx {
       BulkCaptureJobWrapper bulkWrapper = new BulkCaptureJobWrapper(urlEcde,
             ecdeServices, bulkCaptureJob);
       bulkWrapper.setLogContexteUUID((String) MDC.get("log_contexte_uuid"));
@@ -62,6 +73,7 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
       bulkWrapper.setIndicator(new JmxIndicator());
       // Ici on regarde si le thread a fini sa tâche avant d'en lancer une
       // autre
+      checkBulkCaptureEcdeUrl(urlEcde);
       if (taskExecutor.getActiveCount() == 0) {
          LOG
                .debug(
@@ -111,6 +123,14 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    public boolean isActive() {
       return taskExecutor.getActiveCount() != 0;
 
+   }
+
+   @Override
+   public void checkBulkCaptureEcdeUrl(String urlEcde)
+         throws CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx,
+         CaptureEcdeWriteFileEx {
+      controlesCaptureService.checkBulkCaptureEcdeUrl(urlEcde);
+      
    }
 
 }

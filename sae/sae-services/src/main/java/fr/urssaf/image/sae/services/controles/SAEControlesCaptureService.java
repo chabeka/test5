@@ -1,10 +1,10 @@
-/**
- * 
- */
 package fr.urssaf.image.sae.services.controles;
 
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -15,7 +15,7 @@ import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 
 /**
- * Classe de contrôle des métadonnées.
+ * Classe de contrôle pour la capture unitaire et la capture en masse.
  * 
  * @author rhofir.
  */
@@ -40,7 +40,8 @@ public interface SAEControlesCaptureService {
     * <li>Vérifier l’existence des métadonnées.</li><br>
     * <li>Vérifier le type/format des métadonnées</li><br>
     * <li>Vérifier la duplication des métadonnées</li><br>
-    * <li>Vérifier que les valeurs des métadonnées obligatoire sont saisies.</li><br>
+    * <li>Vérifier que les valeurs des métadonnées obligatoire sont saisies.</li>
+    * <br>
     * </ul>
     * 
     * @param untypedDocument
@@ -51,7 +52,8 @@ public interface SAEControlesCaptureService {
     *            {@link DuplicatedMetadataEx}
     * @throws InvalidValueTypeAndFormatMetadataEx
     *            {@link InvalidValueTypeAndFormatMetadataEx}
-    * @throws RequiredArchivableMetadataEx {@link RequiredArchivableMetadataEx} 
+    * @throws RequiredArchivableMetadataEx
+    *            {@link RequiredArchivableMetadataEx}
     */
    void checkUntypedMetadata(UntypedDocument untypedDocument)
          throws UnknownMetadataEx, DuplicatedMetadataEx,
@@ -78,8 +80,7 @@ public interface SAEControlesCaptureService {
          throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx;
 
    /**
-    * Cette méthode permet de vérifier que l'ensemble des métadonnées
-    * obligatoires lors du stockage sont présentes. Cette méthode doit être
+    * Vérifie l'ensemble des métadonnées obligatoires lors du stockage sont présentes. Cette méthode doit être
     * appelée après <b>l’enrichissement</b> des métadonnées.
     * 
     * @param sAEDocument
@@ -92,7 +93,7 @@ public interface SAEControlesCaptureService {
          throws RequiredStorageMetadataEx;
 
    /**
-    * Cette méthode permet de vérifier la valeur du Hash du document à archiver.
+    * Vérifie la valeur du Hash du document à archiver.
     * 
     * @param saeDocument
     *           : Classe représentant un document typé de type
@@ -103,4 +104,31 @@ public interface SAEControlesCaptureService {
    void checkHashCodeMetadataForStorage(SAEDocument saeDocument)
          throws UnknownHashCodeEx;
 
+   /**
+    * Vérifie l'URL ECDE envoyée au service de <b>Capture de masse</b>.
+    * 
+    * @param urlEcde
+    *           : L'URL ECDE du sommaire.xml.
+    * @throws CaptureBadEcdeUrlEx
+    *            si l'URL ECDE fournit est incorrecte.
+    * @throws CaptureEcdeUrlFileNotFoundEx
+    *            si l'URL ECDE fournit pointe sur un fichier inexistant.
+    * @throws CaptureEcdeWriteFileEx
+    *            si le SAE n'a pas les droits d’écriture.
+    */
+   void checkBulkCaptureEcdeUrl(String urlEcde) throws CaptureBadEcdeUrlEx,
+         CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx;
+
+   /**
+    * Vérifie l'URL ECDE envoyée au service de <b>Capture unitaire.</b>
+    * 
+    * @param urlEcde
+    *           : L'URL ECDE du fichier à archiver.
+    * @throws CaptureBadEcdeUrlEx
+    *            si l'URL ECDE fournit est incorrecte.
+    * @throws CaptureEcdeUrlFileNotFoundEx
+    *            si l'URL ECDE fournit pointe sur un fichier inexistant.
+    */
+   void checkCaptureEcdeUrl(String urlEcde) throws CaptureBadEcdeUrlEx,
+         CaptureEcdeUrlFileNotFoundEx;
 }

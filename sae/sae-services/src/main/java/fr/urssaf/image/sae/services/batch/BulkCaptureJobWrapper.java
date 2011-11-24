@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.urssaf.image.sae.services.batch;
 
 import java.io.IOException;
@@ -17,7 +14,6 @@ import fr.urssaf.image.sae.ecde.exception.EcdeGeneralException;
 import fr.urssaf.image.sae.ecde.modele.resultats.Resultats;
 import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
-import fr.urssaf.image.sae.services.document.impl.SAEBulkCaptureServiceImpl;
 import fr.urssaf.image.sae.services.jmx.CommonIndicator;
 import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
@@ -29,7 +25,7 @@ import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
  */
 public class BulkCaptureJobWrapper extends CommonIndicator implements Runnable {
    private static final Logger LOGGER = LoggerFactory
-         .getLogger(SAEBulkCaptureServiceImpl.class);
+         .getLogger(BulkCaptureJobWrapper.class);
    private String ecdeUrl;
    private final EcdeServices ecdeServices;
    private final BulkCaptureJob bulkCaptureJob;

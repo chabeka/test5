@@ -22,7 +22,10 @@ import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
+import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -55,7 +58,9 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    private final EcdeServices ecdeServices;
 
    private final SAECommonCaptureService commonsService;
-
+   @Autowired
+   @Qualifier("saeControlesCaptureService")
+   private SAEControlesCaptureService controlesService;
    /**
     * initialisation des différents services du SAE nécessaire à la capture
     * 
@@ -86,7 +91,6 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    /**
     * {@inheritDoc}
-    * 
     */
    @Override
    public final UUID capture(List<UntypedMetadata> metadatas, URI ecdeURL)
@@ -94,7 +98,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx {
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx, CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx {
       // Traces debug - entrée méthode
       String prefixeTrc = "capture()";
       LOG.debug("{} - Début", prefixeTrc);
@@ -102,16 +106,14 @@ public class SAECaptureServiceImpl implements SAECaptureService {
             buildMessageFromList(metadatas));
       LOG.debug("{} - URI ECDE : \"{}\"", prefixeTrc, ecdeURL.toString());
       // Fin des traces debug - entrée méthode
-
+      controlesService.checkCaptureEcdeUrl(ecdeURL.toString());
       // chargement du document de l'ECDE
       File ecdeFile = loadEcdeFile(ecdeURL);
 
       // instanciation d'un UntypedDocument
       UntypedDocument untypedDocument = createUntypedDocument(metadatas,
             ecdeFile);
-
       // appel du service commun d'archivage dans la capture unitaire
-
       StorageDocument storageDoc;
       try {
          storageDoc = commonsService

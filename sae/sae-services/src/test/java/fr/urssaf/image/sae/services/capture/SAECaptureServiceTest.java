@@ -38,6 +38,8 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestDocument;
 import fr.urssaf.image.sae.ecde.util.test.EcdeTestTools;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -109,12 +111,13 @@ public class SAECaptureServiceTest {
    }
 
    @Test
-   public void capture_success() throws SAECaptureServiceEx,
+   public void captureSuccess() throws SAECaptureServiceEx,
          ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         UnknownHashCodeEx, IOException {
+         UnknownHashCodeEx, IOException, CaptureBadEcdeUrlEx,
+         CaptureEcdeUrlFileNotFoundEx {
 
       EcdeTestDocument ecde = ecdeTestTools
             .buildEcdeTestDocument("attestation_consultation.pdf");
@@ -173,6 +176,22 @@ public class SAECaptureServiceTest {
                   .loadDocumentFile(doc)));
    }
 
+   @Test(expected = CaptureEcdeUrlFileNotFoundEx.class)
+   public void captureFailed() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException, CaptureBadEcdeUrlEx,
+         CaptureEcdeUrlFileNotFoundEx {
+
+      EcdeTestDocument ecde = ecdeTestTools
+            .buildEcdeTestDocument("attestation_consultation.pdf");
+      URI urlEcdeDocument = ecde.getUrlEcdeDocument();
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
+      metadatas.add(new UntypedMetadata("DateReception", "1999-11-25"));
+      service.capture(metadatas, urlEcdeDocument);
+   }
    private static void assertDocument(Document doc, String expectedHash) {
 
       // TEST sur métadonnée : Titre
@@ -294,5 +313,4 @@ public class SAECaptureServiceTest {
             criterion.getWord());
 
    }
-
 }

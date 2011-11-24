@@ -2,6 +2,8 @@ package fr.urssaf.image.sae.services.controles.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +19,16 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.bo.model.MetadataError;
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
+import fr.urssaf.image.sae.ecde.exception.EcdeBadURLException;
+import fr.urssaf.image.sae.ecde.exception.EcdeBadURLFormatException;
+import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
 import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
 import fr.urssaf.image.sae.services.enrichment.dao.impl.SAEMetatadaFinderUtils;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEArchivalMetadatas;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -35,7 +43,7 @@ import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 
 /**
- * Classe de contrôle des métadonnées.
+ *Classe de contrôle pour la capture unitaire et la capture en masse.
  * 
  * @author rhofir.
  */
@@ -48,6 +56,8 @@ public class SAEControlesCaptureServiceImpl implements
    @Autowired
    @Qualifier("metadataControlServices")
    private MetadataControlServices metadataCS;
+   @Autowired
+   private EcdeServices ecdeServices;
 
    /**
     * {@inheritDoc}
@@ -338,5 +348,162 @@ public class SAEControlesCaptureServiceImpl implements
       }
 
       return FormatUtils.formattingDisplayList(codeLongErrors);
+   }
+
+   @Override
+   public final void checkBulkCaptureEcdeUrl(String urlEcde)
+         throws CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx,
+         CaptureEcdeWriteFileEx {
+      boolean ecdePermission = true;
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "checkBulkCaptureEcdeUrl()";
+         LOGGER.debug("{} - Début", prefixeTrc);
+         LOGGER
+               .debug(
+                     "{} - Début des vérifications sur " +
+                     "l'URL ECDE envoyée au service de capture de masse",
+                     prefixeTrc);
+         // Fin des traces debug - entrée méthode
+
+         File fileEcde = ecdeServices
+               .convertSommaireToFile(convertToEcdeUri(urlEcde));
+         checkExistingEcdeFile(fileEcde, urlEcde);
+         LOGGER
+               .debug(
+                     "{} - Début de la vérification sur les droits d'écriture " +
+                     "du SAE dans le répertoire de traitement ECDE",
+                     prefixeTrc);
+
+         File parentFile = fileEcde.getParentFile();
+         // Dans le cas du système d'exploitation Windows
+         // "parentFile.canWrite()" ne fonctionne pas, d'où le faite qu'il y a
+         // deux implementations pour vérifier les permissions ECDE.
+         // Implementation autre que Windows
+         if (!parentFile.canWrite()) {
+            ecdePermission = false;
+         }
+         // Implementation pour windows
+         if (ecdePermission) {
+            try {
+               File tmpfile = File.createTempFile("bulkFlagPermission", ".tmp",
+                     parentFile);
+               if (tmpfile.isFile() && tmpfile.exists()) {
+                  tmpfile.delete();
+               } else {
+                  ecdePermission = false;
+               }
+            } catch (Exception e) {
+               ecdePermission = false;
+            }
+         }
+         if (!ecdePermission) {
+            throw new CaptureEcdeWriteFileEx(ResourceMessagesUtils.loadMessage(
+                  "capture.ecde.droit.ecriture", urlEcde));
+         }
+         LOGGER.debug("{} - Le répertoire de traitement ECDE est {}",
+               prefixeTrc, parentFile.getAbsoluteFile());
+         LOGGER
+               .debug(
+                     "{} - Fin de la vérification sur les droits d'écriture " +
+                     "du SAE dans le répertoire de traitement ECDE  ",
+                     prefixeTrc);
+
+         LOGGER
+               .debug(
+                     "{} - Fin des vérifications sur l'URL ECDE envoyée au service de capture de masse",
+                     prefixeTrc);
+         // Traces debug - sortie méthode
+         LOGGER.debug("{} - Sortie", prefixeTrc);
+         // Fin des traces debug - sortie méthode
+      } catch (EcdeBadURLException except) {
+         throw new CaptureBadEcdeUrlEx(ResourceMessagesUtils.loadMessage(
+               "capture.url.ecde.incorrecte", urlEcde), except);
+      } catch (EcdeBadURLFormatException except) {
+         throw new CaptureBadEcdeUrlEx(ResourceMessagesUtils.loadMessage(
+               "capture.url.ecde.incorrecte", urlEcde), except);
+      }
+   }
+
+   @Override
+   public final void checkCaptureEcdeUrl(String urlEcde)
+         throws CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "checkCaptureEcdeUrl()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      try {
+         LOGGER
+               .debug(
+                     "{} - Début des vérifications sur l'URL ECDE envoyée au service de capture unitaire",
+                     prefixeTrc);
+         File fileEcde = ecdeServices
+               .convertURIToFile(convertToEcdeUri(urlEcde));
+         checkExistingEcdeFile(fileEcde, urlEcde);
+         LOGGER
+               .debug(
+                     "{} - Fin des vérifications sur l'URL ECDE envoyée au service de capture unitaire",
+                     prefixeTrc);
+      } catch (EcdeBadURLException badUrlEx) {
+         throw new CaptureBadEcdeUrlEx(ResourceMessagesUtils.loadMessage(
+               "capture.url.ecde.incorrecte", urlEcde), badUrlEx);
+      } catch (EcdeBadURLFormatException e) {
+         throw new CaptureBadEcdeUrlEx(ResourceMessagesUtils.loadMessage(
+               "capture.url.ecde.incorrecte", urlEcde), e);
+      }
+      // Traces debug - sortie méthode
+      LOGGER.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
+   }
+
+   /**
+    * Convertit l'URL ECDE vers une URI.
+    * 
+    * @param url : url de l'ECDE.
+    * @throws CaptureBadEcdeUrlEx
+    *            si l'URL ECDE n'est pas incorrecte.
+    */
+   private URI convertToEcdeUri(String url) throws CaptureBadEcdeUrlEx {
+      try {
+         return new URI(url);
+      } catch (URISyntaxException except) {
+         throw new CaptureBadEcdeUrlEx(ResourceMessagesUtils.loadMessage(
+               "capture.url.ecde.incorrecte", url), except);
+      }
+   }
+
+   /**
+    * Vérifie l'existance du fichier à archiver ou le sommaire.xml dans l'ECDE.
+    * 
+    * @param ecdeFile
+    *           : Fichier à archiver pour le cas de la capture unitaire ou le
+    *           sommaire.xml pour le cas de la capture en masse.
+    * @param urlEcde : url de l'ECDE.
+    * @throws CaptureEcdeUrlFileNotFoundEx
+    *            si le fichier à archiver ou le sommaire.xml n'est pas présent.
+    */
+   private void checkExistingEcdeFile(File ecdeFile, String urlEcde)
+         throws CaptureEcdeUrlFileNotFoundEx {
+      // Traces debug - entrée méthode
+      String prefixeTrc = "checkExistingEcdeFile()";
+      // Fin des traces debug - entrée méthode
+      LOGGER.debug("{} - Début", prefixeTrc);
+      LOGGER
+            .debug(
+                  "{} - Début de la vérification sur l'existence du fichier pointé par l'URL ECDE ({})",
+                  prefixeTrc, ecdeFile.getAbsoluteFile());
+      if (!(ecdeFile.isFile() && ecdeFile.exists())) {
+         LOGGER.debug("{} - {} ", prefixeTrc, ResourceMessagesUtils
+               .loadMessage("capture.url.ecde.fichier.introuvable", urlEcde));
+         throw new CaptureEcdeUrlFileNotFoundEx(ResourceMessagesUtils
+               .loadMessage("capture.url.ecde.fichier.introuvable", urlEcde));
+      }
+      LOGGER
+            .debug(
+                  "{} - Fin de la vérification sur l'existence du fichier pointé par l'URL ECDE ({})",
+                  prefixeTrc, ecdeFile.getAbsoluteFile());
+      // Traces debug - sortie méthode
+      LOGGER.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
    }
 }
