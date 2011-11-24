@@ -23,10 +23,10 @@ public final class IgcFactory {
    public static final String ICG_CONFIG_ERROR = "Une erreur s'est produite lors du chargement du fichier de configuration IGC";
 
    @SuppressWarnings("PMD.LongVariable")
-   public static final String IGC_CONFIG_REQUIRED = "Le contenu de la variable JNDI SAE_Fichier_Configuration_IGC n’est pas renseigné, alors que c’est obligatoire";
+   public static final String IGC_CONFIG_REQUIRED = "Le fichier de configuration générale du SAE ne contient pas le chemin du fichier de configuration IGC";
 
    @SuppressWarnings("PMD.LongVariable")
-   public static final String IGC_CONFIG_NOTEXIST = "Le fichier de configuration IGC indiqué par la variable JNDI SAE_Fichier_Configuration_IGC est introuvable (${0})";
+   public static final String IGC_CONFIG_NOTEXIST = "Le fichier de configuration IGC indiqué dans le fichier de configuration générale est introuvable (${0})";
 
    /**
     * initialisation des répertoires des fichiers AC racine et des CRL à partir

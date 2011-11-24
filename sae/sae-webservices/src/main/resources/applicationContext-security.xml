@@ -18,10 +18,7 @@
 
 
    <bean id="igcConfigResource" class="org.springframework.core.io.FileSystemResource">
-      <constructor-arg>
-         <jee:jndi-lookup id="IGC_Config"
-            jndi-name="java:comp/env/SAE_Fichier_Configuration_IGC" />
-      </constructor-arg>
+      <constructor-arg value="${sae.igc.cheminFichierConfig}" />
    </bean>
 
    <!--
