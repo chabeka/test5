@@ -36,6 +36,7 @@ import fr.urssaf.image.sae.webservices.SaeStorageService;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
+import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
@@ -91,8 +92,12 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    @Autowired
    private WSRechercheService search;
+
    @Autowired
    private WSCaptureService capture;
+
+   @Autowired
+   private WSCaptureMasseService captureMasse;
 
    /**
     * Instanciation du service {@link SaeService}
@@ -194,7 +199,8 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          String prefixeTrc = "Opération archivageMasseSecure()";
          LOG.debug("{} - Début", prefixeTrc);
          // Fin des traces debug - entrée méthode
-         ArchivageMasseResponse response = capture.archivageEnMasse(request);
+         ArchivageMasseResponse response = captureMasse
+               .archivageEnMasse(request);
          LOG.debug("{} - Sortie", prefixeTrc);
          // Fin des traces debug - sortie méthode
          return response;
@@ -285,14 +291,12 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    private void clearLogContext() {
       MDC.clear();
    }
-   
-   
+
    private void logSoapFault(AxisFault fault) {
-      LOG.warn("Une exception AxisFault a été levée",fault);
+      LOG.warn("Une exception AxisFault a été levée", fault);
    }
-   
-   
+
    private void logRuntimeException(RuntimeException exception) {
-      LOG.warn("Une exception RuntimeException a été levée",exception);
+      LOG.warn("Une exception RuntimeException a été levée", exception);
    }
 }

@@ -6,44 +6,34 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.axis2.context.MessageContext;
-import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.cirtil.www.saeservice.ArchivageMasse;
-import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
-import fr.cirtil.www.saeservice.EcdeUrlSommaireType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
-import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
-import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
-import fr.urssaf.image.sae.services.exception.capture.ServerBusyEx;
+import fr.urssaf.image.sae.services.exception.capture.SAECaptureServiceEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownHashCodeEx;
 import fr.urssaf.image.sae.services.exception.capture.UnknownMetadataEx;
 import fr.urssaf.image.sae.services.exception.enrichment.ReferentialRndException;
 import fr.urssaf.image.sae.services.exception.enrichment.UnknownCodeRndEx;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
-import fr.urssaf.image.sae.webservices.impl.factory.ObjectStorageResponseFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
@@ -59,9 +49,6 @@ public class WSCaptureServiceImpl implements WSCaptureService {
          .getLogger(WSCaptureServiceImpl.class);
    @Autowired
    private SAECaptureService captureService;
-   @Autowired
-   @Qualifier("saeBulkCaptureService")
-   private SAEBulkCaptureService saeBulkCaptureService;
 
    /**
     * {@inheritDoc}
@@ -172,63 +159,27 @@ public class WSCaptureServiceImpl implements WSCaptureService {
          throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
 
       } catch (CaptureBadEcdeUrlEx e) {
+         
          throw new CaptureAxisFault("CaptureUrlEcdeIncorrecte", e.getMessage(),
                e);
+         
       } catch (CaptureEcdeUrlFileNotFoundEx e) {
+
          throw new CaptureAxisFault("CaptureUrlEcdeFichierIntrouvable", e
                .getMessage(), e);
-      } catch (Exception e) {
+
+      } catch (SAECaptureServiceEx e) {
+
+         throw new CaptureAxisFault("ErreurInterneCapture",
+               MessageRessourcesUtils
+                     .recupererMessage("ws.capture.error", null), e);
+
+      } catch (NotArchivableMetadataEx e) {
+
          throw new CaptureAxisFault("ErreurInterneCapture",
                MessageRessourcesUtils
                      .recupererMessage("ws.capture.error", null), e);
       }
-   }
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public final ArchivageMasseResponse archivageEnMasse(ArchivageMasse request)
-         throws CaptureAxisFault {
-      String prefixeTrc = "archivageEnMasse()";
-      LOG.debug("{} - Début", prefixeTrc);
-      try {
-         EcdeUrlSommaireType ecdeUrlWs = request.getArchivageMasse()
-               .getUrlSommaire();
-         String ecdeUrl = ecdeUrlWs.getEcdeUrlSommaireType().toString();
-         LOG.debug("{} - URI ECDE: {}", prefixeTrc, ecdeUrl);
-         // Appel du service, celui-ci doit rendre la main rapidement
-         // (traitement dans un autre thread)
-         saeBulkCaptureService.bulkCapture(ecdeUrl);
-      } catch (ServerBusyEx ex) {
-         // ici on retourne un status 412 pour informer que le serveur est
-         // occupé
-         LOG.debug("{} - {}", prefixeTrc, MessageRessourcesUtils
-               .recupererMessage("ws.bulk.capture.is.busy", null));
-         HttpServletResponse resp = (HttpServletResponse) MessageContext
-               .getCurrentMessageContext().getProperty(
-                     HTTPConstants.MC_HTTP_SERVLETRESPONSE);
-
-         if (resp != null) {
-            resp.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
-            throw new CaptureAxisFault("CaptureMasseRefusee",
-                  MessageRessourcesUtils.recupererMessage(
-                        "ws.bulk.capture.is.busy", null), ex);
-         }
-
-      } catch (CaptureBadEcdeUrlEx e) {
-         throw new CaptureAxisFault("CaptureUrlEcdeIncorrecte", e.getMessage(),
-               e);
-      } catch (CaptureEcdeUrlFileNotFoundEx e) {
-         throw new CaptureAxisFault("CaptureUrlEcdeFichierIntrouvable", e
-               .getMessage(), e);
-      } catch (CaptureEcdeWriteFileEx e) {
-         throw new CaptureAxisFault("CaptureEcdeDroitEcriture", e.getMessage(),
-               e);
-      }
-      // On prend acte de la demande,
-      // le retour se fera via le fichier resultats.xml de l'ECDE
-      return ObjectStorageResponseFactory.createArchivageMasseResponse();
 
    }
 

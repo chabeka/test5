@@ -20,6 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.capture.SAECaptureService;
+import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
+import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
@@ -324,6 +326,40 @@ public class ArchivageUnitaireFailureTest {
 
          assertAxisFault(axisFault, "ErreurInterne",
                "Une erreur interne à l'application est survenue lors de la capture.");
+      }
+   }
+
+   @Test
+   public void archivageUnitaire_failure_CaptureBadEcdeUrlEx() {
+
+      mockThrowable(new CaptureBadEcdeUrlEx(null));
+
+      try {
+
+         callService();
+
+         Assert.fail(FAIL_MSG);
+
+      } catch (AxisFault axisFault) {
+
+         assertAxisFault(axisFault, "CaptureUrlEcdeIncorrecte");
+      }
+   }
+
+   @Test
+   public void archivageUnitaire_failure_CaptureEcdeUrlFileNotFoundEx() {
+
+      mockThrowable(new CaptureEcdeUrlFileNotFoundEx(null));
+
+      try {
+
+         callService();
+
+         Assert.fail(FAIL_MSG);
+
+      } catch (AxisFault axisFault) {
+
+         assertAxisFault(axisFault, "CaptureUrlEcdeFichierIntrouvable");
       }
    }
 

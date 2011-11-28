@@ -24,6 +24,7 @@ public enum BulkProgress {
 	// Génération du fichier résultat en cours
 	GENERATION_RESULT_FILE("Génération du fichier résultat en cours..."),
 	// Pas d'archivage en masse en cours
+	@Deprecated
 	NO_BULK_STORAGE_BEING("Aucun archivage en masse est en cours d'exécution.."),
 	// Il n'y aucun identifiant de traitement.
 	NO_TREATMENT_ID("Il n'y aucun identifiant de traitement."),
@@ -36,6 +37,7 @@ public enum BulkProgress {
 			"Aucun identifiant de traitement n'a été trouvé car la lecture du fichier sommaire n'est pas terminée."),
 	// Il n'y aucun identifiant de traitement car aucun archivage en masse est
 	// en cours d'exécution.
+	@Deprecated
 	NO_TREATMENT_ID_NO_BULK_STORAGE_BEING(
 			"Aucun identifiant de traitement n'a été trouvé car il n'y pas d'archivage en masse en cours d'exécution.");
 	// Le message.

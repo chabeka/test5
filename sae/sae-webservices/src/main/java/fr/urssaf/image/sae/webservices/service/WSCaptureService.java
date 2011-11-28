@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.webservices.service;
 
-import fr.cirtil.www.saeservice.ArchivageMasse;
-import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
@@ -33,13 +31,4 @@ public interface WSCaptureService {
    ArchivageUnitaireResponse archivageUnitaire(ArchivageUnitaire request)
          throws CaptureAxisFault;
 
-   /**
-    * Service pour l'opération <b>Archivage en masse</b>
-    * 
-    * @param request
-    *           Un objet qui contient l'URI du sommaire.xml
-    * @return une objet de type {@link ArchivageMasseResponse}.
- * @throws CaptureAxisFault Une exception est levée lors de l'archivage en masse.
-    */
-   ArchivageMasseResponse archivageEnMasse(ArchivageMasse request) throws CaptureAxisFault;
 }
