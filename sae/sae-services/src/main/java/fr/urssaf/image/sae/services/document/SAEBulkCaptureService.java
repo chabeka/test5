@@ -30,8 +30,6 @@ public interface SAEBulkCaptureService {
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx;
 
    /**
-    * @param indicator
-    *           : Les indicateurs du service de stockage en masse.
     * @return Les indicateurs Jmx au niveau du stockage.
     */
    JmxIndicator retrieveJmxSAEBulkCaptureIndicator();
@@ -41,6 +39,7 @@ public interface SAEBulkCaptureService {
     * 
     * @return true s'il y'a un thread actif sinon false.
     */
+   @Deprecated
    boolean isActive();
 
    /**

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
@@ -16,7 +15,6 @@ import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
-import fr.urssaf.image.sae.services.exception.capture.ServerBusyEx;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 /**
@@ -29,38 +27,24 @@ import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    private static final Logger LOG = LoggerFactory
          .getLogger(SAEBulkCaptureServiceImpl.class);
-   private ThreadPoolTaskExecutor taskExecutor;
+
    private EcdeServices ecdeServices;
    private BulkCaptureJob bulkCaptureJob;
    private BulkCaptureJobWrapper jobWrapper;
-  
+
    @Autowired
    @Qualifier("saeControlesCaptureService")
-   private SAEControlesCaptureService controlesCaptureService;  
-
-   /**
-    * 
-    * @param taskExecutor
-    *           : un objet de type {@link ThreadPoolTaskExecutor}
-    */
-   public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
-      this.taskExecutor = taskExecutor;
-   }
-
-   /**
-    * 
-    * @param taskExecutor
-    *           : un objet de type {@link ThreadPoolTaskExecutor}
-    */
-   public ThreadPoolTaskExecutor getTaskExecutor() {
-      return taskExecutor;
-   }
+   private SAEControlesCaptureService controlesCaptureService;
 
    /**
     * {@inheritDoc} puisqu'on est dans une thread séparée
-    * @throws CaptureEcdeWriteFileEx {@link CaptureEcdeWriteFileEx}
-    * @throws CaptureEcdeUrlFileNotFoundEx {@link CaptureEcdeUrlFileNotFoundEx}
-    * @throws CaptureBadEcdeUrlEx {@link CaptureBadEcdeUrlEx}
+    * 
+    * @throws CaptureEcdeWriteFileEx
+    *            {@link CaptureEcdeWriteFileEx}
+    * @throws CaptureEcdeUrlFileNotFoundEx
+    *            {@link CaptureEcdeUrlFileNotFoundEx}
+    * @throws CaptureBadEcdeUrlEx
+    *            {@link CaptureBadEcdeUrlEx}
     */
    public final void bulkCapture(String urlEcde) throws CaptureBadEcdeUrlEx,
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx {
@@ -71,20 +55,11 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
       LOG.debug("{} - Début", prefixeTrc);
       jobWrapper = bulkWrapper;
       bulkWrapper.setIndicator(new JmxIndicator());
-      // Ici on regarde si le thread a fini sa tâche avant d'en lancer une
-      // autre
+      
       checkBulkCaptureEcdeUrl(urlEcde);
-      if (taskExecutor.getActiveCount() == 0) {
-         LOG
-               .debug(
-                     "{} - Lancement du thread pour l'exécution de la capture de masse",
-                     prefixeTrc);
-         taskExecutor.execute(bulkWrapper);
 
-      } else {
-         // sinon on lève une exception
-         throw new ServerBusyEx();
-      }
+      bulkWrapper.execute();
+
       LOG.debug("{} - Sortie", prefixeTrc);
       // Fin des traces debug - sortie méthode
    }
@@ -96,17 +71,13 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
     *           : Le service Ecde
     * @param bulkCaptureJob
     *           : Le job de l'archivage en masse.
-    * @param taskExecutor
-    *           : Le pool de threads.
     */
    @Autowired
    public SAEBulkCaptureServiceImpl(
          @Qualifier("ecdeServices") final EcdeServices ecdeServices,
-         @Qualifier("bulkCaptureJob") final BulkCaptureJob bulkCaptureJob,
-         final ThreadPoolTaskExecutor taskExecutor) {
+         @Qualifier("bulkCaptureJob") final BulkCaptureJob bulkCaptureJob) {
       this.ecdeServices = ecdeServices;
       this.bulkCaptureJob = bulkCaptureJob;
-      this.taskExecutor = taskExecutor;
 
    }
 
@@ -120,17 +91,17 @@ public class SAEBulkCaptureServiceImpl implements SAEBulkCaptureService {
    /**
     * {@inheritDoc}
     */
-   public boolean isActive() {
-      return taskExecutor.getActiveCount() != 0;
+   public final boolean isActive() {
+      return true;
 
    }
 
    @Override
-   public void checkBulkCaptureEcdeUrl(String urlEcde)
+   public final void checkBulkCaptureEcdeUrl(String urlEcde)
          throws CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx,
          CaptureEcdeWriteFileEx {
       controlesCaptureService.checkBulkCaptureEcdeUrl(urlEcde);
-      
+
    }
 
 }

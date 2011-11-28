@@ -79,11 +79,7 @@ public class SAEBulkCaptureServiceImplTest extends CommonsServices {
       IOUtils.copy(resAttestation1.getInputStream(), fos);
 
       saeBulkCaptureService.bulkCapture(urlEcdeSommaire.toString());
-      try {
-         Thread.currentThread().sleep(200000);
-      } catch (InterruptedException e) {
-         BULK_LOGGER.error(e);
-      }
+      
    }
 
    @Test

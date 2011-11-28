@@ -23,7 +23,7 @@ import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
  * 
  * @author Rhofir
  */
-public class BulkCaptureJobWrapper extends CommonIndicator implements Runnable {
+public class BulkCaptureJobWrapper extends CommonIndicator {
    private static final Logger LOGGER = LoggerFactory
          .getLogger(BulkCaptureJobWrapper.class);
    private String ecdeUrl;
@@ -47,9 +47,9 @@ public class BulkCaptureJobWrapper extends CommonIndicator implements Runnable {
    }
 
    /**
-    * @see java.lang.Runnable#run()
+    * Méthode d'exécution du traitement d'archivage en masse
     */
-   public final void run() {
+   public final void execute() {
       // Appeler le service ECDE de récupération du sommaire.xml à partir de
       // l'URL
       try {
@@ -142,7 +142,7 @@ public class BulkCaptureJobWrapper extends CommonIndicator implements Runnable {
     *           : L'identifiant du contexte logbak.
     */
    public void setLogContexteUUID(String logContexteUUID) {
-         this.logContexteUUID = logContexteUUID;
+      this.logContexteUUID = logContexteUUID;
    }
 
 }
