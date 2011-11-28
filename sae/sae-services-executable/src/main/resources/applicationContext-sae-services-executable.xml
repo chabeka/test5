@@ -9,9 +9,14 @@
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 
-   <bean id="dfceConfigResource" class="org.springframework.core.io.ClassPathResource">
-      <constructor-arg value="dfce-config.properties" />
+   <bean id="saeConfigResourceLoader"
+      class="fr.urssaf.image.sae.services.executable.manager.SAEConfigResourceLoader">
+      <constructor-arg ref="saeConfigResource" />
    </bean>
+
+   <bean id="dfceConfigResource" factory-bean="saeConfigResourceLoader"
+      factory-method="loadDFCEConfigResource" />
+
 
    <bean id="applicationProperties"
       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -42,8 +47,8 @@
    <import resource="applicationContext-sae-metadata.xml" />
    <import resource="applicationContext-sae-ecde.xml" />
    <import resource="applicationContext-sae-mapping.xml" />
-   
+
    <!-- configuration JMX -->
    <import resource="applicationContext-sae-services-jmx.xml" />
-   
+
 </beans>
