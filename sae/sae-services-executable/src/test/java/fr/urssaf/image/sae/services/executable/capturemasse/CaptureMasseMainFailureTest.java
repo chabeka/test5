@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.executable;
+package fr.urssaf.image.sae.services.executable.capturemasse;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.easymock.EasyMock;
@@ -11,7 +11,7 @@ import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
-import fr.urssaf.image.sae.services.executable.exception.CaptureMasseMainException;
+import fr.urssaf.image.sae.services.executable.capturemasse.exception.CaptureMasseMainException;
 import fr.urssaf.image.sae.services.executable.service.SAEServiceProvider;
 
 @SuppressWarnings("PMD.MethodNamingConventions")

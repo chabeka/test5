@@ -37,7 +37,7 @@
                      <transformers>
                         <transformer
                            implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                           <mainClass>fr.urssaf.image.sae.services.executable.CaptureMasseMain</mainClass>
+                           <mainClass>fr.urssaf.image.sae.services.executable.ServicesMain</mainClass>
                         </transformer>
                         <transformer
                            implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">

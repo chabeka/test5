@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.executable.exception;
+package fr.urssaf.image.sae.services.executable.capturemasse.exception;
 
 /**
  * Exception levée lors de l’exécution du service d’archivage en masse

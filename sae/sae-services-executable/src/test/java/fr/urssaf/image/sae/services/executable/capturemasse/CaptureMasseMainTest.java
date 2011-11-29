@@ -1,4 +1,4 @@
-package fr.urssaf.image.sae.services.executable;
+package fr.urssaf.image.sae.services.executable.capturemasse;
 
 import org.easymock.EasyMock;
 import org.junit.After;

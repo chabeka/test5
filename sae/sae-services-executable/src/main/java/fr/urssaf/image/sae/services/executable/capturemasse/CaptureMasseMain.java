@@ -1,18 +1,16 @@
-package fr.urssaf.image.sae.services.executable;
+package fr.urssaf.image.sae.services.executable.capturemasse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.context.ApplicationContext;
 
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
-import fr.urssaf.image.sae.services.executable.exception.CaptureMasseMainException;
+import fr.urssaf.image.sae.services.executable.capturemasse.exception.CaptureMasseMainException;
+import fr.urssaf.image.sae.services.executable.factory.SAEApplicationContextFactory;
 import fr.urssaf.image.sae.services.executable.util.ValidateUtils;
 
 /**
@@ -64,38 +62,29 @@ public final class CaptureMasseMain {
       MDC.put("log_contexte_uuid", contexteLog);
 
       // instanciation du contexte de SPRING
-      GenericApplicationContext genericContext = new GenericApplicationContext();
-      BeanDefinitionBuilder saeConfigBean = BeanDefinitionBuilder
-            .genericBeanDefinition(FileSystemResource.class);
-      saeConfigBean.addConstructorArgValue(saeConfiguration);
-
-      genericContext.registerBeanDefinition("saeConfigResource", saeConfigBean
-            .getBeanDefinition());
-      genericContext.refresh();
-
-      ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-            new String[] { configLocation }, genericContext);
+      ApplicationContext context = SAEApplicationContextFactory
+            .createSAEApplicationContext(configLocation, saeConfiguration);
 
       // appel du service de capture en masse
       SAEBulkCaptureService bulkCapture = context
             .getBean(SAEBulkCaptureService.class);
 
       try {
-         
+
          bulkCapture.bulkCapture(sommaire);
-         
+
       } catch (CaptureBadEcdeUrlEx e) {
-         
+
          throw new CaptureMasseMainException(e);
-         
+
       } catch (CaptureEcdeUrlFileNotFoundEx e) {
-         
+
          throw new CaptureMasseMainException(e);
-         
+
       } catch (CaptureEcdeWriteFileEx e) {
-         
+
          throw new CaptureMasseMainException(e);
-         
+
       }
 
    }
