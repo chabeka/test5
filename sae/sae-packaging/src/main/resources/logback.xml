@@ -56,6 +56,7 @@
       
       <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
          <fileNamePattern>${LOGS_FOLDER}/sae_webservices.%d{yyyyMMdd}.log</fileNamePattern>
+         <maxHistory>15</maxHistory>
       </rollingPolicy>
       
       <encoder>
@@ -100,15 +101,14 @@
    -->
    
    
-   <!-- Pour tout le SAE, ou plus precisement pour le package de plus haut niveau-->
-   
+   <!-- Pour tout le SAE, ou plus precisement pour le package de plus haut niveau -->
    <!--
    <logger name="fr.urssaf.image.sae" level="DEBUG" additivity="false">
       <appender-ref ref="log-file" />
       <appender-ref ref="debug-file" />
    </logger>
-
    -->
+   
    
    <!-- Pour sae-webservices -->
    <!--
@@ -136,8 +136,8 @@
    </logger>
    -->
    
-     <!-- Pour sea-ecde -->
-<!--
+   <!-- Pour sae-ecde -->
+   <!--
    <logger name="fr.urssaf.image.sae.ecde" level="DEBUG" additivity="false">
       <appender-ref ref="log-file" />
       <appender-ref ref="debug-file" />
