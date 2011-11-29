@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.rmi.RemoteException;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,7 +24,7 @@ public class PingTest {
    @Autowired
    private PingService service;
 
-   private static final Logger LOG = Logger.getLogger(PingTest.class);
+   private static final Logger LOG = LoggerFactory.getLogger(PingTest.class);
 
    @Test
    public void ping_success() throws RemoteException {

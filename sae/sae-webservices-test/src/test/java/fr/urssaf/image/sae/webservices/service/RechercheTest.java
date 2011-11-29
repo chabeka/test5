@@ -3,11 +3,12 @@ package fr.urssaf.image.sae.webservices.service;
 import java.rmi.RemoteException;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,7 +23,8 @@ import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class RechercheTest {
 
-   private static final Logger LOG = Logger.getLogger(RechercheTest.class);
+   private static final Logger LOG = LoggerFactory
+         .getLogger(RechercheTest.class);
 
    @Autowired
    private RechercheService service;

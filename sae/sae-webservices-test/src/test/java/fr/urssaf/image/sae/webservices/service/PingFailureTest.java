@@ -5,10 +5,11 @@ import static org.junit.Assert.fail;
 import java.rmi.RemoteException;
 
 import org.apache.axis2.AxisFault;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,7 +26,8 @@ public class PingFailureTest {
    @Autowired
    private PingService service;
 
-   private static final Logger LOG = Logger.getLogger(PingFailureTest.class);
+   private static final Logger LOG = LoggerFactory
+         .getLogger(PingFailureTest.class);
 
    @After
    public final void after() {

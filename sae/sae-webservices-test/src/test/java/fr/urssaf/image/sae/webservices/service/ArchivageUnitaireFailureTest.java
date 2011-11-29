@@ -13,7 +13,8 @@ import org.apache.axis2.AxisFault;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,7 +38,7 @@ import fr.urssaf.image.sae.webservices.util.SoapTestUtils;
       "PMD.VariableNamingConventions" })
 public class ArchivageUnitaireFailureTest {
 
-   private static final Logger LOG = Logger
+   private static final Logger LOG = LoggerFactory
          .getLogger(ArchivageUnitaireFailureTest.class);
 
    @Autowired
@@ -328,7 +329,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_ErreurInterneCapture_FileNotFound()
+   public void archivageUnitaire_failure_CaptureUrlEcdeFichierIntrouvable()
          throws IOException {
 
       try {
@@ -346,8 +347,35 @@ public class ArchivageUnitaireFailureTest {
          SoapTestUtils
                .assertAxisFault(
                      fault,
-                     "Une erreur interne à l'application est survenue lors de la capture.",
-                     "ErreurInterneCapture", SoapTestUtils.SAE_NAMESPACE,
+                     "Le fichier pointé par l'URL ECDE est introuvable (ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation_inconnu.pdf)",
+                     "CaptureUrlEcdeFichierIntrouvable",
+                     SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
+
+      }
+   }
+
+   @Test
+   public void archivageUnitaire_failure_CaptureUrlEcdeIncorrecte()
+         throws IOException {
+
+      try {
+
+         // le DNS n'est pas bon
+         service
+               .archivageUnitaire(
+                     URI
+                           .create("ecde://ecde.cer70.recouv/DCL001/19991231/3/documents/attestation_inconnu.pdf"),
+                     metadatasRef.values());
+
+         Assert.fail(SoapTestUtils.FAIL_MSG);
+
+      } catch (AxisFault fault) {
+
+         SoapTestUtils
+               .assertAxisFault(
+                     fault,
+                     "L'URL ECDE est incorrecte (ecde://ecde.cer70.recouv/DCL001/19991231/3/documents/attestation_inconnu.pdf)",
+                     "CaptureUrlEcdeIncorrecte", SoapTestUtils.SAE_NAMESPACE,
                      SoapTestUtils.SAE_PREFIX);
 
       }

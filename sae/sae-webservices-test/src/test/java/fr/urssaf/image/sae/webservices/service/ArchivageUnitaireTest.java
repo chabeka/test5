@@ -14,12 +14,13 @@ import java.util.Map;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,7 +37,7 @@ import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class ArchivageUnitaireTest {
 
-   private static final Logger LOG = Logger
+   private static final Logger LOG = LoggerFactory
          .getLogger(ArchivageUnitaireTest.class);
 
    @Autowired
