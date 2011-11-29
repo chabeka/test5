@@ -50,10 +50,10 @@ public class ArchivageMasseTest {
 
       MessageContext.setCurrentMessageContext(ctx);
    }
-   
+
    @After
-   public void after(){
-      
+   public void after() {
+
       EasyMock.reset(captureLauncher);
       EasyMock.reset(controlesService);
    }
@@ -77,7 +77,8 @@ public class ArchivageMasseTest {
       EasyMock.expect(captureLauncher.isLaunched()).andReturn(isLaunched);
 
       captureLauncher.launch(EasyMock.anyObject(Object.class), EasyMock
-            .anyObject(Object.class), EasyMock.anyObject(Object.class));
+            .anyObject(Object.class), EasyMock.anyObject(Object.class),
+            EasyMock.anyObject(Object.class));
 
       EasyMock.replay(captureLauncher);
    }

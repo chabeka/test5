@@ -32,7 +32,6 @@ import fr.cirtil.www.saeservice.PingSecureResponse;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.webservices.SaeService;
-import fr.urssaf.image.sae.webservices.SaeStorageService;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
@@ -85,7 +84,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    private static final Logger LOG = LoggerFactory
          .getLogger(SaeServiceSkeleton.class);
 
-   private final SaeStorageService storageService;
+   public static final String LOG_CONTEXTE = "log_contexte_uuid";
 
    @Autowired
    private WSConsultationService consultation;
@@ -104,18 +103,13 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
     * 
     * @param service
     *           implémentation des services web
-    * @param storageService
-    *           implémentation de {@link SaeStorageService}
     */
    @Autowired
-   public SaeServiceSkeleton(SaeService service,
-         SaeStorageService storageService) {
+   public SaeServiceSkeleton(SaeService service) {
 
       Assert.notNull(service, "service is required");
-      Assert.notNull(storageService, "storageService is required");
 
       this.service = service;
-      this.storageService = storageService;
    }
 
    /**
@@ -282,7 +276,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
     */
    private void buildLogContext() {
       String contexteLog = UUID.randomUUID().toString();
-      MDC.put("log_contexte_uuid", contexteLog);
+      MDC.put(LOG_CONTEXTE, contexteLog);
    }
 
    /**

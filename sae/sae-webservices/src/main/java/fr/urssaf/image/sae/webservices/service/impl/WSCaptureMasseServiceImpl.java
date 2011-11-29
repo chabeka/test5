@@ -23,9 +23,11 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
+import fr.urssaf.image.sae.webservices.exception.CaptureMasseRuntimeException;
 import fr.urssaf.image.sae.webservices.impl.factory.ObjectStorageResponseFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.support.LauncherSupport;
+import fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
 /**
@@ -49,6 +51,13 @@ public class WSCaptureMasseServiceImpl implements WSCaptureMasseService {
 
    private final File saeConfigResource;
 
+   /**
+    * Le fichier de configuration générale est transmis à chaque lancement d'un
+    * traitement de capture en masse
+    * 
+    * @param saeConfigResource
+    *           fichier de configuration générale du SAE
+    */
    @Autowired
    public WSCaptureMasseServiceImpl(Resource saeConfigResource) {
 
@@ -56,9 +65,9 @@ public class WSCaptureMasseServiceImpl implements WSCaptureMasseService {
          this.saeConfigResource = saeConfigResource.getFile();
       } catch (IOException e) {
 
-         // TODO faire un Exception Runtime pour la capture
-
-         throw new RuntimeException(e);
+         throw new CaptureMasseRuntimeException(
+               "Erreur lors de la lecture du fichier de configuration du SAE.",
+               e);
       }
    }
 
@@ -118,17 +127,19 @@ public class WSCaptureMasseServiceImpl implements WSCaptureMasseService {
 
       // Appel du service, celui-ci doit rendre la main rapidement d'un
       // processus
-      // TODO faire une constante pour MDC
-      String contextLog = MDC.get("log_contexte_uuid");
+      String contextLog = MDC.get(SaeServiceSkeleton.LOG_CONTEXTE);
 
       // les trois arguments sont dans l'ordre
-      // 1 - URL ECDE du sommaire.xml
-      // 2 - Le chemin complet du fichier de configuration globale du SAE
-      // 3 - UUID du contexte LOGBACK en cours
-      LOG.debug("{} - UUID du contexte LOGBACK en cours: {}", prefixeTrc, contextLog);
-      LOG.debug("{} - Fichier configuration globale du SAE: {}", prefixeTrc, saeConfigResource.getAbsolutePath());
-      captureLauncher.launch(ecdeUrl, saeConfigResource.getAbsolutePath(),
+      // 1 - le nom du traitement : captureMasse
+      // 2 - URL ECDE du sommaire.xml
+      // 3 - Le chemin complet du fichier de configuration globale du SAE
+      // 4 - UUID du contexte LOGBACK en cours
+      LOG.debug("{} - UUID du contexte LOGBACK en cours: {}", prefixeTrc,
             contextLog);
+      LOG.debug("{} - Fichier configuration globale du SAE: {}", prefixeTrc,
+            saeConfigResource.getAbsolutePath());
+      captureLauncher.launch("captureMasse", ecdeUrl, saeConfigResource
+            .getAbsolutePath(), contextLog);
 
       // On prend acte de la demande,
       // le retour se fera via le fichier resultats.xml de l'ECDE

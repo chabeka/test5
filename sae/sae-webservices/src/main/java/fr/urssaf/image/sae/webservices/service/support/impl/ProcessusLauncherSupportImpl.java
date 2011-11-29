@@ -153,51 +153,81 @@ public class ProcessusLauncherSupportImpl implements LauncherSupport {
 
          final Process process = runtime.exec(command);
 
-         // on surveille ici tant que l'application est en ligne les traces
-         // laissées par le traitement de capture en masse
-         new Thread() {
-            public void run() {
-               try {
-                  BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(process.getInputStream()));
-                  String line = reader.readLine();
-                  try {
-                     while (line != null) {
+         // on trace ici les exceptions levées par le lancement du processus
+         // par exemple : le commande est incomprise, les options d'exécution
+         // n'existent pas, les droits sont insuffissants
 
-                        LOG.debug("{} - {}", PREFIX_LOG, line);
-                     }
-                  } finally {
-                     reader.close();
-                  }
-               } catch (IOException e) {
-                  throw new NestableRuntimeException(e);
-               }
-            }
-         }.start();
-
-         new Thread() {
-            public void run() {
-               try {
-                  BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream()));
-                  String line = reader.readLine();
-                  try {
-                     while (line != null) {
-
-                        LOG.error("{} - {}", PREFIX_LOG, line);
-                     }
-                  } finally {
-                     reader.close();
-                  }
-               } catch (IOException e) {
-                  throw new NestableRuntimeException(e);
-               }
-            }
-         }.start();
+         new InputStreamProcess(process).start();
+         new ErrorStreamProcess(process).start();
 
       } catch (IOException e) {
          throw new LauncherRuntimeException("Le lancement du processus '"
                + command + "' a échoué", e);
       }
    }
+
+   // on récupère les flux du processus
+   // le flux de sortie de processus est fermé
+   // le flux des erreurs du processus est lui affiché dans un LOG de niveau
+   // ERROR
+   // le code est récupéré et adapté de de
+   // http://ydisanto.developpez.com/tutoriels/java/runtime-exec/
+
+   private static class InputStreamProcess extends Thread {
+
+      private final Process process;
+
+      protected InputStreamProcess(Process process) {
+         super();
+         this.process = process;
+      }
+
+      /**
+       * Fermeture du flux de sortie du processus de l'application externe
+       */
+      @Override
+      public void run() {
+
+         try {
+            process.getInputStream().close();
+         } catch (IOException e) {
+            throw new NestableRuntimeException(e);
+         }
+
+      }
+   }
+
+   private static class ErrorStreamProcess extends Thread {
+
+      private final Process process;
+
+      protected ErrorStreamProcess(Process process) {
+         super();
+         this.process = process;
+      }
+
+      /**
+       * Affichage du flux d'erreur du processus de l'application externe
+       */
+      @Override
+      public void run() {
+         try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                  process.getErrorStream()));
+            String line = "";
+            try {
+               // ce code permet d'éviter les boucles infinies!
+               while ((line = reader.readLine()) != null) {
+
+                  LOG.error("{} - {}", PREFIX_LOG, line);
+               }
+            } finally {
+               reader.close();
+            }
+         } catch (IOException e) {
+            throw new NestableRuntimeException(e);
+         }
+      }
+   }
+
 }
