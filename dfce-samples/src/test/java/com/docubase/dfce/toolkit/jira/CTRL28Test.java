@@ -43,7 +43,7 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
     @Parameters
     public static List<Integer[]> numbersOfThreads() {
 	return Arrays.asList(new Integer[][] { { 1, 0 }, // mono thread
-		{ 3, 0 }, { 20, 0 }, { 50, 0 }, });
+		{ 10, 0 }, { 50, 0 }, { 200, 0 }, });
     }
 
     public CTRL28Test(int input, int expected) {
@@ -110,7 +110,8 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 	@Override
 	public File call() throws Exception {
 	    try {
-		localServiceProvider.connect(ADM_LOGIN, ADM_PASSWORD, SERVICE_URL);
+		localServiceProvider.connect(ADM_LOGIN, ADM_PASSWORD,
+			SERVICE_URL);
 
 	    } catch (Throwable e) {
 		e.printStackTrace();

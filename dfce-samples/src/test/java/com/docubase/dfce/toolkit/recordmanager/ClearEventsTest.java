@@ -37,7 +37,7 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 		.createCustomSystemEventLog(rmSystemEvent);
 	Thread.sleep(2000);
 	calendar = Calendar.getInstance();
-	calendar.add(Calendar.MILLISECOND, -500);
+	calendar.add(Calendar.MILLISECOND, -1);
 	archiveService.clearSystemEventsTo(calendar.getTime());
     }
 
@@ -113,7 +113,7 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	Date lastSucessfulRunDate = archiveService
 		.getLastSucessfulSystemLogsArchiveRunDate();
-	calendar.add(Calendar.SECOND, -500);
+	calendar.add(Calendar.SECOND, -1);
 	lastSucessfulRunDate = calendar.getTime();
 
 	// clearing event to job's last success (previous to custom event)
