@@ -10,13 +10,11 @@
    <artifactId>sae-webservices</artifactId>
    <name>sae-webservices</name>
    <version>0.0.1-SNAPSHOT</version>
-   <packaging>aar</packaging>
+   <packaging>war</packaging>
    <description>Services web du SAE</description>
 
    <properties>
       <axiom.version>1.2.9</axiom.version>
-      <!-- on repète le n° de version pour les plugins  'org.apache.axis2' -->
-      <axis2.version>1.5.4</axis2.version>
    </properties>
 
    <profiles>
@@ -92,7 +90,6 @@
 
       <plugins>
 
-
          <!-- COMPILATION ASPECT -->
          <plugin>
             <inherited>true</inherited>
@@ -100,16 +97,6 @@
             <artifactId>aspectj-maven-plugin</artifactId>
          </plugin>
 
-         <!-- ARCHIVAGE AXIS2 -->
-         <plugin>
-            <groupId>org.apache.axis2</groupId>
-            <artifactId>axis2-aar-maven-plugin</artifactId>
-            <version>${axis2.version}</version>
-            <extensions>true</extensions>
-            <configuration>
-               <aarName>${project.name}</aarName>
-            </configuration>
-         </plugin>
       </plugins>
 
    </build>
@@ -126,6 +113,10 @@
             <exclusion>
                <groupId>log4j</groupId>
                <artifactId>log4j</artifactId>
+            </exclusion>
+            <exclusion>
+               <groupId>org.slf4j</groupId>
+               <artifactId>slf4j-log4j12</artifactId>
             </exclusion>
          </exclusions>
       </dependency>
@@ -169,6 +160,18 @@
          <version>${axis2.version}</version>
       </dependency>
 
+      <dependency>
+         <groupId>org.apache.axis2</groupId>
+         <artifactId>axis2-transport-local</artifactId>
+         <version>${axis2.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.apache.axis2</groupId>
+         <artifactId>axis2-transport-http</artifactId>
+         <version>${axis2.version}</version>
+      </dependency>
+      
       <dependency>
          <groupId>org.apache.axis2</groupId>
          <artifactId>axis2-spring</artifactId>
