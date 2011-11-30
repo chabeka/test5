@@ -23,5 +23,27 @@
       <servlet-name>AxisServlet</servlet-name>
       <url-pattern>/services/*</url-pattern>
    </servlet-mapping>
+   
+   <servlet>
+      <display-name>EtatSaeServlet</display-name>
+      <servlet-name>EtatSaeServlet</servlet-name>
+      <servlet-class>fr.urssaf.image.sae.exploitation.servlet.EtatSaeServlet</servlet-class>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>EtatSaeServlet</servlet-name>
+      <url-pattern>/SAETest</url-pattern>
+   </servlet-mapping>
+  
+  <servlet>
+    <display-name>EtatSaeFastServlet</display-name>
+    <servlet-name>EtatSaeFastServlet</servlet-name>
+    <servlet-class>fr.urssaf.image.sae.exploitation.servlet.EtatSaeFastServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>EtatSaeFastServlet</servlet-name>
+    <url-pattern>/SAEFastTest</url-pattern>
+  </servlet-mapping>
   
 </web-app>
