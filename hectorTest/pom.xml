@@ -1,4 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>hectorTest</groupId>
@@ -8,16 +8,28 @@
   <name>hectorTest</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-    <dependency>
-		<groupId>me.prettyprint</groupId>
-		<artifactId>hector</artifactId>
-		<version>0.8.0-1</version>
-		<type>pom</type>
-	</dependency>
+	<dependency>
+	  <groupId>me.prettyprint</groupId>
+	  <artifactId>hector</artifactId>
+	  <version>1.0-1</version>
+	  <type>pom</type>
+    </dependency>
+    <!-- On indique la version de libthrift explicitement pour désactiver slf4j-log4j -->
+	<dependency>
+	  <groupId>org.apache.thrift</groupId>
+	  <artifactId>libthrift</artifactId>
+	  <version>0.6.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+      </exclusions>
+	</dependency>    
 	<dependency>
 	  <groupId>me.prettyprint</groupId>
 	  <artifactId>hector-object-mapper</artifactId>
-	  <version>1.1-01</version>
+	  <version>2.0-01</version>
 	</dependency>	
     <dependency>
     	<groupId>junit</groupId>
@@ -28,7 +40,17 @@
     <dependency>
     	<groupId>ch.qos.logback</groupId>
     	<artifactId>logback-classic</artifactId>
-    	<version>0.9.28</version>
-    </dependency>    
+    	<version>0.9.30</version>
+    </dependency>
+	<dependency>
+	  <groupId>org.slf4j</groupId>
+	  <artifactId>slf4j-api</artifactId>
+	  <version>1.6.3</version>
+	</dependency>    
+	<dependency>
+	    <groupId>commons-collections</groupId>
+	    <artifactId>commons-collections</artifactId>
+	    <version>3.2.1</version>
+	</dependency>   
   </dependencies>
 </project>

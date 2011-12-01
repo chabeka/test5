@@ -1,5 +1,9 @@
 package fr.urssaf.hectotest;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+
 /**
  * Utilitaires de conversion
  *
@@ -111,4 +115,27 @@ public class ConvertHelper
 		}
 		return strBuffer.toString();
 	}
+	
+	public static byte[] stringToBytes (String str) throws UnsupportedEncodingException {
+		return str.getBytes("ISO-8859-1");
+	}
+	
+	/**
+	 *   
+	 * @param str Exemple : "DOCUBASE|||sm_d"
+
+	 * @return
+	 */
+	public static byte[] stringToBytesWithDocubaseDelimiter(String str) throws UnsupportedEncodingException {
+		byte[] bytes = str.getBytes("ISO-8859-1"); 
+		int delimiterIndex = str.indexOf("|||", 0);
+		while (delimiterIndex >=0) {
+			bytes[delimiterIndex] = (byte) 0xef;
+			bytes[delimiterIndex+1] = (byte) 0xbf;
+			bytes[delimiterIndex+2] = (byte) 0xbf;
+			delimiterIndex = str.indexOf("|||", delimiterIndex + 3);
+		}
+		return bytes;
+	}
+	
 }

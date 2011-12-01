@@ -3,6 +3,7 @@ package fr.urssaf.hectotest;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -13,6 +14,7 @@ import me.prettyprint.cassandra.model.CqlRows;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
+import me.prettyprint.cassandra.service.FailoverPolicy;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.HConsistencyLevel;
 import me.prettyprint.hector.api.Keyspace;
@@ -40,11 +42,13 @@ public class CheckBaseTest {
 	@Before  
 	public void init() throws Exception {
 		ConfigurableConsistencyLevel ccl = new ConfigurableConsistencyLevel();
-		ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
+		ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.QUORUM);
 		ccl.setDefaultWriteConsistencyLevel(HConsistencyLevel.QUORUM);
-		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160,cer69imageint9.cer69.recouv:9160" ));
+		HashMap<String,String> credentials = new HashMap<String, String>() {{ put("username", "root");}{ put("password", "regina4932");}};
+		
+		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint9.cer69.recouv:9160" ));
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69-saeint2.cer69.recouv:9160" ));
-		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl);
+		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl, FailoverPolicy.ON_FAIL_TRY_ALL_AVAILABLE, credentials);
 		sysout = new PrintStream(System.out, true, "UTF-8");
 		dumper = new Dumper(keyspace, sysout);
     }
@@ -113,13 +117,16 @@ public class CheckBaseTest {
 			String name = column.getName();
 			byte[] value =  column.getValue();
 			String stringValue = ConvertHelper.getReadableUTF8String(value);
-			if (name.startsWith("baseCategoryReferences.") && !name.startsWith("baseCategoryReferences.COLL")) {
-				if (stringValue.startsWith(baseName + "\\xef\\xbf\\xbf")) {
-					String s = stringValue.substring(baseName.length() + 12);
-					categories.add(s);
-				}
-				else {
-					throw new Exception("Valeur inattendue :" + stringValue);
+			if (name.startsWith("baseCategoryReferences.")) {
+				char c = name.charAt(23);
+				if (c >= '0' && c <= '9') {
+					if (stringValue.startsWith(baseName + "\\xef\\xbf\\xbf")) {
+						String s = stringValue.substring(baseName.length() + 12);
+						categories.add(s);
+					}
+					else {
+						throw new Exception("Valeur inattendue :" + stringValue);
+					}
 				}
 			}
 		}

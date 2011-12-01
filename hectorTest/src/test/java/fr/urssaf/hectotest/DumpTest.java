@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import me.prettyprint.cassandra.model.CqlRows;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
+import me.prettyprint.cassandra.service.FailoverPolicy;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.HConsistencyLevel;
 import me.prettyprint.hector.api.Keyspace;
@@ -53,12 +55,21 @@ public class DumpTest
 	@Before  
 	public void init() throws Exception {
 		ConfigurableConsistencyLevel ccl = new ConfigurableConsistencyLevel();
-		ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.ONE);
+		ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.QUORUM);
 		ccl.setDefaultWriteConsistencyLevel(HConsistencyLevel.QUORUM);
-		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160,cer69imageint9.cer69.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69-saeint2.cer69.recouv:9160" ));
-		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl);
+		HashMap<String,String> credentials = new HashMap<String, String>() {{ put("username", "root");}{ put("password", "regina4932");}};
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160,cer69imageint9.cer69.recouv:9160" ));
+		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint9.cer69.recouv:9160" ));
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("10.203.34.39:9160" )); //noufnouf
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69givnsaecas1.cer69.recouv:9160,hwi69givnsaecas2.cer69.recouv:9160" ));
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69devsaecas1.cer69.recouv:9160,hwi69devsaecas2.cer69.recouv:9160" ));
+
+		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl, FailoverPolicy.ON_FAIL_TRY_ALL_AVAILABLE, credentials);
+
 		sysout = new PrintStream(System.out, true, "UTF-8");
+
+		// Pour dumper sur un fichier plutôt que sur la sortie standard
+		//sysout = new PrintStream("c:/temp/out.txt");
 		dumper = new Dumper(keyspace, sysout);
     }
     
@@ -83,15 +94,34 @@ public class DumpTest
 	public void testDumpDocInfo() throws Exception {
 		dumper.dumpCF("DocInfo", 150);
 	}
+
+	@Test
+	public void testExtractOneDocInfo() throws Exception {
+		extractOneDocInfo  ("00001972-c16e-491b-922addd2e7bf20e7");
+		//extractOneDocInfo("bf15608f-1f17-4819-944d-e377c7bd726d");
+		//extractOneDocInfo("6fd809ec-8fd7-44f3-9d6f-ee655fa7e54a");		
+	}
+
+	private void extractOneDocInfo(String uuid) throws Exception {
+		byte[] key = ConvertHelper.stringToBytesWithDocubaseDelimiter(uuid + "|||0.0.0");
+		dumper.dumpCF("DocInfo",key);	}
+	
+	@Test
+	public void testGetDocCount() throws Exception {
+		int count = dumper.getKeysCount("DocInfo");
+		sysout.println("Nombre de clés dans DocInfo : " + count);
+		count = dumper.getKeysCount("Documents");
+		sysout.println("Nombre de clés dans Documents : " + count);
+	}
 	
 	@Test
 	public void testDumpDocuments() throws Exception {
-		dumper.dumpCF("Documents", 20);
+		dumper.dumpCF("Documents", 150);
 	}
 	
 	@Test
 	public void testDumpOneDocument() throws Exception {
-		dumper.dumpCF("Documents", "0f5003e0-8698-4405-9804-a098ed6e5575_v1");
+		dumper.dumpCF("Documents", "dcd998fe-0445-48a5-baa1-22f27433b983_v1");
 	}
 
 	@Test
@@ -144,13 +174,14 @@ public class DumpTest
 
 	@Test
 	public void testDumpTermInfo() throws Exception {
-		//String delimiter = "\u00ef\u00bf\u00bf";
-		String delimiter = "\uffff";
-		//String startKey = "DOCUBASE" + delimiter +  "srt";
-		//String startKey = "DOCUBASE" + delimiter +  "caté";
-		String startKey = "D";
+		// sm_life_cycle_reference_date - sm_uuid 
+		byte[] startKey = ConvertHelper.stringToBytesWithDocubaseDelimiter("DOCUBASE|||sm_uuid|||fff");
 		String filter = "0052ffca-a542-4aca-b0aa-4b4d037e9fe6";
-		dumper.dumpSCF("TermInfo", startKey, 100000, filter);
+		//dumper.dumpSCF("TermInfo", startKey, 100000, filter);
+		//dumper.dumpCF("TermInfo", 10000);
+		sysout.println("début");
+		dumper.dumpCF_StartKey("TermInfo", startKey, 100);
+		//dumper.dumpCF("TermInfo", 50);
 	}
 	
 	@Test
@@ -185,7 +216,7 @@ public class DumpTest
 	
 	@Test
 	public void testDumpCategoriesReference() throws Exception {
-		dumper.dumpCF("CategoriesReference", 15);
+		dumper.dumpCF("CategoriesReference", 100);
 	}
 	
 	@Test
@@ -202,7 +233,16 @@ public class DumpTest
 	public void testDumpIndexCriteriaReference() throws Exception {
 		dumper.dumpCF("IndexCriteriaReference", 15);
 	}
-	
+
+	@Test
+	public void testDumpJobs() throws Exception {
+		dumper.dumpCF("Jobs", 15);
+	}
+	@Test
+	public void testDumpLifeCycleRules() throws Exception {
+		dumper.dumpCF("LifeCycleRules", 15);
+	}
+
 	@Test
 	public void testDumpStaticDictionaries() throws Exception {
 		dumper.dumpCF("StaticDictionaries", 15);
@@ -219,7 +259,7 @@ public class DumpTest
 	}
 	@Test
 	public void testDumpDocEventLog() throws Exception {
-		dumper.dumpCF("DocEventLog", 200);
+		dumper.dumpCF("DocEventLog", 30);
 	}
 	@Test
 	public void testDumpDocEventLogByTime() throws Exception {
@@ -229,6 +269,18 @@ public class DumpTest
 	public void testDumpUser() throws Exception {
 		dumper.dumpCF("User", 15);
 	}
+	@Test
+	public void testDumpUserGroup() throws Exception {
+		dumper.dumpCF("UserGroup", 15);
+	}
+	@Test
+	public void testDumpUserSearchFilters() throws Exception {
+		dumper.dumpCF("UserSearchFilters", 15);
+	}
+	@Test
+	public void testDumpVersions() throws Exception {
+		dumper.dumpCF("Versions", 15);
+	}
 	
 	
 	@Test
@@ -236,14 +288,35 @@ public class DumpTest
 		StringSerializer stringSerializer = StringSerializer.get();
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
 		CqlQuery<byte[],String,byte[]> cqlQuery = new CqlQuery<byte[],String,byte[]>(keyspace, bytesSerializer, stringSerializer, bytesSerializer);
-		//String query = "select * from DocInfo where Key ='" + ConvertHelper.stringToHex("DOCUBASE") + "efbfbf" + ConvertHelper.stringToHex("28e154e8-ee91-44f8-ab50-c62e0f8c6898") + "'";
+		//String query = "select * from DocInfo where Key ='" + ConvertHelper.stringToHex("DOCUBASE") + "efbfbf" + ConvertHelper.stringToHex("dd258958-24ff-486e-84b8-4f6b2714aaff") + "'";
 		//String query = "select * from DocInfo where Key ='" + ConvertHelper.stringToHex("DOCUBASE") + "efbfbf" + ConvertHelper.stringToHex("d6db9900-4e83-401f-ac82-21e88b804503") + "'";
 		//String query = "select * from BasesReference where Key ='" + ConvertHelper.stringToHex("SAE") + "'";
-		String query = "select * from Documents where Key ='" + ConvertHelper.stringToHex("d6db9900-4e83-401f-ac82-21e88b804503_v1") + "'";
-		//String query = "select * from SystemEventLog WHERE KEY >'" + ConvertHelper.stringToHex("20110727132645016") + "' LIMIT 100";
+		String query = "select * from Documents where Key ='" + ConvertHelper.stringToHex("dd258958-24ff-486e-84b8-4f6b2714aaff_v1") + "'";
+		//String query = "select * from SystemEventLog WHERE KEY >'" + ConvertHelper.stringToHex("20110819000000000") + "' LIMIT 100";
+		//String query = "select * from DocEventLogByTime WHERE KEY >'" + ConvertHelper.stringToHex("20110819000000000") + "' LIMIT 100";
+		//String query = "select * from DocEventLog WHERE KEY >'" + ConvertHelper.stringToHex("d6db9900-4e83-401f-ac82-21e88b804503") + "' LIMIT 50";
 		cqlQuery.setQuery(query);
 		QueryResult<CqlRows<byte[],String,byte[]>> result = cqlQuery.execute();
 		dumper.dumpCqlQueryResult(result);
+	}
+	
+	@Test
+	public void testExtractDocEventForOneDoc() throws Exception {
+		QueryResult<CqlRows<byte[],String,byte[]>> result = getDocEventForOneDoc("dd258958-24ff-486e-84b8-4f6b2714aaff");
+		//QueryResult<CqlRows<byte[],String,byte[]>> result = getDocEventForOneDoc("d6db9900-4e83-401f-ac82-21e88b804503");
+		dumper.dumpCqlQueryResult(result);
+	}
+	
+	protected QueryResult<CqlRows<byte[],String,byte[]>> getDocEventForOneDoc(String uuid) throws Exception {
+		StringSerializer stringSerializer = StringSerializer.get();
+		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
+		CqlQuery<byte[],String,byte[]> cqlQuery = new CqlQuery<byte[],String,byte[]>(keyspace, bytesSerializer, stringSerializer, bytesSerializer);
+		String query = "select * from DocEventLog " +
+				" WHERE KEY >'" + ConvertHelper.stringToHex(uuid) + "'" + 
+				" AND KEY < '" + ConvertHelper.stringToHex(uuid) + "FF'";
+		cqlQuery.setQuery(query);
+		QueryResult<CqlRows<byte[],String,byte[]>> result = cqlQuery.execute();
+		return result;
 	}
 	
 	@Test
