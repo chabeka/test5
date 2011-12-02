@@ -226,11 +226,6 @@
          </exclusions>
       </dependency>
       <dependency>
-         <groupId>joda-time</groupId>
-         <artifactId>joda-time</artifactId>
-         <version>1.6.2</version>
-      </dependency>
-      <dependency>
          <groupId>junitperf</groupId>
          <artifactId>junitperf</artifactId>
          <version>1.9.1</version>
@@ -245,6 +240,24 @@
          <artifactId>commons-collections</artifactId>
          <version>3.2.1</version>
       </dependency>
+
+      <!-- EASYMOCK -->
+
+      <dependency>
+         <groupId>org.easymock</groupId>
+         <artifactId>easymock</artifactId>
+         <version>3.0</version>
+         <scope>test</scope>
+      </dependency>
+
+      <!-- JODATIME -->
+
+      <dependency>
+         <groupId>joda-time</groupId>
+         <artifactId>joda-time</artifactId>
+         <version>2.0</version>
+      </dependency>
+
    </dependencies>
    <build>
       <plugins>

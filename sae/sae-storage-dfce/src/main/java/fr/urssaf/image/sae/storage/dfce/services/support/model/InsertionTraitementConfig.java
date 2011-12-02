@@ -6,7 +6,7 @@ package fr.urssaf.image.sae.storage.dfce.services.support.model;
  * <ul>
  * <li>start : Heure de programmation du début de l'interruption. Doit être au
  * format HH:mm:ss</li>
- * <li>delay : Durée de la pause</li>
+ * <li>delay : Durée de la pause en secondes</li>
  * <li>tentatives : Nombre de tentatives pour reprendre le traitement</li>
  * </ul>
  * 
@@ -16,7 +16,7 @@ public class InsertionTraitementConfig {
 
    private String start;
 
-   private long delay;
+   private int delay;
 
    private int tentatives;
 
@@ -38,7 +38,7 @@ public class InsertionTraitementConfig {
    /**
     * @return the delay
     */
-   public final long getDelay() {
+   public final int getDelay() {
       return delay;
    }
 
@@ -46,7 +46,7 @@ public class InsertionTraitementConfig {
     * @param delay
     *           the delay to set
     */
-   public final void setDelay(long delay) {
+   public final void setDelay(int delay) {
       this.delay = delay;
    }
 

@@ -23,7 +23,7 @@ public class InterruptionTraitementSupportValidationTest {
 
    private static final String ARG_START = "12:37:54";
 
-   private static final long ARG_DELAY = 120;
+   private static final int ARG_DELAY = 120;
 
    private static final int ARG_TENTATIVES = 2;
 
@@ -33,8 +33,8 @@ public class InterruptionTraitementSupportValidationTest {
       InterruptionTraitementSupport support = new InterruptionTraitementSupport() {
 
          @Override
-         public void interruption(String start, long delay, int tentatives) {
-            //implémentation vide
+         public void interruption(String start, int delay, int tentatives) {
+            // implémentation vide
          }
 
       };
@@ -63,7 +63,7 @@ public class InterruptionTraitementSupportValidationTest {
       } catch (IllegalArgumentException e) {
 
          Assert.assertEquals(EXCEPTION_MESSAGE,
-               "L'argument 'start' doit être renseigné.", e.getMessage());
+               "L'argument 'startTime' doit être renseigné.", e.getMessage());
       }
    }
 
@@ -86,8 +86,8 @@ public class InterruptionTraitementSupportValidationTest {
 
       } catch (IllegalArgumentException e) {
 
-         Assert.assertEquals(EXCEPTION_MESSAGE, "L'argument 'start'='" + time
-               + "' doit être au format HH:mm:ss.", e.getMessage());
+         Assert.assertEquals(EXCEPTION_MESSAGE, "L'argument 'startTime'='"
+               + time + "' doit être au format HH:mm:ss.", e.getMessage());
       }
    }
 
@@ -98,7 +98,7 @@ public class InterruptionTraitementSupportValidationTest {
       assertInterruptionDelay(-2);
    }
 
-   private void assertInterruptionDelay(long delay) {
+   private void assertInterruptionDelay(int delay) {
 
       try {
 

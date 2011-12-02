@@ -20,4 +20,13 @@ public class InterruptionTraitementException extends RuntimeException {
    public InterruptionTraitementException(String message, Throwable cause) {
       super(message, cause);
    }
+
+   /**
+    * 
+    * @param cause
+    *           cause de l'exception
+    */
+   public InterruptionTraitementException(Throwable cause) {
+      super(cause);
+   }
 }

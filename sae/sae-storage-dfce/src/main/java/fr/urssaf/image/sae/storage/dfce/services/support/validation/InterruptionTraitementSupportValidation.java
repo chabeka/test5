@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import fr.urssaf.image.sae.storage.dfce.utils.TimeUtils;
+import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
 
 /**
  * Classe de validation des arguments en entrée des implémentations du service
@@ -22,7 +22,7 @@ public class InterruptionTraitementSupportValidation {
    private static final String CLASS = "fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport";
 
    private static final String METHOD = "execution(void " + CLASS
-         + ".interruption(*,*,*))" + "&& args(start,delay,tentatives)";
+         + ".interruption(*,*,*))" + "&& args(startTime,delay,tentatives)";
 
    private static final String ARG_EMPTY = "L''argument ''{0}'' doit être renseigné.";
 
@@ -32,10 +32,10 @@ public class InterruptionTraitementSupportValidation {
 
    /**
     * Validation des méthodes de
-    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#interruption(String, long, int)}
+    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#interruption(String, int, int)}
     * <br>
     * 
-    * @param start
+    * @param startTime
     *           doit être renseigné au format HH:mm:ss
     * @param delay
     *           doit être supérieure à 0
@@ -43,18 +43,18 @@ public class InterruptionTraitementSupportValidation {
     *           doit être supérieure à 0
     */
    @Before(METHOD)
-   public final void interruption(String start, long delay, int tentatives) {
+   public final void interruption(String startTime, int delay, int tentatives) {
 
-      if (StringUtils.isBlank(start)) {
+      if (StringUtils.isBlank(startTime)) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_EMPTY,
-               "start"));
+               "startTime"));
       }
 
-      if (!TimeUtils.isValidate(start)) {
+      if (!LocalTimeUtils.isValidate(startTime)) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_TIME,
-               "start",start));
+               "startTime", startTime));
       }
 
       if (delay < 1) {
