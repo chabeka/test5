@@ -62,7 +62,7 @@
       <module>../sae-dfce-admin</module>
       
       -->
-      <module>../sae-admin-dfce-exploit</module>
+      <module>../sae-dfce-admin-exploit</module>
       
       
       <module>../sae-ecde</module>
