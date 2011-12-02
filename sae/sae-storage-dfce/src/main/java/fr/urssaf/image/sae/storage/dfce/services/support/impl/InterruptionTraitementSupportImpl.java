@@ -7,6 +7,8 @@ import me.prettyprint.cassandra.utils.Assert;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,9 @@ import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 @Component
 public class InterruptionTraitementSupportImpl implements
       InterruptionTraitementSupport {
+
+   private static final Logger LOG = LoggerFactory
+         .getLogger(InterruptionTraitementSupportImpl.class);
 
    private final StorageServiceProvider storageProvider;
 
@@ -72,6 +77,8 @@ public class InterruptionTraitementSupportImpl implements
 
    }
 
+   private static final String LOG_PREFIX = "Interruption programmée d'un traitement";
+
    protected final void interruption(Date currentDate, String startTime,
          int delay, int tentatives) {
 
@@ -82,41 +89,83 @@ public class InterruptionTraitementSupportImpl implements
 
       if (LocalTimeUtils.isSameTime(currentLocalDate, startLocalTime, delay)) {
 
+         LOG.debug("{} - début programmé à {}", LOG_PREFIX, startTime);
+
          storageProvider.closeConnexion();
 
-         String exceptionMessage = MessageFormat.format(EXCEPTION_MESSAGE,
-               startTime, delay, tentatives);
+         ConnectionResult connectionResult = pause(delay, null, tentatives,
+               tentatives);
 
-         pause(delay, exceptionMessage, null, tentatives);
+         if (connectionResult.lastException != null) {
+
+            String exceptionMessage = MessageFormat.format(EXCEPTION_MESSAGE,
+                  startTime, delay, tentatives);
+
+            throw new InterruptionTraitementException(exceptionMessage,
+                  connectionResult.lastException);
+         }
+
+         LOG.debug(
+               "{} - Réussite de la tentative n°{}/{} de reconnexion à DFCE ",
+               new Object[] { LOG_PREFIX, connectionResult.step, tentatives });
       }
    }
 
-   private void pause(long delay, String exceptionMessage,
-         InterruptionTraitementException lastException, int tentatives) {
+   private ConnectionResult pause(long delay, Exception lastException,
+         int tentatives, int total) {
+
+      int step = total - tentatives + 1;
+
+      ConnectionResult connectionResult = new ConnectionResult();
+      connectionResult.lastException = lastException;
+      connectionResult.step = step;
 
       if (tentatives > 0) {
+
+         LOG.debug("{} - Interruption de {} secondes", LOG_PREFIX, delay);
 
          pause(delay);
 
          try {
 
+            LOG.debug("{} - Tentative n°{}/{} de reconnexion à DFCE",
+                  new Object[] { LOG_PREFIX, step, total });
+
             storageProvider.openConnexion();
+
+            // réussite de la connexion à DFCE
+
+            connectionResult.step = step;
+            connectionResult.setLastException(null);
 
          } catch (Exception e) {
 
-            InterruptionTraitementException newException = new InterruptionTraitementException(
-                  exceptionMessage, new Exception());
+            // échec de la connection
 
             int newTentatives = tentatives - 1;
 
-            pause(this.delay, exceptionMessage, newException, newTentatives);
+            LOG.debug(
+                  "{} - Echec de la tentative n°{}/{} de reconnexion à DFCE ",
+                  new Object[] { LOG_PREFIX, step, total });
+
+            connectionResult = pause(this.delay, e, newTentatives, total);
          }
 
-         return;
       }
 
-      throw lastException;
+      return connectionResult;
 
+   }
+
+   private static class ConnectionResult {
+
+      private Exception lastException;
+
+      private int step;
+
+      private void setLastException(Exception lastException) {
+         this.lastException = lastException;
+      }
    }
 
    private void pause(long delay) {

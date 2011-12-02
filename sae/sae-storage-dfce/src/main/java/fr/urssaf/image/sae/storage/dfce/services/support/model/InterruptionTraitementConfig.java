@@ -12,7 +12,7 @@ package fr.urssaf.image.sae.storage.dfce.services.support.model;
  * 
  * 
  */
-public class InsertionTraitementConfig {
+public class InterruptionTraitementConfig {
 
    private String start;
 

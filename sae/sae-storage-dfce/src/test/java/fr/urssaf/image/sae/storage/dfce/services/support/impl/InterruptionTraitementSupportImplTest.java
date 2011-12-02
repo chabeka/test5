@@ -91,15 +91,13 @@ public class InterruptionTraitementSupportImplTest {
    public void interruption_failure_after2Tentatives()
          throws ConnectionServiceEx {
 
-      openConnexion(3);
+      openConnexion(5);
 
       String start = "02:00:00";
 
       try {
 
          support.interruption(currentDate, start, 2, 2);
-
-         EasyMock.verify(storageProvider);
 
          Assert.fail("On s'attend à lever une exception de type "
                + InterruptionTraitementException.class);
