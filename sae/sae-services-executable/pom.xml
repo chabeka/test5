@@ -31,7 +31,6 @@
                      <goal>shade</goal>
                   </goals>
                   <configuration>
-                     <finalName>sae-services-exe</finalName>
                      <artifactSet>
                         <excludes>
                            <exclude>log4j:log4j:jar:</exclude>
