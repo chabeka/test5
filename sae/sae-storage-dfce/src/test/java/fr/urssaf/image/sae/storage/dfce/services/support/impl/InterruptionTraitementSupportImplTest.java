@@ -10,24 +10,24 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
-import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class InterruptionTraitementSupportImplTest {
 
    private InterruptionTraitementSupportImpl support;
 
-   private StorageServiceProvider storageProvider;
+   private DFCEServicesManager dfceManager;
 
    private Date currentDate;
 
    @Before
    public void before() throws ParseException {
 
-      storageProvider = EasyMock.createMock(StorageServiceProvider.class);
-      support = new InterruptionTraitementSupportImpl(storageProvider);
+      dfceManager = EasyMock.createMock(DFCEServicesManager.class);
+      support = new InterruptionTraitementSupportImpl(dfceManager);
 
       // on fixe les delais pour les tentatives de reconnexion après la première
       // à 1 seconde!
@@ -42,21 +42,21 @@ public class InterruptionTraitementSupportImplTest {
    @After
    public void after() {
 
-      EasyMock.reset(storageProvider);
+      EasyMock.reset(dfceManager);
    }
 
    private void openConnexion(int tentatives) throws ConnectionServiceEx {
 
-      storageProvider.closeConnexion();
+      dfceManager.closeConnection();
 
-      storageProvider.openConnexion();
+      dfceManager.getConnection();
 
       EasyMock.expectLastCall().andThrow(new ConnectionServiceEx()).times(
             tentatives - 1);
 
-      storageProvider.openConnexion();
+      dfceManager.getConnection();
 
-      EasyMock.replay(storageProvider);
+      EasyMock.replay(dfceManager);
    }
 
    @Test
@@ -84,7 +84,7 @@ public class InterruptionTraitementSupportImplTest {
       support.interruption(currentDate, start, 2, tentatives);
 
       // on doit vérifier qu'on ferme bien la connexion
-      EasyMock.verify(storageProvider);
+      EasyMock.verify(dfceManager);
    }
 
    @Test

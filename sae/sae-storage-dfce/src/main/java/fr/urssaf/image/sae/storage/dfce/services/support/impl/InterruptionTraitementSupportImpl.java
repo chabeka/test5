@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.storage.dfce.services.support.impl;
 
-import java.text.MessageFormat;
 import java.util.Date;
 
 import me.prettyprint.cassandra.utils.Assert;
@@ -12,10 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
-import fr.urssaf.image.sae.storage.services.StorageServiceProvider;
 
 /**
  * Implémentation du service {@link InterruptionTraitementSupport}
@@ -29,22 +28,19 @@ public class InterruptionTraitementSupportImpl implements
    private static final Logger LOG = LoggerFactory
          .getLogger(InterruptionTraitementSupportImpl.class);
 
-   private final StorageServiceProvider storageProvider;
-
-   private static final String EXCEPTION_MESSAGE = "Après une déconnexion DFCE programmée à {0} il est impossible de reprendre le traitement après {1} secondes et {2} tentatives.";
+   private final DFCEServicesManager dfceManager;
 
    /**
     * 
-    * @param storageProvider
-    *           ensemble des services de manipulation de la surcouche de DFCE
+    * @param dfceManager
+    *           ensemble des services de manipulation DFCE
     */
    @Autowired
-   public InterruptionTraitementSupportImpl(
-         StorageServiceProvider storageProvider) {
+   public InterruptionTraitementSupportImpl(DFCEServicesManager dfceManager) {
 
-      Assert.notNull(storageProvider, "'storageProvider' is required");
+      Assert.notNull(dfceManager, "'dfceManager' is required");
 
-      this.storageProvider = storageProvider;
+      this.dfceManager = dfceManager;
    }
 
    private static final int DELAY = 120;
@@ -91,18 +87,21 @@ public class InterruptionTraitementSupportImpl implements
 
          LOG.debug("{} - début programmé à {}", LOG_PREFIX, startTime);
 
-         storageProvider.closeConnexion();
+         dfceManager.closeConnection();
 
-         ConnectionResult connectionResult = pause(delay, null, tentatives,
-               tentatives);
+         ConnectionResult connectionResult;
+         try {
+            connectionResult = pause(delay, null, tentatives, tentatives);
+         } catch (InterruptedException e) {
+            // Interruption lors de la mise en pause du traitement
+            throw new InterruptionTraitementException(startTime, delay,
+                  tentatives, e);
+         }
 
          if (connectionResult.lastException != null) {
 
-            String exceptionMessage = MessageFormat.format(EXCEPTION_MESSAGE,
-                  startTime, delay, tentatives);
-
-            throw new InterruptionTraitementException(exceptionMessage,
-                  connectionResult.lastException);
+            throw new InterruptionTraitementException(startTime, delay,
+                  tentatives, connectionResult.lastException);
          }
 
          LOG.debug(
@@ -112,7 +111,7 @@ public class InterruptionTraitementSupportImpl implements
    }
 
    private ConnectionResult pause(long delay, Exception lastException,
-         int tentatives, int total) {
+         int tentatives, int total) throws InterruptedException {
 
       int step = total - tentatives + 1;
 
@@ -124,14 +123,14 @@ public class InterruptionTraitementSupportImpl implements
 
          LOG.debug("{} - Interruption de {} secondes", LOG_PREFIX, delay);
 
-         pause(delay);
+         Thread.sleep(delay * 1000);
 
          try {
 
             LOG.debug("{} - Tentative n°{}/{} de reconnexion à DFCE",
                   new Object[] { LOG_PREFIX, step, total });
 
-            storageProvider.openConnexion();
+            dfceManager.getConnection();
 
             // réussite de la connexion à DFCE
 
@@ -165,15 +164,6 @@ public class InterruptionTraitementSupportImpl implements
 
       private void setLastException(Exception lastException) {
          this.lastException = lastException;
-      }
-   }
-
-   private void pause(long delay) {
-
-      try {
-         Thread.sleep(delay * 1000);
-      } catch (InterruptedException e) {
-         throw new InterruptionTraitementException(e);
       }
    }
 
