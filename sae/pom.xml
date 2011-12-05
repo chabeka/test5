@@ -484,11 +484,12 @@
       <module>sae-metadata</module>
       <module>sae-mapping</module>
       <module>sae-services</module>
-      
+            
       <!-- Les applications finales -->
       <module>sae-igcmaj</module> <!-- dépendance sur sae-igc -->
       <module>sae-services-executable</module> <!-- dépendance sur sae-services -->
       <module>sae-webservices</module>
+      <module>sae-dfce-admin-exploit</module>
       
    </modules>
    
