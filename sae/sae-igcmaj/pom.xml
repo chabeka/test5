@@ -1,15 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
-      <version>0.0.1-SNAPSHOT</version>
-   </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
    <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <artifactId>sae</artifactId>
+      <version>12.1.51.1-SNAPSHOT</version>
+   </parent>
+
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-igcmaj</artifactId>
+   <version>12.1.51.1-SNAPSHOT</version>
+   
    <name>sae-igcmaj</name>
-   <version>0.0.1-SNAPSHOT</version>
+   
    <description>Programme exécutable en mode console permettant le téléchargement des CRL.
 
 Le programme est compatible Windows et Linux.
@@ -59,7 +63,7 @@ Le programme peut par exemple être exécuté sous forme de tâche planifiée, a
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-igc</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
       </dependency>
       
       

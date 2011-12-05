@@ -1,23 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
-      <version>0.0.1-SNAPSHOT</version>
-   </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
    <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <artifactId>sae</artifactId>
+      <version>12.1.51.1-SNAPSHOT</version>
+   </parent>
+
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-services</artifactId>
+   <version>12.1.51.1-SNAPSHOT</version>
+   
    <name>sae-services</name>
-   <version>0.0.1-SNAPSHOT</version>
+   
    <description>Archive contenant les services capture, capture en masse, recherche, consultation.</description>
-   <developers>
-      <developer>
-         <name>Hicham Rhofir </name>
-         <organization>Atos</organization>
-      </developer>
-   </developers>
-
+   
    <build>
       <plugins>
          <!-- COMPILATION ASPECT -->
@@ -29,12 +27,16 @@
 
       </plugins>
    </build>
+   
    <dependencies>
+      
+      <!-- SAE -->
+      
       <!-- SAE BO -->
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-bo</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -56,7 +58,7 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-mapping</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -78,7 +80,7 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-storage</artifactId>
-         <version>0.0.2-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>org.slf4j</groupId>
@@ -95,7 +97,7 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-storage-dfce</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>org.slf4j</groupId>
@@ -112,7 +114,7 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-metadata</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -134,7 +136,7 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-ecde</artifactId>
-         <version>0.0.2-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -144,14 +146,14 @@
                <groupId>org.slf4j</groupId>
                <artifactId>slf4j-api</artifactId>
             </exclusion>
-
             <exclusion>
                <groupId>org.slf4j</groupId>
                <artifactId>slf4j-log4j12</artifactId>
             </exclusion>
-
          </exclusions>
       </dependency>
+      
+      
       <!-- JASPECT -->
       <dependency>
          <groupId>org.aspectj</groupId>

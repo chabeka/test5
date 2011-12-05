@@ -1,21 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   
    <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <artifactId>sae</artifactId>
+      <version>12.1.51.1-SNAPSHOT</version>
+   </parent>
 
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-ecde</artifactId>
+   <version>12.1.51.1-SNAPSHOT</version>
+   
    <packaging>jar</packaging>
-   <version>0.0.2-SNAPSHOT</version>
+   
    <name>sae-ecde</name>
+   
    <description>Services de manipulation de l'ECDE</description>
 
-   <parent>
-      <groupId>fr.urssaf.image.sae</groupId>
-      <artifactId>sae-parent</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-   </parent>
-
-
+   
    <profiles>
       <profile>
          <id>genererCodeModeleSommaireEtResultat</id>
@@ -91,6 +94,14 @@
 
    <dependencies>
 
+      <!-- SAE -->
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-bo</artifactId>
+         <version>12.1.51.1-SNAPSHOT</version>
+      </dependency>
+
+
       <dependency>
          <groupId>com.thoughtworks.xstream</groupId>
          <artifactId>xstream</artifactId>
@@ -164,11 +175,5 @@
          <version>${jaxb.impl.version}</version>
       </dependency>
 
-      <!-- BO -->
-      <dependency>
-         <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-bo</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
    </dependencies>
 </project>

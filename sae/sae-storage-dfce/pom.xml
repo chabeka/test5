@@ -1,27 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
-      <version>0.0.1-SNAPSHOT</version>
-   </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
    <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <artifactId>sae</artifactId>
+      <version>12.1.51.1-SNAPSHOT</version>
+   </parent>
+
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-storage-dfce</artifactId>
-   <version>0.0.1-SNAPSHOT</version>
+   <version>12.1.51.1-SNAPSHOT</version>
+   
    <name>sae-storage-dfce</name>
-   <description>Archive contenant les implementations des interfaces des
-      services de l'artefact sea-storage </description>
-   <developers>
-      <developer>
-         <name>Ahmed Kenore </name>
-         <organization>Atos</organization>
-      </developer>
-      <developer>
-         <name>Hicham Rhofir </name>
-         <organization>Atos</organization>
-      </developer>
-   </developers>
+   
+   <description>Archive contenant les implementations des interfaces des services de l'artefact sae-storage </description>
+   
    <properties>
       <dfce.serialization>1.0.0-alpha-04</dfce.serialization>
       <dfce.toolkit.client>1.0.0-alpha-04</dfce.toolkit.client>
@@ -30,13 +24,15 @@
       <dfce.toolkit.service>1.0.0-alpha-04</dfce.toolkit.service>
       <dfce.commons>1.0.0-alpha-04</dfce.commons>
    </properties>
+   
    <!-- Ajout des dependances -->
    <dependencies>
+      
+      <!-- SAE -->
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-storage</artifactId>
-         <version>0.0.2-SNAPSHOT</version>
-
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -44,6 +40,8 @@
             </exclusion>
          </exclusions>
       </dependency>
+      
+      
       <dependency>
          <groupId>com.thoughtworks.xstream</groupId>
          <artifactId>xstream</artifactId>

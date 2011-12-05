@@ -1,16 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
-      <version>0.0.1-SNAPSHOT</version>
-   </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
    <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.sae</groupId>
+      <artifactId>sae</artifactId>
+      <version>12.1.51.1-SNAPSHOT</version>
+   </parent>
+
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-webservices</artifactId>
+   <version>12.1.51.1-SNAPSHOT</version>
+   
    <name>sae-webservices</name>
-   <version>0.0.1-SNAPSHOT</version>
+   
    <packaging>war</packaging>
+   
    <description>Services web du SAE</description>
 
    <properties>
@@ -103,12 +108,13 @@
 
    <dependencies>
 
-      <!--  SAE VI -->
+      <!-- SAE -->
 
+      <!-- SAE VI -->
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-vi</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -122,11 +128,10 @@
       </dependency>
 
       <!-- SAE IGC -->
-
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-igc</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
@@ -135,20 +140,17 @@
          </exclusions>
       </dependency>
 
-
       <!-- SAE SERVICES -->
-
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-services</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
+         <version>12.1.51.1-SNAPSHOT</version>
          <exclusions>
             <exclusion>
                <groupId>log4j</groupId>
                <artifactId>log4j</artifactId>
             </exclusion>
          </exclusions>
-
       </dependency>
 
 
