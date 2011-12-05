@@ -5,12 +5,12 @@
    <parent>
       <groupId>fr.urssaf.image.sae</groupId>
       <artifactId>sae</artifactId>
-      <version>12.1.51.1</version>
+      <version>12.1.51.1-SNAPSHOT</version>
    </parent>
 
    <groupId>fr.urssaf.image.sae</groupId>
    <artifactId>sae-ecde</artifactId>
-   <version>12.1.51.1</version>
+   <version>12.1.51.1-SNAPSHOT</version>
    
    <packaging>jar</packaging>
    
@@ -63,7 +63,9 @@
                         <phase>generate-sources</phase>
                         <configuration>
                            <target name="addSuppressWarnings">
-                              <replace dir="${basedir}/src/main/java" includes="**/modele/**/*.java" token="public class" value="@SuppressWarnings(&quot;PMD&quot;)&#xA;public class" />
+                              <replace dir="${basedir}/src/main/java"
+                                 includes="**/modele/**/*.java" token="public class"
+                                 value='@SuppressWarnings("PMD")&#xA;public class' />
                            </target>
                         </configuration>
                         <goals>
@@ -96,7 +98,7 @@
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-bo</artifactId>
-         <version>12.1.51.1</version>
+         <version>12.1.51.1-SNAPSHOT</version>
       </dependency>
 
 
