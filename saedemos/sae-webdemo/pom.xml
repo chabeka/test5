@@ -1,21 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   
    <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
+      <groupId>fr.urssaf.image.saedemos</groupId>
+      <artifactId>saedemos</artifactId>
       <version>0.0.1-SNAPSHOT</version>
    </parent>
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>fr.urssaf.image.sae</groupId>
+   
+   <groupId>fr.urssaf.image.saedemos</groupId>
    <artifactId>sae-webdemo</artifactId>
-   <packaging>war</packaging>
-   <name>sae-webdemo</name>
    <version>0.0.1-SNAPSHOT</version>
-
+   
+   <packaging>war</packaging>
+   
+   <name>sae-webdemo</name>
 
 
    <build>
-
 
       <plugins>
          <plugin>
@@ -56,7 +58,17 @@
 
    <dependencies>
 
-      <!-- COMMONS -->
+      
+      <!-- SAE -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.sae</groupId>
+         <artifactId>sae-vi</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      
+      
+      <!-- R&D -->
 
       <dependency>
          <groupId>fr.urssaf.image.commons</groupId>
@@ -69,15 +81,14 @@
          <artifactId>commons-util</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-
-      <!-- SAE -->
-
+      
       <dependency>
-         <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-vi</artifactId>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-maquette</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
 
+      
       <!-- JSR 303 -->
 
       <dependency>
@@ -112,14 +123,6 @@
          <artifactId>slf4j-log4j12</artifactId>
          <version>${org.slf4j.version}</version>
          <scope>runtime</scope>
-      </dependency>
-
-      <!-- MAQUETTE -->
-
-      <dependency>
-         <groupId>fr.urssaf.image.commons</groupId>
-         <artifactId>commons-maquette</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
       </dependency>
 
       <!--  SPRING -->

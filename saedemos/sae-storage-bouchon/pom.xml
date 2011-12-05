@@ -1,29 +1,32 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<artifactId>sae-parent</artifactId>
-		<groupId>fr.urssaf.image.sae</groupId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.urssaf.image.sae</groupId>
+   <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.saedemos</groupId>
+      <artifactId>saedemos</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   
+	<groupId>fr.urssaf.image.saedemos</groupId>
 	<artifactId>sae-storage-bouchon</artifactId>
-	<name>sae-storage-bouchon</name>
 	<version>0.0.1-SNAPSHOT</version>
+   
+   <name>sae-storage-bouchon</name>
+	
 	<description>Archive bouchon</description>
-	<developers>
-		<developer>
-			<name> Ahmed  Kénoré </name>
-		</developer>
-	</developers>
+   
 	<!-- Ajout des dependances -->
 	<dependencies>
-		<dependency>
-			<groupId> fr.urssaf.image.sae </groupId>
-			<artifactId> sae-storage </artifactId>
-			<version>0.0.1-SNAPSHOT </version>
+		
+      <!-- SAE -->
+      <dependency>
+			<groupId>fr.urssaf.image.sae</groupId>
+			<artifactId>sae-storage</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+      
+      
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -61,23 +64,9 @@
 			<version>r09</version>
 		</dependency>
 		<dependency>
-    <groupId>commons-codec</groupId>
-    <artifactId>commons-codec</artifactId>
-    <version>1.5</version>
-</dependency>
-		<!-- Dépendance au framework de tests unitaires JUnit, utilisé dans tous 
-			les composants -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- Dépendance au framework de traces Log4j, utilisé dans tous les composants -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
+         <groupId>commons-codec</groupId>
+         <artifactId>commons-codec</artifactId>
+         <version>1.5</version>
+      </dependency>
 	</dependencies>
 </project>

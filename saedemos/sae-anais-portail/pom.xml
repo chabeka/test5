@@ -1,20 +1,34 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   
    <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
+      <groupId>fr.urssaf.image.saedemos</groupId>
+      <artifactId>saedemos</artifactId>
       <version>0.0.1-SNAPSHOT</version>
    </parent>
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>fr.urssaf.image.sae</groupId>
+
+   <groupId>fr.urssaf.image.saedemos</groupId>
    <artifactId>sae-anais-portail</artifactId>
-   <packaging>war</packaging>
-   <name>sae-anais-portail</name>
    <version>0.0.1-SNAPSHOT</version>
+   
+   <packaging>war</packaging>
+   
+   <name>sae-anais-portail</name>
+   
 
    <dependencies>
 
-      <!-- COMMONS -->
+      <!-- SAE -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.saedemos</groupId>
+         <artifactId>sae-anais-framework</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+      
+      
+      <!-- R&D -->
 
       <dependency>
          <groupId>fr.urssaf.image.commons</groupId>
@@ -27,14 +41,13 @@
          <artifactId>commons-util</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
-
-      <!-- ANAIS FRAMEWORK -->
-
+      
       <dependency>
-         <groupId>fr.urssaf.image.sae</groupId>
-         <artifactId>sae-anais-framework</artifactId>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-maquette</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+
 
       <!-- JSR 303 -->
 
@@ -72,14 +85,7 @@
          <scope>runtime</scope>
       </dependency>
 
-      <!-- MAQUETTE -->
-
-      <dependency>
-         <groupId>fr.urssaf.image.commons</groupId>
-         <artifactId>commons-maquette</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
-
+      
       <!--  SPRING -->
 
       <dependency>

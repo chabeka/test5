@@ -1,20 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   
    <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
+      <groupId>fr.urssaf.image.saedemos</groupId>
+      <artifactId>saedemos</artifactId>
       <version>0.0.1-SNAPSHOT</version>
    </parent>
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>fr.urssaf.image.sae</groupId>
+   
+   <groupId>fr.urssaf.image.saedemos</groupId>
    <artifactId>sae-packaging</artifactId>
-   <packaging>pom</packaging>
-   <name>sae-packaging</name>
    <version>0.0.1-SNAPSHOT</version>
+   
+   <packaging>pom</packaging>
+   
+   <name>sae-packaging</name>
+   
    <description>Packaging des web services du SAE</description>
 
    <modules>
 
+      <!--
+      Ce projet est obsolète, les modules sont désactivés car ils correspondent à l'ancienne utilisation
+      de sae-packaging
       <module>../sae-parent</module>
       <module>../sae-ecde</module>
       <module>../sae-vi</module>
@@ -27,13 +35,16 @@
       <module>../sae-mapping</module>
       <module>../sae-services</module>
       <module>../sae-webservices</module>
-
+      -->
 
 
    </modules>
 
    <build>
-
+      
+      <!--
+      Ce projet est obsolète, les plug-ins sont désactivés car ils correspondent à l'ancienne utilisation
+      de sae-packaging
       <plugins>
 
          <plugin>
@@ -72,6 +83,7 @@
 
 
       </plugins>
+      -->
 
    </build>
 

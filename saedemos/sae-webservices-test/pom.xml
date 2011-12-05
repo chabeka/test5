@@ -1,15 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   
    <parent>
-      <artifactId>sae-parent</artifactId>
-      <groupId>fr.urssaf.image.sae</groupId>
+      <groupId>fr.urssaf.image.saedemos</groupId>
+      <artifactId>saedemos</artifactId>
       <version>0.0.1-SNAPSHOT</version>
    </parent>
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>fr.urssaf.image.sae</groupId>
+   
+   <groupId>fr.urssaf.image.saedemos</groupId>
    <artifactId>sae-webservices-test</artifactId>
-   <name>sae-webservices-test</name>
    <version>0.0.1-SNAPSHOT</version>
+   
+   <name>sae-webservices-test</name>
+   
 
    <properties>
       <axiom.version>1.2.11</axiom.version>
@@ -98,13 +102,14 @@
 
    <dependencies>
 
-      <!--  SAE VI -->
+      <!--  SAE -->
 
       <dependency>
          <groupId>fr.urssaf.image.sae</groupId>
          <artifactId>sae-vi</artifactId>
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
+      
 
       <!--  AXIS 2 -->
 

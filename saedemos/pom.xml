@@ -473,11 +473,25 @@
    <!-- Les modules -->
    <modules>
       
-      <!-- Les composants techniques -->
-      <!-- TODO -->
       
-      <!-- Les applications finales -->
-      <!-- TODO -->
+      <!-- Client de tests pour les services web du SAE -->
+      <module>sae-webservices-test</module>
+      
+      <!-- Outils de lancement de tâches administratives sur DFCE -->
+      <module>sae-dfce-admin</module>
+      
+      <!-- Projet démo livré au PNR dans le cadre des premiers accrochages techniques Attestations<=>SAE -->
+      <module>sae-webservices-client-demo</module>
+      
+      <!-- Projet démo IHM web et authentification ANAIS -->
+      <module>sae-anais-framework</module>
+      <module>sae-anais-portail</module>
+      <module>sae-webdemo</module>
+      
+      <!-- Les projets obsolètes -->
+      <module>sae-packaging</module>
+      <module>sae-storage-bouchon</module>
+      
       
    </modules>
    

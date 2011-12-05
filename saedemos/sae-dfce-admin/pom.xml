@@ -1,34 +1,30 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<artifactId>sae-parent</artifactId>
-		<groupId>fr.urssaf.image.sae</groupId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>fr.urssaf.image.sae</groupId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   
+   <parent>
+      <groupId>fr.urssaf.image.saedemos</groupId>
+      <artifactId>saedemos</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+
+	<groupId>fr.urssaf.image.saedemos</groupId>
 	<artifactId>sae-dfce-admin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sae-storage-admin</name>
+	
+   <name>sae-storage-admin</name>
+   
 	<description>Fournit des services pour administrer la base SAE </description>
-	<developers>
-		<developer>
-			<name>Ahmed Kenore </name>
-			<organization>Atos</organization>
-		</developer>
-		<developer>
-			<name>Hicham Rhofir </name>
-			<organization>Atos</organization>
-		</developer>
-	</developers>
+	
 	<properties>
 		<dfce.serialization>1.0.0-alpha-04</dfce.serialization>
 		<dfce.toolkit.client>1.0.0-alpha-04</dfce.toolkit.client>
 		<dfce.toolkit.pojo>1.0.0-alpha-04</dfce.toolkit.pojo>
 		<dfce.pojo>1.0.0-alpha-04</dfce.pojo>
 		<dfce.toolkit.service>1.0.0-alpha-04</dfce.toolkit.service>
-        <dfce.commons>1.0.0-alpha-04</dfce.commons>
+      <dfce.commons>1.0.0-alpha-04</dfce.commons>
 	</properties>
+   
 	<build>
 		<plugins>
 			<plugin>
@@ -51,6 +47,7 @@
 			</plugin>
 		</plugins>
 	</build>
+   
 	<!-- Ajout des dépendances -->
 	<dependencies>
 
@@ -106,21 +103,7 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.5</version>
 		</dependency>
-		<!-- Dépendance au framework de tests unitaires JUnit, utilisé dans tous 
-			les composants -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- Dépendance au framework de traces Log4j, utilisé dans tous les composants -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>net.jcip</groupId>
 			<artifactId>jcip-annotations</artifactId>
