@@ -129,7 +129,7 @@ public class SAECaptureServiceTest {
             + repertoireEcde.getAbsoluteFile());
       File fileDoc = new File(repertoireEcde, "attestation_consultation.pdf");
       ClassPathResource resDoc = new ClassPathResource(
-            "attestation_consultation.pdf");
+            "doc/attestation_consultation.pdf");
       FileOutputStream fos = new FileOutputStream(fileDoc);
       IOUtils.copy(resDoc.getInputStream(), fos);
 

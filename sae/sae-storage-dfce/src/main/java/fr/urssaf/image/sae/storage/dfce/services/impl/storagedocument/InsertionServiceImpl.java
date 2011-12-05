@@ -16,15 +16,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
 import fr.urssaf.image.sae.storage.dfce.constants.Constants;
+import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.mapping.BeanMapper;
 import fr.urssaf.image.sae.storage.dfce.messages.LogLevel;
 import fr.urssaf.image.sae.storage.dfce.messages.StorageMessageHandler;
 import fr.urssaf.image.sae.storage.dfce.model.AbstractServices;
 import fr.urssaf.image.sae.storage.dfce.model.StorageTechnicalMetadatas;
+import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
+import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.DeletionServiceEx;
 import fr.urssaf.image.sae.storage.exception.InsertionServiceEx;
@@ -58,6 +62,39 @@ public class InsertionServiceImpl extends AbstractServices implements
    private int jmxStorageIndex;
    private int totalDocument;
    private JmxIndicator indicator;
+
+   private InterruptionTraitementSupport interruption;
+
+   private InterruptionTraitementConfig interruptionConfig;
+
+   @Autowired
+   private DFCEServicesManager dfceManager;
+
+   /**
+    * 
+    * @param interruption
+    *           support pour l'interruption des traitements
+    */
+   @Autowired
+   public InsertionServiceImpl(InterruptionTraitementSupport interruption) {
+      super();
+
+      Assert.notNull(interruption, "'interruption' is required");
+      this.interruption = interruption;
+   }
+
+   /**
+    * 
+    * @param interruptionConfig
+    *           configuration de l'interruption programmée du traitement de la
+    *           capture en masse
+    */
+   @Autowired(required = false)
+   public final void setInterruptionConfig(
+         @Qualifier("interruption_capture_masse") InterruptionTraitementConfig interruptionConfig) {
+
+      this.interruptionConfig = interruptionConfig;
+   }
 
    /**
     * @return : Le service de suppression
@@ -125,7 +162,13 @@ public class InsertionServiceImpl extends AbstractServices implements
       }
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
+
+         // TODO revoir l'emplacement de l'interruption du traitement de capture
+         // en masse lors de l'injection
+         interruptionTraitement();
+
          try {
+
             LOGGER.debug("{} - Stockage du document #{} ({})", new Object[] {
                   prefixeTrc, ++indexDocument, storageDocument.getFilePath() });
             storageDocument.setUuid(insertStorageDocument(storageDocument)
@@ -158,6 +201,7 @@ public class InsertionServiceImpl extends AbstractServices implements
                storageDocDone.clear();
                break;
             }
+          
          }
          LOGGER.debug(
                "{} - Fin de la boucle d'insertion des documents dans DFCE",
@@ -166,6 +210,24 @@ public class InsertionServiceImpl extends AbstractServices implements
       }
       return new BulkInsertionResults(new StorageDocuments(storageDocDone),
             new StorageDocumentsOnError(storageDocFailed));
+   }
+
+   private void interruptionTraitement() {
+
+      if (interruptionConfig != null) {
+         // on vérifie l'interruption
+         interruption.interruption(interruptionConfig.getStart(),
+               interruptionConfig.getDelay(), interruptionConfig
+                     .getTentatives());
+
+         // on renseigne le nouveau le fournisseur de service DFCE pour
+         // éviter en cas de close de la session pendant l'interruption de
+         // perdre la session DFCE
+         // TODO recourir à un ThreadLocal pour garder appeller l'objet
+         // DFCEService
+         this.setDfceService(dfceManager.getDFCEService());
+
+      }
    }
 
    /**
@@ -195,6 +257,11 @@ public class InsertionServiceImpl extends AbstractServices implements
          indicator.setJmxTreatmentState(BulkProgress.DELETION_DOCUMENTS);
       }
       for (StorageDocument strDocument : Utils.nullSafeIterable(storageDocDone)) {
+
+         // TODO revoir l'emplacement de l'interruption du traitement de capture
+         // en masse lors du rollback
+         interruptionTraitement();
+
          try {
             LOGGER.debug("{} - Rollback du document #{} ({})", new Object[] {
                   prefixeTrc, ++indexDocument, strDocument.getUuid() });

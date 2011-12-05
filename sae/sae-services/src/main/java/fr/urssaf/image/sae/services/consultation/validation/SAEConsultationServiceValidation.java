@@ -22,9 +22,6 @@ public class SAEConsultationServiceValidation {
    private static final String METHOD = "execution(fr.urssaf.image.sae.bo.model.untyped.UntypedDocument "
          + CLASS + "consultation(*))" + "&& args(idArchive)";
 
-   @SuppressWarnings("PMD.LongVariable")
-   public static final String IGC_CONFIG_NOTEXIST = "Le fichier de configuration IGC est introuvable (${0})";
-
    /**
     * Validation des méthodes de
     * {@link fr.urssaf.image.sae.services.consultation.SAEConsultationService#consultation(UUID)}
