@@ -127,7 +127,7 @@ public class InterruptionTraitementSupportImpl implements
 
          LOG.debug("{} - Interruption de {} secondes", LOG_PREFIX, delay);
 
-         Duration duration = new Duration(delay);
+         Duration duration = Duration.standardSeconds(delay);
 
          Thread.sleep(duration.getMillis());
 
