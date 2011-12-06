@@ -122,14 +122,26 @@ public class BulkCaptureJob extends  CommonIndicator{
 							storageDocuments, true);
 			storageServiceProvider.closeConnexion();
 		} catch (ConnectionServiceEx except) {
+		   logBulkCaptureException(except);
 			bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
 		} catch (InsertionServiceEx except) {
+		   logBulkCaptureException(except);
 			bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
 		} catch (Exception except) {
+		   logBulkCaptureException(except);
 			bulkCaptureHelper.buildTechnicalErrors(storageDocuments, except);
 		}
 		return bulkInsertionResults;
 	}
+	
+// code provisoir pour bénificier d'un log en cas d'erreur dans l'insertion
+   // en masse
+   @Deprecated
+   private void logBulkCaptureException(Exception exception) {
+
+      LOGGER.warn("bulkCapture() - erreur lors de l'insertion en masse ",
+            exception);
+   }
 
 	/**
 	 * 
