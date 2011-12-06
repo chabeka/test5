@@ -4,6 +4,7 @@ import java.util.Date;
 
 import me.prettyprint.cassandra.utils.Assert;
 
+import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.slf4j.Logger;
@@ -83,7 +84,10 @@ public class InterruptionTraitementSupportImpl implements
       LocalDateTime currentLocalDate = LocalDateTime
             .fromDateFields(currentDate);
 
-      if (LocalTimeUtils.isSameTime(currentLocalDate, startLocalTime, delay)) {
+      long diffTime = LocalTimeUtils.getDifference(currentLocalDate,
+            startLocalTime, delay);
+
+      if (diffTime > 0) {
 
          LOG.debug("{} - début programmé à {}", LOG_PREFIX, startTime);
 
@@ -91,7 +95,7 @@ public class InterruptionTraitementSupportImpl implements
 
          ConnectionResult connectionResult;
          try {
-            connectionResult = pause(delay, null, tentatives, tentatives);
+            connectionResult = pause(diffTime, null, tentatives, tentatives);
          } catch (InterruptedException e) {
             // Interruption lors de la mise en pause du traitement
             throw new InterruptionTraitementException(startTime, delay,
@@ -123,7 +127,9 @@ public class InterruptionTraitementSupportImpl implements
 
          LOG.debug("{} - Interruption de {} secondes", LOG_PREFIX, delay);
 
-         Thread.sleep(delay * 1000);
+         Duration duration = new Duration(delay);
+
+         Thread.sleep(duration.getMillis());
 
          try {
 

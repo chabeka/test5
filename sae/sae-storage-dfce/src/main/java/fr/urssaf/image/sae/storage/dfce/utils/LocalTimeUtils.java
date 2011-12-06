@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.storage.dfce.utils;
 
+import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -80,20 +81,28 @@ public final class LocalTimeUtils {
    }
 
    /**
-    * Vérification si l'heure d'une date est postérieure à une certaine heure
-    * dans la limite d'un delai.<br>
+    * Retourne la durée qu'il reste à une heure dans un intervalle de temps.<br>
+    * <br>
+    * Ex :<br>
+    * <code>getDifference([01-01-1999 03:00:00],[03:00:00], 120) = 120</code><br>
+    * <code>getDifference([01-01-1999 03:00:01],[03:00:00], 120) = 119</code><br>
+    * <code>getDifference([01-01-1999 03:01:59],[03:00:00], 120) = 1</code><br>
+    * <code>getDifference([01-01-1999 03:02:00],[03:00:00], 120) = 0</code><br>
+    * <code>getDifference([01-01-1999 03:02:01],[03:00:00], 120) = -1</code><br>
+    * <code>getDifference([01-01-1999 02:59:59],[03:00:00], 120) = -1</code><br>
     * 
     * @param currentDate
     *           date à vérifier
     * @param startTime
-    *           heure du début
+    *           heure du début de l'intervalle
     * @param delay
-    *           limite en secondes
-    * @return <code>true</code> si l'heure locale de <code>currentDate</code>
-    *         est situé après <code>startTime</code> dans la limite de
-    *         <code>delay</delay>
+    *           limite en secondes de l'intervalle
+    * @return durée en secondes qu'il reste à l'heure locale de
+    *         <code>currentDate</code> pour finir l'intervalle. Si l'heure
+    *         locale n'est pas dans l'intervalle alors la valeur renvoyée est
+    *         <code>-1</code>
     */
-   public static boolean isSameTime(LocalDateTime currentDate,
+   public static long getDifference(LocalDateTime currentDate,
          LocalTime startTime, int delay) {
 
       Assert.notNull(currentDate);
@@ -104,23 +113,27 @@ public final class LocalTimeUtils {
 
       LocalTime currentHour = currentDate.toLocalTime();
 
-      boolean isSameTime;
+      long diff;
 
       if (currentHour.getMillisOfDay() >= startTime.getMillisOfDay()) {
 
-         if (currentHour.getMillisOfDay() < endTime.getMillisOfDay()) {
+         if (currentHour.getMillisOfDay() <= endTime.getMillisOfDay()) {
 
-            isSameTime = true;
+            Duration duration = new Duration(endTime.getMillisOfDay()
+                  - currentHour.getMillisOfDay());
+
+            diff = duration.getStandardSeconds();
 
          } else {
 
-            isSameTime = false;
+            diff = -1;
          }
 
       } else {
-         isSameTime = false;
+         diff = -1;
       }
 
-      return isSameTime;
+      return diff;
    }
+
 }

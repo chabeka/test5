@@ -65,8 +65,30 @@ public class LocalTimeUtilsTest {
             + "' ne doit pas être au bon format", isValidate);
    }
 
-   private boolean isSameTime(String date, String startTime, int delay)
-         throws ParseException {
+   @Test
+   public void getDifference() throws ParseException {
+
+      String startTime = "03:00:00";
+      int delay = 120;
+
+      // avant le start time
+      assertDiffTime(-1, "01-01-1999 02:59:59", startTime, delay);
+
+      // debut du start time
+      assertDiffTime(120, "01-01-1999 03:00:00", startTime, delay);
+      assertDiffTime(119, "01-01-1999 03:00:01", startTime, delay);
+
+      // à la fin du delai
+      assertDiffTime(1, "01-01-1999 03:01:59", startTime, delay);
+      assertDiffTime(0, "01-01-1999 03:02:00", startTime, delay);
+
+      // après le delai
+      assertDiffTime(-1, "01-01-1999 03:02:01", startTime, delay);
+
+   }
+
+   private void assertDiffTime(int expectedDiffTime, String date,
+         String startTime, int delay) throws ParseException {
 
       Date currentDate = DateUtils.parseDate(date,
             new String[] { "dd-MM-yyyy HH:mm:ss" });
@@ -74,54 +96,13 @@ public class LocalTimeUtilsTest {
       LocalDateTime currentDateTime = LocalDateTime.fromDateFields(currentDate);
       LocalTime startLocalTime = LocalTimeUtils.parse(startTime);
 
-      boolean isSameTime = LocalTimeUtils.isSameTime(currentDateTime,
+      long diffTime = LocalTimeUtils.getDifference(currentDateTime,
             startLocalTime, delay);
 
-      return isSameTime;
-   }
-
-   @Test
-   public void isSameTime_success() throws ParseException {
-
-      // debut du start time
-      assertTrueIsSameTime("01-01-1999 02:00:00", "02:00:00", 120);
-
-      // après le start time
-      assertTrueIsSameTime("01-01-1999 03:00:01", "3:0:0", 120);
-
-   }
-
-   private void assertTrueIsSameTime(String date, String startTime, int delay)
-         throws ParseException {
-
-      boolean isSameTime = isSameTime(date, startTime, delay);
-
-      Assert.assertTrue("L'heure courante de '" + date + "' doit être après "
+      Assert.assertEquals("L'heure courante de '" + date + "' doit être après "
             + startTime + " dans la limite de " + delay + " secondes",
-            isSameTime);
+            expectedDiffTime, diffTime);
 
    }
 
-   @Test
-   public void isSameTime_failure() throws ParseException {
-
-      // avant le start time
-      assertFalseIsSameTime("01-01-1999 02:59:59", "03:00:00", 120);
-
-      // après le delai
-      assertFalseIsSameTime("01-01-1999 04:03:00", "04:00:00", 120);
-      assertFalseIsSameTime("01-01-1999 05:02:00", "05:00:00", 120);
-
-   }
-
-   private void assertFalseIsSameTime(String date, String startTime, int delay)
-         throws ParseException {
-
-      boolean isSameTime = isSameTime(date, startTime, delay);
-
-      Assert.assertFalse("L'heure courante de '" + date
-            + "' ne doit pas être après " + startTime + " dans la limite de "
-            + delay + " secondes", isSameTime);
-
-   }
 }
