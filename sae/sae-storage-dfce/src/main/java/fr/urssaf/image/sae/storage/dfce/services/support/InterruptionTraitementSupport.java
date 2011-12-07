@@ -7,6 +7,7 @@ package fr.urssaf.image.sae.storage.dfce.services.support;
  */
 public interface InterruptionTraitementSupport {
 
+   // TODO mettre un seul argument pour la config d'interruption
    /**
     * L'interruption du service DFCE est parfois nécessaire pour des questions
     * de maintenance, et programmée à des moments précis pour être redémarré

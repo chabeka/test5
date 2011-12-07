@@ -80,6 +80,7 @@ public final class LocalTimeUtils {
 
    }
 
+   // TODO renvoyer des millisecondes plutôt que des secondes
    /**
     * Retourne la durée qu'il reste à une heure dans un intervalle de temps.<br>
     * <br>

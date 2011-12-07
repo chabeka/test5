@@ -146,6 +146,7 @@ public class ProcessusLauncherSupportImpl implements LauncherSupport {
 
       Runtime runtime = Runtime.getRuntime();
 
+      // TODO préférer un exécutable avec des paramètres {0},{1}...
       String command = StringUtils.join(new String[] { executable,
             StringUtils.join(parameters, SEPARATOR) }, SEPARATOR);
       LOG.debug("{} - Lancement du processus: {}", PREFIX_LOG, command);
