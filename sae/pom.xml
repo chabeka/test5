@@ -491,6 +491,9 @@
       <module>sae-webservices</module>
       <module>sae-dfce-admin-exploit</module>
       
+      <!-- Le module du livrable -->
+      <module>sae-livrable</module>
+      
    </modules>
    
    
