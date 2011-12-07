@@ -10,7 +10,6 @@
       http://www.springframework.org/schema/jee 
       http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
 
-
    <!-- Chargement des properties -->
    <import resource="applicationContext-properties.xml"/>
 
@@ -44,17 +43,14 @@
    </bean>
    
    
-   
-
-
    <import resource="applicationContext-security.xml"/>
    <import resource="applicationContext-service.xml" />
-   <import resource="applicationContext-security.xml" />
    <import resource="applicationContext-sae-services.xml" />
    <import resource="applicationContext-sae-storage-dfce.xml" />
    <import resource="applicationContext-sae-metadata.xml" />
    <import resource="applicationContext-storageConnectionParameter.xml" />
    <import resource="applicationContext-sae-ecde.xml" />
    <import resource="applicationContext-sae-mapping.xml" />
+   <import resource="applicationContext-sae-servlet.xml" />
 
 </beans>

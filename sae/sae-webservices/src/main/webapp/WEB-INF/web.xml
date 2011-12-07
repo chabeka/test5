@@ -13,6 +13,36 @@
       <welcome-file>welcome.html</welcome-file>
    </welcome-file-list>
 
+   <!-- context de l'application -->
+   <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:applicationContext.xml</param-value>
+   </context-param>
+   
+   <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>
+   
+   <!-- Ou utilisation de la servlet ContextLoaderServlet-->
+   <!--<servlet>
+      <servlet-name>context</servlet-name>
+      <servlet-class>org.springframework.web.context.ContextLoaderServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   
+   -->
+   <servlet>
+      <servlet-name>spring</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   
+   <!-- le mapping des url -->
+   <servlet-mapping>
+      <servlet-name>spring</servlet-name>
+      <url-pattern>*.do</url-pattern>
+   </servlet-mapping>
+     
    <servlet>
       <servlet-name>AxisServlet</servlet-name>
       <servlet-class>org.apache.axis2.transport.http.AxisServlet</servlet-class>
@@ -24,26 +54,5 @@
       <url-pattern>/services/*</url-pattern>
    </servlet-mapping>
    
-   <servlet>
-      <display-name>EtatSaeServlet</display-name>
-      <servlet-name>EtatSaeServlet</servlet-name>
-      <servlet-class>fr.urssaf.image.sae.exploitation.servlet.EtatSaeServlet</servlet-class>
-   </servlet>
-
-   <servlet-mapping>
-      <servlet-name>EtatSaeServlet</servlet-name>
-      <url-pattern>/SAETest</url-pattern>
-   </servlet-mapping>
-  
-  <servlet>
-    <display-name>EtatSaeFastServlet</display-name>
-    <servlet-name>EtatSaeFastServlet</servlet-name>
-    <servlet-class>fr.urssaf.image.sae.exploitation.servlet.EtatSaeFastServlet</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>EtatSaeFastServlet</servlet-name>
-    <url-pattern>/SAEFastTest</url-pattern>
-  </servlet-mapping>
-  
+   
 </web-app>
