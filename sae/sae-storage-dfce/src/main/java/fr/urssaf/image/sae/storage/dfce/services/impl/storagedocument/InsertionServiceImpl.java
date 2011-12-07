@@ -10,6 +10,7 @@ import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,11 +164,12 @@ public class InsertionServiceImpl extends AbstractServices implements
       for (StorageDocument storageDocument : Utils
             .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
 
-         // TODO revoir l'emplacement de l'interruption du traitement de capture
-         // en masse lors de l'injection
-         interruptionTraitement();
-
          try {
+
+            // TODO revoir l'emplacement de l'interruption du traitement de
+            // capture
+            // en masse lors de l'injection
+            interruptionTraitement();
 
             LOGGER.debug("{} - Stockage du document #{} ({})", new Object[] {
                   prefixeTrc, ++indexDocument, storageDocument.getFilePath() });
@@ -201,15 +203,36 @@ public class InsertionServiceImpl extends AbstractServices implements
                storageDocDone.clear();
                break;
             }
-          
+
+         } catch (RuntimeException e) {
+
+            if (allOrNothing && CollectionUtils.isNotEmpty(storageDocDone)) {
+
+               String idTraitement = storageDocDone.get(0).getProcessId();
+
+               logRollbackFailure(idTraitement);
+            }
+
+            throw e;
          }
-         LOGGER.debug(
-               "{} - Fin de la boucle d'insertion des documents dans DFCE",
-               prefixeTrc);
-         LOGGER.debug("{} - Sortie", prefixeTrc);
+
       }
+
+      LOGGER.debug("{} - Fin de la boucle d'insertion des documents dans DFCE",
+            prefixeTrc);
+      LOGGER.debug("{} - Sortie", prefixeTrc);
+
       return new BulkInsertionResults(new StorageDocuments(storageDocDone),
             new StorageDocumentsOnError(storageDocFailed));
+   }
+
+   private void logRollbackFailure(String idTraitement) {
+
+      LOGGER
+            .error(
+
+                  "Le traitement de masse n°{} doit être rollbacké par une procédure d'exploitation",
+                  idTraitement);
    }
 
    private void interruptionTraitement() {
@@ -258,11 +281,13 @@ public class InsertionServiceImpl extends AbstractServices implements
       }
       for (StorageDocument strDocument : Utils.nullSafeIterable(storageDocDone)) {
 
-         // TODO revoir l'emplacement de l'interruption du traitement de capture
-         // en masse lors du rollback
-         interruptionTraitement();
-
          try {
+
+            // TODO revoir l'emplacement de l'interruption du traitement de
+            // capture
+            // en masse lors du rollback
+            interruptionTraitement();
+
             LOGGER.debug("{} - Rollback du document #{} ({})", new Object[] {
                   prefixeTrc, ++indexDocument, strDocument.getUuid() });
             deletionService.setDeletionServiceParameter(getDfceService());
@@ -284,12 +309,24 @@ public class InsertionServiceImpl extends AbstractServices implements
             // L'appelant pourrait obtenir une liste des documents non
             // rollbackés via un attribut
             // de l'exception AllOrNothingRollbackException
+
+            String idTraitement = strDocument.getProcessId();
+
+            logRollbackFailure(idTraitement);
+
             LOGGER.debug(
                   "{} - Une exception a été levée lors du rollback : {}",
                   prefixeTrc, delSerEx.getMessage());
             throw new InsertionServiceEx(StorageMessageHandler
                   .getMessage(Constants.DEL_CODE_ERROR), delSerEx.getMessage(),
                   delSerEx);
+         } catch (RuntimeException e) {
+
+            String idTraitement = storageDocDone.get(0).getProcessId();
+
+            logRollbackFailure(idTraitement);
+
+            throw e;
          }
       }
       LOGGER.debug("{} - Sortie", prefixeTrc);

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class BulkCaptureHelper extends CommonIndicator {
 			List<StorageDocument> storageDocs) {
       String prefixeTrc = "addIdTreatementToStorageDoc()";
       LOGGER.debug("{} - Début", prefixeTrc);
-		UUID idtreatement = UUID.randomUUID();
+		String idtreatement = ObjectUtils.toString(UUID.randomUUID());
 		LOGGER
       .debug(
             "{} - Début de l'ajout de la métadonnée IdTraitementMasseInterne",
@@ -99,7 +100,8 @@ public class BulkCaptureHelper extends CommonIndicator {
 		for (StorageDocument storageDocument : Utils
 				.nullSafeIterable(storageDocs)) {
 			storageDocument.getMetadatas().add(
-					new StorageMetadata("iti", idtreatement.toString()));
+					new StorageMetadata("iti", idtreatement));
+			storageDocument.setProcessId(idtreatement);
 		}
       LOGGER
       .debug(
