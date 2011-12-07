@@ -44,11 +44,8 @@
       
       <!-- Application finale web contenant le service web SaeService -->
       <fileSet>
-         <directory>${project.parent.basedir}\sae-webservices\target\</directory>
+         <directory>${project.parent.basedir}/sae-webservices/target/</directory>
          <includes>
-            <!--
-            <include>sae-webservices*.war</include>
-            -->
             <include>sae-webservices-${version}.war</include>
          </includes>
          <outputDirectory />
@@ -57,7 +54,7 @@
       
       <!-- Application finale console de téléchargement des CRL -->
       <fileSet>
-         <directory>${project.parent.basedir}\sae-igcmaj\target\</directory>
+         <directory>${project.parent.basedir}/sae-igcmaj/target/</directory>
          <includes>
             <include>sae-igcmaj-${version}-exe.jar</include>
          </includes>
@@ -67,7 +64,7 @@
       
       <!-- Application finale console de lancement des services -->
       <fileSet>
-         <directory>${project.parent.basedir}\sae-services-executable\target\</directory>
+         <directory>${project.parent.basedir}/sae-services-executable/target/</directory>
          <includes>
             <include>sae-services-executable-${version}.jar</include>
          </includes>
