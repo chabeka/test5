@@ -44,6 +44,8 @@
    <bean id="captureMasseLauncher" factory-bean="SAEServiceFactory"
       factory-method="createLauncherSupport" />
 
+   <bean id="dfceInfoService"
+      class="fr.urssaf.image.sae.exploitation.service.DfceInfoService" />
 
 
 </beans>

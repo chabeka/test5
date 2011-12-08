@@ -28,7 +28,7 @@ import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service-test.xml",
-      "/applicationContext-security-test.xml" })
+      "/applicationContext-security-test.xml", "/applicationContext-sae-servlet-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class PingSecureTest {
 

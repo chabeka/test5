@@ -21,7 +21,7 @@ import fr.urssaf.image.sae.webservices.util.Axis2Utils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-service-test.xml",
-      "/applicationContext-security-test.xml" })
+      "/applicationContext-security-test.xml", "/applicationContext-sae-servlet-test.xml" })
 public class AuthenticateHandlerTest {
 
    private static final String FAIL_MSG = "le test doit échouer";

@@ -26,7 +26,9 @@ import fr.urssaf.image.sae.webservices.service.support.LauncherSupport;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml" })
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml", 
+      "/applicationContext-sae-servlet-test.xml"   
+                                  })
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class ArchivageMasseTest {
 
