@@ -9,7 +9,7 @@
 				<descriptif>Periode</descriptif>
 				<name>per</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
 	 			<single>false</single>
@@ -130,7 +130,7 @@
 				<descriptif>NumeroStructure</descriptif>
 				<name>nst</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -163,7 +163,7 @@
 				<descriptif>DateReception</descriptif>
 				<name>dre</name>
 				<dataType>Date</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -174,7 +174,7 @@
 				<descriptif>ApplicationProductrice</descriptif>
 				<name>apr</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -185,7 +185,7 @@
 				<descriptif>ApplicationTraitement</descriptif>
 				<name>atr</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -196,7 +196,7 @@
 				<descriptif>CodeOrganismeProprietaire</descriptif>
 				<name>cop</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -207,7 +207,7 @@
 				<descriptif>CodeOrganismeGestionnaire</descriptif>
 				<name>cog</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -218,7 +218,7 @@
 				<descriptif>SiteAcquisition</descriptif>
 				<name>sac</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -240,7 +240,7 @@
 				<descriptif>CodeFonction</descriptif>
 				<name>dom</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -251,7 +251,7 @@
 				<descriptif>CodeActivite</descriptif>
 				<name>act</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -262,7 +262,7 @@
 				<descriptif>DateFinConservation</descriptif>
 				<name>dfc</name>
 				<dataType>Date</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -295,7 +295,7 @@
 				<descriptif>FormatFichier</descriptif>
 				<name>ffi</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
@@ -328,7 +328,7 @@
 				<descriptif>ContratDeService</descriptif>
 				<name>cse</name>
 				<dataType>String</dataType>
-				<index>true</index>
+				<index>false</index>
 				<minimumValues>1</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
