@@ -62,7 +62,7 @@ public class CompositeQueriesTest extends AbstractTestCaseCreateAndPrepareBase {
     }
 
     @Test
-    public void test() throws ExceededSearchLimitException,
+    public void testSubQueriesAndRange() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
 	String query = "(" + category1.getFormattedName() + ":" + "c11"
 		+ " AND " + category2.getFormattedName() + ":" + "c21"

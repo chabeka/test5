@@ -117,7 +117,9 @@ public class TypedCategoryTest extends AbstractTestCaseCreateAndPrepareBase {
 	Criterion dateCriterion = storeDoc.getFirstCriterion(dateBaseCategory);
 
 	assertEquals((new DateTime(currDate.getTime())).toDateMidnight()
-		.toDate(), dateCriterion.getWord());
+		.toDate(),
+		new DateTime(((Date) dateCriterion.getWord()).getTime())
+			.toDateMidnight().toDate());
 
 	assertCriterionsEquals(document, storeDoc);
 

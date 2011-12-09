@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.docubase.toolkit.model.recordmanager.RMDocEvent;
 import net.docubase.toolkit.model.recordmanager.RMSystemEvent;
-import net.docubase.toolkit.service.ServiceProvider;
 import net.docubase.toolkit.service.ged.RecordManagerService;
 
 import org.joda.time.DateTime;
@@ -51,7 +50,6 @@ public class RecordManagerClientTest extends AbstractEventTest {
 	// Trouver l'évènement enregistré dans la liste retournée
 	boolean found = false;
 	for (RMSystemEvent evt : events) {
-	    System.out.println("evt.getKey() = " + evt.getKey());
 	    if ("EVENT1".equals(evt.getEventDescription())) {
 		found = true;
 	    }

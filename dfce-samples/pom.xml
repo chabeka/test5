@@ -7,11 +7,11 @@
    <name>Tests unitaires fournis par Docubase</name>
 
    <properties>
-      <dfce.serialization>1.0.0-alpha-04</dfce.serialization>
-      <dfce.toolkit.client>1.0.0-alpha-04</dfce.toolkit.client>
-      <dfce.toolkit.pojo>1.0.0-alpha-04</dfce.toolkit.pojo>
-      <dfce.toolkit.service>1.0.0-alpha-04</dfce.toolkit.service>
-      <dfce.commons>1.0.0-alpha-04</dfce.commons>
+      <dfce.serialization>1.0.0-beta-01</dfce.serialization>
+      <dfce.toolkit.client>1.0.0-beta-01</dfce.toolkit.client>
+      <dfce.toolkit.pojo>1.0.0-beta-01</dfce.toolkit.pojo>
+      <dfce.toolkit.service>1.0.0-beta-01</dfce.toolkit.service>
+      <dfce.commons>1.0.0-beta-01</dfce.commons>
    </properties>
 
    <build>

@@ -917,8 +917,7 @@ public class RichGedTest extends AbstractTestCaseCreateAndPrepareBase {
 		query, 5, base);
 	List<Document> docs = searchResult.getDocuments();
 	assertTrue(docs != null && docs.size() == 1);
-	System.out.println(docs.get(0).getUuid());
-	System.out.println(docs.get(0).getDigest());
+
 	// on fait les contrôles
 	control(docs.get(0), newDoc, c0);
 

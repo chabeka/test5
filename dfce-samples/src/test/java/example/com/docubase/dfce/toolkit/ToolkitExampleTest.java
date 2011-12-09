@@ -58,7 +58,7 @@ public class ToolkitExampleTest {
     public void before() throws ObjectAlreadyExistsException {
 	serviceProvider = ServiceProvider.newServiceProvider();
 	serviceProvider.connect("_ADMIN", "DOCUBASE",
-		"http://localhost:9090/dfce-webapp/toolkit/");
+		"http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/");
 
 	createUser();
 	createCategories();
@@ -82,7 +82,7 @@ public class ToolkitExampleTest {
 		.getUserAdministrationService();
 
 	if (userAdminService.loadUser("MyUser") != null) {
-	    // ce test ne passe qu'une fois, la seconde fois le user existe déjà
+	    // ce test ne passe qu'une fois, la seconde fois le user existe dï¿½jï¿½
 	    return;
 	}
 
@@ -133,11 +133,11 @@ public class ToolkitExampleTest {
 	documentCamus = storeService.storeDocument(documentCamus, "camus",
 		"pdf", new FileInputStream(fileCamus));
 
-	// créating document for André Breton's file
+	// crï¿½ating document for Andrï¿½ Breton's file
 	Document documentBreton = toolkitFactory.createDocumentTag(testBase);
 
 	// adding metadata to document
-	documentBreton.addCriterion(NAME, "André Breton");
+	documentBreton.addCriterion(NAME, "Andrï¿½ Breton");
 	documentBreton.addCriterion(CIVILITY, "MR");
 	documentBreton.addCriterion(NB_NOVELS, 28);
 	documentBreton.addCriterion(BIRTHDATE, new GregorianCalendar(19, 1,
@@ -149,7 +149,7 @@ public class ToolkitExampleTest {
 		"pdf", new FileInputStream(fileBreton));
 
 	// WRONG DICTIONNARY
-	// créating document for André Breton's file
+	// crï¿½ating document for Andrï¿½ Breton's file
 	Document documentBeauvoir = toolkitFactory.createDocumentTag(testBase);
 
 	// adding metadata to document
@@ -223,7 +223,7 @@ public class ToolkitExampleTest {
 	// connecting to DFCE
 	ServiceProvider serviceProvider = ServiceProvider.newServiceProvider();
 	serviceProvider.connect("User", "Password",
-		"http://localhost:9090/dfce-webapp/toolkit/");
+		"http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/");
 
 	// testing if server up
 	assertTrue(serviceProvider.isServerUp());
@@ -244,7 +244,7 @@ public class ToolkitExampleTest {
 	FileReference fileReference = adminService.createFileReference(
 		"XXthCentury", "pdf", new FileInputStream(fileSand));
 
-	// créating Beauvoir document
+	// crï¿½ating Beauvoir document
 	Document documentBeauvoir = toolkitFactory.createDocumentTag(testBase);
 	documentBeauvoir.addCriterion(NAME, "Simone de Beauvoir");
 	documentBeauvoir.addCriterion(CIVILITY, "MRS");
@@ -256,7 +256,7 @@ public class ToolkitExampleTest {
 	documentBeauvoir = storeService.storeVirtualDocument(documentBeauvoir,
 		fileReference, 1, 3);
 
-	// créating Sartre Document document
+	// crï¿½ating Sartre Document document
 	Document documentSartre = toolkitFactory.createDocumentTag(testBase);
 	documentSartre.addCriterion(NAME, "Jean-Paul Sartre");
 	documentSartre.addCriterion(CIVILITY, "MS");
