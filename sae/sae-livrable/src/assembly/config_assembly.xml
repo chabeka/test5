@@ -72,9 +72,14 @@
       </fileSet>
       
       
-      <!-- TODO : Application finale console des services d'exploitation -->
-      
-      
+      <!-- Application finale console des services d'exploitation -->
+      <fileSet>
+         <directory>${project.parent.basedir}/sae-dfce-admin-exploit/target/</directory>
+         <includes>
+            <include>sae-dfce-admin-exploit-${version}.jar</include>
+         </includes>
+         <outputDirectory />
+      </fileSet>
       
    </fileSets>
    
