@@ -26,7 +26,7 @@ import fr.urssaf.image.sae.storage.dfce.services.xml.XmlDataService;
  */
 @Service
 @Qualifier("xmlDataService")
-public class XmlDataServiceImpl implements XmlDataService {
+public class XmlDataServiceTestImpl implements XmlDataService {
 	/**
 	 * {@inheritDoc}
 	 */

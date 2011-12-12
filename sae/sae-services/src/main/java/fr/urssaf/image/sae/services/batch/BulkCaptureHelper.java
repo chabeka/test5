@@ -22,7 +22,6 @@ import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.services.MappingDocumentOnErrorService;
 import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
-import fr.urssaf.image.sae.services.enrichment.dao.impl.SAEMetatadaFinderUtils;
 import fr.urssaf.image.sae.services.enrichment.xml.model.SAEBulkErrors;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
@@ -47,6 +46,7 @@ import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocumentOnError;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocuments;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
+import fr.urssaf.image.sae.storage.util.StorageMetadataUtils;
 
 /**
  * Cette classe a pour rôle de contrôler, de convertir et d’archiver les
@@ -291,10 +291,10 @@ public class BulkCaptureHelper extends CommonIndicator {
 		List<UntypedMetadata> untypedMetadatas = new ArrayList<UntypedMetadata>();
 		buildSaeErros(exception, filePath, SAEBulkErrors.FUNCTIONAL_ERROR);
 		untypedMetadatas.add(new UntypedMetadata("TypeHash",
-				SAEMetatadaFinderUtils.valueMetadataFinder(
+		      StorageMetadataUtils.valueMetadataFinder(
 						badDocument.getMetadatas(),
 						"version.1.digest.alogorithm")));
-		untypedMetadatas.add(new UntypedMetadata("Hash", SAEMetatadaFinderUtils
+		untypedMetadatas.add(new UntypedMetadata("Hash", StorageMetadataUtils
 				.valueMetadataFinder(badDocument.getMetadatas(),
 						"version.1.digest")));
 		untypedDocumentsOnError.add(new UntypedDocumentOnError(null,

@@ -123,6 +123,10 @@
 				<name>per</name>
 				<value>P</value>
 			</category>
+            <category>
+               <name>sm_digest_algorithm</name>
+               <value>SHA-256</value>
+            </category>
 		</categories>
 	</base>
 </docuBase>

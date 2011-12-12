@@ -123,6 +123,10 @@
 				<name>sm_creation_date</name>
 				<value>2011-10-01</value>
 			</category>
+            <category>
+               <name>sm_digest_algorithm</name>
+               <value>SHA-1</value>
+            </category>
 		</categories>
 	</base>
 </docuBase>

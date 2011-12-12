@@ -34,6 +34,8 @@
       <property name="storageBase" ref="storageBase" />
       <property name="storageHost" ref="storageHost" />
       <property name="storageUser" ref="storageUser" />
+      <property name="digestAlgo" value="${db.digestAlgo}" />
+      <property name="checkHash" value="${db.checkHash}" />
    </bean>
    
 </beans>

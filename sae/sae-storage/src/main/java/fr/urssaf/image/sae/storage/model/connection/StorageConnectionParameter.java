@@ -14,107 +14,153 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * </li>
  * <li>
  * storageUser : Représente les paramètres de l’utilisateur de connexion</li>
+ * <li>
+ * digestAlgo : Répresente l'algorithme de hachage des documents dans DFCE.</li>
+ * <li>
+ * checkHash : Répresente le flag de vérification du hash lors de l'insertion
+ * d'un document dans DFCE.</li>
  * </ul>
  */
 public class StorageConnectionParameter {
-	// Les attributs
-	private StorageBase storageBase;
-	private StorageHost storageHost;
-	private StorageUser storageUser;
+   // Les attributs
+   private StorageBase storageBase;
+   private StorageHost storageHost;
+   private StorageUser storageUser;
 
-	/**
-	 * Retourne la base de stockage
-	 * 
-	 * @return La base de stockage
-	 */
-	public final StorageBase getStorageBase() {
-		return storageBase;
-	}
+   private String digestAlgo;
+   private boolean checkHash;
 
-	/**
-	 * Initialise la base de stockage
-	 * 
-	 * @param storageBase
-	 *            : La base de stockage
-	 */
-	public final void setStorageBase(final StorageBase storageBase) {
-		this.storageBase = storageBase;
-	}
+   /**
+    * Retourne la base de stockage
+    * 
+    * @return La base de stockage
+    */
+   public final StorageBase getStorageBase() {
+      return storageBase;
+   }
 
-	/**
-	 * Retourne la machine où se trouve la base de stockage
-	 * 
-	 * @return La machine qui héberge la base de stockage
-	 */
-	public final StorageHost getStorageHost() {
-		return storageHost;
-	}
+   /**
+    * Initialise la base de stockage
+    * 
+    * @param storageBase
+    *           : La base de stockage
+    */
+   public final void setStorageBase(final StorageBase storageBase) {
+      this.storageBase = storageBase;
+   }
 
-	/**
-	 * Initialise les paramètres d'accès à la base de stockage
-	 * 
-	 * @param storageHost
-	 *            : Les paramètres d'accès à la base de stockage
-	 */
-	public final void setStorageHost(final StorageHost storageHost) {
-		this.storageHost = storageHost;
-	}
+   /**
+    * Retourne la machine où se trouve la base de stockage
+    * 
+    * @return La machine qui héberge la base de stockage
+    */
+   public final StorageHost getStorageHost() {
+      return storageHost;
+   }
 
-	/**
-	 * Retourne les paramètres de l'utilisateur de connexion à la base de
-	 * stockage
-	 * 
-	 * @return L'utilisateur
-	 */
-	public final StorageUser getStorageUser() {
-		return storageUser;
-	}
+   /**
+    * Initialise les paramètres d'accès à la base de stockage
+    * 
+    * @param storageHost
+    *           : Les paramètres d'accès à la base de stockage
+    */
+   public final void setStorageHost(final StorageHost storageHost) {
+      this.storageHost = storageHost;
+   }
 
-	/**
-	 * Initialise les paramètres de l'utilisateur de connexion à la base de
-	 * stockage
-	 * 
-	 * @param storageUser
-	 *            : L'utilisateur de connexion à la base de stockage
-	 */
-	public final void setStorageUser(final StorageUser storageUser) {
-		this.storageUser = storageUser;
-	}
+   /**
+    * Retourne les paramètres de l'utilisateur de connexion à la base de
+    * stockage
+    * 
+    * @return L'utilisateur
+    */
+   public final StorageUser getStorageUser() {
+      return storageUser;
+   }
 
-	/**
-	 * Construit un nouveau {@link StorageConnectionParameter }
-	 * 
-	 * @param storageBase
-	 *            : Le nom de la base de donnée de stockage
-	 * @param storageHost
-	 *            : Les paramètres de connexion à la base de stockage
-	 * @param storageUser
-	 *            : les paramètres de l'utilisateur de connexion à la base de
-	 *            stockage
-	 */
-	public StorageConnectionParameter(final StorageBase storageBase,
-			final StorageHost storageHost, final StorageUser storageUser) {
-		this.storageBase = storageBase;
-		this.storageHost = storageHost;
-		this.storageUser = storageUser;
-	}
+   /**
+    * Initialise les paramètres de l'utilisateur de connexion à la base de
+    * stockage
+    * 
+    * @param storageUser
+    *           : L'utilisateur de connexion à la base de stockage
+    */
+   public final void setStorageUser(final StorageUser storageUser) {
+      this.storageUser = storageUser;
+   }
 
-	/**
-	 * Construit un nouveau {@link StorageConnectionParameter } par défaut
-	 * 
-	 */
-	public StorageConnectionParameter() {
-		// ici on ne fait rien
-	}
+   /**
+    * 
+    * 
+    * @param digestAlgo
+    *           L'algorithme de hachage des documents dans DFCE.
+    */
+   public final void setDigestAlgo(String digestAlgo) {
+      this.digestAlgo = digestAlgo;
+   }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this)
-				.append("storageBase", storageBase.toString())
-				.append("storageHost", storageHost.toString())
-				.append("storageUser", storageUser.toString()).toString();
-	}
+   /**
+    * 
+    * @return L'algorithme de hachage des documents dans DFCE.
+    */
+   public final String getDigestAlgo() {
+      return this.digestAlgo;
+   }
+
+   /**
+    * 
+    * @param checkHash
+    *           flag de vérification du hash lors de l'insertion d'un document
+    *           dans DFCE.
+    */
+   public final void setCheckHash(boolean checkHash) {
+      this.checkHash = checkHash;
+   }
+
+   /**
+    * 
+    * @return flag de vérification du hash lors de l'insertion d'un document
+    *         dans DFCE.
+    */
+   public final boolean isCheckHash() {
+      return checkHash;
+   }
+
+   /**
+    * Construit un nouveau {@link StorageConnectionParameter }
+    * 
+    * @param storageBase
+    *           : Le nom de la base de donnée de stockage
+    * @param storageHost
+    *           : Les paramètres de connexion à la base de stockage
+    * @param storageUser
+    *           : les paramètres de l'utilisateur de connexion à la base de
+    *           stockage
+    */
+   public StorageConnectionParameter(final StorageBase storageBase,
+         final StorageHost storageHost, final StorageUser storageUser) {
+      this.storageBase = storageBase;
+      this.storageHost = storageHost;
+      this.storageUser = storageUser;
+   }
+
+   /**
+    * Construit un nouveau {@link StorageConnectionParameter } par défaut
+    * 
+    */
+   public StorageConnectionParameter() {
+      // ici on ne fait rien
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final String toString() {
+      return new ToStringBuilder(this).append("storageBase",
+            storageBase.toString()).append("storageHost",
+            storageHost.toString()).append("storageUser",
+            storageUser.toString()).toString();
+   }
+
 }
