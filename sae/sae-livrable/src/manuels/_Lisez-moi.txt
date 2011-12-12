@@ -116,7 +116,7 @@ Ce programme est lancé par le service web SaeService lors d'une capture de mass
 // --------------------------------------------------------------------
 
 // Pour lancer la création de la base DFCE
-java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logback-sae-dfce-admin-exploit.xml sae-dfce-admin-exploit.jar createDataBase @@SAE_HOME@@/dfce-config.properties @@SAE_HOME@@/sae-dfce-admin-exploit/saeBase.xml @@SAE_HOME@@/sae-dfce-admin-exploit/lifeCycle.xml
+java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logback-sae-dfce-admin-exploit.xml @@SAE_HOME@@/sae-dfce-admin-exploit/sae-dfce-admin-exploit.jar createDataBase @@SAE_HOME@@/sae-config.properties @@SAE_HOME@@/sae-dfce-admin-exploit/saeBase.xml @@SAE_HOME@@/sae-dfce-admin-exploit/LifeCycleRule.xml
 
 // Pour lancer la réindexation de la base DFCE
 java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logback-sae-dfce-admin-exploit.xml @@SAE_HOME@@/sae-dfce-admin-exploit/sae-dfce-admin-exploit.jar reindex @@SAE_HOME@@/sae-config.properties
