@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.util.Assert;
 
 import fr.urssaf.image.sae.webservices.service.support.LauncherSupport;
@@ -145,10 +146,14 @@ public class ProcessusLauncherSupportImpl implements LauncherSupport {
    public final void launch(Object... parameters) {
 
       Runtime runtime = Runtime.getRuntime();
-
+      // Ajout d'uuid
+      String uuid = MDC.get("log_contexte_uuid");
+      String executableWithUuid = StringUtils.replace(executable,
+            "_UUID_TO_REPLACE", uuid);
       // TODO préférer un exécutable avec des paramètres {0},{1}...
-      String command = StringUtils.join(new String[] { executable,
+      String command = StringUtils.join(new String[] { executableWithUuid,
             StringUtils.join(parameters, SEPARATOR) }, SEPARATOR);
+
       LOG.debug("{} - Lancement du processus: {}", PREFIX_LOG, command);
       try {
 
