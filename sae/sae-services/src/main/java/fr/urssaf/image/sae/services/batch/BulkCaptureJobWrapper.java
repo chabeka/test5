@@ -1,12 +1,19 @@
 package fr.urssaf.image.sae.services.batch;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.util.Assert;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
@@ -15,6 +22,7 @@ import fr.urssaf.image.sae.ecde.modele.resultats.Resultats;
 import fr.urssaf.image.sae.ecde.modele.sommaire.Sommaire;
 import fr.urssaf.image.sae.ecde.service.EcdeServices;
 import fr.urssaf.image.sae.services.jmx.CommonIndicator;
+import fr.urssaf.image.sae.services.util.FormatUtils;
 import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
@@ -54,18 +62,42 @@ public class BulkCaptureJobWrapper extends CommonIndicator {
       // l'URL
       try {
          MDC.put("log_contexte_uuid", getLogContexteUUID());
+         Assert.notNull(getLogContexteUUID(),
+               "L'indentifiant du traiement en masse doit être non null.");
          String prefixeTrc = "run()";
+         final String debutFlag = "debut_traitement.flag";
          LOGGER.debug("{} - Début", prefixeTrc);
          getIndicator().setJmxTreatmentState(BulkProgress.BEGIN_OF_ARCHIVE);
          bulkCaptureJob.setIndicator(getIndicator());
          URI ecdeUri = new URI(ecdeUrl);
          getIndicator().setJmxTreatmentState(BulkProgress.READING_DOCUMENTS);
+         // Ajout d'un fichier début traitement debut_traitement.flag
+         // Ajout du host name du serveur qui a pris le traitement
+         // UUID du traitement en masse
+         LOGGER.debug("{} - Début de création du fichier ({})", prefixeTrc,
+               debutFlag);
+         StringBuffer urlFlag = new StringBuffer(ecdeServices
+               .convertSommaireToFile(ecdeUri).getParent());
+         urlFlag.append("/");
+         urlFlag.append(debutFlag);
+         LOGGER.debug("{} - Chemin du du fichier ({}) : ({})", new Object[] {
+               prefixeTrc, debutFlag, urlFlag.toString() });
+         File bulkStartFile = new File(urlFlag.toString());
+         Collection<String> bulkCaptureInfos = new ArrayList<String>();
+         InetAddress hostInfo = InetAddress.getLocalHost();
+         bulkCaptureInfos.add("idTraitementMasse=" + getLogContexteUUID());
+         bulkCaptureInfos.add("heureDebutTraitementEnMasse="
+               + FormatUtils.dateToString(new Date()));
+         bulkCaptureInfos.add("hostnameServeurAppli=" + hostInfo.getHostName());
+         bulkCaptureInfos.add("hostIP=" + hostInfo.getHostAddress());
+         FileUtils.writeLines(bulkStartFile, bulkCaptureInfos, "\r");
+         LOGGER.debug("{} - Fin de création du fichier ({})", prefixeTrc,
+               debutFlag);
          Sommaire sommaireEcde = ecdeServices.fetchSommaireByUri(ecdeUri);
          getIndicator().setJmxExternalIdTreatment(
                retrieveExternalTreatmentId(sommaireEcde));
-         // Début traitement par BOB
-         Resultats resultatEcde = bulkCaptureJob.bulkCapture(sommaireEcde);
-         // Fin traitement par BOB
+         Resultats resultatEcde = bulkCaptureJob.bulkCapture(sommaireEcde,
+               getLogContexteUUID());
          // Appeler le service ECDE de persistance du résultat
          getIndicator().setJmxTreatmentState(
                BulkProgress.GENERATION_RESULT_FILE);

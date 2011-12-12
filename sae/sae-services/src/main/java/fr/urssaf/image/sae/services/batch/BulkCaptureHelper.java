@@ -3,10 +3,8 @@ package fr.urssaf.image.sae.services.batch;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,41 +74,41 @@ public class BulkCaptureHelper extends CommonIndicator {
 	
 
 	/**
-	 * Enrichissement des métadonnées avec un ID traitement.
-	 * 
-	 * @param storageDocs
-	 *            : Une liste de type {@link StorageDocument}.
-	 * @return Une liste de type {@link StorageDocument}.
-	 */
-	@SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
-	public final List<StorageDocument> addIdTreatementToStorageDoc(
-			List<StorageDocument> storageDocs) {
+    * Enrichissement des métadonnées avec un ID traitement.
+    * 
+    * @param storageDocs
+    *           : Une liste de type {@link StorageDocument}.
+    * @param treatementId
+    *           : UUID du traitement en masse.
+    * @return Une liste de type {@link StorageDocument}.
+    */
+   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+   public final List<StorageDocument> addIdTreatementToStorageDoc(
+         List<StorageDocument> storageDocs, String treatementId) {
       String prefixeTrc = "addIdTreatementToStorageDoc()";
       LOGGER.debug("{} - Début", prefixeTrc);
-		String idtreatement = ObjectUtils.toString(UUID.randomUUID());
-		LOGGER
-      .debug(
+      // String idtreatement = ObjectUtils.toString(UUID.randomUUID());
+      LOGGER.debug(
             "{} - Début de l'ajout de la métadonnée IdTraitementMasseInterne",
             prefixeTrc);
-		
-		LOGGER
-      .debug(
-            "{} - L'identifiant de traitement de masse interne pour le rollback est : {}",
-            prefixeTrc,idtreatement);
-		for (StorageDocument storageDocument : Utils
-				.nullSafeIterable(storageDocs)) {
-			storageDocument.getMetadatas().add(
-					new StorageMetadata("iti", idtreatement));
-			storageDocument.setProcessId(idtreatement);
-		}
+
       LOGGER
-      .debug(
+            .debug(
+                  "{} - L'identifiant de traitement de masse interne pour le rollback est : {}",
+                  prefixeTrc, treatementId);
+      for (StorageDocument storageDocument : Utils
+            .nullSafeIterable(storageDocs)) {
+         storageDocument.getMetadatas().add(
+               new StorageMetadata("iti", treatementId));
+         storageDocument.setProcessId(treatementId);
+      }
+      LOGGER.debug(
             "{} - Fin de l'ajout de la métadonnée IdTraitementMasseInterne",
             prefixeTrc);
       LOGGER.debug("{} - Sortie", prefixeTrc);
       // Fin des traces debug - sortie méthode
-		return storageDocs;
-	}
+      return storageDocs;
+   }
 
 	/**
 	 * Construit une liste de type {@link StorageDocument}.

@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
@@ -77,7 +79,7 @@ public class SAEBulkCaptureServiceImplTest extends CommonsServices {
       File fileAttestation1 = new File(repertoireEcdeDocuments, "doc1.PDF");
       fos = new FileOutputStream(fileAttestation1);
       IOUtils.copy(resAttestation1.getInputStream(), fos);
-
+      MDC.put("log_contexte_uuid",UUID.randomUUID().toString());
       saeBulkCaptureService.bulkCapture(urlEcdeSommaire.toString());
       
    }

@@ -2,6 +2,7 @@ package fr.urssaf.image.sae.services.document;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import junit.framework.Assert;
 
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,6 +24,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFound
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
+import org.apache.commons.lang.ObjectUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-bulkcapture-test.xml" })
@@ -79,7 +82,7 @@ public class SAEBulkCaptureServiceTest {
    @After
    public void after() {
 
-      //EasyMock.reset(interruption);
+      // EasyMock.reset(interruption);
    }
 
    private void assertFinTraitementFlag() {
@@ -110,7 +113,8 @@ public class SAEBulkCaptureServiceTest {
    @Test
    public void bulkCapture_success() throws CaptureBadEcdeUrlEx,
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
-
+      String idtreatement = ObjectUtils.toString(UUID.randomUUID());
+      MDC.put("log_contexte_uuid", idtreatement);
       // appel du service de capture en masse
       bulkCapture.bulkCapture(urlSommaire);
 
@@ -134,7 +138,8 @@ public class SAEBulkCaptureServiceTest {
             .anyInt(), EasyMock.anyInt());
 
       EasyMock.expectLastCall().andThrow(
-            new InterruptionTraitementException("starTime",120,2, new Exception()));
+            new InterruptionTraitementException("starTime", 120, 2,
+                  new Exception()));
 
       EasyMock.replay(interruption);
 
