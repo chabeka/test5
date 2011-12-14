@@ -22,7 +22,7 @@ import fr.urssaf.image.sae.metadata.utils.Utils;
 public class FormatUtils {
    private static final Logger LOGGER = LoggerFactory
          .getLogger(FormatUtils.class);
-   public static final String DATE_PATTERN = "yyyy-MM-dd hh:mm:ss";
+   public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
    public static final Locale DEFAULT_LOCAL = Locale.FRENCH;
 
    /**
