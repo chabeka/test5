@@ -25,7 +25,15 @@ Exemples :
   /hawai/logs/sae
   C:/hawai/logs/sae
 
-   
+
+@@SAE_CM_JAVA_OPTS@@
+Les paramètres supplémentaires à fournir à la JVM dans laquelle s'exécute une capture de masse.
+L'objectif est d'y mettre le paramétrage mémoire.
+Par exemple, on peut mettre "-Xms500m -Xmx2500m" pour indiquer que la JVM démarre avec 500 Mo de RAM,
+et peut monter jusqu'à 2.5 Go de RAM.
+
+
+
 De plus, le fichier sae-igc-config.xml est regénéré au niveau d'Hawai.
 Pour l'instant, le SAE reconnaît uniquement la PKI de validation n°1 de l'AED.
 Du coup, le point de distribution des CRL de cette PKI est :
