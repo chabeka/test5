@@ -20,18 +20,21 @@ import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
    private ArchiveService archiveService = serviceProvider.getArchiveService();
-   private RecordManagerService recordManagerService = serviceProvider.getRecordManagerService();
+   private RecordManagerService recordManagerService = serviceProvider
+         .getRecordManagerService();
 
    Calendar calendar = Calendar.getInstance();
 
    // trying to run system events clearing job on events that haven't
    // been archived yet -> Exception
-   @Test(expected = UnsupportedOperationException.class)
+   @Test(expected = IllegalArgumentException.class)
    public void testClearSystemEventsNotArchived() throws InterruptedException {
-      RMSystemEvent rmSystemEvent = ToolkitFactory.getInstance().createRMSystemEvent();
+      RMSystemEvent rmSystemEvent = ToolkitFactory.getInstance()
+            .createRMSystemEvent();
       rmSystemEvent.setEventDescription("eventDescription");
       rmSystemEvent.setUsername("username");
-      rmSystemEvent = recordManagerService.createCustomSystemEventLog(rmSystemEvent);
+      rmSystemEvent = recordManagerService
+            .createCustomSystemEventLog(rmSystemEvent);
       Thread.sleep(2000);
       calendar = Calendar.getInstance();
       calendar.add(Calendar.MILLISECOND, -1);
@@ -48,7 +51,8 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
       rmDocEvent.setEventType(DocEventLogType.DELETE_DOCUMENT);
       rmDocEvent.setUsername("username");
       rmDocEvent.setDocUUID(UUID.randomUUID());
-      rmDocEvent = recordManagerService.createCustomDocumentEventLog(rmDocEvent);
+      rmDocEvent = recordManagerService
+            .createCustomDocumentEventLog(rmDocEvent);
 
       Thread.sleep(1000);
       archiveService.clearDocumentEventsTo(rmDocEvent.getEventDate());
@@ -60,14 +64,15 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
       Thread.currentThread().sleep(1000);
       // archiving system events
       archiveService.createNextSystemLogsArchive();
-      Date lastSucessfulRunDate = archiveService.getLastSucessfulSystemLogsArchiveRunDate();
+      Date lastSucessfulRunDate = archiveService
+            .getLastSucessfulSystemLogsArchiveRunDate();
 
       // clearing system events to last archive date
       archiveService.clearSystemEventsTo(lastSucessfulRunDate);
 
       // no events left in the date range (date0 to last run)
-      List<RMSystemEvent> systemEventLogsByDates = recordManagerService.getSystemEventLogsByDates(
-            new Date(0), lastSucessfulRunDate);
+      List<RMSystemEvent> systemEventLogsByDates = recordManagerService
+            .getSystemEventLogsByDates(new Date(0), lastSucessfulRunDate);
       assertTrue(systemEventLogsByDates.isEmpty());
    }
 
@@ -78,16 +83,16 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
 
       // archiving document events
       archiveService.createNextDocumentLogsArchive();
-      Date lastSucessfulRunDate = archiveService.getLastSucessfulDocumentLogsArchiveRunDate();
+      Date lastSucessfulRunDate = archiveService
+            .getLastSucessfulDocumentLogsArchiveRunDate();
 
       // clearing document events to last archive date
       archiveService.clearDocumentEventsTo(lastSucessfulRunDate);
 
       // no events left in the date range (date0 to last run)
-      List<RMDocEvent> documentEventLogsByDates = recordManagerService.getDocumentEventLogsByDates(
-            new Date(0), lastSucessfulRunDate);
+      List<RMDocEvent> documentEventLogsByDates = recordManagerService
+            .getDocumentEventLogsByDates(new Date(0), lastSucessfulRunDate);
       assertTrue(documentEventLogsByDates.isEmpty());
-
    }
 
    @SuppressWarnings("static-access")
@@ -98,19 +103,20 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
       archiveService.createNextSystemLogsArchive();
 
       // creating custom system event
-      RMSystemEvent rmSystemEvent = ToolkitFactory.getInstance().createRMSystemEvent();
+      RMSystemEvent rmSystemEvent = ToolkitFactory.getInstance()
+            .createRMSystemEvent();
       String randomName = UUID.randomUUID().toString();
       rmSystemEvent.setUsername(randomName);
       recordManagerService.createCustomSystemEventLog(rmSystemEvent);
-
-      Date lastSucessfulRunDate = archiveService.getLastSucessfulSystemLogsArchiveRunDate();
-      calendar.add(Calendar.SECOND, -1);
-      lastSucessfulRunDate = calendar.getTime();
-
+      long lastSucessfulRunDate = archiveService
+            .getLastSucessfulSystemLogsArchiveRunDate().getTime();
+      long newJobRunDate = lastSucessfulRunDate - 600;
+      // lastSucessfulRunDate = calendar.getTime();
       // clearing event to job's last success (previous to custom event)
-      archiveService.clearSystemEventsTo(lastSucessfulRunDate);
-      List<RMSystemEvent> systemEventLogsByDates = recordManagerService.getSystemEventLogsByDates(
-            lastSucessfulRunDate, new Date());
+      archiveService.clearSystemEventsTo(new Date(newJobRunDate));
+      List<RMSystemEvent> systemEventLogsByDates = recordManagerService
+            .getSystemEventLogsByDates(new Date(lastSucessfulRunDate),
+                  new Date());
 
       boolean eventFound = false;
       for (RMSystemEvent rmSystemEventIter : systemEventLogsByDates) {
@@ -137,14 +143,15 @@ public class ClearEventsTest extends AbstractTestCaseCreateAndPrepareBase {
       rmDocEvent.setDocUUID(UUID.randomUUID());
       recordManagerService.createCustomDocumentEventLog(rmDocEvent);
 
-      Date lastSucessfulRunDate = archiveService.getLastSucessfulDocumentLogsArchiveRunDate();
-      calendar.add(Calendar.SECOND, -1);
-      lastSucessfulRunDate = calendar.getTime();
+      long lastSucessfulRunDate = archiveService
+            .getLastSucessfulSystemLogsArchiveRunDate().getTime();
+      long newJobRunDate = lastSucessfulRunDate - 600;
 
       // clearing event to job's last success (previous to custom event)
-      archiveService.clearDocumentEventsTo(lastSucessfulRunDate);
-      List<RMDocEvent> documentEventLogsByDates = recordManagerService.getDocumentEventLogsByDates(
-            lastSucessfulRunDate, new Date());
+      archiveService.clearDocumentEventsTo(new Date(newJobRunDate));
+      List<RMDocEvent> documentEventLogsByDates = recordManagerService
+            .getDocumentEventLogsByDates(new Date(lastSucessfulRunDate),
+                  new Date());
 
       boolean eventFound = false;
       for (RMDocEvent rmDocEventIter : documentEventLogsByDates) {
