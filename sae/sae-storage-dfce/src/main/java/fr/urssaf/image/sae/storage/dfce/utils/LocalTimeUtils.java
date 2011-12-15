@@ -1,6 +1,5 @@
 package fr.urssaf.image.sae.storage.dfce.utils;
 
-import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
@@ -80,14 +79,13 @@ public final class LocalTimeUtils {
 
    }
 
-   // TODO renvoyer des millisecondes plutôt que des secondes
    /**
     * Retourne la durée qu'il reste à une heure dans un intervalle de temps.<br>
     * <br>
     * Ex :<br>
-    * <code>getDifference([01-01-1999 03:00:00],[03:00:00], 120) = 120</code><br>
-    * <code>getDifference([01-01-1999 03:00:01],[03:00:00], 120) = 119</code><br>
-    * <code>getDifference([01-01-1999 03:01:59],[03:00:00], 120) = 1</code><br>
+    * <code>getDifference([01-01-1999 03:00:00],[03:00:00], 120) = 120000</code><br>
+    * <code>getDifference([01-01-1999 03:00:01],[03:00:00], 120) = 119000</code><br>
+    * <code>getDifference([01-01-1999 03:01:59],[03:00:00], 120) = 1000</code><br>
     * <code>getDifference([01-01-1999 03:02:00],[03:00:00], 120) = 0</code><br>
     * <code>getDifference([01-01-1999 03:02:01],[03:00:00], 120) = -1</code><br>
     * <code>getDifference([01-01-1999 02:59:59],[03:00:00], 120) = -1</code><br>
@@ -98,7 +96,7 @@ public final class LocalTimeUtils {
     *           heure du début de l'intervalle
     * @param delay
     *           limite en secondes de l'intervalle
-    * @return durée en secondes qu'il reste à l'heure locale de
+    * @return durée en millisecondes qu'il reste à l'heure locale de
     *         <code>currentDate</code> pour finir l'intervalle. Si l'heure
     *         locale n'est pas dans l'intervalle alors la valeur renvoyée est
     *         <code>-1</code>
@@ -120,10 +118,7 @@ public final class LocalTimeUtils {
 
          if (currentHour.getMillisOfDay() <= endTime.getMillisOfDay()) {
 
-            Duration duration = new Duration(endTime.getMillisOfDay()
-                  - currentHour.getMillisOfDay());
-
-            diff = duration.getStandardSeconds();
+            diff = endTime.getMillisOfDay() - currentHour.getMillisOfDay();
 
          } else {
 

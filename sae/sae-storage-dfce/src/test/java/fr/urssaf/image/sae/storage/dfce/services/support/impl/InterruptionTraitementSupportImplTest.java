@@ -1,10 +1,9 @@
 package fr.urssaf.image.sae.storage.dfce.services.support.impl;
 
-import java.text.ParseException;
-import java.util.Date;
-
-import org.apache.commons.lang.time.DateUtils;
 import org.easymock.EasyMock;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,21 +20,23 @@ public class InterruptionTraitementSupportImplTest {
 
    private DFCEServicesManager dfceManager;
 
-   private Date currentDate;
+   private DateTime currentDate;
 
    @Before
-   public void before() throws ParseException {
+   public void before() {
 
       dfceManager = EasyMock.createMock(DFCEServicesManager.class);
       support = new InterruptionTraitementSupportImpl(dfceManager);
 
       // on fixe les delais pour les tentatives de reconnexion après la première
       // à 1 seconde!
-      support.setDelay(1);
+      support.setDelay(1000);
 
       // on fixe la date courante à 01/01/1999 à 02h00 et 1 seconde!
-      currentDate = DateUtils.parseDate("01-01-1999 02:00:01",
-            new String[] { "dd-MM-yyyy HH:mm:ss" });
+      DateTimeFormatter formatter = DateTimeFormat
+            .forPattern("dd-MM-yyyy HH:mm:ss");
+
+      currentDate = DateTime.parse("01-01-1999 02:00:01", formatter);
 
    }
 
@@ -45,40 +46,51 @@ public class InterruptionTraitementSupportImplTest {
       EasyMock.reset(dfceManager);
    }
 
-   private void openConnexion(int tentatives) throws ConnectionServiceEx {
+   private void openConnexion(int failures) throws ConnectionServiceEx {
 
       dfceManager.closeConnection();
 
       dfceManager.getConnection();
 
-      EasyMock.expectLastCall().andThrow(new ConnectionServiceEx()).times(
-            tentatives - 1);
+      if (failures > 0) {
 
-      dfceManager.getConnection();
+         EasyMock.expectLastCall().andThrow(new ConnectionServiceEx()).times(
+               failures);
+
+         dfceManager.getConnection();
+
+      }
 
       EasyMock.replay(dfceManager);
    }
 
    @Test
-   public void interruption_success_after_2tentatives()
+   public void interruption_success_first_tentative()
          throws ConnectionServiceEx {
 
-      assertInterruptionSuccess(2);
+      assertInterruptionSuccess(4, 0);
 
    }
 
    @Test
-   public void interruption_success_after_4tentatives()
-         throws ConnectionServiceEx {
+   public void interruption_success_last_tentative() throws ConnectionServiceEx {
 
-      assertInterruptionSuccess(4);
+      assertInterruptionSuccess(2, 1);
 
    }
 
-   private void assertInterruptionSuccess(int tentatives)
+   @Test
+   public void interruption_success_after_3tentatives()
          throws ConnectionServiceEx {
 
-      openConnexion(2);
+      assertInterruptionSuccess(4, 2);
+
+   }
+
+   private void assertInterruptionSuccess(int tentatives, int failures)
+         throws ConnectionServiceEx {
+
+      openConnexion(failures);
 
       String start = "02:00:00";
       support.interruption(currentDate, start, 2, tentatives);
@@ -88,7 +100,7 @@ public class InterruptionTraitementSupportImplTest {
    }
 
    @Test
-   public void interruption_failure_after2Tentatives()
+   public void interruption_failure_with_2tentatives()
          throws ConnectionServiceEx {
 
       openConnexion(5);

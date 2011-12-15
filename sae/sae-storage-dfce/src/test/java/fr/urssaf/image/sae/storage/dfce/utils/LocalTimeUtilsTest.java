@@ -75,11 +75,11 @@ public class LocalTimeUtilsTest {
       assertDiffTime(-1, "01-01-1999 02:59:59", startTime, delay);
 
       // debut du start time
-      assertDiffTime(120, "01-01-1999 03:00:00", startTime, delay);
-      assertDiffTime(119, "01-01-1999 03:00:01", startTime, delay);
+      assertDiffTime(120000, "01-01-1999 03:00:00", startTime, delay);
+      assertDiffTime(119000, "01-01-1999 03:00:01", startTime, delay);
 
       // à la fin du delai
-      assertDiffTime(1, "01-01-1999 03:01:59", startTime, delay);
+      assertDiffTime(1000, "01-01-1999 03:01:59", startTime, delay);
       assertDiffTime(0, "01-01-1999 03:02:00", startTime, delay);
 
       // après le delai

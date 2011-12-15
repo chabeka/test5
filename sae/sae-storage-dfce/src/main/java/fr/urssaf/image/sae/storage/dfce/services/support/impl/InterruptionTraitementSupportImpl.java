@@ -1,17 +1,18 @@
 package fr.urssaf.image.sae.storage.dfce.services.support.impl;
 
-import java.util.Date;
-
-import me.prettyprint.cassandra.utils.Assert;
-
+import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
+import fr.urssaf.image.sae.storage.dfce.constants.Constants;
 import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
@@ -44,9 +45,9 @@ public class InterruptionTraitementSupportImpl implements
       this.dfceManager = dfceManager;
    }
 
-   private static final int DELAY = 120;
+   private static final long DELAY = 120000;
 
-   private int delay = DELAY;
+   private long delay = DELAY;
 
    /**
     * 
@@ -54,7 +55,7 @@ public class InterruptionTraitementSupportImpl implements
     *           temps d'attente en secondes entre chaque tentatives après la
     *           première
     */
-   public final void setDelay(int delay) {
+   public final void setDelay(long delay) {
       this.delay = delay;
    }
 
@@ -68,7 +69,7 @@ public class InterruptionTraitementSupportImpl implements
    @Override
    public final void interruption(String start, int delay, int tentatives) {
 
-      Date currentDate = new Date();
+      DateTime currentDate = new DateTime();
 
       interruption(currentDate, start, delay, tentatives);
 
@@ -76,13 +77,12 @@ public class InterruptionTraitementSupportImpl implements
 
    private static final String LOG_PREFIX = "Interruption programmée d'un traitement";
 
-   protected final void interruption(Date currentDate, String startTime,
+   protected final void interruption(DateTime currentDate, String startTime,
          int delay, int tentatives) {
 
       LocalTime startLocalTime = LocalTimeUtils.parse(startTime);
 
-      LocalDateTime currentLocalDate = LocalDateTime
-            .fromDateFields(currentDate);
+      LocalDateTime currentLocalDate = new LocalDateTime(currentDate);
 
       long diffTime = LocalTimeUtils.getDifference(currentLocalDate,
             startLocalTime, delay);
@@ -90,6 +90,14 @@ public class InterruptionTraitementSupportImpl implements
       if (diffTime > 0) {
 
          LOG.debug("{} - début programmé à {}", LOG_PREFIX, startTime);
+
+         DateTime endDate = currentDate.plus(diffTime);
+
+         DateTimeFormatter formatter = DateTimeFormat
+               .forPattern(Constants.DATE_TIME_PATTERN);
+
+         LOG.debug("{} - Reprise prévue à {}", LOG_PREFIX, formatter
+               .print(endDate));
 
          dfceManager.closeConnection();
 
@@ -125,11 +133,12 @@ public class InterruptionTraitementSupportImpl implements
 
       if (tentatives > 0) {
 
-         LOG.debug("{} - Interruption de {} secondes", LOG_PREFIX, delay);
+         Duration duration = Duration.millis(delay);
 
-         Duration duration = Duration.standardSeconds(delay);
+         LOG.debug("{} - Interruption de {} secondes", LOG_PREFIX, duration
+               .getStandardSeconds());
 
-         Thread.sleep(duration.getMillis());
+         Thread.sleep(delay);
 
          try {
 
