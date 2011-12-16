@@ -172,7 +172,11 @@ public class InsertionServiceImpl extends AbstractServices implements
             // TODO revoir l'emplacement de l'interruption du traitement de
             // capture
             // en masse lors de l'injection
-            interruptionTraitement();
+            interruptionTraitement(indicator);
+
+            if (indicator != null) {
+               indicator.setJmxTreatmentState(BulkProgress.INSERTION_DOCUMENTS);
+            }
 
             LOGGER.debug("{} - Stockage du document #{} ({})", new Object[] {
                   prefixeTrc, ++indexDocument, storageDocument.getFilePath() });
@@ -238,13 +242,13 @@ public class InsertionServiceImpl extends AbstractServices implements
                   idTraitement);
    }
 
-   private void interruptionTraitement() {
+   private void interruptionTraitement(JmxIndicator indicator) {
 
       if (interruptionConfig != null) {
          // on vérifie l'interruption
          interruption.interruption(interruptionConfig.getStart(),
                interruptionConfig.getDelay(), interruptionConfig
-                     .getTentatives());
+                     .getTentatives(), indicator);
 
          // on renseigne le nouveau le fournisseur de service DFCE pour
          // éviter en cas de close de la session pendant l'interruption de
@@ -289,7 +293,7 @@ public class InsertionServiceImpl extends AbstractServices implements
             // TODO revoir l'emplacement de l'interruption du traitement de
             // capture
             // en masse lors du rollback
-            interruptionTraitement();
+            interruptionTraitement(indicator);
 
             LOGGER.debug("{} - Rollback du document #{} ({})", new Object[] {
                   prefixeTrc, ++indexDocument, strDocument.getUuid() });

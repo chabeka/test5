@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.storage.model.jmx;
 
+import org.joda.time.DateTime;
+
 /**
  * Cette classe contient l'ensemble des indicateurs JMX.
  * 
@@ -14,6 +16,11 @@ public class JmxIndicator {
    private String jmxExternalIdTreatment;
    private BulkProgress jmxTreatmentState;
    private int jmxCountDocument;
+
+   private DateTime interruptionStart;
+   private DateTime interruptionEnd;
+
+   private long interruptionDelay;
 
    /**
     * @return L'index du document en cours de stockage.
@@ -89,4 +96,52 @@ public class JmxIndicator {
    public final void setJmxCountDocument(int jmxCountDocument) {
       this.jmxCountDocument = jmxCountDocument;
    }
+
+   /**
+    * @return date d'interruption du traitement
+    */
+   public final DateTime getInterruptionStart() {
+      return interruptionStart;
+   }
+
+   /**
+    * @param interruptionStart
+    *           date d'interruption du traitement
+    */
+   public final void setInterruptionStart(DateTime interruptionStart) {
+      this.interruptionStart = interruptionStart;
+   }
+
+   /**
+    * 
+    * @param interruptionEnd
+    *           date de reprise du traitement
+    */
+   public final void setInterruptionEnd(DateTime interruptionEnd) {
+      this.interruptionEnd = interruptionEnd;
+   }
+
+   /**
+    * 
+    * @return date de reprise du traitement
+    */
+   public final DateTime getInterruptionEnd() {
+      return interruptionEnd;
+   }
+
+   /**
+    * @return durée programmée de l'interruption en secondes
+    */
+   public final long getInterruptionDelay() {
+      return interruptionDelay;
+   }
+
+   /**
+    * @param interruptionDelay
+    *           durée programmée de l'interruption en secondes
+    */
+   public final void setInterruptionDelay(long interruptionDelay) {
+      this.interruptionDelay = interruptionDelay;
+   }
+
 }

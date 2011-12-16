@@ -17,6 +17,8 @@ import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
+import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 /**
  * Implémentation du service {@link InterruptionTraitementSupport}
@@ -67,18 +69,19 @@ public class InterruptionTraitementSupportImpl implements
     * 
     */
    @Override
-   public final void interruption(String start, int delay, int tentatives) {
+   public final void interruption(String start, int delay, int tentatives,
+         JmxIndicator indicator) {
 
       DateTime currentDate = new DateTime();
 
-      interruption(currentDate, start, delay, tentatives);
+      interruption(currentDate, start, delay, tentatives, indicator);
 
    }
 
    private static final String LOG_PREFIX = "Interruption programmée d'un traitement";
 
    protected final void interruption(DateTime currentDate, String startTime,
-         int delay, int tentatives) {
+         int delay, int tentatives, JmxIndicator indicator) {
 
       LocalTime startLocalTime = LocalTimeUtils.parse(startTime);
 
@@ -95,6 +98,13 @@ public class InterruptionTraitementSupportImpl implements
 
          DateTimeFormatter formatter = DateTimeFormat
                .forPattern(Constants.DATE_TIME_PATTERN);
+
+         // renseignement de l'indicateur JMX pour un traitement
+         indicator.setJmxTreatmentState(BulkProgress.INTERRUPTED_TREATMENT);
+         Duration duration = Duration.millis(diffTime);
+         indicator.setInterruptionDelay(duration.getStandardSeconds());
+         indicator.setInterruptionStart(currentDate);
+         indicator.setInterruptionEnd(endDate);
 
          LOG.debug("{} - Reprise prévue à {}", LOG_PREFIX, formatter
                .print(endDate));
@@ -119,6 +129,10 @@ public class InterruptionTraitementSupportImpl implements
          LOG.debug(
                "{} - Réussite de la tentative n°{}/{} de reconnexion à DFCE ",
                new Object[] { LOG_PREFIX, connectionResult.step, tentatives });
+
+         // renseignement de l'indicateur JMX pour un traitement
+         indicator.setJmxTreatmentState(BulkProgress.RESTART_TREATMENT);
+
       }
    }
 

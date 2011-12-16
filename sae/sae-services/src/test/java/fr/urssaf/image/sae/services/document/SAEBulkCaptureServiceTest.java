@@ -24,6 +24,8 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFound
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
+
 import org.apache.commons.lang.ObjectUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -130,12 +132,14 @@ public class SAEBulkCaptureServiceTest {
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
 
       interruption.interruption(EasyMock.anyObject(String.class), EasyMock
-            .anyInt(), EasyMock.anyInt());
+            .anyInt(), EasyMock.anyInt(), EasyMock
+            .anyObject(JmxIndicator.class));
 
       EasyMock.expectLastCall().times(2);
 
       interruption.interruption(EasyMock.anyObject(String.class), EasyMock
-            .anyInt(), EasyMock.anyInt());
+            .anyInt(), EasyMock.anyInt(), EasyMock
+            .anyObject(JmxIndicator.class));
 
       EasyMock.expectLastCall().andThrow(
             new InterruptionTraitementException("starTime", 120, 2,

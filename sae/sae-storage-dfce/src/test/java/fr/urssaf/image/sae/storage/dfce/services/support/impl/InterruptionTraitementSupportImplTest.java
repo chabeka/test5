@@ -12,6 +12,7 @@ import org.junit.Test;
 import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class InterruptionTraitementSupportImplTest {
@@ -21,6 +22,8 @@ public class InterruptionTraitementSupportImplTest {
    private DFCEServicesManager dfceManager;
 
    private DateTime currentDate;
+
+   private JmxIndicator jmxIndicator;
 
    @Before
    public void before() {
@@ -37,6 +40,9 @@ public class InterruptionTraitementSupportImplTest {
             .forPattern("dd-MM-yyyy HH:mm:ss");
 
       currentDate = DateTime.parse("01-01-1999 02:00:01", formatter);
+
+      // on instancie jmxIndicator
+      jmxIndicator = new JmxIndicator();
 
    }
 
@@ -93,7 +99,7 @@ public class InterruptionTraitementSupportImplTest {
       openConnexion(failures);
 
       String start = "02:00:00";
-      support.interruption(currentDate, start, 2, tentatives);
+      support.interruption(currentDate, start, 2, tentatives, jmxIndicator);
 
       // on doit vérifier qu'on ferme bien la connexion
       EasyMock.verify(dfceManager);
@@ -109,7 +115,7 @@ public class InterruptionTraitementSupportImplTest {
 
       try {
 
-         support.interruption(currentDate, start, 2, 2);
+         support.interruption(currentDate, start, 2, 2, jmxIndicator);
 
          Assert.fail("On s'attend à lever une exception de type "
                + InterruptionTraitementException.class);

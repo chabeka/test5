@@ -1,5 +1,7 @@
 package fr.urssaf.image.sae.storage.dfce.services.support;
 
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
+
 /**
  * Service pour permettre d'interrompre un traitement
  * 
@@ -8,6 +10,7 @@ package fr.urssaf.image.sae.storage.dfce.services.support;
 public interface InterruptionTraitementSupport {
 
    // TODO mettre un seul argument pour la config d'interruption
+   // TODO voir comment ne pas passer indicateur JMX dans les arguments
    /**
     * L'interruption du service DFCE est parfois nécessaire pour des questions
     * de maintenance, et programmée à des moments précis pour être redémarré
@@ -23,6 +26,9 @@ public interface InterruptionTraitementSupport {
     *           secondes
     * @param tentatives
     *           Nombre de tentatives de reconnexion
+    * @param indicator
+    *           indicateur JMX pour le traitement
     */
-   void interruption(String startTime, int delay, int tentatives);
+   void interruption(String startTime, int delay, int tentatives,
+         JmxIndicator indicator);
 }

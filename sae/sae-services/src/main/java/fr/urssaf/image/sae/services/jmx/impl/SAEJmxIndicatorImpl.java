@@ -1,8 +1,12 @@
 package fr.urssaf.image.sae.services.jmx.impl;
 
+import java.text.MessageFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
 import fr.urssaf.image.sae.services.document.SAEBulkCaptureService;
 import fr.urssaf.image.sae.services.jmx.SAEJmxIndicator;
 import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
@@ -25,7 +29,7 @@ public class SAEJmxIndicatorImpl implements SAEJmxIndicator {
     * {@inheritDoc}
     */
    public String retrieveExternalTreatmentId() {
-      String IdTreatement = BulkProgress.NO_TREATMENT_ID.toString();
+      String IdTreatement = BulkProgress.NO_TREATMENT_ID.getMessage();
       if (bulkCaptureService.isActive()) {
          JmxIndicator indicator = bulkCaptureService
                .retrieveJmxSAEBulkCaptureIndicator();
@@ -70,11 +74,37 @@ public class SAEJmxIndicatorImpl implements SAEJmxIndicator {
                   BulkProgress.CONTROL_DOCUMENTS)) {
                progress = formatMessage(progress, indicator
                      .getJmxControlIndex(), indicator.getJmxCountDocument());
+            } else if (indicator.getJmxTreatmentState().equals(
+                  BulkProgress.INTERRUPTED_TREATMENT)) {
+
+               // 0 - constante : Capture de masse en pause
+               // 1 - Début de l'interruption en dd/MM/yyyy HH:mm:ss
+               // 2 - Durée de la pause en secondes
+               // 3 - Date de reprise de l'interruption en dd/MM/yyyy HH:mm:ss
+               // 4 - Nombre de documents archivés
+               // 5 - Nombre total de documents à archiver
+
+               Date startDate = indicator.getInterruptionStart().toDate();
+               long delay = indicator.getInterruptionDelay();
+               Date endDate = indicator.getInterruptionEnd().toDate();
+               int countStorage = indicator.getJmxStorageIndex();
+               int countDocument = indicator.getJmxCountDocument();
+
+               progress = MessageFormat.format(INTERRUPTED_TREATMENT_MSG,
+                     "Capture de masse en pause.", startDate, delay, endDate,
+                     countStorage, countDocument);
+
+            } else if (indicator.getJmxTreatmentState().equals(
+                  BulkProgress.RESTART_TREATMENT)) {
+
+               progress = "Reprise de la capture en masse.";
             }
          }
       }
       return progress;
    }
+
+   private static final String INTERRUPTED_TREATMENT_MSG = "{0} Début de la pause : {1,date,dd/MM/yyyy HH:mm:ss}. Durée de la pause : {2,number,#} secondes. Reprise du traitement : {3,date,dd/MM/yyyy HH:mm:ss}. Nombre de documents intégrés : {4,number,#}/{5,number,#}";
 
    /**
     * Permet de formatter le message.

@@ -40,7 +40,11 @@ public enum BulkProgress {
    // en cours d'exécution.
    @Deprecated
    NO_TREATMENT_ID_NO_BULK_STORAGE_BEING(
-         "Aucun identifiant de traitement n'a été trouvé car il n'y pas d'archivage en masse en cours d'exécution.");
+         "Aucun identifiant de traitement n'a été trouvé car il n'y pas d'archivage en masse en cours d'exécution."),
+   // Interruption du traitement en cours
+   INTERRUPTED_TREATMENT("Interruption du traitement en cours."),
+   // Reprise du traitement en cours.
+   RESTART_TREATMENT("Reprise du traitement en cours.");
    // Le message.
    private String message;
 
@@ -50,15 +54,6 @@ public enum BulkProgress {
     * @param message
     */
    BulkProgress(final String message) {
-      this.message = message;
-   }
-
-   /**
-    * @param message
-    *           : Le message qui indique l'état d'avancement de l'insertion en
-    *           masse.
-    */
-   public void setMessage(String message) {
       this.message = message;
    }
 

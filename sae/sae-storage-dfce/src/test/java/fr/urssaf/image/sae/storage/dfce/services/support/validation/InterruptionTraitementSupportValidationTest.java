@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/appliContext-sae-storage-dfce-test.xml" })
@@ -27,19 +28,22 @@ public class InterruptionTraitementSupportValidationTest {
 
    private static final int ARG_TENTATIVES = 2;
 
+   private static final JmxIndicator ARG_JMX_INDICATOR = new JmxIndicator();
+
    @Test
    public void interruption_success() {
 
       InterruptionTraitementSupport support = new InterruptionTraitementSupport() {
 
          @Override
-         public void interruption(String start, int delay, int tentatives) {
+         public void interruption(String start, int delay, int tentatives,
+               JmxIndicator jmxIndicator) {
             // implémentation vide
          }
 
       };
 
-      support.interruption("02:24:18", 120, 2);
+      support.interruption("02:24:18", 120, 2, ARG_JMX_INDICATOR);
 
    }
 
@@ -56,7 +60,8 @@ public class InterruptionTraitementSupportValidationTest {
 
       try {
 
-         support.interruption(start, ARG_DELAY, ARG_TENTATIVES);
+         support.interruption(start, ARG_DELAY, ARG_TENTATIVES,
+               ARG_JMX_INDICATOR);
 
          Assert.fail(FAIL_MESSAGE);
 
@@ -80,7 +85,8 @@ public class InterruptionTraitementSupportValidationTest {
 
       try {
 
-         support.interruption(time, ARG_DELAY, ARG_TENTATIVES);
+         support.interruption(time, ARG_DELAY, ARG_TENTATIVES,
+               ARG_JMX_INDICATOR);
 
          Assert.fail(FAIL_MESSAGE);
 
@@ -102,7 +108,8 @@ public class InterruptionTraitementSupportValidationTest {
 
       try {
 
-         support.interruption(ARG_START, delay, ARG_TENTATIVES);
+         support.interruption(ARG_START, delay, ARG_TENTATIVES,
+               ARG_JMX_INDICATOR);
 
          Assert.fail(FAIL_MESSAGE);
 
@@ -125,7 +132,8 @@ public class InterruptionTraitementSupportValidationTest {
 
       try {
 
-         support.interruption(ARG_START, ARG_DELAY, tentatives);
+         support.interruption(ARG_START, ARG_DELAY, tentatives,
+               ARG_JMX_INDICATOR);
 
          Assert.fail(FAIL_MESSAGE);
 
@@ -134,6 +142,24 @@ public class InterruptionTraitementSupportValidationTest {
          Assert.assertEquals(EXCEPTION_MESSAGE,
                "L'argument 'tentatives' doit être au moins égal à 1.", e
                      .getMessage());
+      }
+   }
+
+   @Test
+   public void interruption_failure_jmxIndicator_empty() {
+
+      try {
+
+         support.interruption(ARG_START, ARG_DELAY, ARG_TENTATIVES, null);
+
+         Assert.fail(FAIL_MESSAGE);
+
+      } catch (IllegalArgumentException e) {
+
+         Assert
+               .assertEquals(EXCEPTION_MESSAGE,
+                     "L'argument 'jmxIndicator' doit être renseigné.", e
+                           .getMessage());
       }
    }
 }

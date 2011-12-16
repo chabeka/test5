@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 /**
  * Classe de validation des arguments en entrée des implémentations du service
@@ -22,7 +23,8 @@ public class InterruptionTraitementSupportValidation {
    private static final String CLASS = "fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport";
 
    private static final String METHOD = "execution(void " + CLASS
-         + ".interruption(*,*,*))" + "&& args(startTime,delay,tentatives)";
+         + ".interruption(*,*,*,*))"
+         + "&& args(startTime,delay,tentatives,jmxIndicator)";
 
    private static final String ARG_EMPTY = "L''argument ''{0}'' doit être renseigné.";
 
@@ -41,9 +43,12 @@ public class InterruptionTraitementSupportValidation {
     *           doit être supérieure à 0
     * @param tentatives
     *           doit être supérieure à 0
+    * @param jmxIndicator
+    *           doit être renseigné
     */
    @Before(METHOD)
-   public final void interruption(String startTime, int delay, int tentatives) {
+   public final void interruption(String startTime, int delay, int tentatives,
+         JmxIndicator jmxIndicator) {
 
       if (StringUtils.isBlank(startTime)) {
 
@@ -67,6 +72,12 @@ public class InterruptionTraitementSupportValidation {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_POSITIF,
                "tentatives"));
+      }
+
+      if (jmxIndicator == null) {
+
+         throw new IllegalArgumentException(MessageFormat.format(ARG_EMPTY,
+               "jmxIndicator"));
       }
 
    }
