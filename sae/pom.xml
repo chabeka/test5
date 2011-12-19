@@ -603,6 +603,13 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>1.0-beta-2</version>
+            <dependencies>
+               <dependency>
+                  <groupId>org.jdom</groupId>
+                  <artifactId>jdom</artifactId>
+                  <version>${org.jdom.version}</version>
+               </dependency>
+            </dependencies>
          </plugin>
          
          
