@@ -55,8 +55,6 @@ import fr.urssaf.image.sae.storage.util.StorageMetadataUtils;
  */
 @Component
 @Qualifier("bulkCaptureHelper")
-@SuppressWarnings( { "PMD.LongVariable", "PMD.ExcessiveImports",
-      "PMD.AvoidInstantiatingObjectsInLoops", "PMD.CyclomaticComplexity" })
 public class BulkCaptureHelper extends CommonIndicator {
    private static final Logger LOGGER = LoggerFactory
          .getLogger(BulkCaptureHelper.class);
@@ -267,14 +265,10 @@ public class BulkCaptureHelper extends CommonIndicator {
     * @param errorType
     */
    private void buildSaeErros(String exceptionMessage, String filePath,
-         SAEBulkErrors errorType) {
+         String errorType) {
       MetadataError error = new MetadataError();
-      error
-            .setCode(ResourceMessagesUtils
-                  .loadMessage(errorType.getErrorType()));
-      error.setMessage(ResourceMessagesUtils.loadMessage(
-            errorType.getMessage(), new File(filePath).getName(),
-            exceptionMessage));
+      error.setCode(errorType);
+      error.setMessage(exceptionMessage);
       errors.add(error);
    }
 
@@ -318,7 +312,7 @@ public class BulkCaptureHelper extends CommonIndicator {
          BulkInsertionResults bulkInsertionResults, int initialDocumentsCount,
          Sommaire sommaire) {
       StorageDocumentOnError badDocumentError = null;
-      UntypedDocumentOnError untypedDocumentOnError = null;
+      // UntypedDocumentOnError untypedDocumentOnError = null;
       Resultats resultats = new Resultats();
       resultats.setBatchMode(TOUT_OU_RIEN);
       resultats.setInitialDocumentsCount(initialDocumentsCount);
@@ -327,27 +321,46 @@ public class BulkCaptureHelper extends CommonIndicator {
       // Traitement archivage en masse a échoué.
       List<StorageDocumentOnError> documentsErrorFromStorage = bulkInsertionResults
             .getStorageDocumentsOnError().getStorageDocumentsOnError();
-      List<UntypedDocumentOnError> untypedDocmentsErrorFromStorage = new ArrayList<UntypedDocumentOnError>();
-      // Cas de la liste StorageDocumentOnError.
-      if (!CollectionUtils.isEmpty(documentsErrorFromStorage)) {
-         for (StorageDocumentOnError documentError : documentsErrorFromStorage) {
-            try {
-               badDocumentError = documentError;
-               untypedDocumentOnError = mappingOnError
-                     .storageDocumentOnErrorToUntypedDocumentOnError(documentError);
-               buildSaeErros(documentError.getCodeError(), documentError
-                     .getFilePath(), SAEBulkErrors.FUNCTIONAL_ERROR);
-               untypedDocumentOnError.setErrors(errors);
-               untypedDocmentsErrorFromStorage.add(untypedDocumentOnError);
 
-            } catch (InvalidSAETypeException except) {
-               buildErrors(badDocumentError, except);
+      if (!CollectionUtils.isEmpty(documentsErrorFromStorage)) {
+
+         List<UntypedDocumentOnError> nonIntegratedDocuments = new ArrayList<UntypedDocumentOnError>();
+         List<UntypedDocument> untypedDocuments = sommaire.getDocuments();
+         int index = 0;
+         for (UntypedDocument doc : untypedDocuments) {
+
+            StorageDocumentOnError docOnError = findDocument(index,
+                  documentsErrorFromStorage);
+
+            if (docOnError == null) {
+               UntypedDocumentOnError newDocOnError = new UntypedDocumentOnError(
+                     doc.getContent(), doc.getUMetadatas(), null);
+               newDocOnError.setFilePath(doc.getFilePath());
+               nonIntegratedDocuments.add(newDocOnError);
+            } else {
+
+               try {
+                  UntypedDocumentOnError newDocOnError = mappingOnError
+                        .storageDocumentOnErrorToUntypedDocumentOnError(docOnError);
+
+                  buildSaeErros(docOnError.getMessageError(), docOnError
+                        .getFilePath(), docOnError.getCodeError());
+                  newDocOnError.setErrors(errors);
+
+                  nonIntegratedDocuments.add(newDocOnError);
+
+               } catch (InvalidSAETypeException e) {
+                  buildErrors(badDocumentError, e);
+               }
+
             }
 
+            index++;
          }
-         untypedDocmentsErrorFromStorage.addAll(getUntypedDocumentsOnError());
+
+         // untypedDocmentsErrorFromStorage.addAll(getUntypedDocumentsOnError());
          resultats.setNonIntegratedDocumentsCount(initialDocumentsCount);
-         resultats.setNonIntegratedDocuments(untypedDocmentsErrorFromStorage);
+         resultats.setNonIntegratedDocuments(nonIntegratedDocuments);
 
          resultats.setIntegratedDocumentsCount(0);
       }
@@ -359,6 +372,19 @@ public class BulkCaptureHelper extends CommonIndicator {
                .size());
       }
       return resultats;
+   }
+
+   private StorageDocumentOnError findDocument(int index,
+         List<StorageDocumentOnError> docsOnErrors) {
+      StorageDocumentOnError docFound = null;
+      for (StorageDocumentOnError docOnError : docsOnErrors) {
+         if (docOnError.getIndex() == index) {
+            docFound = docOnError;
+            break;
+         }
+      }
+
+      return docFound;
    }
 
    /**

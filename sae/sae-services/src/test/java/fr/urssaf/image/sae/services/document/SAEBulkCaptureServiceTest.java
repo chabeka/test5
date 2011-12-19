@@ -7,10 +7,10 @@ import java.util.UUID;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.MDC;
@@ -25,8 +25,6 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
-
-import org.apache.commons.lang.ObjectUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-bulkcapture-test.xml" })
@@ -79,12 +77,16 @@ public class SAEBulkCaptureServiceTest {
       // création de l'URL ECDE pour le sommaire
       urlSommaire = "ecde://" + ecdeSource.getHost() + "/" + TRAITEMENT_REF
             + "/sommaire.xml";
+
+      // instanciation de l'identifiant du traitement de masse
+      String idtreatement = ObjectUtils.toString(UUID.randomUUID());
+      MDC.put("log_contexte_uuid", idtreatement);
    }
 
    @After
    public void after() {
 
-      // EasyMock.reset(interruption);
+      EasyMock.reset(interruption);
    }
 
    private void assertFinTraitementFlag() {
@@ -115,8 +117,7 @@ public class SAEBulkCaptureServiceTest {
    @Test
    public void bulkCapture_success() throws CaptureBadEcdeUrlEx,
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
-      String idtreatement = ObjectUtils.toString(UUID.randomUUID());
-      MDC.put("log_contexte_uuid", idtreatement);
+
       // appel du service de capture en masse
       bulkCapture.bulkCapture(urlSommaire);
 
@@ -127,7 +128,6 @@ public class SAEBulkCaptureServiceTest {
    }
 
    @Test
-   @Ignore("le test ne peut aboutir à cause du mantis n°007788 non résolu")
    public void bulkCapture_failure_interruption() throws CaptureBadEcdeUrlEx,
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
 

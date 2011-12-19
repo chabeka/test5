@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,6 @@ import fr.urssaf.image.sae.storage.util.StorageMetadataUtils;
  */
 @Service
 @Qualifier("insertionService")
-@SuppressWarnings( { "PMD.ExcessiveImports" })
 public class InsertionServiceImpl extends AbstractServices implements
       InsertionService {
    private static final Logger LOGGER = LoggerFactory
@@ -67,7 +67,7 @@ public class InsertionServiceImpl extends AbstractServices implements
    private int totalDocument;
    private JmxIndicator indicator;
 
-   private InterruptionTraitementSupport interruption;
+   private final InterruptionTraitementSupport interruption;
 
    private InterruptionTraitementConfig interruptionConfig;
 
@@ -138,8 +138,6 @@ public class InsertionServiceImpl extends AbstractServices implements
     */
    @Loggable(LogLevel.TRACE)
    @ServiceChecked
-   @SuppressWarnings( { "PMD.AvoidInstantiatingObjectsInLoops",
-         "PMD.CyclomaticComplexity", "PMD.LongVariable" })
    public final BulkInsertionResults bulkInsertStorageDocument(
          final StorageDocuments storageDocuments, final boolean allOrNothing)
          throws InsertionServiceEx {
@@ -164,10 +162,15 @@ public class InsertionServiceImpl extends AbstractServices implements
          indicator.setJmxStorageIndex(jmxStorageIndex);
          indicator.setJmxTreatmentState(BulkProgress.INSERTION_DOCUMENTS);
       }
-      for (StorageDocument storageDocument : Utils
-            .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
 
-         try {
+      StorageDocument currentDocument = null;
+
+      try {
+
+         for (StorageDocument storageDocument : Utils
+               .nullSafeIterable(storageDocuments.getAllStorageDocuments())) {
+
+            currentDocument = storageDocument;
 
             // TODO revoir l'emplacement de l'interruption du traitement de
             // capture
@@ -187,41 +190,56 @@ public class InsertionServiceImpl extends AbstractServices implements
             if (indicator != null) {
                indicator.setJmxStorageIndex(jmxStorageIndex);
             }
-         } catch (InsertionServiceEx insertExcp) {
-            if (storageDocument != null) {
-               StorageDocumentOnError storageDocumentOnError = new StorageDocumentOnError(
-                     storageDocument.getMetadatas(), storageDocument
-                           .getContent() == null ? "DOCERROR!".getBytes()
-                           : storageDocument.getContent(), storageDocument
-                           .getFilePath(), "INSERROR : "
-                           + insertExcp.getMessage());
-               storageDocumentOnError.setMessageError("INSERROR");
-               storageDocFailed.add(storageDocumentOnError);
-            }
-            if (allOrNothing) {
-               LOGGER.debug("{} - Déclenchement de la procédure de rollback",
-                     prefixeTrc);
-               rollback(storageDocDone);
-               // Les documents "rollbackés" ne doivent pas apparaitre dans
-               // BulkInsertionResults
-
-               LOGGER.debug("{} - La procédure de rollback est terminée",
-                     prefixeTrc);
-               storageDocDone.clear();
-               break;
-            }
-
-         } catch (RuntimeException e) {
-
-            if (allOrNothing && CollectionUtils.isNotEmpty(storageDocDone)) {
-
-               String idTraitement = storageDocDone.get(0).getProcessId();
-
-               logRollbackFailure(idTraitement);
-            }
-
-            throw e;
          }
+      } catch (InsertionServiceEx insertExcp) {
+
+         if (currentDocument != null) {
+
+            String codeError = "SAE-CA-BUL001";
+            String messageError = MessageFormat
+                  .format(
+                        "Une erreur interne à l''application est survenue lors de la capture du document {0}. Détails : {1}",
+                        new File(currentDocument.getFilePath()).getName(),
+                        "INSERROR : " + insertExcp.getCodeError());
+
+            StorageDocumentOnError storageDocumentOnError = createStorageDocumentOnError(
+                  currentDocument, codeError, messageError, jmxStorageIndex);
+
+            storageDocFailed.add(storageDocumentOnError);
+         }
+         if (allOrNothing) {
+            LOGGER.debug("{} - Déclenchement de la procédure de rollback",
+                  prefixeTrc);
+            rollback(storageDocDone);
+            // Les documents "rollbackés" ne doivent pas apparaitre dans
+            // BulkInsertionResults
+
+            LOGGER.debug("{} - La procédure de rollback est terminée",
+                  prefixeTrc);
+            storageDocDone.clear();
+
+         }
+
+      } catch (RuntimeException e) {
+
+         if (currentDocument != null) {
+
+            String codeError = "SAE-CA-BUL003";
+            String messageError = "La capture de masse en mode 'Tout ou rien' a été interrompue. Une procédure d'exploitation a été initialisée pour supprimer les données qui auraient pu être stockées.";
+
+            StorageDocumentOnError storageDocumentOnError = createStorageDocumentOnError(
+                  currentDocument, codeError, messageError, jmxStorageIndex);
+
+            storageDocFailed.add(storageDocumentOnError);
+         }
+
+         if (allOrNothing && CollectionUtils.isNotEmpty(storageDocDone)) {
+
+            String idTraitement = storageDocDone.get(0).getProcessId();
+
+            logRollbackFailure(idTraitement);
+         }
+         storageDocDone.clear();
 
       }
 
@@ -231,6 +249,22 @@ public class InsertionServiceImpl extends AbstractServices implements
 
       return new BulkInsertionResults(new StorageDocuments(storageDocDone),
             new StorageDocumentsOnError(storageDocFailed));
+   }
+
+   private StorageDocumentOnError createStorageDocumentOnError(
+         StorageDocument storageDocument, String codeError,
+         String messageError, int index) {
+
+      StorageDocumentOnError storageDocumentOnError = new StorageDocumentOnError(
+            storageDocument.getMetadatas(),
+            storageDocument.getContent() == null ? "DOCERROR!".getBytes()
+                  : storageDocument.getContent(),
+            storageDocument.getFilePath(), codeError);
+      storageDocumentOnError.setMessageError(messageError);
+      storageDocumentOnError.setIndex(index);
+
+      return storageDocumentOnError;
+
    }
 
    private void logRollbackFailure(String idTraitement) {
