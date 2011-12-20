@@ -131,12 +131,12 @@ public class SAEBulkCaptureServiceTest {
    public void bulkCapture_failure_interruption() throws CaptureBadEcdeUrlEx,
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
 
+      // 1er document passe sans interruption
       interruption.interruption(EasyMock.anyObject(String.class), EasyMock
             .anyInt(), EasyMock.anyInt(), EasyMock
             .anyObject(JmxIndicator.class));
 
-      EasyMock.expectLastCall().times(2);
-
+      // 2ième document passe avec une interruption
       interruption.interruption(EasyMock.anyObject(String.class), EasyMock
             .anyInt(), EasyMock.anyInt(), EasyMock
             .anyObject(JmxIndicator.class));

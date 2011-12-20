@@ -18,18 +18,18 @@
             <ns2:objetNumerique>
                 <ns2:cheminEtNomDuFichier>attestation2.pdf</ns2:cheminEtNomDuFichier>
             </ns2:objetNumerique>
-            <ns2:erreurs/>
-        </ns2:nonIntegratedDocument>
-        <ns2:nonIntegratedDocument>
-            <ns2:objetNumerique>
-                <ns2:cheminEtNomDuFichier>attestation3.pdf</ns2:cheminEtNomDuFichier>
-            </ns2:objetNumerique>
             <ns2:erreurs>
                 <ns2:erreur>
                     <ns2:code>SAE-CA-BUL003</ns2:code>
                     <ns2:libelle>La capture de masse en mode 'Tout ou rien' a été interrompue. Une procédure d'exploitation a été initialisée pour supprimer les données qui auraient pu être stockées.</ns2:libelle>
                 </ns2:erreur>
             </ns2:erreurs>
+        </ns2:nonIntegratedDocument>
+        <ns2:nonIntegratedDocument>
+            <ns2:objetNumerique>
+                <ns2:cheminEtNomDuFichier>attestation3.pdf</ns2:cheminEtNomDuFichier>
+            </ns2:objetNumerique>
+            <ns2:erreurs/>
         </ns2:nonIntegratedDocument>
     </nonIntegratedDocuments>
     <nonIntegratedVirtualDocuments/>
