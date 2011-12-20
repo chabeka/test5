@@ -603,13 +603,6 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>1.0-beta-2</version>
-            <dependencies>
-               <dependency>
-                  <groupId>dom4j</groupId>
-                  <artifactId>dom4j</artifactId>
-                  <version>1.6.1</version>
-               </dependency>
-            </dependencies>
          </plugin>
          
          
