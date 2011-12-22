@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -20,6 +18,9 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.TagControlException;
 
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
