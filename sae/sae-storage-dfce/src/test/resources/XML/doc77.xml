@@ -7,7 +7,7 @@
 		<typeDoc>PDF</typeDoc>
 		<categories>
 			<category>
-				<name>sm_creation_date</name>
+				<name>SM_CREATION_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
@@ -15,7 +15,7 @@
 				<value>11.1</value>
 			</category>
 			<category>
-				<name>sm_life_cycle_reference_date</name>
+				<name>SM_LIFE_CYCLE_REFERENCE_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
@@ -27,7 +27,7 @@
 				<value>999999</value>
 			</category>
 			<category>
-				<name>sm_title</name>
+				<name>SM_TITLE</name>
 				<value>APPEL ET NOTIFICATION TI du 49116419000010</value>
 			</category>
 			<category>

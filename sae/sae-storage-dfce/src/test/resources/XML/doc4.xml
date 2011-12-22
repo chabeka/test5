@@ -7,15 +7,15 @@
 		<filePath>src/test/resources/PDF/doc4.PDF</filePath>
 		<categories>
 			<category>
-				<name>sm_title</name>
+				<name>SM_TITLE</name>
 				<value>NOTIFICATIONS DE REMBOURSEMENT du 41882050200025</value>
 			</category>
 			<category>
-				<name>sm_creation_date</name>
+				<name>SM_CREATION_DATE</name>
 				<value>2010-12-11</value>
 			</category>
 			<category>
-				<name>sm_document_type</name>
+				<name>SM_DOCUMENT_TYPE</name>
 				<value>2.2.3.2.2</value>
 			</category>
 			<category>
@@ -23,7 +23,7 @@
 				<value>1.1</value>
 			</category>
 			<category>
-				<name>sm_life_cycle_reference_date</name>
+				<name>SM_LIFE_CYCLE_REFERENCE_DATE</name>
 				<value>2010-12-01</value>
 			</category>
 			<category>

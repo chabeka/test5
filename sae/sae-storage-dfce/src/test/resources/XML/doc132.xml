@@ -7,15 +7,15 @@
 		<typeDoc>PDF</typeDoc>
 		<categories>
 			<category>
-				<name>sm_title</name>
+				<name>SM_TITLE</name>
 				<value>SUIVI DES CONTRATS EXONERATION du 40099704500044</value>
 			</category>
 				<category>
-				<name>sm_creation_date</name>
+				<name>SM_CREATION_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
-				<name>sm_document_type</name>
+				<name>SM_DOCUMENT_TYPE</name>
 				<value>2.2.3.2.2</value>
 			</category>
 			<category>
@@ -27,7 +27,7 @@
 				<value>doc1.PDF</value>
 			</category>
 			<category>
-				<name>sm_life_cycle_reference_date</name>
+				<name>SM_LIFE_CYCLE_REFERENCE_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>

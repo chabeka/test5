@@ -7,7 +7,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.service.ServiceProvider;
 
@@ -20,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import com.docubase.dfce.exception.TagControlException;
 
 import fr.urssaf.image.sae.storage.dfce.annotations.Loggable;
 import fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked;
@@ -261,7 +262,7 @@ public class InsertionServiceImpl extends AbstractServices implements
                   : storageDocument.getContent(),
             storageDocument.getFilePath(), codeError);
       storageDocumentOnError.setMessageError(messageError);
-      storageDocumentOnError.setIndex(index);
+      storageDocumentOnError.setIndex(index);  
 
       return storageDocumentOnError;
 

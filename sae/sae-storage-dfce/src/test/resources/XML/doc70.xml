@@ -7,15 +7,15 @@
 		<typeDoc>PDF</typeDoc>
 		<categories>
 			<category>
-				<name>sm_title</name>
+				<name>SM_TITLE</name>
 				<value>RADIATION AUTO ENTREPRENEUR du 0115683S02</value>
 			</category>
 			<category>
-				<name>sm_creation_date</name>
+				<name>SM_CREATION_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
-				<name>sm_document_type</name>
+				<name>SM_DOCUMENT_TYPE</name>
 				<value>1.2.3.1.4</value>
 			</category>
 			<category>
@@ -27,7 +27,7 @@
 				<value>11.1</value>
 			</category>
 			<category>
-				<name>sm_life_cycle_reference_date</name>
+				<name>SM_LIFE_CYCLE_REFERENCE_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>

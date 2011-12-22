@@ -7,7 +7,7 @@
 		<typeDoc>PDF</typeDoc>
 		<categories>
 			<category>
-				<name>sm_title</name>
+				<name>SM_TITLE</name>
 				<value>NOTIFICATIONS DE REMBOURSEMENT du 41882050200023</value>
 			</category>
 			<category>
@@ -16,7 +16,7 @@
 			</category>
 		
 			<category>
-				<name>sm_document_type</name>
+				<name>SM_DOCUMENT_TYPE</name>
 				<value>2.3.1.1.12</value>
 			</category>
 			<category>
@@ -24,7 +24,7 @@
 				<value>11.1</value>
 			</category>
 			<category>
-				<name>sm_life_cycle_reference_date</name>
+				<name>SM_LIFE_CYCLE_REFERENCE_DATE</name>
 				<value>2011-12-01</value>
 			</category>
 			<category>
@@ -122,11 +122,11 @@
 				<value>P</value>
 			</category>
             <category>
-               <name>sm_digest_algorithm</name>
+               <name>SM_DIGEST_ALGORITHM</name>
                <value>SHA-1</value>
             </category>
             <category>
-               <name>sm_digest</name>
+               <name>SM_DIGEST</name>
                <value>a2f93f1f121ebba0faef2c0596f2f126eacae77b</value>
             </category>
 		</categories>
