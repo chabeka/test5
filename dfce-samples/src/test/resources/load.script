@@ -20,33 +20,30 @@ use Docubase;
 create column family TermInfo
     with comparator = 'CompositeType(UUIDType, UUIDType, UTF8Type)';
 
-create column family TermInfoRange
-    with comparator = 'CompositeType(UTF8Type, UUIDType, UUIDType, UTF8Type)';
-
-    
 create column family TermInfoRangeDate
-    with comparator = 'CompositeType(UTF8Type, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(UTF8Type, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeDatetime
-    with comparator = 'CompositeType(UTF8Type, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(UTF8Type, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeDouble
-    with comparator = 'CompositeType(LongType, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(LongType, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeFloat
-    with comparator = 'CompositeType(IntegerType, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(IntegerType, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeInteger
-    with comparator = 'CompositeType(IntegerType, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(IntegerType, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeLong
-    with comparator = 'CompositeType(LongType, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(LongType, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeString
-    with comparator = 'CompositeType(UTF8Type, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(UTF8Type, UUIDType, UTF8Type)';
     
 create column family TermInfoRangeUUID
-    with comparator = 'CompositeType(UTF8Type, UUIDType, UUIDType, UTF8Type)';
+    with comparator = 'CompositeType(UTF8Type, UUIDType, UTF8Type)';
+
 
 create column family DocInfo 
     with default_validation_class = BytesType;
@@ -60,6 +57,7 @@ create column family Documents
     and column_metadata = [
     {column_name: 72656655554944, validation_class: BytesType, index_name: refUUID_idx, index_type: KEYS}
     ];
+
 
 /* 
 baseId in hex = 626173654964
@@ -93,7 +91,7 @@ create column family CompositeIndexesReference
     and rows_cached = 100
     and keys_cached = 0;
 
-create column family IndexCriteriaReference
+create column family IndexReference
     with comparator = BytesType
     and rows_cached = 100
     and keys_cached = 0;

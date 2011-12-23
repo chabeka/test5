@@ -6,20 +6,18 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.user.User;
-import net.docubase.toolkit.model.user.UserGroup;
 import net.docubase.toolkit.model.user.UserPermission;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 
 public class UserAdministrationClientTest extends AbstractTestBase {
     private String GROUP_NAME = "groupName" + UUID.randomUUID();
     private User user;
-    private UserGroup userGroup;
     private final String userNameRandom = "userName" + UUID.randomUUID();
     private final String password = "password";
     private final Set<String> baseNames = new HashSet<String>();

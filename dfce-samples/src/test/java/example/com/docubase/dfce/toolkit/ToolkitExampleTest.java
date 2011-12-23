@@ -9,10 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -31,34 +27,57 @@ import net.docubase.toolkit.service.administration.UserAdministrationService;
 import net.docubase.toolkit.service.ged.SearchService;
 import net.docubase.toolkit.service.ged.StoreService;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.SearchQueryParseException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 @RunWith(JUnit4.class)
 public class ToolkitExampleTest {
     private static final String TEST_BASE_ID = "TestBase";
 
+    /** The logger. */
+    private static Logger logger = Logger.getLogger(ToolkitExampleTest.class);
+
     private ServiceProvider serviceProvider;
 
     private Base testBase;
 
-    public static final String CIVILITY = "CIVILITY";
-    public static final String NAME = "NAME";
-    public static final String NB_NOVELS = "NB_NOVELS";
-    public static final String BIRTHDATE = "BIRTHDATE";
+    public static final String CIVILITY = "civility";
+    public static final String NAME = "name";
+    public static final String NB_NOVELS = "nb_novels";
+    public static final String BIRTHDATE = "birthdate";
 
-    private ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
+    private final ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
 
     @Before
     public void before() throws ObjectAlreadyExistsException {
+
+	String url = "";
+	// Load test configuration.
+	Configuration config;
+	try {
+	    config = new PropertiesConfiguration("test.properties");
+	    url = config.getString("test.server.1.url");
+	} catch (ConfigurationException e) {
+	    logger.error("Fail to load configuration from test.properties", e);
+	    fail();
+	}
+	logger.info("Configuration loaded from test.properties");
+
 	serviceProvider = ServiceProvider.newServiceProvider();
-	serviceProvider.connect("_ADMIN", "DOCUBASE",
-		"http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/");
+	serviceProvider.connect("_ADMIN", "DOCUBASE", url);
 
 	createUser();
 	createCategories();
@@ -223,7 +242,7 @@ public class ToolkitExampleTest {
 	// connecting to DFCE
 	ServiceProvider serviceProvider = ServiceProvider.newServiceProvider();
 	serviceProvider.connect("User", "Password",
-		"http://cer69-ds4int.cer69.recouv:8080/dfce-webapp/toolkit/");
+		"http://cer69imageint9.cer69.recouv:8080/dfce-webapp/toolkit/");
 
 	// testing if server up
 	assertTrue(serviceProvider.isServerUp());

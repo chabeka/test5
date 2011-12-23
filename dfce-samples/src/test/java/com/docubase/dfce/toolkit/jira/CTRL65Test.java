@@ -9,9 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
@@ -19,6 +16,9 @@ import net.docubase.toolkit.service.ged.SearchService.DateFormat;
 
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.SearchQueryParseException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class CTRL65Test extends AbstractCRTLTest {
@@ -40,9 +40,6 @@ public class CTRL65Test extends AbstractCRTLTest {
 
 	document = ToolkitFactory.getInstance().createDocumentTag(base);
 	document.addCriterion(NCE, NCE_VALUE);
-
-	Calendar calendar = Calendar.getInstance();
-	calendar.set(2011, 9, 17);
 	document.addCriterion(DATE,
 		new GregorianCalendar(2011, 9, 17).getTime());
 
@@ -57,7 +54,7 @@ public class CTRL65Test extends AbstractCRTLTest {
 	document = ToolkitFactory.getInstance().createDocumentTag(base);
 	document.addCriterion(NCE, NCE_VALUE);
 
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.set(2011, 9, 17);
 	document.addCriterion(DATE, calendar.getTime());
 
@@ -80,7 +77,7 @@ public class CTRL65Test extends AbstractCRTLTest {
     public void testDate() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
 	SearchResult searchResult = serviceProvider.getSearchService().search(
-		"nce:" + NCE_VALUE + " AND date:20111017", 10, base);
+		NCE + ":" + NCE_VALUE + " AND " + DATE + ":20111017", 10, base);
 	List<Document> documents = searchResult.getDocuments();
 	assertEquals(3, documents.size());
 	Set<String> fileNames = new HashSet<String>();

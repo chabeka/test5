@@ -4,8 +4,6 @@ import static junit.framework.Assert.*;
 
 import java.util.List;
 
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -15,6 +13,8 @@ import net.docubase.toolkit.model.search.SearchResult;
 
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.SearchQueryParseException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -61,7 +61,7 @@ public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testCompositeSearch() throws ExceededSearchLimitException,
-	    SearchQueryParseException {
+	    SearchQueryParseException, InterruptedException {
 
 	ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
 	BaseCategory baseCategory0 = base.getBaseCategory(catNames[0]);
@@ -95,8 +95,13 @@ public class IndexCompositeTest extends AbstractTestCaseCreateAndPrepareBase {
 
 	assertNotNull(compositeIndex);
 
-	String query = category1.getFormattedName() + ":TestComposite10 AND "
-		+ category2.getFormattedName() + ":Joker10";
+	Thread.sleep(1000); // on attend que l'index composite se recalcule
+
+	serviceProvider.getStorageAdministrationService()
+		.updateAllIndexesUsageCount();
+
+	String query = category1.getName() + ":TestComposite10 AND "
+		+ category2.getName() + ":Joker10";
 
 	SearchResult search = serviceProvider.getSearchService().search(query,
 		10000, base);

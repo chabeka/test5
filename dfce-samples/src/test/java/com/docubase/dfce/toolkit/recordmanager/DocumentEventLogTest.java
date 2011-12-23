@@ -11,8 +11,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -24,6 +22,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 

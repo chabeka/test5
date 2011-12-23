@@ -13,10 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 import junit.framework.TestCase;
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -31,14 +27,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.docubase.dfce.commons.indexation.SystemFieldName;
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.SearchQueryParseException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class MultibaseTest extends AbstractTestBase {
-    private static final String CATA = "MBCode Fournisseur";
-    private static final String CATB = "MBNo Serie";
-    private static final String CATC = "Prix Vente";
-    private static final String CATD = "Facultatif";
+    private static final String CATA = "code_fournisseur";
+    private static final String CATB = "no_serie";
+    private static final String CATC = "prix";
+    private static final String CATD = "facultatif";
 
     private static Base base1;
     private static Base base2;
@@ -136,12 +136,10 @@ public class MultibaseTest extends AbstractTestBase {
 	 */
 	Category categoryA = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATA);
-	String query1 = categoryA.getFormattedName() + ":"
-		+ catValues.get(CATA);
+	String query1 = categoryA.getName() + ":" + catValues.get(CATA);
 	searchMono(base1, query1, 10, 1);
 
-	String query2 = categoryA.getFormattedName() + ":"
-		+ catValues.get(CATA);
+	String query2 = categoryA.getName() + ":" + catValues.get(CATA);
 	searchMono(base2, query2, 10, 1);
 
 	/*
@@ -198,9 +196,8 @@ public class MultibaseTest extends AbstractTestBase {
 	    SearchQueryParseException {
 	Category category = serviceProvider.getStorageAdministrationService()
 		.getCategory(CATA);
-	String query = category.getFormattedName() + ":Docubase";
-	SearchResult multiBaseSearch = serviceProvider.getSearchService()
-		.multiBaseSearch(query, 100, null, 1);
+	String query = category.getName() + ":Docubase";
+	serviceProvider.getSearchService().multiBaseSearch(query, 100, null, 1);
     }
 
     private static void storeDoc(Base target, String title,

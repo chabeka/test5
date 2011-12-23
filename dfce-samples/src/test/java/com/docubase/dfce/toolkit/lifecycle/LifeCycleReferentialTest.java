@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import java.util.Set;
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.reference.LifeCycleLengthUnit;
 import net.docubase.toolkit.model.reference.LifeCycleRule;
 
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class LifeCycleReferentialTest extends

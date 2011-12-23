@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import junit.framework.Assert;
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -27,6 +25,9 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.TagControlException;
 
 /**
  * This class provide a default template implementation for integration testing

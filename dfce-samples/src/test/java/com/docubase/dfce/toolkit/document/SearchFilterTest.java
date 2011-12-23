@@ -1,9 +1,6 @@
 package com.docubase.dfce.toolkit.document;
 
 import static junit.framework.Assert.*;
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -15,6 +12,9 @@ import net.docubase.toolkit.model.search.SearchResult;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.SearchQueryParseException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
 public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -100,12 +100,12 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
-		.addTermFilter(company.getFormattedName(), "spam",
+		.addTermFilter(company.getName(), "spam",
 			ChainedFilterOperator.AND)
-		.addTermFilter(owner.getFormattedName(), "bob",
+		.addTermFilter(owner.getName(), "bob",
 			ChainedFilterOperator.AND);
 	SearchResult result = serviceProvider.getSearchService().search(
-		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
+		key.getName() + ":key*", 1000, base, chainedFilter);
 
 	assertEquals(50, result.getTotalHits());
     }
@@ -116,12 +116,12 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
-		.addTermFilter(company.getFormattedName(), "spam",
+		.addTermFilter(company.getName(), "spam",
 			ChainedFilterOperator.OR)
-		.addTermFilter(company.getFormattedName(), "at&t",
+		.addTermFilter(company.getName(), "at&t",
 			ChainedFilterOperator.OR);
 	SearchResult result = serviceProvider.getSearchService().search(
-		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
+		key.getName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(200, result.getTotalHits());
 
     }
@@ -132,11 +132,11 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
-		.addTermFilter(owner.getFormattedName(), "bob",
+		.addTermFilter(owner.getName(), "bob",
 			ChainedFilterOperator.ANDNOT);
 
 	SearchResult result = serviceProvider.getSearchService().search(
-		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
+		key.getName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(100, result.getTotalHits());
     }
 
@@ -145,9 +145,9 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	    throws ExceededSearchLimitException, SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory.getInstance()
 		.createChainedFilter()
-		.addIntRangeFilter(id.getFormattedName(), 7, 47, false, false);
+		.addIntRangeFilter(id.getName(), 7, 47, false, false);
 	SearchResult result = serviceProvider.getSearchService().search(
-		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
+		key.getName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(50, result.getTotalHits());
 
     }
@@ -157,9 +157,9 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	    throws ExceededSearchLimitException, SearchQueryParseException {
 	ChainedFilter chainedFilter = ToolkitFactory.getInstance()
 		.createChainedFilter()
-		.addIntRangeFilter(id.getFormattedName(), 7, 47, true, true);
+		.addIntRangeFilter(id.getName(), 7, 47, true, true);
 	SearchResult result = serviceProvider.getSearchService().search(
-		key.getFormattedName() + ":key*", 1000, base, chainedFilter);
+		key.getName() + ":key*", 1000, base, chainedFilter);
 	assertEquals(150, result.getTotalHits());
 
     }
@@ -170,14 +170,14 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
 	ChainedFilter chainedFilter = ToolkitFactory
 		.getInstance()
 		.createChainedFilter()
-		.addTermFilter(company.getFormattedName(), "spam",
+		.addTermFilter(company.getName(), "spam",
 			ChainedFilterOperator.AND)
-		.addTermFilter(owner.getFormattedName(), "bob",
+		.addTermFilter(owner.getName(), "bob",
 			ChainedFilterOperator.AND)
-		.addTermFilter(owner.getFormattedName(), "sue",
+		.addTermFilter(owner.getName(), "sue",
 			ChainedFilterOperator.OR);
 	SearchResult result = serviceProvider.getSearchService().search(
-		number.getFormattedName() + ":[1 TO 10]", 1000, base,
+		number.getName() + ":[1 TO 10]", 1000, base,
 		chainedFilter);
 
 	assertEquals(10, result.getTotalHits());
@@ -188,8 +188,8 @@ public class SearchFilterTest extends AbstractTestCaseCreateAndPrepareBase {
     public void testNumericRangeQuery() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
 	SearchResult result = serviceProvider.getSearchService().search(
-		owner.getFormattedName() + ":bob AND "
-			+ number.getFormattedName() + ":[1 TO 20]", 1000, base);
+		owner.getName() + ":bob AND "
+			+ number.getName() + ":[1 TO 20]", 1000, base);
 	assertEquals(10, result.getTotalHits());
     }
 }

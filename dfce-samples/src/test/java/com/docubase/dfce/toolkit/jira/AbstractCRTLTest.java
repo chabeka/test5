@@ -1,6 +1,5 @@
 package com.docubase.dfce.toolkit.jira;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -10,6 +9,7 @@ import net.docubase.toolkit.model.reference.Category;
 import org.junit.After;
 import org.junit.Before;
 
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 
 public abstract class AbstractCRTLTest extends AbstractTestBase {

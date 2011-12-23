@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import junit.framework.Assert;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.base.CategoryDataType;
@@ -17,6 +16,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class DictionaryTest extends AbstractTestCaseCreateAndPrepareBase {

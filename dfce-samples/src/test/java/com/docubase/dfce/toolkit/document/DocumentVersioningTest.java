@@ -12,8 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import junit.framework.Assert;
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.document.Document;
 
 import org.apache.commons.codec.binary.Hex;
@@ -22,6 +20,8 @@ import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 

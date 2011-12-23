@@ -5,9 +5,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -18,6 +15,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.SearchQueryParseException;
 import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
@@ -101,7 +101,7 @@ public class SearchSecurityTest extends AbstractTestCaseCreateAndPrepareBase {
     private static void createAdultRestrictedUser()
 	    throws ObjectAlreadyExistsException {
 	UserSearchFilter searchFilter = ToolkitFactory.getInstance()
-		.createSearchFilter(c1.getFormattedName(), "adulte");
+		.createSearchFilter(c1.getName(), "adulte");
 	List<UserSearchFilter> filters = new ArrayList<UserSearchFilter>();
 	filters.add(searchFilter);
 	serviceProvider.getUserAdministrationService().createUser(
@@ -112,9 +112,9 @@ public class SearchSecurityTest extends AbstractTestCaseCreateAndPrepareBase {
     private static void createMaleAdultAndAdoRestrictedUser()
 	    throws ObjectAlreadyExistsException {
 	UserSearchFilter searchFilterAdultAndAdo = ToolkitFactory.getInstance()
-		.createSearchFilter(c1.getFormattedName(), "adulte", "ado");
+		.createSearchFilter(c1.getName(), "adulte", "ado");
 	UserSearchFilter searchFilterMale = ToolkitFactory.getInstance()
-		.createSearchFilter(c2.getFormattedName(), "masculin");
+		.createSearchFilter(c2.getName(), "masculin");
 	List<UserSearchFilter> filters = new ArrayList<UserSearchFilter>();
 	filters.add(searchFilterAdultAndAdo);
 	filters.add(searchFilterMale);
@@ -126,8 +126,7 @@ public class SearchSecurityTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testSimpleQuery() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
-	String query = c1.getFormattedName() + ":adulte OR "
-		+ c1.getFormattedName() + ":ado";
+	String query = c1.getName() + ":adulte OR " + c1.getName() + ":ado";
 	assertEquals(40, searchLucene(query, 1000, null));
 
 	serviceProvider.connect(ADULT_RESTRICTED_USERNAME,
@@ -144,10 +143,10 @@ public class SearchSecurityTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testCompositeQuery() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
-	String query = "(" + c1.getFormattedName() + ":adulte" + " AND "
-		+ c2.getFormattedName() + ":masculin" + ") OR ("
-		+ c1.getFormattedName() + ":enfant" + " AND "
-		+ c2.getFormattedName() + ":feminin)";
+	String query = "(" + c1.getName() + ":adulte" + " AND "
+		+ c2.getName() + ":masculin" + ") OR ("
+		+ c1.getName() + ":enfant" + " AND "
+		+ c2.getName() + ":feminin)";
 	assertEquals(20, searchLucene(query, 1000, null));
 
 	serviceProvider.connect(ADULT_RESTRICTED_USERNAME,
@@ -164,8 +163,8 @@ public class SearchSecurityTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testRange() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
-	String query = c2.getFormattedName() + ":masculin" + " AND "
-		+ c1.getFormattedName() + ":[adulte TO enfant]";
+	String query = c2.getName() + ":masculin" + " AND "
+		+ c1.getName() + ":[adulte TO enfant]";
 	assertEquals(20, searchLucene(query, 1000, null));
 
 	serviceProvider.connect(ADULT_RESTRICTED_USERNAME,
@@ -182,8 +181,8 @@ public class SearchSecurityTest extends AbstractTestCaseCreateAndPrepareBase {
     @Test
     public void testAnd() throws ExceededSearchLimitException,
 	    SearchQueryParseException {
-	String query = c1.getFormattedName() + ":adulte" + " AND "
-		+ c4.getFormattedName() + ":10";
+	String query = c1.getName() + ":adulte" + " AND "
+		+ c4.getName() + ":10";
 	assertEquals(30, searchLucene(query, 1000, null));
 
 	serviceProvider.connect(ADULT_RESTRICTED_USERNAME,

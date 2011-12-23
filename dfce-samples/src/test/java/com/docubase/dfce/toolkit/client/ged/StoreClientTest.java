@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.document.Document;
@@ -19,6 +17,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 
 public class StoreClientTest extends AbstractTestBase {

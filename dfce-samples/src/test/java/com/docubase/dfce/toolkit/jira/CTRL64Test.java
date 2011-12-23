@@ -2,9 +2,6 @@ package com.docubase.dfce.toolkit.jira;
 
 import java.io.InputStream;
 
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.search.SearchResult;
@@ -12,6 +9,9 @@ import net.docubase.toolkit.model.search.SearchResult;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.SearchQueryParseException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class CTRL64Test extends AbstractCRTLTest {

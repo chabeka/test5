@@ -4,29 +4,34 @@ import java.util.Set;
 import java.util.UUID;
 
 import junit.framework.Assert;
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
 import net.docubase.toolkit.model.base.CategoryDataType;
 import net.docubase.toolkit.model.reference.Category;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 
 public class CategoryReferenceTest extends AbstractTestBase {
-    private static final String CATEGORY_CODE1 = "CATEGORY_CODE1"
-	    + UUID.randomUUID();
-    private static final String CATEGORY_CODE2 = "CATEGORY_CODE2"
-	    + UUID.randomUUID();
-    private static final String CATEGORY_CODE3 = "CATEGORY_CODE3"
-	    + UUID.randomUUID();
-    private static final String CATEGORY_CODE4 = "CATEGORY_CODE4"
-	    + UUID.randomUUID();
+    private static String CATEGORY_CODE1;
+    private static String CATEGORY_CODE2;
+    private static String CATEGORY_CODE3;
+    private static String CATEGORY_CODE4;
 
     @BeforeClass
     public static void setUp() {
 	connect();
+	CATEGORY_CODE1 = StringUtils.deleteWhitespace(StringUtils.replace(
+		"CATEGORY_CODE1" + UUID.randomUUID(), "-", StringUtils.EMPTY));
+	CATEGORY_CODE2 = StringUtils.deleteWhitespace(StringUtils.replace(
+		"CATEGORY_CODE2" + UUID.randomUUID(), "-", StringUtils.EMPTY));
+	CATEGORY_CODE3 = StringUtils.deleteWhitespace(StringUtils.replace(
+		"CATEGORY_CODE3" + UUID.randomUUID(), "-", StringUtils.EMPTY));
+	CATEGORY_CODE4 = StringUtils.deleteWhitespace(StringUtils.replace(
+		"CATEGORY_CODE4" + UUID.randomUUID(), "-", StringUtils.EMPTY));
     }
 
     @AfterClass

@@ -4,12 +4,12 @@ import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
 
 import org.junit.Test;
 
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class CTRL61Test extends AbstractCRTLTest {

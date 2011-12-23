@@ -118,7 +118,7 @@ public class CTRL28Test extends AbstractTestCaseCreateAndPrepareBase {
 	    }
 	    InputStream extractedDoc = null;
 	    BaseCategory baseCategory = base.getBaseCategory(catNames[0]);
-	    String fname = baseCategory.getFormattedName();
+	    String fname = baseCategory.getName();
 	    String luceneQuery = String.format("%s:%s", fname, docAppliSource);
 	    SearchResult result = localServiceProvider.getSearchService()
 		    .search(luceneQuery, 100, base, null);

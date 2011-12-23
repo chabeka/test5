@@ -9,15 +9,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.document.impl.DocumentImpl;
 import net.docubase.toolkit.model.reference.LifeCycleLengthUnit;
 
 import org.junit.Test;
 
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 

@@ -6,10 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.document.Document;
 import net.docubase.toolkit.model.reference.FileReference;
@@ -18,6 +14,10 @@ import net.docubase.toolkit.service.ged.SearchService;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.SearchQueryParseException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 import com.docubase.dfce.toolkit.base.AbstractTestCaseCreateAndPrepareBase;
 
@@ -26,7 +26,7 @@ public class CTRL54Test extends AbstractTestCaseCreateAndPrepareBase {
     private final ToolkitFactory toolkitFactory = ToolkitFactory.getInstance();
     private final SearchService searchService = serviceProvider
 	    .getSearchService();
-    private final String c1Query = category1.getFormattedName() + ":index1";
+    private final String c1Query = category1.getName() + ":index1";
     private InputStream inputStream;
 
     @Before

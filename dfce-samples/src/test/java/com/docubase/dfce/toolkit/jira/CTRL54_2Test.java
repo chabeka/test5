@@ -4,10 +4,6 @@ import static junit.framework.Assert.*;
 
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.FrozenDocumentException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -22,6 +18,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.SearchQueryParseException;
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 import com.docubase.dfce.toolkit.TestUtils;
 
@@ -111,7 +111,7 @@ public class CTRL54_2Test extends AbstractTestBase {
 
 	// Check that document have been properly stored in base1 and base2.
 	SearchResult search = serviceProvider.getSearchService().search(
-		name.getFormattedName() + ":[name000 TO name019]", 200, base1);
+		name.getName() + ":[name000 TO name019]", 200, base1);
 	assertEquals(20, search.getTotalHits());
     }
 
@@ -121,7 +121,7 @@ public class CTRL54_2Test extends AbstractTestBase {
 
 	// Check that document have been properly stored in base1 and base2.
 	SearchResult search = serviceProvider.getSearchService().search(
-		name.getFormattedName() + ":name*", 200, base1);
+		name.getName() + ":name*", 200, base1);
 	assertEquals(20, search.getTotalHits());
     }
 
@@ -132,16 +132,16 @@ public class CTRL54_2Test extends AbstractTestBase {
 
 	// Check that document have been properly stored in base1 and base2.
 	SearchResult search = serviceProvider.getSearchService().search(
-		name.getFormattedName() + ":[name000 TO name019]", 200, base1);
+		name.getName() + ":[name000 TO name019]", 200, base1);
 	assertEquals(20, search.getTotalHits());
 
 	search = serviceProvider.getSearchService().search(
-		name.getFormattedName() + ":[name000 TO name019]", 200, base2);
+		name.getName() + ":[name000 TO name019]", 200, base2);
 	assertEquals(20, search.getTotalHits());
 
 	// Search all documents that share the same id value on every base
 	search = serviceProvider.getSearchService().multiBaseSearch(
-		id.getFormattedName() + ":testDelete", 100);
+		id.getName() + ":testDelete", 100);
 	assertEquals(40, search.getTotalHits());
 
 	// We delete all documents.
@@ -151,7 +151,7 @@ public class CTRL54_2Test extends AbstractTestBase {
 
 	// Check that all documents have been properly deleted
 	search = serviceProvider.getSearchService().multiBaseSearch(
-		name.getFormattedName() + ":[name000 TO name019]", 100);
+		name.getName() + ":[name000 TO name019]", 100);
 	assertEquals(0, search.getTotalHits());
     }
 }

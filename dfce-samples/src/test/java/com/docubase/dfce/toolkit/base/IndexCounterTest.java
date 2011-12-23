@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import net.docubase.toolkit.exception.ged.TagControlException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
@@ -19,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.TagControlException;
 import com.docubase.dfce.toolkit.TestUtils;
 
 public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
@@ -79,7 +79,6 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testDocInsertionCounts() throws TagControlException {
-
 	Category category0Reference = serviceProvider
 		.getStorageAdministrationService().getCategory(catNames[0]);
 	Category category1Reference = serviceProvider
@@ -118,8 +117,6 @@ public class IndexCounterTest extends AbstractTestCaseCreateAndPrepareBase {
 
     @Test
     public void testDocDeleteCounts() throws Exception {
-	// assertTrue("La base " + BASEID + " n'est pas démarrée.",
-	// base.isStarted());
 	Category category0Reference = serviceProvider
 		.getStorageAdministrationService().getCategory(catNames[0]);
 	Category category1Reference = serviceProvider

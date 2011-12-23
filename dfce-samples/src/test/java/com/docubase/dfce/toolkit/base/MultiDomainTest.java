@@ -12,9 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import junit.framework.TestCase;
-import net.docubase.toolkit.exception.ObjectAlreadyExistsException;
-import net.docubase.toolkit.exception.ged.ExceededSearchLimitException;
-import net.docubase.toolkit.exception.ged.SearchQueryParseException;
 import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
@@ -29,6 +26,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
+import com.docubase.dfce.exception.ObjectAlreadyExistsException;
+import com.docubase.dfce.exception.SearchQueryParseException;
 import com.docubase.dfce.toolkit.AbstractTestBase;
 import com.docubase.dfce.toolkit.TestUtils;
 
@@ -41,10 +41,10 @@ public class MultiDomainTest extends AbstractTestBase {
     private static final String URL = AbstractTestBase.SERVICE_URL;
     private static final String URL2 = AbstractTestBase.SERVICE_URL_2;
 
-    private static final String CATA = "MBCode Fournisseur";
-    private static final String CATB = "MBNo Serie";
-    private static final String CATC = "Prix Vente";
-    private static final String CATD = "Facultatif";
+    private static final String CATA = "code_fournisseur";
+    private static final String CATB = "no_serie";
+    private static final String CATC = "prix";
+    private static final String CATD = "facultatif";
 
     private static final String BASE2 = "BASE 2";
     private static final String BASE3 = "BASE 3";
@@ -164,7 +164,7 @@ public class MultiDomainTest extends AbstractTestBase {
 
 	List<Document> docs = null;
 	docs = searchMulti(base3, base3.getBaseCategory(CATA)
-		.getFormattedName() + ":" + catValues.get(CATA), 1000, null);
+		.getName() + ":" + catValues.get(CATA), 1000, null);
 
 	assertNotNull(docs);
 	assertEquals(2, docs.size());
@@ -189,7 +189,7 @@ public class MultiDomainTest extends AbstractTestBase {
 	 * On recherche à nouveau
 	 */
 	docs = searchMulti(base2, base2.getBaseCategory(CATA)
-		.getFormattedName() + ":" + catValues.get(CATA), 1000, null);
+		.getName() + ":" + catValues.get(CATA), 1000, null);
 	assertNotNull(docs);
 	assertEquals(2, docs.size());
 
