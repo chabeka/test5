@@ -169,7 +169,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          if (!dfceUp) {
             LOG.debug("{} - Sortie", prefixeTrc);
             
-            setCodeHttp();
+            setCodeHttp412();
             
             throw new CaptureAxisFault(STOCKAGE_INDISPO,
                                        MessageRessourcesUtils.recupererMessage(
@@ -220,7 +220,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          boolean dfceUp = dfceInfoService.isDfceUp();
          if (!dfceUp) {
             LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp();
+            setCodeHttp412();
             throw new CaptureAxisFault(STOCKAGE_INDISPO,
                                        MessageRessourcesUtils.recupererMessage(
                                                          MES_STOCKAGE, null));
@@ -263,7 +263,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          boolean dfceUp = dfceInfoService.isDfceUp();
          if (!dfceUp) {
             LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp();
+            setCodeHttp412();
             throw new RechercheAxis2Fault(STOCKAGE_INDISPO,
                                        MessageRessourcesUtils.recupererMessage(
                                                                MES_STOCKAGE, null));
@@ -303,7 +303,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          boolean dfceUp = dfceInfoService.isDfceUp();
          if (!dfceUp) {
             LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp();
+            setCodeHttp412();
             throw new ConsultationAxisFault(MessageRessourcesUtils.recupererMessage(
                                             MES_STOCKAGE, null),
                                             STOCKAGE_INDISPO
@@ -358,7 +358,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
     * 
     * 
     */
-   private void setCodeHttp() {
+   private void setCodeHttp412() {
       HttpServletResponse response = (HttpServletResponse) MessageContext
                                                                .getCurrentMessageContext().getProperty(
                                                                     HTTPConstants.MC_HTTP_SERVLETRESPONSE);
@@ -366,13 +366,13 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       if (response != null) {
          response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
          
-//         try {
-//            // on force le status a 412
-//            //response.flushBuffer();
-//            
-//         } catch (IOException e) {
-//            throw new RuntimeException(e);
-//         }
+         try {
+            // on force le status a 412
+            response.flushBuffer();
+            
+         } catch (IOException e) {
+            throw new RuntimeException(e);
+         }
       }
    }
     
