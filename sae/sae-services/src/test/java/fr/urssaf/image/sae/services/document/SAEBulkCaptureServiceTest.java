@@ -29,6 +29,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
+import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,6 +50,9 @@ public class SAEBulkCaptureServiceTest {
 
    @Autowired
    private SAEServiceTestProvider testProvider;
+
+   @Autowired
+   private InterruptionTraitementConfig captureMasseConfig;
 
    private String urlSommaire;
 
@@ -160,12 +164,17 @@ public class SAEBulkCaptureServiceTest {
 
       // 2ième document passe avec une interruption
 
+      InterruptionTraitementException mockException = EasyMock
+            .createMockBuilder(InterruptionTraitementException.class)
+            .withConstructor(InterruptionTraitementConfig.class,
+                  Throwable.class).withArgs(captureMasseConfig,
+                  new ConnectionServiceEx()).createMock();
+
       interruption.interruption(EasyMock
             .anyObject(InterruptionTraitementConfig.class), EasyMock
             .anyObject(JmxIndicator.class));
 
-      EasyMock.expectLastCall().andThrow(
-            EasyMock.createMock(InterruptionTraitementException.class));
+      EasyMock.expectLastCall().andThrow(mockException);
 
       EasyMock.replay(interruption);
 

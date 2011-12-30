@@ -2,6 +2,8 @@ package fr.urssaf.image.sae.storage.dfce.services.support.exception;
 
 import java.text.MessageFormat;
 
+import org.springframework.util.Assert;
+
 import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 
 /**
@@ -29,6 +31,7 @@ public class InterruptionTraitementException extends RuntimeException {
          InterruptionTraitementConfig interruption, Throwable cause) {
 
       super(cause);
+      Assert.notNull(interruption, "'interruption' is required");
       this.interruption = interruption;
 
    }
