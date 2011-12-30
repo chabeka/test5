@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
+import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
@@ -23,8 +24,7 @@ public class InterruptionTraitementSupportValidation {
    private static final String CLASS = "fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport";
 
    private static final String METHOD = "execution(void " + CLASS
-         + ".interruption(*,*,*,*))"
-         + "&& args(startTime,delay,tentatives,jmxIndicator)";
+         + ".interruption(*,*)) && args(interruptionConfig,jmxIndicator)";
 
    private static final String ARG_EMPTY = "L''argument ''{0}'' doit être renseigné.";
 
@@ -34,41 +34,52 @@ public class InterruptionTraitementSupportValidation {
 
    /**
     * Validation des méthodes de
-    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#interruption(String, int, int)}
+    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#interruption(InterruptionTraitementConfig, JmxIndicator)}
     * <br>
     * 
-    * @param startTime
-    *           doit être renseigné au format HH:mm:ss
-    * @param delay
-    *           doit être supérieure à 0
-    * @param tentatives
-    *           doit être supérieure à 0
+    * @param interruptionConfig
+    *           doit être renseigné
+    *           <ul>
+    *           <li>{@link InterruptionTraitementConfig#getStart()} doit être
+    *           renseigné au format HH:mm:ss</li>
+    *           <li>{@link InterruptionTraitementConfig#getDelay()} doit être
+    *           supérieure à 0</li>
+    *           <li>{@link InterruptionTraitementConfig#getTentatives()} doit
+    *           être supérieure à 0</li>
+    *           </ul>
     * @param jmxIndicator
     *           doit être renseigné
     */
    @Before(METHOD)
-   public final void interruption(String startTime, int delay, int tentatives,
+   public final void interruption(
+         InterruptionTraitementConfig interruptionConfig,
          JmxIndicator jmxIndicator) {
 
-      if (StringUtils.isBlank(startTime)) {
+      if (interruptionConfig == null) {
+
+         throw new IllegalArgumentException(MessageFormat.format(ARG_EMPTY,
+               "interruptionConfig"));
+      }
+
+      if (StringUtils.isBlank(interruptionConfig.getStart())) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_EMPTY,
                "startTime"));
       }
 
-      if (!LocalTimeUtils.isValidate(startTime)) {
+      if (!LocalTimeUtils.isValidate(interruptionConfig.getStart())) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_TIME,
-               "startTime", startTime));
+               "startTime", interruptionConfig.getStart()));
       }
 
-      if (delay < 1) {
+      if (interruptionConfig.getDelay() < 1) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_POSITIF,
                "delay"));
       }
 
-      if (tentatives < 1) {
+      if (interruptionConfig.getTentatives() < 1) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_POSITIF,
                "tentatives"));

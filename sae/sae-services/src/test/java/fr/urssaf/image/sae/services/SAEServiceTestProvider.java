@@ -11,15 +11,18 @@ import net.docubase.toolkit.model.ToolkitFactory;
 import net.docubase.toolkit.model.base.Base;
 import net.docubase.toolkit.model.base.BaseCategory;
 import net.docubase.toolkit.model.document.Document;
+import net.docubase.toolkit.model.search.SearchResult;
 import net.docubase.toolkit.service.ServiceProvider;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
+import com.docubase.dfce.exception.ExceededSearchLimitException;
 import com.docubase.dfce.exception.FrozenDocumentException;
+import com.docubase.dfce.exception.SearchQueryParseException;
 import com.docubase.dfce.exception.TagControlException;
 
 import fr.urssaf.image.sae.storage.dfce.utils.Utils;
@@ -53,7 +56,7 @@ public class SAEServiceTestProvider {
          @Qualifier("storageConnectionParameter") StorageConnectionParameter connection)
          throws ConnectionServiceEx {
 
-      Assert.assertNotNull(connection);
+      Assert.notNull(connection);
 
       this.serviceProvider = ServiceProvider.newServiceProvider();
 
@@ -166,6 +169,38 @@ public class SAEServiceTestProvider {
                documentTitle, documentType, docContent).getUuid();
 
       } catch (TagControlException e) {
+         throw new NestableRuntimeException(e);
+      }
+
+   }
+
+   /**
+    * Permet de retrouver tous les documents dans le SAE d'après leur
+    * identifiant du traitement de capture en masse <br>
+    * <br>
+    * Identifiant du traitement de capture en masse :
+    * <code>metadata : iti</code><br>
+    * <br>
+    * Cette méthode peut s'avérer utile pour les tests unitaires dans le cadre
+    * de l'insertion en masse
+    * 
+    * @param idTreatement
+    *           identifiant du traitement de capture en masse
+    * @param limitResult
+    *           nombre limite de résultats
+    * @return liste des documents insérés dans DFCE
+    */
+   public final SearchResult searchDocuments(String idTreatement,
+         int limitResult) {
+
+      Assert.hasText(idTreatement);
+
+      try {
+         return serviceProvider.getSearchService().search(
+               "iti:" + idTreatement, limitResult, base);
+      } catch (ExceededSearchLimitException e) {
+         throw new NestableRuntimeException(e);
+      } catch (SearchQueryParseException e) {
          throw new NestableRuntimeException(e);
       }
 

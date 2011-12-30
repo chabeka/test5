@@ -2,9 +2,12 @@ package fr.urssaf.image.sae.services.document;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import junit.framework.Assert;
+import net.docubase.toolkit.model.document.Document;
+import net.docubase.toolkit.model.search.SearchResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -19,11 +22,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
+import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
+import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,7 +47,12 @@ public class SAEBulkCaptureServiceTest {
    @Autowired
    private InterruptionTraitementSupport interruption;
 
+   @Autowired
+   private SAEServiceTestProvider testProvider;
+
    private String urlSommaire;
+
+   private String idTreatement;
 
    @Before
    public void before() throws IOException {
@@ -79,8 +89,8 @@ public class SAEBulkCaptureServiceTest {
             + "/sommaire.xml";
 
       // instanciation de l'identifiant du traitement de masse
-      String idtreatement = ObjectUtils.toString(UUID.randomUUID());
-      MDC.put("log_contexte_uuid", idtreatement);
+      idTreatement = ObjectUtils.toString(UUID.randomUUID());
+      MDC.put("log_contexte_uuid", idTreatement);
    }
 
    @After
@@ -121,8 +131,18 @@ public class SAEBulkCaptureServiceTest {
       // appel du service de capture en masse
       bulkCapture.bulkCapture(urlSommaire);
 
+      SearchResult results = testProvider.searchDocuments(idTreatement, 10000);
+      List<Document> documents = results.getDocuments();
+
+      // on vérifie que les documents avant l'échec de l'interruption sont bien
+      // insérés
+      Assert.assertEquals("le nombre de documents inséré est inattendu", 3,
+            documents.size());
+
+      // on test le fichier de fin de traitement
       assertFinTraitementFlag();
 
+      // on test le fichier de resultats
       assertResultats("src/test/resources/resultats/resultats_success.xml");
 
    }
@@ -132,18 +152,20 @@ public class SAEBulkCaptureServiceTest {
          CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
 
       // 1er document passe sans interruption
-      interruption.interruption(EasyMock.anyObject(String.class), EasyMock
-            .anyInt(), EasyMock.anyInt(), EasyMock
+      interruption.interruption(EasyMock
+            .anyObject(InterruptionTraitementConfig.class), EasyMock
             .anyObject(JmxIndicator.class));
 
+      EasyMock.expectLastCall().times(1);
+
       // 2ième document passe avec une interruption
-      interruption.interruption(EasyMock.anyObject(String.class), EasyMock
-            .anyInt(), EasyMock.anyInt(), EasyMock
+
+      interruption.interruption(EasyMock
+            .anyObject(InterruptionTraitementConfig.class), EasyMock
             .anyObject(JmxIndicator.class));
 
       EasyMock.expectLastCall().andThrow(
-            new InterruptionTraitementException("starTime", 120, 2,
-                  new Exception()));
+            EasyMock.createMock(InterruptionTraitementException.class));
 
       EasyMock.replay(interruption);
 
@@ -152,8 +174,17 @@ public class SAEBulkCaptureServiceTest {
 
       EasyMock.verify(interruption);
 
+      // on vérifie que les documents avant l'échec de l'interruption sont bien
+      // insérés
+      SearchResult results = testProvider.searchDocuments(idTreatement, 10000);
+      List<Document> documents = results.getDocuments();
+      Assert.assertEquals("le nombre de documents inséré est inattendu", 1,
+            documents.size());
+
+      // on test le fichier de fin de traitement
       assertFinTraitementFlag();
 
+      // on test le fichier de resultats
       assertResultats("src/test/resources/resultats/resultats_failure.xml");
 
    }

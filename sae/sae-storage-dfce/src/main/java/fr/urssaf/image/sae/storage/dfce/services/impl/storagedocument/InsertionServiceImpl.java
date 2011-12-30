@@ -262,7 +262,7 @@ public class InsertionServiceImpl extends AbstractServices implements
                   : storageDocument.getContent(),
             storageDocument.getFilePath(), codeError);
       storageDocumentOnError.setMessageError(messageError);
-      storageDocumentOnError.setIndex(index);  
+      storageDocumentOnError.setIndex(index);
 
       return storageDocumentOnError;
 
@@ -281,9 +281,7 @@ public class InsertionServiceImpl extends AbstractServices implements
 
       if (interruptionConfig != null) {
          // on vérifie l'interruption
-         interruption.interruption(interruptionConfig.getStart(),
-               interruptionConfig.getDelay(), interruptionConfig
-                     .getTentatives(), indicator);
+         interruption.interruption(interruptionConfig, indicator);
 
          // on renseigne le nouveau le fournisseur de service DFCE pour
          // éviter en cas de close de la session pendant l'interruption de

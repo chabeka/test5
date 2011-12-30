@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
+import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
@@ -99,7 +100,13 @@ public class InterruptionTraitementSupportImplTest {
       openConnexion(failures);
 
       String start = "02:00:00";
-      support.interruption(currentDate, start, 2, tentatives, jmxIndicator);
+
+      InterruptionTraitementConfig interruptionConfig = new InterruptionTraitementConfig();
+      interruptionConfig.setStart(start);
+      interruptionConfig.setDelay(2);
+      interruptionConfig.setTentatives(tentatives);
+
+      support.interruption(currentDate, interruptionConfig, jmxIndicator);
 
       // on doit vérifier qu'on ferme bien la connexion
       EasyMock.verify(dfceManager);
@@ -113,9 +120,14 @@ public class InterruptionTraitementSupportImplTest {
 
       String start = "02:00:00";
 
+      InterruptionTraitementConfig interruptionConfig = new InterruptionTraitementConfig();
+      interruptionConfig.setStart(start);
+      interruptionConfig.setDelay(2);
+      interruptionConfig.setTentatives(2);
+
       try {
 
-         support.interruption(currentDate, start, 2, 2, jmxIndicator);
+         support.interruption(currentDate, interruptionConfig, jmxIndicator);
 
          Assert.fail("On s'attend à lever une exception de type "
                + InterruptionTraitementException.class);

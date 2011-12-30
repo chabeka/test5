@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.storage.dfce.services.support;
 
+import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 /**
@@ -9,7 +10,6 @@ import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
  */
 public interface InterruptionTraitementSupport {
 
-   // TODO mettre un seul argument pour la config d'interruption
    // TODO voir comment ne pas passer indicateur JMX dans les arguments
    /**
     * L'interruption du service DFCE est parfois nécessaire pour des questions
@@ -18,17 +18,12 @@ public interface InterruptionTraitementSupport {
     * {@link java.lang.Thread} courant pendant cette période puis de se
     * reconnecter au service DFCE
     * 
-    * @param startTime
-    *           Heure de programmation du début de l'interruption. Doit être au
-    *           format HH:mm:ss
-    * @param delay
-    *           Temps d'attente avant la première tentative de reconnexion en
-    *           secondes
-    * @param tentatives
-    *           Nombre de tentatives de reconnexion
+    * @param interruptionConfig
+    *           configuration de l'interruption
     * @param indicator
     *           indicateur JMX pour le traitement
     */
-   void interruption(String startTime, int delay, int tentatives,
+   void interruption(InterruptionTraitementConfig interruptionConfig,
          JmxIndicator indicator);
+
 }
