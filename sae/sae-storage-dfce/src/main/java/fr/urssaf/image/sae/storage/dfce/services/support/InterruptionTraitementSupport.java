@@ -1,5 +1,8 @@
 package fr.urssaf.image.sae.storage.dfce.services.support;
 
+import org.joda.time.DateTime;
+
+import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
@@ -18,12 +21,31 @@ public interface InterruptionTraitementSupport {
     * {@link java.lang.Thread} courant pendant cette période puis de se
     * reconnecter au service DFCE
     * 
+    * @param currentDate
+    *           date courante
     * @param interruptionConfig
     *           configuration de l'interruption
     * @param indicator
     *           indicateur JMX pour le traitement
+    * @throws InterruptionTraitementException
+    *            une exception a été levée lors de la tentative de reconnexion à
+    *            DFCE
     */
-   void interruption(InterruptionTraitementConfig interruptionConfig,
-         JmxIndicator indicator);
+   void interruption(DateTime currentDate,
+         InterruptionTraitementConfig interruptionConfig, JmxIndicator indicator)
+         throws InterruptionTraitementException;
+
+   /**
+    * Vérifie si une date courante est dans une période d'interruption
+    * 
+    * @param currentDate
+    *           date courante
+    * @param interruptionConfig
+    *           configuration de l'interruption
+    * @return <code>true</code> si <code>currentDate</code> est situé dans la
+    *         période d'interruption, <code>false</code> sinon
+    */
+   boolean hasInterrupted(DateTime currentDate,
+         InterruptionTraitementConfig interruptionConfig);
 
 }

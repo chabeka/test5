@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
+import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 import fr.urssaf.image.sae.storage.services.storagedocument.DeletionService;
 import fr.urssaf.image.sae.storage.services.storagedocument.InsertionService;
 import fr.urssaf.image.sae.storage.services.storagedocument.RetrievalService;
@@ -123,6 +124,8 @@ public class StorageServices extends CommonsServices {
 				getDfceServicesManager().getDFCEService());
 		getSearchingService().setSearchingServiceParameter(
 				getDfceServicesManager().getDFCEService());
+		
+		getInsertionService().setJmxIndicator(new JmxIndicator());
 	}
 
 	/**

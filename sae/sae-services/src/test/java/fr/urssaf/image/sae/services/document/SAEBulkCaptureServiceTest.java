@@ -11,8 +11,6 @@ import net.docubase.toolkit.model.search.SearchResult;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ObjectUtils;
-import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +24,6 @@ import fr.urssaf.image.sae.services.SAEServiceTestProvider;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
-import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
-import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
-import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
-import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
-import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-services-bulkcapture-test.xml" })
@@ -46,13 +39,7 @@ public class SAEBulkCaptureServiceTest {
    private EcdeSource ecdeSource;
 
    @Autowired
-   private InterruptionTraitementSupport interruption;
-
-   @Autowired
    private SAEServiceTestProvider testProvider;
-
-   @Autowired
-   private InterruptionTraitementConfig captureMasseConfig;
 
    private String urlSommaire;
 
@@ -95,12 +82,6 @@ public class SAEBulkCaptureServiceTest {
       // instanciation de l'identifiant du traitement de masse
       idTreatement = ObjectUtils.toString(UUID.randomUUID());
       MDC.put("log_contexte_uuid", idTreatement);
-   }
-
-   @After
-   public void after() {
-
-      EasyMock.reset(interruption);
    }
 
    private void assertFinTraitementFlag() {
@@ -151,50 +132,4 @@ public class SAEBulkCaptureServiceTest {
 
    }
 
-   @Test
-   public void bulkCapture_failure_interruption() throws CaptureBadEcdeUrlEx,
-         CaptureEcdeUrlFileNotFoundEx, CaptureEcdeWriteFileEx, IOException {
-
-      // 1er document passe sans interruption
-      interruption.interruption(EasyMock
-            .anyObject(InterruptionTraitementConfig.class), EasyMock
-            .anyObject(JmxIndicator.class));
-
-      EasyMock.expectLastCall().times(1);
-
-      // 2ième document passe avec une interruption
-
-      InterruptionTraitementException mockException = EasyMock
-            .createMockBuilder(InterruptionTraitementException.class)
-            .withConstructor(InterruptionTraitementConfig.class,
-                  Throwable.class).withArgs(captureMasseConfig,
-                  new ConnectionServiceEx()).createMock();
-
-      interruption.interruption(EasyMock
-            .anyObject(InterruptionTraitementConfig.class), EasyMock
-            .anyObject(JmxIndicator.class));
-
-      EasyMock.expectLastCall().andThrow(mockException);
-
-      EasyMock.replay(interruption);
-
-      // appel du service de capture en masse
-      bulkCapture.bulkCapture(urlSommaire);
-
-      EasyMock.verify(interruption);
-
-      // on vérifie que les documents avant l'échec de l'interruption sont bien
-      // insérés
-      SearchResult results = testProvider.searchDocuments(idTreatement, 10000);
-      List<Document> documents = results.getDocuments();
-      Assert.assertEquals("le nombre de documents inséré est inattendu", 1,
-            documents.size());
-
-      // on test le fichier de fin de traitement
-      assertFinTraitementFlag();
-
-      // on test le fichier de resultats
-      assertResultats("src/test/resources/resultats/resultats_failure.xml");
-
-   }
 }

@@ -55,7 +55,7 @@ public class InterruptionTraitementSupportImplTest {
 
    private void openConnexion(int failures) throws ConnectionServiceEx {
 
-      dfceManager.closeConnection();
+      // dfceManager.closeConnection();
 
       dfceManager.getConnection();
 
@@ -73,14 +73,15 @@ public class InterruptionTraitementSupportImplTest {
 
    @Test
    public void interruption_success_first_tentative()
-         throws ConnectionServiceEx {
+         throws ConnectionServiceEx, InterruptionTraitementException {
 
       assertInterruptionSuccess(4, 0);
 
    }
 
    @Test
-   public void interruption_success_last_tentative() throws ConnectionServiceEx {
+   public void interruption_success_last_tentative()
+         throws ConnectionServiceEx, InterruptionTraitementException {
 
       assertInterruptionSuccess(2, 1);
 
@@ -88,14 +89,14 @@ public class InterruptionTraitementSupportImplTest {
 
    @Test
    public void interruption_success_after_3tentatives()
-         throws ConnectionServiceEx {
+         throws ConnectionServiceEx, InterruptionTraitementException {
 
       assertInterruptionSuccess(4, 2);
 
    }
 
    private void assertInterruptionSuccess(int tentatives, int failures)
-         throws ConnectionServiceEx {
+         throws ConnectionServiceEx, InterruptionTraitementException {
 
       openConnexion(failures);
 
@@ -140,6 +141,47 @@ public class InterruptionTraitementSupportImplTest {
                      "Après une déconnexion DFCE programmée à 02:00:00 il est impossible de reprendre le traitement après 2 secondes et 2 tentatives.",
                      e.getMessage());
       }
+
+   }
+
+   @Test
+   public void hasInterrupted_true() {
+
+      String date1 = "25-12-1999 03:00:02";
+
+      Assert.assertTrue("le traitement doit être interrompue pour " + date1,
+            hasInterrupted(date1));
+
+   }
+
+   @Test
+   public void hasInterrupted_false() {
+
+      String date1 = "25-12-1999 02:59:59";
+
+      Assert.assertFalse("le traitement ne doit pas être interrompue pour "
+            + date1, hasInterrupted(date1));
+
+      String date2 = "25-12-1999 03:02:00";
+
+      Assert.assertFalse("le traitement ne doit pas être interrompue pour "
+            + date2, hasInterrupted(date2));
+   }
+
+   private boolean hasInterrupted(String textDate) {
+
+      DateTime currentDate = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss")
+            .parseDateTime(textDate);
+
+      String startTime = "03:00:00";
+      int delay = 120;
+
+      InterruptionTraitementConfig interruptionConfig = new InterruptionTraitementConfig();
+      interruptionConfig.setTentatives(2);
+      interruptionConfig.setStart(startTime);
+      interruptionConfig.setDelay(delay);
+
+      return support.hasInterrupted(currentDate, interruptionConfig);
 
    }
 

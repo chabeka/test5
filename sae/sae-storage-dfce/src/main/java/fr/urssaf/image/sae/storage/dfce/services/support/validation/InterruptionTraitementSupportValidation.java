@@ -5,6 +5,7 @@ import java.text.MessageFormat;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.joda.time.DateTime;
 
 import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
 import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
@@ -23,8 +24,13 @@ public class InterruptionTraitementSupportValidation {
 
    private static final String CLASS = "fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport";
 
-   private static final String METHOD = "execution(void " + CLASS
-         + ".interruption(*,*)) && args(interruptionConfig,jmxIndicator)";
+   private static final String METHOD_INTERRUPTION = "execution(void "
+         + CLASS
+         + ".interruption(*,*,*)) && args(currentDate,interruptionConfig,jmxIndicator)";
+
+   private static final String METHOD_HAS_INTERRUPTED = "execution(boolean "
+         + CLASS
+         + ".hasInterrupted(*,*)) && args(currentDate,interruptionConfig)";
 
    private static final String ARG_EMPTY = "L''argument ''{0}'' doit être renseigné.";
 
@@ -32,28 +38,7 @@ public class InterruptionTraitementSupportValidation {
 
    private static final String ARG_POSITIF = "L''argument ''{0}'' doit être au moins égal à 1.";
 
-   /**
-    * Validation des méthodes de
-    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#interruption(InterruptionTraitementConfig, JmxIndicator)}
-    * <br>
-    * 
-    * @param interruptionConfig
-    *           doit être renseigné
-    *           <ul>
-    *           <li>{@link InterruptionTraitementConfig#getStart()} doit être
-    *           renseigné au format HH:mm:ss</li>
-    *           <li>{@link InterruptionTraitementConfig#getDelay()} doit être
-    *           supérieure à 0</li>
-    *           <li>{@link InterruptionTraitementConfig#getTentatives()} doit
-    *           être supérieure à 0</li>
-    *           </ul>
-    * @param jmxIndicator
-    *           doit être renseigné
-    */
-   @Before(METHOD)
-   public final void interruption(
-         InterruptionTraitementConfig interruptionConfig,
-         JmxIndicator jmxIndicator) {
+   private void validate(InterruptionTraitementConfig interruptionConfig) {
 
       if (interruptionConfig == null) {
 
@@ -85,6 +70,46 @@ public class InterruptionTraitementSupportValidation {
                "tentatives"));
       }
 
+   }
+
+   private void validate(DateTime currentDate) {
+
+      if (currentDate == null) {
+
+         throw new IllegalArgumentException(MessageFormat.format(ARG_EMPTY,
+               "currentDate"));
+      }
+   }
+
+   /**
+    * Validation des méthodes de
+    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#interruption(DateTime,InterruptionTraitementConfig, JmxIndicator)}
+    * <br>
+    * 
+    * @param currentDate
+    *           doit être renseigné
+    * @param interruptionConfig
+    *           doit être renseigné
+    *           <ul>
+    *           <li>{@link InterruptionTraitementConfig#getStart()} doit être
+    *           renseigné au format HH:mm:ss</li>
+    *           <li>{@link InterruptionTraitementConfig#getDelay()} doit être
+    *           supérieure à 0</li>
+    *           <li>{@link InterruptionTraitementConfig#getTentatives()} doit
+    *           être supérieure à 0</li>
+    *           </ul>
+    * @param jmxIndicator
+    *           doit être renseigné
+    */
+   @Before(METHOD_INTERRUPTION)
+   public final void interruption(DateTime currentDate,
+         InterruptionTraitementConfig interruptionConfig,
+         JmxIndicator jmxIndicator) {
+
+      this.validate(currentDate);
+
+      this.validate(interruptionConfig);
+
       if (jmxIndicator == null) {
 
          throw new IllegalArgumentException(MessageFormat.format(ARG_EMPTY,
@@ -92,4 +117,32 @@ public class InterruptionTraitementSupportValidation {
       }
 
    }
+
+   /**
+    * Validation des méthodes de
+    * {@link fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport#hasInterrupted(DateTime, InterruptionTraitementConfig)}
+    * <br>
+    * 
+    * @param currentDate
+    *           doit être renseigné
+    * @param interruptionConfig
+    *           doit être renseigné
+    *           <ul>
+    *           <li>{@link InterruptionTraitementConfig#getStart()} doit être
+    *           renseigné au format HH:mm:ss</li>
+    *           <li>{@link InterruptionTraitementConfig#getDelay()} doit être
+    *           supérieure à 0</li>
+    *           <li>{@link InterruptionTraitementConfig#getTentatives()} doit
+    *           être supérieure à 0</li>
+    *           </ul>
+    */
+   @Before(METHOD_HAS_INTERRUPTED)
+   public final void hasInterrupted(DateTime currentDate,
+         InterruptionTraitementConfig interruptionConfig) {
+
+      this.validate(currentDate);
+
+      this.validate(interruptionConfig);
+   }
+
 }

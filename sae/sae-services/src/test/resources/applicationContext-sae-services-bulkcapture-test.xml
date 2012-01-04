@@ -37,20 +37,5 @@
       </property>
    </bean>
 
-   <!--
-      MOCK pour le service d'interruption du traitement au cours de
-      l'archivage en masse
-   -->
-   <bean id="interruptionTraitementSupportImpl"
-      class="fr.urssaf.image.sae.services.manager.StorageServiceManager"
-      factory-method="createInterruptionTraitementSupport" />
-
-   <bean id="captureMasseConfig"
-      class="fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig">
-      <qualifier value="interruption_capture_masse" />
-      <property name="start" value="02:00:00" />
-      <property name="delay" value="60" />
-      <property name="tentatives" value="2" />
-   </bean>
 
 </beans>

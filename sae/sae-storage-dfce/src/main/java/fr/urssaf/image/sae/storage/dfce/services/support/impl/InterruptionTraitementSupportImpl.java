@@ -2,8 +2,6 @@ package fr.urssaf.image.sae.storage.dfce.services.support.impl;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
@@ -17,7 +15,7 @@ import fr.urssaf.image.sae.storage.dfce.manager.DFCEServicesManager;
 import fr.urssaf.image.sae.storage.dfce.services.support.InterruptionTraitementSupport;
 import fr.urssaf.image.sae.storage.dfce.services.support.exception.InterruptionTraitementException;
 import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTraitementConfig;
-import fr.urssaf.image.sae.storage.dfce.utils.LocalTimeUtils;
+import fr.urssaf.image.sae.storage.dfce.services.support.util.InterruptionTraitementUtils;
 import fr.urssaf.image.sae.storage.model.jmx.BulkProgress;
 import fr.urssaf.image.sae.storage.model.jmx.JmxIndicator;
 
@@ -62,40 +60,29 @@ public class InterruptionTraitementSupportImpl implements
       this.defaultDelay = defaultDelay;
    }
 
+   private static final String LOG_PREFIX = "Interruption programmée d'un traitement";
+
    /**
     * {@inheritDoc} <br>
     * Après la première tentative le delai d'attente entre chaque tentative est
     * fixé par {@value #setDelay(int)} en secondes.<br>
     * Par défaut cette valeur est fixé à {@value #DELAY}
     * 
+    * 
     */
    @Override
-   public final void interruption(
-         InterruptionTraitementConfig interruptionConfig, JmxIndicator indicator) {
+   public final void interruption(DateTime currentDate,
+         InterruptionTraitementConfig interruptionConfig, JmxIndicator indicator)
+         throws InterruptionTraitementException {
 
-      DateTime currentDate = new DateTime();
-
-      interruption(currentDate, interruptionConfig, indicator);
-
-   }
-
-   private static final String LOG_PREFIX = "Interruption programmée d'un traitement";
-
-   protected final void interruption(DateTime currentDate,
-         InterruptionTraitementConfig interruptionConfig, JmxIndicator indicator) {
-
-      LocalTime startLocalTime = LocalTimeUtils.parse(interruptionConfig
-            .getStart());
-
-      LocalDateTime currentLocalDate = new LocalDateTime(currentDate);
-
-      long diffTime = LocalTimeUtils.getDifference(currentLocalDate,
-            startLocalTime, interruptionConfig.getDelay());
+      long diffTime = InterruptionTraitementUtils.waitTime(currentDate,
+            interruptionConfig);
 
       if (diffTime > 0) {
 
-         LOG.debug("{} - début programmé à {}", LOG_PREFIX, interruptionConfig
-               .getStart());
+         LOG.debug("{} - début programmé à {} - indicator {}", new Object[] {
+               LOG_PREFIX, interruptionConfig.getStart(),
+               Integer.valueOf(indicator.getJmxStorageIndex()) });
 
          DateTime endDate = currentDate.plus(diffTime);
 
@@ -111,8 +98,11 @@ public class InterruptionTraitementSupportImpl implements
 
          LOG.debug("{} - Reprise prévue à {}", LOG_PREFIX, formatter
                .print(endDate));
-         
-         dfceManager.closeConnection();
+
+         // On ne ferme pas la connexion avec DFCE pour éviter une levée
+         // d'exception sur les Threads en cours d'exécution qui effectuent une
+         // insertion dans DFCE
+         // dfceManager.closeConnection();
 
          ConnectionResult connectionResult;
          try {
@@ -201,6 +191,19 @@ public class InterruptionTraitementSupportImpl implements
       private void setLastException(Exception lastException) {
          this.lastException = lastException;
       }
+   }
+
+   /**
+    * {@inheritDoc}
+    * 
+    * 
+    */
+   @Override
+   public final boolean hasInterrupted(DateTime currentDate,
+         InterruptionTraitementConfig interruptionConfig) {
+
+      return InterruptionTraitementUtils.waitTime(currentDate,
+            interruptionConfig) > 0;
    }
 
 }

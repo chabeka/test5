@@ -12,7 +12,7 @@ import fr.urssaf.image.sae.storage.dfce.services.support.model.InterruptionTrait
  * 
  * 
  */
-public class InterruptionTraitementException extends RuntimeException {
+public class InterruptionTraitementException extends Exception {
 
    private static final long serialVersionUID = 1L;
 
