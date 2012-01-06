@@ -27,7 +27,6 @@ public class LancerAgentJconsole {
         		                             ":type=PremierNotificationMBean");
         
         PremierNotification premier= new PremierNotification();
-        premier.setValeur(1500);
         
         mbs.registerMBean(premier, name);
         
@@ -39,14 +38,10 @@ public class LancerAgentJconsole {
       
         jmxConnector.start();
         
-        System.out.print("ecoute...");
-        
-        while (premier.getValeur() < 1780) {
-           premier.setValeur(premier.getValeur() + 1);
-           System.out.print(premier.getValeur()+"\n");
-           Thread.sleep(3500);
+        while (true) {
+           Thread.sleep(1500);
         }
-        jmxConnector.stop();
+        
      } catch (Exception e) {
          e.printStackTrace();
      } 
