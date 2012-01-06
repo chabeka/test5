@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.management.AttributeChangeNotification;
 import javax.management.MBeanNotificationInfo;
+import javax.management.Notification;
 import javax.management.NotificationBroadcasterSupport;
 
 
@@ -13,9 +14,11 @@ public class PremierNotification extends NotificationBroadcasterSupport implemen
    private static String nom            = "PremierNotificationMBean";
 
    private int           valeur         = 0;
-      
-   private List<MBeanNotificationInfo> listInfo = new ArrayList<MBeanNotificationInfo>();
+   
+   private static long   numeroSequence = 00;
 
+   private List<String> listInfo = new ArrayList<String>();
+   
    public String getNom() {
      return nom;
    }
@@ -24,54 +27,69 @@ public class PremierNotification extends NotificationBroadcasterSupport implemen
      return valeur;
    }
 
-   public synchronized void setValeur(int valeur) {
+   public void setValeur(int valeur) {
       this.valeur = valeur;
       
-      String name = AttributeChangeNotification.class.getName();
-      String string = "Un ou des attribut(s) du MBean ont ete modifie(s)."; 
-      String description = "La valeur de l'attribut 'valeur' a ete modifie";
-      String[] strings = new String[]{string};
-      MBeanNotificationInfo info = new MBeanNotificationInfo(strings, name, description);
-      listInfo.add(info);
-      
+      numeroSequence++;
+      Notification notif = new AttributeChangeNotification(this,
+          numeroSequence, System.currentTimeMillis(),
+          "Modification de l'attribut 'valeur' a " + valeur, "Valeur", "int", this.valeur, valeur);
+      sendNotification(notif);
+      listInfo.add(notif.getMessage());
    }
 
    public void rafraichir() {
-      System.out.println("Rafraichir les donnees");
-
-      String name = AttributeChangeNotification.class.getName();
-      String string = "Un rafraichissement des donnees a ete fait."; 
-      String description = "Un rafraichissement des donnees a ete fait.";
-      MBeanNotificationInfo info = new MBeanNotificationInfo(new String[]{string}, name, description);
-      listInfo.add(info); 
+    
+      numeroSequence++;
+      Notification notif = new AttributeChangeNotification(this,
+          numeroSequence, System.currentTimeMillis(),
+          "Un rafraichissement des donnees a ete fait !", "Data", "string", null, null);
+      sendNotification(notif);
+      listInfo.add(notif.getMessage());
    }
    
    @Override
    public int add(int a, int b) {
-      
-      String name = AttributeChangeNotification.class.getName();
-      String string = "Une addition a ete realisee."; 
-      String description = "Une addition a ete realisee.";
-      MBeanNotificationInfo info = new MBeanNotificationInfo(new String[]{string}, name, description);
-      listInfo.add(info);
-      
-      return a + b;
+      int somme = a+ b ;   
+      numeroSequence++;
+      Notification notif = new AttributeChangeNotification(this,
+          numeroSequence, System.currentTimeMillis(),
+          "Une addition a ete realisee!\n Le resultat est : " + somme, "Data", "string", a, b);
+      sendNotification(notif);
+      listInfo.add(notif.getMessage());
+      return somme;
    }
    
    @Override 
    public MBeanNotificationInfo[] getNotificationInfo() { 
        
-      return getAllNotif();
+      String[] types = getMessage();
+      int taille = types.length;
+      MBeanNotificationInfo[] mBeanNotificationInfo = new MBeanNotificationInfo[taille];
       
+      String name = AttributeChangeNotification.class.getSimpleName();
+      
+      for(int i=0; i < taille; i++) {
+         MBeanNotificationInfo info = 
+                 new MBeanNotificationInfo(new String[] {types[i]}, 
+                                           name, 
+                                           types[i]);
+         
+         mBeanNotificationInfo[i] = info;
+      }
+      return mBeanNotificationInfo;
+            
    }
    
-   private MBeanNotificationInfo[] getAllNotif() {
-       MBeanNotificationInfo[] mBeanNotificationInfo = new MBeanNotificationInfo[listInfo.size()];
-       
-       for(int i=0; i < listInfo.size(); i++) {
-          mBeanNotificationInfo[i] = listInfo.get(i);
-       }
-       return mBeanNotificationInfo;
+   private String[] getMessage() {
+      
+      String[] strings = new String[listInfo.size()];
+      
+      for (int i = 0; i < listInfo.size(); i++) {
+         strings[i] = listInfo.get(i);
+      }
+            
+      return strings;
    }
    
 
