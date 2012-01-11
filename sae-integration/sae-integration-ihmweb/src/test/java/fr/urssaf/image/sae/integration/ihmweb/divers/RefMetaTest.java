@@ -13,9 +13,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
-import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.xml.sax.SAXException;
 
@@ -25,56 +26,57 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.refmeta.ObjectFactory;
 import fr.urssaf.image.sae.integration.ihmweb.utils.BooleanUtils;
 import fr.urssaf.image.sae.integration.ihmweb.utils.JAXBUtils;
 
-
 /**
  * Outils pour le référentiel des métadonnées
  */
 public class RefMetaTest {
-   
-   
-   private static final Logger LOG = Logger.getLogger(RefMetaTest.class);
-   
-   
+
+   private static final Logger LOG = LoggerFactory.getLogger(RefMetaTest.class);
+
    /**
-    * Génération d'un fichier ReferentielMetadonnees.xml dans le répertoire temporaire
-    * de l'OS, à partir d'un export Excel du référentiel des métadonnées, au format CSV
-    * (NB : la 1ère ligne du CSV doit contenir les noms des colonnes)
+    * Génération d'un fichier ReferentielMetadonnees.xml dans le répertoire
+    * temporaire de l'OS, à partir d'un export Excel du référentiel des
+    * métadonnées, au format CSV (NB : la 1ère ligne du CSV doit contenir les
+    * noms des colonnes)
     * 
-    * Le fichier CSV est à placer dans le répertoire src/test/resources/referentiel_metadonnees/
+    * Le fichier CSV est à placer dans le répertoire
+    * src/test/resources/referentiel_metadonnees/
     */
    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    @Ignore("Ce n'est pas un TU, mais un moyen de construire le fichier XML du référentiel des métadonnées")
    @Test
-   public void csvToxml() throws IOException, URISyntaxException, JAXBException, SAXException {
-      
-      ClassPathResource csv = new ClassPathResource("referentiel_metadonnees/Metadonnees_1_4.csv");
-      
+   public void csvToxml() throws IOException, URISyntaxException,
+         JAXBException, SAXException {
+
+      ClassPathResource csv = new ClassPathResource(
+            "referentiel_metadonnees/Metadonnees_1_4.csv");
+
       String repTempOs = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
-      String fichierXmlSortie = FilenameUtils.concat(repTempOs, "ReferentielMetadonnees.xml") ;
-      
-      List<String> lignes = FileUtils.readLines(csv.getFile(),CharEncoding.UTF_8);
-      
-      
-      ObjectFactory factory = new ObjectFactory() ;
+      String fichierXmlSortie = FilenameUtils.concat(repTempOs,
+            "ReferentielMetadonnees.xml");
+
+      List<String> lignes = FileUtils.readLines(csv.getFile(),
+            CharEncoding.UTF_8);
+
+      ObjectFactory factory = new ObjectFactory();
       ListeMetadonneesType listeMetas = factory.createListeMetadonneesType();
-      
 
       // Attention : 1ère ligne = en-tête de colonne
       // codeLong;codeCourt;archivablePossible;archivableObligatoire;consulteeParDefaut;consultable;critereRecherche;client;obligatoireAuStockage;typeDfce
-      String ligne ;
+      String ligne;
       String parts[];
       MetadonneeType meta;
-      for (int i=1;i<lignes.size();i++) {
-         
+      for (int i = 1; i < lignes.size(); i++) {
+
          ligne = lignes.get(i);
-         
+
          // System.out.println(ligne);
-         
+
          parts = StringUtils.split(ligne, ';');
-         
+
          meta = factory.createMetadonneeType();
          listeMetas.getMetadonnee().add(meta);
-         
+
          meta.setCodeLong(StringUtils.trim(parts[0]));
          meta.setCodeCourt(StringUtils.trim(parts[1]));
          meta.setArchivablePossible(BooleanUtils.ouiNonToBoolean(parts[2]));
@@ -85,18 +87,20 @@ public class RefMetaTest {
          meta.setClient(BooleanUtils.ouiNonToBoolean(parts[7]));
          meta.setObligatoireAuStockage(BooleanUtils.ouiNonToBoolean(parts[8]));
          meta.setTypeDfce(parts[9]);
-         
+
       }
-      
-      String xsdSchemaPath = new ClassPathResource("/ReferentielMetadonnees/ReferentielMetadonnees.xsd").getFile().getAbsolutePath();
+
+      String xsdSchemaPath = new ClassPathResource(
+            "/ReferentielMetadonnees/ReferentielMetadonnees.xsd").getFile()
+            .getAbsolutePath();
       File xsdSchema = new File(xsdSchemaPath);
       File output = new File(fichierXmlSortie);
-      JAXBElement<ListeMetadonneesType> jaxbElement = factory.createReferentielMetadonnees(listeMetas);
+      JAXBElement<ListeMetadonneesType> jaxbElement = factory
+            .createReferentielMetadonnees(listeMetas);
       JAXBUtils.marshal(jaxbElement, output, xsdSchema, null);
-      
+
       LOG.debug(fichierXmlSortie);
-      
+
    }
-   
 
 }
