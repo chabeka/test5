@@ -21,7 +21,7 @@
 <p><a href="refCasTest.do">Référentiel des cas de test</a></p>
 
 <p><br /></p>
-<p><a href="listeEcdeSources.do">Liste des sources disponibles</a></p>
+<p><a href="listeEcdeSources.do">Configuration ECDE</a></p>
 
 <p><br /><br /><br /><br /></p>
 </body>
