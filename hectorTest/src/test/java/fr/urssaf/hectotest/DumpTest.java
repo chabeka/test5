@@ -1,10 +1,18 @@
 package fr.urssaf.hectotest;
 
+import static me.prettyprint.hector.api.ddl.ComparatorType.UTF8TYPE;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -16,14 +24,19 @@ import org.junit.Test;
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.model.CqlQuery;
 import me.prettyprint.cassandra.model.CqlRows;
+import me.prettyprint.cassandra.model.thrift.ThriftCountQuery;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.FailoverPolicy;
+import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
+import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.HConsistencyLevel;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.HSuperColumn;
 import me.prettyprint.hector.api.beans.OrderedRows;
@@ -31,6 +44,7 @@ import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.SuperRow;
 import me.prettyprint.hector.api.beans.SuperRows;
 import me.prettyprint.hector.api.beans.SuperSlice;
+import me.prettyprint.hector.api.beans.AbstractComposite.ComponentEquality;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.MultigetSuperSliceQuery;
@@ -58,11 +72,13 @@ public class DumpTest
 		ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.QUORUM);
 		ccl.setDefaultWriteConsistencyLevel(HConsistencyLevel.QUORUM);
 		HashMap<String,String> credentials = new HashMap<String, String>() {{ put("username", "root");}{ put("password", "regina4932");}};
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cnp69saecas1:9160, cnp69saecas2:9160, cnp69saecas3:9160, cnp31saecas1.cer31.recouv:9160" ));
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160,cer69imageint9.cer69.recouv:9160" ));
-		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint9.cer69.recouv:9160" ));
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160" ));
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint9.cer69.recouv:9160" ));
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("10.203.34.39:9160" )); //noufnouf
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69givnsaecas1.cer69.recouv:9160,hwi69givnsaecas2.cer69.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69devsaecas1.cer69.recouv:9160,hwi69devsaecas2.cer69.recouv:9160" ));
+		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69devsaecas1.cer69.recouv:9160,hwi69devsaecas2.cer69.recouv:9160" ));
 
 		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl, FailoverPolicy.ON_FAIL_TRY_ALL_AVAILABLE, credentials);
 
@@ -92,26 +108,65 @@ public class DumpTest
 	
 	@Test
 	public void testDumpDocInfo() throws Exception {
-		dumper.dumpCF("DocInfo", 150);
+		dumper.printKeyInHex = true;
+		dumper.dumpCF("DocInfo", 500);
+	}
+
+	@Test
+	public void testDocInfoFreezer() throws Exception {
+		dumper.printKeyInHex = true;
+		dumper.dumpCF("DocInfoFreezer", 150);
 	}
 
 	@Test
 	public void testExtractOneDocInfo() throws Exception {
-		extractOneDocInfo  ("00001972-c16e-491b-922addd2e7bf20e7");
+		//extractOneDocInfo  ("32100f97-5d05-4d6c-b2e3-6e9cc8f2bf86");
+		extractOneDocInfo  ("dd498a1d-66fa-4777-8eda-cfdafe19b2ce");
 		//extractOneDocInfo("bf15608f-1f17-4819-944d-e377c7bd726d");
 		//extractOneDocInfo("6fd809ec-8fd7-44f3-9d6f-ee655fa7e54a");		
 	}
 
 	private void extractOneDocInfo(String uuid) throws Exception {
-		byte[] key = ConvertHelper.stringToBytesWithDocubaseDelimiter(uuid + "|||0.0.0");
-		dumper.dumpCF("DocInfo",key);	}
+		String startKey = "0010";
+		String endKey = "000005" + ConvertHelper.stringToHex("0.0.0") + "00";
+		byte[] key =  ConvertHelper.hexStringToByteArray(startKey + uuid.replace("-", "") + endKey);
+		dumper.dumpCF("DocInfo",key);
+	}
 	
 	@Test
 	public void testGetDocCount() throws Exception {
+		/*
+		 
+		//Méthode trop lente
+		
 		int count = dumper.getKeysCount("DocInfo");
 		sysout.println("Nombre de clés dans DocInfo : " + count);
 		count = dumper.getKeysCount("Documents");
 		sysout.println("Nombre de clés dans Documents : " + count);
+		*/
+		
+		List<byte[]> keys = dumper.getKeys("TermInfoRangeUUID", 1000);
+		if (keys.size() == 1000) throw new Exception("Attention : trop de clés");
+		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
+
+		byte[] sliceStart = getTermInfoRangeUUIDSliceBytes("\u0000");
+		byte[] sliceEnd = getTermInfoRangeUUIDSliceBytes("\uFFFF");
+
+		int total = 0;
+		for (byte[] key : keys) {
+			String displayableKey = ConvertHelper.getReadableUTF8String(key);
+			if (displayableKey.contains("SM_UUID")) {
+				sysout.print("Nombre de colonnes pour la clé " + displayableKey + " ...");
+				ThriftCountQuery<byte[], byte[]> cq = new ThriftCountQuery<byte[], byte[]>(keyspace, bytesSerializer, bytesSerializer);
+			    cq.setColumnFamily("TermInfoRangeUUID").setKey(key);
+			    cq.setRange(sliceStart, sliceEnd , 10000000);
+			    QueryResult<Integer> r = cq.execute();
+			    int count = r.get();
+				sysout.println(count);
+				total += count;
+			}
+		}
+		sysout.print("Nombre total de documents : " + total);		
 	}
 	
 	@Test
@@ -121,25 +176,25 @@ public class DumpTest
 	
 	@Test
 	public void testDumpOneDocument() throws Exception {
-		dumper.dumpCF("Documents", "dcd998fe-0445-48a5-baa1-22f27433b983_v1");
+		dumper.dumpCF("Documents", "651b658e-e0ca-4dce-abf5-aed4d32557e3");
 	}
 
 	@Test
 	public void testExtractOneDocument() throws Exception {
-		ExtractOneDocument("0052ffca-a542-4aca-b0aa-4b4d037e9fe6", "c:\\temp\\test.pdf");
-		ExtractOneDocument("017961ff-1899-40a7-8d3d-6d32729780ef", "c:\\temp\\test2.pdf");
-		ExtractOneDocument("0125e102-a096-4db0-9746-edf0c314498a", "c:\\temp\\test3.pdf");
-		ExtractOneDocument("0f5003e0-8698-4405-9804-a098ed6e5575", "c:\\temp\\test4.pdf");
+		ExtractOneDocument("651b658e-e0ca-4dce-abf5-aed4d32557e4", "c:\\temp\\test.csv");
+		//ExtractOneDocument("017961ff-1899-40a7-8d3d-6d32729780ef", "c:\\temp\\test2.pdf");
+		//ExtractOneDocument("0125e102-a096-4db0-9746-edf0c314498a", "c:\\temp\\test3.pdf");
+		//ExtractOneDocument("0f5003e0-8698-4405-9804-a098ed6e5575", "c:\\temp\\test4.pdf");
 	}
 
 	/***
 	 * Extrait le corps de la version 1 du document dont l'uuid est passé en paramètre
-	 * @param uuid : uuid du document à extraire
+	 * @param uuid : uuid du fichier à extraire
 	 * @param fileName : fichier à créer
 	 * @throws Exception
 	 */
 	private void ExtractOneDocument(String uuid, String fileName) throws Exception {
-		String key = uuid + "_v1";
+		String key = uuid;
 		
 		StringSerializer stringSerializer = StringSerializer.get();
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
@@ -155,6 +210,7 @@ public class DumpTest
 		
 		// On ne reçoit normalement qu'une seule ligne
 		Row<String, String, byte[]> row = orderedRows.getByKey(key);
+		if (row == null) throw new IllegalArgumentException("On n'a pas trouvé de fichier dont l'uuid est " + uuid);
 		
 		sysout.println("Création du fichier " + fileName + "...");
 		File someFile = new File(fileName);
@@ -174,15 +230,129 @@ public class DumpTest
 
 	@Test
 	public void testDumpTermInfo() throws Exception {
-		// sm_life_cycle_reference_date - sm_uuid 
-		byte[] startKey = ConvertHelper.stringToBytesWithDocubaseDelimiter("DOCUBASE|||sm_uuid|||fff");
-		String filter = "0052ffca-a542-4aca-b0aa-4b4d037e9fe6";
-		//dumper.dumpSCF("TermInfo", startKey, 100000, filter);
+		dumper.printColumnNameInComposite = true;
+		dumper.deserializeValue = true;
+		dumper.compositeDisplayTypeMapper = new boolean[]{true, true, false};
+
 		//dumper.dumpCF("TermInfo", 10000);
-		sysout.println("début");
-		dumper.dumpCF_StartKey("TermInfo", startKey, 100);
-		//dumper.dumpCF("TermInfo", 50);
+		
+		byte[] startKey = getTermInfoKey("srn", "0123406588");
+		dumper.dumpCF_StartKey("TermInfo", startKey, 30);
 	}
+	
+	@Test
+	public void testDumpOneTermInfo() throws Exception {
+		dumpOneTermInfo("srn", "0123406588");
+		//dumpOneTermInfo("SM_LIFE_CYCLE_REFERENCE_DATE", "20120106124749571");
+	}
+	
+	/**
+	 * Calcule une clé pour la CF TermInfo
+	 * @param categorieName : nom de la catégorie (ex : nre)
+	 * @param value			: valeur de la catégorie
+	 * @throws Exception
+	 */
+	private byte[] getTermInfoKey(String categorieName, String value) throws Exception {
+		// Exemple de Clé de terminfo :
+		// \x00\x00\x00\x00   \x03    nre   \x00\x00  \x04    1234    \x00
+		// Les \x03 et \x04 sont les tailles de categorieName et value
+		byte[] key = ConvertHelper.hexStringToByteArray("00000000" + ConvertHelper.getHexString((byte)categorieName.length()) 
+				+ ConvertHelper.stringToHex(categorieName) 
+				+ "0000" + ConvertHelper.getHexString((byte)value.length())
+				+ ConvertHelper.stringToHex(value) + "00");
+		return key;
+	}
+	
+	/**
+	 * Dump une ligne de la CF TermInfo
+	 * @param categorieName : nom de la catégorie (ex : nre)
+	 * @param value			: valeur de la catégorie
+	 * @throws Exception
+	 */
+	private void dumpOneTermInfo(String categorieName, String value) throws Exception {
+		byte[] key = getTermInfoKey(categorieName, value);
+		dumper.printColumnNameInHex = true;		
+		dumper.deserializeValue = true;
+		dumper.dumpCF("TermInfo", key);		
+	}
+	
+	
+	@Test
+	public void testDumpTermInfoRangeDate() throws Exception {
+		dumper.deserializeValue = true;
+		dumper.printColumnNameInComposite = true;
+		dumper.compositeDisplayTypeMapper = new boolean[]{false, true, false};
+		dumper.dumpCF("TermInfoRangeDate", 15);
+	}
+	@Test
+	public void testDumpTermInfoRangeDateTime() throws Exception {
+		dumper.deserializeValue = true;
+		dumper.printColumnNameInComposite = true;
+		dumper.compositeDisplayTypeMapper = new boolean[]{false, true, false};
+		dumper.dumpCF("TermInfoRangeDatetime", 15);
+	}
+
+	@Test
+	public void testDumpTermInfoRangeDouble() throws Exception {
+		dumper.dumpCF("TermInfoRangeDouble", 15);
+	}
+
+	@Test
+	public void testDumpTermInfoRangeFloat() throws Exception {
+		dumper.dumpCF("TermInfoRangeFloat", 15);
+	}
+	@Test
+	public void testDumpTermInfoRangeInteger() throws Exception {
+		dumper.dumpCF("TermInfoRangeInteger", 15);
+	}
+	@Test
+	public void testDumpTermInfoRangeLong() throws Exception {
+		dumper.dumpCF("TermInfoRangeLong", 15);
+	}
+	@Test
+	public void testDumpTermInfoRangeString() throws Exception {
+		dumper.deserializeValue = true;
+		dumper.printColumnNameInComposite = true;
+		dumper.compositeDisplayTypeMapper = new boolean[]{false, true, false};
+		dumper.dumpCF("TermInfoRangeString", 30);
+	}
+	@Test
+	public void testDumpTermInfoRangeUUID() throws Exception {
+		dumper.deserializeValue = true;
+		dumper.printColumnNameInComposite = true;
+		dumper.compositeDisplayTypeMapper = new boolean[]{false, true, false};
+		
+		//dumper.dumpCF("TermInfoRangeUUID", 15);
+		
+		//byte[]sliceStart = new byte[0];
+		//byte[]sliceEnd = new byte[0];
+		byte[] sliceStart = getTermInfoRangeUUIDSliceBytes("1234");
+		byte[] sliceEnd = getTermInfoRangeUUIDSliceBytes("1235");
+		dumper.dumpCF_slice("TermInfoRangeUUID", sliceStart, sliceEnd, 15);
+	}
+	
+	private Composite getTermInfoRangeUUIDSliceComposite(String docUUID) {
+		/*
+		 La CF TermInfoRangeUUID est déclarée ainsi :
+		 create column family TermInfoRangeUUID with comparator = 'CompositeType(UTF8Type, UUIDType, UTF8Type)'
+		 
+		 La 1ere partie du composite est l'uuid du document codé en UTF8
+		 La 1ere partie du composite est l'uuid du document codé en bytes  !!!!
+		 La 1ere partie du composite est une chaîne correspondant à la version du document ("0.0.0")
+		 */
+		
+		Composite c = new Composite();
+		c.addComponent(docUUID, StringSerializer.get());
+		c.addComponent(ConvertHelper.hexStringToByteArray("00000000000000000000000000000000"), BytesArraySerializer.get());
+		c.addComponent("", StringSerializer.get());
+		return c;
+	}
+
+	private byte[] getTermInfoRangeUUIDSliceBytes(String docUUID) {
+		Composite c = getTermInfoRangeUUIDSliceComposite(docUUID);
+		return new CompositeSerializer().toBytes(c);
+	}
+
 	
 	@Test
 	public void testDumpNotes() throws Exception {
@@ -192,21 +362,6 @@ public class DumpTest
 	@Test
 	public void testDumpAnnotations() throws Exception {
 		dumper.dumpCF("Annotations", 15);
-	}
-	
-	@Test
-	public void testDumpRecordManager() throws Exception {
-		dumper.dumpSCF("RecordManager", 15);
-	}
-	
-	@Test
-	public void testDumpRecordManagerRef() throws Exception {
-		dumper.dumpCF("RecordManagerRef", 15);
-	}
-	
-	@Test
-	public void testDumpRecordManagerArchive() throws Exception {
-		dumper.dumpCF("RecordManagerArchive", 15);
 	}
 	
 	@Test
@@ -230,8 +385,8 @@ public class DumpTest
 	}
 	
 	@Test
-	public void testDumpIndexCriteriaReference() throws Exception {
-		dumper.dumpCF("IndexCriteriaReference", 15);
+	public void testDumpIndexReference() throws Exception {
+		dumper.dumpCF("IndexReference", 15);
 	}
 
 	@Test
@@ -250,19 +405,24 @@ public class DumpTest
 	
 	@Test
 	public void testDumpIndexCounter() throws Exception {
-		dumper.dumpCF("IndexCounter", 15);
+		dumper.dumpCF("IndexCounter", 50);
 	}
 	
 	@Test
 	public void testDumpSystemEventLog() throws Exception {
-		dumper.dumpCF("SystemEventLog", 15);
+		dumper.dumpCF("SystemEventLog", 150);
 	}
+	@Test
+	public void SystemEventLogByTime() throws Exception {
+		dumper.dumpCF("SystemEventLogByTime", 15);
+	}	
 	@Test
 	public void testDumpDocEventLog() throws Exception {
 		dumper.dumpCF("DocEventLog", 30);
 	}
 	@Test
 	public void testDumpDocEventLogByTime() throws Exception {
+		dumper.printColumnNameInHex = true;
 		dumper.dumpCF("DocEventLogByTime", 15);
 	}
 	@Test
@@ -285,9 +445,8 @@ public class DumpTest
 	
 	@Test
 	public void testCQL() throws Exception {
-		StringSerializer stringSerializer = StringSerializer.get();
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		CqlQuery<byte[],String,byte[]> cqlQuery = new CqlQuery<byte[],String,byte[]>(keyspace, bytesSerializer, stringSerializer, bytesSerializer);
+		CqlQuery<byte[],byte[],byte[]> cqlQuery = new CqlQuery<byte[],byte[],byte[]>(keyspace, bytesSerializer, bytesSerializer, bytesSerializer);
 		//String query = "select * from DocInfo where Key ='" + ConvertHelper.stringToHex("DOCUBASE") + "efbfbf" + ConvertHelper.stringToHex("dd258958-24ff-486e-84b8-4f6b2714aaff") + "'";
 		//String query = "select * from DocInfo where Key ='" + ConvertHelper.stringToHex("DOCUBASE") + "efbfbf" + ConvertHelper.stringToHex("d6db9900-4e83-401f-ac82-21e88b804503") + "'";
 		//String query = "select * from BasesReference where Key ='" + ConvertHelper.stringToHex("SAE") + "'";
@@ -296,28 +455,10 @@ public class DumpTest
 		//String query = "select * from DocEventLogByTime WHERE KEY >'" + ConvertHelper.stringToHex("20110819000000000") + "' LIMIT 100";
 		//String query = "select * from DocEventLog WHERE KEY >'" + ConvertHelper.stringToHex("d6db9900-4e83-401f-ac82-21e88b804503") + "' LIMIT 50";
 		cqlQuery.setQuery(query);
-		QueryResult<CqlRows<byte[],String,byte[]>> result = cqlQuery.execute();
+		QueryResult<CqlRows<byte[],byte[],byte[]>> result = cqlQuery.execute();
 		dumper.dumpCqlQueryResult(result);
 	}
 	
-	@Test
-	public void testExtractDocEventForOneDoc() throws Exception {
-		QueryResult<CqlRows<byte[],String,byte[]>> result = getDocEventForOneDoc("dd258958-24ff-486e-84b8-4f6b2714aaff");
-		//QueryResult<CqlRows<byte[],String,byte[]>> result = getDocEventForOneDoc("d6db9900-4e83-401f-ac82-21e88b804503");
-		dumper.dumpCqlQueryResult(result);
-	}
-	
-	protected QueryResult<CqlRows<byte[],String,byte[]>> getDocEventForOneDoc(String uuid) throws Exception {
-		StringSerializer stringSerializer = StringSerializer.get();
-		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		CqlQuery<byte[],String,byte[]> cqlQuery = new CqlQuery<byte[],String,byte[]>(keyspace, bytesSerializer, stringSerializer, bytesSerializer);
-		String query = "select * from DocEventLog " +
-				" WHERE KEY >'" + ConvertHelper.stringToHex(uuid) + "'" + 
-				" AND KEY < '" + ConvertHelper.stringToHex(uuid) + "FF'";
-		cqlQuery.setQuery(query);
-		QueryResult<CqlRows<byte[],String,byte[]>> result = cqlQuery.execute();
-		return result;
-	}
 	
 	@Test
 	public void testDelete() throws Exception {

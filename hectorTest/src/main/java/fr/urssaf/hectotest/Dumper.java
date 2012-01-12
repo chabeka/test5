@@ -1,20 +1,26 @@
 package fr.urssaf.hectotest;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.io.PrintStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.prettyprint.cassandra.model.CqlRows;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
+import me.prettyprint.cassandra.serializers.CompositeSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
+import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.HColumn;
 import me.prettyprint.hector.api.beans.HSuperColumn;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.SuperSlice;
+import me.prettyprint.hector.api.beans.AbstractComposite.Component;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
@@ -24,58 +30,52 @@ public class Dumper {
 
 	Keyspace keyspace;
 	PrintStream sysout;
-
+	public boolean printKeyInHex = false;
+	public boolean printColumnNameInHex = false;
+	public boolean printColumnNameInComposite = false;
+	public boolean deserializeValue = false;
+	
+	/**
+	 * Si on affiche le nom de colonne en mode "composite", on peut indiquer dans ce tableau
+	 * pour chaque élément du composite s'il faut l'afficher en hexadécimal
+	 */
+	public boolean[] compositeDisplayTypeMapper;
+	
 	public Dumper(Keyspace k, PrintStream p) {
 		keyspace = k;
 		sysout = p;
 	}
 	
-	public List<String> getKeys(String CFName, int count) throws Exception {
-		StringSerializer stringSerializer = StringSerializer.get();
-		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		RangeSlicesQuery<String, String, byte[]> rangeSlicesQuery = HFactory.createRangeSlicesQuery(keyspace, stringSerializer, stringSerializer, bytesSerializer);
-		rangeSlicesQuery.setColumnFamily(CFName);
-		rangeSlicesQuery.setColumnNames("toto");
-		QueryResult<OrderedRows<String, String, byte[]>> result = rangeSlicesQuery.execute();
-		OrderedRows<String, String, byte[]> orderedRows = result.get();
-		//sysout.println("Count " + orderedRows.getCount());
-		ArrayList<String> list = new ArrayList<String>(count);
-		for (Row<String, String, byte[]> row : orderedRows) {
-			String key = row.getKey();
-			list.add(key);
-			//sysout.println("Key : " + key);
-		}
-		return list;
+	public List<byte[]> getKeys(String CFName, int count) throws Exception {
+		return getKeys(CFName, "", count);
 	}
 	
-	public List<String> getKeys(String CFName, String startKey, int count) throws Exception {
+	public List<byte[]> getKeys(String CFName, String startKey, int count) throws Exception {
 		return getKeys(CFName, ConvertHelper.stringToBytes(startKey), count);
 	}
 
-	public List<String> getKeys(String CFName, byte[] startKey, int count) throws Exception {
+	public List<byte[]> getKeys(String CFName, byte[] startKey, int count) throws Exception {
 		StringSerializer stringSerializer = StringSerializer.get();
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		//RangeSlicesQuery<String, String, byte[]> rangeSlicesQuery = HFactory.createRangeSlicesQuery(keyspace, stringSerializer, stringSerializer, bytesSerializer);
 		RangeSlicesQuery<byte[], String, byte[]> rangeSlicesQuery = HFactory.createRangeSlicesQuery(keyspace, bytesSerializer, stringSerializer, bytesSerializer);
 		
 		rangeSlicesQuery.setColumnFamily(CFName);
-		rangeSlicesQuery.setRange("", "", false, count);
+		//rangeSlicesQuery.setRange("", "", false, count);
+		rangeSlicesQuery.setColumnNames("toto");
 		//rangeSlicesQuery.setKeys(startKey, "");
 		byte[] endBytes = new byte[0];
 		rangeSlicesQuery.setKeys(startKey , endBytes);
 		rangeSlicesQuery.setRowCount(count);
 		rangeSlicesQuery.setReturnKeysOnly();
-		//QueryResult<OrderedRows<String, String, byte[]>> result = rangeSlicesQuery.execute();
 		QueryResult<OrderedRows<byte[], String, byte[]>> result = rangeSlicesQuery.execute();
 		
-		//OrderedRows<String, String, byte[]> orderedRows = result.get();
 		OrderedRows<byte[], String, byte[]> orderedRows = result.get();
 		//sysout.println("Count " + orderedRows.getCount());
-		ArrayList<String> list = new ArrayList<String>(count);
+		ArrayList<byte[]> list = new ArrayList<byte[]>(count);
 		for (Row<byte[], String, byte[]> row : orderedRows) {
 			byte[] key = row.getKey();
 			//String t = ConvertHelper.stringToHex(key);
-			list.add(new String(key));
+			list.add(key);
 			//list.add(key);
 			//sysout.println("Key : " + key);
 		}
@@ -107,10 +107,11 @@ public class Dumper {
 			count = orderedRows.getCount();
 			// On enlève 1, car sinon à chaque itération, la startKey serait comptée deux fois.
 			total += count-1;
+			sysout.print(" " + total);
 			// Parcours des rows pour déterminer la dernière clé de l'ensemble
-			for (Row<String, String, byte[]> row : orderedRows) {
-				startKey = row.getKey();
-			}
+			Row<String,String,byte[]> lastRow = orderedRows.peekLast();
+			startKey = lastRow.getKey();			
+
 		}
 		while (count == blockSize);
 		return total;
@@ -123,22 +124,24 @@ public class Dumper {
 	 * @throws Exception
 	 */
 	public void dumpCF(String CFName, int count) throws Exception {
-		StringSerializer stringSerializer = StringSerializer.get();
+		dumpCF_slice(CFName, new byte[0], new byte[0], count);
+	}
+
+	public void dumpCF_slice(String CFName, byte[]sliceStart, byte[]sliceEnd, int count) throws Exception {
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		RangeSlicesQuery<byte[], String, byte[]> rangeSlicesQuery = HFactory
+		RangeSlicesQuery<byte[], byte[], byte[]> rangeSlicesQuery = HFactory
 				.createRangeSlicesQuery(keyspace, bytesSerializer,
-						stringSerializer, bytesSerializer);
+						bytesSerializer, bytesSerializer);
 		rangeSlicesQuery.setColumnFamily(CFName);
 		//rangeSlicesQuery.setKeys(
 		//		"SrMd8I1c￿0002dfa8-4085-45f9-9554-d036b105c968", "");
-		rangeSlicesQuery.setRange("", "", false, count);
+		rangeSlicesQuery.setRange(sliceStart, sliceEnd, false, count);
 		rangeSlicesQuery.setRowCount(count);
-		QueryResult<OrderedRows<byte[], String, byte[]>> result = rangeSlicesQuery
+		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = rangeSlicesQuery
 				.execute();
 		dumpQueryResult(result);
-
 	}
-	
+
 	/**
 	 * Dump les colonnes d'une column family pour une clé donnée
 	 * @param CFName
@@ -146,33 +149,43 @@ public class Dumper {
 	 * @throws Exception
 	 */
 	public void dumpCF(String CFName, byte[] key) throws Exception {
-		StringSerializer stringSerializer = StringSerializer.get();
+		dumpCF_slice(CFName, key, new byte[0], new byte[0], 1000);
+	}
+
+	/**
+	 * Dump un ensemble (un slice) de colonnes d'une column family pour une clé donnée
+	 * @param CFName
+	 * @param key
+	 * @throws Exception
+	 */
+	public void dumpCF_slice(String CFName, byte[] key, byte[]sliceStart, byte[]sliceEnd, int count) throws Exception {
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		RangeSlicesQuery<byte[], String, byte[]> rangeSlicesQuery = HFactory
+		RangeSlicesQuery<byte[], byte[], byte[]> rangeSlicesQuery = HFactory
 				.createRangeSlicesQuery(keyspace, bytesSerializer,
-						stringSerializer, bytesSerializer);
+						bytesSerializer, bytesSerializer);
 		rangeSlicesQuery.setColumnFamily(CFName);
 		rangeSlicesQuery.setKeys(key, key);
-		rangeSlicesQuery.setRange("", "zzz", false, 1000);
-		QueryResult<OrderedRows<byte[], String, byte[]>> result = rangeSlicesQuery
+		rangeSlicesQuery.setRange(sliceStart, sliceEnd, false, count);
+		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = rangeSlicesQuery
 				.execute();
 		dumpQueryResult(result);
 	}
+
 
 	public void dumpCF(String CFName, String key) throws Exception {
 		dumpCF(CFName, key.getBytes());
 	}
 	
 	public void dumpCF_StartKey(String CFName, byte[] startKey, int count) throws Exception {
-		List<String> keys = getKeys(CFName, startKey, count);
-		for (String key : keys) {
+		List<byte[]> keys = getKeys(CFName, startKey, count);
+		for (byte[] key : keys) {
 			dumpCF(CFName, key);
 		}
 	}
 
 	
-	void dumpCqlQueryResult(QueryResult<CqlRows<byte[], String, byte[]>> result) throws Exception {
-		CqlRows<byte[], String, byte[]> orderedRows = result.get();
+	void dumpCqlQueryResult(QueryResult<CqlRows<byte[], byte[], byte[]>> result) throws Exception {
+		CqlRows<byte[], byte[], byte[]> orderedRows = result.get();
 		if (orderedRows != null) {
 			sysout.println("Count " + orderedRows.getCount());
 			dumpRows(orderedRows);
@@ -182,46 +195,90 @@ public class Dumper {
 		}
 	}
 
-	private void dumpQueryResult(QueryResult<OrderedRows<byte[], String, byte[]>> result) throws Exception {
-		OrderedRows<byte[], String, byte[]> orderedRows = result.get();
+	private void dumpQueryResult(QueryResult<OrderedRows<byte[], byte[], byte[]>> result) throws Exception {
+		OrderedRows<byte[], byte[], byte[]> orderedRows = result.get();
 		sysout.println("Count " + orderedRows.getCount());
 		dumpRows(orderedRows);
 	}
 	
-	private void dumpRows(Iterable<Row<byte[], String, byte[]>> orderedRows) throws Exception {
-		for (Row<byte[], String, byte[]> row : orderedRows) {
-			String key = ConvertHelper.getReadableUTF8String(row.getKey());
-			sysout.println("Key : " + key);
-			ColumnSlice<String, byte[]> columnSlice = row.getColumnSlice();
-			List<HColumn<String, byte[]>> columns = columnSlice.getColumns();
+	private void dumpRows(Iterable<Row<byte[], byte[], byte[]>> orderedRows) throws Exception {
+		for (Row<byte[], byte[], byte[]> row : orderedRows) {
+			if (printKeyInHex) {
+				String key = ConvertHelper.getHexString(row.getKey());
+				sysout.println("Key (hex) : " + key);
+			}
+			else {
+				String key = ConvertHelper.getReadableUTF8String(row.getKey());
+				sysout.println("Key : " + key);
+			}
+			ColumnSlice<byte[], byte[]> columnSlice = row.getColumnSlice();
+			List<HColumn<byte[], byte[]>> columns = columnSlice.getColumns();
 			dumpColumns(columns);
 		}		
 	}
 	
-	private void dumpColumns(List<HColumn<String, byte[]>> columns) throws Exception {
-		for (HColumn<String, byte[]> column : columns) {
-			String name = column.getName();
-			byte[] value =  column.getValue();
-			if (value.length > 200) {
-				byte [] dst = new byte[200];
-				System.arraycopy( value, 0, dst, 0, 200 );
-				value = dst;
+	private void dumpColumns(List<HColumn<byte[], byte[]>> columns) throws Exception {
+		for (HColumn<byte[], byte[]> column : columns) {
+			String s;
+			if (printColumnNameInHex) {
+				s = "Name (hex) : " + ConvertHelper.getHexString(column.getName());
 			}
-			String s = "Name : " + name;
-			//int ttl = column.getTtl();
-			//s += " - ttl : " + ttl;
-			String stringValue = ConvertHelper.getReadableUTF8String(value);
-			s += " - StringValue : " + stringValue;
-			if (value.length <=4) {
-				int intValue = ConvertHelper.byteArrayToInt(value, 0);
-				s += " - IntValue : " + intValue;
+			else if (printColumnNameInComposite)
+			{
+				s = "Name (composite) : (";
+				Composite comp = new CompositeSerializer().fromBytes(column.getName());
+				int i = 0;
+				for (Component<?> c : comp.getComponents()) {
+					ByteBuffer buffer = (ByteBuffer)c.getValue();
+					if (buffer == null)
+						s+="(null)";
+					else {
+						byte[] bytes = new byte[buffer.remaining()];
+						buffer.get(bytes);
+						if (compositeDisplayTypeMapper != null && compositeDisplayTypeMapper[i++] == true) {
+							s += "(hex)" + ConvertHelper.getHexString(bytes);
+						}
+						else {
+							s += ConvertHelper.getReadableUTF8String(bytes);
+						}
+					}
+					s += "   ";
+				}
+				s += ")";
 			}
-			else if (value.length <=8) {
-				long longValue = ConvertHelper.byteArrayToLong(value);
-				s += " - longValue : " + longValue;
+			else
+			{
+				s = "Name : " + ConvertHelper.getReadableUTF8String(column.getName());
 			}
-			String hexValue = ConvertHelper.getHexString(value);
-			s += " - hexValue : " + hexValue;
+			byte[] value =  column.getValue();			
+			
+			if (deserializeValue) {
+			    ByteArrayInputStream bis = new ByteArrayInputStream(value);
+			    ObjectInputStream ois= new ObjectInputStream(bis);
+			    Object o = ois.readObject();
+				s += " - DeseriazedValue : " + o.toString();
+			}
+			else {
+				if (value.length > 200) {
+					byte [] dst = new byte[200];
+					System.arraycopy( value, 0, dst, 0, 200 );
+					value = dst;
+				}
+				//int ttl = column.getTtl();
+				//s += " - ttl : " + ttl;
+				String stringValue = ConvertHelper.getReadableUTF8String(value);
+				s += " - StringValue : " + stringValue;
+				if (value.length <=4) {
+					int intValue = ConvertHelper.byteArrayToInt(value, 0);
+					s += " - IntValue : " + intValue;
+				}
+				else if (value.length <=8) {
+					long longValue = ConvertHelper.byteArrayToLong(value);
+					s += " - longValue : " + longValue;
+				}
+				String hexValue = ConvertHelper.getHexString(value);
+				s += " - hexValue : " + hexValue;
+			}
 			sysout.println(s);
 		}
 	}
@@ -233,8 +290,8 @@ public class Dumper {
 	 * @throws Exception
 	 */
 	public void dumpSCF(String CFName, int count) throws Exception {
-		List<String> keys = getKeys(CFName, count);
-		for (String key : keys) {
+		List<byte[]> keys = getKeys(CFName, count);
+		for (byte[] key : keys) {
 			dumpSCFRow(CFName, key, count);
 		}
 	}
@@ -247,8 +304,8 @@ public class Dumper {
 	 * @throws Exception
 	 */
 	public void dumpSCF(String CFName, String startKey, int count) throws Exception {
-		List<String> keys = getKeys(CFName, startKey, count);
-		for (String key : keys) {
+		List<byte[]> keys = getKeys(CFName, startKey, count);
+		for (byte[] key : keys) {
 			dumpSCFRow(CFName, key, count);
 		}
 	}
@@ -262,8 +319,8 @@ public class Dumper {
 	 * @throws Exception
 	 */
 	public void dumpSCF(String CFName, byte[] startKey, int count, String scNameFilter) throws Exception {
-		List<String> keys = getKeys(CFName, startKey, count);
-		for (String key : keys) {
+		List<byte[]> keys = getKeys(CFName, startKey, count);
+		for (byte[] key : keys) {
 			dumpSCFRow(CFName, key, count, scNameFilter);
 		}
 	}
@@ -274,7 +331,7 @@ public class Dumper {
 	 * @param count
 	 * @throws Exception
 	 */
-	public void dumpSCFRow(String CFName, String key, int count) throws Exception {
+	public void dumpSCFRow(String CFName, byte[] key, int count) throws Exception {
 		dumpSCFRow(CFName, key, count, null);
 	}
 	
@@ -285,26 +342,25 @@ public class Dumper {
 	 * @param scNameFilter : si non null : on affiche que les super-colonne dont le nom contient scNameFilter 
 	 * @throws Exception
 	 */
-	public void dumpSCFRow(String CFName, String key, int count, String scNameFilter) throws Exception {
-		
-		StringSerializer stringSerializer = StringSerializer.get();
-		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
-		SuperSliceQuery<String, String, String, byte[]> superSliceQuery = HFactory
-			.createSuperSliceQuery(keyspace, stringSerializer, stringSerializer, stringSerializer, bytesSerializer);
+	public void dumpSCFRow(String CFName, byte[] key, int count, String scNameFilter) throws Exception {
+		StringSerializer stringSerializer = StringSerializer.get(); 
+		BytesArraySerializer bytesSerializer = BytesArraySerializer.get();
+		SuperSliceQuery<byte[], String, byte[], byte[]> superSliceQuery = HFactory
+			.createSuperSliceQuery(keyspace, bytesSerializer, stringSerializer, bytesSerializer, bytesSerializer);
 		superSliceQuery.setColumnFamily(CFName);
 		superSliceQuery.setRange("", "", false, count);
 		superSliceQuery.setKey(key);
-		QueryResult<SuperSlice<String, String, byte[]>> result = superSliceQuery.execute();
-		SuperSlice<String,String,byte[]> superSlice = result.get();
+		QueryResult<SuperSlice<String, byte[], byte[]>> result = superSliceQuery.execute();
+		SuperSlice<String,byte[],byte[]> superSlice = result.get();
 		
-		List<HSuperColumn<String, String, byte[]>> superColumns = superSlice.getSuperColumns();
+		List<HSuperColumn<String, byte[], byte[]>> superColumns = superSlice.getSuperColumns();
 		if (scNameFilter == null) {
 			sysout.println("Clé de la super row : " + key);
 			sysout.println("Nombre de super colonnes : " + superColumns.size());
 		}
 		
 		// Parcours des super colonnes
-		for (HSuperColumn<String, String, byte[]> superColumn : superColumns) {
+		for (HSuperColumn<String, byte[], byte[]> superColumn : superColumns) {
 			String superColumnName = superColumn.getName();
 			if (scNameFilter != null) {
 				if (!superColumnName.contains(scNameFilter)) {
@@ -316,7 +372,7 @@ public class Dumper {
 				}
 			}
 			sysout.println("SuperName : " + superColumnName);
-			List<HColumn<String, byte[]>> columns = superColumn.getColumns();
+			List<HColumn<byte[], byte[]>> columns = superColumn.getColumns();
 			
 			// Dump des colonnes
 			dumpColumns(columns);
