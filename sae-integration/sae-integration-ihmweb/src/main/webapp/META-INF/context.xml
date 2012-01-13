@@ -2,4 +2,6 @@
 <Context>
    <Environment name="SAE_Fichier_Configuration" type="java.lang.String"
       value="C:\sae\integration\ecdesources.xml" />
+   <Environment name="SAE_Fichier_Referentiel_Test" type="java.lang.String"
+      value="C:\sae\integration\ecdetests.xml" />
 </Context>
