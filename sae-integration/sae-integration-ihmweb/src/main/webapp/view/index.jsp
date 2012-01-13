@@ -23,6 +23,8 @@
 <p><br /></p>
 <p><a href="listeEcdeSources.do">Configuration ECDE</a></p>
 
+<p><br /></p>
+<p><a href="testInjectionCtrl.do">Injection Cas de test</a></p>
 <p><br /><br /><br /><br /></p>
 </body>
 </html>
