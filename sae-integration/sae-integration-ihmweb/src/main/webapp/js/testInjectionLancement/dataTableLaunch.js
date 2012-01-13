@@ -48,7 +48,7 @@ function initTable() {
 
 				},
 				{
-					header : 'name',
+					header : 'nom cas de test',
 					width : 320,
 					dataIndex : 'name',
 					sortable : true
@@ -192,7 +192,7 @@ function initTasks(gridTable) {
 		run : function() {
 			gridTable.store.load();
 		},
-		interval : 15001
+		interval : 10001
 	// 1 second
 	};
 
@@ -223,7 +223,7 @@ function initTasks(gridTable) {
 				}
 			});
 		},
-		interval : 15000
+		interval : 10000
 	// 1 second
 	};
 }

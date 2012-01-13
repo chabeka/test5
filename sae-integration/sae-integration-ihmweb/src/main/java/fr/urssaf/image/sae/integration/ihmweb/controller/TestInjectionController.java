@@ -119,6 +119,8 @@ public class TestInjectionController {
          if (listTraitement != null && !listTraitement.isEmpty()) {
 
             for (EcdeTestDisplayed ecdeTestDisplayed : testDisplayeds) {
+               ecdeTestDisplayed.setErreur(null);
+               
                if (listTraitement.contains(ecdeTestDisplayed.getUrl())) {
                   ecdeTestDisplayed.setChecked(true);
                   ecdeTestDisplayed
