@@ -5,6 +5,7 @@ package fr.urssaf.image.sae.integration.ihmweb.service.ecde.file;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,8 +30,12 @@ public class EcdeTestsImpl implements EcdeTestInterface {
     * {@inheritDoc}
     */
    @Override
-   public void generateFile(EcdeTests ecdeTests) {
-
+   public void generateFile(List<EcdeTest> ecdeTest) throws Exception {
+      StaxDriver staxDriver = new StaxDriver();
+      XStream xstream = new XStream(staxDriver);
+      xstream.alias("test", EcdeTest.class);
+      xstream.alias("tests", List.class);
+      xstream.toXML(ecdeTest, new FileOutputStream(filePath));
    }
 
    /**

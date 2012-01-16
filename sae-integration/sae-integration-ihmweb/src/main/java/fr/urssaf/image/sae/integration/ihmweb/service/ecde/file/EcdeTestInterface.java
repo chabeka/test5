@@ -3,6 +3,9 @@
  */
 package fr.urssaf.image.sae.integration.ihmweb.service.ecde.file;
 
+import java.util.List;
+
+import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeTests;
 
 /**
@@ -23,6 +26,7 @@ public interface EcdeTestInterface {
     * 
     * @param ecdeTests
     *           liste des cas de test
+    * @throws Exception erreur lors du traitement
     */
-   void generateFile(EcdeTests ecdeTests);
+   void generateFile(List<EcdeTest> ecdeTest) throws Exception;
 }

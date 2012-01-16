@@ -6,7 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Intégration des cas de test</title>
+<title>Injection des jeux de test</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
 	href="js/extjs/resources/css/ext-all.css" />
@@ -24,7 +24,7 @@
 <table width="100%">
 	<tr>
 		<td style="width: 75%">
-		<p class="titre1">Intégration des cas de test</p>
+		<p class="titre1">Injection des jeux de test</p>
 		</td>
 		<td style="width: 25%" align="right"><a href="index.do">&lt;&lt;&nbsp;Retour
 		à l&apos;accueil </a></td>
