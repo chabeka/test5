@@ -167,15 +167,6 @@
          </CasTest>
 
          <CasTest>
-            <id>160</id>
-            <code>160-CaptureUnitaire-KO-EcdeFichierDroit</code>
-            <description>
-               On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE pointe sur un fichier pour lequel l'application SAE n'a pas le droit de lecture.
-            </description>
-            <implemente>false</implemente>
-         </CasTest>
-
-         <CasTest>
             <id>161</id>
             <code>161-CaptureUnitaire-KO-TailleZero</code>
             <description>
@@ -256,15 +247,6 @@
          </CasTest>
 
          <CasTest>
-            <id>251</id>
-            <code>251-CaptureMasse-KO-SommaireFichierInexistant</code>
-            <description>
-               On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE du sommaire.xml pointe sur un fichier inexistant
-            </description>
-            <implemente>false</implemente>
-         </CasTest>
-
-         <CasTest>
             <id>252</id>
             <code>252-CaptureMasse-KO-Tor-MetadonneeVide</code>
             <description>
@@ -336,38 +318,11 @@
             <implemente>false</implemente>
          </CasTest>
 
-         <CasTest>
-            <id>260</id>
-            <code>260-CaptureMasse-KO-SommaireFichierDroit</code>
-            <description>
-               On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE du sommaire.xml pointe sur un fichier pour lequel l'application SAE n'a pas le droit de lecture
-            </description>
-            <implemente>false</implemente>
-         </CasTest>
-
-         <CasTest>
-            <id>261</id>
-            <code>261-CaptureMasse-KO-SommaireRepertoireInexistant</code>
-            <description>
-               On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE du sommaire.xml pointe sur un fichier inexistant (mais une arborescence de répertoire correcte : l’ECDE existe, le répertoire de traitement aussi)
-            </description>
-            <implemente>false</implemente>
-         </CasTest>
-
-         <CasTest>
+          <CasTest>
             <id>262</id>
             <code>262-CaptureMasse-KO-Tor-FichierInexistant</code>
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, le chemin de fichier pointe sur un fichier inexistant
-            </description>
-            <implemente>false</implemente>
-         </CasTest>
-
-         <CasTest>
-            <id>263</id>
-            <code>263-CaptureMasse-KO-Tor-FichierDroit</code>
-            <description>
-               On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, le chemin de fichier pointe sur un fichier pour lequel l'application SAE n'a pas le droit de lecture
             </description>
             <implemente>false</implemente>
          </CasTest>
