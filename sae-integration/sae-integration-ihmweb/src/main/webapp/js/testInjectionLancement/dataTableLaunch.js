@@ -128,7 +128,7 @@ function initForm(gridTable) {
 	monFormulaire.add(gridTable);
 
 	var monBoutonValidation = new Ext.Button( {
-		text : 'Intégrer les cas de test',
+		text : 'Injecter les jeux de test',
 		id : 'btnValider',
 		handler : function() {
 			var tempName;
@@ -136,9 +136,11 @@ function initForm(gridTable) {
 			var check = document.getElementsByName('cck');
 			var checkLength = check.length;
 			var allRecords = gridTable.store.getRange();
-
+			var nbCk = 0;
+			
 			for ( var i = 0; i < checkLength; i++) {
 				if (check[i].checked) {
+					nbCk++;
 					tempName = new Ext.form.Hidden( {
 						name : 'treatmentList',
 						value : allRecords[i].data["url"]
@@ -147,19 +149,23 @@ function initForm(gridTable) {
 				}
 			}
 			monFormulaire.doLayout();
-
-			monFormulaire.getForm().submit( {
-				success : function(response, opts) {
-
-					disable('btnValider', true);
-
-					runner.start(task);
-					runner.start(taskLookStatus);
-				},
-				failure : function(response, opts) {
-					alert("le traitement n'est pas lancé");
-				}
-			});
+			
+			if (nbCk < 1) {
+				alert("Il n'y a aucun jeu de test à injecter");
+			} else {
+				monFormulaire.getForm().submit( {
+					success : function(response, opts) {
+	
+						disable('btnValider', true);
+	
+						runner.start(task);
+						runner.start(taskLookStatus);
+					},
+					failure : function(response, opts) {
+						alert("le traitement n'est pas lancé");
+					}
+				});
+			}
 		}
 	});
 
