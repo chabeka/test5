@@ -24,30 +24,9 @@
 
 <c:forEach var="categorie" items="${listeTests.categorie}">
 
-	<p class="titre2"><c:out value="${categorie.nom}" /></p>
-
-	<table border=0 cellpadding=3>
-
-		<c:forEach var="casTest" items="${categorie.casTests.casTest}">
-			<tr>
-				<td><c:choose>
-
-					<c:when test="${casTest.implemente==true}">
-						<a class="lienCas" href="test<c:out value="${casTest.id}" />.do">
-						<c:out value="${casTest.code}" /> </a>
-					</c:when>
-
-					<c:otherwise>
-						<c:out value="${casTest.code}" />
-					</c:otherwise>
-
-				</c:choose></td>
-			</tr>
-		</c:forEach>
-
-	</table>
-
-
+	<p class="titre2">
+		<a href="listeTests.do?action=detail&id=${categorie.id}">
+	<c:out value="${categorie.nom}" /></a></p>
 	<p><br />
 	</p>
 

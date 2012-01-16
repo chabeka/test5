@@ -18,6 +18,7 @@
    <xsd:complexType name="CategorieType">
       <xsd:sequence>
          <xsd:element name="Nom" type="xsd:string" />
+         <xsd:element name="Id" type="xsd:int" />
          <xsd:element name="CasTests" type="this:ListeCasTestsType" />
       </xsd:sequence>
    </xsd:complexType>

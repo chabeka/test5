@@ -45,7 +45,8 @@ public class TestInjectionController {
    @RequestMapping(method = RequestMethod.GET)
    public String defaultView(HttpSession session) {
 
-      if (!ThreadInitCasDeTest.EtatThread.RUNNING.equals(casDeTest.getEtat())) {
+      if (!ThreadInitCasDeTest.EtatThread.RUNNING.equals(casDeTest.getEtat())
+            && session.getServletContext().getAttribute(ECDE_LIST) == null) {
          List<EcdeTestDisplayed> testDisplayeds = new ArrayList<EcdeTestDisplayed>();
 
          EcdeTestDisplayed testDisplayed;

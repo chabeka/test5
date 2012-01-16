@@ -25,71 +25,59 @@ import fr.urssaf.image.sae.integration.ihmweb.utils.ControllerUtils;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ModelUtils;
 
 /**
- * Classe mère pour tous les contrôleurs pour les tests du service web SaeService
+ * Classe mère pour tous les contrôleurs pour les tests du service web
+ * SaeService
  * 
- * @param <T> l'objet formulaire associé au contrôleur
+ * @param <T>
+ *           l'objet formulaire associé au contrôleur
  */
 public abstract class AbstractTestWsController<T extends TestWsParentFormulaire> {
 
-   
    @Autowired
    private TestConfig testConfig;
-   
-   
+
    @Autowired
    private ModelUtils modelUtils;
-   
-   
+
    @Autowired
    private SaeServiceTestService saeWsTestUtils;
-   
-   
+
    @Autowired
    private ReferentielSoapFaultService refSoapFault;
-   
-   
+
    @Autowired
    private ReferentielMetadonneesService refMetas;
-   
-   
+
    @Autowired
    private ReferentielCasTestService refCasTestService;
-   
-   
+
    @Autowired
    private TestsMetadonneesService testMetasService;
-   
-   
+
    @Autowired
    private EcdeService ecdeService;
-   
-   
+
    @Autowired
    private ConsultationTestService consultTestServ;
-   
-   
+
    @Autowired
    private CaptureUnitaireTestService captUnitTestServ;
-   
-   
+
    @Autowired
    private CaptureMasseTestService captMassTestServ;
-   
-   
+
    @Autowired
    private RechercheTestService rechTestServ;
-   
-   
+
    /**
     * Service utilitaires pour les tests du service web SaeService
     * 
-    * @return Service utilitaires pour les tests du service web SaeService 
+    * @return Service utilitaires pour les tests du service web SaeService
     */
    public final SaeServiceTestService getSaeWsTestUtils() {
       return this.saeWsTestUtils;
    }
-   
-   
+
    /**
     * Service du référentiel des soap fault
     * 
@@ -98,8 +86,7 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final ReferentielSoapFaultService getRefSoapFault() {
       return this.refSoapFault;
    }
-   
-   
+
    /**
     * Service du référentiel des métadonnées
     * 
@@ -108,8 +95,7 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final ReferentielMetadonneesService getRefMetas() {
       return this.refMetas;
    }
-   
-   
+
    /**
     * Service de tests des métadonnées
     * 
@@ -118,8 +104,7 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final TestsMetadonneesService getTestsMetasService() {
       return this.testMetasService;
    }
-   
-   
+
    /**
     * Service de manipulation de l'ECDE
     * 
@@ -128,28 +113,28 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final EcdeService getEcdeService() {
       return ecdeService;
    }
-   
-   
+
    /**
     * Service des tests de l'opération "consultation" du service web SaeService
     * 
-    * @return Service des tests de l'opération "consultation" du service web SaeService
+    * @return Service des tests de l'opération "consultation" du service web
+    *         SaeService
     */
    public final ConsultationTestService getConsultationTestService() {
       return consultTestServ;
    }
-   
-   
+
    /**
-    * Service des tests de l'opération "capture unitaire" du service web SaeService
+    * Service des tests de l'opération "capture unitaire" du service web
+    * SaeService
     * 
-    * @return Service des tests de l'opération "capture unitaire" du service web SaeService
+    * @return Service des tests de l'opération "capture unitaire" du service web
+    *         SaeService
     */
    public final CaptureUnitaireTestService getCaptureUnitaireTestService() {
       return captUnitTestServ;
    }
-   
-   
+
    /**
     * Service des tests de la fonctionnalité "Capture de masse"
     * 
@@ -158,110 +143,103 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final CaptureMasseTestService getCaptureMasseTestService() {
       return this.captMassTestServ;
    }
-   
-      
+
    /**
-    * Service des tests de la fonctionnalité "Recherche" 
+    * Service des tests de la fonctionnalité "Recherche"
     * 
     * @return Service des tests de la fonctionnalité "Recherche"
     */
    public final RechercheTestService getRechercheTestService() {
       return this.rechTestServ;
    }
-   
-   
+
    /**
     * Renvoie le numéro du test
     * 
     * @return le numéro du test
     */
    protected abstract String getNumeroTest();
-   
-   
+
    /**
     * Renvoie le formulaire à mettre dans le GET
     * 
     * @return le formulaire à mettre dans le GET
     */
    protected abstract T getFormulairePourGet();
-   
-
 
    private String getNomVue() {
       return "test" + getNumeroTest();
    }
-   
-   
+
    /**
-    * Déclare les classes de transtypage  
+    * Déclare les classes de transtypage
     * 
-    * @param binder l'objet dans lequel déclarer les classes de transtypage
+    * @param binder
+    *           l'objet dans lequel déclarer les classes de transtypage
     */
    @InitBinder
    public final void initBinder(WebDataBinder binder) {
       ControllerUtils.addAllBinders(binder);
    }
 
-   
    /**
     * Le GET
     * 
-    * @param model le modèle
+    * @param model
+    *           le modèle
     * 
     * @return le nom de la vue
     */
    @RequestMapping(method = RequestMethod.GET)
-   protected final String getDefaultView(
-         Model model)
-   {
-      
+   protected final String getDefaultView(int id, Model model) {
+
       // Ajoute la description du cas de test dans le modèle
-      modelUtils.ajouteCasTestDansModele(getNumeroTest(),model);
-      
+      modelUtils.ajouteCasTestDansModele(getNumeroTest(), model);
+
       // Initialise le modèle
       TestWsParentFormulaire formulaire = getFormulairePourGet();
       model.addAttribute("formulaire", formulaire);
-      
+      model.addAttribute("id", id);
+
       // Définition de l'URL par défaut du service web SaeService
       formulaire.setUrlServiceWeb(testConfig.getUrlSaeService());
-      
+
       // Renvoie le nom de la vue à afficher
       return getNomVue();
-      
+
    }
-   
-   
+
    /**
     * Le POST
     * 
-    * @param model le modèle
-    * @param formulaire l'objet formulaire
+    * @param model
+    *           le modèle
+    * @param formulaire
+    *           l'objet formulaire
     * @return le nom de la vue
     */
    @RequestMapping(method = RequestMethod.POST)
-   protected final String post(
-         Model model,
-         @ModelAttribute("formulaire") T formulaire)
-   {
-      
+   protected final String post(Model model,
+         @ModelAttribute("formulaire") T formulaire) {
+
       // Ajoute la description du cas de test dans le modèle
-      modelUtils.ajouteCasTestDansModele(getNumeroTest(),model);
-      
+      modelUtils.ajouteCasTestDansModele(getNumeroTest(), model);
+
       // Appel de la méthode de traitement
       doPost(formulaire);
-      
+
       // Renvoie le nom de la vue à afficher
       return this.getNomVue();
-      
+
    }
-   
+
    /**
     * Effectue les actions du POST
     * 
-    * @param formulaire l'objet formulaire
+    * @param formulaire
+    *           l'objet formulaire
     */
-   protected abstract void doPost(T formulaire) ;
-
+   protected abstract void doPost(T formulaire);
 
    /**
     * Le service du référentiel des cas de test
@@ -271,8 +249,7 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final ReferentielCasTestService getRefCasTestService() {
       return refCasTestService;
    }
-   
-   
+
    /**
     * Renvoie l'objet décrivant le cas de test
     * 
@@ -281,5 +258,5 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
    public final CasTest getCasTest() {
       return refCasTestService.getCasTest(getNumeroTest());
    }
-   
+
 }

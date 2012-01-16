@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Tests
-   xmlns="http://www.cirtil.fr/saeIntegration/tests"
+<Tests xmlns="http://www.cirtil.fr/saeIntegration/tests"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://www.cirtil.fr/saeIntegration/tests ListeCasTests.xsd">
 
    <!-- ======================================================== -->
    <!-- Tests techniques -->
    <!-- ======================================================== -->
-   
+
    <Categorie>
-   
+
       <Nom>Tests techniques</Nom>
-      
+      <Id>42</Id>
       <CasTests>
-      
+
          <CasTest>
             <id>995</id>
             <code>995-Tests techniques</code>
@@ -22,22 +21,22 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-      
+
       </CasTests>
-   
+
    </Categorie>
 
 
    <!-- ======================================================== -->
    <!-- Capture unitaire -->
    <!-- ======================================================== -->
-   
+
    <Categorie>
-      
+
       <Nom>Capture unitaire</Nom>
-      
+      <Id>1</Id>
       <CasTests>
-      
+
          <CasTest>
             <id>100</id>
             <code>100-CaptureUnitaire-TestLibre</code>
@@ -46,7 +45,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>101</id>
             <code>101-CaptureUnitaire-OK-Standard</code>
@@ -56,7 +55,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 101-CaptureUnitaire-OK-Standard"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>102</id>
             <code>102-CaptureUnitaire-OK-EnrichissementEcrasement</code>
@@ -66,7 +65,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 102-CaptureUnitaire-OK-EnrichissementEcrasement"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>103</id>
             <code>103-CaptureUnitaire-OK-ToutesMetasSpecifiables</code>
@@ -76,7 +75,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 103-CaptureUnitaire-OK-ToutesMetasSpecifiables"</luceneExemple>
          </CasTest>
-      
+
          <CasTest>
             <id>150</id>
             <code>150-CaptureUnitaire-KO-SansAuthentification</code>
@@ -85,7 +84,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>151</id>
             <code>151-CaptureUnitaire-KO-EcdeFichierInexistant</code>
@@ -94,7 +93,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>152</id>
             <code>152-CaptureUnitaire-KO-MetadonneeVide</code>
@@ -103,7 +102,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>153</id>
             <code>153-CaptureUnitaire-KO-MetadonneeObligatoireOmise</code>
@@ -112,7 +111,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>154</id>
             <code>154-CaptureUnitaire-KO-MetadonneeObligatoireVide</code>
@@ -121,7 +120,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>155</id>
             <code>155-CaptureUnitaire-KO-MetadonneeInconnue</code>
@@ -130,7 +129,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>156</id>
             <code>156-CaptureUnitaire-KO-MetadonneeDoublon</code>
@@ -139,7 +138,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>157</id>
             <code>157-CaptureUnitaire-KO-MetadonneeFormatIncorrect</code>
@@ -148,7 +147,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>158</id>
             <code>158-CaptureUnitaire-KO-MetadonneeNonArchivable</code>
@@ -157,7 +156,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>159</id>
             <code>159-CaptureUnitaire-KO-HashIncorrect</code>
@@ -166,7 +165,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>160</id>
             <code>160-CaptureUnitaire-KO-EcdeFichierDroit</code>
@@ -175,7 +174,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>161</id>
             <code>161-CaptureUnitaire-KO-TailleZero</code>
@@ -184,7 +183,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>162</id>
             <code>162-CaptureUnitaire-KO-CodeRNDincorrect</code>
@@ -193,7 +192,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>163</id>
             <code>163-CaptureUnitaire-KO-TypeHash</code>
@@ -202,7 +201,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>164</id>
             <code>164-CaptureUnitaire-KO-MetadonneeValeurVide</code>
@@ -211,23 +210,23 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
       </CasTests>
-      
+
    </Categorie>
-   
-   
-   
+
+
+
    <!-- ======================================================== -->
    <!-- Capture de masse -->
    <!-- ======================================================== -->
-   
+
    <Categorie>
-      
+
       <Nom>Capture de masse</Nom>
-      
+      <Id>2</Id>
       <CasTests>
-   
+
          <CasTest>
             <id>200</id>
             <code>200-CaptureMasse-TestLibre</code>
@@ -236,7 +235,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>201</id>
             <code>201-CaptureMasse-OK-Tor-10</code>
@@ -246,7 +245,7 @@
             <implemente>false</implemente>
             <luceneExemple>Denomination:"Test 201-CaptureMasse-OK-Tor-10"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>250</id>
             <code>250-CaptureMasse-KO-SansAuthentification</code>
@@ -255,7 +254,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>251</id>
             <code>251-CaptureMasse-KO-SommaireFichierInexistant</code>
@@ -264,7 +263,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>252</id>
             <code>252-CaptureMasse-KO-Tor-MetadonneeVide</code>
@@ -273,7 +272,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>253</id>
             <code>253-CaptureMasse-KO-Tor-MetadonneeObligatoireOmise</code>
@@ -282,7 +281,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>254</id>
             <code>254-CaptureMasse-KO-Tor-MetadonneeObligatoireVide</code>
@@ -291,7 +290,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>255</id>
             <code>255-CaptureMasse-KO-Tor-MetadonneeInconnue</code>
@@ -300,7 +299,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>256</id>
             <code>256-CaptureMasse-KO-Tor-MetadonneeDoublon</code>
@@ -309,7 +308,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>257</id>
             <code>257-CaptureMasse-KO-Tor-MetadonneeFormatIncorrect</code>
@@ -318,7 +317,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>258</id>
             <code>258-CaptureMasse-KO-Tor-MetadonneeNonArchivable</code>
@@ -326,8 +325,8 @@
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, la liste des métadonnées contient une métadonnée qui n’est pas spécifiable lors de l’archivage
             </description>
             <implemente>false</implemente>
-         </CasTest>         
-         
+         </CasTest>
+
          <CasTest>
             <id>259</id>
             <code>259-CaptureMasse-KO-Tor-HashIncorrect</code>
@@ -336,7 +335,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>260</id>
             <code>260-CaptureMasse-KO-SommaireFichierDroit</code>
@@ -345,7 +344,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>261</id>
             <code>261-CaptureMasse-KO-SommaireRepertoireInexistant</code>
@@ -354,7 +353,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>262</id>
             <code>262-CaptureMasse-KO-Tor-FichierInexistant</code>
@@ -363,7 +362,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>263</id>
             <code>263-CaptureMasse-KO-Tor-FichierDroit</code>
@@ -372,7 +371,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>264</id>
             <code>264-CaptureMasse-KO-Tor-TailleZero</code>
@@ -381,7 +380,7 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>265</id>
             <code>265-CaptureMasse-KO-FichierSommaireIncorrect</code>
@@ -390,22 +389,22 @@
             </description>
             <implemente>false</implemente>
          </CasTest>
-         
+
       </CasTests>
-      
+
    </Categorie>
-   
-   
+
+
    <!-- ======================================================== -->
    <!-- Recherche -->
    <!-- ======================================================== -->
-   
+
    <Categorie>
-      
+
       <Nom>Recherche</Nom>
-      
+      <Id>3</Id>
       <CasTests>
-      
+
          <CasTest>
             <id>300</id>
             <code>300-Recherche-TestLibre</code>
@@ -415,7 +414,7 @@
             <implemente>true</implemente>
             <luceneExemple>CodeRND:2.3.1.1.12 AND DateArchivage:2011-09-01</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>301</id>
             <code>301-Recherche-OK-Standard</code>
@@ -425,7 +424,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 301-Recherche-OK-Standard" AND CodeRND:("2.3.1.1.12" OR "2.3.1.1.8") AND NumeroCompteExterne:"30148032541101600" AND (DateCreation: [20101001 TO 20101007])</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>302</id>
             <code>302-Recherche-OK-Tronquee</code>
@@ -435,7 +434,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 302-Recherche-OK-Tronquee"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>303</id>
             <code>303-Recherche-OK-EnSpecifiantMetadonnees</code>
@@ -445,7 +444,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 303-Recherche-OK-EnSpecifiantMetadonnees"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>304</id>
             <code>304-Recherche-OK-Complexe-Dates</code>
@@ -455,7 +454,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 304-Recherche-OK-Complexe-Dates" AND (DateCreation:20050618 OR DateCreation:[20050718 TO 20050722] OR DateCreation:{20050818 TO 20050822})</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>305</id>
             <code>305-Recherche-OK-RequeteLuceneAvecDeuxPointsDansValeurRecherchee</code>
@@ -475,7 +474,7 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 306-Recherche-OK-RequeteLuceneAvecJokerDansValeurRecherchee" AND CodeRND:2.3.1.1.*</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>350</id>
             <code>350-Recherche-KO-SansAuthentification</code>
@@ -485,7 +484,7 @@
             <implemente>true</implemente>
             <luceneExemple>CodeRND:"1.2.3.4.5"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>351</id>
             <code>351-Recherche-KO-RequeteVide</code>
@@ -495,7 +494,7 @@
             <implemente>true</implemente>
             <luceneExemple> </luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>352</id>
             <code>352-Recherche-KO-MauvaiseRequeteLucene</code>
@@ -505,7 +504,7 @@
             <implemente>true</implemente>
             <luceneExemple>gloubi@"boulga"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>353</id>
             <code>353-Recherche-KO-MetadonneeConsultInexistante</code>
@@ -515,7 +514,7 @@
             <implemente>true</implemente>
             <luceneExemple>CodeRND:"2.3.1.1.12"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>354</id>
             <code>354-Recherche-KO-MetadonneeConsultNonAutorisee</code>
@@ -525,7 +524,7 @@
             <implemente>true</implemente>
             <luceneExemple>CodeRND:"2.3.1.1.12"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>355</id>
             <code>355-Recherche-KO-MetadonneeRechercheInexistante</code>
@@ -535,7 +534,7 @@
             <implemente>true</implemente>
             <luceneExemple>CodeRND:"2.3.1.1.12" AND Gloubi:"1234" AND Boulga:"5678"</luceneExemple>
          </CasTest>
-         
+
          <CasTest>
             <id>356</id>
             <code>356-Recherche-KO-MetadonneeRechercheNonAutorisee</code>
@@ -545,22 +544,22 @@
             <implemente>true</implemente>
             <luceneExemple>CodeRND:"2.3.1.1.12" AND TailleFichier:34 AND FormatFichier:"fmt/354" AND VersionRND:"11.1"</luceneExemple>
          </CasTest>
-         
+
       </CasTests>
-      
+
    </Categorie>
-   
-   
+
+
    <!-- ======================================================== -->
    <!-- Consultation -->
    <!-- ======================================================== -->
-   
+
    <Categorie>
-      
+
       <Nom>Consultation</Nom>
-      
+      <Id>4</Id>
       <CasTests>
-      
+
          <CasTest>
             <id>400</id>
             <code>400-Consultation-TestLibre</code>
@@ -569,7 +568,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>401</id>
             <code>401-Consultation-OK-RetourContenu</code>
@@ -578,7 +577,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>450</id>
             <code>450-Consultation-KO-SansAuthentification</code>
@@ -587,7 +586,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>451</id>
             <code>451-Consultation-KO-IdArchivageInconnu</code>
@@ -596,9 +595,9 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
       </CasTests>
-      
+
    </Categorie>
-   
+
 </Tests>
