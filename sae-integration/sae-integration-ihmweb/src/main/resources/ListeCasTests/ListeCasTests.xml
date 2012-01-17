@@ -91,7 +91,7 @@
             <description>
                On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE pointe sur un fichier inexistant.
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -198,6 +198,15 @@
             <code>164-CaptureUnitaire-KO-MetadonneeValeurVide</code>
             <description>
                On vérifie que la bonne erreur est renvoyée lorsqu'une métadonnée spécifiable à l'archivage, mais pas obligatoire, est transmise au SAE avec une valeur vide
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+         
+         <CasTest>
+            <id>165</id>
+            <code>Cas 165-captureunitaire-KO-url-ecde-incorrecte</code>
+            <description>
+               On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE est erronée
             </description>
             <implemente>true</implemente>
          </CasTest>

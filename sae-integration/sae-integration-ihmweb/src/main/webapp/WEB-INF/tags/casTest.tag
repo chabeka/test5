@@ -9,7 +9,8 @@
 		</td>
 		<td style="width: 25%; text-align: right;"><a
 			href='listeTests.do?action=detail&id=<c:out value="${requestScope['id']}"/>'>Retour
-		à la liste des tests</a></td>
+		à la liste des tests</a><input type="hidden" name="id"
+			value='<c:out value="${requestScope['id']}" />' /></td>
 	</tr>
 </table>
 

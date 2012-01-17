@@ -219,12 +219,14 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
     * @return le nom de la vue
     */
    @RequestMapping(method = RequestMethod.POST)
-   protected final String post(Model model,
+   protected final String post(int id, Model model,
          @ModelAttribute("formulaire") T formulaire) {
 
       // Ajoute la description du cas de test dans le modèle
       modelUtils.ajouteCasTestDansModele(getNumeroTest(), model);
-
+      
+      model.addAttribute("id", id);
+      
       // Appel de la méthode de traitement
       doPost(formulaire);
 

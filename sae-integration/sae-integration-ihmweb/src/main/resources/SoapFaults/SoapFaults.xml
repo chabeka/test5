@@ -247,4 +247,19 @@
       <message>Le contrôle de l'intégrité du fichier a échoué.</message>
    </SoapFault>
    
+   <SoapFault>
+      <id>sae_CaptureEcdeFichierInexistant</id>
+      <namespace>urn:sae:faultcodes</namespace>
+      <prefixe>sae</prefixe>
+      <localPart>CaptureUrlEcdeFichierIntrouvable</localPart>
+      <message>Le fichier pointé par l'URL ECDE est introuvable (%s)</message>
+   </SoapFault>
+   
+   <SoapFault>
+      <id>sae_CaptureUrlEcdeIncorrecte</id>
+      <namespace>urn:sae:faultcodes</namespace>
+      <prefixe>sae</prefixe>
+      <localPart>CaptureUrlEcdeIncorrecte</localPart>
+      <message>L'URL ECDE est incorrecte (%s)</message>
+   </SoapFault>
 </SoapFaults>
