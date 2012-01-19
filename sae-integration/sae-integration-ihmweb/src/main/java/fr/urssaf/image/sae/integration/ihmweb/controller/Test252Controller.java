@@ -126,7 +126,7 @@ public class Test252Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType);
+            formulaire, 3, documentType, 2);
 
    }
 

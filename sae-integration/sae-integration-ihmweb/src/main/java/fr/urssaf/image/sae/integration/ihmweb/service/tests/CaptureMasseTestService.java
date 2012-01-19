@@ -324,7 +324,7 @@ public class CaptureMasseTestService {
     */
    public final void testResultatsTdmReponseKOAttendue(
          CaptureMasseResultatFormulaire formulaire, int notIntegratedDocuments,
-         NonIntegratedDocumentType documentType) {
+         NonIntegratedDocumentType documentType, int index) {
 
       // Vide le résultat du test précédent
       ResultatTest resultatTest = formulaire.getResultats();
@@ -380,13 +380,14 @@ public class CaptureMasseTestService {
                      || objResultatXml.getNonIntegratedDocuments()
                            .getNonIntegratedDocument() == null
                      || objResultatXml.getNonIntegratedDocuments()
-                           .getNonIntegratedDocument().isEmpty()) {
+                           .getNonIntegratedDocument().size() < index) {
                   formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-                  log.appendLogLn("Aucun document non intégré listé ");
+                  log
+                        .appendLogLn("Aucun document non intégré listé ou index de document erroné");
                } else {
                   findNonIntegratedDocument(formulaire, documentType,
                         objResultatXml.getNonIntegratedDocuments()
-                              .getNonIntegratedDocument());
+                              .getNonIntegratedDocument(), index);
                }
 
             } else {
@@ -512,7 +513,7 @@ public class CaptureMasseTestService {
    private final void findNonIntegratedDocument(
          CaptureMasseResultatFormulaire formulaire,
          NonIntegratedDocumentType documentType,
-         List<NonIntegratedDocumentType> nonIntegratedDocument) {
+         List<NonIntegratedDocumentType> nonIntegratedDocument, int index) {
 
       if (documentType == null
             || documentType.getObjetNumerique() == null
@@ -527,22 +528,12 @@ public class CaptureMasseTestService {
 
       } else {
 
-         String fichierAttendu = documentType.getObjetNumerique()
-               .getCheminEtNomDuFichier();
          HashMap<String, String> mapErreurs = new HashMap<String, String>();
          for (ErreurType erreurType : documentType.getErreurs().getErreur()) {
             mapErreurs.put(erreurType.getCode(), erreurType.getLibelle());
          }
 
-         NonIntegratedDocumentType found = null;
-         int i = 0;
-         while (found == null && i < nonIntegratedDocument.size()) {
-            if (fichierAttendu.equals(nonIntegratedDocument.get(i)
-                  .getObjetNumerique().getCheminEtNomDuFichier())) {
-               found = nonIntegratedDocument.get(i);
-            }
-            i++;
-         }
+         NonIntegratedDocumentType found = nonIntegratedDocument.get(index);
 
          if (found == null) {
             formulaire.getResultats().getLog().appendLogLn(
@@ -551,7 +542,7 @@ public class CaptureMasseTestService {
 
          } else {
             boolean hasError = false;
-            i = 0;
+            int i = 0;
             String label;
             List<ErreurType> listErreurs = found.getErreurs().getErreur();
             while (!hasError && i < listErreurs.size()) {

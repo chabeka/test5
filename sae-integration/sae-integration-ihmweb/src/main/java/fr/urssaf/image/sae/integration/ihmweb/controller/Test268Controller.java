@@ -15,26 +15,26 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_r
 import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_resultat.NonIntegratedDocumentType;
 
 /**
- * Test 254<br>
+ * Test 268<br>
  * <br>
- * La Capture de masse échoue avec il y a des métadonnées obligatoires vides
+ * La Capture de masse échoue et on a une seule erreur sur une arborescence
  */
 @Controller
-@RequestMapping(value = "test254")
-public class Test254Controller extends
+@RequestMapping(value = "test268")
+public class Test268Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-254-CaptureMasse-KO-Tor-MetadonneeObligatoireVide/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-268-CaptureMasse-KO-Tor-3-meme-doc-avec-premier-en-erreur-arbo/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "254";
+      return "268";
    }
 
    /**
@@ -57,7 +57,7 @@ public class Test254Controller extends
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
       rechFormulaire
-            .setRequeteLucene("Denomination:\"Test 254-CaptureMasse-KO-Tor-MetadonneeObligatoireVide\"");
+            .setRequeteLucene("Denomination:\"Test 268-CaptureMasse-KO-Tor-3-meme-doc-avec-premier-en-erreur-arbo\"");
 
       return formulaire;
 
@@ -111,12 +111,13 @@ public class Test254Controller extends
          CaptureMasseResultatFormulaire formulaire) {
 
       FichierType fichierType = new FichierType();
-      fichierType.setCheminEtNomDuFichier("doc77.PDF");
+      fichierType.setCheminEtNomDuFichier("doc1.PDF");
 
       ErreurType erreurType = new ErreurType();
       erreurType.setCode("SAE-CA-BUL002");
       erreurType
-            .setLibelle("Le document doc77.PDF n'a pas été archivé. Détails : La ou les métadonnées suivantes, obligatoires lors de l'archivage, ne sont pas renseignées : CodeOrganismeGestionnaire, CodeRND, TypeHash");
+            .setLibelle("Le document doc1.PDF n'a pas été archivé. Détails : "
+                  + "La ou les métadonnées suivantes, obligatoires lors de l'archivage, ne sont pas renseignées : ApplicationProductrice");
 
       ListeErreurType listeErreurType = new ListeErreurType();
       listeErreurType.getErreur().add(erreurType);
@@ -126,7 +127,7 @@ public class Test254Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType, 2);
+            formulaire, 3, documentType, 1);
 
    }
 

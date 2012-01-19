@@ -15,26 +15,26 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_r
 import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_resultat.NonIntegratedDocumentType;
 
 /**
- * Test 254<br>
+ * Test 267<br>
  * <br>
- * La Capture de masse échoue avec il y a des métadonnées obligatoires vides
+ * La Capture de masse échoue car on essaie d’intégrer des fichiers inexistants
  */
 @Controller
-@RequestMapping(value = "test254")
-public class Test254Controller extends
+@RequestMapping(value = "test267")
+public class Test267Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-254-CaptureMasse-KO-Tor-MetadonneeObligatoireVide/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-267-CaptureMasse-KO-Tor-PlusieursFichiersIntrouvables/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "254";
+      return "267";
    }
 
    /**
@@ -57,7 +57,7 @@ public class Test254Controller extends
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
       rechFormulaire
-            .setRequeteLucene("Denomination:\"Test 254-CaptureMasse-KO-Tor-MetadonneeObligatoireVide\"");
+            .setRequeteLucene("Denomination:\"Test 267-CaptureMasse-KO-Tor-PlusieursFichiersIntrouvables\"");
 
       return formulaire;
 
@@ -111,12 +111,13 @@ public class Test254Controller extends
          CaptureMasseResultatFormulaire formulaire) {
 
       FichierType fichierType = new FichierType();
-      fichierType.setCheminEtNomDuFichier("doc77.PDF");
+      fichierType.setCheminEtNomDuFichier("attestation1.pdf");
 
       ErreurType erreurType = new ErreurType();
-      erreurType.setCode("SAE-CA-BUL002");
+      erreurType.setCode("SAE-EC-SOM002");
       erreurType
-            .setLibelle("Le document doc77.PDF n'a pas été archivé. Détails : La ou les métadonnées suivantes, obligatoires lors de l'archivage, ne sont pas renseignées : CodeOrganismeGestionnaire, CodeRND, TypeHash");
+            .setLibelle("Impossible d'accéder au document attestation1.pdf. Détails : "
+                  + "L'objet numérique : attestation1.pdf ne représente pas un fichier existant.");
 
       ListeErreurType listeErreurType = new ListeErreurType();
       listeErreurType.getErreur().add(erreurType);
@@ -126,7 +127,7 @@ public class Test254Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType, 2);
+            formulaire, 3, documentType, 1);
 
    }
 

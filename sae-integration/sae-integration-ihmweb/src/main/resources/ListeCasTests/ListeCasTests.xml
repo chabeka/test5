@@ -432,6 +432,24 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
+         
+         <CasTest>
+            <id>267</id>
+            <code>267-capturemasse-KO-TOR-plusieursfichiersintrouvables</code>
+            <description>
+               La Capture de masse échoue car le fichier sommaire.xml précise un mode d’intégration "partiel"
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+         
+         <CasTest>
+            <id>268</id>
+            <code>268-capturemasse-KO-TOR-3-meme-doc-avec-premier-en-erreur-arbo</code>
+            <description>
+               La Capture de masse échoue et on a une seule erreur sur une arborescence
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
 
       </CasTests>
 

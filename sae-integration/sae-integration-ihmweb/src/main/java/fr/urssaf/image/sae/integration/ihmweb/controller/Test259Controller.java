@@ -37,7 +37,7 @@ public class Test259Controller extends
     */
    @Override
    protected final String getNumeroTest() {
-      return "258";
+      return "259";
    }
 
    /**
@@ -130,7 +130,7 @@ public class Test259Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType);
+            formulaire, 3, documentType, 2);
 
    }
 
