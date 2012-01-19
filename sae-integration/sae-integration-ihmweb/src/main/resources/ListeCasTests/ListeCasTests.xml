@@ -412,7 +412,7 @@
             <description>
                On vérifie que la bonne erreur est renvoyée lorsqu'un des fichiers à archiver possède une taille à 0 octet.
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -421,7 +421,16 @@
             <description>
                On vérifie que la bonne erreur est renvoyée lorsque le fichier sommaire.xml est syntaxiquement incorrect.
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
+         </CasTest>
+         
+         <CasTest>
+            <id>266</id>
+            <code>266-capturemasse-KO-autremodetoutourien</code>
+            <description>
+               La Capture de masse échoue car le fichier sommaire.xml précise un mode d’intégration "partiel"
+            </description>
+            <implemente>true</implemente>
          </CasTest>
 
       </CasTests>

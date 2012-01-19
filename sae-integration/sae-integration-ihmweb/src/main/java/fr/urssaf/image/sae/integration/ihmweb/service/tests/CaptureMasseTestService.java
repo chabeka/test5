@@ -397,6 +397,114 @@ public class CaptureMasseTestService {
    }
 
    /**
+    * Regarde les résultats d'un traitement de masse
+    * 
+    * @param formulaire
+    *           le formulaire
+    * @param notIntegratedDocuments
+    *           le nombre de documents non intégrés attendu
+    * @param waitedError
+    *           erreur bloquante attendue
+    */
+   public final void testResultatsTdmReponseKOAttendue(
+         CaptureMasseResultatFormulaire formulaire, ErreurType waitedError) {
+
+      // Vide le résultat du test précédent
+      ResultatTest resultatTest = formulaire.getResultats();
+      resultatTest.clear();
+      ResultatTestLog log = resultatTest.getLog();
+      resultatTest.setStatus(TestStatusEnum.SansStatus);
+
+      // Récupère l'URL ECDE du fichier sommaire.xml
+      String urlEcdeSommaire = formulaire.getUrlSommaire();
+
+      // Récupère le fichier de début de traitement
+      String cheminFichierDebutFlag = getCheminFichierDebutFlag(urlEcdeSommaire);
+
+      // Récupère le chemin complet du fichier flag
+      String cheminFichierFlag = getCheminFichierFlag(urlEcdeSommaire);
+
+      // test de la présence du fichier debut_traitement.flag
+      boolean fileExists = testFileExists(cheminFichierDebutFlag, log,
+            formulaire);
+
+      if (fileExists) {
+
+         // test de la présence du fichier fin_traitement.flag
+         fileExists = testFileExists(cheminFichierFlag, log, formulaire);
+
+         if (fileExists) {
+
+            File startFile = new File(cheminFichierDebutFlag);
+            File endFile = new File(cheminFichierFlag);
+
+            long endDate = endFile.lastModified();
+            long startDate = startFile.lastModified();
+            long time = endDate - startDate;
+
+            log.appendLogLn("temps de traitement = " + getDuration(time));
+
+            String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlEcdeSommaire);
+            fileExists = testFileExists(cheminFichierResultatsXml, log,
+                  formulaire);
+
+            if (fileExists) {
+               ResultatsType objResultatXml = ecdeService
+                     .chargeResultatsXml(cheminFichierResultatsXml);
+
+               if (objResultatXml.getErreurBloquanteTraitement() == null
+                     || waitedError == null) {
+                  log
+                        .appendLogLn("Impossible de comparer l'erreur attendue et celle obtenue");
+                  if (waitedError == null) {
+                     log.appendLog("erreur attendue nulle ");
+                  }
+                  if (objResultatXml.getErreurBloquanteTraitement() == null) {
+                     log.appendLog("erreur obtenue nulle");
+                  }
+                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+
+               } else {
+
+                  if (objResultatXml.getErreurBloquanteTraitement().getCode() == null
+                        || objResultatXml.getErreurBloquanteTraitement()
+                              .getLibelle() == null
+                        || waitedError.getCode() == null
+                        || waitedError.getLibelle() == null
+                        || !waitedError.getCode().equalsIgnoreCase(
+                              objResultatXml.getErreurBloquanteTraitement()
+                                    .getCode())
+                        || !waitedError.getLibelle().equalsIgnoreCase(
+                              objResultatXml.getErreurBloquanteTraitement()
+                                    .getLibelle())) {
+                     log
+                           .appendLogLn("Les deux erreurs obtenues et attendues sont différentes :");
+                     log.appendLogLn("attendue : code : "
+                           + waitedError.getCode() + "  /  libellé : "
+                           + waitedError.getLibelle());
+                     log.appendLogLn("obtenue : code : "
+                           + objResultatXml.getErreurBloquanteTraitement()
+                                 .getCode()
+                           + "  /  libellé : "
+                           + objResultatXml.getErreurBloquanteTraitement()
+                                 .getLibelle());
+                     formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+                  } else {
+                     log
+                           .appendLogLn("Les deux erreurs obtenues et attendues sont identiques");
+                     formulaire.getResultats().setStatus(TestStatusEnum.Succes);
+                  }
+
+               }
+
+            } else {
+               formulaire.getResultats().setStatus(TestStatusEnum.Succes);
+            }
+         }
+      }
+   }
+
+   /**
     * @param formulaire
     * @param documentType
     * @param nonIntegratedDocument
