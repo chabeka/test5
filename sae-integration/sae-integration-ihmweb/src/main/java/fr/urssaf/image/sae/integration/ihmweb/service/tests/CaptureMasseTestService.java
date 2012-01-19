@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.integration.ihmweb.service.tests;
 
 import java.io.File;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -464,6 +463,26 @@ public class CaptureMasseTestService {
                      .getLog()
                      .appendLogLn(
                            "Impossible de trouver toutes les erreurs dans le document non intégré");
+
+               formulaire.getResultats().getLog().appendLogLn(
+                     "erreurs attendues : ");
+
+               for (ErreurType erreurType : documentType.getErreurs()
+                     .getErreur()) {
+                  formulaire.getResultats().getLog().appendLogLn(
+                        "code : " + erreurType.getCode() + "  /  libellé : "
+                              + erreurType.getLibelle());
+               }
+
+               formulaire.getResultats().getLog().appendLogLn(
+                     "erreurs obtenues : ");
+
+               for (ErreurType erreurType : found.getErreurs().getErreur()) {
+                  formulaire.getResultats().getLog().appendLogLn(
+                        "code : " + erreurType.getCode() + "  /  libellé : "
+                              + erreurType.getLibelle());
+               }
+
                formulaire.getResultats().setStatus(TestStatusEnum.Echec);
             } else {
                formulaire.getResultats().getLog().appendLogLn(

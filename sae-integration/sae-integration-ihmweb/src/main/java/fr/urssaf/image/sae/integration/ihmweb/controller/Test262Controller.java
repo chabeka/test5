@@ -15,28 +15,28 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_r
 import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_resultat.NonIntegratedDocumentType;
 
 /**
- * Test 253<br>
+ * Test 262<br>
  * <br>
  * On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun
  * document mis en archive, erreur présente dans resultats.xml) si, pour un
- * document, une métadonnée obligatoire est omise
+ * document, le chemin de fichier pointe sur un fichier inexistant
  */
 @Controller
-@RequestMapping(value = "test253")
-public class Test253Controller extends
+@RequestMapping(value = "test262")
+public class Test262Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-253-CaptureMasse-KO-Tor-MetadonneeObligatoireOmise/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-262-CaptureMasse-KO-Tor-FichierInexistant/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "253";
+      return "262";
    }
 
    /**
@@ -59,7 +59,7 @@ public class Test253Controller extends
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
       rechFormulaire
-            .setRequeteLucene("Denomination:\"Test 253-CaptureMasse-KO-Tor-MetadonneeObligatoireOmise\"");
+            .setRequeteLucene("Denomination:\"Test 262-CaptureMasse-KO-Tor-FichierInexistant\"");
 
       return formulaire;
 
@@ -113,12 +113,13 @@ public class Test253Controller extends
          CaptureMasseResultatFormulaire formulaire) {
 
       FichierType fichierType = new FichierType();
-      fichierType.setCheminEtNomDuFichier("doc77.PDF");
+      fichierType.setCheminEtNomDuFichier("doc_inexistant.pdf");
 
       ErreurType erreurType = new ErreurType();
-      erreurType.setCode("SAE-CA-BUL002");
+      erreurType.setCode("SAE-EC-SOM002");
       erreurType
-            .setLibelle("Le document doc77.PDF n'a pas été archivé. Détails : La ou les métadonnées suivantes, obligatoires lors de l'archivage, ne sont pas renseignées : CodeOrganismeProprietaire, CodeRND");
+            .setLibelle("Impossible d'accéder au document doc_inexistant.pdf. Détails : "
+                  + "L'objet numérique : doc_inexistant.pdf ne représente pas un fichier existant.");
 
       ListeErreurType listeErreurType = new ListeErreurType();
       listeErreurType.getErreur().add(erreurType);

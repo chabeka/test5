@@ -349,7 +349,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, une métadonnée obligatoire a une valeur vide
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -358,7 +358,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, sa liste des métadonnées contient une métadonnée inconnue du SAE
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -367,7 +367,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, il y a plusieurs occurrences de la même métadonnée dans sa liste des métadonnées
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -376,7 +376,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, sa liste des métadonnées contient une métadonnée dont la valeur n'est pas conforme au format attendu.
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -385,7 +385,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, la liste des métadonnées contient une métadonnée qui n’est pas spécifiable lors de l’archivage
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -394,7 +394,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, le hash du fichier est différent du hash spécifié dans le sommaire.xml
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -403,7 +403,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, le chemin de fichier pointe sur un fichier inexistant
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>

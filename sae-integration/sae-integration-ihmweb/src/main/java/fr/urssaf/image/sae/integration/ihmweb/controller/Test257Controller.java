@@ -15,28 +15,29 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_r
 import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_resultat.NonIntegratedDocumentType;
 
 /**
- * Test 253<br>
+ * Test 257<br>
  * <br>
  * On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun
  * document mis en archive, erreur présente dans resultats.xml) si, pour un
- * document, une métadonnée obligatoire est omise
+ * document, sa liste des métadonnées contient une métadonnée dont la valeur
+ * n'est pas conforme au format attendu.
  */
 @Controller
-@RequestMapping(value = "test253")
-public class Test253Controller extends
+@RequestMapping(value = "test257")
+public class Test257Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-253-CaptureMasse-KO-Tor-MetadonneeObligatoireOmise/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-257-CaptureMasse-KO-Tor-MetadonneeFormatIncorrect/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "253";
+      return "257";
    }
 
    /**
@@ -59,7 +60,7 @@ public class Test253Controller extends
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
       rechFormulaire
-            .setRequeteLucene("Denomination:\"Test 253-CaptureMasse-KO-Tor-MetadonneeObligatoireOmise\"");
+            .setRequeteLucene("Denomination:\"Test 257-CaptureMasse-KO-Tor-MetadonneeFormatIncorrect\"");
 
       return formulaire;
 
@@ -118,7 +119,9 @@ public class Test253Controller extends
       ErreurType erreurType = new ErreurType();
       erreurType.setCode("SAE-CA-BUL002");
       erreurType
-            .setLibelle("Le document doc77.PDF n'a pas été archivé. Détails : La ou les métadonnées suivantes, obligatoires lors de l'archivage, ne sont pas renseignées : CodeOrganismeProprietaire, CodeRND");
+            .setLibelle("Le document doc77.PDF n'a pas été archivé. Détails : "
+                  + "Le type ou le format des métadonnées suivantes n'est pas valide : "
+                  + "CodeSousCategorieV2, DateCreation, DateReception, NbPages");
 
       ListeErreurType listeErreurType = new ListeErreurType();
       listeErreurType.getErreur().add(erreurType);
