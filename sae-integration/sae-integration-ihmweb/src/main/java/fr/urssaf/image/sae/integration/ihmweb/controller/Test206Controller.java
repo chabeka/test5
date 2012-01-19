@@ -18,27 +18,27 @@ import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.R
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
 
 /**
- * Test 204<br>
+ * Test 206<br>
  * <br>
- * Capture de masse de 10 documents à archiver dans une arborescence de 10
- * niveaux précisés par des anti-slash
+ * Capture de masse d’un document dont on précise toutes les métadonnées en
+ * archivage
  */
 @Controller
-@RequestMapping(value = "test204")
-public class Test204Controller extends
+@RequestMapping(value = "test206")
+public class Test206Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-204-CaptureMasse-OK-Tor-10-repertoire-anti-slash/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-206-CaptureMasse-OK-Toutes-metadonnees-specifiables/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "204";
+      return "206";
    }
 
    /**
@@ -61,11 +61,20 @@ public class Test204Controller extends
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
       rechFormulaire
-            .setRequeteLucene("Denomination:\"Test 204-CaptureMasse-OK-Tor-10-repertoire-anti-slash\"");
+            .setRequeteLucene("Denomination:\"Test 206-CaptureMasse-OK-Toutes-metadonnees-specifiables\"");
       CodeMetadonneeList codeMetadonneeList = new CodeMetadonneeList();
 
-      String[] tabElement = new String[] { "CodeRND", "DateArchivage", "Hash",
-            "NomFichier", "NumeroRecours" };
+      String[] tabElement = new String[] { "ApplicationProductrice",
+            "ApplicationTraitement", "CodeCategorieV2",
+            "CodeOrganismeGestionnaire", "CodeOrganismeProprietaire",
+            "CodeRND", "CodeSousCategorieV2", "DateCreation",
+            "DateDebutConservation", "DateReception", "Denomination",
+            "FormatFichier", "Hash", "IdTraitementMasse", "NbPages",
+            "NniEmployeur", "NomFichier", "NumeroCompteExterne",
+            "NumeroCompteInterne", "NumeroIntControle", "NumeroPersonne",
+            "NumeroRecours", "NumeroStructure", "Periode", "PseudoSiret",
+            "Siren", "Siret", "SiteAcquisition", "TailleFichier", "Titre",
+            "TracabilitrePreArchivage", "TypeHash", "VersionRND" };
 
       codeMetadonneeList.addAll(Arrays.asList(tabElement));
 
@@ -134,7 +143,7 @@ public class Test204Controller extends
       RechercheResponse response = getRechercheTestService()
             .appelWsOpRechercheReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(),
-                  formulaire.getRechFormulaire(), 10, false, null);
+                  formulaire.getRechFormulaire(), 1, false, null);
 
       if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
@@ -172,9 +181,41 @@ public class Test204Controller extends
       MetadonneeValeurList valeursAttendues = new MetadonneeValeurList();
 
       String numeroResultatRecherche = "1";
-
+      valeursAttendues.add("ApplicationProductrice", "ADELAIDE");
+      valeursAttendues.add("ApplicationTraitement", "ATTESTATIONS");
+      valeursAttendues.add("CodeCategorieV2", "4");
+      valeursAttendues.add("CodeOrganismeGestionnaire", "CER69");
+      valeursAttendues.add("CodeOrganismeProprietaire", "UR750");
       valeursAttendues.add("CodeRND", "2.3.1.1.12");
+      valeursAttendues.add("CodeSousCategorieV2", "11");
+      // valeursAttendues.add("DateCreation", "2011-09-05");
+      // valeursAttendues.add("DateDebutConservation", "2011-09-02");
+      // valeursAttendues.add("DateReception", "2011-09-01");
+      valeursAttendues.add("Denomination",
+            "Test 206-CaptureMasse-OK-Toutes-metadonnees-specifiables");
+      valeursAttendues.add("FormatFichier", "fmt/354");
       valeursAttendues.add("Hash", "a2f93f1f121ebba0faef2c0596f2f126eacae77b");
+      valeursAttendues.add("IdTraitementMasse", "123654");
+      valeursAttendues.add("NbPages", "2");
+      valeursAttendues.add("NniEmployeur", "148032541101648");
+      valeursAttendues.add("NomFichier", "doc1.PDF");
+      valeursAttendues.add("NumeroCompteExterne", "30148032541101600");
+      valeursAttendues.add("NumeroCompteInterne", "719900");
+      valeursAttendues.add("NumeroIntControle", "57377");
+      valeursAttendues.add("NumeroPersonne", "123854");
+      valeursAttendues.add("NumeroRecours ", "1");
+      valeursAttendues.add("NumeroStructure", "000050221");
+      valeursAttendues.add("Periode", "PERI");
+      valeursAttendues.add("PseudoSiret", "4914736610005");
+      valeursAttendues.add("Siren", "0123456789");
+      valeursAttendues.add("Siret", "12345678912345");
+      valeursAttendues.add("SiteAcquisition", "CER44");
+      valeursAttendues.add("TailleFichier", "56587");
+      valeursAttendues.add("Titre", "Attestation de vigilance");
+      valeursAttendues.add("TracabilitrePreArchivage",
+            "Tracabilite pre archivage");
+      valeursAttendues.add("TypeHash", "SHA-1");
+      valeursAttendues.add("VersionRND", "5.3");
 
       getRechercheTestService().verifieResultatRecherche(resultatRecherche,
             numeroResultatRecherche, resultatTest, valeursAttendues);

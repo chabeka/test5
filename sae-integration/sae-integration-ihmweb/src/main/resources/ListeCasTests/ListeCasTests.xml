@@ -287,6 +287,36 @@
          </CasTest>
 
          <CasTest>
+            <id>206</id>
+            <code>206-capturemasse-OK-toutes-metadonnees-specifiables</code>
+            <description>
+              Capture de masse d’un document dont on précise toutes les métadonnées en archivage
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"Test 206-CaptureMasse-OK-Toutes-metadonnees-specifiables"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>207</id>
+            <code>207-capturemasse-OK-idtraitementmasse</code>
+            <description>
+               Capture de masse d’un document dont on précise  la métadonnée IdTraitementMasse en archivage
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"Test 207-CaptureMasse-OK-IdTraitementMasse"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>208</id>
+            <code>208-capturemasse-OK-jarlancearret</code>
+            <description>
+               Capture de masse de 5000 documents, démarrage et arrêt du processus "application console d’exécution de la capture de masse"
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"208-CaptureMasse-OK-JarLanceArret"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
             <id>250</id>
             <code>250-CaptureMasse-KO-SansAuthentification</code>
             <description>
@@ -301,7 +331,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, sa liste de métadonnées est vide
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>
@@ -310,7 +340,7 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" a échoué (aucun document mis en archive, erreur présente dans resultats.xml) si, pour un document, une métadonnée obligatoire est omise
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
          </CasTest>
 
          <CasTest>

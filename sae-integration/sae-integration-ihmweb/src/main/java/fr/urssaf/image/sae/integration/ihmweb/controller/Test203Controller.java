@@ -126,7 +126,7 @@ public class Test203Controller extends
    private void etape2captureMasseResultats(
          CaptureMasseResultatFormulaire formulaire) {
 
-      getCaptureMasseTestService().testResultatsTdm(formulaire);
+      getCaptureMasseTestService().testResultatsTdmReponseOKAttendue(formulaire);
 
    }
 

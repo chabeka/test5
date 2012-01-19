@@ -2,9 +2,13 @@ package fr.urssaf.image.sae.integration.ihmweb.service.tests;
 
 import java.io.File;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,8 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTestLog;
 import fr.urssaf.image.sae.integration.ihmweb.modele.SoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
+import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_resultat.ErreurType;
+import fr.urssaf.image.sae.integration.ihmweb.modele.somres.commun_sommaire_et_resultat.NonIntegratedDocumentType;
 import fr.urssaf.image.sae.integration.ihmweb.modele.somres.resultats.ResultatsType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ArchivageMasse;
@@ -236,7 +242,8 @@ public class CaptureMasseTestService {
     * @param formulaire
     *           le formulaire
     */
-   public final void testResultatsTdm(CaptureMasseResultatFormulaire formulaire) {
+   public final void testResultatsTdmReponseOKAttendue(
+         CaptureMasseResultatFormulaire formulaire) {
 
       // Vide le résultat du test précédent
       ResultatTest resultatTest = formulaire.getResultats();
@@ -302,6 +309,169 @@ public class CaptureMasseTestService {
                }
             }
          }
+      }
+
+   }
+
+   /**
+    * Regarde les résultats d'un traitement de masse
+    * 
+    * @param formulaire
+    *           le formulaire
+    * @param notIntegratedDocuments
+    *           le nombre de documents non intégrés attendu
+    * @param documentType
+    *           erreur attendue pour le document donné
+    */
+   public final void testResultatsTdmReponseKOAttendue(
+         CaptureMasseResultatFormulaire formulaire, int notIntegratedDocuments,
+         NonIntegratedDocumentType documentType) {
+
+      // Vide le résultat du test précédent
+      ResultatTest resultatTest = formulaire.getResultats();
+      resultatTest.clear();
+      ResultatTestLog log = resultatTest.getLog();
+      resultatTest.setStatus(TestStatusEnum.SansStatus);
+
+      // Récupère l'URL ECDE du fichier sommaire.xml
+      String urlEcdeSommaire = formulaire.getUrlSommaire();
+
+      // Récupère le fichier de début de traitement
+      String cheminFichierDebutFlag = getCheminFichierDebutFlag(urlEcdeSommaire);
+
+      // Récupère le chemin complet du fichier flag
+      String cheminFichierFlag = getCheminFichierFlag(urlEcdeSommaire);
+
+      // test de la présence du fichier debut_traitement.flag
+      boolean fileExists = testFileExists(cheminFichierDebutFlag, log,
+            formulaire);
+
+      if (fileExists) {
+
+         // test de la présence du fichier fin_traitement.flag
+         fileExists = testFileExists(cheminFichierFlag, log, formulaire);
+
+         if (fileExists) {
+
+            File startFile = new File(cheminFichierDebutFlag);
+            File endFile = new File(cheminFichierFlag);
+
+            long endDate = endFile.lastModified();
+            long startDate = startFile.lastModified();
+            long time = endDate - startDate;
+
+            log.appendLogLn("temps de traitement = " + getDuration(time));
+
+            String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlEcdeSommaire);
+            fileExists = testFileExists(cheminFichierResultatsXml, log,
+                  formulaire);
+
+            if (fileExists) {
+               ResultatsType objResultatXml = ecdeService
+                     .chargeResultatsXml(cheminFichierResultatsXml);
+
+               if (objResultatXml.getNonIntegratedDocumentsCount() != notIntegratedDocuments) {
+                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+                  log.appendLogLn("Le nombre de documents non intégrés est de "
+                        + objResultatXml.getNonIntegratedDocumentsCount()
+                        + " alors que nous en attendions "
+                        + notIntegratedDocuments);
+
+               } else if (objResultatXml.getNonIntegratedDocuments() == null
+                     || objResultatXml.getNonIntegratedDocuments()
+                           .getNonIntegratedDocument() == null
+                     || objResultatXml.getNonIntegratedDocuments()
+                           .getNonIntegratedDocument().isEmpty()) {
+                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+                  log.appendLogLn("Aucun document non intégré listé ");
+               } else {
+                  findNonIntegratedDocument(formulaire, documentType,
+                        objResultatXml.getNonIntegratedDocuments()
+                              .getNonIntegratedDocument());
+               }
+
+            } else {
+               formulaire.getResultats().setStatus(TestStatusEnum.Succes);
+            }
+         }
+      }
+   }
+
+   /**
+    * @param formulaire
+    * @param documentType
+    * @param nonIntegratedDocument
+    */
+   private final void findNonIntegratedDocument(
+         CaptureMasseResultatFormulaire formulaire,
+         NonIntegratedDocumentType documentType,
+         List<NonIntegratedDocumentType> nonIntegratedDocument) {
+
+      if (documentType == null
+            || documentType.getObjetNumerique() == null
+            || StringUtils.isBlank(documentType.getObjetNumerique()
+                  .getCheminEtNomDuFichier())
+            || documentType.getErreurs() == null
+            || documentType.getErreurs().getErreur() == null
+            || documentType.getErreurs().getErreur().isEmpty()) {
+         formulaire.getResultats().getLog().appendLogLn(
+               "L'objet d'erreur attendu est incomplet");
+         formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+
+      } else {
+
+         String fichierAttendu = documentType.getObjetNumerique()
+               .getCheminEtNomDuFichier();
+         HashMap<String, String> mapErreurs = new HashMap<String, String>();
+         for (ErreurType erreurType : documentType.getErreurs().getErreur()) {
+            mapErreurs.put(erreurType.getCode(), erreurType.getLibelle());
+         }
+
+         NonIntegratedDocumentType found = null;
+         int i = 0;
+         while (found == null && i < nonIntegratedDocument.size()) {
+            if (fichierAttendu.equals(nonIntegratedDocument.get(i)
+                  .getObjetNumerique().getCheminEtNomDuFichier())) {
+               found = nonIntegratedDocument.get(i);
+            }
+            i++;
+         }
+
+         if (found == null) {
+            formulaire.getResultats().getLog().appendLogLn(
+                  "Impossible de trouver l'erreur correspondant au fichier");
+            formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+
+         } else {
+            boolean hasError = false;
+            i = 0;
+            String label;
+            List<ErreurType> listErreurs = found.getErreurs().getErreur();
+            while (!hasError && i < listErreurs.size()) {
+               label = mapErreurs.get(listErreurs.get(i).getCode());
+               if (label == null
+                     || !label
+                           .equalsIgnoreCase(listErreurs.get(i).getLibelle())) {
+                  hasError = true;
+               }
+
+               i++;
+            }
+
+            if (hasError) {
+               formulaire
+                     .getResultats()
+                     .getLog()
+                     .appendLogLn(
+                           "Impossible de trouver toutes les erreurs dans le document non intégré");
+               formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+            } else {
+               formulaire.getResultats().getLog().appendLogLn(
+                     "Toutes les erreurs attendues ont été trouvées");
+               formulaire.getResultats().setStatus(TestStatusEnum.Succes);
+            }
+         }
+
       }
 
    }

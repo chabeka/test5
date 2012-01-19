@@ -18,27 +18,27 @@ import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.R
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
 
 /**
- * Test 204<br>
+ * Test 207<br>
  * <br>
- * Capture de masse de 10 documents à archiver dans une arborescence de 10
- * niveaux précisés par des anti-slash
+ * Capture de masse d’un document dont on précise la métadonnée
+ * IdTraitementMasse en archivage
  */
 @Controller
-@RequestMapping(value = "test204")
-public class Test204Controller extends
+@RequestMapping(value = "test207")
+public class Test207Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-204-CaptureMasse-OK-Tor-10-repertoire-anti-slash/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-207-CaptureMasse-OK-IdTraitementMasse/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "204";
+      return "207";
    }
 
    /**
@@ -61,11 +61,11 @@ public class Test204Controller extends
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
       rechFormulaire
-            .setRequeteLucene("Denomination:\"Test 204-CaptureMasse-OK-Tor-10-repertoire-anti-slash\"");
+            .setRequeteLucene("Denomination:\"Test 207-CaptureMasse-OK-IdTraitementMasse\"");
       CodeMetadonneeList codeMetadonneeList = new CodeMetadonneeList();
 
-      String[] tabElement = new String[] { "CodeRND", "DateArchivage", "Hash",
-            "NomFichier", "NumeroRecours" };
+      String[] tabElement = new String[] { "CodeRND", "DateArchivage",
+            "Denomination", "IdTraitementMasse" };
 
       codeMetadonneeList.addAll(Arrays.asList(tabElement));
 
@@ -134,7 +134,7 @@ public class Test204Controller extends
       RechercheResponse response = getRechercheTestService()
             .appelWsOpRechercheReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(),
-                  formulaire.getRechFormulaire(), 10, false, null);
+                  formulaire.getRechFormulaire(), 1, false, null);
 
       if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
@@ -172,9 +172,10 @@ public class Test204Controller extends
       MetadonneeValeurList valeursAttendues = new MetadonneeValeurList();
 
       String numeroResultatRecherche = "1";
-
       valeursAttendues.add("CodeRND", "2.3.1.1.12");
-      valeursAttendues.add("Hash", "a2f93f1f121ebba0faef2c0596f2f126eacae77b");
+      valeursAttendues.add("Denomination",
+            "Test 207-CaptureMasse-OK-IdTraitementMasse");
+      valeursAttendues.add("IdTraitementMasse", "12345678901234567890");
 
       getRechercheTestService().verifieResultatRecherche(resultatRecherche,
             numeroResultatRecherche, resultatTest, valeursAttendues);
