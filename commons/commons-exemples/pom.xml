@@ -46,9 +46,7 @@
       <module>../commons-webservice-axis-client</module>
       <module>../commons-jms-spring-exemple</module>
       <module>../commons-jms-spring-remoting-exemple</module>
-      <module>../commons-jmx-htmladaptor-exemple</module>
-      <module>../commons-jmx-jconsole-notifications</module>
-      <module>../commons-jmx-security-exemple</module>
+      <module>../commons-jmx-exemple</module>
       <module>../commons-jmx-spring-exemple</module>
       <module>../commons-junit-spring3-exemple</module>
    </modules>
