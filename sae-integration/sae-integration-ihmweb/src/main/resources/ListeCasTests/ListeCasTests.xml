@@ -201,7 +201,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>165</id>
             <code>Cas 165-captureunitaire-KO-url-ecde-incorrecte</code>
@@ -242,8 +242,48 @@
             <description>
                On vérifie que la capture de masse en mode "tout ou rien" fonctionne correctement pour 10 documents à archiver
             </description>
-            <implemente>false</implemente>
+            <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 201-CaptureMasse-OK-Tor-10"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>202</id>
+            <code>202-CaptureMasse-OK-Tor-1000</code>
+            <description>
+               Capture de masse de 1000 documents
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"Test 202-CaptureMasse-OK-Tor-1000"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>203</id>
+            <code>203-capturemasse-OK-TOR-10-repertoire-slash</code>
+            <description>
+               Capture de masse de 10 documents à archiver dans une arborescence de 10 niveaux précisés par des slash
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"Test 203-capturemasse-OK-TOR-10-repertoire-slash"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>204</id>
+            <code>204-CAPTUREMASSE-OK-TOR-10-REPERTOIRE-ANTI-SLASH</code>
+            <description>
+               Capture de masse de 10 documents à archiver dans une arborescence de 10 niveaux précisés par des anti-slash
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"204-CAPTUREMASSE-OK-TOR-10-repertoire-anti-slash"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>205</id>
+            <code>205-CAPTUREMASSE-OK-TOR-3-REPERTOIRE-ANTI-SLASH-MEME-DOC</code>
+            <description>
+               Capture de masse du même document 3 fois dans une arborescence d’un seul niveau spécifiée par des anti-slash
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:"Test 205-CaptureMasse-OK-Tor-3-repertoire-anti-slash-meme-doc"</luceneExemple>
          </CasTest>
 
          <CasTest>
@@ -327,7 +367,7 @@
             <implemente>false</implemente>
          </CasTest>
 
-          <CasTest>
+         <CasTest>
             <id>262</id>
             <code>262-CaptureMasse-KO-Tor-FichierInexistant</code>
             <description>

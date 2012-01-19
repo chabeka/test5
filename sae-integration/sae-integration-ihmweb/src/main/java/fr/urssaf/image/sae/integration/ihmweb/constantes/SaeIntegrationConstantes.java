@@ -16,6 +16,12 @@ public final class SaeIntegrationConstantes {
     * indique que le traitement de masse est terminé
     */
    public static final String NOM_FIC_FLAG_TDM = "fin_traitement.flag";
+   
+   /**
+    * Nom du fichier flag dont la présence dans le répertoire adéquat de l'ECDE
+    * indique que le traitement de masse a commencé
+    */
+   public static final String NOM_FIC_DEB_FLAG_TDM = "debut_traitement.flag";
  
    
    /**

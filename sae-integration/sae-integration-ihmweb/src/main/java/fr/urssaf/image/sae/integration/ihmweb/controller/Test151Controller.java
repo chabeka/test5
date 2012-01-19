@@ -10,12 +10,11 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 
 /**
- * Test 150<br>
+ * Test 151<br>
  * <br>
- * Ce test vérifie que l'authentification applicative est activée sur
- * l'opération "archivageUnitaire" du service web SaeService. Pour cela, on
- * invoque l'opération "archivageUnitaire" en omettant le VI dans le message
- * SOAP.
+ * Ce test vérifie que la bonne erreur est renvoyée lorsque le fichier dans
+ * l’ecde n’existe pas. pour cela, on envoie un chemin vers un fichier
+ * inexistant
  */
 @Controller
 @RequestMapping(value = "test151")
