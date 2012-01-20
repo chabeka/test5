@@ -262,4 +262,12 @@
       <localPart>CaptureUrlEcdeIncorrecte</localPart>
       <message>L'URL ECDE est incorrecte (%s)</message>
    </SoapFault>
+   
+   <SoapFault>
+      <id>sae_CaptureMasseRefusee</id>
+      <namespace>urn:sae:faultcodes</namespace>
+      <prefixe>sae</prefixe>
+      <localPart>CaptureMasseRefusee</localPart>
+      <message>L'archivage de masse ne peut pas être exécuté sur ce serveur car un traitement de masse est déjà en cours.</message>
+   </SoapFault>
 </SoapFaults>

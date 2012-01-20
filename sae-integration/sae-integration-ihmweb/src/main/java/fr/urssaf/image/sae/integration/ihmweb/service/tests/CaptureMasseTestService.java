@@ -31,6 +31,7 @@ import fr.urssaf.image.sae.integration.ihmweb.service.ecde.EcdeService;
 import fr.urssaf.image.sae.integration.ihmweb.service.referentiels.ReferentielSoapFaultService;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.WsTestListener;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplLibre;
+import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSansSoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 
@@ -701,6 +702,71 @@ public class CaptureMasseTestService {
       value = value.replace("day", "jour");
 
       return value;
+
+   }
+
+   /**
+    * appel de l'archivage de masse avec en attente aucune saop fault
+    * 
+    * @param urlWebService
+    * @param formulaire
+    */
+   public void appelWsOpArchiMasseOKAttendu(String urlWebService,
+         CaptureMasseFormulaire formulaire) {
+
+      // Création de l'objet qui implémente l'interface WsTestListener
+      // et qui ne s'attend pas à un quelconque résultat (test libre)
+      WsTestListener testLibre = new WsTestListenerImplSansSoapFault();
+
+      // Appel de la méthode "générique" de test
+      appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK, formulaire,
+            testLibre);
+
+   }
+
+   /**
+    * appel de l'archivage de masse avec en attente une saop fault dont on
+    * fournit le code
+    * 
+    * @param urlWebService
+    * @param formulaire
+    */
+   public void appelWsOpArchiMasseSoapFaultCaptureRefusee(String urlWebService,
+         CaptureMasseFormulaire formulaire) {
+
+      // Création de l'objet qui implémente l'interface WsTestListener
+      // et qui ne s'attend pas à un quelconque résultat (test libre)
+
+      SoapFault faultAttendue = refSoapFault
+            .findSoapFault("sae_CaptureMasseRefusee");
+
+      WsTestListener testLibre = new WsTestListenerImplSoapFault(faultAttendue,
+            null);
+
+      // Appel de la méthode "générique" de test
+      appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK, formulaire,
+            testLibre);
+
+   }
+
+   /**
+    * @param urlWebService
+    * @param captureMasseDeclenchement
+    */
+   public void appelWsOpArchiMasseSoapFaultUrlIncorrecte(String urlWebService,
+         CaptureMasseFormulaire captureMasseDeclenchement) {
+      // Création de l'objet qui implémente l'interface WsTestListener
+      // et qui ne s'attend pas à un quelconque résultat (test libre)
+
+      SoapFault faultAttendue = refSoapFault
+            .findSoapFault("sae_CaptureUrlEcdeIncorrecte");
+
+      WsTestListener testLibre = new WsTestListenerImplSoapFault(faultAttendue,
+            null);
+
+      // Appel de la méthode "générique" de test
+      appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK,
+            captureMasseDeclenchement, testLibre);
 
    }
 

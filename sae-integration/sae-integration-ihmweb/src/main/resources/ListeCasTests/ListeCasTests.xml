@@ -423,7 +423,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>266</id>
             <code>266-capturemasse-KO-autremodetoutourien</code>
@@ -432,7 +432,7 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>267</id>
             <code>267-capturemasse-KO-TOR-plusieursfichiersintrouvables</code>
@@ -441,12 +441,39 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>268</id>
             <code>268-capturemasse-KO-TOR-3-meme-doc-avec-premier-en-erreur-arbo</code>
             <description>
                La Capture de masse échoue et on a une seule erreur sur une arborescence
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+
+         <CasTest>
+            <id>269</id>
+            <code>269-capturemasse-KO-deux-lancements</code>
+            <description>
+               La Capture de masse échoue sur le deuxième lancement si on a un seul serveur d’application
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+
+         <CasTest>
+            <id>270</id>
+            <code>270-capturemasse-KO-TOR-3000-rollback</code>
+            <description>
+               La Capture de masse échoue suite à la suppression d’un fichier image après l’analyse
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+         
+         <CasTest>
+            <id>271</id>
+            <code>271-capturemasse-KO-URL-ecde-incorrecte</code>
+            <description>
+               La Capture de masse échoue car URL ECDE incorrecte
             </description>
             <implemente>true</implemente>
          </CasTest>
