@@ -1,10 +1,6 @@
-package fr.urssaf.image.commons.spring.exemple.mbean;
+package fr.urssaf.image.commons.jmx.spring.exemple.mbean;
 
-/**
- * Premier MBean pour tester JMX.
- * 
- *
- */
+
 public interface IPremierBean {
   
   public int add (int x, int y);
@@ -18,4 +14,5 @@ public interface IPremierBean {
   public int getValeur();
   
   public void setValeur(int valeur);
+  
 }

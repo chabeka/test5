@@ -1,14 +1,18 @@
-package fr.urssaf.image.commons.spring.exemple.mbean;
+package fr.urssaf.image.commons.jmx.spring.exemple.mbean;
 
 import javax.management.Notification;
 
 import org.springframework.jmx.export.notification.NotificationPublisher;
 import org.springframework.jmx.export.notification.NotificationPublisherAware;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PremierBean implements IPremierBean, NotificationPublisherAware {
 
-   private String helloWord;
-   private int valeur;
+   private String helloWord = "Hello test";
+   
+   private int valeur = 1;
+   
    private NotificationPublisher publisher;
    
    @Override
