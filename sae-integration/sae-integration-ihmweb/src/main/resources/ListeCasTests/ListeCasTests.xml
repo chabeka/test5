@@ -630,6 +630,16 @@
             <implemente>true</implemente>
             <luceneExemple>Denomination: "Test 312-Recherche-OK-DateReception" AND DateReception:[20111103 TO 20111105]</luceneExemple>
          </CasTest>
+         
+         <CasTest>
+            <id>313</id>
+            <code>313-recherche-OK-datedebutconservation</code>
+            <description>
+               Recherche sur la date de début de conservation
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination: "Test 313-Recherche-OK-DateDebutConservation" AND DateDebutConservation:[20101003 TO 20101006]</luceneExemple>
+         </CasTest>
 
          <CasTest>
             <id>350</id>
@@ -699,6 +709,16 @@
             </description>
             <implemente>true</implemente>
             <luceneExemple>CodeRND:"2.3.1.1.12" AND TailleFichier:34 AND FormatFichier:"fmt/354" AND VersionRND:"11.1"</luceneExemple>
+         </CasTest>
+         
+         <CasTest>
+            <id>357</id>
+            <code>357-recherche-KO-saesyntaxeluceneincorrecte</code>
+            <description>
+               Envoie d’une SoapFault suite à l’envoie d’une requête syntaxiquement incorrecte
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination:::Recherche</luceneExemple>
          </CasTest>
 
       </CasTests>
