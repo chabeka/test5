@@ -270,4 +270,12 @@
       <localPart>CaptureMasseRefusee</localPart>
       <message>L'archivage de masse ne peut pas être exécuté sur ce serveur car un traitement de masse est déjà en cours.</message>
    </SoapFault>
+   
+   <SoapFault>
+      <id>sae_CaptureEcdeDroitEcriture</id>
+      <namespace>urn:sae:faultcodes</namespace>
+      <prefixe>sae</prefixe>
+      <localPart>CaptureEcdeDroitEcriture</localPart>
+      <message>Le SAE ne dispose pas des droits d'écriture dans le répertoire de traitement ECDE de l'URL ECDE (%s)</message>
+   </SoapFault>
 </SoapFaults>

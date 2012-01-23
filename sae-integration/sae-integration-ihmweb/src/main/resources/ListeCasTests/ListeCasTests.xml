@@ -468,12 +468,30 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
-         
+
          <CasTest>
             <id>271</id>
             <code>271-capturemasse-KO-URL-ecde-incorrecte</code>
             <description>
                La Capture de masse échoue car URL ECDE incorrecte
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+
+         <CasTest>
+            <id>272</id>
+            <code>272-capturemasse-KO-url-ecde-repertoire-sans-droits-ecriture</code>
+            <description>
+               La Capture de masse échoue car l’URL ECDE en lecture seul
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+
+         <CasTest>
+            <id>273</id>
+            <code>273-capturemasse-KO-jararrettomcatsansrepriseavecstockage</code>
+            <description>
+               Capture de masse est interrompue et pas de redémarrage de dfce après la pause
             </description>
             <implemente>true</implemente>
          </CasTest>
@@ -561,6 +579,56 @@
             </description>
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 306-Recherche-OK-RequeteLuceneAvecJokerDansValeurRecherchee" AND CodeRND:2.3.1.1.*</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>307</id>
+            <code>307-recherche-OK-META-I-META-NI</code>
+            <description>
+               Recherche sur des métadonnées non indexée et indexée
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>NumeroStructure:"000050221" AND Siren:"3070000001"</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>308</id>
+            <code>308-RECHERCHE-OK-avec-espace-et-joker</code>
+            <description>
+               Recherche avec dans la requête des espaces et des caractères joker
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>CodeRND:"2.3.1.1.12" AND Denomination:Test\ 308\-Recherche*</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>309</id>
+            <code>309-recherche-OK-projetattestations</code>
+            <description>
+               Recherche classique des utilisateurs pour le projet attestation
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>CodeRND: 2.3.1.1.12 AND Siren:3090000001 AND DateCreation:20070401</luceneExemple>
+         </CasTest>
+
+         <CasTest>
+            <id>311</id>
+            <code>311-recherche-OK-datecreation</code>
+            <description>
+               Recherche sur la date de création
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination: "Test 311-Recherche-OK-DateCreation" AND DateCreation:[20101003 TO 20101005]</luceneExemple>
+         </CasTest>
+         
+         <CasTest>
+            <id>312</id>
+            <code>312-recherche-OK-datereception</code>
+            <description>
+               Recherche sur la date de réception
+            </description>
+            <implemente>true</implemente>
+            <luceneExemple>Denomination: "Test 312-Recherche-OK-DateReception" AND DateReception:[20111103 TO 20111105]</luceneExemple>
          </CasTest>
 
          <CasTest>

@@ -6,31 +6,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import fr.urssaf.image.sae.integration.ihmweb.exception.IntegrationRuntimeException;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureMasseFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureMasseResultatFormulaire;
+import fr.urssaf.image.sae.integration.ihmweb.formulaire.RechercheFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.TestStockageMasseAllFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
 
 /**
- * Test 271<br>
+ * Test 272<br>
  * <br>
- * La Capture de masse échoue suite à la suppression d’un fichier image après
- * l’analyse
+ * La Capture de masse échoue car l’URL ECDE en lecture seul
  */
 @Controller
-@RequestMapping(value = "test271")
-public class Test271Controller extends
+@RequestMapping(value = "test272")
+public class Test272Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
     * URL du répertoire contenant les fichiers de données
     */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.tutu/SAE_INTEGRATION/20110822/CaptureMasse-271-CaptureMasse-KO-URL-ECDE-incorrecte/";
+   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-272-CaptureMasse-KO-URL-ECDE-Repertoire-Sans-Droits-Ecriture/";
 
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
-      return "271";
+      return "272";
    }
 
    /**
@@ -46,6 +46,15 @@ public class Test271Controller extends
       formCapture.setUrlSommaire(URL_DIRECTORY + "sommaire.xml");
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
 
+      CaptureMasseResultatFormulaire formResultat = formulaire
+            .getCaptureMasseResultat();
+      formResultat.setUrlSommaire(URL_DIRECTORY + "resultat.xml");
+      formResultat.getResultats().setStatus(TestStatusEnum.SansStatus);
+
+      RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
+      rechFormulaire
+            .setRequeteLucene("Denomination:\"Test 272-CaptureMasse-KO-URL-ECDE-Repertoire-Sans-Droits-Ecriture\"");
+
       return formulaire;
 
    }
@@ -60,6 +69,16 @@ public class Test271Controller extends
       if ("1".equals(etape)) {
 
          etape1captureMasseAppelWs(formulaire.getUrlServiceWeb(), formulaire);
+
+      } else if ("2".equals(etape)) {
+
+         etape2LectureResultat(URL_DIRECTORY + "sommaire.xml", formulaire
+               .getCaptureMasseResultat());
+
+      } else if ("3".equals(etape)) {
+
+         etape3Recherche(formulaire.getRechFormulaire(), formulaire
+               .getUrlServiceWeb());
 
       } else {
 
@@ -81,8 +100,30 @@ public class Test271Controller extends
             .getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultUrlIncorrecte(
-            urlWebService, formulaire.getCaptureMasseDeclenchement(), URL_DIRECTORY + "sommaire.xml");
+      getCaptureMasseTestService()
+            .appelWsOpArchiMasseSoapFaultDroitLectureSeul(urlWebService,
+                  formulaire.getCaptureMasseDeclenchement(),
+                  URL_DIRECTORY + "sommaire.xml");
+
+   }
+
+   /**
+    * @param urlServiceWeb
+    * @param captureMasseResultat
+    */
+   private void etape2LectureResultat(String urlEcde,
+         CaptureMasseResultatFormulaire captureMasseResultat) {
+
+      getCaptureMasseTestService().testResultatsTdmReponseAucunFichierAttendu(
+            captureMasseResultat, urlEcde);
+
+   }
+
+   private void etape3Recherche(RechercheFormulaire formulaire,
+         String urlWebService) {
+
+      getRechercheTestService().appelWsOpRechercheReponseCorrecteAttendue(
+            urlWebService, formulaire, 0, false, null);
 
    }
 
