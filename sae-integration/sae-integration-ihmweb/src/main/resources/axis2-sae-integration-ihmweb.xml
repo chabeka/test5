@@ -16,7 +16,7 @@
    -->
 
 <axisconfig name="AxisJava2.0">
-   
+
    <!-- ================================================= -->
    <!-- Parameters -->
    <!-- ================================================= -->
@@ -560,6 +560,9 @@
 
          <handler name="HTTPLocationBasedDispatcher"
             class="org.apache.axis2.dispatchers.HTTPLocationBasedDispatcher" />
+
+         <handler name="LogInMessageHandler"
+            class="fr.urssaf.image.sae.integration.ihmweb.saeservice.security.LogInMessageHandler" />
       </phase>
       <phase name="RMPhase" />
       <!--  System predefined phases       -->
@@ -586,7 +589,7 @@
       </phase>
       <phase name="Security" />
       <phase name="SamlToken">
-          
+
       </phase>
    </phaseOrder>
    <phaseOrder type="InFaultFlow">
