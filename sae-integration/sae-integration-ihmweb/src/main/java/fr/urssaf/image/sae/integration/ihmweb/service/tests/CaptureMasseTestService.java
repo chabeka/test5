@@ -157,7 +157,7 @@ public class CaptureMasseTestService {
             testAuth);
 
    }
-   
+
    /**
     * appel de l'archivage de masse avec en attente aucune saop fault
     * 
@@ -184,14 +184,13 @@ public class CaptureMasseTestService {
     * @param urlWebService
     * @param formulaire
     */
-   public void appelWsOpArchiMasseSoapFaultCaptureRefusee(String urlWebService,
-         CaptureMasseFormulaire formulaire) {
+   public void appelWsOpArchiMasseSoapFaultAttendue(String urlWebService,
+         CaptureMasseFormulaire formulaire, String soapFault, String[] args) {
 
       // Création de l'objet qui implémente l'interface WsTestListener
       // et qui ne s'attend pas à un quelconque résultat (test libre)
 
-      SoapFault faultAttendue = refSoapFault
-            .findSoapFault("sae_CaptureMasseRefusee");
+      SoapFault faultAttendue = refSoapFault.findSoapFault(soapFault);
 
       WsTestListener testLibre = new WsTestListenerImplSoapFault(faultAttendue,
             null);
@@ -199,63 +198,6 @@ public class CaptureMasseTestService {
       // Appel de la méthode "générique" de test
       appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK, formulaire,
             testLibre);
-
-   }
-
-   /**
-    * appel de l'archivage de masse avec une URL erroneé. Nous attendons en
-    * retour une SOAP FAULT.
-    * 
-    * @param urlWebService
-    *           adresse du WS
-    * @param captureMasseDeclenchement
-    *           formulaire
-    * @param url
-    *           url ecde du fichier sommaire.xml
-    */
-   public void appelWsOpArchiMasseSoapFaultUrlIncorrecte(String urlWebService,
-         CaptureMasseFormulaire captureMasseDeclenchement, String url) {
-      // Création de l'objet qui implémente l'interface WsTestListener
-      // et qui ne s'attend pas à un quelconque résultat (test libre)
-
-      SoapFault faultAttendue = refSoapFault
-            .findSoapFault("sae_CaptureUrlEcdeIncorrecte");
-
-      WsTestListener testLibre = new WsTestListenerImplSoapFault(faultAttendue,
-            new String[] { url });
-
-      // Appel de la méthode "générique" de test
-      appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK,
-            captureMasseDeclenchement, testLibre);
-
-   }
-
-   /**
-    * appel de l'archivage de masse avec une URL erroneé. Nous attendons en
-    * retour une SOAP FAULT.
-    * 
-    * @param urlWebService
-    *           adresse du WS
-    * @param captureMasseDeclenchement
-    *           formulaire
-    * @param url
-    *           url ecde du fichier sommaire.xml
-    */
-   public void appelWsOpArchiMasseSoapFaultDroitLectureSeul(
-         String urlWebService,
-         CaptureMasseFormulaire captureMasseDeclenchement, String url) {
-      // Création de l'objet qui implémente l'interface WsTestListener
-      // et qui ne s'attend pas à un quelconque résultat (test libre)
-
-      SoapFault faultAttendue = refSoapFault
-            .findSoapFault("sae_CaptureEcdeDroitEcriture");
-
-      WsTestListener testLibre = new WsTestListenerImplSoapFault(faultAttendue,
-            new String[] { url });
-
-      // Appel de la méthode "générique" de test
-      appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK,
-            captureMasseDeclenchement, testLibre);
 
    }
 
@@ -607,7 +549,6 @@ public class CaptureMasseTestService {
       }
    }
 
-   
    /**
     * Vérification qu'aucun fichier de traitement n'a été créé
     * 
@@ -618,25 +559,23 @@ public class CaptureMasseTestService {
     */
    public void testResultatsTdmReponseAucunFichierAttendu(
          CaptureMasseResultatFormulaire captureMasseResultat, String urlEcde) {
-      
+
       String startFlagFilePath = getCheminFichierDebutFlag(urlEcde);
       File startFlagFile = new File(startFlagFilePath);
       ResultatTestLog log = captureMasseResultat.getResultats().getLog();
-      
+
       if (startFlagFile.exists()) {
          log.appendLogLn("Un traitement a été lancé sur l'URL " + urlEcde);
-         log.appendLogLn("Le fichier concerné est en lecture seule, aucune écriture n'est possible.");
+         log
+               .appendLogLn("Le fichier concerné est en lecture seule, aucune écriture n'est possible.");
          captureMasseResultat.getResultats().setStatus(TestStatusEnum.Echec);
       } else {
          log.appendLogLn("Pas de fichier de traitement présent sur " + urlEcde);
          captureMasseResultat.getResultats().setStatus(TestStatusEnum.Succes);
       }
-      
-      
 
    }
 
-   
    /**
     * @param formulaire
     * @param documentType

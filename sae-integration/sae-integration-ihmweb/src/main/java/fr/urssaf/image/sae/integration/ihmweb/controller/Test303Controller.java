@@ -86,7 +86,7 @@ public class Test303Controller extends AbstractTestWsController<TestWsRechercheF
       ResultatTest resultatTest = formulaire.getResultats();
       
       // Résultats attendus
-      int nbResultatsAttendus = 3 ; 
+      int nbResultatsAttendus = 3; 
       boolean flagResultatsTronquesAttendu = false;
       
       // Appel de la méthode de test

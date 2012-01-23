@@ -100,10 +100,10 @@ public class Test272Controller extends
             .getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService()
-            .appelWsOpArchiMasseSoapFaultDroitLectureSeul(urlWebService,
-                  formulaire.getCaptureMasseDeclenchement(),
-                  URL_DIRECTORY + "sommaire.xml");
+      getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultAttendue(
+            urlWebService, formulaire.getCaptureMasseDeclenchement(),
+            "sae_CaptureEcdeDroitEcriture",
+            new String[] { URL_DIRECTORY + "sommaire.xml" });
 
    }
 

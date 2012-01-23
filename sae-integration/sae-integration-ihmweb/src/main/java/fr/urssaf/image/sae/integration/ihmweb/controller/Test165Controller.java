@@ -25,7 +25,7 @@ public class Test165Controller extends
    /**
     * URL du fichier
     */
-   private final static String URL_ECDE = "ecde://ecde.cer69.recouvtest/SAE_INTEGRATION/20110822/CaptureUnitaire-165-CaptureUnitaire-KO-URL-ECDE-incorrecte/documents/doc1.PDF";
+   private static final String URL_ECDE = "ecde://ecde.cer69.recouvtest/SAE_INTEGRATION/20110822/CaptureUnitaire-165-CaptureUnitaire-KO-URL-ECDE-incorrecte/documents/doc1.PDF";
 
    /**
     * {@inheritDoc}

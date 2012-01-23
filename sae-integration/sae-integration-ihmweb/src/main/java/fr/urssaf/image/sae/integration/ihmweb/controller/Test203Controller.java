@@ -34,6 +34,11 @@ public class Test203Controller extends
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-203-CaptureMasse-OK-Tor-10-repertoire-slash/";
 
    /**
+    * Nombre d'occurence attendu
+    */
+   private static final int COUNT_WAITED = 200;
+   
+   /**
     * {@inheritDoc}
     */
    @Override
@@ -134,7 +139,7 @@ public class Test203Controller extends
       RechercheResponse response = getRechercheTestService()
             .appelWsOpRechercheReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(),
-                  formulaire.getRechFormulaire(), 200, false, null);
+                  formulaire.getRechFormulaire(), COUNT_WAITED, false, null);
 
       if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {

@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ListeCasDeTestFormulaire;
-import fr.urssaf.image.sae.integration.ihmweb.formulaire.ListeEcdeSourcesFormulaire;
-import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeSource;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeTests;
 import fr.urssaf.image.sae.integration.ihmweb.service.ecde.file.EcdeTestInterface;

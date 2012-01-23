@@ -21,7 +21,7 @@ import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 public class Test151Controller extends
       AbstractTestWsController<TestWsCaptureUnitaireFormulaire> {
 
-   private final static String URL_ECDE = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-151-CaptureUnitaire-KO-EcdeFichierInexistant/documents/doc1.PDF";
+   private static final String URL_ECDE = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-151-CaptureUnitaire-KO-EcdeFichierInexistant/documents/doc1.PDF";
 
    /**
     * {@inheritDoc}

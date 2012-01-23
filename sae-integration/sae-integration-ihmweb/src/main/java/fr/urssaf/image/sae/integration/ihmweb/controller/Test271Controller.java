@@ -81,8 +81,10 @@ public class Test271Controller extends
             .getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultUrlIncorrecte(
-            urlWebService, formulaire.getCaptureMasseDeclenchement(), URL_DIRECTORY + "sommaire.xml");
+      getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultAttendue(
+            urlWebService, formulaire.getCaptureMasseDeclenchement(),
+            "sae_CaptureUrlEcdeIncorrecte",
+            new String[] { URL_DIRECTORY + "sommaire.xml" });
 
    }
 

@@ -86,7 +86,7 @@ public class Test304Controller extends AbstractTestWsController<TestWsRechercheF
       ResultatTest resultatTest = formulaire.getResultats();
       
       // Résultats attendus
-      int nbResultatsAttendus = 9 ; 
+      int nbResultatsAttendus = 9; 
       boolean flagResultatsTronquesAttendu = false;
       
       // Appel de la méthode de test

@@ -138,8 +138,8 @@ public class Test269Controller extends
       formCaptMassRes.setUrlSommaire(captureMasseFormulaire.getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultCaptureRefusee(
-            urlWebService, captureMasseFormulaire);
+      getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultAttendue(
+            urlWebService, captureMasseFormulaire, "sae_CaptureMasseRefusee", null);
 
    }
 
