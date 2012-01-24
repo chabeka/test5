@@ -7,7 +7,7 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
  */
 public class TestWsRechercheFormulaire extends TestWsParentFormulaire {
 
-   private final RechercheFormulaire recherche = new RechercheFormulaire() ;
+   private final RechercheFormulaire recherche = new RechercheFormulaire(this) ;
    
    
    /**

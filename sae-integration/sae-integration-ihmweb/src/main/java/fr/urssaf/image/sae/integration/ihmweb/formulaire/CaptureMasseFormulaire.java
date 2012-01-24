@@ -2,19 +2,27 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
 
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 
-
 /**
- * Classe de sous-formulaire pour un test du WS SaeService, opération "archivageMasse"<br>
+ * Classe de sous-formulaire pour un test du WS SaeService, opération
+ * "archivageMasse"<br>
  * <br>
- * Un objet de cette classe s'associe au tag "captureMasse.tag" (attribut "objetFormulaire")
+ * Un objet de cette classe s'associe au tag "captureMasse.tag" (attribut
+ * "objetFormulaire")
  */
-public class CaptureMasseFormulaire {
+public class CaptureMasseFormulaire extends GenericForm {
 
    private ResultatTest resultats = new ResultatTest();
-   
+
    private String urlSommaire;
-   
-   
+
+   /**
+    * @param parent
+    */
+   public CaptureMasseFormulaire(TestWsParentFormulaire parent) {
+      super(parent);
+      // TODO Auto-generated constructor stub
+   }
+
    /**
     * Les résultats de l'appel à l'opération
     * 
@@ -24,16 +32,15 @@ public class CaptureMasseFormulaire {
       return this.resultats;
    }
 
-
    /**
     * Les résultats de l'appel à l'opération
     * 
-    * @param resultats Les résultats de l'appel à l'opération
+    * @param resultats
+    *           Les résultats de l'appel à l'opération
     */
    public final void setResultats(ResultatTest resultats) {
       this.resultats = resultats;
    }
-
 
    /**
     * L'URL du fichier sommaire.xml
@@ -44,15 +51,14 @@ public class CaptureMasseFormulaire {
       return urlSommaire;
    }
 
-   
    /**
     * L'URL du fichier sommaire.xml
     * 
-    * @param urlSommaire L'URL du fichier sommaire.xml
+    * @param urlSommaire
+    *           L'URL du fichier sommaire.xml
     */
    public final void setUrlSommaire(String urlSommaire) {
       this.urlSommaire = urlSommaire;
    }
-   
-   
+
 }

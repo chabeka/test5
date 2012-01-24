@@ -3,10 +3,14 @@ package fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl;
 import java.rmi.RemoteException;
 
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.context.ConfigurationContext;
 
+import fr.urssaf.image.sae.integration.ihmweb.formulaire.TestWsParentFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTestLog;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.security.LogInMessageHandler;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.security.VIHandler;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.WsTestListener;
 import fr.urssaf.image.sae.integration.ihmweb.utils.LogUtils;
 
@@ -22,12 +26,24 @@ public final class WsTestListenerImplSansSoapFault implements WsTestListener {
    }
 
    @Override
-   public void onRetourWsSansErreur(ResultatTest resultatTest) {
+   public void onRetourWsSansErreur(ResultatTest resultatTest,
+         ConfigurationContext configurationContext,
+         TestWsParentFormulaire testWsParentFormulaire) {
       resultatTest.setStatus(TestStatusEnum.Succes);
+
+      String messageIn = (String) configurationContext
+            .getProperty(LogInMessageHandler.PROP_MESSAGE_IN);
+      String messageOut = (String) configurationContext
+            .getProperty(VIHandler.PROP_MESSAGE_OUT);
+
+      testWsParentFormulaire.getSoapFormulaire().setMessageIn(messageIn);
+      testWsParentFormulaire.getSoapFormulaire().setMessageOut(messageOut);
    }
 
    @Override
-   public void onSoapFault(ResultatTest resultatTest, AxisFault faultObtenue) {
+   public void onSoapFault(ResultatTest resultatTest, AxisFault faultObtenue,
+         ConfigurationContext configurationContext,
+         TestWsParentFormulaire testWsParentFormulaire) {
 
       // On loggue simplement la SoapFault
       ResultatTestLog log = resultatTest.getLog();
@@ -36,11 +52,20 @@ public final class WsTestListenerImplSansSoapFault implements WsTestListener {
       LogUtils.logSoapFault(log, faultObtenue);
       resultatTest.setStatus(TestStatusEnum.Echec);
 
+      String messageIn = (String) configurationContext
+            .getProperty(LogInMessageHandler.PROP_MESSAGE_IN);
+      String messageOut = (String) configurationContext
+            .getProperty(VIHandler.PROP_MESSAGE_OUT);
+
+      testWsParentFormulaire.getSoapFormulaire().setMessageIn(messageIn);
+      testWsParentFormulaire.getSoapFormulaire().setMessageOut(messageOut);
+
    }
 
    @Override
    public void onRemoteException(ResultatTest resultatTest,
-         RemoteException exception) {
+         RemoteException exception, ConfigurationContext configurationContext,
+         TestWsParentFormulaire testWsParentFormulaire) {
 
       // On loggue simplement l'exception
       ResultatTestLog log = resultatTest.getLog();
@@ -48,6 +73,14 @@ public final class WsTestListenerImplSansSoapFault implements WsTestListener {
       log.appendLogNewLine();
       log.appendLogLn(exception.toString());
       resultatTest.setStatus(TestStatusEnum.Echec);
+
+      String messageIn = (String) configurationContext
+            .getProperty(LogInMessageHandler.PROP_MESSAGE_IN);
+      String messageOut = (String) configurationContext
+            .getProperty(VIHandler.PROP_MESSAGE_OUT);
+
+      testWsParentFormulaire.getSoapFormulaire().setMessageIn(messageIn);
+      testWsParentFormulaire.getSoapFormulaire().setMessageOut(messageOut);
    }
 
 }

@@ -86,7 +86,9 @@ public class RechercheTestService {
          response = service.recherche(paramsService);
 
          // Appel du listener
-         wsListener.onRetourWsSansErreur(resultatTest);
+         wsListener.onRetourWsSansErreur(resultatTest, service
+               ._getServiceClient().getServiceContext()
+               .getConfigurationContext(), formulaire.getParent());
 
          // Log de la réponse obtenue
          log.appendLogNewLine();
@@ -98,12 +100,16 @@ public class RechercheTestService {
       } catch (AxisFault fault) {
 
          // Appel du listener
-         wsListener.onSoapFault(resultatTest, fault);
+         wsListener.onSoapFault(resultatTest, fault, service
+               ._getServiceClient().getServiceContext()
+               .getConfigurationContext(), formulaire.getParent());
 
       } catch (RemoteException e) {
 
          // Appel du listener
-         wsListener.onRemoteException(resultatTest, e);
+         wsListener.onRemoteException(resultatTest, e, service
+               ._getServiceClient().getServiceContext()
+               .getConfigurationContext(), formulaire.getParent());
 
       }
 

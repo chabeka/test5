@@ -7,10 +7,10 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
 public class Test103Formulaire extends TestWsParentFormulaire {
 
 
-   private final CaptureUnitaireFormulaire captureUnitaire = new CaptureUnitaireFormulaire() ;
+   private final CaptureUnitaireFormulaire captureUnitaire = new CaptureUnitaireFormulaire(this) ;
    
    
-   private final RechercheFormulaire recherche = new RechercheFormulaire() ;
+   private final RechercheFormulaire recherche = new RechercheFormulaire(this) ;
    
    
    

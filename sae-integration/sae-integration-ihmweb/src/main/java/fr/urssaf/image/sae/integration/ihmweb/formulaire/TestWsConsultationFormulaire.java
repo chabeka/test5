@@ -7,7 +7,7 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
  */
 public class TestWsConsultationFormulaire extends TestWsParentFormulaire {
 
-   private final ConsultationFormulaire consultation = new ConsultationFormulaire() ;
+   private final ConsultationFormulaire consultation = new ConsultationFormulaire(this) ;
    
    
    /**

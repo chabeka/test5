@@ -20,11 +20,10 @@ public class LogInMessageHandler extends AbstractHandler {
          .getLogger(LogInMessageHandler.class);
 
    /**
-    * Le nom de la propriété du MessageContext dans laquelle il faut renseigner
-    * le chemin du fichier de ressource XML contenant le vecteur d'identifiant à
-    * utiliser
+    * Le nom de la propriété du MessageContext dans laquelle on renseigne le
+    * message SOAP en entrée
     */
-   public static final String PROP_FICHIER_VI = "ficRessourceVi";
+   public static final String PROP_MESSAGE_IN = "messageIn";
 
    /**
     * Création d'une balise WS-Security dans le header du SOAP<br>
@@ -47,6 +46,9 @@ public class LogInMessageHandler extends AbstractHandler {
          StringWriter sWriter = new StringWriter();
          msgCtx.getEnvelope().serialize(sWriter);
          LOG.debug(sWriter.toString());
+
+         msgCtx.getRootContext().setProperty(PROP_MESSAGE_IN,
+               sWriter.toString());
 
       } catch (Exception e) {
          throw new IllegalStateException(e);

@@ -3,17 +3,25 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 
 /**
- * Classe de sous-formulaire pour un test du WS SaeService, opération "consultation"<br>
+ * Classe de sous-formulaire pour un test du WS SaeService, opération
+ * "consultation"<br>
  * <br>
- * Un objet de cette classe s'associe au tag "consultation.tag" (attribut "objetFormulaire")
+ * Un objet de cette classe s'associe au tag "consultation.tag" (attribut
+ * "objetFormulaire")
  */
-public class ConsultationFormulaire {
+public class ConsultationFormulaire extends GenericForm {
 
    private ResultatTest resultats = new ResultatTest();
-   
+
    private String idArchivage;
-   
-   
+
+   /**
+    * @param parent
+    */
+   public ConsultationFormulaire(TestWsParentFormulaire parent) {
+      super(parent);
+   }
+
    /**
     * Les résultats de l'appel à l'opération
     * 
@@ -23,17 +31,16 @@ public class ConsultationFormulaire {
       return this.resultats;
    }
 
-
    /**
     * Les résultats de l'appel à l'opération
     * 
-    * @param resultats Les résultats de l'appel à l'opération
+    * @param resultats
+    *           Les résultats de l'appel à l'opération
     */
    public final void setResultats(ResultatTest resultats) {
       this.resultats = resultats;
    }
-   
-   
+
    /**
     * L'identifiant d'archivage de l'archive que l'on souhaite consulter
     * 
@@ -43,15 +50,15 @@ public class ConsultationFormulaire {
       return idArchivage;
    }
 
-   
    /**
     * L'identifiant d'archivage de l'archive que l'on souhaite consulter
     * 
-    * @param idArchivage L'identifiant d'archivage de l'archive que l'on souhaite consulter
+    * @param idArchivage
+    *           L'identifiant d'archivage de l'archive que l'on souhaite
+    *           consulter
     */
    public final void setIdArchivage(String idArchivage) {
       this.idArchivage = idArchivage;
    }
 
-   
 }

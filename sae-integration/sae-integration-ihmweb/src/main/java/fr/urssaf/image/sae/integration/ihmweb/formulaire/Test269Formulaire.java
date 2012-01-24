@@ -5,15 +5,15 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
  */
 public class Test269Formulaire extends TestWsParentFormulaire {
 
-   private final CaptureMasseFormulaire captMasseDecl = new CaptureMasseFormulaire();
+   private final CaptureMasseFormulaire captMasseDecl = new CaptureMasseFormulaire(this);
 
-   private final CaptureMasseFormulaire captMasseDeclTwo = new CaptureMasseFormulaire();
+   private final CaptureMasseFormulaire captMasseDeclTwo = new CaptureMasseFormulaire(this);
 
    private final CaptureMasseResultatFormulaire captMasseResult = new CaptureMasseResultatFormulaire();
    
-   private final RechercheFormulaire rechFormulaire = new RechercheFormulaire();
+   private final RechercheFormulaire rechFormulaire = new RechercheFormulaire(this);
 
-   private final RechercheFormulaire rechFormulaireParallele = new RechercheFormulaire();
+   private final RechercheFormulaire rechFormulaireParallele = new RechercheFormulaire(this);
 
    /**
     * Le sous-formulaire pour l'appel à l'opération "archivageMasse"

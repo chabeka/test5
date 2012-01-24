@@ -7,7 +7,7 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
  */
 public class TestWsCaptureUnitaireFormulaire extends TestWsParentFormulaire {
 
-   private final CaptureUnitaireFormulaire captureUnitaire = new CaptureUnitaireFormulaire() ;
+   private final CaptureUnitaireFormulaire captureUnitaire = new CaptureUnitaireFormulaire(this) ;
    
    
    /**
