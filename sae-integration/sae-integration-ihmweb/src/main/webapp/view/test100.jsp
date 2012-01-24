@@ -21,7 +21,7 @@
 	<sae:captureUnitaire numeroEtape="unique"
 		objetFormulaire="${formulaire.captureUnitaire}"
 		pathFormulaire="captureUnitaire" />
-
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
 </form:form>
 
 <p><br />
