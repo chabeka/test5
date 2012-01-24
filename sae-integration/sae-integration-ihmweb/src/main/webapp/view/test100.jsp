@@ -22,8 +22,6 @@
 		objetFormulaire="${formulaire.captureUnitaire}"
 		pathFormulaire="captureUnitaire" />
 
-	<c:out value="${formulaire.soapFormulaire.messageIn}"></c:out>
-
 </form:form>
 
 <p><br />
