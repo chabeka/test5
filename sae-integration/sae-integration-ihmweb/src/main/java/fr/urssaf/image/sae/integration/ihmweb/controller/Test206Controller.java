@@ -135,7 +135,8 @@ public class Test206Controller extends
    private void etape2captureMasseResultats(
          CaptureMasseResultatFormulaire formulaire) {
 
-      getCaptureMasseTestService().testResultatsTdmReponseOKAttendue(formulaire);
+      getCaptureMasseTestService()
+            .testResultatsTdmReponseOKAttendue(formulaire);
 
    }
 
@@ -145,7 +146,7 @@ public class Test206Controller extends
                   formulaire.getUrlServiceWeb(),
                   formulaire.getRechFormulaire(), 1, false, null);
 
-      if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+      if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
 
          ResultatRechercheType results[] = response.getRechercheResponse()
@@ -162,7 +163,7 @@ public class Test206Controller extends
             i++;
          }
 
-         if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+         if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
                .getResultats().getStatus())) {
 
             formulaire.getConsultFormulaire().setIdArchivage(
@@ -203,7 +204,7 @@ public class Test206Controller extends
       valeursAttendues.add("NumeroCompteInterne", "719900");
       valeursAttendues.add("NumeroIntControle", "57377");
       valeursAttendues.add("NumeroPersonne", "123854");
-      valeursAttendues.add("NumeroRecours ", "1");
+      valeursAttendues.add("NumeroRecours", "1");
       valeursAttendues.add("NumeroStructure", "000050221");
       valeursAttendues.add("Periode", "PERI");
       valeursAttendues.add("PseudoSiret", "4914736610005");

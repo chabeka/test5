@@ -37,7 +37,7 @@ public class Test204Controller extends
     * Nombre d'occurence attendu
     */
    private static final int COUNT_WAITED = 10;
-   
+
    /**
     * {@inheritDoc}
     */
@@ -131,7 +131,8 @@ public class Test204Controller extends
    private void etape2captureMasseResultats(
          CaptureMasseResultatFormulaire formulaire) {
 
-      getCaptureMasseTestService().testResultatsTdmReponseOKAttendue(formulaire);
+      getCaptureMasseTestService()
+            .testResultatsTdmReponseOKAttendue(formulaire);
 
    }
 
@@ -141,7 +142,7 @@ public class Test204Controller extends
                   formulaire.getUrlServiceWeb(),
                   formulaire.getRechFormulaire(), COUNT_WAITED, false, null);
 
-      if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+      if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
 
          ResultatRechercheType results[] = response.getRechercheResponse()
@@ -158,7 +159,7 @@ public class Test204Controller extends
             i++;
          }
 
-         if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+         if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
                .getResultats().getStatus())) {
 
             formulaire.getConsultFormulaire().setIdArchivage(

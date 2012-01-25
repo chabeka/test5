@@ -141,7 +141,7 @@ public class Test205Controller extends
                   formulaire.getUrlServiceWeb(),
                   formulaire.getRechFormulaire(), COUNT_WAITED, false, null);
 
-      if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+      if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
 
          ResultatRechercheType results[] = response.getRechercheResponse()
@@ -158,7 +158,7 @@ public class Test205Controller extends
             i++;
          }
 
-         if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+         if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
                .getResultats().getStatus())) {
 
             formulaire.getConsultFormulaire().setIdArchivage(

@@ -127,24 +127,19 @@ public class Test208Controller extends
       RechercheResponse response = getRechercheTestService()
             .appelWsOpRechercheReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(),
-                  formulaire.getRechFormulaire(), COUNT_WAITED, false, null);
+                  formulaire.getRechFormulaire(), COUNT_WAITED, true, null);
 
-      if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+      if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
 
          ResultatRechercheType results[] = response.getRechercheResponse()
                .getResultats().getResultat();
 
-         if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
-               .getResultats().getStatus())) {
+         formulaire.getConsultFormulaire().setIdArchivage(
+               results[0].getIdArchive().getUuidType());
 
-            formulaire.getConsultFormulaire().setIdArchivage(
-                  results[0].getIdArchive().getUuidType());
-
-            formulaire.getRechFormulaire().getResultats().setStatus(
-                  TestStatusEnum.AControler);
-         }
-
+         formulaire.getRechFormulaire().getResultats().setStatus(
+               TestStatusEnum.AControler);
       }
 
    }
