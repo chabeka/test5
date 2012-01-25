@@ -105,7 +105,7 @@ public class Test256Controller extends
             .getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService().appelWsOpArchiMasseTestLibre(urlWebService,
+      getCaptureMasseTestService().appelWsOpArchiMasseOKAttendu(urlWebService,
             formulaire.getCaptureMasseDeclenchement());
 
    }

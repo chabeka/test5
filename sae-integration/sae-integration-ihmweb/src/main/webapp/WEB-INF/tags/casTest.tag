@@ -12,6 +12,14 @@
 		à la liste des tests</a><input type="hidden" name="id"
 			value='<c:out value="${requestScope['id']}" />' /></td>
 	</tr>
+	<tr>
+		<td colspan="2" align="right"><a href='listeTests.do'>Retour
+		à la liste des catégories de tests</a></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right"><a href='index.do'>Retour à
+		l'accueil</a></td>
+	</tr>
 </table>
 
 <hr />

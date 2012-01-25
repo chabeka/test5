@@ -120,7 +120,7 @@ public class Test307Controller extends
 
       if (numeroResultat >= 1 && numeroResultat <= 8) {
          valeursAttendues.add("ApplicationProductrice", "ADELAIDE");
-         valeursAttendues.add("Siren", "0123456789");
+         valeursAttendues.add("Siren", "3070000001");
          valeursAttendues.add("Denomination",
                "Test 307-Recherche-OK-Meta-I-Meta-NI");
          valeursAttendues.add("NumeroStructure", "000050221");

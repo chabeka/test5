@@ -24,15 +24,9 @@
 		objetFormulaire="${formulaire.captureMasseDeclenchement}"
 		pathFormulaire="captureMasseDeclenchement" />
 
-	<input type="hidden" value="${formulaire.linkToMonitoring}" />
-	<c:if test="${formulaire.linkToMonitoring != null}">
-		<a href="<c:out value='${formulaire.linkToMonitoring}'/>">Monitoring</a>
-	</c:if>
-	<c:if test="${formulaire.linkToMonitoring == null}">
-		Monitoring
-	</c:if>
-	
-	
+	<sae:lienMonitoring pathFormulaire="linkToMonitoring"
+		objetFormulaire="${formulaire.linkToMonitoring}" />
+
 	<sae:captureMasseResultat numeroEtape="2"
 		objetFormulaire="${formulaire.captureMasseResultat}"
 		pathFormulaire="captureMasseResultat" />

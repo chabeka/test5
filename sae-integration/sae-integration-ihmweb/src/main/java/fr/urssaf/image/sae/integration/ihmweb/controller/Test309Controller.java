@@ -118,7 +118,7 @@ public class Test309Controller extends
       valeursAttendues.add("DateCreation", "2007-04-01");
       valeursAttendues.add("Denomination",
             "Test 309-Recherche-OK-ProjetAttestations");
-      valeursAttendues.add("numeroRecours", "1");
+      valeursAttendues.add("NumeroRecours", "1");
       valeursAttendues.add("Siren", "3090000001");
 
       // Renvoi du résultat

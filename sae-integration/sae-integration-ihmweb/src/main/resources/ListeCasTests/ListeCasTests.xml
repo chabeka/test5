@@ -204,7 +204,7 @@
 
          <CasTest>
             <id>165</id>
-            <code>Cas 165-captureunitaire-KO-url-ecde-incorrecte</code>
+            <code>165-captureunitaire-KO-url-ecde-incorrecte</code>
             <description>
                On vérifie que la bonne erreur est renvoyée lorsque l'URL ECDE est erronée
             </description>
@@ -280,7 +280,7 @@
             <id>205</id>
             <code>205-CAPTUREMASSE-OK-TOR-3-REPERTOIRE-ANTI-SLASH-MEME-DOC</code>
             <description>
-               Capture de masse du même document 3 fois dans une arborescence d’un seul niveau spécifiée par des anti-slash
+               Capture de masse du même document 3 fois dans une arborescence d’un seul niveau spécifié par des anti-slash
             </description>
             <implemente>true</implemente>
             <luceneExemple>Denomination:"Test 205-CaptureMasse-OK-Tor-3-repertoire-anti-slash-meme-doc"</luceneExemple>

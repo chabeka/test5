@@ -71,6 +71,12 @@
       <description>Affichage des échanges SOAP</description>
       <path>/WEB-INF/tags/soapMessages.tag</path>
    </tag-file>
+   
+   <tag-file>
+      <name>lienMonitoring</name>
+      <description>Affichage du lien vers le monitoring du traitement de masse</description>
+      <path>/WEB-INF/tags/lienMonitoring.tag</path>
+   </tag-file>
 
    <function>
       <name>booleanToOuiNon</name>

@@ -3,26 +3,13 @@ package fr.urssaf.image.sae.integration.ihmweb.formulaire;
 /**
  * Classe de formulaire
  */
-public class Test269Formulaire extends TestWsParentFormulaire {
+public class Test269Formulaire extends TestStockageMasseAllFormulaire {
 
-   private final CaptureMasseFormulaire captMasseDecl = new CaptureMasseFormulaire(this);
+   private final CaptureMasseFormulaire captMasseDeclTwo = new CaptureMasseFormulaire(
+         this);
 
-   private final CaptureMasseFormulaire captMasseDeclTwo = new CaptureMasseFormulaire(this);
-
-   private final CaptureMasseResultatFormulaire captMasseResult = new CaptureMasseResultatFormulaire();
-   
-   private final RechercheFormulaire rechFormulaire = new RechercheFormulaire(this);
-
-   private final RechercheFormulaire rechFormulaireParallele = new RechercheFormulaire(this);
-
-   /**
-    * Le sous-formulaire pour l'appel à l'opération "archivageMasse"
-    * 
-    * @return Le sous-formulaire pour l'appel à l'opération "archivageMasse"
-    */
-   public final CaptureMasseFormulaire getCaptureMasseDeclenchement() {
-      return this.captMasseDecl;
-   }
+   private final RechercheFormulaire rechFormulaireParallele = new RechercheFormulaire(
+         this);
 
    /**
     * Le sous-formulaire pour l'appel à l'opération "archivageMasse" pour un
@@ -35,28 +22,7 @@ public class Test269Formulaire extends TestWsParentFormulaire {
       return this.captMasseDeclTwo;
    }
 
-   /**
-    * Le sous-formulaire pour la lecture du résultat d'un traitement de masse, à
-    * partir de l'ECDE
-    * 
-    * @return Le sous-formulaire pour la lecture du résultat d'un traitement de
-    *         masse
-    */
-   public final CaptureMasseResultatFormulaire getCaptureMasseResultat() {
-      return this.captMasseResult;
-   }
-   
-   /**
-    * @return the rechFormulaire
-    */
-   public RechercheFormulaire getRechFormulaire() {
-      return rechFormulaire;
-   }
-
-   /**
-    * @return the rechFormulaireParallele
-    */
-   public RechercheFormulaire getRechFormulaireParallele() {
+   public final RechercheFormulaire getRechFormulaireParallele() {
       return rechFormulaireParallele;
    }
 

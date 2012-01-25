@@ -18,20 +18,19 @@ import fr.urssaf.image.sae.integration.ihmweb.saeservice.comparator.ResultatRech
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.RechercheResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
 
-
 /**
  * Test 303-Recherche-OK-EnSpecifiantMetadonnees<br>
  * <br>
- * On vérifie que la recherche fonctionne lorsqu'on spécifie les métadonnées 
- * que l'on souhaite dans les résultats de recherche
+ * On vérifie que la recherche fonctionne lorsqu'on spécifie les métadonnées que
+ * l'on souhaite dans les résultats de recherche
  * 
  */
 @Controller
 @RequestMapping(value = "test303")
-@SuppressWarnings({"PMD.AvoidDuplicateLiterals"})
-public class Test303Controller extends AbstractTestWsController<TestWsRechercheFormulaire> {
+@SuppressWarnings( { "PMD.AvoidDuplicateLiterals" })
+public class Test303Controller extends
+      AbstractTestWsController<TestWsRechercheFormulaire> {
 
-   
    /**
     * {@inheritDoc}
     */
@@ -39,153 +38,130 @@ public class Test303Controller extends AbstractTestWsController<TestWsRechercheF
    protected final String getNumeroTest() {
       return "303";
    }
-   
-   
+
    /**
     * {@inheritDoc}
     */
    @Override
    protected final TestWsRechercheFormulaire getFormulairePourGet() {
-      
+
       TestWsRechercheFormulaire formulaire = new TestWsRechercheFormulaire();
       RechercheFormulaire formRecherche = formulaire.getRecherche();
       formRecherche.getResultats().setStatus(TestStatusEnum.SansStatus);
-      
-      // Requête de recherche correspondant au jeu de test inséré en base d'intégration
+
+      // Requête de recherche correspondant au jeu de test inséré en base
+      // d'intégration
       formRecherche.setRequeteLucene(getCasTest().getLuceneExemple());
-      
+
       // Les métadonnées que l'on souhaite en retour
-      CodeMetadonneeList codesMeta = new CodeMetadonneeList() ;
+      CodeMetadonneeList codesMeta = new CodeMetadonneeList();
       formRecherche.setCodeMetadonnees(codesMeta);
       codesMeta.add("CodeRND");
       codesMeta.add("Denomination");
       codesMeta.add("NumeroRecours");
-      
-            
+
       return formulaire;
-      
+
    }
-   
-   
+
    /**
     * {@inheritDoc}
     */
    @Override
    protected final void doPost(TestWsRechercheFormulaire formulaire) {
-      recherche(
-            formulaire.getUrlServiceWeb(),
-            formulaire.getRecherche());
+      recherche(formulaire.getUrlServiceWeb(), formulaire.getRecherche());
    }
-   
-   
-   private void recherche(
-         String urlServiceWeb,
-         RechercheFormulaire formulaire) {
-      
+
+   private void recherche(String urlServiceWeb, RechercheFormulaire formulaire) {
+
       // Initialise
       ResultatTest resultatTest = formulaire.getResultats();
-      
+
       // Résultats attendus
-      int nbResultatsAttendus = 3; 
+      int nbResultatsAttendus = 3;
       boolean flagResultatsTronquesAttendu = false;
-      
+
       // Appel de la méthode de test
-      RechercheResponse response = getRechercheTestService().appelWsOpRechercheReponseCorrecteAttendue(
-            urlServiceWeb,
-            formulaire,
-            nbResultatsAttendus,
-            flagResultatsTronquesAttendu,
-            TypeComparaison.NumeroRecours);
-      
+      RechercheResponse response = getRechercheTestService()
+            .appelWsOpRechercheReponseCorrecteAttendue(urlServiceWeb,
+                  formulaire, nbResultatsAttendus,
+                  flagResultatsTronquesAttendu, TypeComparaison.NumeroRecours);
+
       // Vérifications en profondeur
-      if ((response!=null) && (!TestStatusEnum.Echec.equals(resultatTest.getStatus()))) {
-      
+      if ((response != null)
+            && (!TestStatusEnum.Echec.equals(resultatTest.getStatus()))) {
+
          // Tri les résultats par ordre croissant de NumeroRecours
-         List<ResultatRechercheType> resultatsTries = 
-            Arrays.asList(
-                  response.getRechercheResponse().getResultats().getResultat());
-         Collections.sort(
-               resultatsTries, 
-               new ResultatRechercheComparator(
-                     TypeComparaison.NumeroRecours));
-         
+         List<ResultatRechercheType> resultatsTries = Arrays.asList(response
+               .getRechercheResponse().getResultats().getResultat());
+         Collections.sort(resultatsTries, new ResultatRechercheComparator(
+               TypeComparaison.NumeroRecours));
+
          // Vérifie chaque résultat
-         verifieResultat1(resultatsTries.get(0),resultatTest);
-         verifieResultat2(resultatsTries.get(1),resultatTest);
-         verifieResultat3(resultatsTries.get(2),resultatTest);
-         
+         verifieResultat1(resultatsTries.get(0), resultatTest);
+         verifieResultat2(resultatsTries.get(1), resultatTest);
+         verifieResultat3(resultatsTries.get(2), resultatTest);
+
       }
-      
-      // Au mieux, si le test est OK, on le passe "A contrôler", pour la vérification
+
+      // Au mieux, si le test est OK, on le passe "A contrôler", pour la
+      // vérification
       // de la date d'archivage
-      if (TestStatusEnum.Succes.equals(resultatTest.getStatus())) {
+      if (!TestStatusEnum.Echec.equals(resultatTest.getStatus())) {
          resultatTest.setStatus(TestStatusEnum.AControler);
       }
-      
+
    }
-   
-   
-   private void verifieResultat1(
-         ResultatRechercheType resultatRecherche,
+
+   private void verifieResultat1(ResultatRechercheType resultatRecherche,
          ResultatTest resultatTest) {
-      
+
       String numeroResultatRecherche = "1";
-      
-      MetadonneeValeurList valeursAttendues = new MetadonneeValeurList(); 
-      
-      valeursAttendues.add("CodeRND","2.3.1.1.12");
-      valeursAttendues.add("Denomination","Test 303-Recherche-OK-EnSpecifiantMetadonnees");
-      valeursAttendues.add("NumeroRecours","1");
-      
-      getRechercheTestService().verifieResultatRecherche(
-            resultatRecherche,
-            numeroResultatRecherche,
-            resultatTest,
-            valeursAttendues);
-      
+
+      MetadonneeValeurList valeursAttendues = new MetadonneeValeurList();
+
+      valeursAttendues.add("CodeRND", "2.3.1.1.12");
+      valeursAttendues.add("Denomination",
+            "Test 303-Recherche-OK-EnSpecifiantMetadonnees");
+      valeursAttendues.add("NumeroRecours", "1");
+
+      getRechercheTestService().verifieResultatRecherche(resultatRecherche,
+            numeroResultatRecherche, resultatTest, valeursAttendues);
+
    }
-   
-   
-   private void verifieResultat2(
-         ResultatRechercheType resultatRecherche,
+
+   private void verifieResultat2(ResultatRechercheType resultatRecherche,
          ResultatTest resultatTest) {
-      
+
       String numeroResultatRecherche = "2";
-      
-      MetadonneeValeurList valeursAttendues = new MetadonneeValeurList(); 
-      
-      valeursAttendues.add("CodeRND","2.3.1.1.12");
-      valeursAttendues.add("Denomination","Test 303-Recherche-OK-EnSpecifiantMetadonnees");
-      valeursAttendues.add("NumeroRecours","2");
-      
-      getRechercheTestService().verifieResultatRecherche(
-            resultatRecherche,
-            numeroResultatRecherche,
-            resultatTest,
-            valeursAttendues);
-      
+
+      MetadonneeValeurList valeursAttendues = new MetadonneeValeurList();
+
+      valeursAttendues.add("CodeRND", "2.3.1.1.12");
+      valeursAttendues.add("Denomination",
+            "Test 303-Recherche-OK-EnSpecifiantMetadonnees");
+      valeursAttendues.add("NumeroRecours", "2");
+
+      getRechercheTestService().verifieResultatRecherche(resultatRecherche,
+            numeroResultatRecherche, resultatTest, valeursAttendues);
+
    }
-   
-   
-   private void verifieResultat3(
-         ResultatRechercheType resultatRecherche,
+
+   private void verifieResultat3(ResultatRechercheType resultatRecherche,
          ResultatTest resultatTest) {
-      
+
       String numeroResultatRecherche = "3";
-      
-      MetadonneeValeurList valeursAttendues = new MetadonneeValeurList(); 
-      
-      valeursAttendues.add("CodeRND","2.3.1.1.12");
-      valeursAttendues.add("Denomination","Test 303-Recherche-OK-EnSpecifiantMetadonnees");
-      valeursAttendues.add("NumeroRecours","3");
-      
-      getRechercheTestService().verifieResultatRecherche(
-            resultatRecherche,
-            numeroResultatRecherche,
-            resultatTest,
-            valeursAttendues);
-      
+
+      MetadonneeValeurList valeursAttendues = new MetadonneeValeurList();
+
+      valeursAttendues.add("CodeRND", "2.3.1.1.12");
+      valeursAttendues.add("Denomination",
+            "Test 303-Recherche-OK-EnSpecifiantMetadonnees");
+      valeursAttendues.add("NumeroRecours", "3");
+
+      getRechercheTestService().verifieResultatRecherche(resultatRecherche,
+            numeroResultatRecherche, resultatTest, valeursAttendues);
+
    }
-   
- 
+
 }

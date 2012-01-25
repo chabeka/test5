@@ -1,9 +1,15 @@
 package fr.urssaf.image.sae.integration.ihmweb.service.tests;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.axis2.AxisFault;
 import org.apache.commons.io.FilenameUtils;
@@ -15,6 +21,7 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.integration.ihmweb.constantes.SaeIntegrationConstantes;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureMasseFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureMasseResultatFormulaire;
+import fr.urssaf.image.sae.integration.ihmweb.formulaire.TestStockageMasseAllFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTestLog;
 import fr.urssaf.image.sae.integration.ihmweb.modele.SoapFault;
@@ -33,6 +40,7 @@ import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.WsTestList
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplLibre;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSansSoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSoapFault;
+import fr.urssaf.image.sae.integration.ihmweb.utils.Base64Utils;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 
 /**
@@ -62,6 +70,26 @@ public class CaptureMasseTestService {
    private void appelWsOpArchiMasse(String urlServiceWeb,
          String ficRessourceVi, CaptureMasseFormulaire formulaire,
          WsTestListener wsListener) {
+
+      // on supprime les fichiers de traitement précédents
+      String urlEcde = formulaire.getUrlSommaire();
+      try {
+         deleteFileIfExists(getCheminFichierDebutFlag(urlEcde));
+      } catch (Exception e1) {
+         // nothing to do
+      }
+
+      try {
+         deleteFileIfExists(getCheminFichierFlag(urlEcde));
+      } catch (Exception e1) {
+         // nothing to do
+      }
+
+      try {
+         deleteFileIfExists(getCheminFichierResultatsXml(urlEcde));
+      } catch (Exception e1) {
+         // nothing to do
+      }
 
       // Vide le résultat du test précédent
       ResultatTest resultatTest = formulaire.getResultats();
@@ -168,9 +196,11 @@ public class CaptureMasseTestService {
     * appel de l'archivage de masse avec en attente aucune saop fault
     * 
     * @param urlWebService
+    *           adresse du WS
     * @param formulaire
+    *           formulaire affiché
     */
-   public void appelWsOpArchiMasseOKAttendu(String urlWebService,
+   public final void appelWsOpArchiMasseOKAttendu(String urlWebService,
          CaptureMasseFormulaire formulaire) {
 
       // Création de l'objet qui implémente l'interface WsTestListener
@@ -181,6 +211,71 @@ public class CaptureMasseTestService {
       appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK, formulaire,
             testLibre);
 
+      File file = new File(getCheminFichierDebutFlag(formulaire
+            .getUrlSommaire()));
+
+      TestStockageMasseAllFormulaire parentForm = (TestStockageMasseAllFormulaire) formulaire
+            .getParent();
+
+      try {
+         int i = 0;
+         while (!file.exists() && i < 10) {
+            Thread.sleep(1001);
+            i++;
+         }
+      } catch (InterruptedException e) {
+         formulaire.getResultats().getLog().appendLog(e.toString());
+      }
+
+      try {
+         if (file.exists()) {
+            Properties properties = new Properties();
+            FileInputStream fileInputStream = new FileInputStream(file);
+            properties.load(fileInputStream);
+
+            String host = properties.getProperty("hostIP");
+            host = "http://" + host + ":8080/sae/SAETest.do";
+
+            parentForm.setLinkToMonitoring(host);
+
+            FileReader fileReader = null;
+            BufferedReader bufferedReader = null;
+            try {
+               fileReader = new FileReader(file);
+               bufferedReader = new BufferedReader(fileReader);
+               String line;
+               formulaire.getResultats().getLog().appendLogLn(
+                     "Contenu du fichier debut_traitement.flag :");
+               while ((line = bufferedReader.readLine()) != null) {
+                  formulaire.getResultats().getLog().appendLogLn(line);
+               }
+            } catch (Exception e) {
+               // nothing to do
+            } finally {
+               try {
+                  if (bufferedReader != null) {
+                     bufferedReader.close();
+                  }
+               } catch (Exception e) {
+                  // nothing to do
+               }
+
+               try {
+                  if (fileReader != null) {
+                     fileReader.close();
+                  }
+               } catch (Exception e) {
+                  // nothing to do
+               }
+            }
+
+         }
+      } catch (FileNotFoundException e) {
+         formulaire.getResultats().getLog().appendLog(e.toString());
+      } catch (IOException e) {
+         formulaire.getResultats().getLog().appendLog(e.toString());
+      }
+
    }
 
    /**
@@ -188,9 +283,11 @@ public class CaptureMasseTestService {
     * fournit le code
     * 
     * @param urlWebService
+    *           adresse du WS
     * @param formulaire
+    *           formulaire affiché
     */
-   public void appelWsOpArchiMasseSoapFaultAttendue(String urlWebService,
+   public final void appelWsOpArchiMasseSoapFaultAttendue(String urlWebService,
          CaptureMasseFormulaire formulaire, String soapFault, String[] args) {
 
       // Création de l'objet qui implémente l'interface WsTestListener
@@ -199,7 +296,7 @@ public class CaptureMasseTestService {
       SoapFault faultAttendue = refSoapFault.findSoapFault(soapFault);
 
       WsTestListener testLibre = new WsTestListenerImplSoapFault(faultAttendue,
-            null);
+            args);
 
       // Appel de la méthode "générique" de test
       appelWsOpArchiMasse(urlWebService, ViUtils.FIC_VI_OK, formulaire,
@@ -294,72 +391,34 @@ public class CaptureMasseTestService {
    public final void testResultatsTdmReponseOKAttendue(
          CaptureMasseResultatFormulaire formulaire) {
 
-      // Vide le résultat du test précédent
-      ResultatTest resultatTest = formulaire.getResultats();
-      resultatTest.clear();
-      ResultatTestLog log = resultatTest.getLog();
-      resultatTest.setStatus(TestStatusEnum.SansStatus);
-
-      // Récupère l'URL ECDE du fichier sommaire.xml
-      String urlEcdeSommaire = formulaire.getUrlSommaire();
-
-      // Récupère le fichier de début de traitement
-      String cheminFichierDebutFlag = getCheminFichierDebutFlag(urlEcdeSommaire);
-
-      // Récupère le chemin complet du fichier flag
-      String cheminFichierFlag = getCheminFichierFlag(urlEcdeSommaire);
-
-      // test de la présence du fichier debut_traitement.flag
-      boolean fileExists = testFileExists(cheminFichierDebutFlag, log,
-            formulaire);
+      boolean fileExists = fileResultatExists(formulaire);
 
       if (fileExists) {
 
-         // test de la présence du fichier fin_traitement.flag
-         fileExists = testFileExists(cheminFichierFlag, log, formulaire);
+         String urlSommaire = formulaire.getUrlSommaire();
+         String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlSommaire);
+         ResultatTestLog log = formulaire.getResultats().getLog();
+         ResultatsType objResultatXml = ecdeService
+               .chargeResultatsXml(cheminFichierResultatsXml);
+         ResultatTest resultatTest = formulaire.getResultats();
 
-         if (fileExists) {
+         // Affiche dans le log un résumé du fichier resultats.xml
+         SaeServiceLogUtils.logResultatsXml(resultatTest, objResultatXml,
+               cheminFichierResultatsXml);
 
-            File startFile = new File(cheminFichierDebutFlag);
-            File endFile = new File(cheminFichierFlag);
+         if (objResultatXml.getErreurBloquanteTraitement() != null) {
+            formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+            log.appendLogLn("Erreur présente dans le fichier de résultat : "
+                  + objResultatXml.getErreurBloquanteTraitement().getLibelle());
+         } else if (objResultatXml.getNonIntegratedDocumentsCount() > 0) {
+            formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+            log.appendLogLn(objResultatXml.getNonIntegratedDocumentsCount()
+                  + " documents non intégrés");
 
-            long endDate = endFile.lastModified();
-            long startDate = startFile.lastModified();
-            long time = endDate - startDate;
-
-            log.appendLogLn("temps de traitement = " + getDuration(time));
-
-            String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlEcdeSommaire);
-            fileExists = testFileExists(cheminFichierResultatsXml, log,
-                  formulaire);
-
-            if (fileExists) {
-               ResultatsType objResultatXml = ecdeService
-                     .chargeResultatsXml(cheminFichierResultatsXml);
-
-               // Affiche dans le log un résumé du fichier resultats.xml
-               SaeServiceLogUtils.logResultatsXml(resultatTest, objResultatXml,
-                     cheminFichierResultatsXml);
-
-               if (objResultatXml.getErreurBloquanteTraitement() != null) {
-                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-                  log
-                        .appendLogLn("Erreur présente dans le fichier de résultat : "
-                              + objResultatXml.getErreurBloquanteTraitement()
-                                    .getLibelle());
-               } else if (objResultatXml.getNonIntegratedDocumentsCount() > 0) {
-                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-                  log.appendLogLn(objResultatXml
-                        .getNonIntegratedDocumentsCount()
-                        + " documents non intégrés");
-
-               } else {
-                  formulaire.getResultats().setStatus(TestStatusEnum.Succes);
-               }
-            }
+         } else {
+            formulaire.getResultats().setStatus(TestStatusEnum.Succes);
          }
       }
-
    }
 
    /**
@@ -371,79 +430,47 @@ public class CaptureMasseTestService {
     *           le nombre de documents non intégrés attendu
     * @param documentType
     *           erreur attendue pour le document donné
+    * @param index
+    *           index du document contenant l'erreur
     */
    public final void testResultatsTdmReponseKOAttendue(
          CaptureMasseResultatFormulaire formulaire, int notIntegratedDocuments,
          NonIntegratedDocumentType documentType, int index) {
 
-      // Vide le résultat du test précédent
-      ResultatTest resultatTest = formulaire.getResultats();
-      resultatTest.clear();
-      ResultatTestLog log = resultatTest.getLog();
-      resultatTest.setStatus(TestStatusEnum.SansStatus);
-
-      // Récupère l'URL ECDE du fichier sommaire.xml
-      String urlEcdeSommaire = formulaire.getUrlSommaire();
-
-      // Récupère le fichier de début de traitement
-      String cheminFichierDebutFlag = getCheminFichierDebutFlag(urlEcdeSommaire);
-
-      // Récupère le chemin complet du fichier flag
-      String cheminFichierFlag = getCheminFichierFlag(urlEcdeSommaire);
-
-      // test de la présence du fichier debut_traitement.flag
-      boolean fileExists = testFileExists(cheminFichierDebutFlag, log,
-            formulaire);
+      boolean fileExists = fileResultatExists(formulaire);
 
       if (fileExists) {
 
-         // test de la présence du fichier fin_traitement.flag
-         fileExists = testFileExists(cheminFichierFlag, log, formulaire);
+         String urlSommaire = formulaire.getUrlSommaire();
+         String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlSommaire);
+         ResultatTestLog log = formulaire.getResultats().getLog();
+         ResultatsType objResultatXml = ecdeService
+               .chargeResultatsXml(cheminFichierResultatsXml);
 
-         if (fileExists) {
+         // Affiche dans le log un résumé du fichier resultats.xml
+         SaeServiceLogUtils.logResultatsXml(formulaire.getResultats(),
+               objResultatXml, cheminFichierResultatsXml);
 
-            File startFile = new File(cheminFichierDebutFlag);
-            File endFile = new File(cheminFichierFlag);
+         if (objResultatXml.getNonIntegratedDocumentsCount() != notIntegratedDocuments) {
+            formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+            log.appendLogLn("Le nombre de documents non intégrés est de "
+                  + objResultatXml.getNonIntegratedDocumentsCount()
+                  + " alors que nous en attendions " + notIntegratedDocuments);
 
-            long endDate = endFile.lastModified();
-            long startDate = startFile.lastModified();
-            long time = endDate - startDate;
-
-            log.appendLogLn("temps de traitement = " + getDuration(time));
-
-            String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlEcdeSommaire);
-            fileExists = testFileExists(cheminFichierResultatsXml, log,
-                  formulaire);
-
-            if (fileExists) {
-               ResultatsType objResultatXml = ecdeService
-                     .chargeResultatsXml(cheminFichierResultatsXml);
-
-               if (objResultatXml.getNonIntegratedDocumentsCount() != notIntegratedDocuments) {
-                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-                  log.appendLogLn("Le nombre de documents non intégrés est de "
-                        + objResultatXml.getNonIntegratedDocumentsCount()
-                        + " alors que nous en attendions "
-                        + notIntegratedDocuments);
-
-               } else if (objResultatXml.getNonIntegratedDocuments() == null
-                     || objResultatXml.getNonIntegratedDocuments()
-                           .getNonIntegratedDocument() == null
-                     || objResultatXml.getNonIntegratedDocuments()
-                           .getNonIntegratedDocument().size() < index) {
-                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-                  log
-                        .appendLogLn("Aucun document non intégré listé ou index de document erroné");
-               } else {
-                  findNonIntegratedDocument(formulaire, documentType,
-                        objResultatXml.getNonIntegratedDocuments()
-                              .getNonIntegratedDocument(), index);
-               }
-
-            } else {
-               formulaire.getResultats().setStatus(TestStatusEnum.Succes);
-            }
+         } else if (objResultatXml.getNonIntegratedDocuments() == null
+               || objResultatXml.getNonIntegratedDocuments()
+                     .getNonIntegratedDocument() == null
+               || objResultatXml.getNonIntegratedDocuments()
+                     .getNonIntegratedDocument().size() < index) {
+            formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+            log
+                  .appendLogLn("Aucun document non intégré listé ou index de document erroné");
+         } else {
+            findNonIntegratedDocument(formulaire, documentType, objResultatXml
+                  .getNonIntegratedDocuments().getNonIntegratedDocument(),
+                  index);
          }
+
       }
    }
 
@@ -451,15 +478,82 @@ public class CaptureMasseTestService {
     * Regarde les résultats d'un traitement de masse
     * 
     * @param formulaire
-    *           le formulaire
-    * @param notIntegratedDocuments
-    *           le nombre de documents non intégrés attendu
+    *           le formulaire le nombre de documents non intégrés attendu
     * @param waitedError
     *           erreur bloquante attendue
     */
    public final void testResultatsTdmReponseKOAttendue(
          CaptureMasseResultatFormulaire formulaire, ErreurType waitedError) {
 
+      boolean fileExists = fileResultatExists(formulaire);
+
+      if (fileExists) {
+
+         String urlSommaire = formulaire.getUrlSommaire();
+         String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlSommaire);
+         ResultatTestLog log = formulaire.getResultats().getLog();
+         ResultatsType objResultatXml = ecdeService
+               .chargeResultatsXml(cheminFichierResultatsXml);
+
+         // Affiche dans le log un résumé du fichier resultats.xml
+         SaeServiceLogUtils.logResultatsXml(formulaire.getResultats(),
+               objResultatXml, cheminFichierResultatsXml);
+
+         if (objResultatXml.getErreurBloquanteTraitement() == null
+               || waitedError == null) {
+            log
+                  .appendLogLn("Impossible de comparer l'erreur attendue et l'erreur obtenue");
+            if (waitedError == null) {
+               log.appendLog("erreur attendue nulle ");
+            }
+            if (objResultatXml.getErreurBloquanteTraitement() == null) {
+               log.appendLog("erreur obtenue nulle");
+            }
+            formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+
+         } else {
+
+            if (objResultatXml.getErreurBloquanteTraitement().getCode() == null
+                  || objResultatXml.getErreurBloquanteTraitement().getLibelle() == null
+                  || waitedError.getCode() == null
+                  || waitedError.getLibelle() == null
+                  || !waitedError.getCode()
+                        .equalsIgnoreCase(
+                              objResultatXml.getErreurBloquanteTraitement()
+                                    .getCode())
+                  || !waitedError.getLibelle().equalsIgnoreCase(
+                        objResultatXml.getErreurBloquanteTraitement()
+                              .getLibelle())) {
+               log
+                     .appendLogLn("L'erreur obtenue et l'erreur attendue sont différentes :");
+               log.appendLogLn("attendue : code : " + waitedError.getCode()
+                     + "  /  libellé : " + waitedError.getLibelle());
+               log.appendLogLn("obtenue : code : "
+                     + objResultatXml.getErreurBloquanteTraitement().getCode()
+                     + "  /  libellé : "
+                     + objResultatXml.getErreurBloquanteTraitement()
+                           .getLibelle());
+               formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+            } else {
+               log
+                     .appendLogLn("L'erreur obtenue et l'erreur attendue sont identiques");
+               formulaire.getResultats().setStatus(TestStatusEnum.Succes);
+            }
+
+         }
+
+      }
+   }
+
+   /**
+    * Vérifie que les différents fichiers existent, et log au fur et à mesure
+    * 
+    * @param formulaire
+    *           : formulaire de résultat de capture de masse
+    * 
+    * @return un booleen définissant l'existence ou non du fichier sommaire.xml
+    */
+   private boolean fileResultatExists(CaptureMasseResultatFormulaire formulaire) {
       // Vide le résultat du test précédent
       ResultatTest resultatTest = formulaire.getResultats();
       resultatTest.clear();
@@ -481,6 +575,12 @@ public class CaptureMasseTestService {
 
       if (fileExists) {
 
+         // Ajoute un lien de téléchargement du fichier
+         String cheminBase64 = Base64Utils.encode(cheminFichierDebutFlag);
+         resultatTest.getLiens().ajouteLien(
+               SaeIntegrationConstantes.NOM_FIC_DEB_FLAG_TDM,
+               "download.do?ecdefilename=" + cheminBase64);
+
          // test de la présence du fichier fin_traitement.flag
          fileExists = testFileExists(cheminFichierFlag, log, formulaire);
 
@@ -498,61 +598,11 @@ public class CaptureMasseTestService {
             String cheminFichierResultatsXml = getCheminFichierResultatsXml(urlEcdeSommaire);
             fileExists = testFileExists(cheminFichierResultatsXml, log,
                   formulaire);
-
-            if (fileExists) {
-               ResultatsType objResultatXml = ecdeService
-                     .chargeResultatsXml(cheminFichierResultatsXml);
-
-               if (objResultatXml.getErreurBloquanteTraitement() == null
-                     || waitedError == null) {
-                  log
-                        .appendLogLn("Impossible de comparer l'erreur attendue et celle obtenue");
-                  if (waitedError == null) {
-                     log.appendLog("erreur attendue nulle ");
-                  }
-                  if (objResultatXml.getErreurBloquanteTraitement() == null) {
-                     log.appendLog("erreur obtenue nulle");
-                  }
-                  formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-
-               } else {
-
-                  if (objResultatXml.getErreurBloquanteTraitement().getCode() == null
-                        || objResultatXml.getErreurBloquanteTraitement()
-                              .getLibelle() == null
-                        || waitedError.getCode() == null
-                        || waitedError.getLibelle() == null
-                        || !waitedError.getCode().equalsIgnoreCase(
-                              objResultatXml.getErreurBloquanteTraitement()
-                                    .getCode())
-                        || !waitedError.getLibelle().equalsIgnoreCase(
-                              objResultatXml.getErreurBloquanteTraitement()
-                                    .getLibelle())) {
-                     log
-                           .appendLogLn("Les deux erreurs obtenues et attendues sont différentes :");
-                     log.appendLogLn("attendue : code : "
-                           + waitedError.getCode() + "  /  libellé : "
-                           + waitedError.getLibelle());
-                     log.appendLogLn("obtenue : code : "
-                           + objResultatXml.getErreurBloquanteTraitement()
-                                 .getCode()
-                           + "  /  libellé : "
-                           + objResultatXml.getErreurBloquanteTraitement()
-                                 .getLibelle());
-                     formulaire.getResultats().setStatus(TestStatusEnum.Echec);
-                  } else {
-                     log
-                           .appendLogLn("Les deux erreurs obtenues et attendues sont identiques");
-                     formulaire.getResultats().setStatus(TestStatusEnum.Succes);
-                  }
-
-               }
-
-            } else {
-               formulaire.getResultats().setStatus(TestStatusEnum.Succes);
-            }
          }
+
       }
+
+      return fileExists;
    }
 
    /**
@@ -563,7 +613,7 @@ public class CaptureMasseTestService {
     * @param urlEcde
     *           url ecde du fichier sommaire.xml
     */
-   public void testResultatsTdmReponseAucunFichierAttendu(
+   public final void testResultatsTdmReponseAucunFichierAttendu(
          CaptureMasseResultatFormulaire captureMasseResultat, String urlEcde) {
 
       String startFlagFilePath = getCheminFichierDebutFlag(urlEcde);
@@ -587,7 +637,7 @@ public class CaptureMasseTestService {
     * @param documentType
     * @param nonIntegratedDocument
     */
-   private final void findNonIntegratedDocument(
+   private void findNonIntegratedDocument(
          CaptureMasseResultatFormulaire formulaire,
          NonIntegratedDocumentType documentType,
          List<NonIntegratedDocumentType> nonIntegratedDocument, int index) {
@@ -680,11 +730,10 @@ public class CaptureMasseTestService {
     */
    private boolean testFileExists(String cheminFichierDebutFlag,
          ResultatTestLog log, CaptureMasseResultatFormulaire formulaire) {
-      log.appendLog("Présence du fichier flag " + cheminFichierDebutFlag
-            + " : ");
       File file = new File(cheminFichierDebutFlag);
       boolean fichierFlagPresent = file.exists();
-
+      log.appendLog("Présence du fichier "
+            + new File(cheminFichierDebutFlag).getName() + " : ");
       if (fichierFlagPresent) {
          log.appendLogLn("OUI");
       } else {
@@ -693,6 +742,19 @@ public class CaptureMasseTestService {
       }
 
       return fichierFlagPresent;
+   }
+
+   /**
+    * Supprime le fichier s'il existe
+    * 
+    * @param path
+    *           : chemin complet du fichier
+    */
+   private void deleteFileIfExists(String path) {
+      File file = new File(path);
+      if (file.exists()) {
+         file.delete();
+      }
    }
 
    // private String getRepertoireTraitement(String repDocuments) {

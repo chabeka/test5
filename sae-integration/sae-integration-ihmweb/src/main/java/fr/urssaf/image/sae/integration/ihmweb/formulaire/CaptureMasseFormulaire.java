@@ -20,7 +20,6 @@ public class CaptureMasseFormulaire extends GenericForm {
     */
    public CaptureMasseFormulaire(TestWsParentFormulaire parent) {
       super(parent);
-      // TODO Auto-generated constructor stub
    }
 
    /**

@@ -127,11 +127,12 @@ public class Test201Controller extends
             .getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService().appelWsOpArchiMasseTestLibre(urlWebService,
+      getCaptureMasseTestService().appelWsOpArchiMasseOKAttendu(urlWebService,
             formulaire.getCaptureMasseDeclenchement());
 
    }
-
+   
+   
    private void etape2captureMasseResultats(
          CaptureMasseResultatFormulaire formulaire) {
 

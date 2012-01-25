@@ -36,7 +36,7 @@ public class Test203Controller extends
    /**
     * Nombre d'occurence attendu
     */
-   private static final int COUNT_WAITED = 200;
+   private static final int COUNT_WAITED = 10;
    
    /**
     * {@inheritDoc}
@@ -123,7 +123,7 @@ public class Test203Controller extends
             .getUrlSommaire());
 
       // Appel de la méthode de test
-      getCaptureMasseTestService().appelWsOpArchiMasseTestLibre(urlWebService,
+      getCaptureMasseTestService().appelWsOpArchiMasseOKAttendu(urlWebService,
             formulaire.getCaptureMasseDeclenchement());
 
    }
