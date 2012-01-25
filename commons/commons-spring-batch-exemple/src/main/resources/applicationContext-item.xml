@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+         http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd         
+         http://www.springframework.org/schema/context 
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+   <!-- READER XML -->
+
+   <bean id="xmlReader" scope="step"
+      class="org.springframework.batch.item.xml.StaxEventItemReader">
+      <property name="fragmentRootElementName" value="livre" />
+      <property name="resource"
+         value="file:#{jobParameters['xml.input.location']}" />
+      <property name="unmarshaller" ref="jaxb2Marshaller" />
+   </bean>
+
+   <!-- WRITER FILE -->
+
+   <bean id="fileWriter" scope="step"
+      class="org.springframework.batch.item.file.FlatFileItemWriter">
+      <property name="resource"
+         value="file:#{jobParameters['file.output.location']}" />
+      <property name="lineAggregator">
+         <bean
+            class="org.springframework.batch.item.file.transform.PassThroughLineAggregator" />
+      </property>
+   </bean>
+
+   <!-- JAXB2 MARSHALLER -->
+
+   <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+      <property name="contextPaths">
+         <array>
+            <value>fr.urssaf.image.commons.spring.batch.model.xml</value>
+         </array>
+      </property>
+     
+     
+      <property name="schemas">
+         <array>
+            <value>classpath:schemas/livre.xsd</value>
+         </array>
+      </property>
+        
+      
+   </bean>
+
+</beans>
