@@ -29,7 +29,7 @@ function initTable() {
 	// tableau des resultats
 	var grid = new Ext.grid.GridPanel( {
 		height : 280,
-		width : 900,
+		width : 1050,
 		title : 'Liste des cas de test',
 		store : store,
 		trackMouseOver : false,
@@ -86,7 +86,7 @@ function initTable() {
 				{
 					header : 'message',
 					dataIndex : 'erreur',
-					width : 150,
+					width : 300,
 					sortable : true,
 					align : 'left',
 					renderer : function(value) {
@@ -112,7 +112,7 @@ function initForm(gridTable) {
 		frame : true,
 		id : 'formPanel',
 		// title : 'Saisie des Informations Personnelles',
-		width : 920
+		width : 1100
 	});
 
 	// Un champ texte
@@ -137,7 +137,15 @@ function initForm(gridTable) {
 			var checkLength = check.length;
 			var allRecords = gridTable.store.getRange();
 			var nbCk = 0;
-			
+
+			var oldOnes = document.getElementsByName("treatmentList");
+			var oldLength = oldOnes.length;
+			for ( var i = 0; i < oldLength; i++) {
+				alert("1");
+				monFormulaire.remove(Ext.get(oldOnes[i]));
+			}
+			alert(document.getElementsByName("treatmentList").length);
+
 			for ( var i = 0; i < checkLength; i++) {
 				if (check[i].checked) {
 					nbCk++;
@@ -149,15 +157,15 @@ function initForm(gridTable) {
 				}
 			}
 			monFormulaire.doLayout();
-			
+
 			if (nbCk < 1) {
 				alert("Il n'y a aucun jeu de test à injecter");
 			} else {
 				monFormulaire.getForm().submit( {
 					success : function(response, opts) {
-	
+
 						disable('btnValider', true);
-	
+
 						runner.start(task);
 						runner.start(taskLookStatus);
 					},
