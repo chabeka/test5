@@ -9,7 +9,7 @@ import fr.urssaf.image.commons.spring.batch.model.flat.Livre;
 import fr.urssaf.image.commons.spring.batch.model.xml.LivreType;
 
 @Component
-public class ConversionProcessor implements
+public class ConversionToFileProcessor implements
       ItemProcessor<JAXBElement<LivreType>, Livre> {
 
    @Override

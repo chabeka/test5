@@ -17,6 +17,46 @@
       <property name="unmarshaller" ref="jaxb2Marshaller" />
    </bean>
 
+   <!-- WRITER XML -->
+
+   <bean id="xmlWriter" scope="step"
+      class="org.springframework.batch.item.xml.StaxEventItemWriter">
+      <property name="rootTagName" value="livres" />
+      <property name="resource"
+         value="file:#{jobParameters['xml.output.location']}" />
+      <property name="marshaller" ref="jaxb2Marshaller" />
+      <property name="overwriteOutput" value="true" />
+   </bean>
+
+   <!-- READER FILE -->
+
+   <bean id="fileReader" scope="step"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+      <property name="resource"
+         value="file:#{jobParameters['file.input.location']}" />
+      <property name="lineMapper">
+         <bean
+            class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+            <property name="lineTokenizer">
+               <bean
+                  class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                  <property name="names" value="identifiant,titre,auteur" />
+                  <property name="delimiter" value="," />
+               </bean>
+            </property>
+            <property name="fieldSetMapper">
+               <bean
+                  class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+                  <property name="prototypeBeanName" value="livre" />
+               </bean>
+            </property>
+         </bean>
+      </property>
+   </bean>
+
+   <bean id="livre" class="fr.urssaf.image.commons.spring.batch.model.flat.Livre"
+      scope="prototype" />
+
    <!-- WRITER FILE -->
 
    <bean id="fileWriter" scope="step"
@@ -25,12 +65,13 @@
          value="file:#{jobParameters['file.output.location']}" />
       <property name="lineAggregator">
          <!--
-         <bean
-            class="org.springframework.batch.item.file.transform.PassThroughLineAggregator" />
+            <bean
+            class="org.springframework.batch.item.file.transform.PassThroughLineAggregator"
+            />
          -->
          <bean
             class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
-            <property name="delimiter" value=", " />
+            <property name="delimiter" value="," />
             <property name="fieldExtractor">
                <bean
                   class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
@@ -44,20 +85,17 @@
    <!-- JAXB2 MARSHALLER -->
 
    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-      <property name="contextPaths">
-         <array>
-            <value>fr.urssaf.image.commons.spring.batch.model.xml</value>
-         </array>
-      </property>
-     
-     
+
+      <property name="contextPath"
+         value="fr.urssaf.image.commons.spring.batch.model.xml" />
+
       <property name="schemas">
          <array>
             <value>classpath:schemas/livre.xsd</value>
          </array>
       </property>
-        
-      
+
+
    </bean>
 
 </beans>
