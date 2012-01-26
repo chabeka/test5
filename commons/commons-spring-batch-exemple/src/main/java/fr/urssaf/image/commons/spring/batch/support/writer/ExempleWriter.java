@@ -17,6 +17,8 @@ public class ExempleWriter implements ItemWriter<Livre> {
    public void write(List<? extends Livre> items) {
 
       for (Livre livre : items) {
+         
+         //écriture d'un item Livre
 
          LOG.debug(livre);
       }

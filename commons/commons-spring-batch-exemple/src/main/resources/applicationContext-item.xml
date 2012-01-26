@@ -24,8 +24,20 @@
       <property name="resource"
          value="file:#{jobParameters['file.output.location']}" />
       <property name="lineAggregator">
+         <!--
          <bean
             class="org.springframework.batch.item.file.transform.PassThroughLineAggregator" />
+         -->
+         <bean
+            class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+            <property name="delimiter" value=", " />
+            <property name="fieldExtractor">
+               <bean
+                  class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                  <property name="names" value="identifiant,titre,auteur" />
+               </bean>
+            </property>
+         </bean>
       </property>
    </bean>
 

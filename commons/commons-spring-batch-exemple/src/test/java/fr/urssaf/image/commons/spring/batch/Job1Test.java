@@ -27,6 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-batch-test.xml",
       "/jobs/job-1.xml" })
+@SuppressWarnings("PMD.MethodNamingConventions")
 public class Job1Test {
 
    private static final File TMP_FILE;
@@ -60,7 +61,7 @@ public class Job1Test {
    }
 
    @Test
-   public void jobExecution() {
+   public void jobExecution_success() {
 
       JobExecution jobExecution;
       try {
@@ -72,7 +73,7 @@ public class Job1Test {
       Collection<StepExecution> stepExecutions = jobExecution
             .getStepExecutions();
 
-      Assert.assertEquals("le nombre d'étapes exécutés est incorrect", 1,
+      Assert.assertEquals("le nombre d'étapes exécutés est incorrect", 2,
             stepExecutions.size());
 
       StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
@@ -87,6 +88,86 @@ public class Job1Test {
       Assert.assertTrue(
             "aucune exception ne doit être levée au cours de cette étape",
             step1.getFailureExceptions().isEmpty());
+
+      StepExecution success = (StepExecution) CollectionUtils.get(
+            stepExecutions, 1);
+
+      Assert.assertEquals("le nom de l'étape est incorrect", "success", success
+            .getStepName());
+
+      Assert.assertEquals("la sortie du job est incorrecte", "COMPLETED",
+            jobExecution.getExitStatus().getExitCode());
+
+   }
+
+   @Test
+   public void jobExecution_step_step1() {
+
+      JobExecution jobExecution;
+      try {
+         jobExecution = jobLauncherTestUtils.launchStep("step1", jobParameters);
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
+
+      Collection<StepExecution> stepExecutions = jobExecution
+            .getStepExecutions();
+
+      StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
+            0);
+
+      Assert.assertEquals("le nom de l'étape est incorrect", "step1", step1
+            .getStepName());
+      Assert.assertEquals("le nombre d'items lus est incorrect", 10, step1
+            .getReadCount());
+      Assert.assertEquals("le nombre d'items écrits est incorrect", 10, step1
+            .getWriteCount());
+      Assert.assertTrue(
+            "aucune exception ne doit être levée au cours de cette étape",
+            step1.getFailureExceptions().isEmpty());
+
+   }
+
+   @Test
+   public void jobExecution_step_success() {
+
+      JobExecution jobExecution;
+      try {
+         jobExecution = jobLauncherTestUtils.launchStep("success",
+               jobParameters);
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
+
+      Collection<StepExecution> stepExecutions = jobExecution
+            .getStepExecutions();
+
+      StepExecution success = (StepExecution) CollectionUtils.get(
+            stepExecutions, 0);
+
+      Assert.assertEquals("le nom de l'étape est incorrect", "success", success
+            .getStepName());
+
+   }
+
+   public void jobExecution_step_failure() {
+
+      JobExecution jobExecution;
+      try {
+         jobExecution = jobLauncherTestUtils.launchStep("failure",
+               jobParameters);
+      } catch (Exception e) {
+         throw new NestableRuntimeException(e);
+      }
+
+      Collection<StepExecution> stepExecutions = jobExecution
+            .getStepExecutions();
+
+      StepExecution failure = (StepExecution) CollectionUtils.get(
+            stepExecutions, 0);
+
+      Assert.assertEquals("le nom de l'étape est incorrect", "failure", failure
+            .getStepName());
 
    }
 
