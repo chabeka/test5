@@ -26,6 +26,10 @@
 <p><br /></p>
 <p><a href="listeCasDeTest.do">Configuration des jeux de test</a></p>
 <p><a href="testInjectionCtrl.do">Injection des jeux de test</a></p>
+
+<p><br /></p>
+<p><a href="calcTemp.do">calcultarice temporelle</a></p>
+
 <p><br /><br /><br /><br /></p>
 </body>
 </html>

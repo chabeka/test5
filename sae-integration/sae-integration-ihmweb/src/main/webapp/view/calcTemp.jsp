@@ -24,7 +24,7 @@
 <table width="100%">
 	<tr>
 		<td style="width: 75%">
-		<p class="titre1">Injection des jeux de test</p>
+		<p class="titre1">Calculatrice temporelle</p>
 		</td>
 		<td style="width: 25%" align="right"><a href="index.do">&lt;&lt;&nbsp;Retour
 		à l&apos;accueil </a></td>
