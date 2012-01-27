@@ -16,6 +16,8 @@ public class ListeEcdeSourcesFormulaire {
 
    private EcdeSource source = new EcdeSource();
 
+   private String urlWS;
+   
    /**
     * @return the ecdeSources
     */
@@ -44,6 +46,20 @@ public class ListeEcdeSourcesFormulaire {
     */
    public final void setSource(EcdeSource source) {
       this.source = source;
+   }
+
+   /**
+    * @return the urlWS
+    */
+   public final String getUrlWS() {
+      return urlWS;
+   }
+
+   /**
+    * @param urlWS the urlWS to set
+    */
+   public final void setUrlWS(String urlWS) {
+      this.urlWS = urlWS;
    }
 
 }

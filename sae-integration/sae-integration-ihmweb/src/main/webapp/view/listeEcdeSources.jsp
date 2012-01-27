@@ -36,10 +36,10 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-		
-		<p style="color: red; font-style: italic"><b>Attention : il faut
-		cliquer sur le bouton Sauvegarder pour que les modifications soient
-		effectives</b></p>
+
+		<p style="color: red; font-style: italic"><b>Attention : il
+		faut cliquer sur le bouton Sauvegarder pour que les modifications
+		soient effectives</b></p>
 		</td>
 	</tr>
 </table>
@@ -98,6 +98,28 @@
 				<td><input type="submit"
 					onclick="document.getElementById('action').value='generate'"
 					value="Sauvegarder" /></td>
+			</tr>
+		</tbody>
+	</table>
+	<br/><hr/>
+	<table width="100%">
+		<tbody>
+			<tr>
+				<td colspan="2">
+				<h3>Modification de l'adresse WebService</h3>
+				</td>
+			</tr>
+			<tr>
+				<td>Adresse du WebService</td>
+				<td><form:input path="urlWS" size="50" /></td>
+			</tr>
+			<tr>
+				<td>
+				<h3 style="color: red">Modifier l'adresse</h3>
+				</td>
+				<td><input type="submit"
+					onclick="document.getElementById('action').value='saveURL'"
+					value="Changer l'adresse" /></td>
 			</tr>
 		</tbody>
 	</table>

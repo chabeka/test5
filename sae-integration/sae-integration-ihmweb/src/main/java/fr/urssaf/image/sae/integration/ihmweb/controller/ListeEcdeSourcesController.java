@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.urssaf.image.sae.integration.ihmweb.config.TestConfig;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ListeEcdeSourcesFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeSource;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeSources;
@@ -25,6 +26,9 @@ import fr.urssaf.image.sae.integration.ihmweb.service.ecde.file.EcdeSourceManage
 @Controller
 @RequestMapping(value = "listeEcdeSources")
 public class ListeEcdeSourcesController {
+
+   @Autowired
+   private TestConfig testConfig;
 
    @Autowired
    private EcdeSourceManager ecdeSourceManager;
@@ -50,6 +54,8 @@ public class ListeEcdeSourcesController {
       // } catch (Exception e) {
       // e.printStackTrace();
       // }
+
+      form.setUrlWS(testConfig.getUrlSaeService());
 
       model.addAttribute("formulaire", form);
 
@@ -124,6 +130,29 @@ public class ListeEcdeSourcesController {
 
       ecdeSources.setSources(form.getEcdeSources().getSources());
 
+      model.addAttribute("formulaire", form);
+
+      return "listeEcdeSources";
+   }
+
+   /**
+    * Sauvegarde l'adresse du WS en mémoire mais pas en dur
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @param errors
+    *           erreurs éventuelles de surface
+    * @return la page de redirection
+    * @throws Exception
+    *            erreur lors du traitement
+    */
+   @RequestMapping(method = RequestMethod.POST, params = { "action=saveURL" })
+   public final String saveURL(Model model, ListeEcdeSourcesFormulaire form)
+         throws Exception {
+
+      testConfig.setUrlSaeService(form.getUrlWS());
       model.addAttribute("formulaire", form);
 
       return "listeEcdeSources";
