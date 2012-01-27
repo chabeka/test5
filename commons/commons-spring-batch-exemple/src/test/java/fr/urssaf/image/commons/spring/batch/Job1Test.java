@@ -39,7 +39,7 @@ public class Job1Test {
    }
 
    @Autowired
-   private JobLauncherTestUtils jobLauncherTestUtils;
+   private JobLauncherTestUtils jobLauncher;
 
    private JobParameters jobParameters;
 
@@ -65,7 +65,7 @@ public class Job1Test {
 
       JobExecution jobExecution;
       try {
-         jobExecution = jobLauncherTestUtils.launchJob(jobParameters);
+         jobExecution = jobLauncher.launchJob(jobParameters);
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
@@ -105,7 +105,7 @@ public class Job1Test {
 
       JobExecution jobExecution;
       try {
-         jobExecution = jobLauncherTestUtils.launchStep("step1", jobParameters);
+         jobExecution = jobLauncher.launchStep("step1", jobParameters);
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
@@ -133,8 +133,7 @@ public class Job1Test {
 
       JobExecution jobExecution;
       try {
-         jobExecution = jobLauncherTestUtils.launchStep("success",
-               jobParameters);
+         jobExecution = jobLauncher.launchStep("success", jobParameters);
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
@@ -154,8 +153,7 @@ public class Job1Test {
 
       JobExecution jobExecution;
       try {
-         jobExecution = jobLauncherTestUtils.launchStep("failure",
-               jobParameters);
+         jobExecution = jobLauncher.launchStep("failure", jobParameters);
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
