@@ -13,7 +13,7 @@ monitoring</p>
 <table border=0 cellspacing=3 cellpadding=3 style="width: 100%;">
 	<tr style="vertical-align: top;">
 		<td><c:choose>
-			<c:when test="${objetFormulaire == null}">
+			<c:when test="${empty objetFormulaire}">
          		Traitement non démarré
          	</c:when>
 			<c:otherwise>
