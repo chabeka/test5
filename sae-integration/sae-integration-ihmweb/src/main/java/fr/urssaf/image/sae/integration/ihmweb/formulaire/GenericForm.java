@@ -17,16 +17,16 @@ public class GenericForm {
    /**
     * Constructeur
     * 
-    * @param parent
+    * @param parent formulaire pere
     */
    public GenericForm(TestWsParentFormulaire parent) {
       this.parent = parent;
    }
 
    /**
-    * @return the parent
+    * @return the parent formulaire pere
     */
-   public TestWsParentFormulaire getParent() {
+   public final TestWsParentFormulaire getParent() {
       return parent;
    }
 

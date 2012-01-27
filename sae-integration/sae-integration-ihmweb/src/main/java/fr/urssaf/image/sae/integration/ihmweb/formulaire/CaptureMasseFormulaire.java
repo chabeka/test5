@@ -16,7 +16,10 @@ public class CaptureMasseFormulaire extends GenericForm {
    private String urlSommaire;
 
    /**
+    * constructeur
+    * 
     * @param parent
+    *           formulaire pere
     */
    public CaptureMasseFormulaire(TestWsParentFormulaire parent) {
       super(parent);

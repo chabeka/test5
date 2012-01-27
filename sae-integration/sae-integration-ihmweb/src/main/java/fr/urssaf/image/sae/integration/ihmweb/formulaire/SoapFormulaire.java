@@ -16,28 +16,28 @@ public class SoapFormulaire {
    /**
     * @return the messageIn
     */
-   public String getMessageIn() {
+   public final String getMessageIn() {
       return messageIn;
    }
 
    /**
     * @param messageIn the messageIn to set
     */
-   public void setMessageIn(String messageIn) {
+   public final void setMessageIn(String messageIn) {
       this.messageIn = messageIn;
    }
 
    /**
     * @return the messageOut
     */
-   public String getMessageOut() {
+   public final String getMessageOut() {
       return messageOut;
    }
 
    /**
     * @param messageOut the messageOut to set
     */
-   public void setMessageOut(String messageOut) {
+   public final void setMessageOut(String messageOut) {
       this.messageOut = messageOut;
    }
    

@@ -19,7 +19,7 @@ public class ListeEcdeSourcesFormulaire {
    /**
     * @return the ecdeSources
     */
-   public EcdeSources getEcdeSources() {
+   public final EcdeSources getEcdeSources() {
       return ecdeSources;
    }
 
@@ -27,14 +27,14 @@ public class ListeEcdeSourcesFormulaire {
     * @param ecdeSources
     *           the ecdeSources to set
     */
-   public void setEcdeSources(EcdeSources ecdeSources) {
+   public final void setEcdeSources(EcdeSources ecdeSources) {
       this.ecdeSources = ecdeSources;
    }
 
    /**
     * @return the source
     */
-   public EcdeSource getSource() {
+   public final EcdeSource getSource() {
       return source;
    }
 
@@ -42,7 +42,7 @@ public class ListeEcdeSourcesFormulaire {
     * @param source
     *           the source to set
     */
-   public void setSource(EcdeSource source) {
+   public final void setSource(EcdeSource source) {
       this.source = source;
    }
 

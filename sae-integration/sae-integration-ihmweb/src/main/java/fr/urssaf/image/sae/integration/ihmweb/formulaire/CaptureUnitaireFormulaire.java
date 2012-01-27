@@ -19,7 +19,9 @@ public class CaptureUnitaireFormulaire extends GenericForm {
    private MetadonneeValeurList metadonnees = new MetadonneeValeurList();
 
    /**
-    * {@inheritDoc}
+    * constructeur
+    * 
+    * @param parent formulaire pere
     */
    public CaptureUnitaireFormulaire(TestWsParentFormulaire parent) {
       super(parent);

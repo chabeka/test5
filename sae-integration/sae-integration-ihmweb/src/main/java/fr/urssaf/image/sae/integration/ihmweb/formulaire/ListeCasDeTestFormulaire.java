@@ -25,7 +25,7 @@ public class ListeCasDeTestFormulaire {
    /**
     * @return the ecdeTests
     */
-   public EcdeTests getEcdeTests() {
+   public final EcdeTests getEcdeTests() {
       return ecdeTests;
    }
 
@@ -33,14 +33,14 @@ public class ListeCasDeTestFormulaire {
     * @param ecdeTests
     *           the ecdeTests to set
     */
-   public void setEcdeTests(EcdeTests ecdeTests) {
+   public final void setEcdeTests(EcdeTests ecdeTests) {
       this.ecdeTests = ecdeTests;
    }
 
    /**
     * @return the ecdeTest
     */
-   public EcdeTest getEcdeTest() {
+   public final EcdeTest getEcdeTest() {
       return ecdeTest;
    }
 
@@ -48,7 +48,7 @@ public class ListeCasDeTestFormulaire {
     * @param ecdeTest
     *           the ecdeTest to set
     */
-   public void setEcdeTest(EcdeTest ecdeTest) {
+   public final void setEcdeTest(EcdeTest ecdeTest) {
       this.ecdeTest = ecdeTest;
    }
 

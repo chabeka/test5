@@ -19,7 +19,10 @@ public class RechercheFormulaire extends GenericForm {
    private CodeMetadonneeList codeMetadonnees = new CodeMetadonneeList();
 
    /**
+    * Constructeur
+    * 
     * @param parent
+    *           formulaire pere
     */
    public RechercheFormulaire(TestWsParentFormulaire parent) {
       super(parent);

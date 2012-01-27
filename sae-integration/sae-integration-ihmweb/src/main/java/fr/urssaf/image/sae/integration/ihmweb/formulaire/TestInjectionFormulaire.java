@@ -34,7 +34,7 @@ public class TestInjectionFormulaire {
    /**
     * @return the treatmentList
     */
-   public List<String> getTreatmentList() {
+   public final List<String> getTreatmentList() {
       return treatmentList;
    }
 
@@ -42,14 +42,14 @@ public class TestInjectionFormulaire {
     * @param treatmentList
     *           the treatmentList to set
     */
-   public void setTreatmentList(List<String> treatmentList) {
+   public final void setTreatmentList(List<String> treatmentList) {
       this.treatmentList = treatmentList;
    }
 
    /**
     * @return the test
     */
-   public EcdeTest getTest() {
+   public final EcdeTest getTest() {
       return test;
    }
 
@@ -57,14 +57,14 @@ public class TestInjectionFormulaire {
     * @param test
     *           the test to set
     */
-   public void setTest(EcdeTest test) {
+   public final void setTest(EcdeTest test) {
       this.test = test;
    }
 
    /**
     * @return the listEcdeDisplayed
     */
-   public List<EcdeTestDisplayed> getListEcdeDisplayed() {
+   public final List<EcdeTestDisplayed> getListEcdeDisplayed() {
       return listEcdeDisplayed;
    }
 
@@ -72,21 +72,21 @@ public class TestInjectionFormulaire {
     * @param listEcdeDisplayed
     *           the listEcdeDisplayed to set
     */
-   public void setListEcdeDisplayed(List<EcdeTestDisplayed> listEcdeDisplayed) {
+   public final void setListEcdeDisplayed(List<EcdeTestDisplayed> listEcdeDisplayed) {
       this.listEcdeDisplayed = listEcdeDisplayed;
    }
 
    /**
     * @return the url
     */
-   public String getUrl() {
+   public final String getUrl() {
       return url;
    }
 
    /**
     * @param url the url to set
     */
-   public void setUrl(String url) {
+   public final void setUrl(String url) {
       this.url = url;
    }
 
