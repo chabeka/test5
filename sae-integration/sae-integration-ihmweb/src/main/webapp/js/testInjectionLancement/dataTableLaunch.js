@@ -142,12 +142,8 @@ function initForm(gridTable) {
 			var oldLength = oldOnes.length;
 			for ( var i = 0; i < oldLength; i++) {
 				var id = oldOnes[i].getAttribute("id");
-				alert(id);
 				monFormulaire.remove(Ext.getCmp(id));
 			}
-			alert("longueur = "
-					+ document.getElementsByName("treatmentList").length);
-
 			for ( var i = 0; i < checkLength; i++) {
 				if (check[i].checked) {
 					var tId = 'treatmentList' + i;
