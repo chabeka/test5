@@ -362,9 +362,12 @@ public class CaptureMasseTestService {
             ResultatsType objResultatXml = ecdeService
                   .chargeResultatsXml(cheminFichierResultatsXml);
 
+            String startFilePath = getCheminFichierDebutFlag(formulaire
+                  .getUrlSommaire());
+
             // Affiche dans le log un résumé du fichier resultats.xml
             SaeServiceLogUtils.logResultatsXml(resultatTest, objResultatXml,
-                  cheminFichierResultatsXml);
+                  cheminFichierResultatsXml, startFilePath);
 
          } else {
 
@@ -402,9 +405,12 @@ public class CaptureMasseTestService {
                .chargeResultatsXml(cheminFichierResultatsXml);
          ResultatTest resultatTest = formulaire.getResultats();
 
+         String startFilePath = getCheminFichierDebutFlag(formulaire
+               .getUrlSommaire());
+
          // Affiche dans le log un résumé du fichier resultats.xml
          SaeServiceLogUtils.logResultatsXml(resultatTest, objResultatXml,
-               cheminFichierResultatsXml);
+               cheminFichierResultatsXml, startFilePath);
 
          if (objResultatXml.getErreurBloquanteTraitement() != null) {
             formulaire.getResultats().setStatus(TestStatusEnum.Echec);
@@ -447,9 +453,12 @@ public class CaptureMasseTestService {
          ResultatsType objResultatXml = ecdeService
                .chargeResultatsXml(cheminFichierResultatsXml);
 
+         String startFilePath = getCheminFichierDebutFlag(formulaire
+               .getUrlSommaire());
+
          // Affiche dans le log un résumé du fichier resultats.xml
          SaeServiceLogUtils.logResultatsXml(formulaire.getResultats(),
-               objResultatXml, cheminFichierResultatsXml);
+               objResultatXml, cheminFichierResultatsXml, startFilePath);
 
          if (objResultatXml.getNonIntegratedDocumentsCount() != notIntegratedDocuments) {
             formulaire.getResultats().setStatus(TestStatusEnum.Echec);
@@ -495,9 +504,12 @@ public class CaptureMasseTestService {
          ResultatsType objResultatXml = ecdeService
                .chargeResultatsXml(cheminFichierResultatsXml);
 
+         String startFilePath = getCheminFichierDebutFlag(formulaire
+               .getUrlSommaire());
+
          // Affiche dans le log un résumé du fichier resultats.xml
          SaeServiceLogUtils.logResultatsXml(formulaire.getResultats(),
-               objResultatXml, cheminFichierResultatsXml);
+               objResultatXml, cheminFichierResultatsXml, startFilePath);
 
          if (objResultatXml.getErreurBloquanteTraitement() == null
                || waitedError == null) {
@@ -574,12 +586,6 @@ public class CaptureMasseTestService {
             formulaire);
 
       if (fileExists) {
-
-         // Ajoute un lien de téléchargement du fichier
-         String cheminBase64 = Base64Utils.encode(cheminFichierDebutFlag);
-         resultatTest.getLiens().ajouteLien(
-               SaeIntegrationConstantes.NOM_FIC_DEB_FLAG_TDM,
-               "download.do?ecdefilename=" + cheminBase64);
 
          // test de la présence du fichier fin_traitement.flag
          fileExists = testFileExists(cheminFichierFlag, log, formulaire);

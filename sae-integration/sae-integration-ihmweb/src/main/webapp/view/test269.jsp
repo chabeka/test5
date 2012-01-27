@@ -24,6 +24,9 @@
 		objetFormulaire="${formulaire.captureMasseDeclenchement}"
 		pathFormulaire="captureMasseDeclenchement" />
 
+	<sae:lienMonitoring pathFormulaire="linkToMonitoring"
+		objetFormulaire="${formulaire.linkToMonitoring}" />
+
 	<sae:captureMasse numeroEtape="2"
 		objetFormulaire="${formulaire.captureMasseDeclenchementParallele}"
 		pathFormulaire="captureMasseDeclenchementParallele" />

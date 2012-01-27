@@ -32,6 +32,17 @@ public class Test306Controller extends AbstractTestWsController<TestWsRechercheF
 
    
    /**
+    * 
+    */
+   private static final int RETURN_COUNT = 7;
+   /**
+    * 
+    */
+   private static final int WAITED_COUNT = 8;
+
+
+
+   /**
     * {@inheritDoc}
     */
    @Override
@@ -86,7 +97,7 @@ public class Test306Controller extends AbstractTestWsController<TestWsRechercheF
       ResultatTest resultatTest = formulaire.getResultats();
       
       // Résultats attendus
-      int nbResultatsAttendus = 8 ; 
+      int nbResultatsAttendus = WAITED_COUNT; 
       boolean flagResultatsTronquesAttendu = false;
       
       // Appel de la méthode de test
@@ -110,7 +121,7 @@ public class Test306Controller extends AbstractTestWsController<TestWsRechercheF
                      TypeComparaison.NumeroRecours));
          
          // Vérifie chaque résultat
-         for (int i=0;i<7;i++) {
+         for (int i = 0; i < RETURN_COUNT;i++) {
             
             getRechercheTestService().verifieResultatRecherche(
                   resultatsTries.get(i),

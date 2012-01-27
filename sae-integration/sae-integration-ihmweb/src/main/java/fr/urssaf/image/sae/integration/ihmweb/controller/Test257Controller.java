@@ -28,6 +28,10 @@ public class Test257Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 3;
+   /**
     * URL du répertoire contenant les fichiers de données
     */
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-257-CaptureMasse-KO-Tor-MetadonneeFormatIncorrect/";
@@ -131,7 +135,7 @@ public class Test257Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType, 2);
+            formulaire, WAITED_COUNT, documentType, 2);
 
    }
 

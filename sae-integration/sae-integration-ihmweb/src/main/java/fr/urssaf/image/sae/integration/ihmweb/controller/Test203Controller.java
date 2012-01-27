@@ -14,6 +14,7 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.comparator.ResultatRechercheComparator.TypeComparaison;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.RechercheResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
 
@@ -140,7 +141,8 @@ public class Test203Controller extends
       RechercheResponse response = getRechercheTestService()
             .appelWsOpRechercheReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(),
-                  formulaire.getRechFormulaire(), COUNT_WAITED, false, null);
+                  formulaire.getRechFormulaire(), COUNT_WAITED, false,
+                  TypeComparaison.NumeroRecours);
 
       if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {

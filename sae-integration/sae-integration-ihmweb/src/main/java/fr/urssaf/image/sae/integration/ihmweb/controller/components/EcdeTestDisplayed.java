@@ -14,18 +14,21 @@ public class EcdeTestDisplayed extends EcdeTest {
    private boolean checked;
 
    private String statusTraitement;
-   
+
    private String erreur;
 
    /**
+    * Constructeur
     * 
+    * @param ecdeTest
+    *           test métier
     */
    public EcdeTestDisplayed(EcdeTest ecdeTest) {
       super(ecdeTest.getName(), ecdeTest.getUrl());
    }
 
    /**
-    * 
+    * constructeur par défaut
     */
    public EcdeTestDisplayed() {
       super();
@@ -34,7 +37,7 @@ public class EcdeTestDisplayed extends EcdeTest {
    /**
     * @return the checked
     */
-   public boolean getChecked() {
+   public final boolean getChecked() {
       return checked;
    }
 
@@ -42,14 +45,14 @@ public class EcdeTestDisplayed extends EcdeTest {
     * @param checked
     *           the checked to set
     */
-   public void setChecked(boolean checked) {
+   public final void setChecked(boolean checked) {
       this.checked = checked;
    }
 
    /**
     * @return the statusTraitement
     */
-   public String getStatusTraitement() {
+   public final String getStatusTraitement() {
       return statusTraitement;
    }
 
@@ -57,21 +60,22 @@ public class EcdeTestDisplayed extends EcdeTest {
     * @param statusTraitement
     *           the statusTraitement to set
     */
-   public void setStatusTraitement(String statusTraitement) {
+   public final void setStatusTraitement(String statusTraitement) {
       this.statusTraitement = statusTraitement;
    }
 
    /**
     * @return the erreur
     */
-   public String getErreur() {
+   public final String getErreur() {
       return erreur;
    }
 
    /**
-    * @param erreur the erreur to set
+    * @param erreur
+    *           the erreur to set
     */
-   public void setErreur(String erreur) {
+   public final void setErreur(String erreur) {
       this.erreur = erreur;
    }
 

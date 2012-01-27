@@ -25,6 +25,10 @@ public class Test268Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 3;
+   /**
     * URL du répertoire contenant les fichiers de données
     */
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-268-CaptureMasse-KO-Tor-3-meme-doc-avec-premier-en-erreur-arbo/";
@@ -127,7 +131,7 @@ public class Test268Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType, 1);
+            formulaire, WAITED_COUNT, documentType, 1);
 
    }
 

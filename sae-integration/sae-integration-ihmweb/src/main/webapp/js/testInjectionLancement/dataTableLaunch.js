@@ -141,16 +141,20 @@ function initForm(gridTable) {
 			var oldOnes = document.getElementsByName("treatmentList");
 			var oldLength = oldOnes.length;
 			for ( var i = 0; i < oldLength; i++) {
-				alert("1");
-				monFormulaire.remove(Ext.get(oldOnes[i]));
+				var id = oldOnes[i].getAttribute("id");
+				alert(id);
+				monFormulaire.remove(Ext.getCmp(id));
 			}
-			alert(document.getElementsByName("treatmentList").length);
+			alert("longueur = "
+					+ document.getElementsByName("treatmentList").length);
 
 			for ( var i = 0; i < checkLength; i++) {
 				if (check[i].checked) {
+					var tId = 'treatmentList' + i;
 					nbCk++;
 					tempName = new Ext.form.Hidden( {
 						name : 'treatmentList',
+						id : tId,
 						value : allRecords[i].data["url"]
 					});
 					monFormulaire.add(tempName);

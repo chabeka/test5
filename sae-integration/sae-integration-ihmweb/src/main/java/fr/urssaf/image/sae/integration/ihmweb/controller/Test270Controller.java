@@ -26,6 +26,14 @@ public class Test270Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
+    * 
+    */
+   private static final int ERROR_NUMBER = 2001;
+   /**
+    * 
+    */
+   private static final int WAITED_COUNT = 2000;
+   /**
     * URL du répertoire contenant les fichiers de données
     */
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-270-CaptureMasse-KO-Tor-3000-Rollback/";
@@ -128,7 +136,7 @@ public class Test270Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 2000, documentType, 2001);
+            formulaire, WAITED_COUNT, documentType, ERROR_NUMBER);
 
    }
 

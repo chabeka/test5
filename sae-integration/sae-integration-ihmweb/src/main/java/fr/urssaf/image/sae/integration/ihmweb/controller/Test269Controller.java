@@ -22,6 +22,11 @@ public class Test269Controller extends
       AbstractTestWsController<Test269Formulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 200;
+
+   /**
     * URL du répertoire contenant les fichiers de données
     */
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-269-CaptureMasse-KO-Deux-Lancements-1/";
@@ -151,14 +156,15 @@ public class Test269Controller extends
 
    }
 
-   private final void etape4Recherche(Test269Formulaire formulaire) {
+   private void etape4Recherche(Test269Formulaire formulaire) {
 
       getRechercheTestService().appelWsOpRechercheReponseCorrecteAttendue(
-            formulaire.getUrlServiceWeb(), formulaire.getRechFormulaire(), 200,
+            formulaire.getUrlServiceWeb(), formulaire.getRechFormulaire(),
+            WAITED_COUNT,
             true, null);
    }
 
-   private final void etape5Recherche(Test269Formulaire formulaire) {
+   private void etape5Recherche(Test269Formulaire formulaire) {
 
       getRechercheTestService().appelWsOpRechercheReponseCorrecteAttendue(
             formulaire.getUrlServiceWeb(),

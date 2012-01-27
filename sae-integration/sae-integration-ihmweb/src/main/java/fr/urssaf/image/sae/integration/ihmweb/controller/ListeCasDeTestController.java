@@ -31,8 +31,15 @@ public class ListeCasDeTestController {
    @Autowired
    private EcdeTestInterface ecdeTestInterface;
 
+   /**
+    * Initialisation de la page
+    * 
+    * @param model
+    *           données spring
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.GET)
-   public String getDefaultView(Model model) {
+   public final String getDefaultView(Model model) {
 
       ListeCasDeTestFormulaire testFormulaire = new ListeCasDeTestFormulaire();
 
@@ -43,8 +50,18 @@ public class ListeCasDeTestController {
       return "listeCasDeTest";
    }
 
+   /**
+    * Ajout d'un élément à la liste
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.POST, params = { "action=add" })
-   public String saveListeEcdeSources(Model model, ListeCasDeTestFormulaire form) {
+   public final String saveListeEcdeSources(Model model,
+         ListeCasDeTestFormulaire form) {
 
       List<EcdeTest> listEcde = form.getEcdeTests().getListTests();
       listEcde.add(form.getEcdeTest());
@@ -55,8 +72,19 @@ public class ListeCasDeTestController {
       return "listeCasDeTest";
    }
 
+   /**
+    * Suppression d'un élément de la liste
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @param idSup
+    *           index de l'élément à supprimer
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.POST, params = { "action=delete" })
-   public String deleteListeEcdeSources(Model model,
+   public final String deleteListeEcdeSources(Model model,
          ListeCasDeTestFormulaire form, Integer idSup) {
 
       List<EcdeTest> listEcde = form.getEcdeTests().getListTests();
@@ -67,8 +95,21 @@ public class ListeCasDeTestController {
       return "listeCasDeTest";
    }
 
+   /**
+    * Sauvergarde des cas de test
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @param errors
+    *           erreurs éventuelles de surface
+    * @return la page de redirection
+    * @throws Exception
+    *            erreur lors du traitement
+    */
    @RequestMapping(method = RequestMethod.POST, params = { "action=generate" })
-   public String generateListeEcdeSources(Model model,
+   public final String generateListeEcdeSources(Model model,
          ListeCasDeTestFormulaire form, BindingResult errors) throws Exception {
 
       ecdeTestInterface.generateFile(form.getEcdeTests().getListTests());

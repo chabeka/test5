@@ -28,6 +28,10 @@ public class Test259Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 3;
+   /**
     * URL du répertoire contenant les fichiers de données
     */
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-259-CaptureMasse-KO-Tor-HashIncorrect/";
@@ -130,7 +134,7 @@ public class Test259Controller extends
       documentType.setObjetNumerique(fichierType);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            formulaire, 3, documentType, 2);
+            formulaire, WAITED_COUNT, documentType, 2);
 
    }
 

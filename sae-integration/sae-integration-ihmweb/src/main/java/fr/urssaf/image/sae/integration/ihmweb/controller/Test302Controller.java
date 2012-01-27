@@ -22,6 +22,11 @@ public class Test302Controller extends
       AbstractTestWsController<TestWsRechercheFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 200;
+
+   /**
     * {@inheritDoc}
     */
    @Override
@@ -62,7 +67,7 @@ public class Test302Controller extends
    private void recherche(String urlServiceWeb, RechercheFormulaire formulaire) {
 
       // Résultats attendus
-      int nbResultatsAttendus = 200;
+      int nbResultatsAttendus = WAITED_COUNT;
       boolean flagResultatsTronquesAttendu = true;
 
       // Appel de la méthode de test

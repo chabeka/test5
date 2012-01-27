@@ -270,7 +270,7 @@ public class ReferentielMetadonneesService {
     * 
     * @return liste des codes des métadonnées "consultables"
     */
-   public CodeMetadonneeList listeMetadonneesConsultables() {
+   public final CodeMetadonneeList listeMetadonneesConsultables() {
       
       CodeMetadonneeList result = new CodeMetadonneeList();
       

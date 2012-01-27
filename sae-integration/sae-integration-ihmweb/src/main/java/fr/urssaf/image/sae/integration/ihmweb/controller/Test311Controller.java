@@ -29,6 +29,11 @@ public class Test311Controller extends
       AbstractTestWsController<TestWsRechercheFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 3;
+
+   /**
     * {@inheritDoc}
     */
    @Override
@@ -77,7 +82,7 @@ public class Test311Controller extends
       ResultatTest resultatTest = formulaire.getResultats();
 
       // Résultats attendus
-      int nbResultatsAttendus = 3;
+      int nbResultatsAttendus = WAITED_COUNT;
       boolean flagResultatsTronquesAttendu = false;
 
       // Appel de la méthode de test
@@ -97,7 +102,7 @@ public class Test311Controller extends
                TypeComparaison.NumeroRecours));
 
          // Vérifie chaque résultat
-         for (int i = 0; i < 3; i++) {
+         for (int i = 0; i < WAITED_COUNT; i++) {
 
             getRechercheTestService().verifieResultatRecherche(
                   resultatsTries.get(i), Integer.toString(i + 1), resultatTest,

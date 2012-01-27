@@ -30,6 +30,15 @@ public class Test308Controller extends
       AbstractTestWsController<TestWsRechercheFormulaire> {
 
    /**
+    * 
+    */
+   private static final int RETURN_COUNT = 7;
+   /**
+    * 
+    */
+   private static final int WAITED_COUNT = 8;
+
+   /**
     * {@inheritDoc}
     */
    @Override
@@ -76,7 +85,7 @@ public class Test308Controller extends
       ResultatTest resultatTest = formulaire.getResultats();
 
       // Résultats attendus
-      int nbResultatsAttendus = 8;
+      int nbResultatsAttendus = WAITED_COUNT;
       boolean flagResultatsTronquesAttendu = false;
 
       // Appel de la méthode de test
@@ -96,7 +105,7 @@ public class Test308Controller extends
                TypeComparaison.NumeroRecours));
 
          // Vérifie chaque résultat
-         for (int i = 0; i < 7; i++) {
+         for (int i = 0; i < RETURN_COUNT; i++) {
 
             getRechercheTestService().verifieResultatRecherche(
                   resultatsTries.get(i), Integer.toString(i + 1), resultatTest,
@@ -117,7 +126,7 @@ public class Test308Controller extends
 
       MetadonneeValeurList valeursAttendues = new MetadonneeValeurList();
 
-      if (numeroResultat >= 1 && numeroResultat <= 8) {
+      if (numeroResultat >= 1 && numeroResultat <= WAITED_COUNT) {
          valeursAttendues.add("ApplicationProductrice", "ADELAIDE");
          valeursAttendues.add("CodeRND", "2.3.1.1.12");
          valeursAttendues.add("Denomination",

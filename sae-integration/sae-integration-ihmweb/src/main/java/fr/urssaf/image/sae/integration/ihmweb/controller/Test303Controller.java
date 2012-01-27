@@ -32,6 +32,11 @@ public class Test303Controller extends
       AbstractTestWsController<TestWsRechercheFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 3;
+
+   /**
     * {@inheritDoc}
     */
    @Override
@@ -78,7 +83,7 @@ public class Test303Controller extends
       ResultatTest resultatTest = formulaire.getResultats();
 
       // Résultats attendus
-      int nbResultatsAttendus = 3;
+      int nbResultatsAttendus = WAITED_COUNT;
       boolean flagResultatsTronquesAttendu = false;
 
       // Appel de la méthode de test

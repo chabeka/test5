@@ -32,8 +32,15 @@ public class ListeEcdeSourcesController {
    @Autowired
    private EcdeSources ecdeSources;
 
+   /**
+    * Initialisation de la page
+    * 
+    * @param model
+    *           données spring
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.GET)
-   public String viewListeEcdeSources(Model model) {
+   public final String viewListeEcdeSources(Model model) {
 
       ListeEcdeSourcesFormulaire form = new ListeEcdeSourcesFormulaire();
       // try {
@@ -50,8 +57,17 @@ public class ListeEcdeSourcesController {
 
    }
 
+   /**
+    * Ajout d'un élément à la liste
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.POST, params = { "action=add" })
-   public String saveListeEcdeSources(Model model,
+   public final String saveListeEcdeSources(Model model,
          ListeEcdeSourcesFormulaire form) {
 
       List<EcdeSource> listEcde = form.getEcdeSources().getSources();
@@ -63,8 +79,19 @@ public class ListeEcdeSourcesController {
       return "listeEcdeSources";
    }
 
+   /**
+    * Suppression d'un élément de la liste
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @param idSup
+    *           index de l'élément à supprimer
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.POST, params = { "action=delete" })
-   public String deleteListeEcdeSources(Model model,
+   public final String deleteListeEcdeSources(Model model,
          ListeEcdeSourcesFormulaire form, Integer idSup) {
 
       List<EcdeSource> listEcde = form.getEcdeSources().getSources();
@@ -75,8 +102,21 @@ public class ListeEcdeSourcesController {
       return "listeEcdeSources";
    }
 
+   /**
+    * Sauvergarde des sources
+    * 
+    * @param model
+    *           données spring
+    * @param form
+    *           formulaire soumis
+    * @param errors
+    *           erreurs éventuelles de surface
+    * @return la page de redirection
+    * @throws Exception
+    *            erreur lors du traitement
+    */
    @RequestMapping(method = RequestMethod.POST, params = { "action=generate" })
-   public String generateListeEcdeSources(Model model,
+   public final String generateListeEcdeSources(Model model,
          ListeEcdeSourcesFormulaire form, BindingResult errors)
          throws Exception {
 

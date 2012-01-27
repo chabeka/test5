@@ -14,6 +14,7 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.comparator.ResultatRechercheComparator.TypeComparaison;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.RechercheResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
 
@@ -131,8 +132,7 @@ public class Test201Controller extends
             formulaire.getCaptureMasseDeclenchement());
 
    }
-   
-   
+
    private void etape2captureMasseResultats(
          CaptureMasseResultatFormulaire formulaire) {
 
@@ -145,7 +145,8 @@ public class Test201Controller extends
       RechercheResponse response = getRechercheTestService()
             .appelWsOpRechercheReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(),
-                  formulaire.getRechFormulaire(), COUNT_WAITED, false, null);
+                  formulaire.getRechFormulaire(), COUNT_WAITED, false,
+                  TypeComparaison.NumeroRecours);
 
       if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
             .getResultats().getStatus())) {
@@ -164,7 +165,7 @@ public class Test201Controller extends
             i++;
          }
 
-         if (TestStatusEnum.Succes.equals(formulaire.getRechFormulaire()
+         if (!TestStatusEnum.Echec.equals(formulaire.getRechFormulaire()
                .getResultats().getStatus())) {
 
             formulaire.getConsultFormulaire().setIdArchivage(

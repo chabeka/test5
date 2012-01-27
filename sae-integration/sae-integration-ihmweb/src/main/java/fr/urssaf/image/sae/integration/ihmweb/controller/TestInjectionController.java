@@ -40,10 +40,17 @@ public class TestInjectionController {
    private EcdeTests ecdeTests;
 
    @Autowired
-   ThreadInitCasDeTest casDeTest;
+   private ThreadInitCasDeTest casDeTest;
 
+   /**
+    * initialisation
+    * 
+    * @param session
+    *           session utilisateur
+    * @return la page de redirection
+    */
    @RequestMapping(method = RequestMethod.GET)
-   public String defaultView(HttpSession session) {
+   public final String defaultView(HttpSession session) {
 
       if (!ThreadInitCasDeTest.EtatThread.RUNNING.equals(casDeTest.getEtat())
             && session.getServletContext().getAttribute(ECDE_LIST) == null) {
@@ -62,8 +69,18 @@ public class TestInjectionController {
       return "testInjectionLancement";
    }
 
+   /**
+    * Retourne la liste des tests
+    * 
+    * @param model
+    *           données spring
+    * @param session
+    *           session utilisateur
+    * @return la liste des tests
+    */
+   @ResponseBody
    @RequestMapping(method = RequestMethod.GET, params = "action=getList")
-   public @ResponseBody
+   public final 
    HashMap<String, Object> loadTable(Model model, HttpSession session) {
 
       List<EcdeTestDisplayed> testDisplayeds = (List<EcdeTestDisplayed>) session
@@ -76,9 +93,16 @@ public class TestInjectionController {
       return map;
    }
 
+   /**
+    * Retourne le status du traitement
+    * 
+    * @param model
+    *           données spring
+    * @return le status du traitement : true si en cours d'execution
+    */
+   @ResponseBody
    @RequestMapping(method = RequestMethod.GET, params = { "action=checkStatus" })
-   public @ResponseBody
-   HashMap<String, Object> checkStatus(Model model) {
+   public final HashMap<String, Object> checkStatus(Model model) {
       HashMap<String, Object> map = new HashMap<String, Object>();
 
       boolean status = ThreadInitCasDeTest.EtatThread.RUNNING.equals(casDeTest
@@ -89,9 +113,16 @@ public class TestInjectionController {
       return map;
    }
 
+   /**
+    * Retourne l'url du WS ainsi que le status de traitement
+    * 
+    * @param model
+    *           données Spring
+    * @return l'url du WS ainsi que le status de traitement
+    */
+   @ResponseBody
    @RequestMapping(method = RequestMethod.GET, params = { "action=getUrl" })
-   public @ResponseBody
-   HashMap<String, Object> getUrl(Model model) {
+   public final HashMap<String, Object> getUrl(Model model) {
       HashMap<String, Object> map = new HashMap<String, Object>();
       map.put("success", true);
       map.put("url", testConfig.getUrlSaeService());
@@ -101,10 +132,19 @@ public class TestInjectionController {
       return map;
    }
 
+   /**
+    * Lance le traitement
+    * 
+    * @param formulaire
+    *           formulaire de données
+    * @param session
+    *           session utilisateur
+    * @return état de lancement du traitement (true [lancé] ou false[non lancé])
+    */
+   @ResponseBody
    @RequestMapping(method = RequestMethod.POST, params = "action=launch")
-   public @ResponseBody
-   HashMap<String, Object> launchTreatment(TestInjectionFormulaire formulaire,
-         HttpSession session) {
+   public final HashMap<String, Object> launchTreatment(
+         TestInjectionFormulaire formulaire, HttpSession session) {
 
       HashMap<String, Object> map = new HashMap<String, Object>();
 
@@ -121,7 +161,7 @@ public class TestInjectionController {
 
             for (EcdeTestDisplayed ecdeTestDisplayed : testDisplayeds) {
                ecdeTestDisplayed.setErreur(null);
-               
+
                if (listTraitement.contains(ecdeTestDisplayed.getUrl())) {
                   ecdeTestDisplayed.setChecked(true);
                   ecdeTestDisplayed

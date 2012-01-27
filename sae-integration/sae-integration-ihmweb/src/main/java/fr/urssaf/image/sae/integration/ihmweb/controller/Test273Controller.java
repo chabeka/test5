@@ -25,6 +25,10 @@ public class Test273Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
+    * 
+    */
+   private static final int WAITED_COUNT = 5000;
+   /**
     * URL du répertoire contenant les fichiers de données
     */
    private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-273-CaptureMasse-KO-JarArretTomCatSansRepriseAvecStockage/";
@@ -130,7 +134,7 @@ public class Test273Controller extends
       documentType.setErreurs(errorList);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            captureMasseResultat, 5000, documentType, 5000);
+            captureMasseResultat, WAITED_COUNT, documentType, WAITED_COUNT);
 
    }
 
