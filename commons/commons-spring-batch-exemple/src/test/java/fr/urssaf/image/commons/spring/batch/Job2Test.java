@@ -79,7 +79,7 @@ public class Job2Test {
       StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
             0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "step1", step1
+      Assert.assertEquals("le nom de l'étape est incorrect", "FiletoXML", step1
             .getStepName());
       Assert.assertEquals("le nombre d'items lus est incorrect", 10, step1
             .getReadCount());

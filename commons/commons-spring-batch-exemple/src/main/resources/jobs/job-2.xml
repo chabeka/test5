@@ -9,14 +9,14 @@
 
 
    <job id="job2">
-   
-      <step id="step1">
+
+      <step id="FiletoXML">
          <tasklet>
             <chunk reader="fileReader" writer="xmlWriter"
                processor="conversionToXMLProcessor" commit-interval="1" />
          </tasklet>
       </step>
-      
+
    </job>
 
 </beans:beans>

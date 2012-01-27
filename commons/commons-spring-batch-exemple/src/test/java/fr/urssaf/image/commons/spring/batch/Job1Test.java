@@ -79,7 +79,7 @@ public class Job1Test {
       StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
             0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "step1", step1
+      Assert.assertEquals("le nom de l'étape est incorrect", "XMLtoFile", step1
             .getStepName());
       Assert.assertEquals("le nombre d'items lus est incorrect", 10, step1
             .getReadCount());
@@ -105,7 +105,7 @@ public class Job1Test {
 
       JobExecution jobExecution;
       try {
-         jobExecution = jobLauncher.launchStep("step1", jobParameters);
+         jobExecution = jobLauncher.launchStep("XMLtoFile", jobParameters);
       } catch (Exception e) {
          throw new NestableRuntimeException(e);
       }
@@ -116,7 +116,7 @@ public class Job1Test {
       StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
             0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "step1", step1
+      Assert.assertEquals("le nom de l'étape est incorrect", "XMLtoFile", step1
             .getStepName());
       Assert.assertEquals("le nombre d'items lus est incorrect", 10, step1
             .getReadCount());
