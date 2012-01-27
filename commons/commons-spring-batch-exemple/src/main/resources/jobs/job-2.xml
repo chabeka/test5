@@ -8,13 +8,21 @@
          http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
 
 
+   <step id="FiletoXML">
+      <tasklet>
+         <chunk reader="fileReader" writer="xmlWriter"
+            commit-interval="1" />
+      </tasklet>
+   </step>
+
    <job id="job2">
 
-      <step id="FiletoXML">
+      <step id="step2" parent="FiletoXML">
+
          <tasklet>
-            <chunk reader="fileReader" writer="xmlWriter"
-               processor="conversionToXMLProcessor" commit-interval="1" />
+            <chunk processor="conversionToXMLProcessor" />
          </tasklet>
+
       </step>
 
    </job>
