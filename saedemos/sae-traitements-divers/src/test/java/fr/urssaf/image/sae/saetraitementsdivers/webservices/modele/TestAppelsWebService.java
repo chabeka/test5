@@ -65,7 +65,7 @@ public class TestAppelsWebService {
       String[] listVersions = port.getLastNumVersion();
 
       assertNotNull("dernier numéro de version attendu non null", listVersions);
-      assertEquals("1 seule version attendue", 1, listVersions.length);
+      assertEquals("2 versions attendue", 2, listVersions.length);
    }
 
    /**
