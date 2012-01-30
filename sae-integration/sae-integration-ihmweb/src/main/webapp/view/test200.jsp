@@ -31,6 +31,8 @@
 		objetFormulaire="${formulaire.captureMasseResultat}"
 		pathFormulaire="captureMasseResultat" />
 
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
+
 </form:form>
 
 <p><br />

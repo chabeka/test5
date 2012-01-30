@@ -36,6 +36,8 @@
 
 	<sae:consultation numeroEtape="4" pathFormulaire="consultFormulaire"
 		objetFormulaire="${formulaire.consultFormulaire}" />
+
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
 		
 </form:form>
 

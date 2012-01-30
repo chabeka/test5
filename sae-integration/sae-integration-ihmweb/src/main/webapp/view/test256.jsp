@@ -34,6 +34,8 @@
 	<sae:recherche numeroEtape="3" pathFormulaire="rechFormulaire"
 		objetFormulaire="${formulaire.rechFormulaire}" />
 
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
+
 </form:form>
 
 <p><br />

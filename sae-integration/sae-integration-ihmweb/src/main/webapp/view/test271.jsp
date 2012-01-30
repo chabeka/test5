@@ -24,6 +24,8 @@
 		objetFormulaire="${formulaire.captureMasseDeclenchement}"
 		pathFormulaire="captureMasseDeclenchement" />
 
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
+
 
 </form:form>
 

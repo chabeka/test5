@@ -22,6 +22,8 @@
 		objetFormulaire="${formulaire.recherche}" pathFormulaire="recherche"
 		readonly="false" />
 
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
+
 </form:form>
 
 <p><br />

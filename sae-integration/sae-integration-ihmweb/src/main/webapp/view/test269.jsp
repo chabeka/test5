@@ -40,6 +40,8 @@
 
 	<sae:recherche numeroEtape="5" pathFormulaire="rechFormulaireParallele"
 		objetFormulaire="${formulaire.rechFormulaireParallele}" />
+
+	<sae:soapMessages objetFormulaire="${formulaire.soapFormulaire}" />
 </form:form>
 
 <p><br />
