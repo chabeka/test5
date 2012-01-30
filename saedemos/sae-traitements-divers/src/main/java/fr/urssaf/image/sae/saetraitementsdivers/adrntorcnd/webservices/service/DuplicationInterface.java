@@ -3,8 +3,10 @@
  */
 package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service;
 
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.exception.AdrnToRcndException;
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele.RNDTypeDocument;
+import java.util.List;
+
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.exception.AdrnToRcndException;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanRNDTypeDocument;
 
 /**
  * Récupération des données du webservice
@@ -20,7 +22,7 @@ public interface DuplicationInterface {
     * @throws AdrnToRcndException
     *            erreur lors du traitement
     */
-   RNDTypeDocument[] getDocumentTypesFromWS() throws AdrnToRcndException;
+   List<BeanRNDTypeDocument> getDocumentTypesFromWS() throws AdrnToRcndException;
 
    /**
     * Récupération des types de documents supportés pour la version récupérée
@@ -30,7 +32,7 @@ public interface DuplicationInterface {
     * @throws AdrnToRcndException
     *            erreur lors du traitement
     */
-   RNDTypeDocument[] getDocumentTypesFromConfigFile() throws AdrnToRcndException;
+   List<BeanRNDTypeDocument> getDocumentTypesFromConfigFile() throws AdrnToRcndException;
 
    /**
     * Récupère le numéro de version dans le fichier de configuration

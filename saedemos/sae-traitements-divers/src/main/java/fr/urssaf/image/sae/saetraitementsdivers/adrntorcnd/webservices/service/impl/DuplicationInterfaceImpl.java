@@ -4,10 +4,17 @@
 package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service.impl;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 import javax.xml.rpc.ServiceException;
 
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.exception.AdrnToRcndException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.exception.AdrnToRcndException;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.factory.ConvertFactory;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanConfig;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanRNDTypeDocument;
 import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele.InterfaceDuplicationLocator;
 import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele.InterfaceDuplicationPort_PortType;
 import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele.RNDTypeDocument;
@@ -17,17 +24,18 @@ import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service.D
  * Appels Webservice correspondant à duplication
  * 
  */
+@Service
 public class DuplicationInterfaceImpl implements DuplicationInterface {
 
-   private String version;
-
-   private String url;
+   @Autowired
+   BeanConfig beanConfig;
 
    /**
     * {@inheritDoc}
     */
    @Override
-   public RNDTypeDocument[] getDocumentTypesFromWS() throws AdrnToRcndException {
+   public List<BeanRNDTypeDocument> getDocumentTypesFromWS()
+         throws AdrnToRcndException {
 
       String version = getVersionFromWS();
 
@@ -37,32 +45,38 @@ public class DuplicationInterfaceImpl implements DuplicationInterface {
                      + "Impossible de continuer les traitements");
       }
 
-      RNDTypeDocument[] typeDoc = null;
-
-      try {
-         InterfaceDuplicationPort_PortType port = getPort();
-         typeDoc = port.getListeTypesDocuments(version);
-      } catch (RemoteException e) {
-         throw new AdrnToRcndException(e);
-      } catch (ServiceException e) {
-         throw new AdrnToRcndException(e);
-      }
-
-      return typeDoc;
+      return getDocuments(version);
    }
 
    /**
     * {@inheritDoc}
     */
    @Override
-   public RNDTypeDocument[] getDocumentTypesFromConfigFile()
+   public List<BeanRNDTypeDocument> getDocumentTypesFromConfigFile()
          throws AdrnToRcndException {
 
-      RNDTypeDocument[] typeDoc = null;
+      return getDocuments(beanConfig.getVersion());
+
+   }
+
+   /**
+    * Appel du WS pour une version donnée
+    * 
+    * @param version
+    *           version désirée
+    * @return la liste des documents
+    * @throws AdrnToRcndException
+    */
+   private List<BeanRNDTypeDocument> getDocuments(String version)
+         throws AdrnToRcndException {
+
+      List<BeanRNDTypeDocument> listDoc = null;
 
       try {
          InterfaceDuplicationPort_PortType port = getPort();
-         typeDoc = port.getListeTypesDocuments(version);
+         RNDTypeDocument[] typeDoc = port.getListeTypesDocuments(version);
+
+         listDoc = ConvertFactory.WSToListRNDTypeDocument(typeDoc, version);
 
       } catch (RemoteException e) {
          throw new AdrnToRcndException(e);
@@ -71,7 +85,7 @@ public class DuplicationInterfaceImpl implements DuplicationInterface {
          throw new AdrnToRcndException(e);
       }
 
-      return typeDoc;
+      return listDoc;
    }
 
    /**
@@ -83,26 +97,10 @@ public class DuplicationInterfaceImpl implements DuplicationInterface {
     */
    private InterfaceDuplicationPort_PortType getPort() throws ServiceException {
       InterfaceDuplicationLocator locator = new InterfaceDuplicationLocator();
-      locator.setInterfaceDuplicationPortEndpointAddress(url);
+      locator.setInterfaceDuplicationPortEndpointAddress(beanConfig.getUrl());
       InterfaceDuplicationPort_PortType port = locator
             .getInterfaceDuplicationPort();
       return port;
-   }
-
-   /**
-    * @param version
-    *           the version to set
-    */
-   public void setVersion(String version) {
-      this.version = version;
-   }
-
-   /**
-    * @param url
-    *           the url to set
-    */
-   public void setUrl(String url) {
-      this.url = url;
    }
 
    /**
@@ -110,7 +108,7 @@ public class DuplicationInterfaceImpl implements DuplicationInterface {
     */
    @Override
    public String getVersionFromConfigFile() {
-      return version;
+      return beanConfig.getVersion();
    }
 
    /**

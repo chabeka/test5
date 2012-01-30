@@ -1,10 +1,12 @@
 /**
  * 
  */
-package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service;
+package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.service;
 
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.exception.AdrnToRcndException;
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele.RNDTypeDocument;
+import java.util.List;
+
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.exception.AdrnToRcndException;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanRNDTypeDocument;
 
 /**
  * Stockage des données
@@ -22,7 +24,7 @@ public interface DataManagementInterface {
     * @throws AdrnToRcndException
     *            exception lors du traitement
     */
-   void saveDocuments(RNDTypeDocument[] typesDocuments, String version)
+   void saveDocuments(List<BeanRNDTypeDocument> listDoc, String version)
          throws AdrnToRcndException;
 
 }

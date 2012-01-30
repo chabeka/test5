@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.exception;
+package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.exception;
 
 /**
  * 

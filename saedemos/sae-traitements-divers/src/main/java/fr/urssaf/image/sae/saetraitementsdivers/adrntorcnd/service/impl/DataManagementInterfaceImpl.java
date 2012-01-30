@@ -1,11 +1,12 @@
 /**
  * 
  */
-package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service.impl;
+package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.service.impl;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -16,37 +17,39 @@ import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.exception.AdrnToRcndException;
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele.RNDTypeDocument;
-import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service.DataManagementInterface;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.exception.AdrnToRcndException;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanConfig;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanRNDTypeDocument;
+import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.service.DataManagementInterface;
 
 /**
  * 
  * Stockage des données
  */
+@Service
 public class DataManagementInterfaceImpl implements DataManagementInterface {
 
-   /**
-    * Chemin de sauvegarde du fichier
-    */
-   private String filePath;
+   @Autowired
+   private BeanConfig beanConfig;
 
    /**
     * {@inheritDoc}
     */
    @Override
    @SuppressWarnings("PMD.EmptyCatchBlock")
-   public void saveDocuments(RNDTypeDocument[] typesDocuments, String version)
+   public void saveDocuments(List<BeanRNDTypeDocument> listDoc, String version)
          throws AdrnToRcndException {
 
       FileWriter fileWriter = null;
       StreamResult streamResult = null;
 
       try {
-         File file = new File(filePath);
+         File file = new File(beanConfig.getSavedFilePath());
          fileWriter = new FileWriter(file);
 
          streamResult = new StreamResult(fileWriter);
@@ -65,8 +68,8 @@ public class DataManagementInterfaceImpl implements DataManagementInterface {
          handler.startElement(StringUtils.EMPTY, StringUtils.EMPTY, "RCND",
                atts);
 
-         for (RNDTypeDocument rndTypeDocument : typesDocuments) {
-            addTypeDocument(handler, rndTypeDocument, version, atts);
+         for (BeanRNDTypeDocument beanDoc : listDoc) {
+            addTypeDocument(handler, beanDoc, version, atts);
          }
 
          handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, "RCND");
@@ -99,37 +102,30 @@ public class DataManagementInterfaceImpl implements DataManagementInterface {
 
    /**
     * @param handler
-    * @param rndTypeDocument
+    * @param beanDoc
     * @param atts
     * @throws SAXException
     */
    private void addTypeDocument(TransformerHandler handler,
-         RNDTypeDocument rndTypeDocument, String version, AttributesImpl atts)
-         throws SAXException {
+         BeanRNDTypeDocument beanDoc, String version,
+         AttributesImpl atts) throws SAXException {
 
       atts.clear();
 
       handler.startElement(StringUtils.EMPTY, StringUtils.EMPTY,
             "TypeDocument", atts);
 
-      addElement(handler, "CodeRND", rndTypeDocument.get_reference(), atts);
+      addElement(handler, "CodeRND", beanDoc.getCodeRND(), atts);
 
-      String value = rndTypeDocument.get_refFonction();
-      String[] tabValues = rndTypeDocument.get_reference().split("\\.");
-      if (StringUtils.isNotBlank(value)) {
-         value = tabValues[0];
-      }
-      addElement(handler, "CodeFonction", value, atts);
+      addElement(handler, "CodeFonction", beanDoc.getCodeFonction(),
+            atts);
 
-      value = rndTypeDocument.get_refActivite();
-      if (StringUtils.isNotBlank(value)) {
-         value = tabValues[1];
-      }
-
-      addElement(handler, "CodeActivite", value, atts);
-      addElement(handler, "LibelleRND", rndTypeDocument.get_label(), atts);
-      addElement(handler, "DureeConservation", null, atts);
-      addElement(handler, "VersionRND", version, atts);
+      addElement(handler, "CodeActivite", beanDoc.getCodeActivite(),
+            atts);
+      addElement(handler, "LibelleRND", beanDoc.getCodeLibelle(), atts);
+      addElement(handler, "DureeConservation", beanDoc
+            .getDureeConservation(), atts);
+      addElement(handler, "VersionRND", beanDoc.getVersionRND(), atts);
 
       handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, "TypeDocument");
    }
@@ -143,21 +139,6 @@ public class DataManagementInterfaceImpl implements DataManagementInterface {
          handler.characters(tabValue, 0, tabValue.length);
       }
       handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, name);
-   }
-
-   /**
-    * @return the filePath
-    */
-   public String getFilePath() {
-      return filePath;
-   }
-
-   /**
-    * @param filePath
-    *           the filePath to set
-    */
-   public void setFilePath(String filePath) {
-      this.filePath = filePath;
    }
 
 }

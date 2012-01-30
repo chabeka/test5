@@ -15,16 +15,10 @@
       <property name="location" value="classpath:config.properties" />
    </bean>
 
-   <bean id="duplicationInterface"
-      class="fr.urssaf.image.sae.saetraitementsdivers.webservices.service.impl.DuplicationInterfaceImpl">
+   <bean id="beanConfig" class="fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanConfig">
+      <property name="savedFilePath" value="${savedFilePath}" />
       <property name="version" value="${version}" />
       <property name="url" value="${url}" />
    </bean>
-
-   <bean id="dataManagementInterface"
-      class="fr.urssaf.image.sae.saetraitementsdivers.webservices.service.impl.DataManagementInterfaceImpl">
-      <property name="filePath" value="${savedFilePath}" />
-   </bean>
-
 
 </beans>
