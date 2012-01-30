@@ -17,3 +17,7 @@ La classe Job3Test exécute ce job.
 job-4.xml : le job exécute plusieurs étapes dans un flux séquentiel
 
 La classe Job4Test exécute ce job.
+
+job-5.xml : le job exécute plusieurs étapes dans un flux avec des étapes en parallèle
+
+La classe Job5Test exécute ce job.

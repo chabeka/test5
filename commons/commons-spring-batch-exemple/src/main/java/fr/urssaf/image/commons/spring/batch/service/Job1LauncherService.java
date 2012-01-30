@@ -58,7 +58,7 @@ public class Job1LauncherService {
 
       } catch (JobParametersInvalidException e) {
 
-         throw new IllegalArgumentException(e.getMessage());
+         throw new IllegalArgumentException(e.getMessage(), e);
       }
 
       return jobExecution.getExitStatus().getExitCode();

@@ -23,9 +23,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-batch-test.xml",
-      "/jobs/job-3.xml" })
+      "/jobs/job-5.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
-public class Job3Test {
+public class Job5Test {
 
    @Autowired
    private JobLauncherTestUtils jobLauncher;
@@ -57,28 +57,41 @@ public class Job3Test {
       Collection<StepExecution> stepExecutions = jobExecution
             .getStepExecutions();
 
-      Assert.assertEquals("le nombre d'étapes exécutés est incorrect", 4,
+      Assert.assertEquals("le nombre d'étapes exécutés est incorrect", 5,
             stepExecutions.size());
 
-      StepExecution stepA = (StepExecution) CollectionUtils.get(stepExecutions,
-            0);
+      // StepExecution stepA = (StepExecution)
+      // CollectionUtils.get(stepExecutions,
+      // 0);
+      //
+      // Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepA",
+      // stepA.getStepName());
+      //
+      // StepExecution stepB = (StepExecution)
+      // CollectionUtils.get(stepExecutions,
+      // 1);
+      //
+      // Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepB",
+      // stepB.getStepName());
+      //
+      // StepExecution stepC = (StepExecution)
+      // CollectionUtils.get(stepExecutions,
+      // 2);
+      //
+      // Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepC",
+      // stepC.getStepName());
+      //
+      // StepExecution stepD = (StepExecution)
+      // CollectionUtils.get(stepExecutions,
+      // 3);
+      //
+      // Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepD",
+      // stepD.getStepName());
 
-      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepA", stepA.getStepName());
+      StepExecution stepE = (StepExecution) CollectionUtils.get(stepExecutions,
+            4);
 
-      StepExecution stepB = (StepExecution) CollectionUtils.get(stepExecutions,
-            1);
-
-      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepB", stepB.getStepName());
-
-      StepExecution stepD = (StepExecution) CollectionUtils.get(stepExecutions,
-            2);
-
-      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepD", stepD.getStepName());
-
-      StepExecution stepF = (StepExecution) CollectionUtils.get(stepExecutions,
-            3);
-
-      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepF", stepF.getStepName());
+      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "stepE", stepE.getStepName());
 
       Assert.assertEquals("la sortie du job est incorrecte", "COMPLETED",
             jobExecution.getExitStatus().getExitCode());

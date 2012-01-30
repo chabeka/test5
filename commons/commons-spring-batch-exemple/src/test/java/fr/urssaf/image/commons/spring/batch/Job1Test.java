@@ -60,6 +60,8 @@ public class Job1Test {
 
    }
 
+   private static final String STEP_FAILURE_MESSSAGE = "le nom de l'étape est incorrect";
+
    @Test
    public void jobExecution_success() {
 
@@ -79,7 +81,7 @@ public class Job1Test {
       StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
             0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "XMLtoFile", step1
+      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "XMLtoFile", step1
             .getStepName());
       Assert.assertEquals("le nombre d'items lus est incorrect", 10, step1
             .getReadCount());
@@ -92,7 +94,7 @@ public class Job1Test {
       StepExecution success = (StepExecution) CollectionUtils.get(
             stepExecutions, 1);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "success", success
+      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "success", success
             .getStepName());
 
       Assert.assertEquals("la sortie du job est incorrecte", "COMPLETED",
@@ -116,7 +118,7 @@ public class Job1Test {
       StepExecution step1 = (StepExecution) CollectionUtils.get(stepExecutions,
             0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "XMLtoFile", step1
+      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "XMLtoFile", step1
             .getStepName());
       Assert.assertEquals("le nombre d'items lus est incorrect", 10, step1
             .getReadCount());
@@ -144,7 +146,7 @@ public class Job1Test {
       StepExecution success = (StepExecution) CollectionUtils.get(
             stepExecutions, 0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "success", success
+      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "success", success
             .getStepName());
 
    }
@@ -164,7 +166,7 @@ public class Job1Test {
       StepExecution failure = (StepExecution) CollectionUtils.get(
             stepExecutions, 0);
 
-      Assert.assertEquals("le nom de l'étape est incorrect", "failure", failure
+      Assert.assertEquals(STEP_FAILURE_MESSSAGE, "failure", failure
             .getStepName());
 
    }
