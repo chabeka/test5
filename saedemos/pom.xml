@@ -12,7 +12,7 @@
    
    
    <properties>
-      <logback.version>0.9.30</logback.version>
+      
       <!-- Encodage de caractères -->
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       
@@ -42,6 +42,30 @@
       </dependency> 
       -->
       
+      <!-- 
+      ==========================================
+      SLF4J + Logback
+      
+      http://logback.qos.ch/
+      ==========================================
+      -->
+      <slf4j-api.version>1.6.4</slf4j-api.version>
+      <logback.version>1.0.0</logback.version>
+
+      
+      <!-- Modèle de dépendance :
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${slf4j-api.version}</version>
+      </dependency>
+      
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-classic</artifactId>
+         <version>${logback.version}</version>
+      </dependency>      
+      -->
       
       <!-- 
       ==========================================
@@ -68,7 +92,7 @@
       http://www.slf4j.org/
       ==========================================
       -->
-      <org.slf4j.version>1.6.1</org.slf4j.version>
+      <org.slf4j.version>1.6.4</org.slf4j.version>
       
       <!-- Modèle de dépendance :
       <dependency>
@@ -480,7 +504,8 @@
       <!-- Outils de lancement de tâches administratives sur DFCE -->
       <module>sae-dfce-admin</module>
       
-      <!-- Projet démo livré au PNR dans le cadre des premiers accrochages techniques Attestations<=>SAE -->
+      <!-- Projet démo livré au PNR dans le cadre des premiers accrochages techniques Attestations<=>SAE
+-->
       <module>sae-webservices-client-demo</module>
       
       <!-- Projet démo IHM web et authentification ANAIS -->
@@ -648,23 +673,18 @@
          <artifactId>log4j</artifactId>
          <version>${log4j.version}</version>
       </dependency>
-      <!-- Log back -->
+      <!-- SLF4J + Log back -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${slf4j-api.version}</version>
+      </dependency>
+      
       <dependency>
          <groupId>ch.qos.logback</groupId>
          <artifactId>logback-classic</artifactId>
          <version>${logback.version}</version>
-      </dependency>
-      <dependency>
-         <groupId>ch.qos.logback</groupId>
-         <artifactId>logback-core</artifactId>
-         <version>${logback.version}</version>
-      </dependency>
-      <!-- slf4j -->
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-         <version>${org.slf4j.version}</version>
-      </dependency>
+     </dependency>
    </dependencies>
 
 
