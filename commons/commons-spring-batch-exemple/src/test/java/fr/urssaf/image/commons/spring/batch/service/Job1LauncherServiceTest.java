@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-batch.xml",
-      "/applicationContext-item.xml", "/applicationContext-jobs.xml" })
+      "/applicationContext-item.xml", "/applicationContext-jobs.xml",
+      "/applicationContext-service-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class Job1LauncherServiceTest {
 

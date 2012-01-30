@@ -7,19 +7,10 @@
 
    <import resource="applicationContext-batch.xml" />
    <import resource="applicationContext-item.xml" />
+   <import resource="applicationContext-service-test.xml" />
 
    <bean id="launcher" class="org.springframework.batch.test.JobLauncherTestUtils" />
 
-   <bean id="processorService"
-      class="fr.urssaf.image.commons.spring.batch.service.ServiceMockFactory"
-      factory-method="createProcessorService" />
 
-   <bean id="readerService"
-      class="fr.urssaf.image.commons.spring.batch.service.ServiceMockFactory"
-      factory-method="createReaderService" />
-
-   <bean id="writerService"
-      class="fr.urssaf.image.commons.spring.batch.service.ServiceMockFactory"
-      factory-method="createWriterService" />
 
 </beans>

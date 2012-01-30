@@ -21,3 +21,7 @@ La classe Job4Test exécute ce job.
 job-5.xml : le job exécute plusieurs étapes dans un flux avec des étapes en parallèle
 
 La classe Job5Test exécute ce job.
+
+job-6.xml : le job exécute plusieurs avec skip-policy = AlwaysSkipItemSkipPolicy
+
+La classe Job6Test exécute ce job.
