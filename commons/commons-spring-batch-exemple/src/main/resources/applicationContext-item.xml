@@ -21,11 +21,13 @@
 
    <bean id="xmlWriter" scope="step"
       class="org.springframework.batch.item.xml.StaxEventItemWriter">
-      <property name="rootTagName" value="livres" />
+      <property name="rootTagName" value="bibliotheque" />
       <property name="resource"
          value="file:#{jobParameters['xml.output.location']}" />
       <property name="marshaller" ref="jaxb2Marshaller" />
       <property name="overwriteOutput" value="true" />
+      <property name="headerCallback" ref="XMLHeaderCallback" />
+      <property name="footerCallback" ref="XMLFooterCallback" />
    </bean>
 
    <!-- READER FILE -->
@@ -80,6 +82,8 @@
             </property>
          </bean>
       </property>
+      <property name="headerCallback" ref="fileCallback" />
+      <property name="footerCallback" ref="fileCallback" />
    </bean>
 
    <!-- JAXB2 MARSHALLER -->
