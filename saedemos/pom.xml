@@ -492,7 +492,8 @@
       <module>sae-packaging</module>
       <module>sae-storage-bouchon</module>
       
-      
+      <!-- traitement de données divers pour le sae -->
+      <module>sae-traitements-divers</module>
    </modules>
    
    
