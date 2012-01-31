@@ -1,12 +1,15 @@
 package fr.urssaf.image.commons.spring.batch;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.easymock.EasyMock;
 import org.junit.After;
@@ -49,12 +52,24 @@ public class Job6Test {
    @Autowired
    private ReaderService readerService;
 
+   private static final File TMP_FILE;
+
+   static {
+
+      TMP_FILE = SystemUtils.getJavaIoTmpDir();
+
+   }
+
    @Before
    public void before() {
+
+      String output = FilenameUtils.concat(TMP_FILE.getAbsolutePath(),
+            "batch-exemple/livres_skip.txt");
 
       Map<String, JobParameter> parameters = new HashMap<String, JobParameter>();
       parameters.put("id", new JobParameter(ObjectUtils.toString(UUID
             .randomUUID())));
+      parameters.put("file.output.location", new JobParameter(output));
       jobParameters = new JobParameters(parameters);
 
    }
