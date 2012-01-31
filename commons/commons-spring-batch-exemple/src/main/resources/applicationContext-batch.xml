@@ -9,7 +9,9 @@
 
    <context:component-scan base-package="fr.urssaf.image.commons.spring.batch">
       <context:exclude-filter type="regex"
-         expression="fr.urssaf.image.commons.spring.batch.service.*" />
+         expression="fr.urssaf.image.commons.spring.batch.launcher.*" />
+      <context:exclude-filter type="regex"
+         expression="fr.urssaf.image.commons.spring.batch.operator.*" />
    </context:component-scan>
 
    <bean id="jobRepository"

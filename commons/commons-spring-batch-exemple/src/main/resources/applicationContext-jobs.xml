@@ -8,12 +8,14 @@
          http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
    <context:component-scan
-      base-package="fr.urssaf.image.commons.spring.batch.service" />
+      base-package="fr.urssaf.image.commons.spring.batch.launcher" />
 
    <import resource="jobs/job-1.xml" />
    <import resource="jobs/job-2.xml" />
    <import resource="jobs/job-3.xml" />
    <import resource="jobs/job-4.xml" />
    <import resource="jobs/job-5.xml" />
+   <import resource="jobs/job-6.xml" />
+   <import resource="jobs/job-7.xml" />
 
 </beans>

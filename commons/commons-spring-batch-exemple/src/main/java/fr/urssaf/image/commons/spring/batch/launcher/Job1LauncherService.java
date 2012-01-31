@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.spring.batch.service;
+package fr.urssaf.image.commons.spring.batch.launcher;
 
 import java.io.File;
 import java.util.HashMap;
