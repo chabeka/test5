@@ -50,6 +50,7 @@
       <module>../commons-jmx-spring-exemple</module>
       <module>../commons-junit-spring3-exemple</module>
       <module>../commons-spring-batch-exemple</module>
+      <module>../commons-logback-exemple</module>
    </modules>
 
    <build>
