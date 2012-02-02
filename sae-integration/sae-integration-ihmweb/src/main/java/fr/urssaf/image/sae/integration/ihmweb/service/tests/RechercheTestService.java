@@ -154,6 +154,8 @@ public class RechercheTestService {
     *           le nombre de résultats attendus, ou null si pas de vérif
     * @param flagResultatsTronquesAttendu
     *           le flag attendu, ou null si pas de verif
+    * @param tri
+    *           à effectuer sur la recherche
     * @return la réponse de l'opération "recherche", ou null si une exception
     *         s'est produite
     */

@@ -3,7 +3,10 @@
  */
 package fr.urssaf.image.sae.integration.ihmweb.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import fr.urssaf.image.sae.integration.ihmweb.controller.components.EcdeTestDisplayed;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ListeCasDeTestFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeTests;
@@ -24,6 +28,8 @@ import fr.urssaf.image.sae.integration.ihmweb.service.ecde.file.EcdeTestInterfac
 @Controller
 @RequestMapping(value = "listeCasDeTest")
 public class ListeCasDeTestController {
+
+   private static final String ECDE_LIST = "ecdeListe";
 
    @Autowired
    private EcdeTests ecdeTests;
@@ -110,11 +116,23 @@ public class ListeCasDeTestController {
     */
    @RequestMapping(method = RequestMethod.POST, params = { "action=generate" })
    public final String generateListeEcdeSources(Model model,
-         ListeCasDeTestFormulaire form, BindingResult errors) throws Exception {
+         HttpSession session, ListeCasDeTestFormulaire form,
+         BindingResult errors) throws Exception {
 
       ecdeTestInterface.generateFile(form.getEcdeTests().getListTests());
 
       ecdeTests.setListTests(form.getEcdeTests().getListTests());
+
+      List<EcdeTestDisplayed> testDisplayeds = new ArrayList<EcdeTestDisplayed>();
+
+      EcdeTestDisplayed testDisplayed;
+      for (EcdeTest ecdeTest : ecdeTests.getListTests()) {
+         testDisplayed = new EcdeTestDisplayed(ecdeTest);
+         testDisplayed.setChecked(true);
+         testDisplayeds.add(testDisplayed);
+      }
+
+      session.getServletContext().setAttribute(ECDE_LIST, testDisplayeds);
 
       model.addAttribute("formulaire", form);
 

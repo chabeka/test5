@@ -80,8 +80,8 @@ public class TestInjectionController {
     */
    @ResponseBody
    @RequestMapping(method = RequestMethod.GET, params = "action=getList")
-   public final 
-   HashMap<String, Object> loadTable(Model model, HttpSession session) {
+   public final HashMap<String, Object> loadTable(Model model,
+         HttpSession session) {
 
       List<EcdeTestDisplayed> testDisplayeds = (List<EcdeTestDisplayed>) session
             .getServletContext().getAttribute(ECDE_LIST);

@@ -122,7 +122,7 @@ public class Test273Controller extends
 
       ErreurType error = new ErreurType();
       error.setCode("SAE-CA-BUL003");
-      error.setLibelle("La capture de masse en mode \"Tout ou rien\" "
+      error.setLibelle("La capture de masse en mode 'Tout ou rien' "
             + "a été interrompue. " + "Une procédure d'exploitation "
             + "a été initialisée pour supprimer les données qui "
             + "auraient pu être stockées.");
@@ -134,15 +134,16 @@ public class Test273Controller extends
       documentType.setErreurs(errorList);
 
       getCaptureMasseTestService().testResultatsTdmReponseKOAttendue(
-            captureMasseResultat, WAITED_COUNT, documentType, WAITED_COUNT);
+            captureMasseResultat, WAITED_COUNT, documentType);
 
    }
 
    private void etape3Recherche(RechercheFormulaire formulaire,
          String urlWebService) {
 
-      getRechercheTestService().appelWsOpRechercheReponseCorrecteAttendue(
-            urlWebService, formulaire, 0, false, null);
+      getRechercheTestService().appelWsOpRechercheTestLibre(urlWebService,
+            formulaire);
+      formulaire.getResultats().setStatus(TestStatusEnum.AControler);
 
    }
 

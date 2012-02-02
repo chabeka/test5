@@ -32,7 +32,7 @@ public class Test270Controller extends
    /**
     * 
     */
-   private static final int WAITED_COUNT = 2000;
+   private static final int WAITED_COUNT = 3000;
    /**
     * URL du répertoire contenant les fichiers de données
     */

@@ -60,6 +60,19 @@ public class Test301Controller extends
 
       // Pas de métadonnées spécifiques à récupérer
       CodeMetadonneeList codesMeta = new CodeMetadonneeList();
+      codesMeta.add("CodeOrganismeGestionnaire");
+      codesMeta.add("CodeOrganismeProprietaire");
+      codesMeta.add("CodeRND");
+      codesMeta.add("ContratDeService");
+      codesMeta.add("DateArchivage");
+      codesMeta.add("DateCreation");
+      codesMeta.add("DateReception");
+      codesMeta.add("FormatFichier");
+      codesMeta.add("Hash");
+      codesMeta.add("NomFichier");
+      codesMeta.add("TailleFichier");
+      codesMeta.add("Titre");
+      codesMeta.add("NumeroRecours");
       formRecherche.setCodeMetadonnees(codesMeta);
 
       return formulaire;

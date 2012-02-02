@@ -40,7 +40,6 @@ import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.WsTestList
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplLibre;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSansSoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSoapFault;
-import fr.urssaf.image.sae.integration.ihmweb.utils.Base64Utils;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 
 /**
@@ -60,6 +59,16 @@ import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
  */
 @Service
 public class CaptureMasseTestService {
+
+   /**
+    * 
+    */
+   private static final int WAITING_TIME = 1001;
+
+   /**
+    * 
+    */
+   private static final int MAX_LOOP = 10;
 
    @Autowired
    private ReferentielSoapFaultService refSoapFault;
@@ -219,8 +228,8 @@ public class CaptureMasseTestService {
 
       try {
          int i = 0;
-         while (!file.exists() && i < 10) {
-            Thread.sleep(1001);
+         while (!file.exists() && i < MAX_LOOP) {
+            Thread.sleep(WAITING_TIME);
             i++;
          }
       } catch (InterruptedException e) {
@@ -286,6 +295,10 @@ public class CaptureMasseTestService {
     *           adresse du WS
     * @param formulaire
     *           formulaire affiché
+    * @param soapFault
+    *           code erreur attendue
+    * @param args
+    *           arguments de la soapFault
     */
    public final void appelWsOpArchiMasseSoapFaultAttendue(String urlWebService,
          CaptureMasseFormulaire formulaire, String soapFault, String[] args) {
@@ -443,6 +456,32 @@ public class CaptureMasseTestService {
          CaptureMasseResultatFormulaire formulaire, int notIntegratedDocuments,
          NonIntegratedDocumentType documentType, int index) {
 
+      processReponseKoAttendue(formulaire, notIntegratedDocuments,
+            documentType, index);
+   }
+
+   /**
+    * Regarde les résultats d'un traitement de masse. Recherche l'erreur donnée
+    * dans l'ensemble des résultats
+    * 
+    * @param formulaire
+    *           le formulaire
+    * @param notIntegratedDocuments
+    *           le nombre de documents non intégrés attendu
+    * @param documentType
+    *           erreur attendue pour le document donné
+    */
+   public final void testResultatsTdmReponseKOAttendue(
+         CaptureMasseResultatFormulaire formulaire, int notIntegratedDocuments,
+         NonIntegratedDocumentType documentType) {
+
+      processReponseKoAttendue(formulaire, notIntegratedDocuments,
+            documentType, Integer.MIN_VALUE);
+   }
+
+   private void processReponseKoAttendue(
+         CaptureMasseResultatFormulaire formulaire, int notIntegratedDocuments,
+         NonIntegratedDocumentType documentType, int index) {
       boolean fileExists = fileResultatExists(formulaire);
 
       if (fileExists) {
@@ -475,9 +514,15 @@ public class CaptureMasseTestService {
             log
                   .appendLogLn("Aucun document non intégré listé ou index de document erroné");
          } else {
-            findNonIntegratedDocument(formulaire, documentType, objResultatXml
-                  .getNonIntegratedDocuments().getNonIntegratedDocument(),
-                  index);
+            if (Integer.MIN_VALUE != index) {
+               findNonIntegratedDocument(formulaire, documentType,
+                     objResultatXml.getNonIntegratedDocuments()
+                           .getNonIntegratedDocument(), index);
+            } else {
+               findNonIntegratedDocument(formulaire, documentType.getErreurs()
+                     .getErreur().get(0), objResultatXml
+                     .getNonIntegratedDocuments().getNonIntegratedDocument());
+            }
          }
 
       }
@@ -640,8 +685,13 @@ public class CaptureMasseTestService {
 
    /**
     * @param formulaire
+    *           formulaire affiché
     * @param documentType
+    *           erreur attendue
     * @param nonIntegratedDocument
+    *           liste des documents non intégrée
+    * @param index
+    *           n° de document où doit se trouver l'erreur.
     */
    private void findNonIntegratedDocument(
          CaptureMasseResultatFormulaire formulaire,
@@ -748,6 +798,71 @@ public class CaptureMasseTestService {
       }
 
       return fichierFlagPresent;
+   }
+
+   /**
+    * Recherche une erreur donnée dans l'ensemble du fichier de résultat
+    * 
+    * @param formulaire
+    *           formulaire affiché
+    * @param erreurType
+    *           erreur recherchée
+    * @param nonIntegratedDocument
+    *           liste documents non intégrés
+    */
+   private void findNonIntegratedDocument(
+         CaptureMasseResultatFormulaire formulaire, ErreurType erreurType,
+         List<NonIntegratedDocumentType> nonIntegratedDocument) {
+
+      boolean errorFound = false;
+      int i = 0;
+      int j = 0;
+      NonIntegratedDocumentType currentNid;
+      List<ErreurType> listErrors;
+      ErreurType currentError;
+
+      while (!errorFound && i < nonIntegratedDocument.size()) {
+
+         currentNid = nonIntegratedDocument.get(i);
+
+         if (currentNid.getErreurs() != null
+               && currentNid.getErreurs().getErreur() != null) {
+            j = 0;
+            listErrors = currentNid.getErreurs().getErreur();
+
+            while (!errorFound && j < listErrors.size()) {
+               currentError = listErrors.get(j);
+
+               if (currentError != null
+                     && erreurType.getCode().equals(currentError.getCode())
+                     && erreurType.getLibelle().equals(
+                           currentError.getLibelle())) {
+                  errorFound = true;
+               }
+
+               j++;
+
+            }
+
+         }
+
+         i++;
+      }
+
+      ResultatTestLog log = formulaire.getResultats().getLog();
+      if (!errorFound) {
+         log
+               .appendLogLn("Aucun des enregistrements ne contient l'erreur souhaitée :");
+         log.appendLogLn("code : " + erreurType.getCode());
+         log.appendLogLn("libellé : " + erreurType.getLibelle());
+         formulaire.getResultats().setStatus(TestStatusEnum.Echec);
+      } else {
+         log
+               .appendLogLn("L'erreur a bien été retrouvée dans le fichier de résultat");
+         log.appendLogLn("code : " + erreurType.getCode());
+         log.appendLogLn("libellé : " + erreurType.getLibelle());
+         formulaire.getResultats().setStatus(TestStatusEnum.Succes);
+      }
    }
 
    /**
