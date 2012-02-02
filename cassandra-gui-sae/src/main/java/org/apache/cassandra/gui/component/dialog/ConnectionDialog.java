@@ -28,6 +28,8 @@ public class ConnectionDialog extends JDialog {
     private JTextField hostText = new JTextField();
     private JTextField thriftPortText = new JTextField();
     private JTextField jmxPortTextField = new JTextField();
+    private JTextField usernameTextField = new JTextField();
+    private JPasswordField passwordField = new JPasswordField();
 
     public ConnectionDialog(JFrame owner){
         super(owner);
@@ -38,14 +40,20 @@ public class ConnectionDialog extends JDialog {
         hostText.addActionListener(new EnterAction());
         thriftPortText.addActionListener(new EnterAction());
         jmxPortTextField.addActionListener(new EnterAction());
+        usernameTextField.addActionListener(new EnterAction());
+        passwordField.addActionListener(new EnterAction());
 
-        JPanel inputPanel = new JPanel(new GridLayout(3, 2));
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2));
         inputPanel.add(new JLabel("Host:"));
         inputPanel.add(hostText);
         inputPanel.add(new JLabel("Thrift Port:"));
         inputPanel.add(thriftPortText);
         inputPanel.add(new JLabel("JMX Port:"));
         inputPanel.add(jmxPortTextField);
+        inputPanel.add(new JLabel("username (optional):"));
+        inputPanel.add(usernameTextField);
+        inputPanel.add(new JLabel("password (optional):"));
+        inputPanel.add(passwordField);
 
         ok.addActionListener(new ActionListener() {
             @Override
@@ -99,7 +107,17 @@ public class ConnectionDialog extends JDialog {
                     Client.DEFAULT_JMX_PORT :
                     Integer.valueOf(jmxPortTextField.getText());
 
-        client = new Client(host, thriftPort, jmxPort);
+      String username = null;
+      if (!usernameTextField.getText().isEmpty()) {
+         username = usernameTextField.getText();
+      }
+
+      String password = null;
+      if (!passwordField.getText().isEmpty()) {
+         password = passwordField.getText();
+      }
+
+      client = new Client(host, thriftPort, jmxPort, username, password);
         try {
             client.connect();
         } catch (Exception e1) {

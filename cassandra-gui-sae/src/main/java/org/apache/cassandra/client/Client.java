@@ -31,6 +31,10 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.apache.cassandra.auth.SimpleAuthenticator;
+import org.apache.cassandra.thrift.AuthenticationException;
+import org.apache.cassandra.thrift.AuthenticationRequest;
+import org.apache.cassandra.thrift.AuthorizationException;
 
 /**
  * Client class to interact with Cassandara cluster
@@ -72,10 +76,13 @@ public class Client {
     private String host;
     private int thriftPort;
     private int jmxPort;
+    private String username;
+    private String password;
 
     private String keyspace;
     private String columnFamily;
     private boolean superColumn;
+    private Map<String,Boolean> authenticateStatus;
 
     public Client() {
         this(DEFAULT_THRIFT_HOST, DEFAULT_THRIFT_PORT, DEFAULT_JMX_PORT);
@@ -85,11 +92,69 @@ public class Client {
         this(host, DEFAULT_THRIFT_PORT, DEFAULT_JMX_PORT);
     }
 
-    public Client(String host, int thriftPort, int jmxPort) {
-        this.host = host;
-        this.thriftPort = thriftPort;
-        this.jmxPort = jmxPort;
-    }
+   public Client(String host, int thriftPort, int jmxPort) {
+      this(host, thriftPort, jmxPort, null, null);
+   }
+
+   public Client(String host, int thriftPort, int jmxPort, String username,
+         String password) {
+      this.host = host;
+      this.thriftPort = thriftPort;
+      this.jmxPort = jmxPort;
+      this.username = username;
+      this.password = password;
+      authenticateStatus = new java.util.HashMap<String, Boolean>();
+   }
+   
+   
+   private void authenticateToKeyspace() {
+      // System.err.println("authenticateToKeyspace");
+      if (!authenticateStatus.containsKey(this.keyspace)) {
+         // System.err.println("no tries");
+         if (client != null) {
+            // System.err.println("client not null");
+
+//            if ((this.username != null) && (this.password != null)
+//                  && (this.keyspace != null)) {
+            
+            if ((this.username != null) && (this.password != null)
+                  ) {
+            
+               // Authenticate
+               Map<String, String> credentials = new java.util.HashMap<String, String>();
+               credentials.put(SimpleAuthenticator.USERNAME_KEY, this.username);
+               credentials.put(SimpleAuthenticator.PASSWORD_KEY, this.password);
+               AuthenticationRequest authRequest = new AuthenticationRequest(
+                     credentials);
+               try {
+                  // client.login(this.keyspace, authRequest);
+                  client.login(authRequest);
+                  
+               } catch (AuthenticationException e) {
+                  System.err
+                        .println("Exception during authentication to the cassandra node, "
+                              + "verify you are using correct credentials.");
+                  authenticateStatus.put(username, Boolean.valueOf(false));
+                  return;
+               } catch (AuthorizationException e) {
+                  System.err.println("You are not authorized to use keyspace: "
+                        + this.keyspace);
+                  authenticateStatus.put(username, Boolean.valueOf(false));
+                  return;
+               } catch (TException e) {
+                  e.printStackTrace();
+                  System.err.println("Login failure.  keyspace:"
+                        + this.keyspace + ",username: " + this.username
+                        + ", password:" + this.password);
+                  return;
+               }
+               // System.err.println("Authenticated");
+               authenticateStatus.put(username, Boolean.valueOf(true));
+            }
+         }
+      }
+   }
+      
 
     public void connect()
             throws TTransportException, IOException, InterruptedException {
@@ -98,7 +163,8 @@ public class Client {
             transport = new TFramedTransport(new TSocket(host, thriftPort));
             protocol = new TBinaryProtocol(transport);
             client = new Cassandra.Client(protocol);
-            probe = new NodeProbe(host, jmxPort);
+            // probe = new NodeProbe(host, jmxPort);
+            probe = new NodeProbe(host, jmxPort, username, password);
             transport.open();
             connected = true;
         }
@@ -156,6 +222,7 @@ public class Client {
     public List<TokenRange> describeRing(String keyspace)
             throws TException, InvalidRequestException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         return client.describe_ring(keyspace);
     }
 
@@ -213,7 +280,16 @@ public class Client {
 
     public List<KsDef> getKeyspaces()
             throws TException, InvalidRequestException {
-        return client.describe_keyspaces();
+       try { 
+          authenticateToKeyspace();
+          return client.describe_keyspaces();
+       } catch (TException ex) {
+          throw ex ;
+       } catch (InvalidRequestException ex) {
+          throw ex ;
+       } catch (RuntimeException ex) {
+          throw ex ;
+       }
     }
 
     public KsDef describeKeyspace(String keyspaceName)
@@ -480,6 +556,7 @@ public class Client {
     public Map<String, String> getColumnFamily(String keyspace, String columnFamily)
             throws NotFoundException, TException, InvalidRequestException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         for (Iterator<CfDef> cfIterator = client.describe_keyspace(keyspace).getCf_defsIterator(); cfIterator.hasNext();) {
@@ -550,6 +627,7 @@ public class Client {
     public Set<String> getColumnFamilys(String keyspace)
             throws NotFoundException, TException, InvalidRequestException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
 
         Set<String> s = new TreeSet<String>();
 
@@ -563,6 +641,7 @@ public class Client {
     public int countColumnsRecord(String keyspace, String columnFamily, String key)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         ColumnParent colParent = new ColumnParent(columnFamily);
@@ -573,6 +652,7 @@ public class Client {
     public int countSuperColumnsRecord(String keyspace, String columnFamily, String superColumn, String key)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         ColumnParent colParent = new ColumnParent(columnFamily);
@@ -589,6 +669,7 @@ public class Client {
                              String value)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException, UnsupportedEncodingException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         ColumnParent parent;
@@ -614,6 +695,7 @@ public class Client {
     public void removeKey(String keyspace, String columnFamily, String key)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         ColumnPath colPath = new ColumnPath(columnFamily);
@@ -625,7 +707,9 @@ public class Client {
 
     public void removeSuperColumn(String keyspace, String columnFamily, String key, String superColumn)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException {
-        ColumnPath colPath = new ColumnPath(columnFamily);
+       this.keyspace = keyspace;
+       authenticateToKeyspace(); 
+       ColumnPath colPath = new ColumnPath(columnFamily);
         colPath.setSuper_column(superColumn.getBytes());
         long timestamp = System.currentTimeMillis() * 1000;
 
@@ -636,6 +720,7 @@ public class Client {
     public void removeColumn(String keyspace, String columnFamily, String key, String column)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         ColumnPath colPath = new ColumnPath(columnFamily);
@@ -649,6 +734,7 @@ public class Client {
     public void removeColumn(String keyspace, String columnFamily, String key, String superColumn, String column)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         ColumnPath colPath = new ColumnPath(columnFamily);
@@ -663,6 +749,7 @@ public class Client {
     public Map<String, Key> getKey(String keyspace, String columnFamily, String superColumn, String key)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException, UnsupportedEncodingException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         Map<String, Key> m = new TreeMap<String, Key>();
@@ -719,6 +806,7 @@ public class Client {
     public Map<String, Key> listKeyAndValues(String keyspace, String columnFamily, String startKey, String endKey, int rows)
             throws InvalidRequestException, UnavailableException, TimedOutException, TException, UnsupportedEncodingException {
         this.keyspace = keyspace;
+        authenticateToKeyspace();
         this.columnFamily = columnFamily;
 
         Map<String, Key> m = new TreeMap<String, Key>();
