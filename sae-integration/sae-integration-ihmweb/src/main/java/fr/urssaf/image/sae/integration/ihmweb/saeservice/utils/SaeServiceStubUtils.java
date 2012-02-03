@@ -1,10 +1,15 @@
 package fr.urssaf.image.sae.integration.ihmweb.saeservice.utils;
 
+import java.util.List;
+
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
+import org.apache.axis2.engine.AxisConfiguration;
+import org.apache.axis2.engine.Phase;
 
 import fr.urssaf.image.sae.integration.ihmweb.exception.IntegrationRuntimeException;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.security.LogInMessageHandler;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.security.VIHandler;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 
@@ -17,6 +22,7 @@ public final class SaeServiceStubUtils {
 
    }
 
+   
    /**
     * Renvoie le stub du service web, branché sur l'URL fournie en argument, et
     * configuré pour ajouter à l'en-tête SOAP le VI contenu dans le fichier de
@@ -34,22 +40,40 @@ public final class SaeServiceStubUtils {
 
       try {
 
-         ConfigurationContext configContext = ConfigurationContextFactory
-               .createBasicConfigurationContext("axis2-sae-integration-ihmweb.xml");
-
+         // Création d'une configuration Axis2 par défaut
+         ConfigurationContext configContext = 
+            ConfigurationContextFactory.createConfigurationContextFromFileSystem(null , null) ;
+         
+         // ----------------------------------------------
+         // Gestion du VI + Log du message SOAP de request
+         // ----------------------------------------------
+         
+         // 1) Ajout d'une propriété dans laquelle on met le nom du fichier de VI
+         //    à inclure dans le message SOAP. L'inclusion sera faite dans un handler
          configContext.setProperty(VIHandler.PROP_FICHIER_VI, ficRessourceVi);
-
+         
+         // 2) Ajout d'un Handler lors de la phase "MessageOut" pour insérer le VI
+         AxisConfiguration axisConfig = configContext.getAxisConfiguration();
+         List<Phase> outFlowPhases = axisConfig.getOutFlowPhases();
+         Phase messageOut = findPhaseByName(outFlowPhases,"MessageOut");
+         messageOut.addHandler(new VIHandler());
+         
+         
+         // ----------------------------------------------
+         // Log du message SOAP de response
+         // ----------------------------------------------
+         
+         List<Phase> inFlowPhases = axisConfig.getInFlowPhases();
+         Phase dispatch = findPhaseByName(inFlowPhases,"Dispatch");
+         dispatch.addHandler(new LogInMessageHandler());
+         
+         
+         
+         // Création du Stub
          SaeServiceStub service = new SaeServiceStub(configContext,
                urlServiceWeb);
          
-         // TODO : Pouvoir paramétrer le timeout
-         // Options options = service._getServiceClient().getOptions();
-         // options.setTimeOutInMilliSeconds(120000);
-         // service._getServiceClient().setOptions(options);
-         //         
-         // System.out.println("Timeout en ms : " +
-         // service._getServiceClient().getOptions().getTimeOutInMilliSeconds());
-
+         // Renvoie du Stub
          return service;
 
       } catch (Exception e) {
@@ -82,6 +106,23 @@ public final class SaeServiceStubUtils {
     */
    public static SaeServiceStub getServiceStubAvecViOk(String urlServiceWeb) {
       return getServiceStub(urlServiceWeb, ViUtils.FIC_VI_OK);
+   }
+   
+   
+   
+   private static Phase findPhaseByName(List<Phase> phases, String nomPhaseRecherchee) {
+      
+      Phase result = null;
+      
+      for(Phase phase: phases) {
+         if (phase.getName().equals(nomPhaseRecherchee)) {
+            result = phase;
+            break;
+         }
+      }
+      
+      return result;
+      
    }
 
 }

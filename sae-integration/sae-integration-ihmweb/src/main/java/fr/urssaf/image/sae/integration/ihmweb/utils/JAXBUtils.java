@@ -58,8 +58,10 @@ public final class JAXBUtils {
 
       // Affectation du schéma XSD si spécifié
       if (xsdSchema != null) {
-         SchemaFactory schemaFactory = SchemaFactory
-               .newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//         SchemaFactory schemaFactory = SchemaFactory
+//               .newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+         SchemaFactory schemaFactory = SchemaFactory.newInstance(
+               "http://www.w3.org/2001/XMLSchema");
          Schema schema = schemaFactory.newSchema(xsdSchema);
          marshaller.setSchema(schema);
       }
@@ -107,8 +109,10 @@ public final class JAXBUtils {
 
       // Affectation du schéma XSD si spécifié
       if (xsdSchema != null) {
-         SchemaFactory schemaFactory = SchemaFactory
-               .newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//         SchemaFactory schemaFactory = SchemaFactory
+//               .newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+         SchemaFactory schemaFactory = SchemaFactory.newInstance(
+               "http://www.w3.org/2001/XMLSchema");
          Schema schema = schemaFactory.newSchema(xsdSchema);
          unmarshaller.setSchema(schema);
       }
