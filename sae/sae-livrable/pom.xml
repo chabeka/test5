@@ -27,13 +27,12 @@
                   <id>make-assembly-targ-z</id>
                   <phase>package</phase>
                   <goals>
-                     <goal>single</goal>
+                     <goal>attached</goal>
                   </goals>
                   <configuration>
-                     <finalname>data_sae</finalname>
-                     <descriptors>
-                        <descriptor>src/assembly/config_tar-gz.xml</descriptor>
-                     </descriptors>
+                        <descriptors>
+                            <descriptor>src/assembly/config_tar-gz.xml</descriptor>
+                        </descriptors>
                   </configuration>
                </execution>
             </executions>
@@ -49,7 +48,9 @@
                      <goal>attached</goal>
                   </goals>
                   <configuration>
-                     <descriptor>src/assembly/config_assembly.xml</descriptor>
+                     <descriptors>
+                        <descriptor>src/assembly/config_assembly.xml</descriptor>
+                     </descriptors>   
                   </configuration>
                </execution>
             </executions>
