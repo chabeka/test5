@@ -780,6 +780,24 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
+         
+         <CasTest>
+            <id>452</id>
+            <code>452-Consultation-KO-MetadonneeConsultInexistante</code>
+            <description>
+               On vérifie que la bonne erreur est renvoyée lorsque des métadonnées demandées à la consultation n'existent pas dans le référentiel des métadonnées
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+         
+         <CasTest>
+            <id>453</id>
+            <code>453-Consultation-KO-MetadonneeConsultNonAutorisee</code>
+            <description>
+               On vérifie que la bonne erreur est renvoyée lorsque des métadonnées demandées à la consultation ne sont pas consultables
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
 
       </CasTests>
 
