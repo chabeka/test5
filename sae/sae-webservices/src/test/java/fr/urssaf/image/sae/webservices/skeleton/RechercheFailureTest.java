@@ -19,11 +19,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.Recherche;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
-import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToConsultEx;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToSearchEx;
 import fr.urssaf.image.sae.services.exception.search.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
-import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
 import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;

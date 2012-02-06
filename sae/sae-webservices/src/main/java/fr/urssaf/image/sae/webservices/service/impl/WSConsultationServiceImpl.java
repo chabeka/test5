@@ -12,11 +12,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.cirtil.www.saeservice.Consultation;
+import fr.cirtil.www.saeservice.ConsultationRequestType;
 import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.services.consultation.model.ConsultParams;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
@@ -50,15 +54,32 @@ public class WSConsultationServiceImpl implements WSConsultationService {
       LOG.debug("{} - Début", prefixeTrc);
       UUID uuid = UUID.fromString(request.getConsultation().getIdArchive()
             .getUuidType());
-      LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,uuid);
+      LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,
+            uuid);
       try {
-         UntypedDocument untypedDocument = saeService.consultation(uuid);
+
+         List<String> listDatas = null;
+         ConsultationRequestType consultation = request.getConsultation();
+
+         if (consultation.getMetadonnees() != null) {
+
+            listDatas = ObjectTypeFactory.buildMetaCodeFromWS(consultation
+                  .getMetadonnees());
+         }
+
+         // ObjectTypeFactory.buildMetaCodeFromWS(request.getConsultation()
+         // .getMetadonnees().getMetadonneeCode());
+
+         ConsultParams consultParams = new ConsultParams(uuid, listDatas);
+
+         UntypedDocument untypedDocument = saeService
+               .consultation(consultParams);
 
          if (untypedDocument == null) {
             LOG
                   .debug(
                         "{} - L'archive demandée n'a pas été retrouvée dans le SAE ({})",
-                        prefixeTrc,uuid);
+                        prefixeTrc, uuid);
             throw new ConsultationAxisFault(
                   "Il n'existe aucun document pour l'identifiant d'archivage '"
                         + uuid + "'", "ArchiveNonTrouvee");
@@ -82,7 +103,7 @@ public class WSConsultationServiceImpl implements WSConsultationService {
             }
 
             byte[] content = untypedDocument.getContent();
-            //Trace à activer pour afficher le résultat de la consultation
+            // Trace à activer pour afficher le résultat de la consultation
             // LOG
             // .debug(
             // "{} - Valeur de retour le contenue du document ({}) et la liste des métadonnés ({})",
@@ -99,6 +120,13 @@ public class WSConsultationServiceImpl implements WSConsultationService {
          // Fin des traces debug - sortie méthode
       } catch (SAEConsultationServiceException e) {
          throw new ConsultationAxisFault(e);
+      
+      } catch (UnknownDesiredMetadataEx e) {
+         throw new ConsultationAxisFault(e.getMessage(),
+               "ConsultationMetadonneesInexistante", e);
+      } catch (MetaDataUnauthorizedToConsultEx e) {
+         throw new ConsultationAxisFault(e.getMessage(),
+               "ConsultationMetadonneesNonAutorisees", e);
       }
 
       return response;

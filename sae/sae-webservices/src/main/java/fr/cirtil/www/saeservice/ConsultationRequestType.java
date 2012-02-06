@@ -63,6 +63,50 @@ public class ConsultationRequestType
                                }
                             
 
+                        /**
+                        * field for Metadonnees
+                        */
+
+                        
+                                    protected fr.cirtil.www.saeservice.ListeMetadonneeCodeType localMetadonnees ;
+                                
+                           /*  This tracker boolean wil be used to detect whether the user called the set method
+                          *   for this attribute. It will be used to determine whether to include this field
+                           *   in the serialized XML
+                           */
+                           protected boolean localMetadonneesTracker = false ;
+                           
+
+                           /**
+                           * Auto generated getter method
+                           * @return fr.cirtil.www.saeservice.ListeMetadonneeCodeType
+                           */
+                           public  fr.cirtil.www.saeservice.ListeMetadonneeCodeType getMetadonnees(){
+                               return localMetadonnees;
+                           }
+
+                           
+                        
+                            /**
+                               * Auto generated setter method
+                               * @param param Metadonnees
+                               */
+                               public void setMetadonnees(fr.cirtil.www.saeservice.ListeMetadonneeCodeType param){
+                            
+                                       if (param != null){
+                                          //update the setting tracker
+                                          localMetadonneesTracker = true;
+                                       } else {
+                                          localMetadonneesTracker = false;
+                                              
+                                       }
+                                   
+                                            this.localMetadonnees=param;
+                                    
+
+                               }
+                            
+
      /**
      * isReaderMTOMAware
      * @return true if the reader supports MTOM
@@ -165,7 +209,13 @@ public class ConsultationRequestType
                                             }
                                            localIdArchive.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","idArchive"),
                                                factory,xmlWriter);
-                                        
+                                         if (localMetadonneesTracker){
+                                            if (localMetadonnees==null){
+                                                 throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
+                                            }
+                                           localMetadonnees.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonnees"),
+                                               factory,xmlWriter);
+                                        }
                     xmlWriter.writeEndElement();
                
 
@@ -336,7 +386,16 @@ public class ConsultationRequestType
                                          throw new org.apache.axis2.databinding.ADBException("idArchive cannot be null!!");
                                     }
                                     elementList.add(localIdArchive);
-                                
+                                 if (localMetadonneesTracker){
+                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
+                                                                      "metadonnees"));
+                            
+                            
+                                    if (localMetadonnees==null){
+                                         throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
+                                    }
+                                    elementList.add(localMetadonnees);
+                                }
 
                 return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(qName, elementList.toArray(), attribList.toArray());
             
@@ -427,7 +486,22 @@ public class ConsultationRequestType
                                     // A start element we are not expecting indicates an invalid parameter was passed
                                     throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
                                 }
-                              
+                            
+                                    
+                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
+                                
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonnees").equals(reader.getName())){
+                                
+                                                object.setMetadonnees(fr.cirtil.www.saeservice.ListeMetadonneeCodeType.Factory.parse(reader));
+                                              
+                                        reader.next();
+                                    
+                              }  // End of if for expected property start element
+                                
+                                    else {
+                                        
+                                    }
+                                  
                             while (!reader.isStartElement() && !reader.isEndElement())
                                 reader.next();
                             

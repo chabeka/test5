@@ -3,7 +3,6 @@ package fr.urssaf.image.sae.webservices.service.impl;
 import static fr.urssaf.image.sae.webservices.service.factory.ObjectRechercheFactory.createRechercheResponse;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,13 +15,14 @@ import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
-import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToConsultEx;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToSearchEx;
 import fr.urssaf.image.sae.services.exception.search.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
-import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
 import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
+import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
@@ -55,11 +55,10 @@ public class WSRechercheServiceImpl implements WSRechercheService {
 
       int maxResult = Integer.parseInt(MessageRessourcesUtils.recupererMessage(
             "max.lucene.results", null));
-      LOG
-            .debug(
-                  "{} - Le nombre maximum de documents à renvoyer dans les résultats de " +
-                  "recherche au niveau de la couche webservice est {}",
-                  prefixeTrc,maxResult );
+      LOG.debug(
+            "{} - Le nombre maximum de documents à renvoyer dans les résultats de "
+                  + "recherche au niveau de la couche webservice est {}",
+            prefixeTrc, maxResult);
       boolean resultatTronque = false;
       RechercheResponse response;
       String requeteLucene = VIDE;
@@ -136,14 +135,8 @@ public class WSRechercheServiceImpl implements WSRechercheService {
     */
    private List<String> recupererListMDDesired(
          MetadonneeCodeType[] listeMDSearch) {
-      List<String> listMDDesired = new ArrayList<String>();
-      if (listeMDSearch != null) {
-         for (MetadonneeCodeType metadonneeCodeType : listeMDSearch) {
-            String code = metadonneeCodeType.getMetadonneeCodeType();
-            listMDDesired.add(code);
-         }
-      }
-      return listMDDesired;
+
+      return ObjectTypeFactory.buildMetaCodeFromWS(listeMDSearch);
    }
 
    /**

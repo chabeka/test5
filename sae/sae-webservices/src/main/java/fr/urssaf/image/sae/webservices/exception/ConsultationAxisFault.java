@@ -57,4 +57,28 @@ public class ConsultationAxisFault extends AxisFault {
 
    }
 
+   /**
+    * Instanciation de {@link AxisFault#AxisFault}
+    * 
+    * <code>faultCode</code>:
+    * <ul>
+    * <li><code>namespaceURI</code>: urn:sae:faultcodes</li>
+    * <li><code>localPart</code>:<code>localPart</code></li>
+    * <li><code>prefix</code>:sae</li>
+    * </ul>
+    * 
+    * @param message
+    *           message de l'exception
+    * @param localPart
+    *           localPart du code du SOAPFault
+    * @param cause cause de l'exception
+    */
+   public ConsultationAxisFault(String message, String localPart,
+         Throwable cause) {
+
+      super(message, SoapFaultCodeFactory.createSoapFaultCode(
+            "urn:sae:faultcodes", localPart, "sae"), cause);
+
+   }
+
 }

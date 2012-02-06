@@ -3,9 +3,11 @@ package fr.urssaf.image.sae.services.consultation.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.Map.Entry;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -18,14 +20,21 @@ import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
 import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
+import fr.urssaf.image.sae.metadata.exceptions.LongCodeNotFoundException;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
+import fr.urssaf.image.sae.metadata.referential.services.SAEControlMetadataService;
+import fr.urssaf.image.sae.metadata.referential.services.SAEConvertMetadataService;
 import fr.urssaf.image.sae.metadata.utils.Utils;
 import fr.urssaf.image.sae.services.consultation.SAEConsultationService;
+import fr.urssaf.image.sae.services.consultation.model.ConsultParams;
 import fr.urssaf.image.sae.services.document.impl.AbstractSAEServices;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.services.factory.SAEStorageFactory;
+import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 import fr.urssaf.image.sae.storage.exception.RetrievalServiceEx;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
@@ -40,9 +49,19 @@ import fr.urssaf.image.sae.storage.model.storagedocument.searchcriteria.UUIDCrit
 @Qualifier("saeConsultationService")
 public class SAEConsultationServiceImpl extends AbstractSAEServices implements
       SAEConsultationService {
+   /**
+    * 
+    */
+   private static final String SEPARATOR_STRING = ", ";
    private static final Logger LOG = LoggerFactory
          .getLogger(SAEConsultationServiceImpl.class);
    private final MetadataReferenceDAO referenceDAO;
+
+   @Autowired
+   private SAEConvertMetadataService convertService;
+
+   @Autowired
+   private SAEControlMetadataService controlService;
 
    private final MappingDocumentService mappingService;
 
@@ -68,7 +87,24 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
     */
    @Override
    public final UntypedDocument consultation(UUID idArchive)
-         throws SAEConsultationServiceException {
+         throws SAEConsultationServiceException, UnknownDesiredMetadataEx,
+         MetaDataUnauthorizedToConsultEx {
+
+      ConsultParams consultParams = new ConsultParams(idArchive);
+
+      return consultation(consultParams);
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final UntypedDocument consultation(ConsultParams consultParams)
+         throws SAEConsultationServiceException, UnknownDesiredMetadataEx,
+         MetaDataUnauthorizedToConsultEx {
+
+      UUID idArchive = consultParams.getIdArchive();
+
       // Traces debug - entrée méthode
       String prefixeTrc = "consultation()";
       LOG.debug("{} - Début", prefixeTrc);
@@ -80,15 +116,8 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
          try {
 
-            List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
+            List<StorageMetadata> metadatas = manageMetaData(consultParams);
 
-            for (Entry<String, MetadataReference> reference : this.referenceDAO
-                  .getDefaultConsultableMetadataReferences().entrySet()) {
-
-               metadatas.add(SAEStorageFactory.createStorageMetadata(reference
-                     .getValue().getShortCode()));
-
-            }
             LOG.debug("{} - Liste des métadonnées consultable : \"{}\"",
                   prefixeTrc, buildMessageFromList(metadatas));
             UUIDCriteria uuidCriteria = new UUIDCriteria(idArchive, metadatas);
@@ -128,7 +157,81 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
 
          throw new SAEConsultationServiceException(e);
       }
+   }
 
+   /**
+    * Retourne la liste des metadatas à renvoyer en fonction de celles stockées
+    * dans l'objet de paramétrage
+    * 
+    * @param consultParams
+    *           paramètres de consultation
+    * @return la liste des metadatas à consulter
+    * @throws UnknownDesiredMetadataEx
+    *            levée lorsque la metadata paramétrée n'existe pas
+    * @throws ReferentialException
+    *            levée lorsqu'au moins une metadata n'existe pas
+    * @throws MetaDataUnauthorizedToConsultEx
+    *            levée lorsqu'au moins une metadata n'est pas consultable
+    */
+   private List<StorageMetadata> manageMetaData(ConsultParams consultParams)
+         throws UnknownDesiredMetadataEx, ReferentialException,
+         MetaDataUnauthorizedToConsultEx {
+
+      List<StorageMetadata> metadatas = new ArrayList<StorageMetadata>();
+
+      List<String> keyList = new ArrayList<String>();
+
+      if (CollectionUtils.isEmpty(consultParams.getMetadonnees())) {
+
+         Map<String, MetadataReference> map = this.referenceDAO
+               .getDefaultConsultableMetadataReferences();
+
+         for (MetadataReference metaRef : map.values()) {
+            keyList.add(metaRef.getShortCode());
+         }
+
+      } else {
+
+         try {
+            controlService.controlLongCodeExist(consultParams.getMetadonnees());
+
+         } catch (LongCodeNotFoundException longNotFoundExcept) {
+            String message = ResourceMessagesUtils.loadMessage(
+                  "consultation.metadonnees.inexistante", StringUtils.join(
+                        longNotFoundExcept.getListCode(), SEPARATOR_STRING));
+            throw new UnknownDesiredMetadataEx(message, longNotFoundExcept);
+         }
+
+         try {
+            controlService.controlLongCodeIsAFConsultation(consultParams
+                  .getMetadonnees());
+         } catch (LongCodeNotFoundException longNotFoundEx) {
+            String message = ResourceMessagesUtils.loadMessage(
+                  "consultation.metadonnees.non.consultable", StringUtils.join(
+                        longNotFoundEx.getListCode(), SEPARATOR_STRING));
+            throw new MetaDataUnauthorizedToConsultEx(message, longNotFoundEx);
+         }
+
+         Map<String, String> mapShortCode = null;
+         try {
+            mapShortCode = convertService.longCodeToShortCode(consultParams
+                  .getMetadonnees());
+         } catch (LongCodeNotFoundException longNotFoundExcept) {
+            String message = ResourceMessagesUtils.loadMessage(
+                  "consultation.metadonnees.inexistante", StringUtils.join(
+                        longNotFoundExcept.getListCode(), SEPARATOR_STRING));
+            throw new UnknownDesiredMetadataEx(message, longNotFoundExcept);
+         }
+
+         keyList.addAll(mapShortCode.keySet());
+
+      }
+
+      for (String shortCode : keyList) {
+         metadatas.add(SAEStorageFactory.createStorageMetadata(shortCode));
+      }
+
+      return metadatas;
    }
 
    /**

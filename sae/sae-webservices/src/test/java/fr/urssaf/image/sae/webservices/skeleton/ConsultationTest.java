@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.activation.DataHandler;
 import javax.xml.stream.XMLStreamReader;
@@ -29,13 +28,15 @@ import fr.cirtil.www.saeservice.ConsultationResponseType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.services.consultation.model.ConsultParams;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml"
-                                  })
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class ConsultationTest {
 
@@ -81,7 +82,8 @@ public class ConsultationTest {
 
    @Test
    public void consultation_success() throws IOException,
-         SAEConsultationServiceException {
+         SAEConsultationServiceException, UnknownDesiredMetadataEx,
+         MetaDataUnauthorizedToConsultEx {
 
       UntypedDocument document = new UntypedDocument();
 
@@ -103,9 +105,11 @@ public class ConsultationTest {
 
       document.setUMetadatas(untypedMetadatas);
 
+//      ConsultParams consultParams = new ConsultParams(UUID
+//            .fromString("cc4a5ec1-788d-4b41-baa8-d349947865bf"));
+      
       EasyMock.expect(
-            documentService.consultation(UUID
-                  .fromString("cc4a5ec1-788d-4b41-baa8-d349947865bf")))
+            documentService.consultation(EasyMock.anyObject(ConsultParams.class)))
             .andReturn(document);
 
       EasyMock.replay(documentService);
@@ -150,6 +154,4 @@ public class ConsultationTest {
                         .getObjetNumeriqueConsultationTypeChoice_type0()
                         .getUrl());
    }
-
-
 }

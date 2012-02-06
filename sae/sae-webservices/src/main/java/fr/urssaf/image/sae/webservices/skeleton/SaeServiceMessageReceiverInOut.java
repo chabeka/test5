@@ -10,7 +10,6 @@
         /**
         *  SaeServiceMessageReceiverInOut message receiver
         */
-
 // CHECKSTYLE:OFF
 @SuppressWarnings("all")
 public class SaeServiceMessageReceiverInOut extends org.apache.axis2.receivers.AbstractInOutMessageReceiver{

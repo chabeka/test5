@@ -3,11 +3,13 @@ package fr.urssaf.image.sae.services.consultation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -21,6 +23,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +35,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
 import fr.urssaf.image.sae.services.SAEServiceTestProvider;
+import fr.urssaf.image.sae.services.consultation.model.ConsultParams;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
 import fr.urssaf.image.sae.storage.exception.ConnectionServiceEx;
 
@@ -105,14 +111,117 @@ public class SAEConsultationServiceTest {
 
    @Test
    public void consultation_success() throws IOException,
-         SAEConsultationServiceException, ConnectionServiceEx, ParseException {
+         SAEConsultationServiceException, ConnectionServiceEx, ParseException,
+         UnknownDesiredMetadataEx, MetaDataUnauthorizedToConsultEx {
 
       uuid = capture();
 
       LOG.debug("document archivé dans DFCE:" + uuid);
 
       UntypedDocument untypedDocument = service.consultation(uuid);
+      checkValues(untypedDocument);
+   }
 
+   @Test
+   public void consultation_success_consultParam() throws IOException,
+         SAEConsultationServiceException, ConnectionServiceEx, ParseException,
+         UnknownDesiredMetadataEx, MetaDataUnauthorizedToConsultEx {
+
+      uuid = capture();
+
+      LOG.debug("document archivé dans DFCE:" + uuid);
+
+      UntypedDocument untypedDocument = service.consultation(new ConsultParams(
+            uuid));
+      checkValues(untypedDocument);
+   }
+
+   @Test
+   public void consultation_success_codes_fournis() throws IOException,
+         SAEConsultationServiceException, ConnectionServiceEx, ParseException,
+         UnknownDesiredMetadataEx, MetaDataUnauthorizedToConsultEx {
+
+      uuid = capture();
+
+      LOG.debug("document archivé dans DFCE:" + uuid);
+
+      UntypedDocument untypedDocument = service.consultation(new ConsultParams(
+            uuid, Arrays.asList(new String[] { "CodeOrganismeGestionnaire",
+                  "ContratDeService" })));
+      List<UntypedMetadata> metadatas = untypedDocument.getUMetadatas();
+      // on trie les métadonnées non typés en fonction de leur code long
+      Comparator<UntypedMetadata> comparator = new Comparator<UntypedMetadata>() {
+         @Override
+         public int compare(UntypedMetadata untypedMetadata1,
+               UntypedMetadata untypedMetadata2) {
+
+            return untypedMetadata1.getLongCode().compareTo(
+                  untypedMetadata2.getLongCode());
+
+         }
+      };
+      Collections.sort(metadatas, comparator);
+
+      assertMetadata(metadatas.get(0), "CodeOrganismeGestionnaire", "UR750");
+      assertMetadata(metadatas.get(1), "ContratDeService", "ATT_PROD_001");
+   }
+
+   @Test
+   public void consultationFailureCodeNotExists() throws ConnectionServiceEx,
+         IOException, ParseException {
+
+      uuid = capture();
+      List<String> listCode = Arrays.asList(new String[] { "Siret",
+            "codeInexistant" });
+      ConsultParams consultParams = new ConsultParams(uuid, listCode);
+
+      LOG.debug("document archivé dans DFCE:" + uuid);
+
+      try {
+         service.consultation(consultParams);
+      } catch (SAEConsultationServiceException e) {
+         fail("C'est l'exception UnknowDesiredMetadataEx qui est attendue");
+      } catch (UnknownDesiredMetadataEx e) {
+         String message = "La ou les métadonnées suivantes, "
+               + "demandées dans les critères de consultation, "
+               + "n'existent pas dans le référentiel des métadonnées : "
+               + "codeInexistant";
+         assertEquals(
+               "le message d'erreur signifiant que le code n'existe pas",
+               message, e.getMessage());
+      } catch (MetaDataUnauthorizedToConsultEx e) {
+         fail("C'est l'exception UnknowDesiredMetadataEx qui est attendue");
+      }
+   }
+
+   @Test
+   public void consultationFailureCodeNoConsult() throws ConnectionServiceEx,
+         IOException, ParseException {
+
+      uuid = capture();
+      List<String> listCode = Arrays
+            .asList(new String[] { "Siret", "StartPage" });
+      ConsultParams consultParams = new ConsultParams(uuid, listCode);
+
+      LOG.debug("document archivé dans DFCE:" + uuid);
+
+      try {
+         service.consultation(consultParams);
+      } catch (SAEConsultationServiceException e) {
+         fail("C'est l'exception MetaDataUnauthorizedToConsultEx qui est attendue");
+      } catch (UnknownDesiredMetadataEx e) {
+         fail("C'est l'exception MetaDataUnauthorizedToConsultEx qui est attendue");
+      } catch (MetaDataUnauthorizedToConsultEx e) {
+         String message = "La ou les métadonnées suivantes, "
+               + "demandées dans les critères de consultation, "
+               + "ne sont pas consultables : StartPage";
+         assertEquals(
+               "le message d'erreur signifiant que le code n'est pas consultable",
+               message, e.getMessage());
+      }
+   }
+
+   private void checkValues(UntypedDocument untypedDocument) throws IOException {
       assertNotNull("idArchive '" + uuid + "' doit être consultable",
             untypedDocument);
 

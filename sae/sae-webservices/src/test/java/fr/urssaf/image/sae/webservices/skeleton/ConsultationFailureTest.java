@@ -16,14 +16,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.cirtil.www.saeservice.Consultation;
+import fr.urssaf.image.sae.services.consultation.model.ConsultParams;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.consultation.SAEConsultationServiceException;
+import fr.urssaf.image.sae.webservices.comparator.ConsultParamComparator;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-service-test.xml"   
-                                  })
+@ContextConfiguration(locations = { "/applicationContext-service-test.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions" })
 public class ConsultationFailureTest {
 
@@ -66,11 +69,14 @@ public class ConsultationFailureTest {
 
    @Test
    public void consultation_failure_uuidNotFound()
-         throws SAEConsultationServiceException {
+         throws SAEConsultationServiceException, UnknownDesiredMetadataEx,
+         MetaDataUnauthorizedToConsultEx {
 
-      EasyMock.expect(
-            documentService.consultation(UUID
-                  .fromString("cc26f62e-fd52-42ff-ad83-afc26f96ea91")))
+      ConsultParams consultParams = new ConsultParams(UUID
+            .fromString("cc26f62e-fd52-42ff-ad83-afc26f96ea91"), null);
+
+      EasyMock
+            .expect(documentService.consultation(checkConsult(consultParams)))
             .andReturn(null);
 
       EasyMock.replay(documentService);
@@ -95,12 +101,14 @@ public class ConsultationFailureTest {
 
    @Test
    public void consultation_failure_SAEConsultationServiceException()
-         throws SAEConsultationServiceException {
+         throws SAEConsultationServiceException, UnknownDesiredMetadataEx,
+         MetaDataUnauthorizedToConsultEx {
 
-      EasyMock.expect(
-            documentService.consultation(UUID
-                  .fromString("cc4a5ec1-788d-4b41-baa8-d349947865bf")))
-            .andThrow(new SAEConsultationServiceException(new Exception()));
+      ConsultParams consultParams = new ConsultParams(UUID
+            .fromString("cc4a5ec1-788d-4b41-baa8-d349947865bf"), null);
+
+      EasyMock.expect(documentService.consultation(checkConsult(consultParams))).andThrow(
+            new SAEConsultationServiceException(new Exception()));
 
       EasyMock.replay(documentService);
 
@@ -122,4 +130,8 @@ public class ConsultationFailureTest {
       }
    }
 
+   public static <T extends ConsultParams> T checkConsult(T in) {
+      EasyMock.reportMatcher(new ConsultParamComparator(in));
+      return null;
+   }
 }

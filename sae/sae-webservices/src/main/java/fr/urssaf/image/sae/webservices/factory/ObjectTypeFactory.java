@@ -1,6 +1,8 @@
 package fr.urssaf.image.sae.webservices.factory;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.activation.DataHandler;
@@ -8,8 +10,10 @@ import javax.activation.DataHandler;
 import org.apache.axis2.databinding.utils.ConverterUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.util.Assert;
 
+import fr.cirtil.www.saeservice.ListeMetadonneeCodeType;
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.MetadonneeCodeType;
 import fr.cirtil.www.saeservice.MetadonneeType;
@@ -215,6 +219,73 @@ public final class ObjectTypeFactory {
    public static ResultatRechercheType createResultatRechercheType() {
 
       return new ResultatRechercheType();
+   }
+
+   /**
+    * Permet de convertir un objet de la couche WebService de type
+    * MetadonneeCodeType[] en une liste List&lt;String&gt;
+    * 
+    * @param listeMD
+    *           liste des codes de métadonnées
+    * @return Liste des codes de métadonnées converties de l'objet
+    *         MetadonneeCodeType[]
+    */
+   public static List<String> buildMetaCodeFromWS(MetadonneeCodeType[] listeMD) {
+      List<String> listMDDesired = null;
+
+      if (ArrayUtils.isNotEmpty(listeMD)) {
+         listMDDesired = new ArrayList<String>();
+
+         for (MetadonneeCodeType metadonneeCodeType : listeMD) {
+            String code = metadonneeCodeType.getMetadonneeCodeType();
+            listMDDesired.add(code);
+         }
+      }
+      return listMDDesired;
+   }
+
+   /**
+    * construit la liste des codes de metadata à partir de la liste fournie
+    * 
+    * @param metadonnees
+    *           liste des metadatas dont il faut récupérer le code
+    * @return la liste des codes
+    */
+   public static List<String> buildMetaCodeFromWS(
+         ListeMetadonneeCodeType metadonnees) {
+
+      List<String> datas = null;
+      if (metadonnees != null) {
+         datas = new ArrayList<String>();
+
+         datas.addAll(buildMetaCodeFromWS(metadonnees.getMetadonneeCode()));
+      }
+
+      return datas;
+
+   }
+
+   /**
+    * Construit la liste des codes de metadata à partir de la liste fournie
+    * 
+    * @param metadonnees
+    *           tableau d'objet metadonnees
+    * @return la liste des code correspondant
+    */
+   public static List<String> buildMetaCodeFromWS(
+         ListeMetadonneeCodeType[] metadonnees) {
+
+      List<String> datas = null;
+      if (ArrayUtils.isNotEmpty(metadonnees)) {
+         datas = new ArrayList<String>();
+
+         for (ListeMetadonneeCodeType metadataCT : metadonnees) {
+            datas.addAll(buildMetaCodeFromWS(metadataCT));
+         }
+      }
+
+      return datas;
+
    }
 
 }

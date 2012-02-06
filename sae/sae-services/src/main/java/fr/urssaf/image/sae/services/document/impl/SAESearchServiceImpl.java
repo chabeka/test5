@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.services.document.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -31,15 +30,17 @@ import fr.urssaf.image.sae.mapping.exception.InvalidSAETypeException;
 import fr.urssaf.image.sae.mapping.exception.MappingFromReferentialException;
 import fr.urssaf.image.sae.mapping.services.MappingDocumentService;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
+import fr.urssaf.image.sae.metadata.exceptions.LongCodeNotFoundException;
 import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.metadata.referential.services.MetadataReferenceDAO;
+import fr.urssaf.image.sae.metadata.referential.services.SAEConvertMetadataService;
 import fr.urssaf.image.sae.services.document.SAESearchService;
-import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToConsultEx;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToSearchEx;
 import fr.urssaf.image.sae.services.exception.search.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
-import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
 import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.services.messages.ServiceMessageHandler;
 import fr.urssaf.image.sae.services.util.FormatUtils;
@@ -79,6 +80,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
    @Autowired
    @Qualifier("mappingDocumentService")
    private MappingDocumentService mappingDocumentService;
+
+   @Autowired
+   private SAEConvertMetadataService convertService;
 
    // du referentiel
    private static final String SPLIT = "(\\w+)\\s*[:>]";
@@ -148,17 +152,17 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
             checkConsultableDesiredMetadata(listCodCourtConsult,
                   isFromRefrentiel);
             LOG
-            .debug(
-                  "{} - Début de la vérification DFCE: La requête de recherche est syntaxiquement correcte",
-                  prefixeTrc);
+                  .debug(
+                        "{} - Début de la vérification DFCE: La requête de recherche est syntaxiquement correcte",
+                        prefixeTrc);
             List<StorageDocument> listStorageDocument = searchStorageDocuments(
                   requeteFinal, Integer.parseInt(ServiceMessageHandler
                         .getMessage("max.lucene.results")) + 1,
                   listCodCourtConsult);
             LOG
-            .debug(
-                  "{} - Fin de la vérification DFCE: La requête de recherche est syntaxiquement correcte",
-                  prefixeTrc);
+                  .debug(
+                        "{} - Fin de la vérification DFCE: La requête de recherche est syntaxiquement correcte",
+                        prefixeTrc);
             LOG
                   .debug(
                         "{} - Le nombre de résultats de recherche renvoyé par le moteur de recherche est {}",
@@ -169,8 +173,9 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
                listUntypedDocument.add(mappingDocumentService
                      .storageDocumentToUntypedDocument(storageDocument));
             }
-            // A activer si besoin pour afficher la liste des résultats 
-            // LOG.debug("{} - Liste des résultats : \"{}\"", prefixeTrc,buildMessageFromList(listUntypedDocument));
+            // A activer si besoin pour afficher la liste des résultats
+            // LOG.debug("{} - Liste des résultats : \"{}\"",
+            // prefixeTrc,buildMessageFromList(listUntypedDocument));
          }
 
       } catch (NumberFormatException except) {
@@ -381,27 +386,14 @@ public class SAESearchServiceImpl extends AbstractSAEServices implements
     */
    private Map<String, String> longCodeToShortCode(List<String> listCodeReq)
          throws SAESearchServiceEx {
-      Map<String, String> map = new HashMap<String, String>();
+
       try {
-         for (String codeLong : listCodeReq) {
-            // recuperer MetaDataReference qui nous renvoie un objet avec
-            // codeCourt
-            // et codeLong
-            // MetadataReference metadaReference = new MetadataReference();
-            if (metaRefD.getByLongCode(codeLong) != null) {
-               MetadataReference metadaReference = metaRefD
-                     .getByLongCode(codeLong);
-               // et ensuite recup le code court
-               String codeCourt = metadaReference.getShortCode();
-               // ajout dans une Map<String, String>
-               map.put(codeCourt, codeLong);
-            }
-         }
-      } catch (ReferentialException except) {
+         return convertService.longCodeToShortCode(listCodeReq);
+      
+      } catch (LongCodeNotFoundException e) {
          throw new SAESearchServiceEx(ResourceMessagesUtils
-               .loadMessage("search.referentiel.error"), except);
+               .loadMessage("search.referentiel.error"), e);
       }
-      return map;
    }
 
    /**

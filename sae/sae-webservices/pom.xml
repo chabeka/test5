@@ -48,7 +48,7 @@
                            <skipWSDL>false</skipWSDL>
                            <generateServerSideInterface>true</generateServerSideInterface>
                            <targetSourceFolderLocation>main/java</targetSourceFolderLocation>
-                           <targetResourcesFolderLocation>main/resources/META-INF</targetResourcesFolderLocation>
+                           <targetResourcesFolderLocation>main/webapp/WEB-INF/services/SaeService/META-INF</targetResourcesFolderLocation>
                         </configuration>
                      </execution>
                   </executions>

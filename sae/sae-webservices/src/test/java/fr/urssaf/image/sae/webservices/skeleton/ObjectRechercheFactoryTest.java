@@ -1,25 +1,22 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
+import static fr.urssaf.image.sae.webservices.service.factory.ObjectRechercheFactory.createRechercheResponse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.easymock.EasyMock;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static fr.urssaf.image.sae.webservices.service.factory.ObjectRechercheFactory.createRechercheResponse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import fr.cirtil.www.saeservice.ListeResultatRechercheType;
 import fr.cirtil.www.saeservice.Recherche;
 import fr.cirtil.www.saeservice.RechercheResponse;
@@ -27,11 +24,11 @@ import fr.cirtil.www.saeservice.RechercheResponseType;
 import fr.cirtil.www.saeservice.ResultatRechercheType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.services.document.SAEDocumentService;
-import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToConsultEx;
+import fr.urssaf.image.sae.services.exception.UnknownDesiredMetadataEx;
+import fr.urssaf.image.sae.services.exception.consultation.MetaDataUnauthorizedToConsultEx;
 import fr.urssaf.image.sae.services.exception.search.MetaDataUnauthorizedToSearchEx;
 import fr.urssaf.image.sae.services.exception.search.SAESearchServiceEx;
 import fr.urssaf.image.sae.services.exception.search.SyntaxLuceneEx;
-import fr.urssaf.image.sae.services.exception.search.UnknownDesiredMetadataEx;
 import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.webservices.util.XMLStreamUtils;
 

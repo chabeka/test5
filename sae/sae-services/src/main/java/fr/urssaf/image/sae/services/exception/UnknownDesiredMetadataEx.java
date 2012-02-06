@@ -1,5 +1,4 @@
-package fr.urssaf.image.sae.services.exception.search;
-
+package fr.urssaf.image.sae.services.exception;
 
 /**
  * Exception à utiliser pour les erreurs lié aux métadonnées Umétadonnées
@@ -32,4 +31,16 @@ public class UnknownDesiredMetadataEx extends Exception {
    public UnknownDesiredMetadataEx(final String message) {
       super(message);
    }
+
+   /**
+    * Construit une nouvelle {@link MetaDataUnauthorizedToSearchEx }avec une
+    * erreur.
+    * 
+    * @param cause
+    *           l'erreur source
+    */
+   public UnknownDesiredMetadataEx(Throwable cause) {
+      super(cause);
+   }
+
 }
