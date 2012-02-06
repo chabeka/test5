@@ -2,8 +2,10 @@ package fr.urssaf.image.sae.webservices.service.factory;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.axis2.databinding.utils.ConverterUtil;
+import org.apache.commons.collections.CollectionUtils;
 
 import fr.urssaf.image.sae.webservices.factory.ObjectModeleFactory;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageMasse;
@@ -76,7 +78,7 @@ public final class RequestServiceFactory {
     *           L'identifiant unique d'archivage de l'archive à consulter
     * @return instance de {@link Consultation}
     */
-   public static Consultation createConsultation(String uuid) {
+   public static Consultation createConsultation(String uuid, List<String> listMetaData) {
 
       Consultation request = new Consultation();
 
@@ -85,6 +87,21 @@ public final class RequestServiceFactory {
       uuidType.setUuidType(uuid);
 
       requestType.setIdArchive(uuidType);
+
+      ListeMetadonneeCodeType listeMD = null;
+      
+      if (CollectionUtils.isNotEmpty(listMetaData)) {
+         listeMD = new ListeMetadonneeCodeType();
+         MetadonneeCodeType codeType;
+         
+         for (String metaData : listMetaData) {
+            codeType = new MetadonneeCodeType();
+            codeType.setMetadonneeCodeType(metaData);
+            listeMD.addMetadonneeCode(codeType);
+         }
+      }
+      
+      requestType.setMetadonnees(listeMD);
 
       request.setConsultation(requestType);
 

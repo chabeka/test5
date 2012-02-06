@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.webservices.service;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,26 @@ public class ConsultationService {
    public final ConsultationResponseType consultation(String uuid)
          throws RemoteException {
 
-      Consultation request = RequestServiceFactory.createConsultation(uuid);
+      Consultation request = RequestServiceFactory.createConsultation(uuid, null);
+
+      return service.consultation(request).getConsultationResponse();
+   }
+
+   /**
+    * appel du service de consultation d'une archive du SAE
+    * 
+    * @param uuid
+    *           identifiant du document du SAe
+    * @param listMetaData
+    *           liste des metadata attendues
+    * @return réponse de la consultation
+    * @throws RemoteException
+    *            levée par le web service
+    */
+   public final ConsultationResponseType consultation(String uuid,
+         List<String> listMetaData) throws RemoteException {
+
+      Consultation request = RequestServiceFactory.createConsultation(uuid, listMetaData);
 
       return service.consultation(request).getConsultationResponse();
    }
