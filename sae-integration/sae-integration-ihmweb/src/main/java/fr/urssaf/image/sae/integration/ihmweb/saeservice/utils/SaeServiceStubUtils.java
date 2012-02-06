@@ -67,6 +67,9 @@ public final class SaeServiceStubUtils {
          Phase dispatch = findPhaseByName(inFlowPhases,"Dispatch");
          dispatch.addHandler(new LogInMessageHandler());
          
+         List<Phase> inFaultPhases = axisConfig.getInFaultFlowPhases();
+         dispatch = findPhaseByName(inFaultPhases,"Dispatch");
+         dispatch.addHandler(new LogInMessageHandler());
          
          
          // Création du Stub
