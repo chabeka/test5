@@ -121,8 +121,9 @@
                      <includeSchemas>
                         <includeSchema>bibliotheque_element.xsd</includeSchema>
                         <includeSchema>livre.xsd</includeSchema>
+                        <includeSchema>bibliotheque.xsd</includeSchema>
                      </includeSchemas>
-                     <generatePackage>fr.urssaf.image.commons.spring.batch.model.xml</generatePackage>
+               
                      <generateDirectory>${basedir}/src/main/java</generateDirectory>
                   </configuration>
                </plugin>

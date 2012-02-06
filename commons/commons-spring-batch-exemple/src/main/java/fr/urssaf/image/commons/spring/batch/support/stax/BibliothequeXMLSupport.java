@@ -76,7 +76,13 @@ public class BibliothequeXMLSupport {
       writer.writeStartElement(B_PREFIX, "bibliotheque", B_NAMESPACE);
       writer.writeNamespace(B_PREFIX, B_NAMESPACE);
       writer.writeNamespace(REF_PREFIX, REF_NAMESPACE);
-      writer.writeStartElement(REF_PREFIX, "livres", REF_NAMESPACE);
+
+      // balise adresse
+      writer.writeStartElement(B_PREFIX, "adresse", B_NAMESPACE);
+      writer.writeCharacters("adresse de la bibliotheque");
+      writer.writeEndElement();
+
+      writer.writeStartElement(B_PREFIX, "livres", B_NAMESPACE);
 
    }
 

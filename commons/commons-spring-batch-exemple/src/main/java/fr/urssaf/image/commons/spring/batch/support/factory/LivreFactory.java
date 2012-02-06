@@ -1,19 +1,17 @@
-package fr.urssaf.image.commons.spring.batch.support.processor;
+package fr.urssaf.image.commons.spring.batch.support.factory;
 
 import javax.xml.bind.JAXBElement;
 
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import fr.urssaf.image.commons.spring.batch.model.flat.Livre;
-import fr.urssaf.image.commons.spring.batch.model.xml.LivreType;
+import fr.urssaf.image.commons.spring.batch.model.xml.livre.LivreType;
+
 
 @Component
-public class ConversionToFileProcessor implements
-      ItemProcessor<JAXBElement<LivreType>, Livre> {
+public class LivreFactory {
 
-   @Override
-   public Livre process(JAXBElement<LivreType> item) {
+   public Livre createLivre(JAXBElement<LivreType> item) {
 
       LivreType livreType = item.getValue();
 
@@ -24,5 +22,4 @@ public class ConversionToFileProcessor implements
 
       return livre;
    }
-
 }

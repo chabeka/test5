@@ -1,17 +1,14 @@
-package fr.urssaf.image.commons.spring.batch.support.processor;
+package fr.urssaf.image.commons.spring.batch.support.factory;
 
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import fr.urssaf.image.commons.spring.batch.model.flat.Livre;
-import fr.urssaf.image.commons.spring.batch.model.xml.LivreType;
+import fr.urssaf.image.commons.spring.batch.model.xml.livre.LivreType;
 
 @Component
-public class ConversionToXMLProcessor implements
-      ItemProcessor<Livre, LivreType> {
+public class LivreTypeFactory {
 
-   @Override
-   public LivreType process(Livre item) {
+   public LivreType createLivreType(Livre item) {
 
       LivreType livreType = new LivreType();
 
@@ -21,5 +18,4 @@ public class ConversionToXMLProcessor implements
 
       return livreType;
    }
-
 }

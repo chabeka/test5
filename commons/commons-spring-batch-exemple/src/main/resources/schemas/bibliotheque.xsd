@@ -12,9 +12,20 @@
 
    <xsd:complexType name="BibliothequeType">
       <xsd:sequence>
+
+         <xsd:element name="adresse" minOccurs="1"
+            maxOccurs="1">
+            <xsd:simpleType>
+               <xsd:restriction base="xsd:string">
+                  <xsd:minLength value="1" />
+               </xsd:restriction>
+            </xsd:simpleType>
+         </xsd:element>
+
          <xsd:element name="livres" type="ref:LivresType"
-            minOccurs="1" maxOccurs="unbounded" />
+            minOccurs="1" maxOccurs="1" />
       </xsd:sequence>
+
    </xsd:complexType>
-   
+
 </xsd:schema>

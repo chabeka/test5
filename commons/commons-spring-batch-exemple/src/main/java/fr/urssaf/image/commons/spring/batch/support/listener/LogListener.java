@@ -23,7 +23,7 @@ import org.springframework.batch.core.annotation.OnWriteError;
 import org.springframework.stereotype.Component;
 
 import fr.urssaf.image.commons.spring.batch.model.flat.Livre;
-import fr.urssaf.image.commons.spring.batch.model.xml.LivreType;
+import fr.urssaf.image.commons.spring.batch.model.xml.livre.LivreType;
 
 @Component
 public class LogListener {

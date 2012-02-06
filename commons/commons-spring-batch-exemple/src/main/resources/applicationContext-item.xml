@@ -91,7 +91,7 @@
    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
 
       <property name="contextPath"
-         value="fr.urssaf.image.commons.spring.batch.model.xml" />
+         value="fr.urssaf.image.commons.spring.batch.model.xml.livre" />
 
       <property name="schemas">
          <array>
@@ -99,6 +99,24 @@
          </array>
       </property>
 
+
+   </bean>
+
+   <!-- ADAPTER PROCESSOR-->
+
+   <bean id="conversionToFileProcessor"
+      class="org.springframework.batch.item.adapter.ItemProcessorAdapter">
+
+      <property name="targetObject" ref="livreFactory" />
+      <property name="targetMethod" value="createLivre" />
+
+   </bean>
+   
+   <bean id="conversionToXMLProcessor"
+      class="org.springframework.batch.item.adapter.ItemProcessorAdapter">
+
+      <property name="targetObject" ref="livreTypeFactory" />
+      <property name="targetMethod" value="createLivreType" />
 
    </bean>
 
