@@ -22,6 +22,12 @@ Etape <c:out value="${numeroEtape}"/> : Appel du service web de consultation
                   <form:input path="${pathFormulaire}.idArchivage" cssStyle="width:100%;" readonly="${readonly}" />
                </td>
             </tr>
+            <tr style="vertical-align:top;">
+               <td>Code des métadonnées souhaitées :</td>
+               <td>
+                  <form:textarea path="${pathFormulaire}.codeMetadonnees" cssStyle="width:100%;height:190pt;" readonly="${readonly}" />
+               </td>
+            </tr>
          </table>
       </td>
       <td style="width:50%;border-left-width:2px;border-left-color:black;border-left-style:solid;">

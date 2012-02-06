@@ -250,10 +250,12 @@ public final class SaeServiceObjectFactory {
     * Construit un objet de requête pour le service web "consultation"
     * 
     * @param idArchivage l'identifiant d'archivage
+    * @param la liste des codes des métadonnées souhaitées
     * @return l'objet pour la couche WebService
     */
    public static Consultation buildConsultationRequest(
-         String idArchivage) {
+         String idArchivage,
+         CodeMetadonneeList codeMetadonnees) {
       
       Consultation consultation = new Consultation();
       
@@ -266,6 +268,14 @@ public final class SaeServiceObjectFactory {
       // UUID
       UuidType uuid = SaeServiceObjectFactory.buildUuid(idArchivage);
       consultationReqType.setIdArchive(uuid);
+      
+      // Les codes des métadonnées souhaitées
+      // Les métadonnées ne sont ajoutées que SI au moins 1 métadonnée est demandée
+      if ((codeMetadonnees!=null) && (!codeMetadonnees.isEmpty())) {
+         ListeMetadonneeCodeType codesMetadonnees = 
+            SaeServiceObjectFactory.buildListeCodesMetadonnes(codeMetadonnees);
+         consultationReqType.setMetadonnees(codesMetadonnees);
+      }
       
       // fin
       return consultation;

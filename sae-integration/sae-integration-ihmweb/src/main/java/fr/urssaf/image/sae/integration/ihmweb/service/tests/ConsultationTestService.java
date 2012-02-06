@@ -72,7 +72,8 @@ public class ConsultationTestService {
 
          // Construction du paramètre d'entrée de l'opération
          Consultation paramsService = SaeServiceObjectFactory
-               .buildConsultationRequest(formulaire.getIdArchivage());
+               .buildConsultationRequest(formulaire.getIdArchivage(),
+                     formulaire.getCodeMetadonnees());
 
          // Appel du service web
          ConsultationResponse response = service.consultation(paramsService);

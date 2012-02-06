@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.integration.ihmweb.formulaire;
 
+import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 
 /**
@@ -14,6 +15,8 @@ public class ConsultationFormulaire extends GenericForm {
    private ResultatTest resultats = new ResultatTest();
 
    private String idArchivage;
+
+   private CodeMetadonneeList codeMetadonnees = new CodeMetadonneeList();
 
    /**
     * @param parent
@@ -59,6 +62,28 @@ public class ConsultationFormulaire extends GenericForm {
     */
    public final void setIdArchivage(String idArchivage) {
       this.idArchivage = idArchivage;
+   }
+
+   /**
+    * La liste des codes des métadonnées que l'on souhaite dans la consultation
+    * 
+    * @return La liste des codes des métadonnées que l'on souhaite dans la
+    *         consultation
+    * 
+    */
+   public final CodeMetadonneeList getCodeMetadonnees() {
+      return codeMetadonnees;
+   }
+
+   /**
+    * La liste des codes des métadonnées que l'on souhaite dans la consultation
+    * 
+    * @param codeMetadonnees
+    *           La liste des codes des métadonnées que l'on souhaite dans la
+    *           consultation
+    */
+   public final void setCodeMetadonnees(CodeMetadonneeList codeMetadonnees) {
+      this.codeMetadonnees = codeMetadonnees;
    }
 
 }
