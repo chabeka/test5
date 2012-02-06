@@ -753,6 +753,15 @@
             </description>
             <implemente>true</implemente>
          </CasTest>
+         
+         <CasTest>
+            <id>403</id>
+            <code>403-Consultation-OK-TouteMetadonneeConsultable</code>
+            <description>
+               On vérifie que la consultation fonctionne correctement lorsqu'on demande toutes les métadonnées consultables
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
 
          <CasTest>
             <id>450</id>

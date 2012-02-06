@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.axis2.databinding.types.URI;
 import org.apache.axis2.databinding.types.URI.MalformedURIException;
+import org.springframework.util.CollectionUtils;
 
 import fr.urssaf.image.sae.integration.ihmweb.exception.IntegrationRuntimeException;
 import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
@@ -271,7 +272,7 @@ public final class SaeServiceObjectFactory {
       
       // Les codes des métadonnées souhaitées
       // Les métadonnées ne sont ajoutées que SI au moins 1 métadonnée est demandée
-      if ((codeMetadonnees!=null) && (!codeMetadonnees.isEmpty())) {
+      if (!CollectionUtils.isEmpty(codeMetadonnees)) {
          ListeMetadonneeCodeType codesMetadonnees = 
             SaeServiceObjectFactory.buildListeCodesMetadonnes(codeMetadonnees);
          consultationReqType.setMetadonnees(codesMetadonnees);

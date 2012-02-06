@@ -2,16 +2,22 @@ package fr.urssaf.image.sae.integration.ihmweb.service.tests;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import javax.activation.DataHandler;
 
 import org.apache.axis2.AxisFault;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.integration.ihmweb.exception.IntegrationRuntimeException;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ConsultationFormulaire;
+import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
+import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeDefinition;
+import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeur;
+import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTestLog;
 import fr.urssaf.image.sae.integration.ihmweb.modele.SoapFault;
@@ -19,11 +25,14 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.Consultation;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationResponse;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ListeMetadonneeType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ObjetNumeriqueConsultationType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceLogUtils;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceObjectExtractor;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceObjectFactory;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceStubUtils;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceTypeUtils;
+import fr.urssaf.image.sae.integration.ihmweb.service.referentiels.ReferentielMetadonneesService;
 import fr.urssaf.image.sae.integration.ihmweb.service.referentiels.ReferentielSoapFaultService;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.WsTestListener;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplLibre;
@@ -31,6 +40,7 @@ import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTes
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.impl.WsTestListenerImplSoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.utils.TestsMetadonneesService;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ChecksumUtils;
+import fr.urssaf.image.sae.integration.ihmweb.utils.TestUtils;
 import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 
 /**
@@ -45,7 +55,10 @@ public class ConsultationTestService {
    private ReferentielSoapFaultService refSoapFault;
 
    @Autowired
-   private TestsMetadonneesService testsMetasService;
+   private TestsMetadonneesService testMetaService;
+
+   @Autowired
+   private ReferentielMetadonneesService referentielMetadonneesService;
 
    private ConsultationResponse appelWsOpConsultation(String urlServiceWeb,
          String ficRessourceVi, ConsultationFormulaire formulaire,
@@ -171,7 +184,9 @@ public class ConsultationTestService {
    }
 
    private void wsVerifieRetour(ConsultationFormulaire formulaire,
-         ConsultationResponse response, String sha1attendu) {
+         ConsultationResponse response, String sha1attendu,
+         CodeMetadonneeList codesMetasAttendues,
+         List<MetadonneeValeur> metaAttendues) {
 
       // Initialise
       ResultatTest resultatTest = formulaire.getResultats();
@@ -210,14 +225,8 @@ public class ConsultationTestService {
       }
 
       // Vérification des métadonnes
-      String erreur = testsMetasService
-            .verifieMetadonneesConsulteeParDefaut(response
-                  .getConsultationResponse().getMetadonnees());
-      if (StringUtils.isNotBlank(erreur)) {
-         testKo = true;
-         log.appendLogNewLine();
-         log.appendLogLn(erreur);
-      }
+      testKo = wsVerifieRetourMetaDemandees(resultatTest, codesMetasAttendues,
+            metaAttendues, response.getConsultationResponse().getMetadonnees());
 
       // Etat du test
       if (testKo) {
@@ -335,6 +344,35 @@ public class ConsultationTestService {
          String urlServiceWeb, ConsultationFormulaire formulaire,
          String sha1attendu) {
 
+      return appelWsOpConsultationReponseCorrecteAttendue(urlServiceWeb,
+            formulaire, sha1attendu, null, null);
+
+   }
+
+   /**
+    * Test d'appel à l'opération "consultation" du service web SaeService.<br>
+    * On s'attend à récupérer une réponse correcte
+    * 
+    * @param urlServiceWeb
+    *           l'URL du service web SaeService
+    * @param formulaire
+    *           le formulaire
+    * @param sha1attendu
+    *           le SHA-1 attendu, ou null si pas de SHA-1
+    * @param codesMetasAttendues
+    *           la liste des codes des métadonnées attendues
+    * @param metaAttendues
+    *           la liste des paires clés/valeur des métadonnées attendus peut
+    *           être un sous-ensemble de la liste codeMetasAttendus, dans le cas
+    *           par exemple où certaines valeurs ne sont pas prédictibles.
+    * @return la réponse de l'opération "consultation", ou null si une exception
+    *         s'est produite
+    */
+   public final ConsultationResponse appelWsOpConsultationReponseCorrecteAttendue(
+         String urlServiceWeb, ConsultationFormulaire formulaire,
+         String sha1attendu, CodeMetadonneeList codesMetasAttendues,
+         List<MetadonneeValeur> metaAttendues) {
+
       // Création de l'objet qui implémente l'interface WsTestListener
       // et qui s'attend à recevoir une réponse
       WsTestListener testAvecReponse = new WsTestListenerImplReponseAttendue();
@@ -361,7 +399,8 @@ public class ConsultationTestService {
 
             // Vérification de la réponse par rapport aux paramètres envoyés au
             // service web
-            wsVerifieRetour(formulaire, response, sha1attendu);
+            wsVerifieRetour(formulaire, response, sha1attendu,
+                  codesMetasAttendues, metaAttendues);
 
          }
 
@@ -369,6 +408,99 @@ public class ConsultationTestService {
 
       // Renvoie la réponse du service web
       return response;
+
+   }
+
+   private boolean wsVerifieRetourMetaDemandees(ResultatTest resultatTest,
+         CodeMetadonneeList codesMetaAttendues,
+         List<MetadonneeValeur> metaAttendues, ListeMetadonneeType metaObtenues) {
+
+      boolean testKo = false;
+
+      ResultatTestLog log = resultatTest.getLog();
+
+      if (codesMetaAttendues == null) {
+
+         // Rétro-compatibilité
+         String erreur = testMetaService
+               .verifieMetadonneesConsulteeParDefaut(metaObtenues);
+         if (StringUtils.isNotBlank(erreur)) {
+            testKo = true;
+            log.appendLogNewLine();
+            log.appendLogLn(erreur);
+         }
+
+      } else {
+
+         // Vérifie que les codes de métadonnées demandées sont bien
+         // consultables
+         // C'est une sorte de "sur-vérification"
+         log.appendLogNewLine();
+         testMetaService.areMetadonneesConsultables(codesMetaAttendues,
+               resultatTest);
+
+         // Vérifie que les métadonnées obtenues sont bien celles demandées
+
+         // D'abord, pour les besoins du service utilisé plus tard, on construit
+         // la
+         // liste des MetadonneeDefinition correspondant aux codes longs
+         // attendus
+         List<MetadonneeDefinition> metadonneesDefinitions = referentielMetadonneesService
+               .construitListeMetadonnee(codesMetaAttendues);
+
+         // 1) Vérifie que les métadonnnées retournées font bien partie de la
+         // liste demandées
+         String messageErreur1 = testMetaService
+               .verifieMetasUniquementDansListeAutorisee(metaObtenues,
+                     metadonneesDefinitions);
+
+         // 2) Vérifie que toutes les métadonnées demandées font bien partie de
+         // la liste
+         // des métadonnées renvoyées
+
+         String messageErreur2 = testMetaService.verifieMetasToutesPresentes(
+               metaObtenues, metadonneesDefinitions);
+
+         // Bilan des erreurs des vérifications 1) et 2)
+         String messageErreurAll = TestUtils.concatMessagesErreurs(
+               messageErreur1, messageErreur2);
+         if (StringUtils.isNotBlank(messageErreurAll)) {
+
+            testKo = true;
+
+            log.appendLogNewLine();
+            log.appendLogLn("Erreur sur les métadonnées");
+            log.appendLogLn(messageErreurAll);
+
+         }
+
+         // La suite des tests ne se fait que si les tests 1) et 2) sont OK
+         if (!testKo) {
+
+            boolean testKoTemp;
+
+            if (CollectionUtils.isNotEmpty(metaAttendues)) {
+
+               MetadonneeValeurList metaObtenues2 = SaeServiceObjectExtractor
+                     .extraitMetadonnees(metaObtenues);
+
+               for (MetadonneeValeur metaValeur : metaAttendues) {
+                  testKoTemp = testMetaService.verifiePresenceEtValeurAvecLog(
+                        resultatTest, metaObtenues2, metaValeur.getCode(),
+                        metaValeur.getValeur());
+                  if (testKoTemp) {
+                     testKo = true;
+                  }
+               }
+
+            }
+
+         }
+
+      }
+
+      // Renvoie du résultat
+      return testKo;
 
    }
 

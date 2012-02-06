@@ -384,6 +384,16 @@ public final class SaeServiceLogUtils {
       log.appendLogLn("Appel de l'opération consultation");
       log.appendLogLn("Paramètres :");
       log.appendLogLn("Id archivage : " + formulaire.getIdArchivage());
+      log.appendLogLn("Métadonnées :");
+
+      if (CollectionUtils.isEmpty(formulaire.getCodeMetadonnees())) {
+         log.appendLogLn("non spécifiées");
+      } else {
+         log
+               .appendLogLn(StringUtils.join(formulaire.getCodeMetadonnees(),
+                     ','));
+      }
+
       log.appendLogNewLine();
    }
 
