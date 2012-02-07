@@ -755,6 +755,15 @@
          </CasTest>
          
          <CasTest>
+            <id>402</id>
+            <code>402-Consultation-OK-version-120150</code>
+            <description>
+               On vérifie que la consultation fonctionne correctement pour le client "Attestations" du lot 120150
+            </description>
+            <implemente>true</implemente>
+         </CasTest>
+         
+         <CasTest>
             <id>403</id>
             <code>403-Consultation-OK-TouteMetadonneeConsultable</code>
             <description>
