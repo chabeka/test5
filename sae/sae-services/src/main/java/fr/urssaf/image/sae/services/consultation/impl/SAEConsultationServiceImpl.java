@@ -195,11 +195,11 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
          try {
             controlService.controlLongCodeExist(consultParams.getMetadonnees());
 
-         } catch (LongCodeNotFoundException longNotFoundExcept) {
+         } catch (LongCodeNotFoundException longExcept) {
             String message = ResourceMessagesUtils.loadMessage(
                   "consultation.metadonnees.inexistante", StringUtils.join(
-                        longNotFoundExcept.getListCode(), SEPARATOR_STRING));
-            throw new UnknownDesiredMetadataEx(message, longNotFoundExcept);
+                        longExcept.getListCode(), SEPARATOR_STRING));
+            throw new UnknownDesiredMetadataEx(message, longExcept);
          }
 
          try {
@@ -216,11 +216,11 @@ public class SAEConsultationServiceImpl extends AbstractSAEServices implements
          try {
             mapShortCode = convertService.longCodeToShortCode(consultParams
                   .getMetadonnees());
-         } catch (LongCodeNotFoundException longNotFoundExcept) {
+         } catch (LongCodeNotFoundException longExcept) {
             String message = ResourceMessagesUtils.loadMessage(
                   "consultation.metadonnees.inexistante", StringUtils.join(
-                        longNotFoundExcept.getListCode(), SEPARATOR_STRING));
-            throw new UnknownDesiredMetadataEx(message, longNotFoundExcept);
+                        longExcept.getListCode(), SEPARATOR_STRING));
+            throw new UnknownDesiredMetadataEx(message, longExcept);
          }
 
          keyList.addAll(mapShortCode.keySet());
