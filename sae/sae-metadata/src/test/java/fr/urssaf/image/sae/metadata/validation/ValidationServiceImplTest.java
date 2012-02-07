@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.sae.bo.model.bo.SAEDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.metadata.control.services.MetadataControlServices;
+import fr.urssaf.image.sae.metadata.exceptions.LongCodeNotFoundException;
+import fr.urssaf.image.sae.metadata.referential.services.SAEConvertMetadataService;
 
 /**
  * 
@@ -23,6 +25,9 @@ public class ValidationServiceImplTest {
 	@Autowired
 	@Qualifier("metadataControlServices")
 	private MetadataControlServices controlService;
+	
+	@Autowired
+   private SAEConvertMetadataService convertService;
 
 	/**
 	 * validation de l'argument du service
@@ -165,5 +170,16 @@ public class ValidationServiceImplTest {
 			final MetadataControlServices controlService) {
 		this.controlService = controlService;
 	}
+	
+	/**
+    * validation de l'argument du service
+    * {@link fr.urssaf.image.sae.metadata.control.services.impl.MetadataControlServicesImpl#checkMetadataRequiredValue(UntypedDocument)
+    * checkSearchableMetadata}
+	 * @throws LongCodeNotFoundException 
+    */
+   @Test(expected = IllegalArgumentException.class)
+   public void checkConvertMetadataRequiredValue() throws LongCodeNotFoundException {
+      convertService.longCodeToShortCode(null);
+   }
 
 }

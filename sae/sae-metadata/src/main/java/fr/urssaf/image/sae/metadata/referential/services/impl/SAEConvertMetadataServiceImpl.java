@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.sae.metadata.exceptions.LongCodeNotFoundException;
@@ -29,7 +28,6 @@ import fr.urssaf.image.sae.metadata.referential.services.SAEConvertMetadataServi
 public class SAEConvertMetadataServiceImpl implements SAEConvertMetadataService {
 
    @Autowired
-   @Qualifier("metadataReferenceDAO")
    private MetadataReferenceDAO metaRefD;
 
    /**
@@ -54,15 +52,15 @@ public class SAEConvertMetadataServiceImpl implements SAEConvertMetadataService 
          // et codeLong
          // MetadataReference metadaReference = new MetadataReference();
          try {
-            if (metaRefD.getByLongCode(codeLong) != null) {
+            if (metaRefD.getByLongCode(codeLong) == null) {
+               errorList.add(codeLong);
+            } else {
                MetadataReference metadaReference = metaRefD
                      .getByLongCode(codeLong);
                // et ensuite recup le code court
                String codeCourt = metadaReference.getShortCode();
                // ajout dans une Map<String, String>
                map.put(codeCourt, codeLong);
-            } else {
-               errorList.add(codeLong);
             }
          } catch (ReferentialException except) {
             errorList.add(codeLong);
