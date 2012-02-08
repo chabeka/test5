@@ -29,11 +29,6 @@ public class Test205Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
    /**
-    * URL du répertoire contenant les fichiers de données
-    */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-205-CaptureMasse-OK-Tor-3-repertoire-anti-slash-meme-doc/";
-
-   /**
     * Nombre d'occurence attendu
     */
    private static final int COUNT_WAITED = 3;
@@ -44,6 +39,11 @@ public class Test205Controller extends
    @Override
    protected final String getNumeroTest() {
       return "205";
+   }
+   
+   
+   private String getDebutUrlEcde() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureMasse-205-CaptureMasse-OK-Tor-3-repertoire-anti-slash-meme-doc/");
    }
 
    /**
@@ -56,12 +56,12 @@ public class Test205Controller extends
 
       CaptureMasseFormulaire formCapture = formulaire
             .getCaptureMasseDeclenchement();
-      formCapture.setUrlSommaire(URL_DIRECTORY + "sommaire.xml");
+      formCapture.setUrlSommaire(getDebutUrlEcde() + "sommaire.xml");
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       CaptureMasseResultatFormulaire formResultat = formulaire
             .getCaptureMasseResultat();
-      formResultat.setUrlSommaire(URL_DIRECTORY + "resultat.xml");
+      formResultat.setUrlSommaire(getDebutUrlEcde() + "resultat.xml");
       formResultat.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();

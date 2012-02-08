@@ -42,7 +42,7 @@ public class Test162Controller extends AbstractTestWsController<TestWsCaptureUni
       
       
       // URL ECDE
-      formCapture.setUrlEcde("ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-162-CaptureUnitaire-KO-CodeRNDincorrect/documents/doc1.PDF");
+      formCapture.setUrlEcde(getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureUnitaire-162-CaptureUnitaire-KO-CodeRNDincorrect/documents/doc1.PDF"));
       
       
       // Métadonnées

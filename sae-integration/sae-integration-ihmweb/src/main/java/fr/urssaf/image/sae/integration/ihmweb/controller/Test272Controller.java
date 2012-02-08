@@ -20,17 +20,18 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
 public class Test272Controller extends
       AbstractTestWsController<TestStockageMasseAllFormulaire> {
 
-   /**
-    * URL du répertoire contenant les fichiers de données
-    */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-272-CaptureMasse-KO-URL-ECDE-Repertoire-Sans-Droits-Ecriture/";
-
+   
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
       return "272";
+   }
+   
+   
+   private String getDebutUrlEcde() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureMasse-272-CaptureMasse-KO-URL-ECDE-Repertoire-Sans-Droits-Ecriture/");
    }
 
    /**
@@ -43,12 +44,12 @@ public class Test272Controller extends
 
       CaptureMasseFormulaire formCapture = formulaire
             .getCaptureMasseDeclenchement();
-      formCapture.setUrlSommaire(URL_DIRECTORY + "sommaire.xml");
+      formCapture.setUrlSommaire(getDebutUrlEcde() + "sommaire.xml");
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       CaptureMasseResultatFormulaire formResultat = formulaire
             .getCaptureMasseResultat();
-      formResultat.setUrlSommaire(URL_DIRECTORY + "resultat.xml");
+      formResultat.setUrlSommaire(getDebutUrlEcde() + "resultat.xml");
       formResultat.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
@@ -72,7 +73,7 @@ public class Test272Controller extends
 
       } else if ("2".equals(etape)) {
 
-         etape2LectureResultat(URL_DIRECTORY + "sommaire.xml", formulaire
+         etape2LectureResultat(getDebutUrlEcde() + "sommaire.xml", formulaire
                .getCaptureMasseResultat());
 
       } else if ("3".equals(etape)) {
@@ -103,7 +104,7 @@ public class Test272Controller extends
       getCaptureMasseTestService().appelWsOpArchiMasseSoapFaultAttendue(
             urlWebService, formulaire.getCaptureMasseDeclenchement(),
             "sae_CaptureEcdeDroitEcriture",
-            new String[] { URL_DIRECTORY + "sommaire.xml" });
+            new String[] { getDebutUrlEcde() + "sommaire.xml" });
 
    }
 

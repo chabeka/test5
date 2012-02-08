@@ -42,7 +42,7 @@ public class Test100Controller extends AbstractTestWsController<TestWsCaptureUni
       // Un exemple d'URL ECDE de fichier à capturer
       // (qui correspond à un document réellement existant sur l'ECDE d'intégration)
       formCapture.setUrlEcde(
-            "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-100-CaptureUnitaire-TestLibre/documents/ADELPF_710_PSNV211157BPCA1L0000.pdf");
+            getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureUnitaire-100-CaptureUnitaire-TestLibre/documents/ADELPF_710_PSNV211157BPCA1L0000.pdf"));
       
       // Des métadonnées exemples
       MetadonneeValeurList metasExemples = 

@@ -38,7 +38,7 @@ public class Test200Controller extends AbstractTestWsController<Test200Formulair
       Test200Formulaire formulaire = new Test200Formulaire();
       
       CaptureMasseFormulaire formCapture = formulaire.getCaptureMasseDeclenchement();
-      formCapture.setUrlSommaire("ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110829/IdTrait/sommaire.xml");
+      formCapture.setUrlSommaire(getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110829/IdTrait/sommaire.xml"));
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
       
       CaptureMasseResultatFormulaire formResultat = formulaire.getCaptureMasseResultat();

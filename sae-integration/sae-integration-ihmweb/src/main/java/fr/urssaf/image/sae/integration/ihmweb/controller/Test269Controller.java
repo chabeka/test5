@@ -26,15 +26,6 @@ public class Test269Controller extends
     */
    private static final int WAITED_COUNT = 200;
 
-   /**
-    * URL du répertoire contenant les fichiers de données
-    */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-269-CaptureMasse-KO-Deux-Lancements-1/";
-
-   /**
-    * URL du répertoire contenant les fichiers de données
-    */
-   private static final String URL_DIRECTORY_TWO = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-269-CaptureMasse-KO-Deux-Lancements-2/";
 
    /**
     * {@inheritDoc}
@@ -42,6 +33,16 @@ public class Test269Controller extends
    @Override
    protected final String getNumeroTest() {
       return "269";
+   }
+   
+   
+   private String getDebutUrlEcde1() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureMasse-269-CaptureMasse-KO-Deux-Lancements-1/");
+   }
+   
+   
+   private String getDebutUrlEcde2() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureMasse-269-CaptureMasse-KO-Deux-Lancements-2/");
    }
 
    /**
@@ -54,17 +55,17 @@ public class Test269Controller extends
 
       CaptureMasseFormulaire formCapture = formulaire
             .getCaptureMasseDeclenchement();
-      formCapture.setUrlSommaire(URL_DIRECTORY + "sommaire.xml");
+      formCapture.setUrlSommaire(getDebutUrlEcde1() + "sommaire.xml");
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       CaptureMasseFormulaire formCapture2 = formulaire
             .getCaptureMasseDeclenchementParallele();
-      formCapture2.setUrlSommaire(URL_DIRECTORY_TWO + "sommaire.xml");
+      formCapture2.setUrlSommaire(getDebutUrlEcde2() + "sommaire.xml");
       formCapture2.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       CaptureMasseResultatFormulaire formResultat = formulaire
             .getCaptureMasseResultat();
-      formResultat.setUrlSommaire(URL_DIRECTORY + "resultat.xml");
+      formResultat.setUrlSommaire(getDebutUrlEcde1() + "resultat.xml");
       formResultat.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       RechercheFormulaire rechercheFormulaire = formulaire.getRechFormulaire();

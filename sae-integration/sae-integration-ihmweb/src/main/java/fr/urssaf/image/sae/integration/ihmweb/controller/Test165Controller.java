@@ -22,10 +22,7 @@ import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 public class Test165Controller extends
       AbstractTestWsController<TestWsCaptureUnitaireFormulaire> {
 
-   /**
-    * URL du fichier
-    */
-   private static final String URL_ECDE = "ecde://ecde.cer69.recouvtest/SAE_INTEGRATION/20110822/CaptureUnitaire-165-CaptureUnitaire-KO-URL-ECDE-incorrecte/documents/doc1.PDF";
+   
 
    /**
     * {@inheritDoc}
@@ -34,6 +31,12 @@ public class Test165Controller extends
    protected final String getNumeroTest() {
       return "165";
    }
+   
+   
+   private String getUrlEcde() {
+      return "ecde://ecde.cer69.recouvtest/SAE_INTEGRATION/20110822/CaptureUnitaire-165-CaptureUnitaire-KO-URL-ECDE-incorrecte/documents/doc1.PDF";
+   }
+   
 
    /**
     * {@inheritDoc}
@@ -44,7 +47,7 @@ public class Test165Controller extends
       TestWsCaptureUnitaireFormulaire formulaire = new TestWsCaptureUnitaireFormulaire();
 
       CaptureUnitaireFormulaire formCapture = formulaire.getCaptureUnitaire();
-      formCapture.setUrlEcde(URL_ECDE);
+      formCapture.setUrlEcde(getUrlEcde());
 
       MetadonneeValeurList metadonnees = new MetadonneeValeurList();
       metadonnees
@@ -88,7 +91,7 @@ public class Test165Controller extends
       // Appel de la méthode de test
       getCaptureUnitaireTestService().appelWsOpCaptureUnitaireSoapFault(
             urlServiceWeb, formulaire, ViUtils.FIC_VI_OK,
-            "sae_CaptureUrlEcdeIncorrecte", new String[] { URL_ECDE });
+            "sae_CaptureUrlEcdeIncorrecte", new String[] { getUrlEcde() });
 
    }
 

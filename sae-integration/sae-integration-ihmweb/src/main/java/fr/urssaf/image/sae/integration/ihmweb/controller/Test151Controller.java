@@ -21,8 +21,7 @@ import fr.urssaf.image.sae.integration.ihmweb.utils.ViUtils;
 public class Test151Controller extends
       AbstractTestWsController<TestWsCaptureUnitaireFormulaire> {
 
-   private static final String URL_ECDE = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-151-CaptureUnitaire-KO-EcdeFichierInexistant/documents/doc1.PDF";
-
+   
    /**
     * {@inheritDoc}
     */
@@ -30,6 +29,12 @@ public class Test151Controller extends
    protected final String getNumeroTest() {
       return "151";
    }
+   
+
+   private String getUrlEcde() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureUnitaire-151-CaptureUnitaire-KO-EcdeFichierInexistant/documents/doc1.PDF");
+   }
+   
 
    /**
     * {@inheritDoc}
@@ -40,7 +45,7 @@ public class Test151Controller extends
       TestWsCaptureUnitaireFormulaire formulaire = new TestWsCaptureUnitaireFormulaire();
 
       CaptureUnitaireFormulaire formCapture = formulaire.getCaptureUnitaire();
-      formCapture.setUrlEcde(URL_ECDE);
+      formCapture.setUrlEcde(getUrlEcde());
 
       MetadonneeValeurList metadonnees = new MetadonneeValeurList();
       metadonnees
@@ -83,7 +88,7 @@ public class Test151Controller extends
       // Appel de la méthode de test
       getCaptureUnitaireTestService().appelWsOpCaptureUnitaireSoapFault(
             urlServiceWeb, formulaire, ViUtils.FIC_VI_OK,
-            "sae_CaptureEcdeFichierInexistant", new String[] { URL_ECDE });
+            "sae_CaptureEcdeFichierInexistant", new String[] { getUrlEcde() });
 
    }
 

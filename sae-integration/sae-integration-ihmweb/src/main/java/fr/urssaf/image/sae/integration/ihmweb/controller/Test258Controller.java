@@ -31,17 +31,19 @@ public class Test258Controller extends
     * 
     */
    private static final int WAITED_COUNT = 3;
-   /**
-    * URL du répertoire contenant les fichiers de données
-    */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-258-CaptureMasse-KO-Tor-MetadonneeNonArchivable/";
 
+   
    /**
     * {@inheritDoc}
     */
    @Override
    protected final String getNumeroTest() {
       return "258";
+   }
+   
+   
+   private String getDebutUrlEcde() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureMasse-258-CaptureMasse-KO-Tor-MetadonneeNonArchivable/");
    }
 
    /**
@@ -54,12 +56,12 @@ public class Test258Controller extends
 
       CaptureMasseFormulaire formCapture = formulaire
             .getCaptureMasseDeclenchement();
-      formCapture.setUrlSommaire(URL_DIRECTORY + "sommaire.xml");
+      formCapture.setUrlSommaire(getDebutUrlEcde() + "sommaire.xml");
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       CaptureMasseResultatFormulaire formResultat = formulaire
             .getCaptureMasseResultat();
-      formResultat.setUrlSommaire(URL_DIRECTORY + "resultat.xml");
+      formResultat.setUrlSommaire(getDebutUrlEcde() + "resultat.xml");
       formResultat.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();

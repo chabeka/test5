@@ -28,10 +28,7 @@ public class Test273Controller extends
     * 
     */
    private static final int WAITED_COUNT = 5000;
-   /**
-    * URL du répertoire contenant les fichiers de données
-    */
-   private static final String URL_DIRECTORY = "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureMasse-273-CaptureMasse-KO-JarArretTomCatSansRepriseAvecStockage/";
+
 
    /**
     * {@inheritDoc}
@@ -39,6 +36,11 @@ public class Test273Controller extends
    @Override
    protected final String getNumeroTest() {
       return "273";
+   }
+   
+   
+   private String getDebutUrlEcde() {
+      return getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureMasse-273-CaptureMasse-KO-JarArretTomCatSansRepriseAvecStockage/");
    }
 
    /**
@@ -51,12 +53,12 @@ public class Test273Controller extends
 
       CaptureMasseFormulaire formCapture = formulaire
             .getCaptureMasseDeclenchement();
-      formCapture.setUrlSommaire(URL_DIRECTORY + "sommaire.xml");
+      formCapture.setUrlSommaire(getDebutUrlEcde() + "sommaire.xml");
       formCapture.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       CaptureMasseResultatFormulaire formResultat = formulaire
             .getCaptureMasseResultat();
-      formResultat.setUrlSommaire(URL_DIRECTORY + "resultat.xml");
+      formResultat.setUrlSommaire(getDebutUrlEcde() + "resultat.xml");
       formResultat.getResultats().setStatus(TestStatusEnum.SansStatus);
 
       RechercheFormulaire rechFormulaire = formulaire.getRechFormulaire();
@@ -80,7 +82,7 @@ public class Test273Controller extends
 
       } else if ("2".equals(etape)) {
 
-         etape2LectureResultat(URL_DIRECTORY + "sommaire.xml", formulaire
+         etape2LectureResultat(getDebutUrlEcde() + "sommaire.xml", formulaire
                .getCaptureMasseResultat());
 
       } else if ("3".equals(etape)) {

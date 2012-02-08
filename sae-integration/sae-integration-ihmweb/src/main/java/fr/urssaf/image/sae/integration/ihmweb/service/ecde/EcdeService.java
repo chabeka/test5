@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
+import fr.urssaf.image.sae.integration.ihmweb.config.TestConfig;
 import fr.urssaf.image.sae.integration.ihmweb.exception.IntegrationRuntimeException;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeSource;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ecde.EcdeSources;
@@ -32,6 +33,9 @@ public class EcdeService {
 
    @Autowired
    private EcdeSources ecdeSources;
+   
+   @Autowired
+   private TestConfig testConfig;
 
    /**
     * Convertit une URL ECDE en un chemin de fichier<br>
@@ -165,5 +169,30 @@ public class EcdeService {
       }
 
    }
+   
+   
+   /**
+    * Construit une URL ECDE<br>
+    * Objectif : mutualiser le DNS, pour pouvoir le changer facilement
+    *            en cas de modification d'ECDE
+    * @param apresDns ce qu'il faut mettre après la partie DNS de l'ECDE
+    * @return
+    */
+   public String construitUrlEcde(String apresDns) {
+      
+      String prefixe = "ecde://";
+      
+      String dns = testConfig.getDnsEcde();
+      
+      if (!apresDns.startsWith("/")) {
+         apresDns = '/' + apresDns;
+      }
+      
+      String result = prefixe + dns + apresDns;
+      
+      return result;
+      
+   }
+   
 
 }

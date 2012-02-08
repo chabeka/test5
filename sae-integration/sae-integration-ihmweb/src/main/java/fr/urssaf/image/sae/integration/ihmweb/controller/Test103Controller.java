@@ -49,7 +49,7 @@ public class Test103Controller extends
 
       // L'URL ECDE
       formCapture
-            .setUrlEcde("ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-103-CaptureUnitaire-OK-ToutesMetasSpecifiables/documents/doc1.PDF");
+            .setUrlEcde(getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureUnitaire-103-CaptureUnitaire-OK-ToutesMetasSpecifiables/documents/doc1.PDF"));
 
       // Les métadonnées
       MetadonneeValeurList metadonnees = new MetadonneeValeurList();

@@ -41,7 +41,7 @@ public class Test163Controller extends AbstractTestWsController<TestWsCaptureUni
       
       
       // URL ECDE
-      formCapture.setUrlEcde("ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/CaptureUnitaire-163-CaptureUnitaire-KO-TypeHash/documents/doc1.PDF");
+      formCapture.setUrlEcde(getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureUnitaire-163-CaptureUnitaire-KO-TypeHash/documents/doc1.PDF"));
       
       
       // Métadonnées

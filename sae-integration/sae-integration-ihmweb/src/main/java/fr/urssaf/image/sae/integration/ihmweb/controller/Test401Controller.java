@@ -63,7 +63,7 @@ public class Test401Controller extends AbstractTestWsController<Test401Formulair
       
       // L'URL ECDE du fichier de test
       formCapture.setUrlEcde(
-            "ecde://ecde.cer69.recouv/SAE_INTEGRATION/20110822/Consultation-401-Consultation-OK-RetourContenu/documents/doc1.PDF");
+            getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/Consultation-401-Consultation-OK-RetourContenu/documents/doc1.PDF"));
       
       // Les métadonnées      
       MetadonneeValeurList metadonnees = new MetadonneeValeurList(); 
