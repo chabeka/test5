@@ -275,7 +275,7 @@ public class RechercheTest {
       listUntyp.add(document1);
 
       String requete = "_uuid:2131131121 dateCreation:[01012011 TO 01122011]";
-      List<String> listMetaDesired = null;
+      List<String> listMetaDesired = new ArrayList<String>();
 
       // valeur attendu est listUntyp via andReturn
       EasyMock.expect(documentService.search(requete, listMetaDesired))
@@ -302,6 +302,12 @@ public class RechercheTest {
 
       Assert.assertTrue(MD_ATTENDU, expectedMetadatas.isEmpty());
 
+   }
+   
+   
+   @Test
+   public void testMDDesiredListNull_success() {
+      
    }
 
    /**
