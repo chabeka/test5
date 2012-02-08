@@ -50,7 +50,7 @@
       
       
       <!-- Application finale console de téléchargement des CRL -->
-      <fileSet>
+      <!--<fileSet>
          <directory>${project.parent.basedir}/sae-igcmaj/target/</directory>
          <includes>
             <include>sae-igcmaj-exe.jar</include>
@@ -60,7 +60,7 @@
       
        
       
-      <!-- Application finale console de lancement des services 
+      --><!-- Application finale console de lancement des services 
       <fileSet>
          <directory>${project.parent.basedir}/sae-services-executable/target/</directory>
          <includes>
@@ -116,6 +116,12 @@
          <source>${project.parent.basedir}/sae-webservices/target/sae-webservices-${version}.war</source>
          <outputDirectory/>
          <destName>sae.war</destName>
+       </file>
+       
+       <file>
+         <source>${project.parent.basedir}/sae-igcmaj/target/sae-igcmaj-${version}.jar</source>
+         <outputDirectory/>
+         <destName>sae-igcmaj-exe.jar</destName>
        </file>
        
        
