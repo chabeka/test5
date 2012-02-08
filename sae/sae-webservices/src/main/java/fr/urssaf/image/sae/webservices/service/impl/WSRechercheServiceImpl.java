@@ -24,6 +24,7 @@ import fr.urssaf.image.sae.services.exception.search.UnknownLuceneMetadataEx;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
 import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
+import fr.urssaf.image.sae.webservices.util.CollectionUtils;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
 /**
@@ -133,10 +134,12 @@ public class WSRechercheServiceImpl implements WSRechercheService {
    /**
     * Récupérer la liste des codes des meta données souhaitées.
     */
-   private List<String> recupererListMDDesired(
+   protected static List<String> recupererListMDDesired(
          MetadonneeCodeType[] listeMDSearch) {
 
-      return ObjectTypeFactory.buildMetaCodeFromWS(listeMDSearch);
+      return CollectionUtils.loadListNotNull(ObjectTypeFactory
+            .buildMetaCodeFromWS(listeMDSearch));
+
    }
 
    /**
