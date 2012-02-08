@@ -34,7 +34,7 @@ public class Test165Controller extends
    
    
    private String getUrlEcde() {
-      return "ecde://ecde.cer69.recouvtest/SAE_INTEGRATION/20110822/CaptureUnitaire-165-CaptureUnitaire-KO-URL-ECDE-incorrecte/documents/doc1.PDF";
+      return "ecde://ecde.cer69.inexistant/SAE_INTEGRATION/20110822/CaptureUnitaire-165-CaptureUnitaire-KO-URL-ECDE-incorrecte/documents/doc1.PDF";
    }
    
 
