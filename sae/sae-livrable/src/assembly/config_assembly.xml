@@ -119,7 +119,7 @@
        </file>
        
        <file>
-         <source>${project.parent.basedir}/sae-igcmaj/target/sae-igcmaj-${version}.jar</source>
+         <source>${project.parent.basedir}/sae-igcmaj/target/sae-igcmaj-${version}-exe.jar</source>
          <outputDirectory/>
          <destName>sae-igcmaj-exe.jar</destName>
        </file>
