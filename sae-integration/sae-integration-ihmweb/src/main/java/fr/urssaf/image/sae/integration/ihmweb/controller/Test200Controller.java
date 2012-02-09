@@ -91,6 +91,10 @@ public class Test200Controller extends AbstractTestWsController<Test200Formulair
             urlWebService, 
             formulaire.getCaptureMasseDeclenchement());
       
+      // Renseigne le formulaire de l'étape 2
+      formCaptMassRes.setUrlSommaire(formulaire.getCaptureMasseDeclenchement().getUrlSommaire());
+      
+      
    }
    
    
