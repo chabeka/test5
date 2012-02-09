@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.urssaf.image.sae.saetraitementsdivers.webservices.service;
+package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.service;
 
 import java.util.List;
 

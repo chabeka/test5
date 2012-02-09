@@ -33,6 +33,7 @@ public class ConvertFactory {
          document = new BeanRNDTypeDocument();
          document.setCodeRND(rndDocument.get_reference());
 
+         // TODO Pourquoi refFonction n'est pas toujours renseigné ?
          String value = rndDocument.get_refFonction();
          String[] tabValues = rndDocument.get_reference().split("\\.");
          if (StringUtils.isBlank(value)) {
@@ -40,6 +41,7 @@ public class ConvertFactory {
          }
          document.setCodeFonction(value);
 
+         // TODO Pourquoi refActivite n'est pas toujours renseigné ?
          value = rndDocument.get_refActivite();
          if (StringUtils.isBlank(value)) {
             value = tabValues[1];
@@ -47,7 +49,10 @@ public class ConvertFactory {
          document.setCodeActivite(value);
 
          document.setCodeLibelle(rndDocument.get_label());
+         
+         // TODO Calculer la durée de conservation
          document.setDureeConservation(null);
+         
          document.setVersionRND(version);
       }
 

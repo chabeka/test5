@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.urssaf.image.sae.saetraitementsdivers.webservices.modele;
+package fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.webservices.modele;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
