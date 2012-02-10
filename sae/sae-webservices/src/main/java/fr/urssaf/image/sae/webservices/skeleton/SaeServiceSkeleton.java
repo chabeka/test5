@@ -179,6 +179,8 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             // Fin des traces debug - entrée méthode
             ArchivageUnitaireResponse response = capture
                   .archivageUnitaire(request);
+            // Nettoyage du contexte pour les logs
+            clearLogContext();
             // Traces debug - sortie méthode
             if (response != null
                   && response.getArchivageUnitaireResponse() != null) {
@@ -197,10 +199,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } finally {
-         // Nettoyage du contexte pour les logs
-         clearLogContext();
-      }
+      } 
    }
 
    /**
@@ -230,6 +229,8 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          
             // Fin des traces debug - entrée méthode
             ArchivageMasseResponse response = captureMasse.archivageEnMasse(request);
+            // Nettoyage du contexte pour les logs
+            clearLogContext();
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
             return response;
@@ -240,10 +241,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } finally {
-         // Nettoyage du contexte pour les logs
-         clearLogContext();
-      }
+      } 
    }
 
    /**
@@ -270,6 +268,8 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          } else {
             // Fin des traces debug - entrée méthode
             RechercheResponse response = search.search(request);
+            // Nettoyage du contexte pour les logs
+            clearLogContext();
             // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
@@ -281,10 +281,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } finally {
-         // Nettoyage du contexte pour les logs
-         clearLogContext();
-      }
+      } 
    }
 
    /**
@@ -312,6 +309,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             
             // Fin des traces debug - entrée méthode
             ConsultationResponse response = consultation.consultation(request);
+            clearLogContext();
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
             return response;
@@ -323,9 +321,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } finally {
-         // Nettoyage du contexte pour les logs
-         clearLogContext();
       }
    }
 
