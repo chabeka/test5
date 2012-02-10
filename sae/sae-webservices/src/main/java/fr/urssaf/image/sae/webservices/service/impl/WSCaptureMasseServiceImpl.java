@@ -22,12 +22,12 @@ import fr.urssaf.image.sae.services.controles.SAEControlesCaptureService;
 import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
+import fr.urssaf.image.sae.webservices.aspect.BuildOrClearMDCAspect;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.CaptureMasseRuntimeException;
 import fr.urssaf.image.sae.webservices.impl.factory.ObjectStorageResponseFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.support.LauncherSupport;
-import fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
 /**
@@ -127,7 +127,7 @@ public class WSCaptureMasseServiceImpl implements WSCaptureMasseService {
 
       // Appel du service, celui-ci doit rendre la main rapidement d'un
       // processus
-      String contextLog = MDC.get(SaeServiceSkeleton.LOG_CONTEXTE);
+      String contextLog = MDC.get(BuildOrClearMDCAspect.LOG_CONTEXTE);
 
       // les trois arguments sont dans l'ordre
       // 1 - le nom du traitement : captureMasse

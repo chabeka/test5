@@ -5,7 +5,6 @@ import java.io.StringWriter;
 import org.apache.axis2.context.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import fr.urssaf.image.sae.webservices.skeleton.SaeServiceSkeleton;
@@ -31,7 +30,7 @@ public class LogWarnSkeletonAspect {
       
       LOG.warn(sWriter.toString());
       
-      MDC.clear();
+      BuildOrClearMDCAspect.clearLogContext();
    }
    
    

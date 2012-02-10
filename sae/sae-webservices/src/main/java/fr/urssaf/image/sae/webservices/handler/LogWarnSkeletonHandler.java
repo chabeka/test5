@@ -28,7 +28,7 @@ public class LogWarnSkeletonHandler extends AbstractHandler{
          msgCtx.setProperty("soapRequestMessage", sWriter);
          
       } catch (XMLStreamException e) {
-         
+         // Exception jamais levée.
       }
       
       return InvocationResponse.CONTINUE;

@@ -10,7 +10,6 @@
 package fr.urssaf.image.sae.webservices.skeleton;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +18,6 @@ import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -91,8 +89,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    private static final Logger LOG = LoggerFactory
          .getLogger(SaeServiceSkeleton.class);
 
-   public static final String LOG_CONTEXTE = "log_contexte_uuid";
-
    @Autowired
    private WSConsultationService consultation;
 
@@ -160,7 +156,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    public final ArchivageUnitaireResponse archivageUnitaireSecure(
          ArchivageUnitaire request) throws CaptureAxisFault {
       // Mise en place du contexte pour les traces
-      buildLogContext();
+      //buildLogContext();
       try {
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération archivageUnitaireSecure()";
@@ -180,7 +176,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             ArchivageUnitaireResponse response = capture
                   .archivageUnitaire(request);
             // Nettoyage du contexte pour les logs
-            clearLogContext();
+            //clearLogContext();
             // Traces debug - sortie méthode
             if (response != null
                   && response.getArchivageUnitaireResponse() != null) {
@@ -211,7 +207,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    public final ArchivageMasseResponse archivageMasseSecure(
          ArchivageMasse request) throws CaptureAxisFault {
       // Mise en place du contexte pour les traces
-      buildLogContext();
+      //buildLogContext();
       try {
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération archivageMasseSecure()";
@@ -230,7 +226,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             // Fin des traces debug - entrée méthode
             ArchivageMasseResponse response = captureMasse.archivageEnMasse(request);
             // Nettoyage du contexte pour les logs
-            clearLogContext();
+            //clearLogContext();
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
             return response;
@@ -253,7 +249,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    public final RechercheResponse rechercheSecure(Recherche request)
          throws RechercheAxis2Fault {
       // Mise en place du contexte pour les traces
-      buildLogContext();
+      //buildLogContext();
       try {
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération rechercheSecure()";
@@ -269,7 +265,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             // Fin des traces debug - entrée méthode
             RechercheResponse response = search.search(request);
             // Nettoyage du contexte pour les logs
-            clearLogContext();
+            //clearLogContext();
             // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
@@ -291,7 +287,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    public final ConsultationResponse consultationSecure(Consultation request)
          throws ConsultationAxisFault {
       // Mise en place du contexte pour les traces
-      buildLogContext();
+      //buildLogContext();
       try {
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération consultationSecure()";
@@ -309,7 +305,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             
             // Fin des traces debug - entrée méthode
             ConsultationResponse response = consultation.consultation(request);
-            clearLogContext();
+            //clearLogContext();
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
             return response;
@@ -322,21 +318,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          logRuntimeException(ex);
          throw ex;
       }
-   }
-
-   /**
-    * Mise en place du Log contexte.
-    */
-   private void buildLogContext() {
-      String contexteLog = UUID.randomUUID().toString();
-      MDC.put(LOG_CONTEXTE, contexteLog);
-   }
-
-   /**
-    * Nettoie le contexte pour le logback.
-    */
-   private void clearLogContext() {
-      MDC.clear();
    }
 
    private void logSoapFault(AxisFault fault) {

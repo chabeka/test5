@@ -18,9 +18,21 @@
    <aop:config>
       <aop:pointcut id="logWarnPointcut"
          expression="execution(public * fr.urssaf.image.sae.webservices.skeleton.*SkeletonInterface.*(..))" />
+      
+      <aop:pointcut id="buildOrClearMDCPointCut"
+         expression="execution(public * fr.urssaf.image.sae.webservices.skeleton.*SkeletonInterface.*(..))" />
+      
+      
       <aop:aspect id="logWarnSkeletonAspect" ref="logWarnSkeletonAspect">
          <aop:after-throwing method="logWarn" throwing="exception" pointcut-ref="logWarnPointcut" />
       </aop:aspect>
+      
+      <aop:aspect id="buildOrClearMDCAspect" ref="buildOrClearMDCAspect">
+         <aop:before method="buildLogContext" pointcut-ref="buildOrClearMDCPointCut"/>
+         <aop:after-returning method="clearLogContext" pointcut-ref="buildOrClearMDCPointCut"/>
+      </aop:aspect>
+      
+      
    </aop:config>
 
 
