@@ -49,11 +49,13 @@ public class ConvertFactory {
          document.setCodeActivite(value);
 
          document.setCodeLibelle(rndDocument.get_label());
-         
+
          // TODO Calculer la durée de conservation
-         document.setDureeConservation(null);
-         
+         document.setDureeConservation("1825");
+
          document.setVersionRND(version);
+
+         document.setEtat(rndDocument.is_etat());
       }
 
       return document;

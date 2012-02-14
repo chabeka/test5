@@ -22,6 +22,8 @@ public class BeanRNDTypeDocument {
    private String versionRND;
    
    private String codeActivite;
+   
+   private boolean etat;
 
    /**
     * @return the codeRND
@@ -125,6 +127,20 @@ public class BeanRNDTypeDocument {
     */
    public final void setCodeActivite(String codeActivite) {
       this.codeActivite = codeActivite;
+   }
+
+   /**
+    * @return the etat
+    */
+   public final boolean isEtat() {
+      return etat;
+   }
+
+   /**
+    * @param etat the etat to set
+    */
+   public final void setEtat(boolean etat) {
+      this.etat = etat;
    }
 
 }
