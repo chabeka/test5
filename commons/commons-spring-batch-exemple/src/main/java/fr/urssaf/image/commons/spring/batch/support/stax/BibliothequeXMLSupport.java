@@ -2,11 +2,18 @@ package fr.urssaf.image.commons.spring.batch.support.stax;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -24,6 +31,8 @@ public class BibliothequeXMLSupport {
 
    private static final String B_PREFIX = "b";
 
+   private XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+
    public void writer(File bibliothequeXMLPath, int nombreDeLivres) {
 
       OutputStream libraryXML;
@@ -36,8 +45,7 @@ public class BibliothequeXMLSupport {
       XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 
       try {
-         XMLStreamWriter writer = outputFactory
-               .createXMLStreamWriter(libraryXML);
+         XMLEventWriter writer = outputFactory.createXMLEventWriter(libraryXML);
 
          try {
 
@@ -69,49 +77,153 @@ public class BibliothequeXMLSupport {
 
    }
 
-   private void headerWriter(XMLStreamWriter writer) throws XMLStreamException {
+   public void writer(File output, File input) {
 
-      writer.writeStartDocument("UTF-8", "1.0");
+      OutputStream libraryXML;
+      try {
+         libraryXML = FileUtils.openOutputStream(output);
+      } catch (IOException e) {
+         throw new NestableRuntimeException(e);
+      }
 
-      writer.writeStartElement(B_PREFIX, "bibliotheque", B_NAMESPACE);
-      writer.writeNamespace(B_PREFIX, B_NAMESPACE);
-      writer.writeNamespace(REF_PREFIX, REF_NAMESPACE);
+      InputStream inputStream;
+      try {
+         inputStream = FileUtils.openInputStream(input);
+      } catch (IOException e) {
+         throw new NestableRuntimeException(e);
+      }
+
+      XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+
+      XMLEventReader reader;
+      try {
+         reader = inputFactory.createXMLEventReader(inputStream);
+      } catch (XMLStreamException e) {
+         throw new NestableRuntimeException(e);
+      }
+
+      XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+
+      try {
+         XMLEventWriter writer = outputFactory.createXMLEventWriter(libraryXML);
+
+         try {
+
+            this.headerWriter(writer);
+
+            this.write(reader, writer);
+
+            this.footerWriter(writer);
+
+         } catch (XMLStreamException e) {
+
+            throw new NestableRuntimeException(e);
+
+         } finally {
+
+            reader.close();
+            writer.close();
+
+         }
+
+      } catch (XMLStreamException e) {
+         throw new NestableRuntimeException(e);
+      }
+
+   }
+
+   private void write(XMLEventReader reader, XMLEventWriter writer)
+         throws XMLStreamException {
+
+      while (reader.hasNext()) {
+
+         XMLEvent next = reader.nextEvent();
+
+         if (next.isStartElement()) {
+            StartElement startElement = next.asStartElement();
+
+            if ("livres".equals(startElement.getName().getLocalPart())) {
+
+               break;
+            }
+
+         }
+
+      }
+
+      while (reader.hasNext()) {
+
+         XMLEvent next = reader.nextEvent();
+
+         writer.add(next);
+
+         if (next.isEndElement()) {
+            EndElement endElement = next.asEndElement();
+
+            if ("livres".equals(endElement.getName().getLocalPart())) {
+
+               break;
+            }
+
+         }
+
+      }
+   }
+
+   private void headerWriter(XMLEventWriter writer) throws XMLStreamException {
+
+      writer.add(eventFactory.createStartDocument("UTF-8", "1.0"));
+
+      writer.add(eventFactory.createStartElement(B_PREFIX, B_NAMESPACE,
+            "bibliotheque"));
+      writer.add(eventFactory.createNamespace(B_PREFIX, B_NAMESPACE));
+      writer.add(eventFactory.createNamespace(REF_PREFIX, REF_NAMESPACE));
 
       // balise adresse
-      writer.writeStartElement(B_PREFIX, "adresse", B_NAMESPACE);
-      writer.writeCharacters("adresse de la bibliotheque");
-      writer.writeEndElement();
+      writer.add(eventFactory.createStartElement(B_PREFIX, B_NAMESPACE,
+            "adresse"));
+      writer.add(eventFactory.createCharacters("adresse de la bibliotheque"));
+      writer.add(eventFactory
+            .createEndElement(B_PREFIX, B_NAMESPACE, "adresse"));
 
-      writer.writeStartElement(B_PREFIX, "livres", B_NAMESPACE);
-
-   }
-
-   private void footerWriter(XMLStreamWriter writer) throws XMLStreamException {
-
-      writer.writeEndElement();
-      writer.writeEndDocument();
+      writer.add(eventFactory.createStartElement(B_PREFIX, B_NAMESPACE,
+            "livres"));
 
    }
 
-   private void itemWriter(Livre livre, XMLStreamWriter writer)
+   private void footerWriter(XMLEventWriter writer) throws XMLStreamException {
+
+      writer.add(eventFactory.createEndElement(B_PREFIX, B_NAMESPACE,
+            "bibliotheque"));
+      writer.add(eventFactory.createEndDocument());
+
+   }
+
+   private void itemWriter(Livre livre, XMLEventWriter writer)
          throws XMLStreamException {
 
       // ouverture de la balise livre
-      writer.writeStartElement(REF_PREFIX, "livre", REF_NAMESPACE);
-      writer.writeAttribute("id", ObjectUtils.toString(livre.getIdentifiant(),
-            "nc"));
+      writer.add(eventFactory.createStartElement(REF_PREFIX, REF_NAMESPACE,
+            "livre"));
+      writer.add(eventFactory.createAttribute("id", ObjectUtils.toString(livre
+            .getIdentifiant(), "nc")));
 
       // balise titre
-      writer.writeStartElement(REF_PREFIX, "titre", REF_NAMESPACE);
-      writer.writeCharacters(livre.getTitre());
-      writer.writeEndElement();
+      writer.add(eventFactory.createStartElement(REF_PREFIX, REF_NAMESPACE,
+            "titre"));
+      writer.add(eventFactory.createCharacters(livre.getTitre()));
+      writer.add(eventFactory.createEndElement(REF_PREFIX, REF_NAMESPACE,
+            "titre"));
 
       // balise auteur
-      writer.writeStartElement(REF_PREFIX, "auteur", REF_NAMESPACE);
-      writer.writeCharacters(livre.getAuteur());
-      writer.writeEndElement();
+      writer.add(eventFactory.createStartElement(REF_PREFIX, REF_NAMESPACE,
+            "auteur"));
+      writer.add(eventFactory.createCharacters(livre.getAuteur()));
+      writer.add(eventFactory.createEndElement(REF_PREFIX, REF_NAMESPACE,
+            "auteur"));
 
-      writer.writeEndElement();
+      writer.add(eventFactory.createEndElement(REF_PREFIX, REF_NAMESPACE,
+            "livre"));
 
    }
 }
