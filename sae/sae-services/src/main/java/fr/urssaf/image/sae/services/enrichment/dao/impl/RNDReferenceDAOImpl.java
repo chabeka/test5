@@ -105,10 +105,6 @@ public class RNDReferenceDAOImpl implements RNDReferenceDAO {
                CODE_RND_INTERDIT, codeRnd));
       }
       activityCode = typeDoc.getActivityCode();
-      if (StringUtils.isEmpty(activityCode)) {
-         throw new ReferentialRndException(ResourceMessagesUtils.loadMessage(
-               "capture.code.activite.nonvalide", codeRnd));
-      }
       return activityCode;
    }
 
