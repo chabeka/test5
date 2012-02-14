@@ -23,6 +23,11 @@ public class BeanConfig {
     * url du WS
     */
    private String url;
+   
+   /**
+    * chemin complet du fichier généré lifeCycle
+    */
+   private String lifeCycleFilePath;
 
    /**
     * chemin du fichier de sauvegarde
@@ -79,6 +84,20 @@ public class BeanConfig {
     */
    public final void setUrl(String url) {
       this.url = url;
+   }
+
+   /**
+    * @return the lifeCycleFilePath
+    */
+   public final String getLifeCycleFilePath() {
+      return lifeCycleFilePath;
+   }
+
+   /**
+    * @param lifeCycleFilePath the lifeCycleFilePath to set
+    */
+   public final void setLifeCycleFilePath(String lifeCycleFilePath) {
+      this.lifeCycleFilePath = lifeCycleFilePath;
    }
 
 }

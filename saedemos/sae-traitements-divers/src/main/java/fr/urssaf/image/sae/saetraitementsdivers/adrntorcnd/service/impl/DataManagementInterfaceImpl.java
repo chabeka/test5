@@ -99,6 +99,67 @@ public class DataManagementInterfaceImpl implements DataManagementInterface {
       }
 
    }
+   
+   /** 
+    * {@inheritDoc}
+    */
+   @Override
+   public void saveLiveCycle(List<BeanRNDTypeDocument> listDoc, String version)
+         throws AdrnToRcndException {
+      
+      FileWriter fileWriter = null;
+      StreamResult streamResult = null;
+      
+      try {
+         File file = new File(beanConfig.getLifeCycleFilePath());
+         fileWriter = new FileWriter(file);
+
+         streamResult = new StreamResult(fileWriter);
+         SAXTransformerFactory factory = (SAXTransformerFactory) SAXTransformerFactory
+               .newInstance();
+
+         // SAX2.0 ContentHandler.
+         TransformerHandler handler = factory.newTransformerHandler();
+         Transformer serializer = handler.getTransformer();
+         serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+         serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+         handler.setResult(streamResult);
+         handler.startDocument();
+         AttributesImpl atts = new AttributesImpl();
+         // USERS tag.
+         handler.startElement(StringUtils.EMPTY, StringUtils.EMPTY, "LifeCycleRule",
+               atts);
+
+         for (BeanRNDTypeDocument beanDoc : listDoc) {
+            addLifeCycle(handler, beanDoc, version, atts);
+         }
+
+         handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, "LifeCycleRule");
+         handler.endDocument();
+
+      } catch (TransformerConfigurationException e) {
+         throw new AdrnToRcndException(e);
+      } catch (IllegalArgumentException e) {
+         throw new AdrnToRcndException(e);
+      } catch (IOException e) {
+         throw new AdrnToRcndException(e);
+      } catch (TransformerFactoryConfigurationError e) {
+         throw new AdrnToRcndException(e);
+      } catch (SAXException e) {
+         throw new AdrnToRcndException(e);
+
+      } finally {
+
+         try {
+            if (fileWriter != null) {
+               fileWriter.close();
+            }
+         } catch (IOException exception) {
+            // nothing to do
+         }
+
+      }
+   }
 
    /**
     * @param handler
@@ -128,6 +189,29 @@ public class DataManagementInterfaceImpl implements DataManagementInterface {
       addElement(handler, "VersionRND", beanDoc.getVersionRND(), atts);
 
       handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, "TypeDocument");
+   }
+   
+   /**
+    * @param handler
+    * @param beanDoc
+    * @param atts
+    * @throws SAXException
+    */
+   private void addLifeCycle(TransformerHandler handler,
+         BeanRNDTypeDocument beanDoc, String version,
+         AttributesImpl atts) throws SAXException {
+
+      atts.clear();
+
+      handler.startElement(StringUtils.EMPTY, StringUtils.EMPTY,
+            "Rule", atts);
+
+      addElement(handler, "CodeRND", beanDoc.getCodeRND(), atts);
+
+      addElement(handler, "DureeConservation", beanDoc
+            .getDureeConservation(), atts);
+
+      handler.endElement(StringUtils.EMPTY, StringUtils.EMPTY, "Rule");
    }
 
    private void addElement(TransformerHandler handler, String name,

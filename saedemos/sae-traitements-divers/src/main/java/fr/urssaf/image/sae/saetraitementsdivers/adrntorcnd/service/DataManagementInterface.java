@@ -15,7 +15,7 @@ import fr.urssaf.image.sae.saetraitementsdivers.adrntorcnd.modele.BeanRNDTypeDoc
 public interface DataManagementInterface {
 
    /**
-    * Sauvegarde dans un fichier XML la miste des documents supportés
+    * Sauvegarde dans un fichier XML la liste des documents supportés
     * 
     * @param typesDocuments
     *           les documents à sauvegarder
@@ -27,4 +27,17 @@ public interface DataManagementInterface {
    void saveDocuments(List<BeanRNDTypeDocument> listDoc, String version)
          throws AdrnToRcndException;
 
+   /**
+    * Sauvegarde dans un fichier XML la liste des durées de conservation par
+    * type de document
+    * 
+    * @param listDoc
+    *           la liste des types de documents à traiter
+    * @param version
+    *           la version de compatibilité
+    * @throws AdrnToRcndException
+    *            exception levée lors du traitement
+    */
+   void saveLiveCycle(List<BeanRNDTypeDocument> listDoc, String version)
+         throws AdrnToRcndException;
 }

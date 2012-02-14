@@ -19,6 +19,7 @@
       <property name="savedFilePath" value="${savedFilePath}" />
       <property name="version" value="${version}" />
       <property name="url" value="${url}" />
+      <property name="lifeCycleFilePath" value="${lifeCycleFilePath}" />
    </bean>
 
 </beans>

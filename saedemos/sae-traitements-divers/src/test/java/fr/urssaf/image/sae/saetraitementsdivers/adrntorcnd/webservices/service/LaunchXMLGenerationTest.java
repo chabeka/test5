@@ -99,4 +99,36 @@ public class LaunchXMLGenerationTest {
 
    }
 
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   @Ignore
+   public void runLiveCycleFromWSCall() throws AdrnToRcndException {
+      String version = duplicationI.getVersionFromWS();
+
+      List<BeanRNDTypeDocument> typeDoc = duplicationI.getDocumentTypesFromWS();
+
+      /* Suppression des éléments dont is_etat=true */
+      PredicateEtatRNDTypeDoc predicate = new PredicateEtatRNDTypeDoc();
+      CollectionUtils.filter(typeDoc, predicate);
+
+      managementI.saveLiveCycle(typeDoc, version);
+
+   }
+
+   @Test
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+   @Ignore
+   public void runLiveCycleFromConfig() throws AdrnToRcndException {
+      String version = duplicationI.getVersionFromConfigFile();
+
+      List<BeanRNDTypeDocument> typeDoc = duplicationI
+            .getDocumentTypesFromConfigFile();
+
+      /* Suppression des éléments dont is_etat=true */
+      PredicateEtatRNDTypeDoc predicate = new PredicateEtatRNDTypeDoc();
+      CollectionUtils.filter(typeDoc, predicate);
+
+      managementI.saveLiveCycle(typeDoc, version);
+
+   }
 }
