@@ -2,7 +2,6 @@ package fr.urssaf.image.commons.spring.batch.operator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -16,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import fr.urssaf.image.commons.spring.batch.support.stax.XSDValidator;
-import fr.urssaf.image.commons.spring.batch.support.stax.XSDValidator.SAXParseExceptionType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-operator.xml",
@@ -41,23 +40,25 @@ public class Job1OperatorServiceTest {
    }
 
    @Test
-   public void validate_success() throws SAXException, IOException,
-         ParserConfigurationException {
+   public void validate_success() throws ParserConfigurationException,
+         SAXException, IOException {
 
-      int count_items = 100000;
+      int count_items = 10000000;
 
       File xmlPath = new File(TMP_FILE, "batch-exemple/bibliotheque_"
             + count_items + ".xml");
 
       File xsdPath = new File("src/main/resources/schemas/bibliotheque.xsd");
 
-      List<SAXParseExceptionType> exceptions = XSDValidator
-            .validXMLFileWithSAX(xmlPath, xsdPath);
+      try {
+         XSDValidator.validXMLFileWithSAX(xmlPath, xsdPath);
 
-      XSDValidator.afficher(exceptions);
+      } catch (SAXParseException e) {
 
-      Assert.assertTrue("le fichier " + xmlPath.getAbsolutePath()
-            + " ne doit comporter aucune erreur", exceptions.isEmpty());
+         Assert.fail("colonne:" + e.getColumnNumber() + " ligne:"
+               + e.getLineNumber() + " " + e.getMessage());
+      }
+
    }
 
    @Test
@@ -77,10 +78,13 @@ public class Job1OperatorServiceTest {
             executionId);
    }
 
+   private long executionId;
+
    @Test
    public void stop() {
 
-      long executionId = 23;
+      Assert.assertTrue("renseigner préalablement la variable 'executionId'",
+            executionId > 0);
 
       boolean isStopped = operatorService.stop(executionId);
 
@@ -91,7 +95,8 @@ public class Job1OperatorServiceTest {
    @Test
    public void restart() {
 
-      long executionId = 23;
+      Assert.assertTrue("renseigner préalablement la variable 'executionId'",
+            executionId > 0);
 
       Long newExecutionId = operatorService.restart(executionId);
 

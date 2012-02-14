@@ -1,6 +1,7 @@
 package fr.urssaf.image.commons.spring.batch.support.reader;
 
 import org.apache.log4j.Logger;
+import org.springframework.batch.core.annotation.AfterRead;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ExempleReader extends
    }
 
    @Override
-   protected void doClose(){
+   protected void doClose() {
       // pas d'implémentation
 
    }
@@ -46,10 +47,15 @@ public class ExempleReader extends
       livre.setTitre("titre_" + this.getCurrentItemCount());
       livre.setAuteur("auteur_" + this.getCurrentItemCount());
 
-      LOG.debug("read " + livre.getTitre());
       readerService.traitement(livre);
 
       return livre;
+   }
+
+   @AfterRead
+   public void afterRead(Livre item) {
+
+      LOG.debug("after read: " + item);
    }
 
 }

@@ -2,20 +2,23 @@ package fr.urssaf.image.commons.spring.batch.support;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import junit.framework.Assert;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import fr.urssaf.image.commons.spring.batch.support.stax.XSDValidator;
-import fr.urssaf.image.commons.spring.batch.support.stax.XSDValidator.SAXParseExceptionType;
 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class XSDValidatorTest {
+
+   private static final Logger LOGGER = Logger
+         .getLogger(XSDValidatorTest.class);
 
    @Test
    public void validate_success() throws SAXException, IOException,
@@ -25,13 +28,8 @@ public class XSDValidatorTest {
 
       File xsdPath = new File("src/main/resources/schemas/bibliotheque.xsd");
 
-      List<SAXParseExceptionType> exceptions = XSDValidator
-            .validXMLFileWithSAX(xmlPath, xsdPath);
+      XSDValidator.validXMLFileWithSAX(xmlPath, xsdPath);
 
-      XSDValidator.afficher(exceptions);
-
-      Assert.assertTrue("le fichier " + xmlPath.getAbsolutePath()
-            + " ne doit comporter aucune erreur", exceptions.isEmpty());
    }
 
    @Test
@@ -40,16 +38,19 @@ public class XSDValidatorTest {
 
       File xmlPath = new File(
             "src/test/resources/data/bibliotheque_failure.xml");
-
       File xsdPath = new File("src/main/resources/schemas/bibliotheque.xsd");
 
-      List<SAXParseExceptionType> exceptions = XSDValidator
-            .validXMLFileWithSAX(xmlPath, xsdPath);
+      try {
+         XSDValidator.validXMLFileWithSAX(xmlPath, xsdPath);
 
-      XSDValidator.afficher(exceptions);
+         Assert.fail("une SAXParseException doit être levée");
 
-      Assert.assertEquals("le fichier " + xmlPath.getAbsolutePath()
-            + " doit comporter des erreurs", 1, exceptions.size());
+      } catch (SAXParseException e) {
+
+         LOGGER.debug("colonne:" + e.getColumnNumber() + " ligne:"
+               + e.getLineNumber() + " " + e.getMessage());
+      }
 
    }
+
 }
