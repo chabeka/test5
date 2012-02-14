@@ -297,7 +297,7 @@ public class SAECaptureServiceTest {
       assertMetadata(criterions.get(9), "nbp", 2);
 
       // TEST sur métadonnée : VersionRND par défaut
-      assertMetadata(criterions.get(10), "vrn", "11.1");
+      assertMetadata(criterions.get(10), "vrn", "11.2");
 
    }
 
