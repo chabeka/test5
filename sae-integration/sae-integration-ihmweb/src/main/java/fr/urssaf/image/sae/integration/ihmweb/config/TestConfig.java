@@ -8,7 +8,7 @@ public class TestConfig {
 
    private String urlSaeService;
    private String dnsEcde;
-
+   private String versionRND;
    
    /**
     * L'URL du service web SaeService
@@ -45,6 +45,24 @@ public class TestConfig {
     */
    public final void setDnsEcde(String dnsEcde) {
       this.dnsEcde = dnsEcde;
+   }
+
+
+   /**
+    * La version du RND en cours
+    * @return the versionRND
+    */
+   public final String getVersionRND() {
+      return versionRND;
+   }
+
+
+   /**
+    * La version du RND en cours
+    * @param versionRND the versionRND to set
+    */
+   public final void setVersionRND(String versionRND) {
+      this.versionRND = versionRND;
    }
    
    

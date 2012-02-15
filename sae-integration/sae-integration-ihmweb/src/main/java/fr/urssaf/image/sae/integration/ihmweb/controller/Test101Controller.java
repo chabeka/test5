@@ -54,7 +54,9 @@ public class Test101Controller extends
 
       // L'URL ECDE
       formCapture
-            .setUrlEcde(getEcdeService().construitUrlEcde("SAE_INTEGRATION/20110822/CaptureUnitaire-101-CaptureUnitaire-OK-Standard/documents/doc1.PDF"));
+            .setUrlEcde(getEcdeService()
+                  .construitUrlEcde(
+                        "SAE_INTEGRATION/20110822/CaptureUnitaire-101-CaptureUnitaire-OK-Standard/documents/doc1.PDF"));
 
       // Les métadonnées
       MetadonneeValeurList metadonnees = new MetadonneeValeurList();
@@ -228,7 +230,7 @@ public class Test101Controller extends
       valeursAttendues.add("CodeOrganismeGestionnaire", "CER69");
       valeursAttendues.add("SiteAcquisition", StringUtils.EMPTY);
       valeursAttendues.add("CodeRND", "2.3.1.1.12");
-      valeursAttendues.add("VersionRND", "11.1");
+      valeursAttendues.add("VersionRND", getTestConfig().getVersionRND());
       valeursAttendues.add("CodeFonction", "2");
       valeursAttendues.add("CodeActivite", "3");
       valeursAttendues.add("DureeConservation", "1825");

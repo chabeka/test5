@@ -261,4 +261,13 @@ public abstract class AbstractTestWsController<T extends TestWsParentFormulaire>
       return refCasTestService.getCasTest(getNumeroTest());
    }
 
+   /**
+    * @return the testConfig
+    */
+   protected final TestConfig getTestConfig() {
+      return testConfig;
+   }
+   
+   
+
 }

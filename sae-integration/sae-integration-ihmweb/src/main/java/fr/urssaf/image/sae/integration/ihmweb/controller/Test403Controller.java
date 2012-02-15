@@ -215,7 +215,7 @@ public class Test403Controller extends AbstractTestWsController<Test403Formulair
       metaAttendues.add(new MetadonneeValeur("TracabilitePostArchivage", StringUtils.EMPTY));
       metaAttendues.add(new MetadonneeValeur("TracabilitrePreArchivage", StringUtils.EMPTY));
       metaAttendues.add(new MetadonneeValeur("TypeHash", "SHA-1"));
-      metaAttendues.add(new MetadonneeValeur("VersionRND", "11.1"));
+      metaAttendues.add(new MetadonneeValeur("VersionRND", getTestConfig().getVersionRND()));
       
       // Lance le test
       getConsultationTestService().appelWsOpConsultationReponseCorrecteAttendue(
