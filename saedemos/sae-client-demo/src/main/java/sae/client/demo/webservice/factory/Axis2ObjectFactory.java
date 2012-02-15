@@ -115,6 +115,48 @@ public class Axis2ObjectFactory {
    }
    
    
+   public static Consultation contruitParamsEntreeConsultation(
+         String idArchive,
+         List<String> codesMetasSouhaites) {
+      
+      Consultation consultation = 
+         new Consultation();
+      
+      ConsultationRequestType consultationRequest = 
+         new ConsultationRequestType();
+      
+      consultation.setConsultation(
+            consultationRequest);
+      
+      // L'identifiant unique de l'archivage
+      UuidType uuid = new UuidType();
+      uuid.setUuidType(idArchive);
+      consultationRequest.setIdArchive(uuid);
+      
+      // Les codes des métadonnées souhaitées
+      if ((codesMetasSouhaites!=null) && (codesMetasSouhaites.size()>0)) {
+         
+         MetadonneeCodeType[] arrMetadonneeCode = new MetadonneeCodeType[codesMetasSouhaites.size()];
+         
+         MetadonneeCodeType metadonneeCode;
+         for(int i=0;i<codesMetasSouhaites.size();i++) {
+            metadonneeCode = new MetadonneeCodeType();
+            metadonneeCode.setMetadonneeCodeType(codesMetasSouhaites.get(i));
+            arrMetadonneeCode[i] = metadonneeCode; 
+         }
+         
+         ListeMetadonneeCodeType listeMetadonneeCode = new ListeMetadonneeCodeType();
+         consultationRequest.setMetadonnees(listeMetadonneeCode);
+         listeMetadonneeCode.setMetadonneeCode(arrMetadonneeCode);
+         
+      }
+      
+      // Renvoie du paramètre d'entrée de l'opération consultation
+      return consultation;
+      
+   }
+   
+   
    
    /**
     * Transformation des objets "pratiques" en objets Axis2 pour un appel de

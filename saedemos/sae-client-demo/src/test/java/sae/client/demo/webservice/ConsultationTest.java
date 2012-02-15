@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.activation.DataHandler;
 
@@ -171,6 +173,46 @@ public class ConsultationTest {
          fail("Une RemoteException a été levée, alors qu'on attendait une AxisFault\r\n" + exception);
          
       }
+      
+   }
+   
+   
+   /**
+    * Exemple de consommation de l'opération consultation du service web SaeService<br>
+    * <br>
+    * On spécifie les métadonnées souhaitées en retour de la consultation.<br>
+    * <br>
+    * Cas sans erreur (sous réserve que l'identifiant unique d'archivage utilisé
+    * dans le test corresponde à une archive en base)
+    * 
+    * @throws RemoteException 
+    */
+   @Test
+   public void consultation_avecMeta_success() throws RemoteException {
+      
+      // Identifiant unique d'archivage de l'archive que l'on veut consulter
+      String idArchive = "1261E8B1-B1AF-4562-82DF-3268C888E9AB";
+      
+      // Métadonnées souhaitées en retour de la consultation
+      List<String> codesMetasSouhaites = new ArrayList<String>();
+      codesMetasSouhaites.add("Siren");
+      codesMetasSouhaites.add("CodeRND");
+      codesMetasSouhaites.add("CodeOrganismeGestionnaire");
+      codesMetasSouhaites.add("NomFichier");
+      
+      // Construction du Stub
+      SaeServiceStub saeService = StubFactory.createStubAvecAuthentification();
+      
+      // Construction du paramètre d'entrée de l'opération consultation, 
+      //  avec les objets modèle générés par Axis2.
+      Consultation paramsEntree = Axis2ObjectFactory.contruitParamsEntreeConsultation(
+            idArchive,codesMetasSouhaites);
+      
+      // Appel du service web de consultation
+      ConsultationResponse reponse = saeService.consultation(paramsEntree);
+      
+      // Affichage du résultat de la consultation
+      afficheResultatConsultation(reponse);
       
    }
    
