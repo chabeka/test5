@@ -1,6 +1,5 @@
 package sae.client.demo.webservice;
 
-import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.rmi.RemoteException;
@@ -104,41 +103,21 @@ public class ArchivageMasseTest {
       } catch (AxisFault fault) {
       
          // sysout
-         System.out.println("Une SoapFault a été obtenue");
-         System.out.println("Code namespace : " + fault.getFaultCode().getNamespaceURI());
-         System.out.println("Code préfixe : " + fault.getFaultCode().getPrefix());
-         System.out.println("Code partie locale : " + fault.getFaultCode().getLocalPart());
-         System.out.println("Message : " + fault.getReason());
+         TestUtils.sysoutAxisFault(fault);
          
-         // Test le code de la SoapFault
-         // Le namespace
-         assertEquals(
-               "Le namespace du code de la SoapFault est incorrect",
+         // Vérification de la SoapFault
+         TestUtils.assertSoapFault(
+               fault,
                "urn:sae:faultcodes",
-               fault.getFaultCode().getNamespaceURI());
-         // Le préfixe
-         assertEquals(
-               "Le préfixe du code de la SoapFault est incorrect",
                "sae",
-               fault.getFaultCode().getPrefix());
-         // La partie locale
-         assertEquals(
-               "La partie locale du code de la SoapFault est incorrecte",
                "CaptureUrlEcdeFichierIntrouvable",
-               fault.getFaultCode().getLocalPart());
+               "Le fichier pointé par l'URL ECDE est introuvable (ecde://cer69-ecdeint.cer69.recouv/le_contrat_service/20120120/TraitementInexistant/sommaire.xml)");
          
-         // Test le message de la SoapFault
-         assertEquals(
-               "Le message de la SoapFault est incorrecte",
-               "Le fichier pointé par l'URL ECDE est introuvable (ecde://cer69-ecdeint.cer69.recouv/le_contrat_service/20120120/TraitementInexistant/sommaire.xml)",
-               fault.getReason());
-       
       } catch (RemoteException exception) {
          
-         fail("Une RemoteException a été levée, alors qu'on attendait une AxisFault");
+         fail("Une RemoteException a été levée, alors qu'on attendait une AxisFault\r\n" + exception);
          
       }
-      
       
    }
    

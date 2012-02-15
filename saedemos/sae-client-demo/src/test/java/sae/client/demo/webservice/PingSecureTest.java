@@ -76,39 +76,19 @@ public class PingSecureTest {
       } catch (AxisFault fault) {
          
          // sysout
-         System.out.println("Une SoapFault a été obtenue");
-         System.out.println("Code namespace : " + fault.getFaultCode().getNamespaceURI());
-         System.out.println("Code préfixe : " + fault.getFaultCode().getPrefix());
-         System.out.println("Code partie locale : " + fault.getFaultCode().getLocalPart());
-         System.out.println("Message : " + fault.getReason());
+         TestUtils.sysoutAxisFault(fault);
          
-         // Test le code de la SoapFault
-         // Le namespace
-         assertEquals(
-               "Le namespace du code de la SoapFault est incorrect",
+         // Vérification de la SoapFault
+         TestUtils.assertSoapFault(
+               fault,
                "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd",
-               fault.getFaultCode().getNamespaceURI());
-         // Le préfixe
-         assertEquals(
-               "Le préfixe du code de la SoapFault est incorrect",
                "wsse",
-               fault.getFaultCode().getPrefix());
-         // La partie locale
-         assertEquals(
-               "La partie locale du code de la SoapFault est incorrecte",
                "SecurityTokenUnavailable",
-               fault.getFaultCode().getLocalPart());
-         
-         // Test le message de la SoapFault
-         assertEquals(
-               "Le message de la SoapFault est incorrecte",
-               "La référence au jeton de sécurité est introuvable",
-               fault.getReason());
-         
+               "La référence au jeton de sécurité est introuvable");
          
       } catch (RemoteException exception) {
          
-         fail("Une RemoteException a été levée, alors qu'on attendait une AxisFault");
+         fail("Une RemoteException a été levée, alors qu'on attendait une AxisFault\r\n" + exception);
          
       }
 

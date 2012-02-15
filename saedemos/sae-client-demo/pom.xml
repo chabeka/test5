@@ -65,6 +65,9 @@
             <version>2.5</version>
             <configuration>
                <skipTests>false</skipTests>
+               <excludes>
+                 <exclude>**/TestUtils.java</exclude>
+               </excludes>
             </configuration>
          </plugin>
 
