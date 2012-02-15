@@ -147,6 +147,9 @@ java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logbac
 // Pour lancer la purge des traces du cycle de vie des archives
 java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logback-sae-dfce-admin-exploit.xml @@SAE_HOME@@/sae-dfce-admin-exploit/sae-dfce-admin-exploit.jar clearDocEvent @@SAE_HOME@@/sae-config.properties 30
 
+// Pour lancer la mise à jour des durée de conservation des documents
+java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logback-sae-dfce-admin-exploit.xml @@SAE_HOME@@/sae-dfce-admin-exploit/sae-dfce-admin-exploit.jar updateLifecycleRules @@SAE_HOME@@/sae-config.properties @@SAE_HOME@@/sae-dfce-admin-exploit/LifeCycleRule.xml
+
 
 
 

@@ -252,7 +252,7 @@
 				<name>act</name>
 				<dataType>String</dataType>
 				<index>false</index>
-				<minimumValues>1</minimumValues>
+				<minimumValues>0</minimumValues>
 				<maximumValues>1</maximumValues>
 				<single>false</single>
 				<enableDictionary>false</enableDictionary>
