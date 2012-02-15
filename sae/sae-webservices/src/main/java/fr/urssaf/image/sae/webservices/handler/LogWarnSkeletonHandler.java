@@ -18,7 +18,7 @@ import org.apache.axis2.handlers.AbstractHandler;
 public class LogWarnSkeletonHandler extends AbstractHandler{
 
    @Override
-   public InvocationResponse invoke(MessageContext msgCtx) throws AxisFault {
+   public final InvocationResponse invoke(MessageContext msgCtx) throws AxisFault {
       
       
       try {

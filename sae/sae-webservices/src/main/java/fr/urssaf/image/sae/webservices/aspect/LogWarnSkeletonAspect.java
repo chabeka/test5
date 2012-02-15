@@ -22,7 +22,10 @@ public class LogWarnSkeletonAspect {
 
    private static final Logger LOG = LoggerFactory.getLogger(SaeServiceSkeleton.class);
    
-   public void logWarn() {
+   /**
+    * Méthode permettant de logger les WARN
+    */
+   public final void logWarn() {
       
       MessageContext msgCtx = MessageContext.getCurrentMessageContext();
       

@@ -19,7 +19,7 @@ public class BuildOrClearMDCAspect {
    /**
     * Mise en place du Log contexte.
     */
-   public void buildLogContext() {
+   public final void buildLogContext() {
       String contexteLog = UUID.randomUUID().toString();
       MDC.put(LOG_CONTEXTE, contexteLog);
    }
