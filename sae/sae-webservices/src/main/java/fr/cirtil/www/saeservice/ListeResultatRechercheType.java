@@ -13,9 +13,7 @@
             *  ListeResultatRechercheType bean class
             */
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ListeResultatRechercheType
+        public  class ListeResultatRechercheType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = listeResultatRechercheType

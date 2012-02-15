@@ -13,9 +13,7 @@
             *  ExtensionMapper class
             */
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ExtensionMapper{
+        public  class ExtensionMapper{
 
           public static java.lang.Object getTypeObject(java.lang.String namespaceURI,
                                                        java.lang.String typeName,
@@ -77,6 +75,26 @@ public class ExtensionMapper{
                   "consultationResponseType".equals(typeName)){
                    
                             return  fr.cirtil.www.saeservice.ConsultationResponseType.Factory.parse(reader);
+                        
+
+                  }
+
+              
+                  if (
+                  "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
+                  "consultationMTOMResponseType".equals(typeName)){
+                   
+                            return  fr.cirtil.www.saeservice.ConsultationMTOMResponseType.Factory.parse(reader);
+                        
+
+                  }
+
+              
+                  if (
+                  "http://www.cirtil.fr/saeService".equals(namespaceURI) &&
+                  "consultationMTOMRequestType".equals(typeName)){
+                   
+                            return  fr.cirtil.www.saeservice.ConsultationMTOMRequestType.Factory.parse(reader);
                         
 
                   }

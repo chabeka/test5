@@ -1,6 +1,6 @@
 
 /**
- * MetadonneeCodeType.java
+ * ConsultationMTOM.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
@@ -10,15 +10,15 @@
             
 
             /**
-            *  MetadonneeCodeType bean class
+            *  ConsultationMTOM bean class
             */
         
-        public  class MetadonneeCodeType
+        public  class ConsultationMTOM
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
                 "http://www.cirtil.fr/saeService",
-                "metadonneeCodeType",
+                "consultationMTOM",
                 "ns1");
 
             
@@ -33,46 +33,34 @@
         
 
                         /**
-                        * field for MetadonneeCodeType
+                        * field for ConsultationMTOM
                         */
 
                         
-                                    protected java.lang.String localMetadonneeCodeType ;
+                                    protected fr.cirtil.www.saeservice.ConsultationMTOMRequestType localConsultationMTOM ;
                                 
 
                            /**
                            * Auto generated getter method
-                           * @return java.lang.String
+                           * @return fr.cirtil.www.saeservice.ConsultationMTOMRequestType
                            */
-                           public  java.lang.String getMetadonneeCodeType(){
-                               return localMetadonneeCodeType;
+                           public  fr.cirtil.www.saeservice.ConsultationMTOMRequestType getConsultationMTOM(){
+                               return localConsultationMTOM;
                            }
 
                            
                         
                             /**
                                * Auto generated setter method
-                               * @param param MetadonneeCodeType
+                               * @param param ConsultationMTOM
                                */
-                               public void setMetadonneeCodeType(java.lang.String param){
+                               public void setConsultationMTOM(fr.cirtil.www.saeservice.ConsultationMTOMRequestType param){
                             
-                                            if (  (1 <= java.lang.String.valueOf(param).length()) ) {
-                                                this.localMetadonneeCodeType=param;
-                                            }
-                                            else {
-                                                throw new java.lang.RuntimeException();
-                                            }
-                                        
+                                            this.localConsultationMTOM=param;
+                                    
 
                                }
                             
-
-                            public java.lang.String toString(){
-                                
-                                        return localMetadonneeCodeType.toString();
-                                    
-                            }
-                        
 
      /**
      * isReaderMTOMAware
@@ -106,7 +94,7 @@
                        new org.apache.axis2.databinding.ADBDataSource(this,MY_QNAME){
 
                  public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       MetadonneeCodeType.this.serialize(MY_QNAME,factory,xmlWriter);
+                       ConsultationMTOM.this.serialize(MY_QNAME,factory,xmlWriter);
                  }
                };
                return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
@@ -130,54 +118,11 @@
                 
                 //We can safely assume an element has only one type associated with it
                 
-                            java.lang.String namespace = parentQName.getNamespaceURI();
-                            java.lang.String localName = parentQName.getLocalPart();
-                        
-                            if (! namespace.equals("")) {
-                                java.lang.String prefix = xmlWriter.getPrefix(namespace);
-
-                                if (prefix == null) {
-                                    prefix = generatePrefix(namespace);
-
-                                    xmlWriter.writeStartElement(prefix, localName, namespace);
-                                    xmlWriter.writeNamespace(prefix, namespace);
-                                    xmlWriter.setPrefix(prefix, namespace);
-
-                                } else {
-                                    xmlWriter.writeStartElement(namespace, localName);
-                                }
-
-                            } else {
-                                xmlWriter.writeStartElement(localName);
-                            }
-
-                            // add the type details if this is used in a simple type
-                               if (serializeType){
-                                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
-                                   if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
-                                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                                           namespacePrefix+":metadonneeCodeType",
-                                           xmlWriter);
-                                   } else {
-                                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                                           "metadonneeCodeType",
-                                           xmlWriter);
-                                   }
-                               }
+                                 if (localConsultationMTOM==null){
+                                   throw new org.apache.axis2.databinding.ADBException("Property cannot be null!");
+                                 }
+                                 localConsultationMTOM.serialize(MY_QNAME,factory,xmlWriter);
                             
-                                          if (localMetadonneeCodeType==null){
-                                            
-                                                     throw new org.apache.axis2.databinding.ADBException("Value cannot be null !!");
-                                                
-                                         }else{
-                                        
-                                                       xmlWriter.writeCharacters(localMetadonneeCodeType);
-                                            
-                                         }
-                                    
-                            xmlWriter.writeEndElement();
-
-                    
 
         }
 
@@ -336,12 +281,7 @@
         
                 
                 //We can safely assume an element has only one type associated with it
-                 return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(MY_QNAME,
-                            new java.lang.Object[]{
-                            org.apache.axis2.databinding.utils.reader.ADBXMLStreamReader.ELEMENT_TEXT,
-                            org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localMetadonneeCodeType)
-                            },
-                            null);
+                return localConsultationMTOM.getPullParser(MY_QNAME);
 
         }
 
@@ -354,29 +294,6 @@
 
         
         
-                public static MetadonneeCodeType fromString(java.lang.String value,
-                                                    java.lang.String namespaceURI){
-                    MetadonneeCodeType returnValue = new  MetadonneeCodeType();
-                    
-                            returnValue.setMetadonneeCodeType(
-                                org.apache.axis2.databinding.utils.ConverterUtil.convertToString(value));
-                        
-
-                    return returnValue;
-                }
-
-                public static MetadonneeCodeType fromString(javax.xml.stream.XMLStreamReader xmlStreamReader,
-                                                                    java.lang.String content) {
-                    if (content.indexOf(":") > -1){
-                        java.lang.String prefix = content.substring(0,content.indexOf(":"));
-                        java.lang.String namespaceUri = xmlStreamReader.getNamespaceContext().getNamespaceURI(prefix);
-                        return MetadonneeCodeType.Factory.fromString(content,namespaceUri);
-                    } else {
-                       return MetadonneeCodeType.Factory.fromString(content,"");
-                    }
-                }
-
-            
 
         /**
         * static method to create the object
@@ -385,9 +302,9 @@
         * Postcondition: If this object is an element, the reader is positioned at its end element
         *                If this object is a complex type, the reader is positioned at the end element of its outer element
         */
-        public static MetadonneeCodeType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
-            MetadonneeCodeType object =
-                new MetadonneeCodeType();
+        public static ConsultationMTOM parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
+            ConsultationMTOM object =
+                new ConsultationMTOM();
 
             int event;
             java.lang.String nillableValue = null;
@@ -408,14 +325,11 @@
 
                     
                 while(!reader.isEndElement()) {
-                    if (reader.isStartElement()  || reader.hasText()){
+                    if (reader.isStartElement() ){
                 
-                                    if (reader.isStartElement()  || reader.hasText()){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","consultationMTOM").equals(reader.getName())){
                                 
-                                    java.lang.String content = reader.getElementText();
-                                    
-                                              object.setMetadonneeCodeType(
-                                                    org.apache.axis2.databinding.utils.ConverterUtil.convertToString(content));
+                                                object.setConsultationMTOM(fr.cirtil.www.saeservice.ConsultationMTOMRequestType.Factory.parse(reader));
                                             
                               }  // End of if for expected property start element
                                 

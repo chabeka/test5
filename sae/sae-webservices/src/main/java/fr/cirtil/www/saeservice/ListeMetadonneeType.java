@@ -13,9 +13,7 @@
             *  ListeMetadonneeType bean class
             */
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ListeMetadonneeType
+        public  class ListeMetadonneeType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = listeMetadonneeType

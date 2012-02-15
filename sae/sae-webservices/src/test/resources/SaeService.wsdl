@@ -73,6 +73,16 @@
       <wsdl:part name="output" element="sae:consultationResponse"/>
    </wsdl:message>
    
+   <wsdl:message name="consultationMTOMRequestMessage">
+      <wsdl:documentation>Message contenant le résultat de la consultationMTOM de documents au SAE</wsdl:documentation>
+      <wsdl:part name="input" element="sae:consultationMTOM"/>
+   </wsdl:message>
+   
+   <wsdl:message name="consultationMTOMResponseMessage">
+      <wsdl:documentation>Message contenant le résultat de la consultationMTOM de documents au SAE</wsdl:documentation>
+      <wsdl:part name="output" element="sae:consultationMTOMResponse"/>
+   </wsdl:message>
+   
    
    <wsdl:portType name="SaeServicePortType">
    
@@ -110,6 +120,13 @@
          <wsdl:documentation>Opération de consultation documentaire sur le SAE</wsdl:documentation>
          <wsdl:input message="tns:consultationRequestMessage"/>
          <wsdl:output message="tns:consultationResponseMessage"/>
+      </wsdl:operation>
+      
+      
+      <wsdl:operation name="consultationMTOM" parameterOrder="input">
+         <wsdl:documentation>Opération de consultationMTOM documentaire sur le SAE</wsdl:documentation>
+         <wsdl:input message="tns:consultationMTOMRequestMessage"/>
+         <wsdl:output message="tns:consultationMTOMResponseMessage"/>
       </wsdl:operation>
       
    </wsdl:portType>
@@ -175,6 +192,18 @@
       <wsdl:operation name="consultation">
          <wsdl:documentation>Service de consultation documentaire du SAE</wsdl:documentation>
          <soap:operation soapAction="consultation"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      
+      
+      <wsdl:operation name="consultationMTOM">
+         <wsdl:documentation>Service de consultationMTOM documentaire du SAE</wsdl:documentation>
+         <soap:operation soapAction="consultationMTOM"/>
          <wsdl:input>
             <soap:body use="literal"/>
          </wsdl:input>

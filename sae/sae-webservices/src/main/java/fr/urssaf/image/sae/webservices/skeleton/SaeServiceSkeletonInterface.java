@@ -7,6 +7,8 @@ import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.Consultation;
+import fr.cirtil.www.saeservice.ConsultationMTOM;
+import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
 import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
@@ -32,6 +34,18 @@ public interface SaeServiceSkeletonInterface {
     *            exception levée lors de la consultation
     */
    ConsultationResponse consultationSecure(Consultation request)
+         throws AxisFault;
+   
+   /**
+    * endpoint de consultation avec MTOM
+    * 
+    * @param request
+    *           request du web service
+    * @return reponse du web service
+    * @throws AxisFault
+    *            exception levée lors de la consultation
+    */
+   ConsultationMTOMResponse consultationMTOMSecure(ConsultationMTOM request)
          throws AxisFault;
 
    /**

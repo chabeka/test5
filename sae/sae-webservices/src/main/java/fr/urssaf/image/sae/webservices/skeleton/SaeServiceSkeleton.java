@@ -27,6 +27,8 @@ import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.Consultation;
+import fr.cirtil.www.saeservice.ConsultationMTOM;
+import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
 import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
@@ -39,6 +41,7 @@ import fr.urssaf.image.sae.webservices.SaeService;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
+import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
@@ -319,6 +322,50 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          throw ex;
       }
    }
+   
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final ConsultationMTOMResponse consultationMTOMSecure(ConsultationMTOM request)
+         throws ConsultationAxisFault {
+      
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "Opération consultationMTOMSecure()";
+         LOG.debug("{} - Début", prefixeTrc);
+         
+         boolean dfceUp = dfceInfoService.isDfceUp();
+         if (!dfceUp) {
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new ConsultationAxisFault(MessageRessourcesUtils.recupererMessage(
+                                            MES_STOCKAGE, null),
+                                            STOCKAGE_INDISPO
+                                            );
+         } else {
+            
+            // Fin des traces debug - entrée méthode
+            Consultation consult = ObjectTypeFactory.convertToConsultation(request);
+            ConsultationResponse response = consultation.consultation(consult);
+            ConsultationMTOMResponse responseMTOM = ObjectTypeFactory.convertToConsultRespMTOM(response);
+            
+            LOG.debug("{} - Sortie", prefixeTrc);
+            // Fin des traces debug - sortie méthode
+            return responseMTOM;
+         }   
+      } catch (ConsultationAxisFault ex) {
+         logSoapFault(ex);
+         throw ex;
+      } catch (RuntimeException ex) {
+         logRuntimeException(ex);
+         throw ex;
+      }
+   }
+   
+   
+   
 
    private void logSoapFault(AxisFault fault) {
       LOG.warn("Une exception AxisFault a été levée", fault);

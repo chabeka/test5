@@ -13,9 +13,7 @@
             *  ObjetNumeriqueConsultationType bean class
             */
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ObjetNumeriqueConsultationType
+        public  class ObjetNumeriqueConsultationType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = objetNumeriqueConsultationType

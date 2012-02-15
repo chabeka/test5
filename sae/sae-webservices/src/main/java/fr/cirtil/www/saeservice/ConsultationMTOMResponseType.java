@@ -1,6 +1,6 @@
 
 /**
- * ConsultationResponseType.java
+ * ConsultationMTOMResponseType.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
@@ -10,13 +10,13 @@
             
 
             /**
-            *  ConsultationResponseType bean class
+            *  ConsultationMTOMResponseType bean class
             */
         
-        public  class ConsultationResponseType
+        public  class ConsultationMTOMResponseType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
-                name = consultationResponseType
+                name = consultationMTOMResponseType
                 Namespace URI = http://www.cirtil.fr/saeService
                 Namespace Prefix = ns1
                 */
@@ -32,30 +32,30 @@
         
 
                         /**
-                        * field for ObjetNumerique
+                        * field for Contenu
                         */
 
                         
-                                    protected fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType localObjetNumerique ;
+                                    protected javax.activation.DataHandler localContenu ;
                                 
 
                            /**
                            * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType
+                           * @return javax.activation.DataHandler
                            */
-                           public  fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType getObjetNumerique(){
-                               return localObjetNumerique;
+                           public  javax.activation.DataHandler getContenu(){
+                               return localContenu;
                            }
 
                            
                         
                             /**
                                * Auto generated setter method
-                               * @param param ObjetNumerique
+                               * @param param Contenu
                                */
-                               public void setObjetNumerique(fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType param){
+                               public void setContenu(javax.activation.DataHandler param){
                             
-                                            this.localObjetNumerique=param;
+                                            this.localContenu=param;
                                     
 
                                }
@@ -123,7 +123,7 @@
                        new org.apache.axis2.databinding.ADBDataSource(this,parentQName){
 
                  public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       ConsultationResponseType.this.serialize(parentQName,factory,xmlWriter);
+                       ConsultationMTOMResponseType.this.serialize(parentQName,factory,xmlWriter);
                  }
                };
                return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
@@ -177,23 +177,44 @@
                    java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
                    if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           namespacePrefix+":consultationResponseType",
+                           namespacePrefix+":consultationMTOMResponseType",
                            xmlWriter);
                    } else {
                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           "consultationResponseType",
+                           "consultationMTOMResponseType",
                            xmlWriter);
                    }
 
                
                    }
                
-                                            if (localObjetNumerique==null){
-                                                 throw new org.apache.axis2.databinding.ADBException("objetNumerique cannot be null!!");
-                                            }
-                                           localObjetNumerique.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","objetNumerique"),
-                                               factory,xmlWriter);
+                                    namespace = "http://www.cirtil.fr/saeService";
+                                    if (! namespace.equals("")) {
+                                        prefix = xmlWriter.getPrefix(namespace);
+
+                                        if (prefix == null) {
+                                            prefix = generatePrefix(namespace);
+
+                                            xmlWriter.writeStartElement(prefix,"contenu", namespace);
+                                            xmlWriter.writeNamespace(prefix, namespace);
+                                            xmlWriter.setPrefix(prefix, namespace);
+
+                                        } else {
+                                            xmlWriter.writeStartElement(namespace,"contenu");
+                                        }
+
+                                    } else {
+                                        xmlWriter.writeStartElement("contenu");
+                                    }
+                                
                                         
+                                    if (localContenu!=null)
+                                    {
+                                       xmlWriter.writeDataHandler(localContenu);
+                                    }
+                                 
+                                   xmlWriter.writeEndElement();
+                             
                                             if (localMetadonnees==null){
                                                  throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
                                             }
@@ -362,15 +383,11 @@
                  java.util.ArrayList attribList = new java.util.ArrayList();
 
                 
-                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "objetNumerique"));
-                            
-                            
-                                    if (localObjetNumerique==null){
-                                         throw new org.apache.axis2.databinding.ADBException("objetNumerique cannot be null!!");
-                                    }
-                                    elementList.add(localObjetNumerique);
+                                      elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
+                                        "contenu"));
                                 
+                            elementList.add(localContenu);
+                        
                             elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
                                                                       "metadonnees"));
                             
@@ -404,9 +421,9 @@
         * Postcondition: If this object is an element, the reader is positioned at its end element
         *                If this object is a complex type, the reader is positioned at the end element of its outer element
         */
-        public static ConsultationResponseType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
-            ConsultationResponseType object =
-                new ConsultationResponseType();
+        public static ConsultationMTOMResponseType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
+            ConsultationMTOMResponseType object =
+                new ConsultationMTOMResponseType();
 
             int event;
             java.lang.String nillableValue = null;
@@ -430,10 +447,10 @@
 
                     java.lang.String type = fullTypeName.substring(fullTypeName.indexOf(":")+1);
                     
-                            if (!"consultationResponseType".equals(type)){
+                            if (!"consultationMTOMResponseType".equals(type)){
                                 //find namespace for the prefix
                                 java.lang.String nsUri = reader.getNamespaceContext().getNamespaceURI(nsPrefix);
-                                return (ConsultationResponseType)fr.cirtil.www.saeservice.ExtensionMapper.getTypeObject(
+                                return (ConsultationMTOMResponseType)fr.cirtil.www.saeservice.ExtensionMapper.getTypeObject(
                                      nsUri,type,reader);
                               }
                         
@@ -458,10 +475,36 @@
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","objetNumerique").equals(reader.getName())){
-                                
-                                                object.setObjetNumerique(fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType.Factory.parse(reader));
-                                              
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","contenu").equals(reader.getName())){
+                                reader.next();
+                                    if (isReaderMTOMAware(reader)
+                                            &&
+                                            java.lang.Boolean.TRUE.equals(reader.getProperty(org.apache.axiom.om.OMConstants.IS_BINARY)))
+                                    {
+                                        //MTOM aware reader - get the datahandler directly and put it in the object
+                                        object.setContenu(
+                                                (javax.activation.DataHandler) reader.getProperty(org.apache.axiom.om.OMConstants.DATA_HANDLER));
+                                    } else {
+                                        if (reader.getEventType() == javax.xml.stream.XMLStreamConstants.START_ELEMENT && reader.getName().equals(new javax.xml.namespace.QName(org.apache.axiom.om.impl.MTOMConstants.XOP_NAMESPACE_URI, org.apache.axiom.om.impl.MTOMConstants.XOP_INCLUDE)))
+                                        {
+                                            java.lang.String id = org.apache.axiom.om.util.ElementHelper.getContentID(reader, "UTF-8");
+                                            object.setContenu(((org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder) ((org.apache.axiom.om.impl.llom.OMStAXWrapper) reader).getBuilder()).getDataHandler(id));
+                                            reader.next();
+                                            
+                                                reader.next();
+                                            
+                                        } else if(reader.hasText()) {
+                                            //Do the usual conversion
+                                            java.lang.String content = reader.getText();
+                                            object.setContenu(
+                                                    org.apache.axis2.databinding.utils.ConverterUtil.convertToBase64Binary(content));
+                                            
+                                                reader.next();
+                                            
+                                        }
+                                    }
+
+                                      
                                         reader.next();
                                     
                               }  // End of if for expected property start element

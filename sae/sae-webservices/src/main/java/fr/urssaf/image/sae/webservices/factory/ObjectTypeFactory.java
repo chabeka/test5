@@ -13,6 +13,13 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.util.Assert;
 
+import fr.cirtil.www.saeservice.Consultation;
+import fr.cirtil.www.saeservice.ConsultationMTOM;
+import fr.cirtil.www.saeservice.ConsultationMTOMRequestType;
+import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
+import fr.cirtil.www.saeservice.ConsultationMTOMResponseType;
+import fr.cirtil.www.saeservice.ConsultationRequestType;
+import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.ListeMetadonneeCodeType;
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.MetadonneeCodeType;
@@ -287,5 +294,43 @@ public final class ObjectTypeFactory {
       return datas;
 
    }
+   
+   /**
+    * Méthode permettant de convertir un objet ConsultationMTOM en Consultation
+    * @param consultationMTOM
+    * @return objet Consultation
+    */
+   public static Consultation convertToConsultation(ConsultationMTOM consultationMTOM) {
+      Consultation consultation = new Consultation();
+      
+      ConsultationMTOMRequestType consultMTOMRT = consultationMTOM.getConsultationMTOM();
+      
+      ConsultationRequestType consultRT = new ConsultationRequestType();
+      UuidType uuidType = consultMTOMRT.getIdArchive(); 
+      consultRT.setIdArchive(uuidType);
+      ListeMetadonneeCodeType listeMD = consultMTOMRT.getMetadonnees();
+      consultRT.setMetadonnees(listeMD);
+      
+      consultation.setConsultation(consultRT);
+      
+      return consultation;
+   }
+   
+   /**
+    * Méthode permettant de convertir un objet ConsultationResponse en ConsultationMTOMResponse
+    * @param consultationResponse
+    * @return ConsultationMTOMResponse
+    */
+   public static ConsultationMTOMResponse convertToConsultRespMTOM(ConsultationResponse consultationResponse) {
+      ConsultationMTOMResponseType param = new ConsultationMTOMResponseType();
+      param.setMetadonnees(consultationResponse.getConsultationResponse().getMetadonnees());
+      
+      ConsultationMTOMResponse responseMTOM = new ConsultationMTOMResponse();
+      param.setContenu(consultationResponse.getConsultationResponse().getObjetNumerique().getObjetNumeriqueConsultationTypeChoice_type0().getContenu());
+      responseMTOM.setConsultationMTOMResponse(param);
+      
+      return responseMTOM;
+   }
+   
 
 }
