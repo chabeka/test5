@@ -4,7 +4,7 @@
    IssueInstant="[AuthnInstant]"
    Version="2.0">
    
-   <saml2:Issuer>SaeIntegration</saml2:Issuer>
+   <saml2:Issuer>[Issuer]</saml2:Issuer>
    
    <saml2:Subject>
       <saml2:NameID 

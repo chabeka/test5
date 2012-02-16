@@ -102,6 +102,7 @@ public class VIHandler extends AbstractHandler {
          SAML20Service assertionService = new SAML20Service();
          
          assertion = assertionService.createAssertion20(
+               "SaeIntegration",
                "ROLE_TOUS;FULL", 
                notAfter,
                notBefore, 

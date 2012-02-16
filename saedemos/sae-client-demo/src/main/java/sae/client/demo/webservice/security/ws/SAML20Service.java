@@ -29,6 +29,8 @@ public class SAML20Service {
     * Les valeurs entre [] sont remplacées par les valeurs passées en argument
     * de la méthode
     * 
+    * @param issuer
+    *           valeur de [Issuer]
     * @param role
     *           valeur de [PAGM]
     * @param notAfter
@@ -41,16 +43,18 @@ public class SAML20Service {
     *           valeur de [AssertionID]
     * @return jeton SAML 2.0
     */
-   public final String createAssertion20(String role, DateTime notAfter,
-         DateTime notBefore, DateTime actual, UUID identifiant) {
+   public final String createAssertion20(String issuer, String role,
+         DateTime notAfter, DateTime notBefore, DateTime actual,
+         UUID identifiant) {
 
       InputStream assertionStream = ResourceUtils.loadResource(this, SAML_20);
 
-      String[] searchList = new String[] { "[PAGM]", "[NotOnOrAfter]",
-            "[NotBefore]", "[AssertionID]", "[AuthnInstant]" };
+      String[] searchList = new String[] { "[Issuer]", "[PAGM]",
+            "[NotOnOrAfter]", "[NotBefore]", "[AssertionID]", "[AuthnInstant]" };
 
-      String[] replacementList = new String[] { role, notAfter.toString(),
-            notBefore.toString(), identifiant.toString(), actual.toString() };
+      String[] replacementList = new String[] { issuer, role,
+            notAfter.toString(), notBefore.toString(), identifiant.toString(),
+            actual.toString() };
 
       return StreamUtils.createObject(assertionStream, searchList,
             replacementList);
@@ -64,6 +68,8 @@ public class SAML20Service {
     * jeton<br>
     * appel de la méthode {@link XmlSignature#signeXml} pour la signature
     * 
+    * @param issuer
+    *           valeur de [Issuer] 
     * @param role
     *           valeur de [PAGM]
     * @param notAfter
@@ -84,13 +90,13 @@ public class SAML20Service {
     * @throws XmlSignatureException
     *            exception lors de la signature
     */
-   public final String createAssertion20(String role, DateTime notAfter,
-         DateTime notBefore, DateTime actual, UUID identifiant,
-         KeyStore keystore, String alias, String password)
+   public final String createAssertion20(String issuer, String role,
+         DateTime notAfter, DateTime notBefore, DateTime actual,
+         UUID identifiant, KeyStore keystore, String alias, String password)
          throws XmlSignatureException {
 
-      String assertion = createAssertion20(role, notAfter, notBefore, actual,
-            identifiant);
+      String assertion = createAssertion20(issuer, role, notAfter, notBefore,
+            actual, identifiant);
 
       return XmlSignature.signeXml(IOUtils.toInputStream(assertion), keystore,
             alias, password);
