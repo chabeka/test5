@@ -31,10 +31,6 @@ Magasin de certificat contenant la clé privée pour signer électroniquement l'
 - Fichiers security/*
 Requis pour la mécanique de génération du Vecteur d'Identification
 
-- Fichier axis2.xml
-Configuration pour axis2, chargé par la méthode sae.client.demo.webservice.factory.StubFactory.createStubAvecAuthentification(...)
-Le fichier contient la référence à la classe sae.client.demo.webservice.security.VIHandler qui pilote l'insertion du VI lors des appels SOAP
-
 - Fichier sae-client-demo.properties
 Fichier de configuration contenant l'URL d'accès au service web SaeService
 A modifier selon l'URL est fournie par la MOE SAE.

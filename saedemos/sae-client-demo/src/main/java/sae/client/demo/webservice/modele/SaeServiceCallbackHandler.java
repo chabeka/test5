@@ -3,7 +3,7 @@
  * SaeServiceCallbackHandler.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:18:42 CET)
+ * by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST)
  */
 
     package sae.client.demo.webservice.modele;
@@ -122,6 +122,22 @@
            * override this method for handling error response from consultation operation
            */
             public void receiveErrorconsultation(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for consultationMTOM method
+            * override this method for handling normal response from consultationMTOM operation
+            */
+           public void receiveResultconsultationMTOM(
+                    sae.client.demo.webservice.modele.SaeServiceStub.ConsultationMTOMResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from consultationMTOM operation
+           */
+            public void receiveErrorconsultationMTOM(java.lang.Exception e) {
             }
                 
            /**

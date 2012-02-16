@@ -13,6 +13,8 @@ import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageMasseRequestTyp
 import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitaire;
 import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitaireRequestType;
 import sae.client.demo.webservice.modele.SaeServiceStub.Consultation;
+import sae.client.demo.webservice.modele.SaeServiceStub.ConsultationMTOM;
+import sae.client.demo.webservice.modele.SaeServiceStub.ConsultationMTOMRequestType;
 import sae.client.demo.webservice.modele.SaeServiceStub.ConsultationRequestType;
 import sae.client.demo.webservice.modele.SaeServiceStub.EcdeUrlSommaireType;
 import sae.client.demo.webservice.modele.SaeServiceStub.EcdeUrlType;
@@ -95,22 +97,16 @@ public class Axis2ObjectFactory {
    public static Consultation contruitParamsEntreeConsultation(
          String idArchive) {
       
-      Consultation consultation = 
-         new Consultation();
+      return contruitParamsEntreeConsultation(idArchive,null);
       
-      ConsultationRequestType consultationRequest = 
-         new ConsultationRequestType();
+   }
+   
+   
+   
+   public static ConsultationMTOM contruitParamsEntreeConsultationMTOM(
+         String idArchive) {
       
-      consultation.setConsultation(
-            consultationRequest);
-      
-      // L'identifiant unique de l'archivage
-      UuidType uuid = new UuidType();
-      uuid.setUuidType(idArchive);
-      consultationRequest.setIdArchive(uuid);
-      
-      // Renvoie du paramètre d'entrée de l'opération consultation
-      return consultation;
+      return contruitParamsEntreeConsultationMTOM(idArchive,null);
       
    }
    
@@ -126,6 +122,49 @@ public class Axis2ObjectFactory {
          new ConsultationRequestType();
       
       consultation.setConsultation(
+            consultationRequest);
+      
+      // L'identifiant unique de l'archivage
+      UuidType uuid = new UuidType();
+      uuid.setUuidType(idArchive);
+      consultationRequest.setIdArchive(uuid);
+      
+      // Les codes des métadonnées souhaitées
+      if ((codesMetasSouhaites!=null) && (codesMetasSouhaites.size()>0)) {
+         
+         MetadonneeCodeType[] arrMetadonneeCode = new MetadonneeCodeType[codesMetasSouhaites.size()];
+         
+         MetadonneeCodeType metadonneeCode;
+         for(int i=0;i<codesMetasSouhaites.size();i++) {
+            metadonneeCode = new MetadonneeCodeType();
+            metadonneeCode.setMetadonneeCodeType(codesMetasSouhaites.get(i));
+            arrMetadonneeCode[i] = metadonneeCode; 
+         }
+         
+         ListeMetadonneeCodeType listeMetadonneeCode = new ListeMetadonneeCodeType();
+         consultationRequest.setMetadonnees(listeMetadonneeCode);
+         listeMetadonneeCode.setMetadonneeCode(arrMetadonneeCode);
+         
+      }
+      
+      // Renvoie du paramètre d'entrée de l'opération consultation
+      return consultation;
+      
+   }
+   
+   
+   
+   public static ConsultationMTOM contruitParamsEntreeConsultationMTOM(
+         String idArchive,
+         List<String> codesMetasSouhaites) {
+      
+      ConsultationMTOM consultation = 
+         new ConsultationMTOM();
+      
+      ConsultationMTOMRequestType consultationRequest = 
+         new ConsultationMTOMRequestType();
+      
+      consultation.setConsultationMTOM(
             consultationRequest);
       
       // L'identifiant unique de l'archivage

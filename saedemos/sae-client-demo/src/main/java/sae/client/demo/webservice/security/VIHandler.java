@@ -10,7 +10,6 @@ import org.apache.axiom.soap.SOAPHeader;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.handlers.AbstractHandler;
-import org.apache.log4j.Logger;
 import org.apache.rampart.util.Axis2Util;
 import org.joda.time.DateTime;
 import org.w3c.dom.Document;
@@ -31,9 +30,6 @@ import sae.client.demo.webservice.security.ws.WSSecurityService;
 public class VIHandler extends AbstractHandler {
 
    
-   private static final Logger LOG = Logger.getLogger(VIHandler.class);
-   
-   
    /**
     * Création d'une balise WS-Security dans le header du SOAP<br>
     * <br>
@@ -46,10 +42,7 @@ public class VIHandler extends AbstractHandler {
    public final InvocationResponse invoke(MessageContext msgCtx)
          throws AxisFault {
 
-      LOG.debug("Début de l'interception du message SOAP avant envoi");
-      
       // Ajout de l'en-tête WS-Security chargé depuis un fichier de ressource XML
-      LOG.debug("Insertion de l'en-tête WS-Security");
       try {
          
          
@@ -75,16 +68,12 @@ public class VIHandler extends AbstractHandler {
          StringWriter sWriter = new StringWriter(); 
          msgCtx.getEnvelope().serialize(sWriter);
          
-         // Trace
-         LOG.debug(sWriter.toString());
-
          
       } catch (Exception e) {
          throw new IllegalStateException(e);
       }
       
       // fin
-      LOG.debug("Fin de l'interception du message SOAP avant envoi");
       return InvocationResponse.CONTINUE;
       
    }
