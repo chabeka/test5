@@ -361,7 +361,7 @@
       <xsd:sequence>
          <xsd:annotation>
             <xsd:documentation>Valeur de retour de l'opération
-               'consultation'</xsd:documentation>
+               'consultationMTOM'</xsd:documentation>
          </xsd:annotation>
          <xsd:element name="contenu" type="xsd:base64Binary" />
          <xsd:element name="metadonnees" type="sae:listeMetadonneeType">

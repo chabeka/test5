@@ -197,9 +197,9 @@ public class ConsultationMTOMTestAll {
    }
 
    private String initBeforeConsult() {
-      String uuid = "50403213-d18a-464f-ab12-bfdd8a929a89";
+      String uuid = "CFC75D9E-9019-4491-9143-6BDC610CAE51";
       String hash = "4bf2ddbd82d5fd38e821e6aae434ac989972a043";
-      String dateArchivage = "2012-02-02";
+      String dateArchivage = "2012-02-16";
 
       File srcFile = new File(PDF_FILE_PATH);
       expectedMetadatas.put("Hash", hash);
@@ -366,8 +366,8 @@ public class ConsultationMTOMTestAll {
          SoapTestUtils
                .assertAxisFault(
                      axisFault,
-                     "La ou les métadonnées suivantes, demandées dans les critères de consultation optimisation MTOM, n'existent pas dans le référentiel des métadonnées : metadatainexistante",
-                     "ConsultationMTOMMetadonneesInexistante",
+                     "La ou les métadonnées suivantes, demandées dans les critères de consultation, n'existent pas dans le référentiel des métadonnées : metadatainexistante",
+                     "ConsultationMetadonneesInexistante",
                      SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
       }
 
@@ -375,7 +375,6 @@ public class ConsultationMTOMTestAll {
    }
 
    @Test
-   @Ignore
    public void testFailNoConsultMetadata() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -393,8 +392,8 @@ public class ConsultationMTOMTestAll {
          SoapTestUtils
                .assertAxisFault(
                      axisFault,
-                     "La ou les métadonnées suivantes, demandées dans les critères de consultation avec optimisation MTOM, ne sont pas consultables : StartPage",
-                     "ConsultationMTOMMetadonneesNonAutorisees",
+                     "La ou les métadonnées suivantes, demandées dans les critères de consultation, ne sont pas consultables : StartPage",
+                     "ConsultationMetadonneesNonAutorisees",
                      SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
       }
 

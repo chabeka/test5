@@ -16,8 +16,8 @@
    
 
    <properties>
-      <axiom.version>1.2.11</axiom.version>
-      <axis2.version>1.5.4</axis2.version>
+      <axiom.version>1.2.12</axiom.version>
+      <axis2.version>1.6.1</axis2.version>
    </properties>
 
 
@@ -157,7 +157,7 @@
       <dependency>
          <groupId>org.apache.rampart</groupId>
          <artifactId>rampart-core</artifactId>
-         <version>1.5.1</version>
+         <version>1.6.1</version>
          <exclusions>
 
             <exclusion>
