@@ -13,6 +13,8 @@ import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageMasseReque
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaire;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaireRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.Consultation;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationMTOM;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationMTOMRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.EcdeUrlSommaireType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.EcdeUrlType;
@@ -104,6 +106,42 @@ public final class RequestServiceFactory {
       requestType.setMetadonnees(listeMD);
 
       request.setConsultation(requestType);
+
+      return request;
+   }
+   
+   /**
+    * 
+    * @param uuid
+    *           L'identifiant unique d'archivage de l'archive à consulter
+    * @return instance de {@link Consultation}
+    */
+   public static ConsultationMTOM createConsultationMTOM(String uuid, List<String> listMetaData) {
+
+      ConsultationMTOM request = new ConsultationMTOM();
+
+      ConsultationMTOMRequestType requestMTOMType = new ConsultationMTOMRequestType();
+      UuidType uuidType = new UuidType();
+      uuidType.setUuidType(uuid);
+
+      requestMTOMType.setIdArchive(uuidType);
+
+      ListeMetadonneeCodeType listeMD = null;
+      
+      if (CollectionUtils.isNotEmpty(listMetaData)) {
+         listeMD = new ListeMetadonneeCodeType();
+         MetadonneeCodeType codeType;
+         
+         for (String metaData : listMetaData) {
+            codeType = new MetadonneeCodeType();
+            codeType.setMetadonneeCodeType(metaData);
+            listeMD.addMetadonneeCode(codeType);
+         }
+      }
+      
+      requestMTOMType.setMetadonnees(listeMD);
+
+      request.setConsultationMTOM(requestMTOMType);
 
       return request;
    }

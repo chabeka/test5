@@ -127,6 +127,22 @@ public class SaeServiceCallbackHandler{
             }
                 
            /**
+            * auto generated Axis2 call back method for consultationMTOM method
+            * override this method for handling normal response from consultationMTOM operation
+            */
+           public void receiveResultconsultationMTOM(
+                    fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationMTOMResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from consultationMTOM operation
+           */
+            public void receiveErrorconsultationMTOM(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for archivageMasse method
             * override this method for handling normal response from archivageMasse operation
             */
