@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javanet.staxutils.IndentingXMLEventWriter;
+
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -31,7 +33,11 @@ public class BibliothequeXMLSupport {
 
    private static final String B_PREFIX = "b";
 
-   private XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+   private final XMLEventFactory eventFactory;
+
+   public BibliothequeXMLSupport() {
+      eventFactory = XMLEventFactory.newInstance();
+   }
 
    public void writer(File bibliothequeXMLPath, int nombreDeLivres) {
 
@@ -46,6 +52,7 @@ public class BibliothequeXMLSupport {
 
       try {
          XMLEventWriter writer = outputFactory.createXMLEventWriter(libraryXML);
+         writer = new IndentingXMLEventWriter(writer);
 
          try {
 
