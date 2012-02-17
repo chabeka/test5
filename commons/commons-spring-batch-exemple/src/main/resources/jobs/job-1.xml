@@ -39,6 +39,10 @@
 
       </step>
 
+      <listeners>
+         <listener ref="jobListener" />
+      </listeners>
+
       <validator ref="job1ParametersValidator" />
 
    </job>
