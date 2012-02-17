@@ -30,3 +30,7 @@ La classe Job6Test exécute ce job.
 job-7.xml : le job exécute écrit dans deux fichiers ressources simultanément
 
 La classe Job7Test exécute ce job.
+
+job-8.xml : le job exécute une tâche en boucle 
+
+La classe Job8Test exécute ce job.

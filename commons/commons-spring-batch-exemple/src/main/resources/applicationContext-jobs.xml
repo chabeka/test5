@@ -17,5 +17,6 @@
    <import resource="jobs/job-5.xml" />
    <import resource="jobs/job-6.xml" />
    <import resource="jobs/job-7.xml" />
+   <import resource="jobs/job-8.xml" />
 
 </beans>
