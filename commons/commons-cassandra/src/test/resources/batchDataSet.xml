@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<keyspace xmlns="http://xml.dataset.cassandraunit.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xml.dataset.cassandraunit.org dataset.xsd ">
+	<name>otherKeyspaceName</name>
+	<strategy>org.apache.cassandra.locator.SimpleStrategy</strategy>
+	<replicationFactor>1</replicationFactor>
+	<columnFamilies>
+		<columnFamily>
+			<name>JobInstance</name>
+			<comparatorType>BytesType</comparatorType>
+			<columnMetadata>
+				<name>jobKey</name>
+				<validationClass>BytesType</validationClass>
+				<indexType>KEYS</indexType>
+			</columnMetadata>
+		</columnFamily>
+		<columnFamily>
+			<name>JobInstanceByTime</name>
+			<comparatorType>TimeUUIDType</comparatorType>
+		</columnFamily>
+		<columnFamily>
+			<name>JobExecution</name>
+			<comparatorType>BytesType</comparatorType>
+			<columnMetadata>
+				<name>jobInstanceId</name>
+				<validationClass>LongType</validationClass>
+				<indexType>KEYS</indexType>
+			</columnMetadata>
+			<columnMetadata>
+				<name>runningJobName</name>
+				<validationClass>BytesType</validationClass>
+				<indexType>KEYS</indexType>
+			</columnMetadata>
+		</columnFamily>
+		<columnFamily>
+			<name>JobStep</name>
+			<comparatorType>BytesType</comparatorType>
+			<columnMetadata>
+				<name>jobExecutionId</name>
+				<validationClass>LongType</validationClass>
+				<indexType>KEYS</indexType>
+			</columnMetadata>
+		</columnFamily>
+	</columnFamilies>
+</keyspace>
