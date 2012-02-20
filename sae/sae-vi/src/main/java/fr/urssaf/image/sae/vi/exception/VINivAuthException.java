@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import fr.urssaf.image.sae.vi.exception.factory.SoapFaultCodeFactory;
@@ -33,12 +35,25 @@ public class VINivAuthException extends VIVerificationException {
 
    private static String createMessage(URI methodAuth) {
 
-      Map<String, String> args = new HashMap<String, String>();
-      args.put("0", methodAuth.toASCIIString());
+      String result;
+      
+      if (StringUtils.isBlank(ObjectUtils.toString(methodAuth))) {
+         
+         result = "Le niveau d'authentification n'est pas renseigné";
+         
+      } else {
+         
+         Map<String, String> args = new HashMap<String, String>();
+         args.put("0", methodAuth.toASCIIString());
 
-      String message = "Le niveau d'authentification '${0}' est incorrect";
-
-      return StrSubstitutor.replace(message, args);
+         String message = "Le niveau d'authentification '${0}' est incorrect";
+         
+         result = StrSubstitutor.replace(message, args);
+         
+      }
+      
+      return result;
+       
    }
 
    /**

@@ -251,6 +251,40 @@ public class WebServiceVIValidateServiceTest {
       }
 
    }
+   
+   
+   @Test
+   public void verifierVIdeServiceWeb_failure_methodauth_vide()
+         throws VIPagmIncorrectException, IOException, VIInvalideException,
+         VIAppliClientException, VIServiceIncorrectException, SAXException {
+
+      Element identification = XMLUtils
+            .parse("src/test/resources/webservice/vi_failure_methodauthn_vide.xml");
+      SamlAssertionData data = extraction.extraitDonnees(identification);
+
+      try {
+         
+         service.validate(
+               data, 
+               TuGenererVi.SERVICE_VISE, 
+               TuGenererVi.ISSUER, 
+               system_date);
+         
+         fail(FAIL_MESSAGE);
+         
+      } catch (VINivAuthException exception) {
+         assertEquals(
+               "Vérification du message de l'exception",
+               "Le niveau d'authentification n'est pas renseigné",
+               exception.getMessage());
+
+         assertVIVerificationException_vi(
+               "InvalidAuthLevel",
+               "Le niveau d'authentification initial n'est pas conforme au contrat d'interopérabilité",
+               exception);
+      }
+
+   }
 
    @Test
    @SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
