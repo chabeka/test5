@@ -19,6 +19,11 @@ public abstract class VIVerificationException extends Exception {
    protected VIVerificationException(String msg) {
       super(msg);
    }
+   
+   
+   protected VIVerificationException(String msg, Throwable cause) {
+      super(msg,cause);
+   }
 
    /**
     * 

@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
+import fr.urssaf.image.sae.saml.exception.SamlExtractionException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.testutils.TuUtils;
@@ -114,9 +115,31 @@ public class SamlAssertionExtractionServiceTest {
       try {
          service.extraitDonnees(assertionSaml);
          fail(FAIL_MESSAGE);
-      } catch (IllegalArgumentException e) {
+      } catch (SamlExtractionException e) {
 
-         assertEquals("Invalid UUID string: bad id", e.getMessage());
+         assertEquals("L'ID de l'assertion doit être un UUID correct (ce qui n'est pas le cas de 'bad id')", e.getMessage());
+         
+      }
+
+   }
+   
+   
+   @Test
+   public void extraitDonnees_failure_ID_2()
+      throws 
+         IOException, 
+         SAXException {
+
+      Element assertionSaml = TuUtils.loadResourceFileToElement(
+            "src/test/resources/saml/saml_failure_ID_2.xml");
+    
+      try {
+         service.extraitDonnees(assertionSaml);
+         fail(FAIL_MESSAGE);
+      } catch (SamlExtractionException e) {
+         
+         assertEquals("L'ID de l'assertion doit être un UUID correct (ce qui n'est pas le cas de 'pfx5d541dee-4468-74d2-7cbe-03078ef284e7')", e.getMessage());
+         
       }
 
    }

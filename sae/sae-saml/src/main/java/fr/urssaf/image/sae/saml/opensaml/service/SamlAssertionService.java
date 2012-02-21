@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.opensaml.Configuration;
 import org.opensaml.saml2.core.Assertion;
@@ -20,8 +21,8 @@ import org.opensaml.xml.validation.ValidationException;
 import org.opensaml.xml.validation.ValidatorSuite;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
-import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.SamlExtractionException;
+import fr.urssaf.image.sae.saml.exception.SamlFormatException;
 import fr.urssaf.image.sae.saml.exception.signature.keyinfo.SamlKeyInfoException;
 import fr.urssaf.image.sae.saml.opensaml.SamlConfiguration;
 import fr.urssaf.image.sae.saml.opensaml.signature.SamlSignatureSignService;
@@ -182,9 +183,21 @@ public class SamlAssertionService {
       commonsParams.setIssueInstant(issueInstant);
 
       // ID
-      UUID uuid = ConverterUtils.uuid(coreService.loadID(assertion));
+      // UUID uuid = ConverterUtils.uuid(coreService.loadID(assertion));
+      UUID uuid;
+      String assertionId = StringUtils.EMPTY;
+      try {
+         assertionId = coreService.loadID(assertion);
+         uuid = ConverterUtils.uuid(assertionId);
+      } catch (IllegalArgumentException ex) {
+         throw new SamlExtractionException(
+               String
+                     .format(
+                           "L'ID de l'assertion doit être un UUID correct (ce qui n'est pas le cas de '%s')",
+                           assertionId), ex);
+      }
       commonsParams.setId(uuid);
-
+      
       // ISSUER
       commonsParams.setIssuer(coreService.loadIssuer(assertion));
 

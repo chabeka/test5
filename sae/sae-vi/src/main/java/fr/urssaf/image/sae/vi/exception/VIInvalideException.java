@@ -21,6 +21,18 @@ public class VIInvalideException extends VIVerificationException {
    public VIInvalideException(String msg) {
       super(msg);
    }
+   
+   
+   /**
+    * Constructeur
+    * 
+    * @param msg le message de l'exception
+    * @param cause la cause de l'exception
+    */
+   public VIInvalideException(String msg, Throwable cause) {
+      super(msg,cause);
+   }
+   
 
    /**
     * 

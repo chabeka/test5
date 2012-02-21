@@ -15,11 +15,13 @@ import org.bouncycastle.jce.X509Principal;
 import org.w3c.dom.Element;
 
 import fr.urssaf.image.sae.saml.data.SamlAssertionData;
+import fr.urssaf.image.sae.saml.exception.SamlExtractionException;
 import fr.urssaf.image.sae.saml.params.SamlAssertionParams;
 import fr.urssaf.image.sae.saml.params.SamlCommonsParams;
 import fr.urssaf.image.sae.saml.service.SamlAssertionCreationService;
 import fr.urssaf.image.sae.saml.service.SamlAssertionExtractionService;
 import fr.urssaf.image.sae.saml.util.ConverterUtils;
+import fr.urssaf.image.sae.vi.exception.VIInvalideException;
 import fr.urssaf.image.sae.vi.exception.VIPagmIncorrectException;
 import fr.urssaf.image.sae.vi.exception.VIVerificationException;
 import fr.urssaf.image.sae.vi.modele.VIPagm;
@@ -165,7 +167,12 @@ public class WebServiceVIService {
       validateService.validate(identification, signVerifParams);
 
       // extraction du jeton SAML
-      SamlAssertionData data = extractService.extraitDonnees(identification);
+      SamlAssertionData data;
+      try {
+         data = extractService.extraitDonnees(identification);
+      } catch (SamlExtractionException exception) {
+         throw new VIInvalideException(exception.getMessage(),exception);
+      }
 
       // vérification supplémentaires sur le jeton SAML
       validateService.validate(data, serviceVise, idAppliClient, new Date());

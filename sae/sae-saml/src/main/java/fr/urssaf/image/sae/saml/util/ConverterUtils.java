@@ -42,6 +42,7 @@ public final class ConverterUtils {
     * @param name
     *           uuid sous forme de chaine de caractère
     * @return UUID répresentant cette chaine
+    * @throws IllegalArgumentException si l'argument name ne représente pas un UUID
     */
    public static UUID uuid(String name) {
 
