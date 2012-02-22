@@ -22,7 +22,7 @@ public class JobInstanceIdGenerator implements IdGenerator {
    }
 
    @Override
-   public long getNextId() {
+   public final long getNextId() {
       return generator.getNextId();
    }
 

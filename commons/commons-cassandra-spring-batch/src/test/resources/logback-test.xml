@@ -11,6 +11,7 @@
    <logger name="org.cassandraunit" level="INFO" />
    <logger name="org.apache.cassandra" level="INFO" />
    <logger name="me.prettyprint.cassandra" level="OFF" />
+   <logger name="com.netflix.curator" level="OFF" />
    
    <root level="TRACE">
       <appender-ref ref="console" />

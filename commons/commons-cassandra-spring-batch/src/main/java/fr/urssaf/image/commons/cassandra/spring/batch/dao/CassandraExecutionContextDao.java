@@ -27,16 +27,18 @@ public class CassandraExecutionContextDao extends AbstractCassandraDAO
       super(keyspace);
    }
 
+   @Override
    /** {@inheritDoc} */
-   public ExecutionContext getExecutionContext(JobExecution jobExecution) {
+   public final ExecutionContext getExecutionContext(JobExecution jobExecution) {
       // Dans l'implémentation cassandra, le contexte est désérialisé en même
       // temps que
       // les autres propriétés du jobExecution.
       return jobExecution.getExecutionContext();
    }
 
+   @Override
    /** {@inheritDoc} */
-   public ExecutionContext getExecutionContext(StepExecution stepExecution) {
+   public final ExecutionContext getExecutionContext(StepExecution stepExecution) {
       // Dans l'implémentation cassandra, le contexte est désérialisé en même
       // temps que
       // les autres propriétés du stepExecution.

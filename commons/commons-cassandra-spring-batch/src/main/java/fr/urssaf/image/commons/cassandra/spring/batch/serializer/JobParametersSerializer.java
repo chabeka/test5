@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -23,13 +24,15 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
 
    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "unchecked", "PMD.IfElseStmtsMustUseBraces" })   
    @Override
-   public JobParameters fromByteBuffer(ByteBuffer byteBuffer) {
+   /** {@inheritDoc} */
+   public final JobParameters fromByteBuffer(ByteBuffer byteBuffer) {
       Map<String, Object> mapObject = (Map<String, Object>) ObjectToJsonSerializer
             .get().fromByteBuffer(byteBuffer);
       Map<String, JobParameter> mapParam = new HashMap<String, JobParameter>(
             mapObject.size());
-      for (String key : mapObject.keySet()) {
-         Object value = mapObject.get(key);
+      for (Entry<String, Object> entySet : mapObject.entrySet()) {
+         String key = entySet.getKey();
+         Object value = entySet.getValue();
          if (value instanceof Date)
             mapParam.put(key, new JobParameter((Date) value));
          else if (value instanceof Long)
@@ -47,13 +50,15 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
    }
 
    @Override
-   public ByteBuffer toByteBuffer(JobParameters jobParameters) {
+   /** {@inheritDoc} */
+   public final ByteBuffer toByteBuffer(JobParameters jobParameters) {
       Map<String, JobParameter> mapParam = jobParameters.getParameters();
       // On transforma la map de JobParameter en map d'objets
       Map<String, Object> mapObject = new HashMap<String, Object>(mapParam
             .size());
-      for (String key : mapParam.keySet()) {
-         JobParameter parameter = mapParam.get(key);
+      for (Entry<String, JobParameter> entySet : mapParam.entrySet()) {
+         String key = entySet.getKey();
+         JobParameter parameter = entySet.getValue();
          mapObject.put(key, parameter.getValue());
       }
       return ObjectToJsonSerializer.get().toByteBuffer(mapObject);

@@ -24,6 +24,7 @@ public class AbstractCassandraDAO {
    protected static final String JOBSTEP_CFNAME = "JobStep";
    protected static final String JOBSTEPS_CFNAME = "JobSteps";
    
+   //CHECKSTYLE:OFF   on ne fait pas d'accesseur pour plus de lisibilité et de concision
    protected Keyspace keyspace;
    protected ColumnFamilyTemplate<Long, String> jobInstanceTemplate;
    protected ColumnFamilyTemplate<String, Long> jobInstancesByNameTemplate;
@@ -34,6 +35,7 @@ public class AbstractCassandraDAO {
    protected ColumnFamilyTemplate<Long, Long> jobExecutionToJobStepTemplate;
    protected ColumnFamilyTemplate<Long, String> jobStepTemplate;
    protected ColumnFamilyTemplate<String, Long> jobStepsTemplate;
+   //CHECKSTYLE:ON
 
    // Colonnes de JobInstance
    protected static final String JI_NAME_COLUMN = "name";

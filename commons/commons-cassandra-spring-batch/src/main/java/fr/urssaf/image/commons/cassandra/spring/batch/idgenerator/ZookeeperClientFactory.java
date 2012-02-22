@@ -13,6 +13,8 @@ import com.netflix.curator.retry.ExponentialBackoffRetry;
  */
 public final class ZookeeperClientFactory {
 
+   private static final int BASE_SLEEP_TIME = 100;    // En milli-secondes
+   private static final int MAX_RETRIES = 10;
    /**
     * Constructeur privé
     */
@@ -24,12 +26,12 @@ public final class ZookeeperClientFactory {
     * @param connexionString  chaîne de connexion (format : "serveur:port")
     * @param namespace        namespace de l'application
     * @return                 connexion
-    * @throws IOException
+    * @throws IOException     quand on n'arrive pas à joindre zookeeper
     */
    public static CuratorFramework getClient(String connexionString, String namespace) throws IOException {
       Builder builder = CuratorFrameworkFactory.builder();
       builder.connectString(connexionString).namespace(namespace);
-      builder.retryPolicy(new ExponentialBackoffRetry(100, 10));
+      builder.retryPolicy(new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES));
       CuratorFramework zkClient = builder.build();
       zkClient.start();
       return zkClient;

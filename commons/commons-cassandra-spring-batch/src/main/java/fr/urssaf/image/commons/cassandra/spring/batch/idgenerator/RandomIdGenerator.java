@@ -12,7 +12,7 @@ public class RandomIdGenerator implements IdGenerator {
    private final Random rnd = new Random();
 
    @Override
-   public long getNextId() {
+   public final long getNextId() {
       return rnd.nextLong();
    }
 

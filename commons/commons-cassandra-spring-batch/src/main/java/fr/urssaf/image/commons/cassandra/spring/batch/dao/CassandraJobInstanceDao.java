@@ -1,18 +1,12 @@
 package fr.urssaf.image.commons.cassandra.spring.batch.dao;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import me.prettyprint.cassandra.serializers.*;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
-import me.prettyprint.cassandra.service.template.*;
+import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
+import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
+import me.prettyprint.cassandra.service.template.IndexedSlicesPredicate;
 import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.*;
 import me.prettyprint.hector.api.factory.HFactory;
@@ -21,13 +15,12 @@ import me.prettyprint.hector.api.query.*;
 
 import org.apache.cassandra.thrift.IndexOperator;
 import org.springframework.batch.admin.service.SearchableJobInstanceDao;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.*;
 import org.springframework.util.Assert;
 
+import fr.urssaf.image.commons.cassandra.helper.HectorIterator;
 import fr.urssaf.image.commons.cassandra.helper.IndexedSlicesPredicateHelper;
+import fr.urssaf.image.commons.cassandra.spring.batch.helper.CassandraJobHelper;
 import fr.urssaf.image.commons.cassandra.spring.batch.idgenerator.IdGenerator;
 import fr.urssaf.image.commons.cassandra.spring.batch.serializer.JobParametersSerializer;
 
@@ -43,6 +36,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       SearchableJobInstanceDao {
 
    private final IdGenerator idGenerator;
+   private static final int MAX_ROWS = 500;
 
    /**
     * Constructeur
@@ -54,8 +48,9 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       this.idGenerator = idGenerator;
    }
 
+   @Override
    /** {@inheritDoc} */
-   public JobInstance createJobInstance(String jobName,
+   public final JobInstance createJobInstance(String jobName,
          JobParameters jobParameters) {
       Assert.notNull(jobName, "Job name must not be null.");
       Assert.notNull(jobParameters, "JobParameters must not be null.");
@@ -71,8 +66,8 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
        * jobParameters, jobName); entityManager.save(instance);
        */
 
-      long id = idGenerator.getNextId();
-      JobInstance instance = new JobInstance(id, jobParameters, jobName);
+      long jobId = idGenerator.getNextId();
+      JobInstance instance = new JobInstance(jobId, jobParameters, jobName);
       instance.incrementVersion();
       saveJobInstance(instance);
 
@@ -92,7 +87,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       JobParametersSerializer serializer = JobParametersSerializer.get();
       byte[] bytes = serializer.toBytes(instance.getJobParameters());
       updater.setByteArray(JI_PARAMETERS_COLUMN, bytes);
-      byte[] jobKey = createJobKey(instance.getJobName(), instance
+      byte[] jobKey = CassandraJobHelper.createJobKey(instance.getJobName(), instance
             .getJobParameters());
       updater.setByteArray(JI_JOB_KEY_COLUMN, jobKey);
       updater.setInteger(JI_VERSION, instance.getVersion());
@@ -124,7 +119,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
     * @param stepExecutionDao
     *           DAO permettant de supprimer les steps de l'instance
     */
-   public void deleteJobInstance(Long instanceId,
+   public final void deleteJobInstance(Long instanceId,
          CassandraJobExecutionDao executionDao,
          CassandraStepExecutionDao stepExecutionDao) {
       Assert.notNull(instanceId, "JobInstanceId cannot be null.");
@@ -178,8 +173,9 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       mutator2.execute();
    }
 
+   @Override
    /** {@inheritDoc} */
-   public JobInstance getJobInstance(Long instanceId) {
+   public final JobInstance getJobInstance(Long instanceId) {
       ColumnFamilyResult<Long, String> result = jobInstanceTemplate
             .queryColumns(instanceId);
       return getJobInstance(instanceId, result);
@@ -194,7 +190,9 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
     */
    private JobInstance getJobInstance(Long instanceId,
          ColumnFamilyResult<Long, String> result) {
-      if (result == null || !result.hasResults()) return null;
+      if (result == null || !result.hasResults()) {
+         return null;
+      }
       String jobName = result.getString(JI_NAME_COLUMN);
       byte[] serializedParams = result.getByteArray(JI_PARAMETERS_COLUMN);
       JobParametersSerializer serializer = JobParametersSerializer.get();
@@ -210,8 +208,9 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       return instance;
    }
 
+   @Override
    /** {@inheritDoc} */
-   public JobInstance getJobInstance(JobExecution jobExecution) {
+   public final JobInstance getJobInstance(JobExecution jobExecution) {
       // Récupération de l'id de l'instance à partir de l'id de l'exécution
       long instanceId = jobExecutionTemplate.querySingleColumn(
             jobExecution.getId(), JE_JOB_INSTANCE_ID_COLUMN,
@@ -220,11 +219,12 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       return getJobInstance(instanceId);
    }
 
+   @Override
    /** {@inheritDoc} */
-   public JobInstance getJobInstance(String jobName, JobParameters jobParameters) {
+   public final JobInstance getJobInstance(String jobName, JobParameters jobParameters) {
       Assert.notNull(jobName, "Job name must not be null.");
       Assert.notNull(jobParameters, "JobParameters must not be null.");
-      byte[] jobKey = createJobKey(jobName, jobParameters);
+      byte[] jobKey = CassandraJobHelper.createJobKey(jobName, jobParameters);
 
       IndexedSlicesPredicate<Long, String, byte[]> predicate = new IndexedSlicesPredicate<Long, String, byte[]>(
             LongSerializer.get(), StringSerializer.get(), BytesArraySerializer
@@ -245,7 +245,9 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       ColumnFamilyResult<Long, String> result = jobInstanceTemplate
             .queryColumns(predicate);
 
-      if (!result.hasResults()) return null;
+      if (!result.hasResults()) {
+         return null;
+      }
       long instanceId = result.getKey();
       return getJobInstance(instanceId, result);
 
@@ -271,61 +273,24 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
        */
    }
 
-   /**
-    * Crée une "clé" permettant de résumer un job et ses paramètres.
-    * Implémentation inspirée de celle de JdbcJobInstanceDao, sauf que cette
-    * dernière est bugguée puisqu'elle ne tient pas compte de jobName.
-    * 
-    * @param jobParameters
-    * @return la "clé" (correspond à un MD5)
-    */
-   protected byte[] createJobKey(String jobName, JobParameters jobParameters) {
-
-      Map<String, JobParameter> props = jobParameters.getParameters();
-      props.put("__jobName", new JobParameter(jobName));
-      StringBuffer stringBuffer = new StringBuffer();
-      List<String> keys = new ArrayList<String>(props.keySet());
-      Collections.sort(keys);
-      for (String key : keys) {
-         JobParameter jobParameter = props.get(key);
-         String value = jobParameter.getValue() == null ? "" : jobParameter
-               .toString();
-         stringBuffer.append(key + "=" + value + ";");
-      }
-
-      MessageDigest digest;
-      try {
-         digest = MessageDigest.getInstance("MD5");
-      } catch (NoSuchAlgorithmException e) {
-         throw new IllegalStateException(
-               "MD5 algorithm not available.  Fatal (should be in the JDK).");
-      }
-      try {
-         byte[] bytes = digest
-               .digest(stringBuffer.toString().getBytes("UTF-8"));
-         return bytes;
-      } catch (UnsupportedEncodingException e) {
-         throw new IllegalStateException(
-               "UTF-8 encoding not available.  Fatal (should be in the JDK).");
-      }
-   }
-
+   @Override
    /** {@inheritDoc} */
-   public List<JobInstance> getJobInstances(String jobName, int start, int count) {
+   public final List<JobInstance> getJobInstances(String jobName, int start, int count) {
       // On se sert de JobInstancesByName, dont la clé est jobName, pour
       // récupérer les id des jobInstances
       SliceQuery<String, Long, Long> sliceQuery = HFactory.createSliceQuery(
             keyspace, StringSerializer.get(), LongSerializer.get(),
             LongSerializer.get()).setKey(jobName).setColumnFamily(
             JOBINSTANCES_BY_NAME_CFNAME);
-      Long nullLong = null;
       Boolean reversed = true;
       ColumnSliceIterator<String, Long, Long> iterator = new ColumnSliceIterator<String, Long, Long>(
-            sliceQuery, nullLong, nullLong, reversed);
+            sliceQuery, (Long) null, (Long) null, reversed);
       int compteur = 0;
       List<Long> jobIds = new ArrayList<Long>(count);
       while (iterator.hasNext()) {
-         if (compteur >= start + count) break;
+         if (compteur >= start + count) {
+            break;
+         }
          HColumn<Long, Long> col = iterator.next();
          if (compteur >= start) {
             long instanceId = col.getName();
@@ -340,12 +305,10 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       // Par contre, les lignes renvoyées ne sont pas triées. Il faut donc les trier
       
       Map<Long, JobInstance> map = new HashMap<Long, JobInstance>(jobIds.size());
-      while (true) {
-         if (result.hasResults()) {
-            long instanceId = result.getKey();
-            map.put(instanceId, getJobInstance(instanceId, result));
-         }
-         if (result.hasNext()) result = result.next(); else break;
+      HectorIterator<Long, String> resultIterator = new HectorIterator<Long, String>(result);
+      for (ColumnFamilyResult<Long, String> row : resultIterator) {
+         long instanceId = row.getKey();
+         map.put(instanceId, getJobInstance(instanceId, row));
       }
       
       // On renvoie les jobInstance dans l'ordre des jobIds
@@ -358,10 +321,11 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       return jobs;
    }
 
+   @Override
    /**
     * {@inheritDoc} La liste est limitée à 500 réponses max
     * */
-   public List<String> getJobNames() {
+   public final List<String> getJobNames() {
       // On se sert de JobInstancesByName, dont la clé est jobName
       RangeSlicesQuery<String, UUID, Long> query = HFactory
             .createRangeSlicesQuery(keyspace, StringSerializer.get(),
@@ -369,7 +333,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       query.setReturnKeysOnly();
       query.setColumnFamily(JOBINSTANCES_BY_NAME_CFNAME);
       query.setKeys(null, null);
-      query.setRowCount(500);
+      query.setRowCount(MAX_ROWS);
       QueryResult<OrderedRows<String, UUID, Long>> result = query.execute();
       OrderedRows<String, UUID, Long> orderedRows = result.get();
       ArrayList<String> list = new ArrayList<String>();
@@ -382,7 +346,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
 
    @Override
    /** {@inheritDoc} */
-   public int countJobInstances(String name) {
+   public final int countJobInstances(String name) {
       return jobInstancesByNameTemplate.countColumns(name);
    }
 

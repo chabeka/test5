@@ -8,6 +8,7 @@ public class IdGeneratorException extends RuntimeException {
 
    /**
     * @see java.lang.RuntimeException
+    * @param message    le message
     */
    public IdGeneratorException(String message) {
       super(message);
@@ -15,6 +16,8 @@ public class IdGeneratorException extends RuntimeException {
 
    /**
     * @see java.lang.RuntimeException
+    * @param message    le message
+    * @param inner      l'inner exception
     */
    public IdGeneratorException(String message, Exception inner) {
       super(message, inner);

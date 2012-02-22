@@ -29,12 +29,12 @@ public class ObjectToJsonSerializer extends AbstractSerializer<Object> {
    }
 
    @Override
-   public Object fromByteBuffer(ByteBuffer byteBuffer) {
+   public final Object fromByteBuffer(ByteBuffer byteBuffer) {
       return xstream.fromXML(StringSerializer.get().fromByteBuffer(byteBuffer));
    }
 
    @Override
-   public ByteBuffer toByteBuffer(Object obj) {
+   public final ByteBuffer toByteBuffer(Object obj) {
       String str = xstream.toXML(obj);
       return StringSerializer.get().toByteBuffer(str);
    }

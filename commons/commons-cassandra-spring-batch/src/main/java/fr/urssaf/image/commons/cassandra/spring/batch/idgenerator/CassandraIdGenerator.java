@@ -33,7 +33,8 @@ public class CassandraIdGenerator implements IdGenerator {
    private final String sequenceName;
    private final ColumnFamilyTemplate<String, String> template;
    private final CuratorFramework curatorClient;
-   private int lockTimeOut = 20;
+   private static final int DEFAULT_TIME_OUT = 20;
+   private int lockTimeOut = DEFAULT_TIME_OUT;
 
    /**
     * Constructeur
@@ -51,9 +52,12 @@ public class CassandraIdGenerator implements IdGenerator {
    }
 
    @Override
-   public long getNextId() {
+   /** {@inheritDoc} */
+   public final long getNextId() {
 
-      // Il faut obtenir un lock avant d'accéder à la séquence
+      // Il faut obtenir un lock avant d'accéder à la séquence.
+      // La variable lockInfo est marquée "final", car sinon java ne peut pas y accéder
+      // depuis la classe anonyme suivante.
       final LockInfo lockInfo = new LockInfo();
 
       // Conformément aux recommandations d'utilisation de la classe de lock
@@ -116,7 +120,9 @@ public class CassandraIdGenerator implements IdGenerator {
                         + sequenceName, e);
          } finally {
             try {
-               if (mutex.isAcquiredInThisProcess()) mutex.release();
+               if (mutex.isAcquiredInThisProcess()) {
+                  mutex.release();
+               }
             } catch (Exception e) {
                LOG.error(
                      "Erreur lors de la libération du lock pour la séquence "
@@ -129,12 +135,20 @@ public class CassandraIdGenerator implements IdGenerator {
       }
    }
 
+   /**
+    * Lit la valeur de la séquence dans cassandra
+    * @return  valeur lue
+    */
    private long readCurrentSequenceValue() {
       HColumn<String, Long> col = template.querySingleColumn(SEQUENCE_KEY,
             sequenceName, LongSerializer.get());
       return col == null ? 0 : col.getValue();
    }
 
+   /**
+    * Écrit la valeur de la séquence dans cassandra 
+    * @param value   nouvelle valeur à écrire
+    */
    private void writeSequenceValue(long value) {
       ColumnFamilyUpdater<String, String> updater = template
             .createUpdater(SEQUENCE_KEY);
@@ -146,7 +160,7 @@ public class CassandraIdGenerator implements IdGenerator {
     * Spécifie le timeout du lock, en seconde (par défaut : 20s)
     * @param lockTimeOut timeout, en seconde
     */
-   public void setLockTimeOut(int lockTimeOut) {
+   public final void setLockTimeOut(int lockTimeOut) {
       this.lockTimeOut = lockTimeOut;
    }
 
@@ -154,12 +168,18 @@ public class CassandraIdGenerator implements IdGenerator {
     * Récupère la valeur du timeout pour le lock
     * @return  timeout, en seconde
     */
-   public int getLockTimeOut() {
+   public final int getLockTimeOut() {
       return lockTimeOut;
    }
 
+   /**
+    * Juste une feinte pour pouvoir modifier le booléen depuis une classe anonyme
+    * (java doesn't support true closures)
+    */
    private static class LockInfo {
+      // CHECKSTYLE:OFF : c'est une classe privée
       public boolean lockOk = true;
+      // CHECKSTYLE:ON
    }
 
 }

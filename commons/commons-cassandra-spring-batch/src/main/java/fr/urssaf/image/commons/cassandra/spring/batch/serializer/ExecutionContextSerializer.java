@@ -22,14 +22,16 @@ public class ExecutionContextSerializer extends
 
    @SuppressWarnings("unchecked")
    @Override
-   public ExecutionContext fromByteBuffer(ByteBuffer byteBuffer) {
+   /** {@inheritDoc} */
+   public final ExecutionContext fromByteBuffer(ByteBuffer byteBuffer) {
       Map<String, Object> map = (Map<String, Object>) ObjectToJsonSerializer
             .get().fromByteBuffer(byteBuffer);
       return new ExecutionContext(map);
    }
 
    @Override
-   public ByteBuffer toByteBuffer(ExecutionContext executionContext) {
+   /** {@inheritDoc} */
+   public final ByteBuffer toByteBuffer(ExecutionContext executionContext) {
       Map<String, Object> map = new HashMap<String, Object>();
       for (Entry<String, Object> me : executionContext.entrySet()) {
          map.put(me.getKey(), me.getValue());

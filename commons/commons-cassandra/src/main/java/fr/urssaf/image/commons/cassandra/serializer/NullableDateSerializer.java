@@ -26,7 +26,7 @@ public class NullableDateSerializer extends AbstractSerializer<Date> {
    }
 
    @Override
-   public ByteBuffer toByteBuffer(Date obj) {
+   public final ByteBuffer toByteBuffer(Date obj) {
       if (obj == null) {
          return ByteBuffer.allocate(0);
       }
@@ -34,7 +34,7 @@ public class NullableDateSerializer extends AbstractSerializer<Date> {
    }
 
    @Override
-   public Date fromByteBuffer(ByteBuffer bytes) {
+   public final Date fromByteBuffer(ByteBuffer bytes) {
       if (bytes == null || !bytes.hasRemaining()) {
          return null;
       }
