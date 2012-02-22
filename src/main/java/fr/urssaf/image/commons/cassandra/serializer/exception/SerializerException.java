@@ -9,6 +9,7 @@ public class SerializerException extends RuntimeException {
 
    /**
     * @see java.lang.RuntimeException
+    * @param message Le message d'erreur
     */
    public SerializerException(String message) {
       super(message);
