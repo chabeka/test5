@@ -42,6 +42,7 @@ public class AbstractCassandraDAO {
    protected static final String JI_PARAMETERS_COLUMN = "parameters";
    protected static final String JI_JOB_KEY_COLUMN = "jobKey";
    protected static final String JI_VERSION = "version";
+   protected static final String JI_RESERVED_BY = "reservedBy";
 
    // Colonnes de JobExecution
    protected static final String JE_JOB_INSTANCE_ID_COLUMN = "jobInstanceId";

@@ -52,7 +52,6 @@ public class CassandraIdGenerator implements IdGenerator {
    }
 
    @Override
-   /** {@inheritDoc} */
    public final long getNextId() {
 
       // Il faut obtenir un lock avant d'accéder à la séquence.

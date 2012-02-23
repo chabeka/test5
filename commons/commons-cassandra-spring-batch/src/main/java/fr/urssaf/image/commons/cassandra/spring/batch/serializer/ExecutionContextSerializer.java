@@ -22,7 +22,6 @@ public class ExecutionContextSerializer extends
 
    @SuppressWarnings("unchecked")
    @Override
-   /** {@inheritDoc} */
    public final ExecutionContext fromByteBuffer(ByteBuffer byteBuffer) {
       Map<String, Object> map = (Map<String, Object>) ObjectToJsonSerializer
             .get().fromByteBuffer(byteBuffer);
@@ -30,7 +29,6 @@ public class ExecutionContextSerializer extends
    }
 
    @Override
-   /** {@inheritDoc} */
    public final ByteBuffer toByteBuffer(ExecutionContext executionContext) {
       Map<String, Object> map = new HashMap<String, Object>();
       for (Entry<String, Object> me : executionContext.entrySet()) {

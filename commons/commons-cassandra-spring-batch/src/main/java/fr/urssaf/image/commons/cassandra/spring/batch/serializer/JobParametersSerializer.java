@@ -24,7 +24,6 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
 
    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "unchecked", "PMD.IfElseStmtsMustUseBraces" })   
    @Override
-   /** {@inheritDoc} */
    public final JobParameters fromByteBuffer(ByteBuffer byteBuffer) {
       Map<String, Object> mapObject = (Map<String, Object>) ObjectToJsonSerializer
             .get().fromByteBuffer(byteBuffer);
@@ -50,7 +49,6 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
    }
 
    @Override
-   /** {@inheritDoc} */
    public final ByteBuffer toByteBuffer(JobParameters jobParameters) {
       Map<String, JobParameter> mapParam = jobParameters.getParameters();
       // On transforma la map de JobParameter en map d'objets

@@ -55,7 +55,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final void addStepExecutions(JobExecution jobExecution) {
       Assert.notNull(jobExecution, "JobExecution cannot be null.");
       Assert.notNull(jobExecution.getId(), "JobExecution Id cannot be null.");
@@ -155,7 +154,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final StepExecution getStepExecution(JobExecution jobExecution,
          Long stepExecutionId) {
 
@@ -172,7 +170,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final void saveStepExecution(StepExecution stepExecution) {
       Assert
             .isNull(stepExecution.getId(),
@@ -284,7 +281,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final void updateStepExecution(StepExecution stepExecution) {
       // Le nom de la méthode n'est pas super explicite, mais is s'agit
       // d'enregister le stepExecution
@@ -324,7 +320,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
 
    @SuppressWarnings("unchecked")
    @Override
-   /** {@inheritDoc} */
    public final int countStepExecutions(String jobNamePattern, String stepNamePattern) {
       ColumnFamilyResult<String, Long> result = jobStepsTemplate.queryColumns(JOB_STEPS_KEY);
       CompositeSerializer cSlz = CompositeSerializer.get();
@@ -347,7 +342,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
 
    @SuppressWarnings("unchecked")
    @Override
-   /** {@inheritDoc} */
    public final Collection<StepExecution> findStepExecutions(String jobNamePattern,
          String stepNamePattern, int start, int count) {
       
@@ -387,7 +381,6 @@ public class CassandraStepExecutionDao extends AbstractCassandraDAO implements
 
    @SuppressWarnings("unchecked")
    @Override
-   /** {@inheritDoc} */
    public final Collection<String> findStepNamesForJobExecution(String jobName,
          String excludesPattern) {
       CompositeSerializer cSlz = CompositeSerializer.get();

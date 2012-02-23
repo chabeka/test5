@@ -21,51 +21,54 @@ public class CassandraExecutionContextDao extends AbstractCassandraDAO
 
    /**
     * Constructeur
-    * @param keyspace : keyspace cassandra 
+    * 
+    * @param keyspace
+    *           : keyspace cassandra
     */
    public CassandraExecutionContextDao(Keyspace keyspace) {
       super(keyspace);
    }
 
    @Override
-   /** {@inheritDoc} */
    public final ExecutionContext getExecutionContext(JobExecution jobExecution) {
-      // Dans l'implémentation cassandra, le contexte est désérialisé en même
-      // temps que
-      // les autres propriétés du jobExecution.
-      return jobExecution.getExecutionContext();
+      if (jobExecution == null) {
+         // Le simpleJobRepository appelle cette méthode avec un jobExecution
+         // null dans
+         // le cas d'une instance qui n'a pas d'exécution associée.
+         // Dans ce cas, on renvoie un contexte vide.
+         return new ExecutionContext();
+      } else {
+         // Dans l'implémentation cassandra, le contexte est désérialisé en même
+         // temps que les autres propriétés du jobExecution.
+         return jobExecution.getExecutionContext();
+      }
    }
 
    @Override
-   /** {@inheritDoc} */
    public final ExecutionContext getExecutionContext(StepExecution stepExecution) {
       // Dans l'implémentation cassandra, le contexte est désérialisé en même
-      // temps que
-      // les autres propriétés du stepExecution.
+      // temps que les autres propriétés du stepExecution.
       return stepExecution.getExecutionContext();
    }
 
-   /** {@inheritDoc} */
+   @Override
    public void saveExecutionContext(JobExecution jobExecution) {
       // Dans l'implémentation cassandra, le contexte est sérialisé en même
-      // temps que
-      // les autres propriétés du jobExecution.
+      // temps que les autres propriétés du jobExecution.
       // Donc on ne fait rien de plus.
    }
 
-   /** {@inheritDoc} */
+   @Override
    public void saveExecutionContext(StepExecution stepExecution) {
       // Dans l'implémentation cassandra, le contexte est sérialisé en même
-      // temps que
-      // les autres propriétés du stepExecution.
+      // temps que les autres propriétés du stepExecution.
       // Donc on ne fait rien de plus.
    }
 
-   /** {@inheritDoc} */
+   @Override
    public void updateExecutionContext(JobExecution jobExecution) {
       // Dans l'implémentation cassandra, le contexte est sérialisé en même
-      // temps que
-      // les autres propriétés du jobExecution.
+      // temps que les autres propriétés du jobExecution.
       // Donc on ne fait rien de plus.
 
       // Sinon, on pourrait faire :
@@ -79,11 +82,10 @@ public class CassandraExecutionContextDao extends AbstractCassandraDAO
        */
    }
 
-   /** {@inheritDoc} */
+   @Override
    public void updateExecutionContext(StepExecution stepExecution) {
       // Dans l'implémentation cassandra, le contexte est sérialisé en même
-      // temps que
-      // les autres propriétés du stepExecution.
+      // temps que les autres propriétés du stepExecution.
       // Donc on ne fait rien de plus.
 
    }

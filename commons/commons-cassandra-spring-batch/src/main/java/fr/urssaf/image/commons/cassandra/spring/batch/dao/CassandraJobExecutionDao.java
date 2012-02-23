@@ -49,7 +49,7 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
       this.idGenerator = idGenerator;
    }
 
-   /** {@inheritDoc} */
+   @Override
    public final List<JobExecution> findJobExecutions(JobInstance jobInstance) {
       Assert.notNull(jobInstance, "Job cannot be null.");
       Assert.notNull(jobInstance.getId(), "Job Id cannot be null.");
@@ -194,7 +194,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final Set<JobExecution> findRunningJobExecutions(String jobName) {
       final Set<JobExecution> set = new HashSet<JobExecution>();
 
@@ -218,7 +217,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final JobExecution getJobExecution(Long executionId) {
       Assert.notNull(executionId, "executionId cannot be null.");
       ColumnFamilyResult<Long, String> result = jobExecutionTemplate
@@ -227,7 +225,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final JobExecution getLastJobExecution(JobInstance jobInstance) {
 
       // Récupération dans jobExecutions, de l'executionId le plus grand
@@ -245,7 +242,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
 
 
    @Override
-   /** {@inheritDoc} */
    public final void saveJobExecution(JobExecution jobExecution) {
       validateJobExecution(jobExecution);
       jobExecution.incrementVersion();
@@ -339,7 +335,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final void synchronizeStatus(JobExecution jobExecution) {
       // On lit le status et la version dans cassandra
       ColumnFamilyResult<Long, String> result = jobExecutionTemplate
@@ -354,7 +349,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final void updateJobExecution(JobExecution jobExecution) {
       // Le nom de la méthode n'est pas super explicite, mais is s'agit
       // d'enregister le jobExecution
@@ -376,13 +370,11 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final int countJobExecutions() {
       return jobExecutionsTemplate.countColumns(ALL_JOBS_KEY);
    }
 
    @Override
-   /** {@inheritDoc} */
    public final int countJobExecutions(String jobName) {
       return jobExecutionsTemplate.countColumns(jobName);
    }
@@ -400,7 +392,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
 
 
    @Override
-   /** {@inheritDoc} */
    public final List<JobExecution> getJobExecutions(String jobName, int start,
          int count) {
       // Récupération des id, par ordre décroissant
@@ -422,7 +413,6 @@ public class CassandraJobExecutionDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final Collection<JobExecution> getRunningJobExecutions() {
       // Récupération des id, par ordre décroissant
       HSlicePredicate<Long> predicate = new HSlicePredicate<Long>(LongSerializer.get());

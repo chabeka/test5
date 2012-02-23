@@ -20,10 +20,6 @@
             <ruleset>Type Resolution Rules</ruleset>
         </rule>
         <rule>
-            <name>IfStmtsMustUseBraces</name>
-            <ruleset>Braces Rules</ruleset>
-        </rule>
-        <rule>
             <name>WhileLoopsMustUseBraces</name>
             <ruleset>Braces Rules</ruleset>
         </rule>
@@ -669,10 +665,6 @@
         </rule>
         <rule>
             <name>NullAssignment</name>
-            <ruleset>Controversial Rules</ruleset>
-        </rule>
-        <rule>
-            <name>OnlyOneReturn</name>
             <ruleset>Controversial Rules</ruleset>
         </rule>
         <rule>
