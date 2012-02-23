@@ -96,10 +96,16 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
             .createUpdater(instance.getJobName());
       updater2.setByteArray(instance.getId(), new byte[0]);
 
+      // Pour le moment, l'instance n'est pas réservée
+      ColumnFamilyUpdater<String, Long> updater3 = jobInstancesByNameTemplate
+            .createUpdater(UNRESERVED_KEY);
+      updater3.setByteArray(instance.getId(), new byte[0]);
+      
       try {
          // On écrit dans cassandra
          jobInstanceTemplate.update(updater);
          jobInstancesByNameTemplate.update(updater2);
+         jobInstancesByNameTemplate.update(updater3);
       } catch (RuntimeException e) {
          // En cas d'échec, on fait le ménage
          deleteJobInstance(instance.getId(), instance.getJobName());
@@ -168,6 +174,8 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       Mutator<String> mutator2 = HFactory.createMutator(keyspace,
             StringSerializer.get());
       mutator2.addDeletion(jobName, JOBINSTANCES_BY_NAME_CFNAME, instanceId,
+            LongSerializer.get());
+      mutator2.addDeletion(UNRESERVED_KEY, JOBINSTANCES_BY_NAME_CFNAME, instanceId,
             LongSerializer.get());
       mutator2.execute();
    }
@@ -294,6 +302,16 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
          compteur++;
       }
 
+      return getJobInstancesFromIds(jobIds);
+   }
+
+   /**
+    * Récupère une liste d'instances à partir d'une liste d'id.
+    * Les instances sont retournées dans le même ordre que les ids fournis
+    * @param jobIds     id des instances de job
+    * @return           Liste d'instances
+    */
+   private List<JobInstance> getJobInstancesFromIds(Collection<Long> jobIds) {
       // Pour optimiser, on récupère tous les jobs d'un coup dans cassandra
       ColumnFamilyResult<Long, String> result = jobInstanceTemplate
             .queryColumns(jobIds);
@@ -307,7 +325,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       }
       
       // On renvoie les jobInstance dans l'ordre des jobIds
-      List<JobInstance> jobs = new ArrayList<JobInstance>(count);
+      List<JobInstance> jobs = new ArrayList<JobInstance>(jobIds.size());
       for (Long jobId : jobIds) {
          if (map.containsKey(jobId)) {
             jobs.add(map.get(jobId));
@@ -315,7 +333,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       }
       return jobs;
    }
-
+   
    @Override
    /**
     * {@inheritDoc} La liste est limitée à 500 réponses max
@@ -334,7 +352,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
       ArrayList<String> list = new ArrayList<String>();
       for (Row<String, UUID, Long> row : orderedRows) {
          String key = row.getKey();
-         list.add(key);
+         if (!key.equals(UNRESERVED_KEY)) list.add(key);
       }
       return list;
    }
@@ -353,15 +371,27 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
     * @param serverName
     *           Nom du serveur qui réserve le job
     */
-   public void reserveJob(long instanceId, String serverName) {
+   public final void reserveJob(long instanceId, String serverName) {
       Assert.notNull(instanceId, "Job instance id name must not be null.");
       Assert.notNull(serverName,
             "serverName must not be null (but can by empty)");
 
+      // Création du champ "ReservedBy"
       ColumnFamilyUpdater<Long, String> updater = jobInstanceTemplate
             .createUpdater(instanceId);
       updater.setString(JI_RESERVED_BY, serverName);
       jobInstanceTemplate.update(updater);
+
+      if (serverName.isEmpty()) {
+         // On ajoute l'instance de la liste des jobs non réservés
+         ColumnFamilyUpdater<String, Long> jibnUpdater = jobInstancesByNameTemplate
+         .createUpdater(UNRESERVED_KEY);
+         jibnUpdater.setByteArray(instanceId, new byte[0]);
+         jobInstancesByNameTemplate.update(jibnUpdater);
+      } else {
+         // On enlève l'instance de la liste des jobs non réservés
+         jobInstancesByNameTemplate.deleteColumn(UNRESERVED_KEY, instanceId);
+      }
    }
 
    /**
@@ -372,7 +402,7 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
     * @return Nom du serveur qui réserve l'instance de job, ou vide si aucun serveur
     *         ne réserve le job, ou null si l'instance n'existe pas
     */
-   public String getReservingServer(long instanceId) {
+   public final String getReservingServer(long instanceId) {
       Assert.notNull(instanceId, "Job instance id name must not be null.");
       ColumnFamilyResult<Long, String> result = jobInstanceTemplate
             .queryColumns(instanceId);
@@ -385,5 +415,16 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
          serverName = "";
       return serverName;
    }
+
+   /**
+    * Renvoie la liste des jobs non réservés
+    * @return  Liste des jobs non réservés
+    */
+   public final List<JobInstance> getUnreservedJobInstances() {
+      ColumnFamilyResult<String, Long> result = jobInstancesByNameTemplate.queryColumns(UNRESERVED_KEY);
+      Collection<Long> jobIds = result.getColumnNames();
+      return getJobInstancesFromIds(jobIds);
+   }
+
    
 }

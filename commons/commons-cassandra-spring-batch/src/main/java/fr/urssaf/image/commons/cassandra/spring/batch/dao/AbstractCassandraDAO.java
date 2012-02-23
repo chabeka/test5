@@ -80,6 +80,10 @@ public class AbstractCassandraDAO {
    // Clés constantes
    protected static final String ALL_JOBS_KEY = "_all";
    protected static final String JOB_STEPS_KEY = "jobSteps";
+   protected static final String UNRESERVED_KEY = "_unreserved";
+   
+   // Nombre de colonnes retournées par défaut pour les CF d'indexation
+   private static final int DEFAULT_MAX_COLS = 500;
    
    /**
     * Constructeur de la DAO
@@ -96,9 +100,11 @@ public class AbstractCassandraDAO {
       jobInstancesByNameTemplate = new ThriftColumnFamilyTemplate<String, Long>(
             keyspace, JOBINSTANCES_BY_NAME_CFNAME, StringSerializer.get(),
             LongSerializer.get());
+      jobInstancesByNameTemplate.setCount(DEFAULT_MAX_COLS);
       jobInstanceToJobExecutionTemplate = new ThriftColumnFamilyTemplate<Long, Long>(
             keyspace, JOBINSTANCE_TO_JOBEXECUTION_CFNAME, LongSerializer.get(),
             LongSerializer.get());
+      jobInstanceToJobExecutionTemplate.setCount(DEFAULT_MAX_COLS);
       
       jobExecutionTemplate = new ThriftColumnFamilyTemplate<Long, String>(
             keyspace, JOBEXECUTION_CFNAME, LongSerializer.get(),
@@ -106,18 +112,22 @@ public class AbstractCassandraDAO {
       jobExecutionsTemplate = new ThriftColumnFamilyTemplate<String, Long>(
             keyspace, JOBEXECUTIONS_CFNAME, StringSerializer.get(),
             LongSerializer.get());
+      jobExecutionsTemplate.setCount(DEFAULT_MAX_COLS);
       jobExecutionsRunningTemplate = new ThriftColumnFamilyTemplate<String, Long>(
             keyspace, JOBEXECUTIONS_RUNNING_CFNAME, StringSerializer.get(),
             LongSerializer.get());
+      jobExecutionsRunningTemplate.setCount(DEFAULT_MAX_COLS);
       jobExecutionToJobStepTemplate = new ThriftColumnFamilyTemplate<Long, Long>(
             keyspace, JOBEXECUTION_TO_JOBSTEP_CFNAME, LongSerializer.get(),
             LongSerializer.get());
+      jobExecutionToJobStepTemplate.setCount(DEFAULT_MAX_COLS);
       
       jobStepTemplate = new ThriftColumnFamilyTemplate<Long, String>(keyspace,
             JOBSTEP_CFNAME, LongSerializer.get(), StringSerializer.get());
       jobStepsTemplate = new ThriftColumnFamilyTemplate<String, Long>(
             keyspace, JOBSTEPS_CFNAME, StringSerializer.get(),
             LongSerializer.get());
+      jobStepsTemplate.setCount(DEFAULT_MAX_COLS);
    }
 
 }

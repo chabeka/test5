@@ -219,6 +219,46 @@ public class CassandraJobInstanceDoaTest extends
 
    }
    
+   @Test
+   public void testGetUnreservedJobInstances() {
+      // Création de 3 instances supplémentaires, soit 4 instances au total
+      for (int i = 1; i <= 3; i++) {
+         Map<String, JobParameter> map = new HashMap<String, JobParameter>();
+         map.put("index", new JobParameter((long) i));
+         JobParameters parameters = new JobParameters(map);
+         jobInstanceDao.createJobInstance(MY_JOB_NAME, parameters);
+      }
+      // Aucune instance n'est pour le moment réservée
+      List<JobInstance> list = jobInstanceDao.getUnreservedJobInstances();
+      Assert.assertEquals(4, list.size());
+      // On vérifie qu'on a les instances dans le bon ordre
+      for (int i=0; i < 4; i++) {
+         Assert.assertEquals(i, list.get(i).getJobParameters().getLong("index"));
+      }
+      
+      // On réserve puis on dé-réserve l'instance 1
+      jobInstanceDao.reserveJob(1, "myServer");
+      jobInstanceDao.reserveJob(1, "");
+      // On réserve l'instance 2
+      jobInstanceDao.reserveJob(2, "myServer");
+
+      // On vérifie qu'on n'a que 3 instances non réservées 
+      list = jobInstanceDao.getUnreservedJobInstances();
+      Assert.assertEquals(3, list.size());
+      // et que l'instance n°2 n'apparait pas dans la liste
+      for (JobInstance jobInstance : list) {
+         Assert.assertTrue(jobInstance.getId() != 2);
+      }
+      
+      // On réserve tous les jobs
+      for (int i = 1; i <= 4; i++) {
+         jobInstanceDao.reserveJob(i, "myServer");
+      }
+      list = jobInstanceDao.getUnreservedJobInstances();
+      Assert.assertEquals(0, list.size());
+      
+   }
+   
    private JobParameters getTestJobParameters() {
       Map<String, JobParameter> mapJobParameters = new HashMap<String, JobParameter>();
       mapJobParameters.put("index", new JobParameter(0L));
