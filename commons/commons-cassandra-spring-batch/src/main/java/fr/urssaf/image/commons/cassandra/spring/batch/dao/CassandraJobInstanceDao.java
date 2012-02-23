@@ -49,7 +49,6 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final JobInstance createJobInstance(String jobName,
          JobParameters jobParameters) {
       Assert.notNull(jobName, "Job name must not be null.");
@@ -174,7 +173,6 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final JobInstance getJobInstance(Long instanceId) {
       ColumnFamilyResult<Long, String> result = jobInstanceTemplate
             .queryColumns(instanceId);
@@ -209,7 +207,6 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final JobInstance getJobInstance(JobExecution jobExecution) {
       // Récupération de l'id de l'instance à partir de l'id de l'exécution
       long instanceId = jobExecutionTemplate.querySingleColumn(
@@ -220,7 +217,6 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final JobInstance getJobInstance(String jobName, JobParameters jobParameters) {
       Assert.notNull(jobName, "Job name must not be null.");
       Assert.notNull(jobParameters, "JobParameters must not be null.");
@@ -274,7 +270,6 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final List<JobInstance> getJobInstances(String jobName, int start, int count) {
       // On se sert de JobInstancesByName, dont la clé est jobName, pour
       // récupérer les id des jobInstances
@@ -345,9 +340,50 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    }
 
    @Override
-   /** {@inheritDoc} */
    public final int countJobInstances(String name) {
       return jobInstancesByNameTemplate.countColumns(name);
    }
 
+   /**
+    * Réserve un job, c'est à dire inscrit un nom de serveur dans la colonne
+    * "reservedBy" de l'instance de job
+    * 
+    * @param instanceId
+    *           Id de l'instance de job à réserver
+    * @param serverName
+    *           Nom du serveur qui réserve le job
+    */
+   public void reserveJob(long instanceId, String serverName) {
+      Assert.notNull(instanceId, "Job instance id name must not be null.");
+      Assert.notNull(serverName,
+            "serverName must not be null (but can by empty)");
+
+      ColumnFamilyUpdater<Long, String> updater = jobInstanceTemplate
+            .createUpdater(instanceId);
+      updater.setString(JI_RESERVED_BY, serverName);
+      jobInstanceTemplate.update(updater);
+   }
+
+   /**
+    * Renvoie le nom du serveur qui réserve l'instance de job
+    * 
+    * @param instanceId
+    *           Id de l'instance
+    * @return Nom du serveur qui réserve l'instance de job, ou vide si aucun serveur
+    *         ne réserve le job, ou null si l'instance n'existe pas
+    */
+   public String getReservingServer(long instanceId) {
+      Assert.notNull(instanceId, "Job instance id name must not be null.");
+      ColumnFamilyResult<Long, String> result = jobInstanceTemplate
+            .queryColumns(instanceId);
+
+      if (result == null || !result.hasResults()) {
+         return null;
+      }
+      String serverName = result.getString(JI_RESERVED_BY);
+      if (serverName == null)
+         serverName = "";
+      return serverName;
+   }
+   
 }

@@ -196,6 +196,29 @@ public class CassandraJobInstanceDoaTest extends
       Assert.assertEquals(4, jobInstanceDao.countJobInstances(MY_JOB_NAME));
    }
 
+   @Test
+   public void testReserveJob() {
+      JobInstance jobInstance = jobInstanceDao.getJobInstance(MY_JOB_NAME,
+            myJobParameters);
+      long instanceId = jobInstance.getId();
+      String server = jobInstanceDao.getReservingServer(instanceId);
+      Assert.assertEquals("", server);
+      
+      jobInstanceDao.reserveJob(instanceId, "serveur.domain.com");
+      server = jobInstanceDao.getReservingServer(instanceId);
+      Assert.assertEquals("serveur.domain.com", server);
+      
+      // On "dé-réserve" le job
+      jobInstanceDao.reserveJob(instanceId, "");
+      server = jobInstanceDao.getReservingServer(instanceId);
+      Assert.assertEquals("", server);
+
+      long nonExistentId = 4654654L;
+      server = jobInstanceDao.getReservingServer(nonExistentId);
+      Assert.assertNull(server);
+
+   }
+   
    private JobParameters getTestJobParameters() {
       Map<String, JobParameter> mapJobParameters = new HashMap<String, JobParameter>();
       mapJobParameters.put("index", new JobParameter(0L));
