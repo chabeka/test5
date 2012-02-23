@@ -7,41 +7,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/projets/java/maven_repository/com/netflix/curator/curator-framework/1.1.2/curator-framework-1.1.2.jar" sourcepath="c:/projets/java/maven_repository/com/netflix/curator/curator-framework/1.1.2/curator-framework-1.1.2-sources.jar">
-		<attributes>
-			<attribute name="maven.groupId" value="com.netflix.curator"/>
-			<attribute name="maven.artifactId" value="curator-framework"/>
-			<attribute name="maven.version" value="1.1.2"/>
-			<attribute name="maven.scope" value="compile"/>
-			<attribute name="javadoc_location" value="jar:file:/c:/projets/java/maven_repository/com/netflix/curator/curator-framework/1.1.2/curator-framework-1.1.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/projets/java/maven_repository/com/netflix/curator/curator-recipes/1.1.2/curator-recipes-1.1.2.jar" sourcepath="c:/projets/java/maven_repository/com/netflix/curator/curator-recipes/1.1.2/curator-recipes-1.1.2-sources.jar">
-		<attributes>
-			<attribute name="maven.groupId" value="com.netflix.curator"/>
-			<attribute name="maven.artifactId" value="curator-recipes"/>
-			<attribute name="maven.version" value="1.1.2"/>
-			<attribute name="maven.scope" value="compile"/>
-			<attribute name="javadoc_location" value="jar:file:/c:/projets/java/maven_repository/com/netflix/curator/curator-recipes/1.1.2/curator-recipes-1.1.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/projets/java/maven_repository/com/netflix/curator/curator-test/1.1.2/curator-test-1.1.2.jar" sourcepath="c:/projets/java/maven_repository/com/netflix/curator/curator-test/1.1.2/curator-test-1.1.2-sources.jar">
-		<attributes>
-			<attribute name="maven.groupId" value="com.netflix.curator"/>
-			<attribute name="maven.artifactId" value="curator-test"/>
-			<attribute name="maven.version" value="1.1.2"/>
-			<attribute name="maven.scope" value="compile"/>
-			<attribute name="javadoc_location" value="jar:file:/c:/projets/java/maven_repository/com/netflix/curator/curator-test/1.1.2/curator-test-1.1.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/projets/java/maven_repository/com/netflix/curator/curator-client/1.1.2/curator-client-1.1.2.jar" sourcepath="c:/projets/java/maven_repository/com/netflix/curator/curator-client/1.1.2/curator-client-1.1.2-sources.jar">
-		<attributes>
-			<attribute name="maven.groupId" value="com.netflix.curator"/>
-			<attribute name="maven.artifactId" value="curator-client"/>
-			<attribute name="maven.version" value="1.1.2"/>
-			<attribute name="maven.scope" value="compile"/>
-			<attribute name="javadoc_location" value="jar:file:/c:/projets/java/maven_repository/com/netflix/curator/curator-client/1.1.2/curator-client-1.1.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
