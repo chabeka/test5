@@ -78,6 +78,7 @@ public class DumpTest
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint9.cer69.recouv:9160" ));
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("10.203.34.39:9160" )); //noufnouf
 		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69givnsaecas1.cer69.recouv:9160,hwi69givnsaecas2.cer69.recouv:9160" ));
+		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69-saeint1.cer69.recouv:9160" ));
 		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69devsaecas1.cer69.recouv:9160,hwi69devsaecas2.cer69.recouv:9160" ));
 
 		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl, FailoverPolicy.ON_FAIL_TRY_ALL_AVAILABLE, credentials);
@@ -395,7 +396,7 @@ public class DumpTest
 	}
 	@Test
 	public void testDumpLifeCycleRules() throws Exception {
-		dumper.dumpCF("LifeCycleRules", 15);
+		dumper.dumpCF("LifeCycleRules", 2000);
 	}
 
 	@Test
