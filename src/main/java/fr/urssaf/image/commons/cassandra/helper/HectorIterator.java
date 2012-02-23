@@ -10,8 +10,8 @@ import me.prettyprint.cassandra.service.template.ColumnFamilyResult;
  * En effet, ColumnFamilyResultWrapper se positionne automatiquement sur le 1er élément,
  * ce qui empêche de parcourir l'itérateur de manière standard.
  * 
- * @param <K>  type de la clé
- * @param <N>  type de la valeur de la colonne
+ *    <K>  type de la clé
+ *    <N>  type de la valeur de la colonne
  */
 public class HectorIterator<K,N> implements Iterator<ColumnFamilyResult<K,N>>, Iterable<ColumnFamilyResult<K,N>> {
 
@@ -20,6 +20,8 @@ public class HectorIterator<K,N> implements Iterator<ColumnFamilyResult<K,N>>, I
 
    /**
     * Crée un itérateur itérable de manière standard
+    *    <K>  type de la clé
+    *    <N>  type de la valeur de la colonne
     * @param result  résultat obtenu par une requête hector via un template
     */
    public HectorIterator(ColumnFamilyResult<K,N> result) {
@@ -27,7 +29,6 @@ public class HectorIterator<K,N> implements Iterator<ColumnFamilyResult<K,N>>, I
    }
    
    @Override
-   /** {@inheritDoc} */
    public final boolean hasNext() {
       if (firstIteration) {
          return result.hasResults();
@@ -38,7 +39,6 @@ public class HectorIterator<K,N> implements Iterator<ColumnFamilyResult<K,N>>, I
    }
 
    @Override
-   /** {@inheritDoc} */
    public final ColumnFamilyResult<K, N> next() {
       if (firstIteration) {
          firstIteration = false;
@@ -50,13 +50,11 @@ public class HectorIterator<K,N> implements Iterator<ColumnFamilyResult<K,N>>, I
    }
 
    @Override
-   /** {@inheritDoc} */
    public final void remove() {
       result.remove();
    }
 
    @Override
-   /** {@inheritDoc} */
    public final Iterator<ColumnFamilyResult<K, N>> iterator() {
       return this;
    }
