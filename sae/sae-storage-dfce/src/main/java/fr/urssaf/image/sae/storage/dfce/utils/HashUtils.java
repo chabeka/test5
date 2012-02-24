@@ -33,6 +33,8 @@ public final class HashUtils {
     *           un tableau de byte
     * @param digestAlgo
     *           algorithme de hachage, doit être renseigné
+    *           
+    * @return string          
     * @throws NoSuchAlgorithmException
     *            l'algorithme de hachage n'est pas prise en compte
     */

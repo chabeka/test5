@@ -3,11 +3,14 @@ package fr.urssaf.image.sae.services.capture.validation;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.util.CollectionUtils;
 
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
+import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 
 /**
@@ -21,6 +24,9 @@ public class SAECaptureServiceValidation {
 
    private static final String CAPTURE_METHOD = "execution(java.util.UUID fr.urssaf.image.sae.services.capture.SAECaptureService.capture(*,*))"
          + "&& args(metadatas,ecdeURL)";
+   
+   private static final String CAPTURE_BINAIRE_METHOD = "execution(java.util.UUID fr.urssaf.image.sae.services.capture.SAECaptureService.captureBinaire(*,*,*))"
+      + "&& args(metadatas, content, fileName)";
 
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la
@@ -46,4 +52,38 @@ public class SAECaptureServiceValidation {
       }
 
    }
+   
+   /**
+    * Methode permettant de venir verifier si les paramétres d'entree de la
+    * methode captureBinaire de l'interface SAECaptureService sont bien correct.
+    * 
+    * @param metadatas
+    *           liste des métadonnées à archiver doit non vide
+    * @param content
+    *           contenu du fichier numérique à archiver doit non null
+    * @param fileName
+    *           nom du fichier numérique à archiver doit non null
+    * @throws EmptyDocumentEx 
+    * @throws EmptyFileNameEx 
+    */
+   @Before(CAPTURE_BINAIRE_METHOD)
+   public final void captureBinaire(List<UntypedMetadata> metadatas, byte[] content, String fileName) throws EmptyDocumentEx, EmptyFileNameEx {
+
+      if (StringUtils.isBlank(fileName)) {
+         throw new EmptyFileNameEx(ResourceMessagesUtils.loadMessage(
+               "nomfichier.vide"));
+      }
+      
+      if (content == null || content.length == 0) {
+         throw new EmptyDocumentEx(ResourceMessagesUtils.loadMessage(
+               "capture.fichier.binaire.vide"));
+      }
+
+      if (CollectionUtils.isEmpty(metadatas)) {
+         throw new IllegalArgumentException(ResourceMessagesUtils.loadMessage(
+               "argument.required", "metadatas"));
+      }
+
+   }
+   
 }

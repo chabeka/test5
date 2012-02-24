@@ -69,4 +69,14 @@ public interface InsertionService {
 	 * @param indicator
 	 */
 	void setJmxIndicator(final JmxIndicator indicator);
+	
+	/**
+	 * Permet d'insérer en base un document unique fourni sous forme de contenu binaire
+	 * 
+	 * @param le storageDocument a persister
+	 * 
+	 * @return le document persisté
+	 * @throws InsertionServiceEx levée lorsque l'insertion d'un document ne se déroule pas bien
+	 */
+	StorageDocument insertBinaryStorageDocument(StorageDocument storageDoc) throws InsertionServiceEx;
 }

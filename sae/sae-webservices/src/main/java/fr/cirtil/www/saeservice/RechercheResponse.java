@@ -13,7 +13,9 @@
             *  RechercheResponse bean class
             */
         
-        public  class RechercheResponse
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class RechercheResponse
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

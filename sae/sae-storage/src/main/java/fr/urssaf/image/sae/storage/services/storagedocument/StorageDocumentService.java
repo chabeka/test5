@@ -43,6 +43,21 @@ public interface StorageDocumentService {
 	 */
 	StorageDocument insertStorageDocument(final StorageDocument storageDocument)
 			throws InsertionServiceEx;
+	
+	/**
+    * Permet d'insérer un document unique avec piece jointe
+    * 
+    * @param storageDocument
+    *            : Le document à stocker
+    * 
+    * @return Le document
+    * 
+    * @throws InsertionServiceEx
+    *             Exception lévée lorsque l'insertion d'un document ne se
+    *             déroule pas bien.
+    */
+   StorageDocument insertBinaryStorageDocument(final StorageDocument storageDocument)
+         throws InsertionServiceEx;
 
 	/**
 	 * Permet de réaliser une insertion en masse de documents

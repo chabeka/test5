@@ -1,7 +1,10 @@
 package fr.urssaf.image.sae.services.capture;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -27,6 +30,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +46,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
@@ -313,4 +318,138 @@ public class SAECaptureServiceTest {
             criterion.getWord());
 
    }
+   
+   
+   
+   /**************************************************************************************/
+   /**************************************************************************************/
+   /***************************CAPTURE UNITAIRE AVEC PJ
+    * @throws IOException 
+    * @throws FileNotFoundException ***********************************/
+   
+   private List<UntypedMetadata> getListMetadata() throws FileNotFoundException, IOException {
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
+      // liste des métadonnées obligatoires
+      metadatas.add(new UntypedMetadata("ApplicationProductrice", "ADELAIDE"));
+      metadatas.add(new UntypedMetadata("CodeOrganismeProprietaire", "CER69"));
+      metadatas.add(new UntypedMetadata("CodeOrganismeGestionnaire", "UR750"));
+      metadatas.add(new UntypedMetadata("FormatFichier", "fmt/1354"));
+      metadatas.add(new UntypedMetadata("NbPages", "2"));
+      metadatas.add(new UntypedMetadata("DateCreation", "2012-01-01"));
+      metadatas.add(new UntypedMetadata("TypeHash", "SHA-1"));
+      
+      metadatas.add(new UntypedMetadata("CodeRND", "2.3.1.1.12"));
+      metadatas.add(new UntypedMetadata("Titre", "Attestation de vigilance"));
+
+      // liste des métadonnées non obligatoires
+      metadatas.add(new UntypedMetadata("DateReception", "1999-11-25"));
+      metadatas.add(new UntypedMetadata("DateDebutConservation", "2011-09-02"));
+      
+      return metadatas;
+   }
+   
+   
+   @Test(expected = EmptyDocumentEx.class)
+   public void captureBinaireContentNull() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException,EmptyFileNameEx {
+      
+      File srcFile = new File(
+      "src/test/resources/doc/attestation_consultation.pdf");
+      List<UntypedMetadata> metadatas = getListMetadata();
+      String hash = DigestUtils.shaHex(new FileInputStream(srcFile));
+      metadatas.add(new UntypedMetadata("Hash", hash));
+      
+      
+      String fileName = "Test fichier contenu vide";
+      
+      service.captureBinaire(metadatas, null, fileName);
+      
+      fail("Le message d'erreur : Le contenu du fichier à archiver est vide.");
+   }
+   
+   @Test(expected = EmptyFileNameEx.class)
+   public void captureBinaireFileNameEmpty() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException,EmptyFileNameEx {
+      
+      File srcFile = new File(
+      "src/test/resources/doc/attestation_consultation.pdf");
+      List<UntypedMetadata> metadatas = getListMetadata();
+      String hash = DigestUtils.shaHex(new FileInputStream(srcFile));
+      metadatas.add(new UntypedMetadata("Hash", hash));
+      
+      String fileNameEmpty = null;
+      byte[] content = new byte[16384];
+      service.captureBinaire(metadatas, content, fileNameEmpty);
+      
+      fail("Le message d'erreur : Le nom du fichier est vide.");
+   }
+   
+   @Test(expected = EmptyFileNameEx.class)
+   public void captureBinaireFileNameSpace() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException,EmptyFileNameEx {
+      
+      File srcFile = new File(
+      "src/test/resources/doc/attestation_consultation.pdf");
+      List<UntypedMetadata> metadatas = getListMetadata();
+      String hash = DigestUtils.shaHex(new FileInputStream(srcFile));
+      metadatas.add(new UntypedMetadata("Hash", hash));
+      
+      String fileNameEmpty = "          ";
+      byte[] content = new byte[16384];
+      service.captureBinaire(metadatas, content, fileNameEmpty);
+      
+      fail("Le message d'erreur : Le nom du fichier est vide.");
+   }
+   
+   @Test
+   @Ignore("Il manque un contrôle sur les extensions, communs à la capture unitaire et la capture de masse")
+   public void captureBinaireFileNameNotExtension() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException,EmptyFileNameEx {
+      
+      List<UntypedMetadata> metadatas = getListMetadata();
+      
+      String fileNameEmpty = "NomSansExtension";
+      byte[] content = new byte[16384];
+      String hash = DigestUtils.shaHex(content);
+      metadatas.add(new UntypedMetadata("Hash", hash));
+      //metadatas.add(new UntypedMetadata("NomFichier", fileNameEmpty));
+      service.captureBinaire(metadatas, content, fileNameEmpty);
+      
+   }
+   
+   @Test
+   public void captureBinaireFileSuccess() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException,EmptyFileNameEx {
+      
+      List<UntypedMetadata> metadatas = getListMetadata();
+      
+      String fileNameEmpty = "NomExtension.pdf";
+      byte[] content = new byte[16];
+      String hash = DigestUtils.shaHex(content);
+      metadatas.add(new UntypedMetadata("Hash", hash));
+      //metadatas.add(new UntypedMetadata("NomFichier", fileNameEmpty));
+      service.captureBinaire(metadatas, content, fileNameEmpty);
+      
+   }
+   
 }

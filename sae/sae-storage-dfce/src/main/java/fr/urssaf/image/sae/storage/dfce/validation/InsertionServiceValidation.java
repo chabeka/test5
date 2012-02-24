@@ -40,6 +40,25 @@ public class InsertionServiceValidation {
 //            CODE_ERROR, "insertion.document.required", "insertion.impact",
 //            "insertion.action"));
    }
+   
+   
+   /**
+    * Valide l'argument de la méthode
+    * {@link fr.urssaf.image.sae.storage.dfce.services.impl.storagedocument.InsertionServiceImpl#insertBinaryStorageDocument(StorageDocument)
+    * insertBinaryStorageDocument}
+    * 
+    * @param storageDocument
+    *           : Le document à insérer.
+    */
+   @Before(value = "execution( fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument  fr.urssaf.image.sae.storage.services.storagedocument..InsertionService.insertBinaryStorageDocument(..)) && @annotation(fr.urssaf.image.sae.storage.dfce.annotations.ServiceChecked) && args(storageDocument)")
+   public final void insertBinaryStorageDocumentValidation(
+         final StorageDocument storageDocument) {
+      // ici on valide que le document n'est pas null
+      Validate.notNull(storageDocument, StorageMessageHandler.getMessage(CODE_ERROR,
+            "insertion.document.required", "insertion.impact",
+            "insertion.action"));
+   }
+   
 
    /**
     * Valide l'argument de la méthode

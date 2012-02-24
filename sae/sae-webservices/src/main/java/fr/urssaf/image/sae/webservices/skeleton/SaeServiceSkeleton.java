@@ -25,11 +25,14 @@ import org.springframework.util.Assert;
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
+import fr.cirtil.www.saeservice.ArchivageUnitairePJ;
+import fr.cirtil.www.saeservice.ArchivageUnitairePJResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.Consultation;
 import fr.cirtil.www.saeservice.ConsultationMTOM;
 import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
 import fr.cirtil.www.saeservice.ConsultationResponse;
+import fr.cirtil.www.saeservice.EcdeUrlType;
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
 import fr.cirtil.www.saeservice.PingSecureRequest;
@@ -46,6 +49,7 @@ import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
+import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
 /**
@@ -200,7 +204,82 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          throw ex;
       } 
    }
-
+   
+   /**
+    * {@inheritDoc}
+    * 
+    * @throws CaptureAxisFault
+    */
+   @Override
+   public final ArchivageUnitairePJResponse archivageUnitairePJSecure(
+         ArchivageUnitairePJ request) throws AxisFault {
+      
+      // si l'appel a été réalisé avec une urlEcde alors appel de la capture unitaire sans PJ
+      // si l'appel a été réalisé avec un contenu et un nom de fichier alors appel archivageUnitairePJ
+      ArchivageUnitairePJResponse response = null;
+      EcdeUrlType ecdeUrlType = request.getArchivageUnitairePJ().getArchivageUnitairePJRequestTypeChoice_type0().getEcdeUrl();
+      if (ecdeUrlType != null)  {
+            // conversion objet archivageUnitairePJ en archivageUnitaire
+            ArchivageUnitaire archivageUnitaire = ObjectArchivageUnitaireFactory.convertToArchivageUnitaire(request);
+            
+            // conversion objet archivageUnitaireResponse en archivageUnitairePJResponse
+            // aprés appel de la capture unitaire sans PJ
+            ArchivageUnitaireResponse archivageUnitaireResponse = this.archivageUnitaireSecure(archivageUnitaire);
+            
+            response = ObjectArchivageUnitaireFactory.convertToArchivageUnitairePJResponse(archivageUnitaireResponse); 
+      }      
+      else {
+            response = archivageUnitairePJ(request);
+      }   
+      
+      return response;
+   }
+   
+   private final ArchivageUnitairePJResponse archivageUnitairePJ(
+         ArchivageUnitairePJ request) throws AxisFault {
+      
+      // Mise en place du contexte pour les traces
+      try {
+         // Traces debug - entrée méthode
+         String prefixeTrc = "Opération archivageUnitairePJSecure()";
+         LOG.debug("{} - Début", prefixeTrc);
+         boolean dfceUp = dfceInfoService.isDfceUp();
+         if (!dfceUp) {
+            LOG.debug("{} - Sortie", prefixeTrc);
+            
+            setCodeHttp412();
+            
+            throw new CaptureAxisFault(STOCKAGE_INDISPO,
+                                       MessageRessourcesUtils.recupererMessage(
+                                                            MES_STOCKAGE, null));
+         } else {
+            
+            // Fin des traces debug - entrée méthode
+            ArchivageUnitairePJResponse response = capture
+                  .archivageUnitairePJ(request);
+            // Nettoyage du contexte pour les logs
+            //clearLogContext();
+            // Traces debug - sortie méthode
+            if (response != null
+                  && response.getArchivageUnitairePJResponse() != null) {
+               LOG.debug("{} - Valeur de retour : \"{}\"", prefixeTrc, response
+                     .getArchivageUnitairePJResponse().getIdArchive());
+            } else {
+               LOG.debug("{} - Valeur de retour : null", prefixeTrc);
+            }
+            LOG.debug("{} - Sortie", prefixeTrc);
+            // Fin des traces debug - sortie méthode
+            return response;
+         }   
+      } catch (CaptureAxisFault ex) {
+         logSoapFault(ex);
+         throw ex;
+      } catch (RuntimeException ex) {
+         logRuntimeException(ex);
+         throw ex;
+      }
+   }
+   
    /**
     * {@inheritDoc}
     * 
@@ -398,5 +477,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          }
       }
    }
+
     
 }

@@ -16,7 +16,9 @@ import fr.urssaf.image.sae.services.document.commons.SAECommonCaptureService;
 import fr.urssaf.image.sae.services.enrichment.SAEEnrichmentMetadataService;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
+import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredStorageMetadataEx;
@@ -65,15 +67,63 @@ public class SAECommonCaptureServiceImpl implements SAECommonCaptureService {
       String prefixeTrc = "buildStorageDocumentForCapture()";
       LOGGER.debug("{} - Début", prefixeTrc);
       // Fin des traces debug - entrée méthode
-      SAEDocument saeDocument = null;
-      StorageDocument storageDocument = null;
-      try {
+      
       // on ne contrôle pas la taille du document
          LOGGER
                .debug(
                      "{} - Début des contrôles sur (UntypedDocument et UntypedMetadata)",
                      prefixeTrc);
          controlesService.checkUntypedDocument(untypedDocument);
+       
+      StorageDocument storageDocument = buildStorageDocument(untypedDocument, prefixeTrc);
+         
+      return storageDocument;
+
+   }
+
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final StorageDocument buildBinaryStorageDocumentForCapture(
+         UntypedDocument untypedDocument) throws RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         EmptyFileNameEx, DuplicatedMetadataEx, NotArchivableMetadataEx,
+         EmptyDocumentEx, RequiredArchivableMetadataEx, SAEEnrichmentEx,
+         UnknownHashCodeEx, ReferentialRndException, UnknownCodeRndEx,
+         NotSpecifiableMetadataEx, SAECaptureServiceEx {
+      
+      
+      // Traces debug - entrée méthode
+      String prefixeTrc = "buildBinaryStorageDocumentForCapture()";
+      LOGGER.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      
+      // on ne contrôle pas la taille du document
+         LOGGER
+               .debug(
+                     "{} - Début des contrôles sur (UntypedDocument)",
+                     prefixeTrc);
+         controlesService.checkUntypedBinaryDocument(untypedDocument);
+       
+      StorageDocument storageDocument = buildStorageDocument(untypedDocument, prefixeTrc);
+         
+      return storageDocument;
+   }
+   
+   
+   // Construction du StorageDocument pour la capture
+   private StorageDocument buildStorageDocument(UntypedDocument untypedDocument, String prefixeTrc) 
+                  throws NotSpecifiableMetadataEx, RequiredArchivableMetadataEx, UnknownMetadataEx, 
+                         DuplicatedMetadataEx, InvalidValueTypeAndFormatMetadataEx, SAEEnrichmentEx, 
+                         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx, 
+                         RequiredStorageMetadataEx, SAECaptureServiceEx {
+      
+      SAEDocument saeDocument = null;
+      StorageDocument storageDocument = null;
+      
+      try{
+         
          controlesService.checkUntypedMetadata(untypedDocument);
          LOGGER
                .debug(

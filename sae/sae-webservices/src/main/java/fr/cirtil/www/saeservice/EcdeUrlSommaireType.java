@@ -13,7 +13,9 @@
             *  EcdeUrlSommaireType bean class
             */
         
-        public  class EcdeUrlSommaireType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class EcdeUrlSommaireType
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

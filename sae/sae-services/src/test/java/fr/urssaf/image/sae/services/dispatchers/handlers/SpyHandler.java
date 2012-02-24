@@ -13,19 +13,47 @@ public class SpyHandler extends AbstractExceptionHandler {
    /**
     * Indique si le handler à été appelé
     */
-   public boolean called = false;
+   private boolean called = false;
    
    /**
     * True si le handler suivant doit être appelé, False sinon
     */
-   public boolean callNext = true;
+   private boolean callNext = true;
    
    @Override
-   public <T extends Exception> void handleException(T exception) throws T {
+   public final <T extends Exception> void handleException(T exception) throws T {
       called = true;
       
       if (!callNext) {
          stop();
       }
+   }
+
+   /**
+    * @return the callNext
+    */
+   public final boolean isCallNext() {
+      return callNext;
+   }
+
+   /**
+    * @param callNext the callNext to set
+    */
+   public final void setCallNext(boolean callNext) {
+      this.callNext = callNext;
+   }
+
+   /**
+    * @return the called
+    */
+   public final boolean isCalled() {
+      return called;
+   }
+
+   /**
+    * @param called the called to set
+    */
+   public final void setCalled(boolean called) {
+      this.called = called;
    }
 }

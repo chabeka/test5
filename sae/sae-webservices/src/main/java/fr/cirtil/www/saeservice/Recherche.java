@@ -13,7 +13,9 @@
             *  Recherche bean class
             */
         
-        public  class Recherche
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class Recherche
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

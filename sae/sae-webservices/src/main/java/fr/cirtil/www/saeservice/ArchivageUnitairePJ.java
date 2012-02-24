@@ -1,6 +1,6 @@
 
 /**
- * ArchivageUnitaireRequestType.java
+ * ArchivageUnitairePJ.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
@@ -10,18 +10,19 @@
             
 
             /**
-            *  ArchivageUnitaireRequestType bean class
+            *  ArchivageUnitairePJ bean class
             */
         
 // CHECKSTYLE:OFF
 @SuppressWarnings("all")
-public class ArchivageUnitaireRequestType
+public class ArchivageUnitairePJ
         implements org.apache.axis2.databinding.ADBBean{
-        /* This type was generated from the piece of schema that had
-                name = archivageUnitaireRequestType
-                Namespace URI = http://www.cirtil.fr/saeService
-                Namespace Prefix = ns1
-                */
+        
+                public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
+                "http://www.cirtil.fr/saeService",
+                "archivageUnitairePJ",
+                "ns1");
+
             
 
         private static java.lang.String generatePrefix(java.lang.String namespace) {
@@ -34,60 +35,30 @@ public class ArchivageUnitaireRequestType
         
 
                         /**
-                        * field for EcdeUrl
+                        * field for ArchivageUnitairePJ
                         */
 
                         
-                                    protected fr.cirtil.www.saeservice.EcdeUrlType localEcdeUrl ;
+                                    protected fr.cirtil.www.saeservice.ArchivageUnitairePJRequestType localArchivageUnitairePJ ;
                                 
 
                            /**
                            * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.EcdeUrlType
+                           * @return fr.cirtil.www.saeservice.ArchivageUnitairePJRequestType
                            */
-                           public  fr.cirtil.www.saeservice.EcdeUrlType getEcdeUrl(){
-                               return localEcdeUrl;
+                           public  fr.cirtil.www.saeservice.ArchivageUnitairePJRequestType getArchivageUnitairePJ(){
+                               return localArchivageUnitairePJ;
                            }
 
                            
                         
                             /**
                                * Auto generated setter method
-                               * @param param EcdeUrl
+                               * @param param ArchivageUnitairePJ
                                */
-                               public void setEcdeUrl(fr.cirtil.www.saeservice.EcdeUrlType param){
+                               public void setArchivageUnitairePJ(fr.cirtil.www.saeservice.ArchivageUnitairePJRequestType param){
                             
-                                            this.localEcdeUrl=param;
-                                    
-
-                               }
-                            
-
-                        /**
-                        * field for Metadonnees
-                        */
-
-                        
-                                    protected fr.cirtil.www.saeservice.ListeMetadonneeType localMetadonnees ;
-                                
-
-                           /**
-                           * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.ListeMetadonneeType
-                           */
-                           public  fr.cirtil.www.saeservice.ListeMetadonneeType getMetadonnees(){
-                               return localMetadonnees;
-                           }
-
-                           
-                        
-                            /**
-                               * Auto generated setter method
-                               * @param param Metadonnees
-                               */
-                               public void setMetadonnees(fr.cirtil.www.saeservice.ListeMetadonneeType param){
-                            
-                                            this.localMetadonnees=param;
+                                            this.localArchivageUnitairePJ=param;
                                     
 
                                }
@@ -121,15 +92,15 @@ public class ArchivageUnitaireRequestType
 
 
         
-               org.apache.axiom.om.OMDataSource dataSource =
-                       new org.apache.axis2.databinding.ADBDataSource(this,parentQName){
+                org.apache.axiom.om.OMDataSource dataSource =
+                       new org.apache.axis2.databinding.ADBDataSource(this,MY_QNAME){
 
                  public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       ArchivageUnitaireRequestType.this.serialize(parentQName,factory,xmlWriter);
+                       ArchivageUnitairePJ.this.serialize(MY_QNAME,factory,xmlWriter);
                  }
                };
                return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
-               parentQName,factory,dataSource);
+               MY_QNAME,factory,dataSource);
             
        }
 
@@ -147,63 +118,13 @@ public class ArchivageUnitaireRequestType
             throws javax.xml.stream.XMLStreamException, org.apache.axis2.databinding.ADBException{
             
                 
-
-
-                java.lang.String prefix = null;
-                java.lang.String namespace = null;
+                //We can safely assume an element has only one type associated with it
                 
-
-                    prefix = parentQName.getPrefix();
-                    namespace = parentQName.getNamespaceURI();
-
-                    if ((namespace != null) && (namespace.trim().length() > 0)) {
-                        java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
-                        if (writerPrefix != null) {
-                            xmlWriter.writeStartElement(namespace, parentQName.getLocalPart());
-                        } else {
-                            if (prefix == null) {
-                                prefix = generatePrefix(namespace);
-                            }
-
-                            xmlWriter.writeStartElement(prefix, parentQName.getLocalPart(), namespace);
-                            xmlWriter.writeNamespace(prefix, namespace);
-                            xmlWriter.setPrefix(prefix, namespace);
-                        }
-                    } else {
-                        xmlWriter.writeStartElement(parentQName.getLocalPart());
-                    }
-                
-                  if (serializeType){
-               
-
-                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
-                   if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
-                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           namespacePrefix+":archivageUnitaireRequestType",
-                           xmlWriter);
-                   } else {
-                       writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           "archivageUnitaireRequestType",
-                           xmlWriter);
-                   }
-
-               
-                   }
-               
-                                            if (localEcdeUrl==null){
-                                                 throw new org.apache.axis2.databinding.ADBException("ecdeUrl cannot be null!!");
-                                            }
-                                           localEcdeUrl.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","ecdeUrl"),
-                                               factory,xmlWriter);
-                                        
-                                            if (localMetadonnees==null){
-                                                 throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
-                                            }
-                                           localMetadonnees.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonnees"),
-                                               factory,xmlWriter);
-                                        
-                    xmlWriter.writeEndElement();
-               
+                                 if (localArchivageUnitairePJ==null){
+                                   throw new org.apache.axis2.databinding.ADBException("Property cannot be null!");
+                                 }
+                                 localArchivageUnitairePJ.serialize(MY_QNAME,factory,xmlWriter);
+                            
 
         }
 
@@ -360,32 +281,9 @@ public class ArchivageUnitaireRequestType
 
 
         
-                 java.util.ArrayList elementList = new java.util.ArrayList();
-                 java.util.ArrayList attribList = new java.util.ArrayList();
-
                 
-                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "ecdeUrl"));
-                            
-                            
-                                    if (localEcdeUrl==null){
-                                         throw new org.apache.axis2.databinding.ADBException("ecdeUrl cannot be null!!");
-                                    }
-                                    elementList.add(localEcdeUrl);
-                                
-                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                      "metadonnees"));
-                            
-                            
-                                    if (localMetadonnees==null){
-                                         throw new org.apache.axis2.databinding.ADBException("metadonnees cannot be null!!");
-                                    }
-                                    elementList.add(localMetadonnees);
-                                
-
-                return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(qName, elementList.toArray(), attribList.toArray());
-            
-            
+                //We can safely assume an element has only one type associated with it
+                return localArchivageUnitairePJ.getPullParser(MY_QNAME);
 
         }
 
@@ -406,9 +304,9 @@ public class ArchivageUnitaireRequestType
         * Postcondition: If this object is an element, the reader is positioned at its end element
         *                If this object is a complex type, the reader is positioned at the end element of its outer element
         */
-        public static ArchivageUnitaireRequestType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
-            ArchivageUnitaireRequestType object =
-                new ArchivageUnitaireRequestType();
+        public static ArchivageUnitairePJ parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
+            ArchivageUnitairePJ object =
+                new ArchivageUnitairePJ();
 
             int event;
             java.lang.String nillableValue = null;
@@ -420,32 +318,6 @@ public class ArchivageUnitaireRequestType
                     reader.next();
 
                 
-                if (reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","type")!=null){
-                  java.lang.String fullTypeName = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance",
-                        "type");
-                  if (fullTypeName!=null){
-                    java.lang.String nsPrefix = null;
-                    if (fullTypeName.indexOf(":") > -1){
-                        nsPrefix = fullTypeName.substring(0,fullTypeName.indexOf(":"));
-                    }
-                    nsPrefix = nsPrefix==null?"":nsPrefix;
-
-                    java.lang.String type = fullTypeName.substring(fullTypeName.indexOf(":")+1);
-                    
-                            if (!"archivageUnitaireRequestType".equals(type)){
-                                //find namespace for the prefix
-                                java.lang.String nsUri = reader.getNamespaceContext().getNamespaceURI(nsPrefix);
-                                return (ArchivageUnitaireRequestType)fr.cirtil.www.saeservice.ExtensionMapper.getTypeObject(
-                                     nsUri,type,reader);
-                              }
-                        
-
-                  }
-                
-
-                }
-
-                
 
                 
                 // Note all attributes that were handled. Used to differ normal attributes
@@ -453,49 +325,26 @@ public class ArchivageUnitaireRequestType
                 java.util.Vector handledAttributes = new java.util.Vector();
                 
 
-                 
                     
-                    reader.next();
+                while(!reader.isEndElement()) {
+                    if (reader.isStartElement() ){
                 
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","archivageUnitairePJ").equals(reader.getName())){
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","ecdeUrl").equals(reader.getName())){
-                                
-                                                object.setEcdeUrl(fr.cirtil.www.saeservice.EcdeUrlType.Factory.parse(reader));
-                                              
-                                        reader.next();
-                                    
+                                                object.setArchivageUnitairePJ(fr.cirtil.www.saeservice.ArchivageUnitairePJRequestType.Factory.parse(reader));
+                                            
                               }  // End of if for expected property start element
                                 
-                                else{
-                                    // A start element we are not expecting indicates an invalid parameter was passed
-                                    throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                                }
-                            
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
-                                
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonnees").equals(reader.getName())){
-                                
-                                                object.setMetadonnees(fr.cirtil.www.saeservice.ListeMetadonneeType.Factory.parse(reader));
-                                              
-                                        reader.next();
-                                    
-                              }  // End of if for expected property start element
-                                
-                                else{
-                                    // A start element we are not expecting indicates an invalid parameter was passed
-                                    throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                                }
-                              
-                            while (!reader.isStartElement() && !reader.isEndElement())
+                             else{
+                                        // A start element we are not expecting indicates an invalid parameter was passed
+                                        throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
+                             }
+                          
+                             } else {
                                 reader.next();
-                            
-                                if (reader.isStartElement())
-                                // A start element we are not expecting indicates a trailing invalid property
-                                throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
-                            
+                             }  
+                           }  // end of while loop
+                        
 
 
 

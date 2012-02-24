@@ -19,7 +19,7 @@ import fr.urssaf.image.sae.metadata.utils.Utils;
  * 
  * 
  */
-public class FormatUtils {
+public final class FormatUtils {
    private static final Logger LOGGER = LoggerFactory
          .getLogger(FormatUtils.class);
    public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
@@ -28,7 +28,7 @@ public class FormatUtils {
    /**
     * Formatter la liste des code erreurs.
     * 
-    * @param list
+    * @param listCodeErrors
     * @return Une Chaîne de code erreur.
     */
    public static String formattingDisplayList(List<String> listCodeErrors) {

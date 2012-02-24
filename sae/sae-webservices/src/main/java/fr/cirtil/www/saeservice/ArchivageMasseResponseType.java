@@ -13,7 +13,9 @@
             *  ArchivageMasseResponseType bean class
             */
         
-        public  class ArchivageMasseResponseType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class ArchivageMasseResponseType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = archivageMasseResponseType

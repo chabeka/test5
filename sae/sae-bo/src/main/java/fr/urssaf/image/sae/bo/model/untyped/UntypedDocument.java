@@ -74,6 +74,40 @@ public class UntypedDocument extends AbstractDocument {
    }
 
    /**
+    * Construit un objet de type {@link UntypedDocument}
+    * 
+    * @param content
+    *           : Le contenu du document métier.
+    * @param filePath
+    *           : Le chemin du document métier.F
+    * @param fileName
+    *           : Le nom du fichier.
+    * @param metadatas
+    *           : La liste des métadonnées non typés.
+    */
+   public UntypedDocument(final byte[] content, final String filePath, final String fileName,
+         final List<UntypedMetadata> metadatas) {
+      super(filePath, fileName, content);
+      this.uMetadatas = metadatas;
+   }
+
+   /**
+    * Construit un objet de type {@link UntypedDocument}
+    * 
+    * @param content
+    *           : Le contenu du document métier.
+    * @param fileName
+    *           : Le nom du fichier.
+    * @param metadatas
+    *           : La liste des métadonnées non typés.
+    */
+   public UntypedDocument(final byte[] content, final String fileName,
+         final List<UntypedMetadata> metadatas) {
+      super(fileName, content);
+      this.uMetadatas = metadatas;
+   }
+
+   /**
     * {@inheritDoc}
     */
    // CHECKSTYLE:OFF

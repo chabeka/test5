@@ -13,7 +13,9 @@
             *  RechercheRequestType bean class
             */
         
-        public  class RechercheRequestType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class RechercheRequestType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = rechercheRequestType

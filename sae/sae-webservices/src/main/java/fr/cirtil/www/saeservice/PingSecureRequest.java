@@ -13,7 +13,9 @@
             *  PingSecureRequest bean class
             */
         
-        public  class PingSecureRequest
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class PingSecureRequest
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

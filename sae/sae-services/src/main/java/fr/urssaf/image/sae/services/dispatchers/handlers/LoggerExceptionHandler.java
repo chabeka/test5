@@ -11,13 +11,13 @@ import fr.urssaf.image.sae.services.dispatchers.AbstractExceptionHandler;
  */
 public class LoggerExceptionHandler extends AbstractExceptionHandler {
 
-   static final private Logger LOGGER = Logger.getLogger(LoggerExceptionHandler.class);
+   private static final Logger LOGGER = Logger.getLogger(LoggerExceptionHandler.class);
 
    /**
     * Log l'exception reçue en paramètre
     */
    @Override
-   public <T extends Exception> void handleException(T exception) throws T {
+   public final <T extends Exception> void handleException(T exception) throws T {
       LOGGER.error(exception);
    }
 }

@@ -5,6 +5,8 @@ import org.apache.axis2.AxisFault;
 import fr.cirtil.www.saeservice.ArchivageMasse;
 import fr.cirtil.www.saeservice.ArchivageMasseResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
+import fr.cirtil.www.saeservice.ArchivageUnitairePJ;
+import fr.cirtil.www.saeservice.ArchivageUnitairePJResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.Consultation;
 import fr.cirtil.www.saeservice.ConsultationMTOM;
@@ -69,6 +71,18 @@ public interface SaeServiceSkeletonInterface {
     *            exception levée dans la consommation du web service
     */
    ArchivageUnitaireResponse archivageUnitaireSecure(ArchivageUnitaire request)
+         throws AxisFault;
+   
+   /**
+    * endpoint de la capture unitaire avec fichier transmis
+    * 
+    * @param request
+    *           requete du web service
+    * @return reponse du web service
+    * @throws AxisFault
+    *            exception levée dans la consommation du web service
+    */
+   ArchivageUnitairePJResponse archivageUnitairePJSecure(ArchivageUnitairePJ request)
          throws AxisFault;
 
    /**

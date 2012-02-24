@@ -28,6 +28,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
@@ -61,6 +62,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    @Autowired
    @Qualifier("saeControlesCaptureService")
    private SAEControlesCaptureService controlesService;
+
    /**
     * initialisation des différents services du SAE nécessaire à la capture
     * 
@@ -68,8 +70,9 @@ public class SAECaptureServiceImpl implements SAECaptureService {
     *           façade des services DFCE
     * @param connectionParam
     *           configuration de la connexion à DFCE
-    * @param ecdeFileService
-    *           service de l'ECDE
+    * 
+    * @param ecdeServices
+    *           les ecdes
     * @param commonsService
     *           service commun de la capture
     */
@@ -98,7 +101,8 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
          DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
-         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx, CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx {
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx,
+         CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx {
       // Traces debug - entrée méthode
       String prefixeTrc = "capture()";
       LOG.debug("{} - Début", prefixeTrc);
@@ -133,6 +137,50 @@ public class SAECaptureServiceImpl implements SAECaptureService {
 
    }
 
+   @Override
+   public final UUID captureBinaire(List<UntypedMetadata> metadatas,
+         byte[] content, String fileName) throws SAECaptureServiceEx,
+         RequiredStorageMetadataEx, InvalidValueTypeAndFormatMetadataEx,
+         UnknownMetadataEx, DuplicatedMetadataEx, NotSpecifiableMetadataEx,
+         EmptyDocumentEx, RequiredArchivableMetadataEx,
+         NotArchivableMetadataEx, ReferentialRndException, UnknownCodeRndEx,
+         UnknownHashCodeEx, EmptyFileNameEx {
+
+      // Traces debug - entrée méthode
+      String prefixeTrc = "capture()";
+      LOG.debug("{} - Début", prefixeTrc);
+      LOG.debug("{} - Liste des métadonnées : \"{}\"", prefixeTrc,
+            buildMessageFromList(metadatas));
+      LOG.debug("{} - Nom du fichier : \"{}\"", prefixeTrc, fileName);
+      // Fin des traces debug - entrée méthode
+
+      controlesService.checkBinaryContent(content);
+      controlesService.checkBinaryFileName(fileName);
+
+      // Instanciation d'un untypedDocument
+      UntypedDocument untypedDocument = new UntypedDocument(content, fileName,
+            metadatas);
+
+      // appel du service commun d'archivage dans la capture unitaire
+      StorageDocument storageDoc;
+      try {
+         storageDoc = commonsService
+               .buildBinaryStorageDocumentForCapture(untypedDocument);
+
+      } catch (SAEEnrichmentEx e) {
+         throw new SAECaptureServiceEx(e);
+      }
+
+      // archivage du document dans DFCE
+      UUID uuid = insererBinaryStorageDocument(storageDoc);
+      // Traces debug - sortie méthode
+      LOG.debug("{} - Valeur de retour archiveId: \"{}\"", prefixeTrc, uuid);
+      LOG.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
+
+      return uuid;
+   }
+
    /**
     * @param metadatas
     * @param ecdeFile
@@ -158,7 +206,8 @@ public class SAECaptureServiceImpl implements SAECaptureService {
     * 
     * @param ecdeURL
     * @return File.
-    * @throws SAECaptureServiceEx {@link SAECaptureServiceEx}
+    * @throws SAECaptureServiceEx
+    *            {@link SAECaptureServiceEx}
     */
    private File loadEcdeFile(URI ecdeURL) throws SAECaptureServiceEx {
       try {
@@ -174,7 +223,8 @@ public class SAECaptureServiceImpl implements SAECaptureService {
    /**
     * @param storageDoc
     * @return UUID
-    * @throws SAECaptureServiceEx {@link SAECaptureServiceEx}
+    * @throws SAECaptureServiceEx
+    *            {@link SAECaptureServiceEx}
     */
    private UUID insererStorageDocument(StorageDocument storageDoc)
          throws SAECaptureServiceEx {
@@ -185,6 +235,30 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          serviceProvider.openConnexion();
          uuid = serviceProvider.getStorageDocumentService()
                .insertStorageDocument(storageDoc).getUuid();
+
+      } catch (ConnectionServiceEx e) {
+         throw new SAECaptureServiceEx(e);
+      } catch (InsertionServiceEx e) {
+         throw new SAECaptureServiceEx(e);
+      }
+      return uuid;
+   }
+
+   /**
+    * @param storageDoc
+    * @return UUID
+    * @throws SAECaptureServiceEx
+    *            {@link SAECaptureServiceEx}
+    */
+   private UUID insererBinaryStorageDocument(StorageDocument storageDoc)
+         throws SAECaptureServiceEx {
+      // insertion du document à archiver dans DFCE puis fermeture de la
+      // connexion DFCE
+      UUID uuid;
+      try {
+         serviceProvider.openConnexion();
+         uuid = serviceProvider.getStorageDocumentService()
+               .insertBinaryStorageDocument(storageDoc).getUuid();
 
       } catch (ConnectionServiceEx e) {
          throw new SAECaptureServiceEx(e);

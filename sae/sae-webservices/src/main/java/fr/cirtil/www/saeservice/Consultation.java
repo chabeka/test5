@@ -13,7 +13,9 @@
             *  Consultation bean class
             */
         
-        public  class Consultation
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class Consultation
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

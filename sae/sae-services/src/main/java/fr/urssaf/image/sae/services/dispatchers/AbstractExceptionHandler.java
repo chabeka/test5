@@ -87,7 +87,7 @@ public abstract class AbstractExceptionHandler {
    public abstract <T extends Exception> void handleException(T exception) throws T;
 
    /**
-    * @return Handler suivant dans la chaine de responsabilité
+    * @return AbstractExceptionHandler Handler suivant dans la chaine de responsabilité
     */
    public AbstractExceptionHandler getSuccessor() {
       return this.successor;
@@ -95,6 +95,7 @@ public abstract class AbstractExceptionHandler {
 
    /**
     * @param successor Handler suivant dans la chaine de responsabilité
+    * @return AbstractExceptionHandler abstractExceptionHandler
     */
    public AbstractExceptionHandler setSuccessor(AbstractExceptionHandler successor) {
       this.successor = successor;

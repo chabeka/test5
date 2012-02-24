@@ -64,6 +64,13 @@ public class SAECaptureServiceValidationTest {
 
             return null;
          }
+
+         @Override
+         public UUID captureBinaire(List<UntypedMetadata> metadatas,
+               byte[] content, String fileName)  {
+            
+            return null;
+         }
       };
    }
 

@@ -13,7 +13,9 @@
             *  ConsultationResponseType bean class
             */
         
-        public  class ConsultationResponseType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class ConsultationResponseType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = consultationResponseType

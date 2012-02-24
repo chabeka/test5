@@ -9,6 +9,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
@@ -76,4 +77,58 @@ public interface SAECaptureService {
          RequiredArchivableMetadataEx, NotArchivableMetadataEx,
          ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx,
          CaptureBadEcdeUrlEx, CaptureEcdeUrlFileNotFoundEx;
+   
+   
+   /**
+    * 
+    * Service pour l'opération : capture unitaire. Le fichier a <br>
+    * été initialement transmis sous forme de flux binaire.
+    * 
+    * @param metadatas
+    *           liste des métadonnées à archiver
+    * @param content
+    *           contenu du fichier à archiver
+    * @param fileName
+    *           nom du fichier à archiver. Sera stocké dans les metadatas
+    * 
+    * @return Identifiant unique du document dans le SAE
+    * 
+    * 
+    * 
+    * @throws SAECaptureServiceEx
+    *            exception levée lors de la capture
+    * @throws RequiredStorageMetadataEx
+    *            les métadonnées obligatoires sont absentes
+    * @throws InvalidValueTypeAndFormatMetadataEx
+    *            les valeurs des métadonnées ne sont pas du bon type ou au bon
+    *            format
+    * @throws UnknownMetadataEx
+    *            les métadonnées n'existent pas dans le référentiel
+    * @throws DuplicatedMetadataEx
+    *            les métadonnées sont dupliquées
+    * @throws NotSpecifiableMetadataEx
+    *            les métadonnées ne sont pas archivables
+    * @throws RequiredArchivableMetadataEx
+    *            les métadonnées obligatoires pour l'archivage sont absentes
+    * @throws EmptyDocumentEx
+    *            Le fichier à archiver est vide
+    * @throws NotArchivableMetadataEx
+    *            les métadonnées ne sont pas archivables
+    * @throws UnknownCodeRndEx
+    *            {@link UnknownCodeRndEx}
+    * @throws ReferentialRndException
+    *            {@link ReferentialRndException}
+    * @throws UnknownHashCodeEx
+    *            {@link UnknownHashCodeEx}
+    * @throws EmptyFileNameEx
+    *            @link EmptyFileNameEx}
+    */
+   UUID captureBinaire(List<UntypedMetadata> metadatas, byte[] content, String fileName)
+         throws SAECaptureServiceEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         ReferentialRndException, UnknownCodeRndEx, UnknownHashCodeEx,
+         EmptyFileNameEx;
+   
 }

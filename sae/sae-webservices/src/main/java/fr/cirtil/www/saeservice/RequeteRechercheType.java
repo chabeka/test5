@@ -13,7 +13,9 @@
             *  RequeteRechercheType bean class
             */
         
-        public  class RequeteRechercheType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class RequeteRechercheType
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

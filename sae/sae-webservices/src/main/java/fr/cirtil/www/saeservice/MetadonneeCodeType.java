@@ -13,7 +13,9 @@
             *  MetadonneeCodeType bean class
             */
         
-        public  class MetadonneeCodeType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class MetadonneeCodeType
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

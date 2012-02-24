@@ -142,8 +142,6 @@ public class BulkCaptureJob extends CommonIndicator {
 
    /**
     * 
-    * @param indicator
-    *           : Les indicateurs du job de la capture.
     * @return Les indicateurs du job de la capture.
     */
    public JmxIndicator retrieveJmxBulkCaptureJobIndicator() {

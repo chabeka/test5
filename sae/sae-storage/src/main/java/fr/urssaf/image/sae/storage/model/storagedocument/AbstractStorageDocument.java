@@ -29,6 +29,7 @@ public abstract class AbstractStorageDocument {
 	private Date creationDate;
 	private String title;
 	private String processId;
+	private String fileName;
 
 	/**
 	 * @return L'identifiant du traitement.
@@ -172,5 +173,22 @@ public abstract class AbstractStorageDocument {
 	public AbstractStorageDocument() {
 		// Ici on ne fait rien.
 	}
+
+   /**
+    * @return le nom du fichier
+    */
+   public final String getFileName() {
+      return fileName;
+   }
+
+   /**
+    * Initialise le chemin du fichier
+    * 
+    * @param fileName
+    *            : Le chemin du document
+    */
+   public final void setFileName(String fileName) {
+      this.fileName = fileName;
+   }
 
 }

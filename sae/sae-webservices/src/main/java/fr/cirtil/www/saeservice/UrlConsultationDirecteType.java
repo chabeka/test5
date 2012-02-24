@@ -13,7 +13,9 @@
             *  UrlConsultationDirecteType bean class
             */
         
-        public  class UrlConsultationDirecteType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class UrlConsultationDirecteType
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

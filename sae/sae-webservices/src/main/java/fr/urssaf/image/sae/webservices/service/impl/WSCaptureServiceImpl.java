@@ -1,11 +1,17 @@
 package fr.urssaf.image.sae.webservices.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import javax.activation.DataHandler;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -14,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.cirtil.www.saeservice.ArchivageUnitaire;
+import fr.cirtil.www.saeservice.ArchivageUnitairePJ;
+import fr.cirtil.www.saeservice.ArchivageUnitairePJResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
@@ -23,6 +31,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureBadEcdeUrlEx;
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFoundEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotArchivableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
@@ -94,6 +103,82 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       if (response != null) {
          LOG.debug("{} - Valeur de retour : \"{}\"", prefixeTrc, response
                .getArchivageUnitaireResponse().getIdArchive().getUuidType());
+      } else {
+         LOG.debug("{} - Valeur de retour : null", prefixeTrc);
+      }
+      LOG.debug("{} - Sortie", prefixeTrc);
+      // Fin des traces debug - sortie méthode
+      return response;
+   }
+
+   /**
+    * {@inheritDoc}
+    * 
+    */
+   @Override
+   public final ArchivageUnitairePJResponse archivageUnitairePJ(
+         ArchivageUnitairePJ request) throws CaptureAxisFault {
+
+      String prefixeTrc = "archivageUnitairePJ()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // vérification que la liste des métadonnées n'est pas vide
+      LOG
+            .debug(
+                  "{} - Début de la vérification : La liste des métadonnées fournies par l'application n'est pas vide",
+                  prefixeTrc);
+      if (request.getArchivageUnitairePJ().getMetadonnees().getMetadonnee() == null) {
+         LOG.debug("{} - {}", prefixeTrc, MessageRessourcesUtils
+               .recupererMessage("ws.capture.metadata.is.empty", null));
+         throw new CaptureAxisFault("CaptureMetadonneesVide",
+               MessageRessourcesUtils.recupererMessage(
+                     "ws.capture.metadata.is.empty", null));
+      }
+      LOG
+            .debug(
+                  "{} - Fin de la vérification : La liste des métadonnées fournies par l'application n'est pas vide",
+                  prefixeTrc);
+
+      String nomFichier = request.getArchivageUnitairePJ()
+            .getArchivageUnitairePJRequestTypeChoice_type0().getDataFile()
+            .getFileName();
+      
+      if (StringUtils.isBlank(nomFichier)) {
+         throw new CaptureAxisFault("NomFichierVide",
+               MessageRessourcesUtils.recupererMessage(
+                     "nomfichier.vide", null));
+      }
+      
+      LOG.debug("{} - Nom fichier: {}", prefixeTrc, nomFichier);
+
+      List<UntypedMetadata> metadatas = new ArrayList<UntypedMetadata>();
+      for (MetadonneeType metadonnee : request.getArchivageUnitairePJ()
+            .getMetadonnees().getMetadonnee()) {
+         metadatas.add(createUntypedMetadata(metadonnee));
+      }
+      LOG.debug("{} - Liste des métadonnées : \"{}\"", prefixeTrc,
+            buildMessageFromList(metadatas));
+      
+      DataHandler dataHandler = request.getArchivageUnitairePJ()
+                                .getArchivageUnitairePJRequestTypeChoice_type0().getDataFile().getFile();
+
+      byte[] content = convertToByteArray(dataHandler); 
+      if (content == null || content.length == 0) {
+         throw new CaptureAxisFault("CaptureFichierVide",
+               MessageRessourcesUtils.recupererMessage(
+                     "capture.fichier.binaire.vide", null));
+      }
+      
+      UUID uuid = capturePJ(metadatas, nomFichier, content);
+
+      LOG.debug("{} - Valeur de retour du service SAECaptureService : \"{}\"",
+            prefixeTrc, uuid);
+      
+      ArchivageUnitairePJResponse response;
+      response = ObjectArchivageUnitaireFactory.createArchivageUnitairePJResponse(uuid);
+      
+      if (response != null) {
+         LOG.debug("{} - Valeur de retour : \"{}\"", prefixeTrc, response
+               .getArchivageUnitairePJResponse().getIdArchive().getUuidType());
       } else {
          LOG.debug("{} - Valeur de retour : null", prefixeTrc);
       }
@@ -183,6 +268,75 @@ public class WSCaptureServiceImpl implements WSCaptureService {
 
    }
 
+   private UUID capturePJ(List<UntypedMetadata> metadatas, String fileName, byte[] content)
+         throws CaptureAxisFault {
+      try {
+         return captureService.captureBinaire(metadatas, content, fileName);
+      } catch (RequiredStorageMetadataEx e) {
+
+         throw new CaptureAxisFault("ErreurInterneCapture", e.getMessage(), e);
+
+      } catch (InvalidValueTypeAndFormatMetadataEx e) {
+
+         throw new CaptureAxisFault("CaptureMetadonneesFormatTypeNonValide", e
+               .getMessage(), e);
+
+      } catch (UnknownMetadataEx e) {
+
+         throw new CaptureAxisFault("CaptureMetadonneesInconnu",
+               e.getMessage(), e);
+
+      } catch (DuplicatedMetadataEx e) {
+
+         throw new CaptureAxisFault("CaptureMetadonneesDoublon",
+               e.getMessage(), e);
+
+      } catch (NotSpecifiableMetadataEx e) {
+
+         throw new CaptureAxisFault("CaptureMetadonneesInterdites", e
+               .getMessage(), e);
+
+      } catch (EmptyDocumentEx e) {
+
+         throw new CaptureAxisFault("CaptureFichierVide", e.getMessage(), e);
+
+      } catch (RequiredArchivableMetadataEx e) {
+
+         throw new CaptureAxisFault("CaptureMetadonneesArchivageObligatoire", e
+               .getMessage(), e);
+
+      } catch (ReferentialRndException e) {
+
+         throw new CaptureAxisFault("ErreurInterne", MessageRessourcesUtils
+               .recupererMessage("ws.capture.error", null), e);
+
+      } catch (UnknownCodeRndEx e) {
+
+         throw new CaptureAxisFault("CaptureCodeRndInterdit", e.getMessage(), e);
+
+      } catch (UnknownHashCodeEx e) {
+
+         throw new CaptureAxisFault("CaptureHashErreur", e.getMessage(), e);
+
+      } catch (SAECaptureServiceEx e) {
+
+         throw new CaptureAxisFault("ErreurInterneCapture",
+               MessageRessourcesUtils
+                     .recupererMessage("ws.capture.error", null), e);
+
+      } catch (NotArchivableMetadataEx e) {
+
+         throw new CaptureAxisFault("ErreurInterneCapture",
+               MessageRessourcesUtils
+                     .recupererMessage("ws.capture.error", null), e);
+      } catch (EmptyFileNameEx e) {
+
+         throw new CaptureAxisFault("NomFichierVide",
+               MessageRessourcesUtils
+                     .recupererMessage("ws.capture.error", null), e);
+      }
+   }
+
    /**
     * Construit une chaîne qui comprends l'ensemble des objets à afficher dans
     * les logs. <br>
@@ -206,4 +360,24 @@ public class WSCaptureServiceImpl implements WSCaptureService {
       }
       return toStrBuilder.toString();
    }
+   
+   /**
+    * Permet de convertir un objet DataHandler en tableau de byte
+    */
+   private byte[] convertToByteArray(DataHandler dataHandler) {
+      if (! (dataHandler == null) ) {
+         try {
+            InputStream inputStream;
+            inputStream = dataHandler.getInputStream();
+            byte[] content = IOUtils.toByteArray(inputStream);
+         
+            return content;
+         } catch (IOException e) {
+            throw new RuntimeException(e);
+         }
+      }  
+      else {
+         return null;
+      }
+   }    
 }

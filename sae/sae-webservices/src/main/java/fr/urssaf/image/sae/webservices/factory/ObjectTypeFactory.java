@@ -297,7 +297,7 @@ public final class ObjectTypeFactory {
    
    /**
     * Méthode permettant de convertir un objet ConsultationMTOM en Consultation
-    * @param consultationMTOM
+    * @param consultationMTOM objet de consultation
     * @return objet Consultation
     */
    public static Consultation convertToConsultation(ConsultationMTOM consultationMTOM) {
@@ -318,7 +318,7 @@ public final class ObjectTypeFactory {
    
    /**
     * Méthode permettant de convertir un objet ConsultationResponse en ConsultationMTOMResponse
-    * @param consultationResponse
+    * @param consultationResponse objet de response de la consultation
     * @return ConsultationMTOMResponse
     */
    public static ConsultationMTOMResponse convertToConsultRespMTOM(ConsultationResponse consultationResponse) {

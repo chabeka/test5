@@ -1,6 +1,6 @@
 
 /**
- * ListeMetadonneeCodeType.java
+ * ArchivageUnitairePJResponseType.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
@@ -10,15 +10,15 @@
             
 
             /**
-            *  ListeMetadonneeCodeType bean class
+            *  ArchivageUnitairePJResponseType bean class
             */
         
 // CHECKSTYLE:OFF
 @SuppressWarnings("all")
-public class ListeMetadonneeCodeType
+public class ArchivageUnitairePJResponseType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
-                name = listeMetadonneeCodeType
+                name = archivageUnitairePJResponseType
                 Namespace URI = http://www.cirtil.fr/saeService
                 Namespace Prefix = ns1
                 */
@@ -34,86 +34,34 @@ public class ListeMetadonneeCodeType
         
 
                         /**
-                        * field for MetadonneeCode
-                        * This was an Array!
+                        * field for IdArchive
                         */
 
                         
-                                    protected fr.cirtil.www.saeservice.MetadonneeCodeType[] localMetadonneeCode ;
+                                    protected fr.cirtil.www.saeservice.UuidType localIdArchive ;
                                 
-                           /*  This tracker boolean wil be used to detect whether the user called the set method
-                          *   for this attribute. It will be used to determine whether to include this field
-                           *   in the serialized XML
-                           */
-                           protected boolean localMetadonneeCodeTracker = false ;
-                           
 
                            /**
                            * Auto generated getter method
-                           * @return fr.cirtil.www.saeservice.MetadonneeCodeType[]
+                           * @return fr.cirtil.www.saeservice.UuidType
                            */
-                           public  fr.cirtil.www.saeservice.MetadonneeCodeType[] getMetadonneeCode(){
-                               return localMetadonneeCode;
+                           public  fr.cirtil.www.saeservice.UuidType getIdArchive(){
+                               return localIdArchive;
                            }
 
                            
                         
-
-
-                               
-                              /**
-                               * validate the array for MetadonneeCode
+                            /**
+                               * Auto generated setter method
+                               * @param param IdArchive
                                */
-                              protected void validateMetadonneeCode(fr.cirtil.www.saeservice.MetadonneeCodeType[] param){
-                             
-                              }
-
-
-                             /**
-                              * Auto generated setter method
-                              * @param param MetadonneeCode
-                              */
-                              public void setMetadonneeCode(fr.cirtil.www.saeservice.MetadonneeCodeType[] param){
-                              
-                                   validateMetadonneeCode(param);
-
-                               
-                                          if (param != null){
-                                             //update the setting tracker
-                                             localMetadonneeCodeTracker = true;
-                                          } else {
-                                             localMetadonneeCodeTracker = false;
-                                                 
-                                          }
-                                      
-                                      this.localMetadonneeCode=param;
-                              }
-
-                               
-                             
-                             /**
-                             * Auto generated add method for the array for convenience
-                             * @param param fr.cirtil.www.saeservice.MetadonneeCodeType
-                             */
-                             public void addMetadonneeCode(fr.cirtil.www.saeservice.MetadonneeCodeType param){
-                                   if (localMetadonneeCode == null){
-                                   localMetadonneeCode = new fr.cirtil.www.saeservice.MetadonneeCodeType[]{};
-                                   }
-
+                               public void setIdArchive(fr.cirtil.www.saeservice.UuidType param){
                             
-                                 //update the setting tracker
-                                localMetadonneeCodeTracker = true;
+                                            this.localIdArchive=param;
+                                    
+
+                               }
                             
-
-                               java.util.List list =
-                            org.apache.axis2.databinding.utils.ConverterUtil.toList(localMetadonneeCode);
-                               list.add(param);
-                               this.localMetadonneeCode =
-                             (fr.cirtil.www.saeservice.MetadonneeCodeType[])list.toArray(
-                            new fr.cirtil.www.saeservice.MetadonneeCodeType[list.size()]);
-
-                             }
-                             
 
      /**
      * isReaderMTOMAware
@@ -147,7 +95,7 @@ public class ListeMetadonneeCodeType
                        new org.apache.axis2.databinding.ADBDataSource(this,parentQName){
 
                  public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       ListeMetadonneeCodeType.this.serialize(parentQName,factory,xmlWriter);
+                       ArchivageUnitairePJResponseType.this.serialize(parentQName,factory,xmlWriter);
                  }
                };
                return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
@@ -201,35 +149,23 @@ public class ListeMetadonneeCodeType
                    java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://www.cirtil.fr/saeService");
                    if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           namespacePrefix+":listeMetadonneeCodeType",
+                           namespacePrefix+":archivageUnitairePJResponseType",
                            xmlWriter);
                    } else {
                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
-                           "listeMetadonneeCodeType",
+                           "archivageUnitairePJResponseType",
                            xmlWriter);
                    }
 
                
                    }
-                if (localMetadonneeCodeTracker){
-                                       if (localMetadonneeCode!=null){
-                                            for (int i = 0;i < localMetadonneeCode.length;i++){
-                                                if (localMetadonneeCode[i] != null){
-                                                 localMetadonneeCode[i].serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonneeCode"),
-                                                           factory,xmlWriter);
-                                                } else {
-                                                   
-                                                        // we don't have to do any thing since minOccures is zero
-                                                    
-                                                }
-
+               
+                                            if (localIdArchive==null){
+                                                 throw new org.apache.axis2.databinding.ADBException("idArchive cannot be null!!");
                                             }
-                                     } else {
+                                           localIdArchive.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","idArchive"),
+                                               factory,xmlWriter);
                                         
-                                               throw new org.apache.axis2.databinding.ADBException("metadonneeCode cannot be null!!");
-                                        
-                                    }
-                                 }
                     xmlWriter.writeEndElement();
                
 
@@ -391,28 +327,16 @@ public class ListeMetadonneeCodeType
                  java.util.ArrayList elementList = new java.util.ArrayList();
                  java.util.ArrayList attribList = new java.util.ArrayList();
 
-                 if (localMetadonneeCodeTracker){
-                             if (localMetadonneeCode!=null) {
-                                 for (int i = 0;i < localMetadonneeCode.length;i++){
-
-                                    if (localMetadonneeCode[i] != null){
-                                         elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
-                                                                          "metadonneeCode"));
-                                         elementList.add(localMetadonneeCode[i]);
-                                    } else {
-                                        
-                                                // nothing to do
-                                            
+                
+                            elementList.add(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService",
+                                                                      "idArchive"));
+                            
+                            
+                                    if (localIdArchive==null){
+                                         throw new org.apache.axis2.databinding.ADBException("idArchive cannot be null!!");
                                     }
-
-                                 }
-                             } else {
-                                 
-                                        throw new org.apache.axis2.databinding.ADBException("metadonneeCode cannot be null!!");
-                                    
-                             }
-
-                        }
+                                    elementList.add(localIdArchive);
+                                
 
                 return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(qName, elementList.toArray(), attribList.toArray());
             
@@ -437,9 +361,9 @@ public class ListeMetadonneeCodeType
         * Postcondition: If this object is an element, the reader is positioned at its end element
         *                If this object is a complex type, the reader is positioned at the end element of its outer element
         */
-        public static ListeMetadonneeCodeType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
-            ListeMetadonneeCodeType object =
-                new ListeMetadonneeCodeType();
+        public static ArchivageUnitairePJResponseType parse(javax.xml.stream.XMLStreamReader reader) throws java.lang.Exception{
+            ArchivageUnitairePJResponseType object =
+                new ArchivageUnitairePJResponseType();
 
             int event;
             java.lang.String nillableValue = null;
@@ -463,10 +387,10 @@ public class ListeMetadonneeCodeType
 
                     java.lang.String type = fullTypeName.substring(fullTypeName.indexOf(":")+1);
                     
-                            if (!"listeMetadonneeCodeType".equals(type)){
+                            if (!"archivageUnitairePJResponseType".equals(type)){
                                 //find namespace for the prefix
                                 java.lang.String nsUri = reader.getNamespaceContext().getNamespaceURI(nsPrefix);
-                                return (ListeMetadonneeCodeType)fr.cirtil.www.saeservice.ExtensionMapper.getTypeObject(
+                                return (ArchivageUnitairePJResponseType)fr.cirtil.www.saeservice.ExtensionMapper.getTypeObject(
                                      nsUri,type,reader);
                               }
                         
@@ -488,54 +412,22 @@ public class ListeMetadonneeCodeType
                     
                     reader.next();
                 
-                        java.util.ArrayList list1 = new java.util.ArrayList();
-                    
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonneeCode").equals(reader.getName())){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","idArchive").equals(reader.getName())){
                                 
+                                                object.setIdArchive(fr.cirtil.www.saeservice.UuidType.Factory.parse(reader));
+                                              
+                                        reader.next();
                                     
-                                    
-                                    // Process the array and step past its final element's end.
-                                    list1.add(fr.cirtil.www.saeservice.MetadonneeCodeType.Factory.parse(reader));
-                                                                
-                                                        //loop until we find a start element that is not part of this array
-                                                        boolean loopDone1 = false;
-                                                        while(!loopDone1){
-                                                            // We should be at the end element, but make sure
-                                                            while (!reader.isEndElement())
-                                                                reader.next();
-                                                            // Step out of this element
-                                                            reader.next();
-                                                            // Step to next element event.
-                                                            while (!reader.isStartElement() && !reader.isEndElement())
-                                                                reader.next();
-                                                            if (reader.isEndElement()){
-                                                                //two continuous end elements means we are exiting the xml structure
-                                                                loopDone1 = true;
-                                                            } else {
-                                                                if (new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonneeCode").equals(reader.getName())){
-                                                                    list1.add(fr.cirtil.www.saeservice.MetadonneeCodeType.Factory.parse(reader));
-                                                                        
-                                                                }else{
-                                                                    loopDone1 = true;
-                                                                }
-                                                            }
-                                                        }
-                                                        // call the converter utility  to convert and set the array
-                                                        
-                                                        object.setMetadonneeCode((fr.cirtil.www.saeservice.MetadonneeCodeType[])
-                                                            org.apache.axis2.databinding.utils.ConverterUtil.convertToArray(
-                                                                fr.cirtil.www.saeservice.MetadonneeCodeType.class,
-                                                                list1));
-                                                            
                               }  // End of if for expected property start element
                                 
-                                    else {
-                                        
-                                    }
-                                  
+                                else{
+                                    // A start element we are not expecting indicates an invalid parameter was passed
+                                    throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
+                                }
+                              
                             while (!reader.isStartElement() && !reader.isEndElement())
                                 reader.next();
                             

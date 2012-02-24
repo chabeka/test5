@@ -89,6 +89,10 @@ public class SAEEnrichmentMetadataServiceImpl implements
 
       String rndValue = SAEMetatadaFinderUtils.codeMetadataFinder(saeMetadatas,
             SAEArchivalMetadatas.CODE_RND.getLongCode());
+      
+      String fileName = SAEMetatadaFinderUtils.codeMetadataFinder(saeMetadatas,
+            SAEArchivalMetadatas.NOM_FICHIER.getLongCode());
+      
       try {
          if (!StringUtils.isEmpty(rndValue)) {
             LOGGER
@@ -103,6 +107,14 @@ public class SAEEnrichmentMetadataServiceImpl implements
             LOGGER.debug("{} - Métadonnées avant enrichissement : {}",
                   prefixeTrc, saeDoc.getMetadatas().toString());
             completedMetadatas(saeDoc, rndValue);
+            LOGGER.debug("{} - Métadonnées après enrichissement : {}",
+                  prefixeTrc, saeDoc.getMetadatas().toString());
+         }
+         if (!StringUtils.isBlank(fileName)) {
+            
+            LOGGER.debug("{} - Métadonnées avant enrichissement : {}",
+                  prefixeTrc, saeDoc.getMetadatas().toString());
+            completedMetadatas(saeDoc, fileName);
             LOGGER.debug("{} - Métadonnées après enrichissement : {}",
                   prefixeTrc, saeDoc.getMetadatas().toString());
          }
@@ -248,8 +260,12 @@ public class SAEEnrichmentMetadataServiceImpl implements
             saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
                   SAEArchivalMetadatas.NOM_FICHIER.getLongCode())
                   .getShortCode());
-            saeMetadata.setValue(FilenameUtils.getName(FilenameUtils
+            if (saeDocument.getFilePath() != null) {
+               saeMetadata.setValue(FilenameUtils.getName(FilenameUtils
                   .separatorsToSystem(saeDocument.getFilePath())));
+            } else {
+               saeMetadata.setValue(saeDocument.getFileName());
+            }
             saeDocument.getMetadatas().add(saeMetadata);
          } else if (metadata.getLongCode().equals(
                SAEArchivalMetadatas.DATE_ARCHIVAGE.getLongCode())) {
@@ -319,7 +335,33 @@ public class SAEEnrichmentMetadataServiceImpl implements
                            "{} - Enrichissement des métadonnées : ajout de la métadonnée VersionRND valeur : {}",
                            prefixeTrc, saeMetadata.getValue());
             }
+         } else if (metadata.getLongCode().equals(
+               SAEArchivalMetadatas.NOM_FICHIER.getLongCode())) {
+            if (SAEMetatadaFinderUtils.codeMetadataFinder(saeDocument
+                  .getMetadatas(), SAEArchivalMetadatas.NOM_FICHIER
+                  .getLongCode()) == null) {
+               LOGGER
+                     .debug(
+                           "{} - La métadonnée NOM_FICHIER n'est pas spécifiée par l'application cliente",
+                           prefixeTrc);
+               saeMetadata.setShortCode(metadataReferenceDAO.getByLongCode(
+                     SAEArchivalMetadatas.NOM_FICHIER.getLongCode())
+                     .getShortCode());
+               String name = "";
+               if (StringUtils.isEmpty(saeDocument.getFilePath())) {
+                  name = saeDocument.getFileName();
+               } else {
+                  name = FilenameUtils.getBaseName(saeDocument.getFilePath());
+               }
+               saeMetadata.setValue(name);
+               saeDocument.getMetadatas().add(saeMetadata);
+               LOGGER
+                     .debug(
+                           "{} - Enrichissement des métadonnées : ajout du nom de fichier valeur : {}",
+                           prefixeTrc, name);
+            }
          }
+         
       }
       // Traces debug - sortie méthode
       LOGGER.debug("{} - Sortie", prefixeTrc);

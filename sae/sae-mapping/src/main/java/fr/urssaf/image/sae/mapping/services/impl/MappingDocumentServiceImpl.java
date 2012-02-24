@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import fr.urssaf.image.sae.metadata.exceptions.ReferentialException;
 import fr.urssaf.image.sae.metadata.referential.model.MetadataReference;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageDocument;
 import fr.urssaf.image.sae.storage.model.storagedocument.StorageMetadata;
+
 
 /**
  * Classe qui fournit des services de conversion entre objet du modèle et objet
@@ -40,10 +43,17 @@ public final class MappingDocumentServiceImpl extends AbstractMappingDocumentSer
          "PMD.DataflowAnomalyAnalysis" })
    public StorageDocument saeDocumentToStorageDocument(final SAEDocument saeDoc)
          throws InvalidSAETypeException {
+      
       final StorageDocument storageDoc = new StorageDocument();
+      
       final List<StorageMetadata> sMetadata = new ArrayList<StorageMetadata>();
+      
       storageDoc.setContent(saeDoc.getContent());
+      
+      storageDoc.setFileName(saeDoc.getFileName());
+      
       storageDoc.setFilePath(saeDoc.getFilePath());
+      
       for (SAEMetadata metadata : Utils.nullSafeIterable(saeDoc.getMetadatas())) {
          sMetadata.add(new StorageMetadata(metadata.getShortCode(), metadata
                .getValue()));
@@ -65,6 +75,7 @@ public final class MappingDocumentServiceImpl extends AbstractMappingDocumentSer
       final List<SAEMetadata> metadatas = new ArrayList<SAEMetadata>();
       saeDoc.setContent(storageDoc.getContent());
       saeDoc.setFilePath(storageDoc.getFilePath());
+      saeDoc.setFileName(storageDoc.getFileName());
       for (StorageMetadata sMetadata : Utils.nullSafeIterable(storageDoc
             .getMetadatas())) {
          try {
@@ -105,7 +116,7 @@ public final class MappingDocumentServiceImpl extends AbstractMappingDocumentSer
          }
       }
 
-      return new UntypedDocument(saeDoc.getFilePath(), saeDoc.getContent(),
+      return new UntypedDocument(saeDoc.getContent(), saeDoc.getFilePath(), saeDoc.getFileName(),
             metadatas);
    }
 
@@ -132,7 +143,7 @@ public final class MappingDocumentServiceImpl extends AbstractMappingDocumentSer
          }
       }
 
-      return new SAEDocument(untyped.getFilePath(), untyped.getContent(),
+      return new SAEDocument(untyped.getFilePath(), untyped.getContent(), untyped.getFileName(),
             metadatas);
    }
 
@@ -159,8 +170,14 @@ public final class MappingDocumentServiceImpl extends AbstractMappingDocumentSer
             throw new MappingFromReferentialException(refExcpt);
          }
       }
-      UntypedDocument untypedDocument = new UntypedDocument(storage
-            .getFilePath(), storage.getContent(), metadatas);
+      String name = null;
+      if(StringUtils.isBlank(storage.getFilePath())) {
+         name = storage.getFileName();
+      } else {
+         name = FilenameUtils.getBaseName(storage.getFilePath());
+      }
+      UntypedDocument untypedDocument = new UntypedDocument(storage.getContent(), storage
+            .getFilePath(), name, metadatas);
       untypedDocument.setUuid(storage.getUuid());
       return untypedDocument;
    }

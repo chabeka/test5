@@ -13,7 +13,9 @@
             *  ConsultationMTOMRequestType bean class
             */
         
-        public  class ConsultationMTOMRequestType
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class ConsultationMTOMRequestType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = consultationMTOMRequestType

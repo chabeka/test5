@@ -7,6 +7,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFound
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
@@ -131,4 +132,40 @@ public interface SAEControlesCaptureService {
     */
    void checkCaptureEcdeUrl(String urlEcde) throws CaptureBadEcdeUrlEx,
          CaptureEcdeUrlFileNotFoundEx;
+   
+   /**
+    * Permet de vérifier que la taille du contenu est supérieure<br>
+    * à 0 octet et que le nom du fichier est renseigné.
+    * 
+    * @param untypedDocument
+    *        le document à traiter
+    * 
+    * @throws EmptyDocumentEx
+    *         si le contenu est vide (0 octet)
+    * @throws EmptyFileNameEx
+    *         si le nom de fichier est vide ou rempli d'espaces
+    * 
+    */
+   void checkUntypedBinaryDocument(UntypedDocument untypedDocument) 
+        throws EmptyDocumentEx, EmptyFileNameEx;
+   
+   /**
+    * Permet de vérifier si le contenu du fichier n'est pas null
+    * 
+    * @param content
+    *        le contenu du fichier
+    * 
+    * @throws EmptyDocumentEx 
+    */
+   void checkBinaryContent(byte[] content) throws EmptyDocumentEx;
+   /**
+    * Permet de vérifier que le nom de fichier est bien renseigné.
+    * 
+    * @param fileName
+    *        le nom du fichier
+    * 
+    * @throws EmptyFileNameEx 
+    */
+   void checkBinaryFileName(String fileName) throws EmptyFileNameEx;
+   
 }

@@ -13,7 +13,9 @@
             *  ConsultationMTOM bean class
             */
         
-        public  class ConsultationMTOM
+// CHECKSTYLE:OFF
+@SuppressWarnings("all")
+public class ConsultationMTOM
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(

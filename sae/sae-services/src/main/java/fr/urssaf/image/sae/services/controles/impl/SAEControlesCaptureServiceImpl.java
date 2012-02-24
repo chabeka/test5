@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeUrlFileNotFound
 import fr.urssaf.image.sae.services.exception.capture.CaptureEcdeWriteFileEx;
 import fr.urssaf.image.sae.services.exception.capture.DuplicatedMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.EmptyDocumentEx;
+import fr.urssaf.image.sae.services.exception.capture.EmptyFileNameEx;
 import fr.urssaf.image.sae.services.exception.capture.InvalidValueTypeAndFormatMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.NotSpecifiableMetadataEx;
 import fr.urssaf.image.sae.services.exception.capture.RequiredArchivableMetadataEx;
@@ -166,7 +169,23 @@ public class SAEControlesCaptureServiceImpl implements
             algoHashCode);
       // FIXME vérifier que l'algorithme passer fait partie d'une liste
       // pré-définit.
-      File docFile = new File(saeDocument.getFilePath());
+      String fileName = null;
+      byte[] content = null;
+      if (saeDocument.getFilePath() != null) {
+         fileName = FilenameUtils.getBaseName(saeDocument.getFilePath());
+         File docFile = new File(saeDocument.getFilePath());
+         try {
+            content = FileUtils.readFileToByteArray(docFile);
+         } catch (IOException e) {
+            throw new SAECaptureServiceRuntimeException(e);
+         }
+      }
+      else {
+         fileName = saeDocument.getFileName();
+         content = saeDocument.getContent();
+      }   
+      
+      //File docFile = new File(saeDocument.getFilePath());
       LOGGER.debug("{} - Début de la vérification : Le type de hash est SHA-1",
             prefixeTrc);
       if (!"SHA-1".equals(algoHashCode)) {
@@ -175,7 +194,7 @@ public class SAEControlesCaptureServiceImpl implements
                      "{} - L'algorithme du document à archiver est différent de SHA-1",
                      prefixeTrc);
          throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-               "capture.hash.erreur", docFile.getName()));
+               "capture.hash.erreur", fileName));
       }
       LOGGER.debug("{} - Fin de la vérification : "
             + "Le type de hash est SHA-1", prefixeTrc);
@@ -185,28 +204,24 @@ public class SAEControlesCaptureServiceImpl implements
                   "{} - Début de la vérification : "
                         + "Equivalence entre le hash fourni en métadonnée et le hash recalculé à partir du fichier",
                   prefixeTrc);
-      try {
-         if (!DigestUtils.shaHex(FileUtils.readFileToByteArray(docFile))
-               .equals(hashCodeValue.trim())) {
-            LOGGER
-                  .debug(
-                        "{} - Hash du document {} est différent que celui recalculé {}",
-                        new Object[] {
-                              prefixeTrc,
-                              hashCodeValue,
-                              DigestUtils.shaHex(FileUtils
-                                    .readFileToByteArray(docFile)) });
-            throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
-                  "capture.hash.erreur", docFile.getName()));
-         }
+      if (!DigestUtils.shaHex(content)
+            .equals(hashCodeValue.trim())) {
          LOGGER
                .debug(
-                     "{} - Fin de la vérification : "
-                           + "Equivalence entre le hash fourni en métadonnée et le hash recalculé à partir du fichier",
-                     prefixeTrc);
-      } catch (IOException e) {
-         throw new SAECaptureServiceRuntimeException(e);
+                     "{} - Hash du document {} est différent que celui recalculé {}",
+                     new Object[] {
+                           prefixeTrc,
+                           hashCodeValue,
+                           DigestUtils.shaHex(content) });
+         throw new UnknownHashCodeEx(ResourceMessagesUtils.loadMessage(
+               "capture.hash.erreur", fileName));
       }
+      LOGGER
+            .debug(
+                  "{} - Fin de la vérification : "
+                        + "Equivalence entre le hash fourni en métadonnée et le hash recalculé à partir du fichier",
+                  prefixeTrc);
+      
       // Traces debug - sortie méthode
       LOGGER.debug("{} - Sortie", prefixeTrc);
       // Fin des traces debug - sortie méthode
@@ -506,4 +521,49 @@ public class SAEControlesCaptureServiceImpl implements
       LOGGER.debug("{} - Sortie", prefixeTrc);
       // Fin des traces debug - sortie méthode
    }
+
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final void checkUntypedBinaryDocument(UntypedDocument untypedDocument)
+         throws EmptyDocumentEx, EmptyFileNameEx {
+     
+      byte[] content = untypedDocument.getContent();
+      String fileName = untypedDocument.getFileName();
+      
+      checkBinaryContent(content);
+      checkBinaryFileName(fileName);      
+   }
+   /**
+    * Permet de vérifier si le contenu du fichier n'est pas null
+    * 
+    * @param content contenu du fichier
+    * 
+    * @throws EmptyDocumentEx 
+    */
+   public final void checkBinaryContent(byte[] content) throws EmptyDocumentEx {
+      
+      if (content == null || content.length == 0) {
+         throw new EmptyDocumentEx(ResourceMessagesUtils.loadMessage(
+               "capture.fichier.binaire.vide"));
+      }
+   }
+   /**
+    * Permet de vérifier que le nom de fichier est bien renseigné.
+    * 
+    * @param fileName 
+    *          nom du fichier
+    * 
+    * @throws EmptyFileNameEx 
+    */
+   public final void checkBinaryFileName(String fileName) throws EmptyFileNameEx {
+      
+      if (StringUtils.isBlank(fileName)) {
+         throw new EmptyFileNameEx(ResourceMessagesUtils.loadMessage(
+               "nomfichier.vide"));
+      }
+   }
+   
 }

@@ -53,18 +53,18 @@ public class ExceptionDispatcherTest {
       SpyHandler spy2 = new SpyHandler();
       SpyHandler spy3 = new SpyHandler();
       
-      assertFalse(spy.called);
-      assertFalse(spy2.called);
-      assertFalse(spy3.called);
+      assertFalse(spy.isCalled());
+      assertFalse(spy2.isCalled());
+      assertFalse(spy3.isCalled());
       
       spy.setSuccessor(spy2).setSuccessor(spy3);
       dispatcher.setHandler(spy);
       dispatcher.dispatch(exception);
       
       // On vérifie que les espions ont bien été appelés
-      assertTrue(spy.called);
-      assertTrue(spy2.called);
-      assertTrue(spy3.called);
+      assertTrue(spy.isCalled());
+      assertTrue(spy2.isCalled());
+      assertTrue(spy3.isCalled());
    } 
    
    /**
@@ -83,7 +83,7 @@ public class ExceptionDispatcherTest {
          fail("Le dispatcher aurait dû lever une exception");
       } catch (Exception e) {
          assertTrue(exception == e);
-         assertTrue(spy.called);
+         assertTrue(spy.isCalled());
       } 
    }
 
@@ -100,20 +100,20 @@ public class ExceptionDispatcherTest {
       SpyHandler spy2 = new SpyHandler();
       SpyHandler spy3 = new SpyHandler();
       
-      assertFalse(spy.called);
-      assertFalse(spy2.called);
-      assertFalse(spy3.called);
+      assertFalse(spy.isCalled());
+      assertFalse(spy2.isCalled());
+      assertFalse(spy3.isCalled());
       
-      spy2.callNext = false;
+      spy2.setCallNext(false);
       spy.setSuccessor(spy2).setSuccessor(spy3);
       dispatcher.setHandler(spy);
       dispatcher.dispatch(exception);
       
       // On vérifie que les deux premiers espions ont bien été appelés
-      assertTrue(spy.called);
-      assertTrue(spy2.called);
+      assertTrue(spy.isCalled());
+      assertTrue(spy2.isCalled());
       // On vérifie que le dernier espion n'a PAS été appelé
-      assertFalse(spy3.called);
+      assertFalse(spy3.isCalled());
    }
 }
 

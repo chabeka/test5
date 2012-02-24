@@ -87,6 +87,15 @@ public class StorageDocumentServiceImpl extends AbstractServiceProvider
 	}
 
 	/**
+    * {@inheritDoc}
+    */
+	public final StorageDocument insertBinaryStorageDocument(
+         final StorageDocument storageDocument) throws InsertionServiceEx {
+      insertionService.setInsertionServiceParameter(getDfceService());
+      return insertionService.insertBinaryStorageDocument(storageDocument);
+   }
+	
+	/**
 	 * 
 	 * @return Les services d'insertions
 	 */
