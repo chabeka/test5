@@ -76,5 +76,40 @@ public class ConsultationTest {
 
       expectedMetadatas.remove(metadata.getCode().getMetadonneeCodeType());
    }
+   
+   
+   public void consultation(ConsultationResponseType response,
+         Map<String, Object> expectedMetadatas)
+         throws IOException {
+
+      MetadonneeType[] metadatas = response.getMetadonnees().getMetadonnee();
+
+      assertNotNull("la liste des metadonnées doit être renseignée", metadatas);
+
+      boolean expectedDateArchivage = false;
+      
+      for (MetadonneeType metadata : metadatas) {
+
+         if ("DateArchivage".equals(metadata.getCode().getMetadonneeCodeType())) {
+
+            expectedDateArchivage = true;
+
+         } else {
+            assertMetadata(metadata, expectedMetadatas);
+         }
+      }
+
+      assertTrue("la métadonnée 'DateArchivage' est attendue",
+            expectedDateArchivage);
+
+//      DataHandler actualContent = response.getObjetNumerique()
+//            .getObjetNumeriqueConsultationTypeChoice_type0().getContenu();
+
+      assertNull(
+            "Test de l'archivage unitaire : doit avoir aucune url directe de consultation",
+            response.getObjetNumerique()
+                  .getObjetNumeriqueConsultationTypeChoice_type0().getUrl());
+
+   }
 
 }

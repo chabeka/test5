@@ -37,13 +37,13 @@ import fr.urssaf.image.sae.webservices.util.SoapTestUtils;
 @ContextConfiguration(locations = { "/applicationContext-sae-webservices.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions",
       "PMD.VariableNamingConventions" })
-public class ArchivageUnitaireFailureTest {
+public class ArchivageUnitairePJFailureTest {
 
    private static final Logger LOG = LoggerFactory
-         .getLogger(ArchivageUnitaireFailureTest.class);
+         .getLogger(ArchivageUnitairePJFailureTest.class);
 
    @Autowired
-   private ArchivageUnitaireService service;
+   private ArchivageUnitairePJService service;
 
    private static File att_file;
 
@@ -129,7 +129,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(urlEcde, metadatasRef.values());
+         service.archivageUnitairePJ(urlEcde, metadatasRef.values());
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -157,7 +157,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, clone);
+         service.archivageUnitairePJ(ECDE_URL, clone);
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -189,7 +189,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, clone);
+         service.archivageUnitairePJ(ECDE_URL, clone);
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -215,7 +215,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, metadatasRef.values());
+         service.archivageUnitairePJ(ECDE_URL, metadatasRef.values());
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -241,7 +241,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, metadatasRef.values());
+         service.archivageUnitairePJ(ECDE_URL, metadatasRef.values());
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -267,7 +267,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, metadatasRef.values());
+         service.archivageUnitairePJ(ECDE_URL, metadatasRef.values());
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -292,7 +292,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, metadatasRef.values());
+         service.archivageUnitairePJ(ECDE_URL, metadatasRef.values());
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -315,7 +315,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, metadatasRef.values());
+         service.archivageUnitairePJ(ECDE_URL, metadatasRef.values());
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -337,7 +337,7 @@ public class ArchivageUnitaireFailureTest {
       try {
 
          service
-               .archivageUnitaire(
+               .archivageUnitairePJ(
                      URI
                            .create("ecde://ecde.cer69.recouv/DCL001/19991231/3/documents/attestation_inconnu.pdf"),
                      metadatasRef.values());
@@ -364,7 +364,7 @@ public class ArchivageUnitaireFailureTest {
 
          // le DNS n'est pas bon
          service
-               .archivageUnitaire(
+               .archivageUnitairePJ(
                      URI
                            .create("ecde://ecde.cer70.recouv/DCL001/19991231/3/documents/attestation_inconnu.pdf"),
                      metadatasRef.values());
@@ -391,7 +391,7 @@ public class ArchivageUnitaireFailureTest {
 
       try {
 
-         service.archivageUnitaire(ECDE_URL, metadatas);
+         service.archivageUnitairePJ(ECDE_URL, metadatas);
 
          Assert.fail(SoapTestUtils.FAIL_MSG);
 
@@ -402,6 +402,91 @@ public class ArchivageUnitaireFailureTest {
                SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
 
       }
+   }
+   
+   
+   @Test
+   public void archivageUnitaire_failure_CaptureContenuVide()
+         throws IOException {
+
+      Collection<Metadata> metadatas = metadatasRef.values();
+
+      try {
+         String fileName = "CaptureContenuVide";
+         
+         service.archivageUnitairePJ(fileName, null, metadatas);
+
+         Assert.fail(SoapTestUtils.FAIL_MSG);
+
+      } catch (AxisFault fault) {
+
+         SoapTestUtils.assertAxisFault(fault,
+               "Le contenu du fichier à archiver est vide.", "CaptureFichierVide",
+               SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
+
+      }
+   }
+   
+   @Test
+   public void archivageUnitaire_failure_CaptureNomVide()
+         throws IOException {
+
+      Collection<Metadata> metadatas = metadatasRef.values();
+
+      try {
+         
+         byte[] contenu = new byte[20];
+         String fileName = "";
+         
+         service.archivageUnitairePJ(fileName, contenu, metadatas);
+
+         Assert.fail(SoapTestUtils.FAIL_MSG);
+
+      } catch (AxisFault fault) {
+
+         SoapTestUtils.assertAxisFault(fault,
+               "Le nom du fichier est vide.", "NomFichierVide",
+               SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
+
+      }
+   }
+   
+   @Test
+   public void archivageUnitaire_failure_CaptureNomEspace()
+         throws IOException {
+
+      Collection<Metadata> metadatas = metadatasRef.values();
+
+      try {
+         
+         byte[] contenu = new byte[20];
+         String fileName = "   ";
+         
+         service.archivageUnitairePJ(fileName, contenu, metadatas);
+
+         Assert.fail(SoapTestUtils.FAIL_MSG);
+
+      } catch (AxisFault fault) {
+
+         SoapTestUtils.assertAxisFault(fault,
+               "Le nom du fichier est vide.", "NomFichierVide",
+               SoapTestUtils.SAE_NAMESPACE, SoapTestUtils.SAE_PREFIX);
+
+      }
+   }
+   
+   @Test
+   @Ignore("A mettre à jour une fois la gestion des extensions faite par DFCE.")
+   public void archivageUnitaire_failure_CaptureSansExtension()
+         throws IOException {
+
+      Collection<Metadata> metadatas = metadatasRef.values();
+
+      byte[] contenu = new byte[20];
+      String fileName = "NomFichierSansExtension";
+         
+      service.archivageUnitairePJ(fileName, contenu, metadatas);
+
    }
 
 }

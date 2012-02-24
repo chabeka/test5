@@ -3,6 +3,7 @@ package fr.urssaf.image.sae.webservices.service;
 import java.rmi.RemoteException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -27,7 +28,7 @@ public class RechercheService {
     *           stub du client des web services du SAE
     */
    @Autowired
-   public RechercheService(SaeServiceStub service) {
+   public RechercheService(@Qualifier("secureStub") SaeServiceStub service) {
       Assert.notNull(service, "SaeServiceStub is required");
       this.service = service;
    }

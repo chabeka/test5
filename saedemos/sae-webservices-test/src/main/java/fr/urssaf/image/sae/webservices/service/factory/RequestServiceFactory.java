@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
+import javax.activation.DataHandler;
+
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axis2.databinding.utils.ConverterUtil;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -11,11 +14,15 @@ import fr.urssaf.image.sae.webservices.factory.ObjectModeleFactory;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageMasse;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageMasseRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaire;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitairePJ;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitairePJRequestType;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitairePJRequestTypeChoice_type0;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ArchivageUnitaireRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.Consultation;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationMTOM;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationMTOMRequestType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ConsultationRequestType;
+import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.DataFileType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.EcdeUrlSommaireType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.EcdeUrlType;
 import fr.urssaf.image.sae.webservices.modele.SaeServiceStub.ListeMetadonneeCodeType;
@@ -223,5 +230,100 @@ public final class RequestServiceFactory {
       return request;
 
    }
+   
+   /**
+    * 
+    * @param url
+    *           l'objet numérique est représenté soit par son URL ECDE
+    * @param metadonnees
+    *           Les métadonnées.
+    * @return instance de {@link ArchivageUnitaire}
+    */
+   public static ArchivageUnitairePJ createArchivagePJUnitaire(URI url,
+         Collection<Metadata> metadonnees) {
+
+      ArchivageUnitairePJ request = createArchivageUnitairePJ(metadonnees);
+
+      // instanciation de EcdeUrlType
+      EcdeUrlType ecdeURL = new EcdeUrlType();
+      ecdeURL
+            .setEcdeUrlType(ConverterUtil.convertToAnyURI(url.toASCIIString()));
+      
+      ArchivageUnitairePJRequestTypeChoice_type0 type_0 = new ArchivageUnitairePJRequestTypeChoice_type0();
+      type_0.setEcdeUrl(ecdeURL);
+      
+      ArchivageUnitairePJRequestType archivageUnitairePJ = request.getArchivageUnitairePJ();
+      archivageUnitairePJ.setArchivageUnitairePJRequestTypeChoice_type0(type_0);
+
+      return request;
+
+   }
+   
+   /**
+    * 
+    * @param fileName
+    *           nom du fichier à archiver
+    * @param contenu
+    *           contenu du fichier à archiver
+    * @param metadonnees
+    *           Les métadonnées.
+    * @return instance de {@link ArchivageUnitaire}
+    */
+   public static ArchivageUnitairePJ createArchivagePJUnitaire(String fileName, byte[] contenu,
+         Collection<Metadata> metadonnees) {
+
+      ArchivageUnitairePJ request = createArchivageUnitairePJ(metadonnees);
+
+      
+      ArchivageUnitairePJRequestTypeChoice_type0 type_0 = new ArchivageUnitairePJRequestTypeChoice_type0();
+      DataFileType data = new DataFileType();
+      data.setFileName(fileName);
+      
+      
+      ByteArrayDataSource byteArray = new ByteArrayDataSource(contenu);
+      DataHandler dataHandler = new DataHandler(byteArray);
+      data.setFile(dataHandler);
+      type_0.setDataFile(data);
+      
+      ArchivageUnitairePJRequestType archivageUnitairePJ = request.getArchivageUnitairePJ();
+      archivageUnitairePJ.setArchivageUnitairePJRequestTypeChoice_type0(type_0);
+
+      return request;
+
+   }
+   
+   private static ArchivageUnitairePJ createArchivageUnitairePJ(
+         Collection<Metadata> metadonnees) {
+
+      ArchivageUnitairePJ request = new ArchivageUnitairePJ();
+
+      ArchivageUnitairePJRequestType requestType = new ArchivageUnitairePJRequestType();
+
+      ListeMetadonneeType listeMetadonnee = new ListeMetadonneeType();
+
+      for (Metadata metadonnee : metadonnees) {
+
+         MetadonneeType type = ObjectModeleFactory.createMetadonneeType();
+
+         MetadonneeCodeType codeType = ObjectModeleFactory
+               .createMetadonneeCodeType(metadonnee.getCode());
+         type.setCode(codeType);
+
+         MetadonneeValeurType valeurType = ObjectModeleFactory
+               .createMetadonneeValeurType(metadonnee.getValue());
+         type.setValeur(valeurType);
+
+         listeMetadonnee.addMetadonnee(type);
+      }
+
+      requestType.setMetadonnees(listeMetadonnee);
+      request.setArchivageUnitairePJ(requestType);
+
+      return request;
+
+   }
+   
+   
+   
 
 }

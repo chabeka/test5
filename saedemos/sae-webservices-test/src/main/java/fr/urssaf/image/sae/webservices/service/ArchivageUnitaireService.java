@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -30,7 +31,7 @@ public class ArchivageUnitaireService {
     *           stub du client des web services du SAE
     */
    @Autowired
-   public ArchivageUnitaireService(SaeServiceStub service) {
+   public ArchivageUnitaireService(@Qualifier("secureStub") SaeServiceStub service) {
       Assert.notNull(service, "SaeServiceStub is required");
       this.service = service;
    }

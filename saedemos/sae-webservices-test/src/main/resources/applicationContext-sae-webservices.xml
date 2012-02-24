@@ -15,6 +15,8 @@
       class="fr.urssaf.image.sae.webservices.security.SecurityConfiguration"
       factory-method="createSaeServiceStub" />
 
-
+   <bean id="serviceStub"
+      class="fr.urssaf.image.sae.webservices.util.SaeServiceStubUtils"
+      factory-method="getServiceStub" />
 
 </beans>

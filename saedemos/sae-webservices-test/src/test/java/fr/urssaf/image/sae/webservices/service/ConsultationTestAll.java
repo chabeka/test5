@@ -103,8 +103,12 @@ public class ConsultationTestAll {
    private static final Logger LOG = LoggerFactory
          .getLogger(ConsultationTestAll.class);
 
+   
+   /**
+    * Methodes d'initialisation des metadatas
+    */
    @Before
-   public void init() {
+   public final void init() {
       expectedMetadatas = new HashMap<String, Object>();
 
       expectedMetadatas.put("ApplicationProductrice", APPLICATION_PRODUCTRICE);
@@ -131,7 +135,7 @@ public class ConsultationTestAll {
     */
    @Test
    @Ignore
-   public void prepareDatas() throws IOException {
+   public final void prepareDatas() throws IOException {
       EcdeManager.cleanEcde();
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -210,9 +214,13 @@ public class ConsultationTestAll {
       return uuid;
    }
 
+   /**
+    * Test en succes avec uid not null et metadata null
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testSuccessUidNotNullListNull() throws RemoteException {
+   public final void testSuccessUidNotNullListNull() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -255,9 +263,13 @@ public class ConsultationTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test en succes avec uid not null et metadata vide
+    * @throws RemoteException
+    */
    @Test
    @Ignore
-   public void testSuccessUidNotNullListEmpty() throws RemoteException {
+   public final void testSuccessUidNotNullListEmpty() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -300,9 +312,13 @@ public class ConsultationTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test en succes avec uid not null avec metadata 
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testSuccessUidNotNullListWithMetaData() throws RemoteException {
+   public final void testSuccessUidNotNullListWithMetaData() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -347,9 +363,13 @@ public class ConsultationTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test en succes avec uid not null et metadata inexistant dans referentiel
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testFailInexistantMetadata() throws RemoteException {
+   public final void testFailInexistantMetadata() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -374,9 +394,13 @@ public class ConsultationTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test failure avec metadata non consultables
+    * @throws RemoteException remoteException
+    */ 
    @Test
    @Ignore
-   public void testFailNoConsultMetadata() throws RemoteException {
+   public final void testFailNoConsultMetadata() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 

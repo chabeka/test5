@@ -103,8 +103,11 @@ public class ConsultationMTOMTestAll {
    private static final Logger LOG = LoggerFactory
          .getLogger(ConsultationMTOMTestAll.class);
 
+   /**
+    * Methode d'initialisation des meta datas.
+    */
    @Before
-   public void init() {
+   public final void init() {
       expectedMetadatas = new HashMap<String, Object>();
 
       expectedMetadatas.put("ApplicationProductrice", APPLICATION_PRODUCTRICE);
@@ -131,7 +134,7 @@ public class ConsultationMTOMTestAll {
     */
    @Test
    @Ignore
-   public void prepareDatas() throws IOException {
+   public final void prepareDatas() throws IOException {
       EcdeManager.cleanEcde();
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -210,9 +213,13 @@ public class ConsultationMTOMTestAll {
       return uuid;
    }
 
+   /**
+    * Test success avec uuid non null et liste de metadata null
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testSuccessUidNotNullListNull() throws RemoteException {
+   public final void testSuccessUidNotNullListNull() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -220,7 +227,12 @@ public class ConsultationMTOMTestAll {
 
       ConsultationMTOMResponseType responseType = consultationMTOMService
             .consultationMTOM(uuid);
+      
+      responseType.getContenu();
+      
       ListeMetadonneeType listeMD = responseType.getMetadonnees();
+      
+      responseType.toString();
 
       assertNotNull("L'objet contenant les metadonnees ne doit pas etre null",
             listeMD);
@@ -255,9 +267,13 @@ public class ConsultationMTOMTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test success avec uuid not null et list null
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testSuccessUidNotNullListEmpty() throws RemoteException {
+   public final void testSuccessUidNotNullListEmpty() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -300,9 +316,14 @@ public class ConsultationMTOMTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   
+   /**
+    * Test success avec Uuid et list de metadata not null
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testSuccessUidNotNullListWithMetaData() throws RemoteException {
+   public final void testSuccessUidNotNullListWithMetaData() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -347,9 +368,13 @@ public class ConsultationMTOMTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test failure avec metadata inexistante.
+    * @throws RemoteException remoteException
+    */
    @Test
    @Ignore
-   public void testFailInexistantMetadata() throws RemoteException {
+   public final void testFailInexistantMetadata() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -374,8 +399,13 @@ public class ConsultationMTOMTestAll {
       SecurityConfiguration.cleanSecurityContext();
    }
 
+   /**
+    * Test fail avec metadata non consultable
+    * @throws RemoteException remoteException
+    */
    @Test
-   public void testFailNoConsultMetadata() throws RemoteException {
+   @Ignore
+   public final void testFailNoConsultMetadata() throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
