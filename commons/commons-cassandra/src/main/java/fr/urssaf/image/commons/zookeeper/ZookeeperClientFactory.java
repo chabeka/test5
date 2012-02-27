@@ -1,4 +1,4 @@
-package fr.urssaf.image.commons.cassandra.spring.batch.idgenerator;
+package fr.urssaf.image.commons.zookeeper;
 
 import java.io.IOException;
 

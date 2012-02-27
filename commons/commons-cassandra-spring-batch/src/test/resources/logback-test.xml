@@ -9,7 +9,7 @@
 
    <logger name="fr.urssaf.image.commons.cassandra.spring.batch" level="TRACE" />
    <logger name="org.cassandraunit" level="INFO" />
-   <logger name="org.apache.cassandra" level="INFO" />
+   <logger name="org.apache.cassandra" level="OFF" />
    <logger name="me.prettyprint.cassandra" level="OFF" />
    <logger name="com.netflix.curator" level="OFF" />
    

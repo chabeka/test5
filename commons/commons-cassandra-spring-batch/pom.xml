@@ -1,12 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-   <parent>
-      <groupId>fr.urssaf.image.commons</groupId>
-      <artifactId>commons-parent</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-   </parent>
-
    <modelVersion>4.0.0</modelVersion>
    <groupId>fr.urssaf.image.commons</groupId>
    <artifactId>commons-cassandra-spring-batch</artifactId>
@@ -19,6 +13,8 @@
       <hector.version>1.0-3</hector.version>
       <slf4j-api.version>1.6.4</slf4j-api.version>
       <logback.version>1.0.0</logback.version>
+      <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+      <junit.version>4.8.1</junit.version>            
    </properties>
 
    <dependencies>
@@ -29,40 +25,6 @@
          <version>0.0.1-SNAPSHOT</version>
       </dependency>
 
-      <!--  Zookeepeer -->
-      <dependency>
-         <groupId>org.apache.zookeeper</groupId>
-         <artifactId>zookeeper</artifactId>
-         <version>3.3.3</version>
-         <exclusions>
-            <exclusion>
-               <groupId>com.sun.jmx</groupId>
-               <artifactId>jmxri</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>com.sun.jdmk</groupId>
-               <artifactId>jmxtools</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>javax.jms</groupId>
-               <artifactId>jms</artifactId>
-            </exclusion>
-            <exclusion>
-               <groupId>log4j</groupId>
-               <artifactId>log4j</artifactId>
-            </exclusion>
-         </exclusions>
-      </dependency>
-      <dependency>
-         <groupId>com.netflix.curator</groupId>
-         <artifactId>curator-recipes</artifactId>
-         <version>1.1.2</version>
-      </dependency>
-      <dependency>
-         <groupId>com.netflix.curator</groupId>
-         <artifactId>curator-test</artifactId>
-         <version>1.1.2</version>
-      </dependency>
 
       <!-- Spring et SPRING BATCH -->
 
@@ -154,7 +116,6 @@
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
-         <!--<version>4.8.2</version>-->
          <version>${junit.version}</version>
          <scope>test</scope>
       </dependency>
@@ -195,4 +156,101 @@
          <version>2.6</version>
       </dependency>
    </dependencies>
+   
+      <build>
+      <plugins>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <source>1.6</source>
+               <target>1.6</target>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>bind-sources</id>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <configuration>
+               <encoding>UTF-8</encoding>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>2.5</version>
+            <configuration>
+               <linkXref>false</linkXref>
+               <sourceEncoding>UTF-8</sourceEncoding>
+               <minimumTokens>100</minimumTokens>
+               <targetJdk>1.6</targetJdk>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.7</version>
+            <configuration>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>1.0-beta-2</version>
+         </plugin>
+
+      </plugins>
+   </build>
+   
+   <reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-pmd-plugin</artifactId>
+            <version>2.5</version>
+            <configuration>
+               <linkXref>false</linkXref>
+               <sourceEncoding>utf-8</sourceEncoding>
+               <minimumTokens>100</minimumTokens>
+               <targetJdk>1.6</targetJdk>
+               <rulesets>
+                  <ruleset>http://cer69-hudson2.cer69.recouv:80/pmd_rules/pmd_commons-parent.xml</ruleset>
+               </rulesets>
+            </configuration>
+         </plugin>
+      </plugins>
+   </reporting>
+
+   <distributionManagement>
+      <repository>
+         <id>nexus</id>
+         <name>Releases</name>
+         <url>http://cer69-nexus.cer69.recouv:8081/nexus/content/repositories/releases</url>
+      </repository>
+      <snapshotRepository>
+         <id>nexus</id>
+         <name>Snapshots</name>
+         <url>http://cer69-nexus.cer69.recouv:8081/nexus/content/repositories/snapshots</url>
+         <uniqueVersion>false</uniqueVersion>
+      </snapshotRepository>
+   </distributionManagement>
+   
 </project>

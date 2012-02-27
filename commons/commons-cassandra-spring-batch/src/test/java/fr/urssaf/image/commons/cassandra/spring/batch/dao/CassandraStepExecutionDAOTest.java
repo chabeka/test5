@@ -30,7 +30,7 @@ import com.netflix.curator.test.TestingServer;
 import fr.urssaf.image.commons.cassandra.spring.batch.idgenerator.JobExecutionIdGenerator;
 import fr.urssaf.image.commons.cassandra.spring.batch.idgenerator.JobInstanceIdGenerator;
 import fr.urssaf.image.commons.cassandra.spring.batch.idgenerator.StepExecutionIdGenerator;
-import fr.urssaf.image.commons.cassandra.spring.batch.idgenerator.ZookeeperClientFactory;
+import fr.urssaf.image.commons.zookeeper.ZookeeperClientFactory;
 
 public class CassandraStepExecutionDAOTest extends
       AbstractCassandraUnit4TestCase {

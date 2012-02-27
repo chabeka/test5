@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.netflix.curator.framework.CuratorFramework;
 import com.netflix.curator.test.TestingServer;
 
+import fr.urssaf.image.commons.zookeeper.ZookeeperClientFactory;
+
 public class JobExecutionIdGeneratorTest extends AbstractCassandraUnit4TestCase {
 
    private TestingServer zkServer;

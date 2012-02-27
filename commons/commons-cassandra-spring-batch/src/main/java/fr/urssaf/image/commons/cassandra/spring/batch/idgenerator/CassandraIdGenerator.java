@@ -10,6 +10,8 @@ import com.netflix.curator.framework.recipes.locks.InterProcessMutex;
 import com.netflix.curator.framework.state.ConnectionState;
 import com.netflix.curator.framework.state.ConnectionStateListener;
 
+import fr.urssaf.image.commons.zookeeper.ZookeeperMutex;
+
 import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
@@ -54,83 +56,35 @@ public class CassandraIdGenerator implements IdGenerator {
    @Override
    public final long getNextId() {
 
-      // Il faut obtenir un lock avant d'accéder à la séquence.
-      // La variable lockInfo est marquée "final", car sinon java ne peut pas y accéder
-      // depuis la classe anonyme suivante.
-      final LockInfo lockInfo = new LockInfo();
-
-      // Conformément aux recommandations d'utilisation de la classe de lock
-      // (https://github.com/Netflix/curator/wiki/Shared-lock)
-      // On capte les événements de déconnexion, car en cas de déconnexion, on
-      // n'est plus sûr d'avoir le lock
-
-      ConnectionStateListener stateListener = new ConnectionStateListener() {
-         @Override
-         public void stateChanged(CuratorFramework client,
-               ConnectionState newState) {
-            switch (newState) {
-            case SUSPENDED:
-            case LOST:
-               lockInfo.lockOk = false;
-               break;
-            case RECONNECTED:
-               lockInfo.lockOk = true;
-               break;
-            default:
-            }
-         }
-      };
-      curatorClient.getConnectionStateListenable().addListener(stateListener);
-
+      ZookeeperMutex mutex = new ZookeeperMutex(curatorClient, "/sequences/"
+            + sequenceName);
       try {
-
-         InterProcessMutex mutex = new InterProcessMutex(curatorClient,
-               "/sequences/" + sequenceName);
-         try {
-            if (!mutex.acquire(lockTimeOut, TimeUnit.SECONDS)) {
-               throw new IdGeneratorException(
-                     "Erreur lors de la tentative d'acquisition du lock pour la séquence "
-                           + sequenceName
-                           + " : on n'a pas obtenu le lock au bout de 20 secondes.");
-            }
-            // On a le lock.
-            // On lit la valeur courante de la séquence
-            long currentId = readCurrentSequenceValue();
-
-            // On écrit dans cassandra la valeur incrémentée
-            writeSequenceValue(currentId + 1);
-
-            // On vérifie qu'on a toujours le lock. Si oui, on peut utiliser la
-            // séquence. Pour cela, on force un événement ZK
-            curatorClient.sync("/sequences", null);
-            if (lockInfo.lockOk) {
-               // On peut utiliser la valeur incrémentée
-               return currentId + 1;
-            } else {
-               throw new IdGeneratorException(
-                     "Erreur lors de la tentative d'acquisition du lock pour la séquence "
-                           + sequenceName
-                           + ". Problème de connexion zookeeper ?");
-            }
-
-         } catch (Exception e) {
+         if (!mutex.acquire(lockTimeOut, TimeUnit.SECONDS)) {
             throw new IdGeneratorException(
                   "Erreur lors de la tentative d'acquisition du lock pour la séquence "
-                        + sequenceName, e);
-         } finally {
-            try {
-               if (mutex.isAcquiredInThisProcess()) {
-                  mutex.release();
-               }
-            } catch (Exception e) {
-               LOG.error(
-                     "Erreur lors de la libération du lock pour la séquence "
-                           + sequenceName, e);
-            }
+                        + sequenceName
+                        + " : on n'a pas obtenu le lock au bout de 20 secondes.");
          }
+         // On a le lock.
+         // On lit la valeur courante de la séquence
+         long currentId = readCurrentSequenceValue();
+
+         // On écrit dans cassandra la valeur incrémentée
+         writeSequenceValue(currentId + 1);
+
+         // On vérifie qu'on a toujours le lock. Si oui, on peut utiliser la
+         // séquence. Pour cela, on force un événement ZK
+         if (mutex.isObjectStillLocked(lockTimeOut, TimeUnit.SECONDS)) {
+            // On peut utiliser la valeur incrémentée
+            return currentId + 1;
+         } else {
+            throw new IdGeneratorException(
+                  "Erreur lors de la tentative d'acquisition du lock pour la séquence "
+                        + sequenceName + ". Problème de connexion zookeeper ?");
+         }
+
       } finally {
-         curatorClient.getConnectionStateListenable().removeListener(
-               stateListener);
+         mutex.release();
       }
    }
 
