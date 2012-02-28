@@ -3,8 +3,9 @@
  * ObjetNumeriqueConsultationTypeChoice_type0.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
+ * by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:23:23 CEST)
  */
+
             
                 package fr.cirtil.www.saeservice;
             
@@ -12,10 +13,9 @@
             /**
             *  ObjetNumeriqueConsultationTypeChoice_type0 bean class
             */
+            @SuppressWarnings({"unchecked","unused"})
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ObjetNumeriqueConsultationTypeChoice_type0
+        public  class ObjetNumeriqueConsultationTypeChoice_type0
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = objetNumeriqueConsultationTypeChoice_type0
@@ -23,15 +23,6 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                 Namespace Prefix = ns1
                 */
             
-
-        private static java.lang.String generatePrefix(java.lang.String namespace) {
-            if(namespace.equals("http://www.cirtil.fr/saeService")){
-                return "ns1";
-            }
-            return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
-        }
-
-        
             /** Whenever a new property is set ensure all others are unset
              *  There can be only one choice and the last one wins
              */
@@ -56,6 +47,11 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                            *   in the serialized XML
                            */
                            protected boolean localUrlTracker = false ;
+
+                           public boolean isUrlSpecified(){
+                               return localUrlTracker;
+                           }
+
                            
 
                            /**
@@ -75,14 +71,7 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                                public void setUrl(fr.cirtil.www.saeservice.UrlConsultationDirecteType param){
                             
                                 clearAllSettingTrackers();
-                            
-                                       if (param != null){
-                                          //update the setting tracker
-                                          localUrlTracker = true;
-                                       } else {
-                                          localUrlTracker = false;
-                                              
-                                       }
+                            localUrlTracker = param != null;
                                    
                                             this.localUrl=param;
                                     
@@ -102,6 +91,11 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                            *   in the serialized XML
                            */
                            protected boolean localContenuTracker = false ;
+
+                           public boolean isContenuSpecified(){
+                               return localContenuTracker;
+                           }
+
                            
 
                            /**
@@ -121,14 +115,7 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                                public void setContenu(javax.activation.DataHandler param){
                             
                                 clearAllSettingTrackers();
-                            
-                                       if (param != null){
-                                          //update the setting tracker
-                                          localContenuTracker = true;
-                                       } else {
-                                          localContenuTracker = false;
-                                              
-                                       }
+                            localContenuTracker = param != null;
                                    
                                             this.localContenu=param;
                                     
@@ -136,20 +123,6 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                                }
                             
 
-     /**
-     * isReaderMTOMAware
-     * @return true if the reader supports MTOM
-     */
-   public static boolean isReaderMTOMAware(javax.xml.stream.XMLStreamReader reader) {
-        boolean isReaderMTOMAware = false;
-        
-        try{
-          isReaderMTOMAware = java.lang.Boolean.TRUE.equals(reader.getProperty(org.apache.axiom.om.OMConstants.IS_DATA_HANDLERS_AWARE));
-        }catch(java.lang.IllegalArgumentException e){
-          isReaderMTOMAware = false;
-        }
-        return isReaderMTOMAware;
-   }
      
      
         /**
@@ -165,27 +138,19 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
 
         
                org.apache.axiom.om.OMDataSource dataSource =
-                       new org.apache.axis2.databinding.ADBDataSource(this,parentQName){
-
-                 public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       ObjetNumeriqueConsultationTypeChoice_type0.this.serialize(parentQName,factory,xmlWriter);
-                 }
-               };
-               return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
-               parentQName,factory,dataSource);
+                       new org.apache.axis2.databinding.ADBDataSource(this,parentQName);
+               return factory.createOMElement(dataSource,parentQName);
             
-       }
+        }
 
          public void serialize(final javax.xml.namespace.QName parentQName,
-                                       final org.apache.axiom.om.OMFactory factory,
-                                       org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
+                                       javax.xml.stream.XMLStreamWriter xmlWriter)
                                 throws javax.xml.stream.XMLStreamException, org.apache.axis2.databinding.ADBException{
-                           serialize(parentQName,factory,xmlWriter,false);
+                           serialize(parentQName,xmlWriter,false);
          }
 
          public void serialize(final javax.xml.namespace.QName parentQName,
-                               final org.apache.axiom.om.OMFactory factory,
-                               org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter,
+                               javax.xml.stream.XMLStreamWriter xmlWriter,
                                boolean serializeType)
             throws javax.xml.stream.XMLStreamException, org.apache.axis2.databinding.ADBException{
             
@@ -216,31 +181,20 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                                                  throw new org.apache.axis2.databinding.ADBException("url cannot be null!!");
                                             }
                                            localUrl.serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","url"),
-                                               factory,xmlWriter);
+                                               xmlWriter);
                                         } if (localContenuTracker){
                                     namespace = "http://www.cirtil.fr/saeService";
-                                    if (! namespace.equals("")) {
-                                        prefix = xmlWriter.getPrefix(namespace);
-
-                                        if (prefix == null) {
-                                            prefix = generatePrefix(namespace);
-
-                                            xmlWriter.writeStartElement(prefix,"contenu", namespace);
-                                            xmlWriter.writeNamespace(prefix, namespace);
-                                            xmlWriter.setPrefix(prefix, namespace);
-
-                                        } else {
-                                            xmlWriter.writeStartElement(namespace,"contenu");
-                                        }
-
-                                    } else {
-                                        xmlWriter.writeStartElement("contenu");
-                                    }
-                                
+                                    writeStartElement(null, namespace, "contenu", xmlWriter);
+                             
                                         
-                                    if (localContenu!=null)
-                                    {
-                                       xmlWriter.writeDataHandler(localContenu);
+                                    if (localContenu!=null)  {
+                                       try {
+                                           org.apache.axiom.util.stax.XMLStreamWriterUtils.writeDataHandler(xmlWriter, localContenu, null, true);
+                                       } catch (java.io.IOException ex) {
+                                           throw new javax.xml.stream.XMLStreamException("Unable to read data handler for contenu", ex);
+                                       }
+                                    } else {
+                                         
                                     }
                                  
                                    xmlWriter.writeEndElement();
@@ -248,36 +202,58 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
 
         }
 
-         /**
-          * Util method to write an attribute with the ns prefix
-          */
-          private void writeAttribute(java.lang.String prefix,java.lang.String namespace,java.lang.String attName,
-                                      java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
-              if (xmlWriter.getPrefix(namespace) == null) {
-                       xmlWriter.writeNamespace(prefix, namespace);
-                       xmlWriter.setPrefix(prefix, namespace);
-
-              }
-
-              xmlWriter.writeAttribute(namespace,attName,attValue);
-
-         }
+        private static java.lang.String generatePrefix(java.lang.String namespace) {
+            if(namespace.equals("http://www.cirtil.fr/saeService")){
+                return "ns1";
+            }
+            return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
+        }
 
         /**
-          * Util method to write an attribute without the ns prefix
-          */
-          private void writeAttribute(java.lang.String namespace,java.lang.String attName,
-                                      java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
-                if (namespace.equals(""))
-              {
-                  xmlWriter.writeAttribute(attName,attValue);
-              }
-              else
-              {
-                  registerPrefix(xmlWriter, namespace);
-                  xmlWriter.writeAttribute(namespace,attName,attValue);
-              }
-          }
+         * Utility method to write an element start tag.
+         */
+        private void writeStartElement(java.lang.String prefix, java.lang.String namespace, java.lang.String localPart,
+                                       javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
+            java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
+            if (writerPrefix != null) {
+                xmlWriter.writeStartElement(namespace, localPart);
+            } else {
+                if (namespace.length() == 0) {
+                    prefix = "";
+                } else if (prefix == null) {
+                    prefix = generatePrefix(namespace);
+                }
+
+                xmlWriter.writeStartElement(prefix, localPart, namespace);
+                xmlWriter.writeNamespace(prefix, namespace);
+                xmlWriter.setPrefix(prefix, namespace);
+            }
+        }
+        
+        /**
+         * Util method to write an attribute with the ns prefix
+         */
+        private void writeAttribute(java.lang.String prefix,java.lang.String namespace,java.lang.String attName,
+                                    java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
+            if (xmlWriter.getPrefix(namespace) == null) {
+                xmlWriter.writeNamespace(prefix, namespace);
+                xmlWriter.setPrefix(prefix, namespace);
+            }
+            xmlWriter.writeAttribute(namespace,attName,attValue);
+        }
+
+        /**
+         * Util method to write an attribute without the ns prefix
+         */
+        private void writeAttribute(java.lang.String namespace,java.lang.String attName,
+                                    java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
+            if (namespace.equals("")) {
+                xmlWriter.writeAttribute(attName,attValue);
+            } else {
+                registerPrefix(xmlWriter, namespace);
+                xmlWriter.writeAttribute(namespace,attName,attValue);
+            }
+        }
 
 
            /**
@@ -370,25 +346,26 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
         }
 
 
-         /**
+        /**
          * Register a namespace prefix
          */
-         private java.lang.String registerPrefix(javax.xml.stream.XMLStreamWriter xmlWriter, java.lang.String namespace) throws javax.xml.stream.XMLStreamException {
-                java.lang.String prefix = xmlWriter.getPrefix(namespace);
-
-                if (prefix == null) {
-                    prefix = generatePrefix(namespace);
-
-                    while (xmlWriter.getNamespaceContext().getNamespaceURI(prefix) != null) {
-                        prefix = org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
+        private java.lang.String registerPrefix(javax.xml.stream.XMLStreamWriter xmlWriter, java.lang.String namespace) throws javax.xml.stream.XMLStreamException {
+            java.lang.String prefix = xmlWriter.getPrefix(namespace);
+            if (prefix == null) {
+                prefix = generatePrefix(namespace);
+                javax.xml.namespace.NamespaceContext nsContext = xmlWriter.getNamespaceContext();
+                while (true) {
+                    java.lang.String uri = nsContext.getNamespaceURI(prefix);
+                    if (uri == null || uri.length() == 0) {
+                        break;
                     }
-
-                    xmlWriter.writeNamespace(prefix, namespace);
-                    xmlWriter.setPrefix(prefix, namespace);
+                    prefix = org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
                 }
-
-                return prefix;
+                xmlWriter.writeNamespace(prefix, namespace);
+                xmlWriter.setPrefix(prefix, namespace);
             }
+            return prefix;
+        }
 
 
   
@@ -464,7 +441,7 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                 java.util.Vector handledAttributes = new java.util.Vector();
                 
 
-                 
+                
                                     if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","url").equals(reader.getName())){
                                 
                                                 object.setUrl(fr.cirtil.www.saeservice.UrlConsultationDirecteType.Factory.parse(reader));
@@ -476,34 +453,8 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
                                         else
                                     
                                     if (reader.isStartElement() && new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","contenu").equals(reader.getName())){
-                                reader.next();
-                                    if (isReaderMTOMAware(reader)
-                                            &&
-                                            java.lang.Boolean.TRUE.equals(reader.getProperty(org.apache.axiom.om.OMConstants.IS_BINARY)))
-                                    {
-                                        //MTOM aware reader - get the datahandler directly and put it in the object
-                                        object.setContenu(
-                                                (javax.activation.DataHandler) reader.getProperty(org.apache.axiom.om.OMConstants.DATA_HANDLER));
-                                    } else {
-                                        if (reader.getEventType() == javax.xml.stream.XMLStreamConstants.START_ELEMENT && reader.getName().equals(new javax.xml.namespace.QName(org.apache.axiom.om.impl.MTOMConstants.XOP_NAMESPACE_URI, org.apache.axiom.om.impl.MTOMConstants.XOP_INCLUDE)))
-                                        {
-                                            java.lang.String id = org.apache.axiom.om.util.ElementHelper.getContentID(reader, "UTF-8");
-                                            object.setContenu(((org.apache.axiom.soap.impl.builder.MTOMStAXSOAPModelBuilder) ((org.apache.axiom.om.impl.llom.OMStAXWrapper) reader).getBuilder()).getDataHandler(id));
-                                            reader.next();
-                                            
-                                                reader.next();
-                                            
-                                        } else if(reader.hasText()) {
-                                            //Do the usual conversion
-                                            java.lang.String content = reader.getText();
-                                            object.setContenu(
-                                                    org.apache.axis2.databinding.utils.ConverterUtil.convertToBase64Binary(content));
-                                            
-                                                reader.next();
-                                            
-                                        }
-                                    }
-
+                                
+                                            object.setContenu(org.apache.axiom.util.stax.XMLStreamReaderUtils.getDataHandlerFromElement(reader));
                                       
                                         reader.next();
                                     
@@ -525,4 +476,4 @@ public class ObjetNumeriqueConsultationTypeChoice_type0
 
         }
            
-          
+    

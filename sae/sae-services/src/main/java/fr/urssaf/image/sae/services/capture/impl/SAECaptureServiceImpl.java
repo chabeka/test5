@@ -152,6 +152,9 @@ public class SAECaptureServiceImpl implements SAECaptureService {
       LOG.debug("{} - Liste des métadonnées : \"{}\"", prefixeTrc,
             buildMessageFromList(metadatas));
       LOG.debug("{} - Nom du fichier : \"{}\"", prefixeTrc, fileName);
+      if ( content != null ) {
+         LOG.debug("{} - Taille du contenu du fichier : \"{}\"", prefixeTrc, content);
+      }   
       // Fin des traces debug - entrée méthode
 
       controlesService.checkBinaryContent(content);

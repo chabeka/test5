@@ -3,8 +3,9 @@
  * ListeMetadonneeCodeType.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
+ * by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:23:23 CEST)
  */
+
             
                 package fr.cirtil.www.saeservice;
             
@@ -12,10 +13,9 @@
             /**
             *  ListeMetadonneeCodeType bean class
             */
+            @SuppressWarnings({"unchecked","unused"})
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ListeMetadonneeCodeType
+        public  class ListeMetadonneeCodeType
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = listeMetadonneeCodeType
@@ -23,15 +23,6 @@ public class ListeMetadonneeCodeType
                 Namespace Prefix = ns1
                 */
             
-
-        private static java.lang.String generatePrefix(java.lang.String namespace) {
-            if(namespace.equals("http://www.cirtil.fr/saeService")){
-                return "ns1";
-            }
-            return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
-        }
-
-        
 
                         /**
                         * field for MetadonneeCode
@@ -46,6 +37,11 @@ public class ListeMetadonneeCodeType
                            *   in the serialized XML
                            */
                            protected boolean localMetadonneeCodeTracker = false ;
+
+                           public boolean isMetadonneeCodeSpecified(){
+                               return localMetadonneeCodeTracker;
+                           }
+
                            
 
                            /**
@@ -77,14 +73,7 @@ public class ListeMetadonneeCodeType
                               
                                    validateMetadonneeCode(param);
 
-                               
-                                          if (param != null){
-                                             //update the setting tracker
-                                             localMetadonneeCodeTracker = true;
-                                          } else {
-                                             localMetadonneeCodeTracker = false;
-                                                 
-                                          }
+                               localMetadonneeCodeTracker = param != null;
                                       
                                       this.localMetadonneeCode=param;
                               }
@@ -115,20 +104,6 @@ public class ListeMetadonneeCodeType
                              }
                              
 
-     /**
-     * isReaderMTOMAware
-     * @return true if the reader supports MTOM
-     */
-   public static boolean isReaderMTOMAware(javax.xml.stream.XMLStreamReader reader) {
-        boolean isReaderMTOMAware = false;
-        
-        try{
-          isReaderMTOMAware = java.lang.Boolean.TRUE.equals(reader.getProperty(org.apache.axiom.om.OMConstants.IS_DATA_HANDLERS_AWARE));
-        }catch(java.lang.IllegalArgumentException e){
-          isReaderMTOMAware = false;
-        }
-        return isReaderMTOMAware;
-   }
      
      
         /**
@@ -144,27 +119,19 @@ public class ListeMetadonneeCodeType
 
         
                org.apache.axiom.om.OMDataSource dataSource =
-                       new org.apache.axis2.databinding.ADBDataSource(this,parentQName){
-
-                 public void serialize(org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
-                       ListeMetadonneeCodeType.this.serialize(parentQName,factory,xmlWriter);
-                 }
-               };
-               return new org.apache.axiom.om.impl.llom.OMSourcedElementImpl(
-               parentQName,factory,dataSource);
+                       new org.apache.axis2.databinding.ADBDataSource(this,parentQName);
+               return factory.createOMElement(dataSource,parentQName);
             
-       }
+        }
 
          public void serialize(final javax.xml.namespace.QName parentQName,
-                                       final org.apache.axiom.om.OMFactory factory,
-                                       org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter)
+                                       javax.xml.stream.XMLStreamWriter xmlWriter)
                                 throws javax.xml.stream.XMLStreamException, org.apache.axis2.databinding.ADBException{
-                           serialize(parentQName,factory,xmlWriter,false);
+                           serialize(parentQName,xmlWriter,false);
          }
 
          public void serialize(final javax.xml.namespace.QName parentQName,
-                               final org.apache.axiom.om.OMFactory factory,
-                               org.apache.axis2.databinding.utils.writer.MTOMAwareXMLStreamWriter xmlWriter,
+                               javax.xml.stream.XMLStreamWriter xmlWriter,
                                boolean serializeType)
             throws javax.xml.stream.XMLStreamException, org.apache.axis2.databinding.ADBException{
             
@@ -177,23 +144,7 @@ public class ListeMetadonneeCodeType
 
                     prefix = parentQName.getPrefix();
                     namespace = parentQName.getNamespaceURI();
-
-                    if ((namespace != null) && (namespace.trim().length() > 0)) {
-                        java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
-                        if (writerPrefix != null) {
-                            xmlWriter.writeStartElement(namespace, parentQName.getLocalPart());
-                        } else {
-                            if (prefix == null) {
-                                prefix = generatePrefix(namespace);
-                            }
-
-                            xmlWriter.writeStartElement(prefix, parentQName.getLocalPart(), namespace);
-                            xmlWriter.writeNamespace(prefix, namespace);
-                            xmlWriter.setPrefix(prefix, namespace);
-                        }
-                    } else {
-                        xmlWriter.writeStartElement(parentQName.getLocalPart());
-                    }
+                    writeStartElement(prefix, namespace, parentQName.getLocalPart(), xmlWriter);
                 
                   if (serializeType){
                
@@ -216,7 +167,7 @@ public class ListeMetadonneeCodeType
                                             for (int i = 0;i < localMetadonneeCode.length;i++){
                                                 if (localMetadonneeCode[i] != null){
                                                  localMetadonneeCode[i].serialize(new javax.xml.namespace.QName("http://www.cirtil.fr/saeService","metadonneeCode"),
-                                                           factory,xmlWriter);
+                                                           xmlWriter);
                                                 } else {
                                                    
                                                         // we don't have to do any thing since minOccures is zero
@@ -235,36 +186,58 @@ public class ListeMetadonneeCodeType
 
         }
 
-         /**
-          * Util method to write an attribute with the ns prefix
-          */
-          private void writeAttribute(java.lang.String prefix,java.lang.String namespace,java.lang.String attName,
-                                      java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
-              if (xmlWriter.getPrefix(namespace) == null) {
-                       xmlWriter.writeNamespace(prefix, namespace);
-                       xmlWriter.setPrefix(prefix, namespace);
-
-              }
-
-              xmlWriter.writeAttribute(namespace,attName,attValue);
-
-         }
+        private static java.lang.String generatePrefix(java.lang.String namespace) {
+            if(namespace.equals("http://www.cirtil.fr/saeService")){
+                return "ns1";
+            }
+            return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
+        }
 
         /**
-          * Util method to write an attribute without the ns prefix
-          */
-          private void writeAttribute(java.lang.String namespace,java.lang.String attName,
-                                      java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
-                if (namespace.equals(""))
-              {
-                  xmlWriter.writeAttribute(attName,attValue);
-              }
-              else
-              {
-                  registerPrefix(xmlWriter, namespace);
-                  xmlWriter.writeAttribute(namespace,attName,attValue);
-              }
-          }
+         * Utility method to write an element start tag.
+         */
+        private void writeStartElement(java.lang.String prefix, java.lang.String namespace, java.lang.String localPart,
+                                       javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException {
+            java.lang.String writerPrefix = xmlWriter.getPrefix(namespace);
+            if (writerPrefix != null) {
+                xmlWriter.writeStartElement(namespace, localPart);
+            } else {
+                if (namespace.length() == 0) {
+                    prefix = "";
+                } else if (prefix == null) {
+                    prefix = generatePrefix(namespace);
+                }
+
+                xmlWriter.writeStartElement(prefix, localPart, namespace);
+                xmlWriter.writeNamespace(prefix, namespace);
+                xmlWriter.setPrefix(prefix, namespace);
+            }
+        }
+        
+        /**
+         * Util method to write an attribute with the ns prefix
+         */
+        private void writeAttribute(java.lang.String prefix,java.lang.String namespace,java.lang.String attName,
+                                    java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
+            if (xmlWriter.getPrefix(namespace) == null) {
+                xmlWriter.writeNamespace(prefix, namespace);
+                xmlWriter.setPrefix(prefix, namespace);
+            }
+            xmlWriter.writeAttribute(namespace,attName,attValue);
+        }
+
+        /**
+         * Util method to write an attribute without the ns prefix
+         */
+        private void writeAttribute(java.lang.String namespace,java.lang.String attName,
+                                    java.lang.String attValue,javax.xml.stream.XMLStreamWriter xmlWriter) throws javax.xml.stream.XMLStreamException{
+            if (namespace.equals("")) {
+                xmlWriter.writeAttribute(attName,attValue);
+            } else {
+                registerPrefix(xmlWriter, namespace);
+                xmlWriter.writeAttribute(namespace,attName,attValue);
+            }
+        }
 
 
            /**
@@ -357,25 +330,26 @@ public class ListeMetadonneeCodeType
         }
 
 
-         /**
+        /**
          * Register a namespace prefix
          */
-         private java.lang.String registerPrefix(javax.xml.stream.XMLStreamWriter xmlWriter, java.lang.String namespace) throws javax.xml.stream.XMLStreamException {
-                java.lang.String prefix = xmlWriter.getPrefix(namespace);
-
-                if (prefix == null) {
-                    prefix = generatePrefix(namespace);
-
-                    while (xmlWriter.getNamespaceContext().getNamespaceURI(prefix) != null) {
-                        prefix = org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
+        private java.lang.String registerPrefix(javax.xml.stream.XMLStreamWriter xmlWriter, java.lang.String namespace) throws javax.xml.stream.XMLStreamException {
+            java.lang.String prefix = xmlWriter.getPrefix(namespace);
+            if (prefix == null) {
+                prefix = generatePrefix(namespace);
+                javax.xml.namespace.NamespaceContext nsContext = xmlWriter.getNamespaceContext();
+                while (true) {
+                    java.lang.String uri = nsContext.getNamespaceURI(prefix);
+                    if (uri == null || uri.length() == 0) {
+                        break;
                     }
-
-                    xmlWriter.writeNamespace(prefix, namespace);
-                    xmlWriter.setPrefix(prefix, namespace);
+                    prefix = org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
                 }
-
-                return prefix;
+                xmlWriter.writeNamespace(prefix, namespace);
+                xmlWriter.setPrefix(prefix, namespace);
             }
+            return prefix;
+        }
 
 
   
@@ -484,7 +458,7 @@ public class ListeMetadonneeCodeType
                 java.util.Vector handledAttributes = new java.util.Vector();
                 
 
-                 
+                
                     
                     reader.next();
                 
@@ -541,7 +515,7 @@ public class ListeMetadonneeCodeType
                             
                                 if (reader.isStartElement())
                                 // A start element we are not expecting indicates a trailing invalid property
-                                throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getLocalName());
+                                throw new org.apache.axis2.databinding.ADBException("Unexpected subelement " + reader.getName());
                             
 
 
@@ -559,4 +533,4 @@ public class ListeMetadonneeCodeType
 
         }
            
-          
+    

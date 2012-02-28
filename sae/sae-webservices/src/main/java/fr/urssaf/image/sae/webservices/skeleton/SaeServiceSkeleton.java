@@ -235,13 +235,13 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       return response;
    }
    
-   private final ArchivageUnitairePJResponse archivageUnitairePJ(
+   private ArchivageUnitairePJResponse archivageUnitairePJ(
          ArchivageUnitairePJ request) throws AxisFault {
       
       // Mise en place du contexte pour les traces
       try {
          // Traces debug - entrée méthode
-         String prefixeTrc = "Opération archivageUnitairePJSecure()";
+         String prefixeTrc = "Opération archivageUnitairePJ()";
          LOG.debug("{} - Début", prefixeTrc);
          boolean dfceUp = dfceInfoService.isDfceUp();
          if (!dfceUp) {

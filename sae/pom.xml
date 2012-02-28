@@ -395,7 +395,8 @@
       http://ws.apache.org/axis/
       ==========================================
       -->
-      <axis2.version>1.5.4</axis2.version>
+      <!--<axis2.version>1.5.4</axis2.version>-->
+      <axis2.version>1.6.1</axis2.version>
       <axis-wsdl4j.version>1.5.1</axis-wsdl4j.version>
       
       <!-- Modèles de dépendance :

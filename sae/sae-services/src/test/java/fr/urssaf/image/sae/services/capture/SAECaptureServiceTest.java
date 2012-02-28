@@ -428,7 +428,6 @@ public class SAECaptureServiceTest {
       byte[] content = new byte[16384];
       String hash = DigestUtils.shaHex(content);
       metadatas.add(new UntypedMetadata("Hash", hash));
-      //metadatas.add(new UntypedMetadata("NomFichier", fileNameEmpty));
       service.captureBinaire(metadatas, content, fileNameEmpty);
       
    }
@@ -447,9 +446,28 @@ public class SAECaptureServiceTest {
       byte[] content = new byte[16];
       String hash = DigestUtils.shaHex(content);
       metadatas.add(new UntypedMetadata("Hash", hash));
-      //metadatas.add(new UntypedMetadata("NomFichier", fileNameEmpty));
       service.captureBinaire(metadatas, content, fileNameEmpty);
       
    }
+   
+   @Test(expected = EmptyDocumentEx.class)
+   public void captureBinaireContent0octet() throws SAECaptureServiceEx,
+         ReferentialRndException, UnknownCodeRndEx, RequiredStorageMetadataEx,
+         InvalidValueTypeAndFormatMetadataEx, UnknownMetadataEx,
+         DuplicatedMetadataEx, NotSpecifiableMetadataEx, EmptyDocumentEx,
+         RequiredArchivableMetadataEx, NotArchivableMetadataEx,
+         UnknownHashCodeEx, IOException,EmptyFileNameEx {
+      
+      List<UntypedMetadata> metadatas = getListMetadata();
+      
+      String fileNameEmpty = "NomExtension.pdf";
+      byte[] content = new byte[0];
+      String hash = DigestUtils.shaHex(content);
+      metadatas.add(new UntypedMetadata("Hash", hash));
+      service.captureBinaire(metadatas, content, fileNameEmpty);
+      
+   }
+   
+   
    
 }

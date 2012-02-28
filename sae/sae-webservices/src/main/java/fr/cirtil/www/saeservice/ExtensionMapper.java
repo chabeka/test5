@@ -3,7 +3,7 @@
  * ExtensionMapper.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.5.4  Built on : Dec 19, 2010 (08:19:26 CET)
+ * by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:23:23 CEST)
  */
 
         
@@ -12,10 +12,9 @@
             /**
             *  ExtensionMapper class
             */
+            @SuppressWarnings({"unchecked","unused"})
         
-// CHECKSTYLE:OFF
-@SuppressWarnings("all")
-public class ExtensionMapper{
+        public  class ExtensionMapper{
 
           public static java.lang.Object getTypeObject(java.lang.String namespaceURI,
                                                        java.lang.String typeName,
