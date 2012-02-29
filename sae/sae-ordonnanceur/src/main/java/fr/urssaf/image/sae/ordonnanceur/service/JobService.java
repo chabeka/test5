@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.ordonnanceur.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public interface JobService {
     * 
     * @return liste des travaux en cours d'exécution
     */
-   List<JobExecution> recupJobEnCours();
+   Collection<JobExecution> recupJobEnCours();
 
    /**
     * Renvoie une map de tous les travaux qui n'ont pas été lancés, avec en clé
