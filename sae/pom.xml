@@ -491,6 +491,7 @@
       <module>sae-services-executable</module> <!-- dépendance sur sae-services -->
       <module>sae-webservices</module>
       <module>sae-dfce-admin-exploit</module>
+      <module>sae-ordonnanceur</module>
       
       <!-- Le module du livrable -->
       <module>sae-livrable</module>
