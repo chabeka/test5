@@ -14,10 +14,21 @@
 
    <dependencies>
 
+      <!-- CASSANDRA -->
+
       <dependency>
          <groupId>fr.urssaf.image.commons</groupId>
          <artifactId>commons-cassandra-spring-batch</artifactId>
          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
+
+      <!-- SPRING -->
+
+      <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-test</artifactId>
+         <version>${spring.framework.version}</version>
+         <scope>test</scope>
       </dependency>
 
    </dependencies>
