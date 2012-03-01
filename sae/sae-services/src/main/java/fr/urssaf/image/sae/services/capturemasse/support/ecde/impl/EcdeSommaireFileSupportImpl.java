@@ -23,7 +23,7 @@ public class EcdeSommaireFileSupportImpl implements EcdeSommaireFileSupport {
     * {@inheritDoc}
     */
    @Override
-   public File convertURLtoFile(URI sommaireURL)
+   public final File convertURLtoFile(URI sommaireURL)
          throws CaptureMasseSommaireEcdeURLException,
          CaptureMasseSommaireFileNotFoundException {
       // FIXME FBON - Implémentation convertURLtoFile

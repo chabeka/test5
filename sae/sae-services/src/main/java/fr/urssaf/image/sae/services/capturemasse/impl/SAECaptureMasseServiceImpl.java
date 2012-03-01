@@ -24,18 +24,18 @@ import fr.urssaf.image.sae.services.capturemasse.exception.CaptureMasseSommaireF
 @Service
 public class SAECaptureMasseServiceImpl implements SAECaptureMasseService {
 
-   /**
-    * Executable du traitement de capture de masse
-    */
-   @Autowired
-   private JobLauncher jobLauncher;
-
-   /**
-    * Job de la capture de masse
-    */
-   @Autowired
-   @Qualifier("capture_masse")
-   private Job job;
+   // /**
+   // * Executable du traitement de capture de masse
+   // */
+   // @Autowired
+   // private JobLauncher jobLauncher;
+   //
+   // /**
+   // * Job de la capture de masse
+   // */
+   // @Autowired
+   // @Qualifier("capture_masse")
+   // private Job job;
 
    /**
     * {@inheritDoc}

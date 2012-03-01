@@ -8,12 +8,11 @@ import java.net.URI;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import fr.urssaf.image.sae.services.capturemasse.support.ecde.EcdeSommaireFileSupport;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 
 /**
  * Classe de validation des arguments en entrée des implémentations du service
- * {@link EcdeSommaireFileSupport}. La validation est basée sur la programmation
+ * {@link fr.urssaf.image.sae.services.capturemasse.support.ecde.EcdeSommaireFileSupport}. La validation est basée sur la programmation
  * Aspect
  * 
  */

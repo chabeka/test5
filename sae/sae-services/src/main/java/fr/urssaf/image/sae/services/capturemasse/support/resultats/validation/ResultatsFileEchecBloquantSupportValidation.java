@@ -9,12 +9,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.services.capturemasse.exception.CaptureMasseSommaireFormatValidationException;
-import fr.urssaf.image.sae.services.capturemasse.support.resultats.ResultatsFileEchecBloquantSupport;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 
 /**
  * Validation des arguments passés en entrée de l'implémentation du service
- * {@link ResultatsFileEchecBloquantSupport}. La validation est basée sur la
+ * {@link fr.urssaf.image.sae.services.capturemasse.support.resultats.ResultatsFileEchecBloquantSupport}. La validation est basée sur la
  * programmation Aspect
  * 
  */

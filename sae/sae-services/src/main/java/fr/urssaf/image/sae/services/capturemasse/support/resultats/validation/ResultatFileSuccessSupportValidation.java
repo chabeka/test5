@@ -10,12 +10,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 import fr.urssaf.image.sae.services.capturemasse.model.CaptureMasseIntegratedDocument;
-import fr.urssaf.image.sae.services.capturemasse.support.resultats.ResultatFileSuccessSupport;
 import fr.urssaf.image.sae.services.util.ResourceMessagesUtils;
 
 /**
  * Validation des arguments en entrée des implémentations du service
- * {@link ResultatFileSuccessSupport}. La validation est basée sur la
+ * {@link fr.urssaf.image.sae.services.capturemasse.support.resultats.ResultatFileSuccessSupport}. La validation est basée sur la
  * programmation orientée Aspect
  * 
  */

@@ -11,6 +11,12 @@ public class CaptureMasseSommaireEcdeURLException extends Exception {
 
    private static final long serialVersionUID = 1L;
 
+   /**
+    * Constructeur
+    * 
+    * @param url
+    *           url du sommaire
+    */
    public CaptureMasseSommaireEcdeURLException(String url) {
       super("l'URL ECDE " + url + " est incorrecte ");
    }
