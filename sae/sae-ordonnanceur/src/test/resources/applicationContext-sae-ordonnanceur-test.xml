@@ -7,6 +7,42 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-   <import resource="applicationContext-sae-ordonnanceur.xml" />
+   <import resource="applicationContext-sae-ordonnanceur-service.xml" />
+
+   <!-- configuration de ECDE -->
+
+   <bean id="ecdeSource1" class="fr.urssaf.image.sae.ecde.modele.source.EcdeSource">
+
+      <constructor-arg value="ecde.cer69.recouv" />
+      <constructor-arg value="base" />
+      <constructor-arg value="true" />
+
+   </bean>
+
+   <bean id="ecdeSource2" class="fr.urssaf.image.sae.ecde.modele.source.EcdeSource">
+
+      <constructor-arg value="ecde.cer44.recouv" />
+      <constructor-arg value="base" />
+      <constructor-arg value="false" />
+
+   </bean>
+
+   <bean id="ecdeSource3" class="fr.urssaf.image.sae.ecde.modele.source.EcdeSource">
+
+      <constructor-arg value="ecde.cer34.recouv" />
+      <constructor-arg value="base" />
+      <constructor-arg value="false" />
+
+   </bean>
+
+   <bean id="ecdeSources" class="fr.urssaf.image.sae.ecde.modele.source.EcdeSources">
+      <property name="sources">
+         <array>
+            <ref bean="ecdeSource1" />
+            <ref bean="ecdeSource2" />
+            <ref bean="ecdeSource3" />
+         </array>
+      </property>
+   </bean>
 
 </beans>

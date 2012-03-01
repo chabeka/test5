@@ -10,4 +10,22 @@ public class AucunJobALancerException extends Exception {
 
    private static final long serialVersionUID = 1L;
 
+   private static final String EXCEPTION_MESSAGE = "Il n'y a aucun traitement à lancer";
+
+   /**
+    * 
+    * {@inheritDoc} <br>
+    * <br>
+    * Le message est formaté sur le modèle {@value #EXCEPTION_MESSAGE}
+    * 
+    * 
+    */
+   @Override
+   public final String getMessage() {
+
+      String message = EXCEPTION_MESSAGE;
+
+      return message;
+   }
+
 }

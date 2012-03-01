@@ -7,17 +7,8 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-   <import resource="applicationContext-sae-ordonnanceur-service.xml" />
+   <context:component-scan base-package="fr.urssaf.image.sae.ordonnanceur" />
 
-   <!-- configuration ECDE -->
-   <bean id="ecdeSourceManager" class="fr.urssaf.image.sae.ecde.EcdeSourceManagerImpl" />
-   <bean id="ecdeConfigFile" class="java.io.File">
-      <constructor-arg value="${sae.ecde.cheminFichierConfig}" />
-   </bean>
-   <bean id="ecdeSources" factory-bean="ecdeSourceManager"
-      factory-method="load">
-      <constructor-arg ref="ecdeConfigFile" />
-   </bean>
-
+   <import resource="applicationContext-commons-cassandra-spring-batch.xml" />
 
 </beans>
