@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.ordonnanceur.service;
 
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import fr.urssaf.image.commons.cassandra.spring.batch.dao.CassandraJobInstanceDa
 import fr.urssaf.image.commons.cassandra.spring.batch.dao.CassandraStepExecutionDao;
 import fr.urssaf.image.sae.ordonnanceur.exception.JobDejaReserveException;
 import fr.urssaf.image.sae.ordonnanceur.exception.JobInexistantException;
+import fr.urssaf.image.sae.ordonnanceur.util.HostUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -61,7 +63,8 @@ public class JobServiceTest {
    public void after() {
 
       // suppression du traitement
-      if (jobInstance != null) {
+      if (jobInstance != null
+            && jobInstanceDao.getJobInstance(jobInstance.getId()) != null) {
 
          jobInstanceDao.deleteJobInstance(jobInstance.getId(), jobExecutionDao,
                stepExecutionDao);
@@ -103,9 +106,82 @@ public class JobServiceTest {
 
    @Test
    public void reserveJob_success() throws JobInexistantException,
-         JobDejaReserveException {
+         JobDejaReserveException, UnknownHostException {
 
-      long idJob = 1;
+      long idJob = jobInstance.getId();
       jobService.reserveJob(idJob);
+
+      String reservingServer = jobInstanceDao.getReservingServer(idJob);
+
+      String serverName = HostUtils.getLocalHostName();
+
+      Assert.assertEquals("le traitement doit être réservé", serverName,
+            reservingServer);
+
+   }
+
+   @Test
+   public void reserveJob_failure_jobInexistantException()
+         throws JobDejaReserveException {
+
+      long idJob = jobInstance.getId();
+
+      // on s'assure que le traitement n'existe pas!
+      jobInstanceDao.deleteJobInstance(jobInstance.getId(), jobExecutionDao,
+            stepExecutionDao);
+
+      try {
+         jobService.reserveJob(idJob);
+
+         Assert
+               .fail("une exception de type JobInexistantException doit être levée");
+
+      } catch (JobInexistantException e) {
+
+         Assert.assertEquals("le message de l'exception est inattendu",
+               "Impossible de lancer le traitement n°" + idJob
+                     + " car il n'existe pas.", e.getMessage());
+
+         Assert.assertEquals("l'instance du job est incorrect", idJob, e
+               .getInstanceId());
+
+      }
+
+   }
+
+   @Test
+   public void reserveJob_failure_jobDejaReserveException()
+         throws JobDejaReserveException, UnknownHostException,
+         JobInexistantException {
+
+      long idJob = jobInstance.getId();
+
+      // réserve une premiere fois le traitement
+      jobService.reserveJob(idJob);
+
+      try {
+         // réserve une seconde fois le même fois le traitement
+         jobService.reserveJob(idJob);
+
+         Assert
+               .fail("une exception de type JobDejaReserveException doit être levée");
+
+      } catch (JobDejaReserveException e) {
+
+         String reservingServer = jobInstanceDao.getReservingServer(idJob);
+
+         Assert.assertEquals("le message de l'exception est inattendu",
+               "Le traitement n°" + idJob
+                     + " est déjà réservé par le serveur '" + reservingServer
+                     + "'.", e.getMessage());
+
+         Assert.assertEquals("l'instance du job est incorrect", idJob, e
+               .getInstanceId());
+
+         Assert.assertEquals("le nom du serveur est incorrect",
+               reservingServer, e.getServer());
+
+      }
+
    }
 }
