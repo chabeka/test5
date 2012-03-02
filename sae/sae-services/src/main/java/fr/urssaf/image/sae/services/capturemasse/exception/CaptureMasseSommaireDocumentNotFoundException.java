@@ -17,7 +17,7 @@ public class CaptureMasseSommaireDocumentNotFoundException extends Exception {
     * @param cheminRelatif
     *           chemin relatif du document
     */
-   public CaptureMasseSommaireDocumentNotFoundException(String cheminRelatif) {
+   public CaptureMasseSommaireDocumentNotFoundException(final String cheminRelatif) {
       super("Le fichier document " + cheminRelatif + " est introuvable");
    }
 

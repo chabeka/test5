@@ -17,7 +17,7 @@ public class CaptureMasseSommaireFileNotFoundException extends Exception {
     * @param url
     *           url du fichier sommaire.xml
     */
-   public CaptureMasseSommaireFileNotFoundException(String url) {
+   public CaptureMasseSommaireFileNotFoundException(final String url) {
       super("Le fichier sommaire " + url + " est introuvable");
    }
 

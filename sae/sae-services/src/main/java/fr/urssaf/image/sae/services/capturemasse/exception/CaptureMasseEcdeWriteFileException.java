@@ -17,7 +17,7 @@ public class CaptureMasseEcdeWriteFileException extends Exception {
     * @param url
     *           url du répertoire de traitement
     */
-   public CaptureMasseEcdeWriteFileException(String url) {
+   public CaptureMasseEcdeWriteFileException(final String url) {
       super("Le SAE ne dispose pas des droits "
             + "d'écriture dans le répertoire de traitement ECDE " + url);
    }

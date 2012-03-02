@@ -16,8 +16,8 @@ public class CaptureMasseSommaireDocumentException extends Exception {
 
    private static final long serialVersionUID = 1L;
 
-   private int index;
-   private DocumentType documentType;
+   private final int index;
+   private final DocumentType documentType;
 
    /**
     * Constructeur
@@ -29,8 +29,8 @@ public class CaptureMasseSommaireDocumentException extends Exception {
     * @param documentType
     *           Le document du fichier sommaire.xml où l'erreur a eu lieu
     */
-   public CaptureMasseSommaireDocumentException(int index, Exception cause,
-         DocumentType documentType) {
+   public CaptureMasseSommaireDocumentException(final int index, final Exception cause,
+         final DocumentType documentType) {
 
       super(cause);
 

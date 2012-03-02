@@ -17,7 +17,7 @@ public class CaptureMasseSommaireEcdeURLException extends Exception {
     * @param url
     *           url du sommaire
     */
-   public CaptureMasseSommaireEcdeURLException(String url) {
+   public CaptureMasseSommaireEcdeURLException(final String url) {
       super("l'URL ECDE " + url + " est incorrecte ");
    }
 

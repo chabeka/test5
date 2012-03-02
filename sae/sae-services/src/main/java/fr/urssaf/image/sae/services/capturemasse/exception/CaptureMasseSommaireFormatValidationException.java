@@ -17,7 +17,7 @@ public class CaptureMasseSommaireFormatValidationException extends Exception {
     * @param url
     *           url du fichier sommaire.xml
     */
-   public CaptureMasseSommaireFormatValidationException(String url) {
+   public CaptureMasseSommaireFormatValidationException(final String url) {
       super("Le format du fichier sommaire.xml " + url + " est invalide");
    }
 

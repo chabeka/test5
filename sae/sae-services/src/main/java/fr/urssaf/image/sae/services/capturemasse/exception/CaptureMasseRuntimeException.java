@@ -27,7 +27,7 @@ public class CaptureMasseRuntimeException extends RuntimeException {
     * @param cause
     *           cause de l'exception
     */
-   public CaptureMasseRuntimeException(Throwable cause) {
+   public CaptureMasseRuntimeException(final Throwable cause) {
       super(MESSAGE, cause);
    }
 
