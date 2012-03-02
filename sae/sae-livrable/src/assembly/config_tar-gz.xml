@@ -46,7 +46,14 @@
          </includes>
          <outputDirectory>sae-services-executable</outputDirectory>
       </fileSet>
-            
+
+      <fileSet>
+         <directory>src/scripts/</directory>
+         <includes>
+            <include>check_dfce_jobs.sh</include>
+         </includes>
+         <outputDirectory>scripts</outputDirectory>
+      </fileSet>
    </fileSets>
    
    <files>
