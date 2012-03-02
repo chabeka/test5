@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.ordonnanceur.service.impl;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,8 +31,9 @@ public class DecisionServiceImpl implements DecisionService {
     * {@inheritDoc}
     */
    @Override
-   public final long trouverJobALancer(Map<String, List<JobInstance>> mapJobs,
-         List<JobExecution> jobsEnCours) throws AucunJobALancerException {
+   public final JobInstance trouverJobALancer(
+         Map<String, List<JobInstance>> mapJobs,
+         Collection<JobExecution> jobsEnCours) throws AucunJobALancerException {
 
       // vérification que des traitements sont à lancer
       if (mapJobs == null) {
@@ -80,9 +82,7 @@ public class DecisionServiceImpl implements DecisionService {
       // on trie les traitements en attente en fonction de leur identifiant
       Collections.sort(jobInstances, new JobInstanceComparator());
 
-      long idJobAlancer = jobInstances.get(0).getId();
-
-      return idJobAlancer;
+      return jobInstances.get(0);
    }
 
    private static class JobInstanceComparator implements

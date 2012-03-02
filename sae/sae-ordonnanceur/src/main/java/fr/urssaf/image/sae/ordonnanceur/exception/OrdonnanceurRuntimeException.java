@@ -18,4 +18,15 @@ public class OrdonnanceurRuntimeException extends RuntimeException {
       super(cause);
    }
 
+   /**
+    * 
+    * @param message
+    *           message de l'exception
+    * @param cause
+    *           exception levée
+    */
+   public OrdonnanceurRuntimeException(String message, Throwable cause) {
+      super(message, cause);
+   }
+
 }

@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.ordonnanceur.support;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -8,6 +9,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -97,7 +99,7 @@ public class CaptureMasseSupport {
     * @return traitements de capture en masse filtrés
     */
    public final List<JobExecution> filtrerJobExecutionByECDELocal(
-         List<JobExecution> jobExecutions) {
+         Collection<JobExecution> jobExecutions) {
 
       @SuppressWarnings("unchecked")
       List<JobExecution> jobCaptureMasse = (List<JobExecution>) CollectionUtils

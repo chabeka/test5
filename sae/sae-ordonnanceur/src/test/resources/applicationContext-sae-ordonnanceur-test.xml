@@ -45,4 +45,11 @@
       </property>
    </bean>
 
+   <!-- configuration de lancement du traitement de capture en masse -->
+
+   <bean id="captureMasseLauncher" factory-bean="serviceMockFactory"
+      factory-method="createTraitementLauncherSupport">
+      <qualifier value="captureMasseLauncher" />
+   </bean>
+
 </beans>

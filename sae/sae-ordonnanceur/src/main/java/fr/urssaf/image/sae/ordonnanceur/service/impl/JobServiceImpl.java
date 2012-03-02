@@ -106,8 +106,6 @@ public class JobServiceImpl implements JobService {
          throw new OrdonnanceurRuntimeException(e);
       }
 
-      // TODO locker la table JonInstance avec Zookeeper
-
       // vérification que le job existe bien dans la table JobInstance
       JobInstance jobInstance = jobInstanceDao.getJobInstance(idJob);
       if (jobInstance == null) {
@@ -128,8 +126,6 @@ public class JobServiceImpl implements JobService {
          throw new JobDejaReserveException(idJob, reservingServer);
 
       }
-
-      // TODO libérer le lock la table JonInstance avec Zookeeper
 
    }
 

@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.ordonnanceur.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +25,10 @@ public interface DecisionService {
     *           la liste des travaux associés
     * @param jobsEnCours
     *           liste des travaux en cours
-    * @return identifiant du job à lancer
+    * @return job à lancer
     * @throws AucunJobALancerException
     *            Exception levée si aucun job n'est à lancer
     */
-   long trouverJobALancer(Map<String, List<JobInstance>> mapJobs,
-         List<JobExecution> jobsEnCours) throws AucunJobALancerException;
+   JobInstance trouverJobALancer(Map<String, List<JobInstance>> mapJobs,
+         Collection<JobExecution> jobsEnCours) throws AucunJobALancerException;
 }

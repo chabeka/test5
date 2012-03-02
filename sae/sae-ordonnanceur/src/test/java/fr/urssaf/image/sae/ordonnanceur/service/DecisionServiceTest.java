@@ -21,7 +21,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import fr.urssaf.image.sae.ordonnanceur.exception.AucunJobALancerException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-sae-ordonnanceur-test.xml" })
+@ContextConfiguration(locations = {
+      "/applicationContext-sae-ordonnanceur-test.xml",
+      "/applicationContext-sae-ordonnanceur-cassandra-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class DecisionServiceTest {
 
@@ -59,10 +61,10 @@ public class DecisionServiceTest {
 
       mapJobs.put(CAPTURE_MASSE_JN, jobCaptureMasse);
 
-      long idJob = decisionService.trouverJobALancer(mapJobs, jobsEnCours);
+      JobInstance job = decisionService.trouverJobALancer(mapJobs, jobsEnCours);
 
-      Assert.assertEquals("l'identifiant du job à lancer est inattendu", 256,
-            idJob);
+      Assert.assertEquals("l'identifiant du job à lancer est inattendu", Long
+            .valueOf(256), job.getId());
 
    }
 
@@ -70,13 +72,23 @@ public class DecisionServiceTest {
     * aucun traitement en attente
     * 
     */
-   @Test(expected = AucunJobALancerException.class)
-   public void decisionService_failure_noJobEnAttente_noJob()
-         throws AucunJobALancerException {
+   @Test
+   public void decisionService_failure_noJobEnAttente_noJob() {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
 
-      decisionService.trouverJobALancer(null, jobsEnCours);
+      try {
+
+         decisionService.trouverJobALancer(null, jobsEnCours);
+
+         Assert
+               .fail("une exception de type AucunJobALancerException doit être levée");
+
+      } catch (AucunJobALancerException e) {
+
+         Assert.assertEquals("le message de l'exception est inattendu",
+               "Il n'y a aucun traitement à lancer", e.getMessage());
+      }
 
    }
 
