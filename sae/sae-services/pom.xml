@@ -17,6 +17,68 @@
 
    <description>Archive contenant les services capture, capture en masse, recherche, consultation.</description>
 
+
+   <profiles>
+      <profile>
+         <id>genererCodeModeleSommaireEtResultat</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>com.sun.tools.xjc.maven2</groupId>
+                  <artifactId>maven-jaxb-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>generate</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <schemaDirectory>${basedir}/src/main/resources/xsd_som_res</schemaDirectory>
+                     <generateDirectory>${basedir}/src/main/java</generateDirectory>
+                     <includeSchemas>
+                        <includeSchema>commun_sommaire_et_resultat.xsd</includeSchema>
+                        <includeSchema>sommaire.xsd</includeSchema>
+                        <includeSchema>resultats.xsd</includeSchema>
+                     </includeSchemas>
+                  </configuration>
+               </plugin>
+
+               <plugin>
+                  <inherited>true</inherited>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <configuration>
+                     <encoding>${file.encoding}</encoding>
+                  </configuration>
+               </plugin>
+
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-antrun-plugin</artifactId>
+                  <version>1.6</version>
+                  <executions>
+                     <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                           <target name="suppressWarnings('PMD')">
+                              <replace dir="${basedir}/src/main/java"
+                                 includes="fr/urssaf/image/sae/services/capturemasse/modele/*/*.java" token="public class"
+                                 value="@SuppressWarnings(&quot;PMD&quot;)&#xA;public class" />
+                           </target>
+                        </configuration>
+                        <goals>
+                           <goal>run</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
    <build>
       <plugins>
          <!-- COMPILATION ASPECT -->
@@ -167,7 +229,7 @@
          <artifactId>spring-beans</artifactId>
          <version>${spring.framework.version}</version>
       </dependency>
-      
+
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
@@ -180,7 +242,7 @@
          <version>${spring.framework.version}</version>
          <scope>test</scope>
       </dependency>
-      
+
       <dependency>
          <groupId>org.springframework.batch</groupId>
          <artifactId>spring-batch-core</artifactId>
