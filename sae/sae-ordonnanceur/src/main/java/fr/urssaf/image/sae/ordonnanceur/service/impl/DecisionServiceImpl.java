@@ -1,10 +1,10 @@
 package fr.urssaf.image.sae.ordonnanceur.service.impl;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.batch.core.JobExecution;
@@ -31,31 +31,21 @@ public class DecisionServiceImpl implements DecisionService {
     * {@inheritDoc}
     */
    @Override
-   public final JobInstance trouverJobALancer(
-         Map<String, List<JobInstance>> mapJobs,
+   public final JobInstance trouverJobALancer(List<JobInstance> jobsEnAttente,
          Collection<JobExecution> jobsEnCours) throws AucunJobALancerException {
-
-      // vérification que des traitements sont à lancer
-      if (mapJobs == null) {
-         throw new AucunJobALancerException();
-      }
 
       // pour l'instant la partie décisionnelle ne prend actuellement en compte
       // que les traitements d'archivage de masse.
       // si un nouveau type de traitement est ajouté, l'algo sera modifié.
 
-      // on récupère les traitement de la capture en masse
-      List<JobInstance> jobInstances = mapJobs
-            .get(CaptureMasseSupport.CAPTURE_MASSE_JN);
-
       // vérification que des traitements de capture en masse sont à lancer
-      if (CollectionUtils.isEmpty(jobInstances)) {
+      if (CollectionUtils.isEmpty(jobsEnAttente)) {
          throw new AucunJobALancerException();
       }
 
       // filtrage des capture en masse sur l'ECDE local
-      jobInstances = captureMasseSupport
-            .filtrerJobInstanceByECDELocal(jobInstances);
+      List<JobInstance> jobInstances = captureMasseSupport
+            .filtrerJobInstanceByECDELocal(jobsEnAttente);
 
       // vérification que des traitements de capture en masse sur l'ECDE local
       // sont à lancer
@@ -65,13 +55,13 @@ public class DecisionServiceImpl implements DecisionService {
 
       // filtrage des traitements en cours sur les capture en masse sur le
       // serveur courant
-      if (jobsEnCours != null) {
-         List<JobExecution> jobEnCours = captureMasseSupport
+      if (!CollectionUtils.isEmpty(jobsEnCours)) {
+         Collection<JobExecution> traitementsEnCours = captureMasseSupport
                .filtrerJobExecutionByECDELocal(jobsEnCours);
 
          // si un traitement de capture en masse est en cours alors aucun
          // traitement n'est à lancer sur le serveur
-         if (!jobEnCours.isEmpty()) {
+         if (!traitementsEnCours.isEmpty()) {
             throw new AucunJobALancerException();
          }
 
@@ -86,7 +76,9 @@ public class DecisionServiceImpl implements DecisionService {
    }
 
    private static class JobInstanceComparator implements
-         Comparator<JobInstance> {
+         Comparator<JobInstance>, Serializable {
+
+      private static final long serialVersionUID = 1L;
 
       @Override
       public int compare(JobInstance job1, JobInstance job2) {

@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.ordonnanceur.service.impl;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -77,13 +76,12 @@ public class CoordinationServiceImpl implements CoordinationService {
 
       Collection<JobExecution> jobsEnCours = this.jobService.recupJobEnCours();
 
-      Map<String, List<JobInstance>> mapJobs = this.jobService
-            .recupJobsALancer();
+      List<JobInstance> jobsEnAttente = this.jobService.recupJobsALancer();
 
       // Etape 2: Décision du traitement à lancer
 
-      JobInstance traitement = this.decisionService.trouverJobALancer(mapJobs,
-            jobsEnCours);
+      JobInstance traitement = this.decisionService.trouverJobALancer(
+            jobsEnAttente, jobsEnCours);
 
       // Etape3 : Réservation du traitement
 

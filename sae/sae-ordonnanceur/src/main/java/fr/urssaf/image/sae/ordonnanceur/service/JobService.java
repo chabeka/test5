@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.ordonnanceur.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -26,12 +25,11 @@ public interface JobService {
    Collection<JobExecution> recupJobEnCours();
 
    /**
-    * Renvoie une map de tous les travaux qui n'ont pas été lancés, avec en clé
-    * le nom du travail et en valeur la liste des travaux associés
+    * Renvoie une liste des travaux qui n'ont pas été lancés
     * 
     * @return liste des travaux en attente d'exécution
     */
-   Map<String, List<JobInstance>> recupJobsALancer();
+   List<JobInstance> recupJobsALancer();
 
    /**
     * Met à jour le nom de la machine dans la table des jobs à lancer afin de

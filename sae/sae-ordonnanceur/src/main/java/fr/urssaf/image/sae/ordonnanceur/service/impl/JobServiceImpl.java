@@ -1,11 +1,8 @@
 package fr.urssaf.image.sae.ordonnanceur.service.impl;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.batch.core.JobExecution;
@@ -70,25 +67,12 @@ public class JobServiceImpl implements JobService {
     * {@inheritDoc}
     */
    @Override
-   public final Map<String, List<JobInstance>> recupJobsALancer() {
-
-      Map<String, List<JobInstance>> jobInstancesMap = new HashMap<String, List<JobInstance>>();
+   public final List<JobInstance> recupJobsALancer() {
 
       List<JobInstance> jobInstances = jobInstanceDao
             .getUnreservedJobInstances();
 
-      for (JobInstance jobInstance : jobInstances) {
-
-         String jobName = jobInstance.getJobName();
-         if (!jobInstancesMap.containsKey(jobName)) {
-            jobInstancesMap.put(jobName, new ArrayList<JobInstance>());
-         }
-
-         jobInstancesMap.get(jobName).add(jobInstance);
-
-      }
-
-      return jobInstancesMap;
+      return jobInstances;
    }
 
    /**

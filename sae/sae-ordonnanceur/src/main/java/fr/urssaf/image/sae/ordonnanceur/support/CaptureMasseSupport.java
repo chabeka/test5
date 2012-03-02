@@ -9,7 +9,6 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +44,7 @@ public class CaptureMasseSupport {
     * Filtre les instances des traitements de masse pour ne récupérer que ceux
     * concernant les capture en masse pour l'ECDE local.<br>
     * <br>
-    * Un traitement de capture en masse indique dans son {@link JobParameter} '
+    * Un traitement de capture en masse indique dans son {@link org.springframework.batch.core.JobParameter} '
     * {@value #CAPTURE_MASSE_ECDE}' l'URL ECDE du fichier sommaire.xml.<br>
     * A chaque URL ECDE correspond une configuration de {@link EcdeSource} pour
     * l'ordonnanceur.<br>

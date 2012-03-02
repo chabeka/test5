@@ -30,7 +30,7 @@ public class ServiceMockFactory {
     * 
     * @return instance de {@link DecisionService}
     */
-   public DecisionService createDecisionService() {
+   public final DecisionService createDecisionService() {
 
       DecisionService service = EasyMock.createMock(DecisionService.class);
 
@@ -42,7 +42,7 @@ public class ServiceMockFactory {
     * 
     * @return instance de {@link TraitementLauncherSupport}
     */
-   public TraitementLauncherSupport createTraitementLauncherSupport() {
+   public final TraitementLauncherSupport createTraitementLauncherSupport() {
 
       TraitementLauncherSupport service = EasyMock
             .createMock(TraitementLauncherSupport.class);

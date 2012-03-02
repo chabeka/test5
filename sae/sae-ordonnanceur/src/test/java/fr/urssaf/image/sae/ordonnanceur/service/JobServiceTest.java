@@ -88,20 +88,12 @@ public class JobServiceTest {
    @Test
    public void recupJobsALancer_success() {
 
-      String jobName = jobInstance.getJobName();
-
       // récupération des traitements à lancer
-      Map<String, List<JobInstance>> jobsAlancer = jobService
-            .recupJobsALancer();
+      List<JobInstance> jobsAlancer = jobService.recupJobsALancer();
 
       Assert.assertTrue("la liste des job à lancer doit être non vide",
             !jobsAlancer.isEmpty());
 
-      Assert.assertTrue("la liste des job à lancer doit contenir " + jobName,
-            jobsAlancer.containsKey(jobName));
-
-      Assert.assertTrue("la liste des job à lancer doit être non vide pour "
-            + jobName, !jobsAlancer.get(jobName).isEmpty());
    }
 
    @Test

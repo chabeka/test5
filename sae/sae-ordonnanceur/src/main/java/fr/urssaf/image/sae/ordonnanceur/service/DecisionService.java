@@ -2,7 +2,6 @@ package fr.urssaf.image.sae.ordonnanceur.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -20,7 +19,7 @@ public interface DecisionService {
     * Choisit un des jobs à lancer à partir de la liste fournie, et renvoie son
     * identifiant
     * 
-    * @param mapJobs
+    * @param jobsEnAttente
     *           liste des travaux en attente, en clé le nom du job et en valeur
     *           la liste des travaux associés
     * @param jobsEnCours
@@ -29,6 +28,6 @@ public interface DecisionService {
     * @throws AucunJobALancerException
     *            Exception levée si aucun job n'est à lancer
     */
-   JobInstance trouverJobALancer(Map<String, List<JobInstance>> mapJobs,
+   JobInstance trouverJobALancer(List<JobInstance> jobsEnAttente,
          Collection<JobExecution> jobsEnCours) throws AucunJobALancerException;
 }

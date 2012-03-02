@@ -46,22 +46,19 @@ public class DecisionServiceTest {
       jobsEnCours.add(createJobExecutionCaptureMasse(435, "autre_traitement",
             CER69_SOMMAIRE));
 
-      Map<String, List<JobInstance>> mapJobs = new HashMap<String, List<JobInstance>>();
+      List<JobInstance> jobsEnAttente = new ArrayList<JobInstance>();
 
-      List<JobInstance> jobCaptureMasse = new ArrayList<JobInstance>();
-
-      jobCaptureMasse.add(createJobCaptureMasse(458, CAPTURE_MASSE_JN,
+      jobsEnAttente.add(createJobCaptureMasse(458, CAPTURE_MASSE_JN,
             CER69_SOMMAIRE));
-      jobCaptureMasse.add(createJobCaptureMasse(202, CAPTURE_MASSE_JN,
+      jobsEnAttente.add(createJobCaptureMasse(202, CAPTURE_MASSE_JN,
             CER44_SOMMAIRE));
-      jobCaptureMasse.add(createJobCaptureMasse(256, CAPTURE_MASSE_JN,
+      jobsEnAttente.add(createJobCaptureMasse(256, CAPTURE_MASSE_JN,
             CER69_SOMMAIRE));
-      jobCaptureMasse.add(createJobCaptureMasse(607, CAPTURE_MASSE_JN,
+      jobsEnAttente.add(createJobCaptureMasse(607, CAPTURE_MASSE_JN,
             CER44_SOMMAIRE));
 
-      mapJobs.put(CAPTURE_MASSE_JN, jobCaptureMasse);
-
-      JobInstance job = decisionService.trouverJobALancer(mapJobs, jobsEnCours);
+      JobInstance job = decisionService.trouverJobALancer(jobsEnAttente,
+            jobsEnCours);
 
       Assert.assertEquals("l'identifiant du job à lancer est inattendu", Long
             .valueOf(256), job.getId());
@@ -101,11 +98,14 @@ public class DecisionServiceTest {
          throws AucunJobALancerException {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
-      Map<String, List<JobInstance>> mapJobs = new HashMap<String, List<JobInstance>>();
+      List<JobInstance> jobsEnAttente = new ArrayList<JobInstance>();
 
-      mapJobs.put(CAPTURE_MASSE_JN, new ArrayList<JobInstance>());
+      JobInstance job = new JobInstance(Long.valueOf(100), new JobParameters(),
+            "OTHER_TRAITEMENT");
 
-      decisionService.trouverJobALancer(mapJobs, jobsEnCours);
+      jobsEnAttente.add(job);
+
+      decisionService.trouverJobALancer(jobsEnAttente, jobsEnCours);
 
    }
 
@@ -118,16 +118,12 @@ public class DecisionServiceTest {
          throws AucunJobALancerException {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
-      Map<String, List<JobInstance>> mapJobs = new HashMap<String, List<JobInstance>>();
+      List<JobInstance> jobsEnAttente = new ArrayList<JobInstance>();
 
-      List<JobInstance> jobCaptureMasse = new ArrayList<JobInstance>();
-
-      jobCaptureMasse.add(createJobCaptureMasse(202, CAPTURE_MASSE_JN,
+      jobsEnAttente.add(createJobCaptureMasse(202, CAPTURE_MASSE_JN,
             CER44_SOMMAIRE));
 
-      mapJobs.put(CAPTURE_MASSE_JN, jobCaptureMasse);
-
-      decisionService.trouverJobALancer(mapJobs, jobsEnCours);
+      decisionService.trouverJobALancer(jobsEnAttente, jobsEnCours);
 
    }
 
@@ -142,16 +138,12 @@ public class DecisionServiceTest {
       jobsEnCours.add(createJobExecutionCaptureMasse(202, CAPTURE_MASSE_JN,
             CER69_SOMMAIRE));
 
-      Map<String, List<JobInstance>> mapJobs = new HashMap<String, List<JobInstance>>();
+      List<JobInstance> jobsEnAttente = new ArrayList<JobInstance>();
 
-      List<JobInstance> jobCaptureMasse = new ArrayList<JobInstance>();
-
-      jobCaptureMasse.add(createJobCaptureMasse(458, CAPTURE_MASSE_JN,
+      jobsEnAttente.add(createJobCaptureMasse(458, CAPTURE_MASSE_JN,
             CER69_SOMMAIRE));
 
-      mapJobs.put(CAPTURE_MASSE_JN, jobCaptureMasse);
-
-      decisionService.trouverJobALancer(mapJobs, jobsEnCours);
+      decisionService.trouverJobALancer(jobsEnAttente, jobsEnCours);
 
    }
 

@@ -36,11 +36,19 @@ public final class LauncherUtils {
    }
 
    /**
+    * 
+    * 
     * La méthode lance le processus en appelant la classe
     * {@link Runtime#exec(String)}<br>
     * <br>
     * La commande est composée du paramètre <code>executable</code> et de la
     * suite des <code>parameters</code> séparé par des espaces
+    * 
+    * 
+    * @param executable
+    *           commande à lancer
+    * @param parameters
+    *           paramètres de la commande
     */
    public static void launch(String executable, Object... parameters) {
 

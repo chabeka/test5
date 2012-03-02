@@ -2,9 +2,7 @@ package fr.urssaf.image.sae.ordonnanceur.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.easymock.EasyMock;
 import org.junit.After;
@@ -48,7 +46,7 @@ public class CoordinationServiceTest {
    public void lancerTraitement_success() throws AucunJobALancerException,
          JobInexistantException, JobDejaReserveException {
 
-      Map<String, List<JobInstance>> jobInstances = new HashMap<String, List<JobInstance>>();
+      List<JobInstance> jobInstances = new ArrayList<JobInstance>();
       EasyMock.expect(jobService.recupJobsALancer()).andReturn(jobInstances)
             .times(3);
 
