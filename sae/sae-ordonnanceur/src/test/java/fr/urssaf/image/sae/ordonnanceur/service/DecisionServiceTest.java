@@ -67,11 +67,11 @@ public class DecisionServiceTest {
    }
 
    /**
-    * aucun traitement en attente renseigné
+    * aucun traitement en attente
     * 
     */
    @Test(expected = AucunJobALancerException.class)
-   public void decisionService_failure_noJobEnAttente_1()
+   public void decisionService_failure_noJobEnAttente_noJob()
          throws AucunJobALancerException {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
@@ -81,11 +81,11 @@ public class DecisionServiceTest {
    }
 
    /**
-    * aucun traitement de capture en masse en attente renseigné
+    * aucun traitement de capture en masse en attente
     * 
     */
    @Test(expected = AucunJobALancerException.class)
-   public void decisionService_failure_noJobEnAttente_2()
+   public void decisionService_failure_noJobEnAttente_nojobCaptureMasse()
          throws AucunJobALancerException {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
@@ -98,11 +98,11 @@ public class DecisionServiceTest {
    }
 
    /**
-    * aucun traitement de capture en masse en local en attente renseigné
+    * aucun traitement de capture en masse en local en attente
     * 
     */
    @Test(expected = AucunJobALancerException.class)
-   public void decisionService_failure_noJobEnAttente_3()
+   public void decisionService_failure_noJobEnAttente_nojobCaptureMasseLocal()
          throws AucunJobALancerException {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
@@ -112,8 +112,6 @@ public class DecisionServiceTest {
 
       jobCaptureMasse.add(createJobCaptureMasse(202, CAPTURE_MASSE_JN,
             CER44_SOMMAIRE));
-      jobCaptureMasse.add(createJobCaptureMasse(607, CAPTURE_MASSE_JN,
-            "ecde://ecde.cer34.recouv/sommaire.xml"));
 
       mapJobs.put(CAPTURE_MASSE_JN, jobCaptureMasse);
 
@@ -125,7 +123,7 @@ public class DecisionServiceTest {
     * traitement de capture en masse en local en cours
     */
    @Test(expected = AucunJobALancerException.class)
-   public void decisionService_failure_noJobEnAttente_4()
+   public void decisionService_failure_noJobEnAttente_executionJobCaptureMasse()
          throws AucunJobALancerException {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();

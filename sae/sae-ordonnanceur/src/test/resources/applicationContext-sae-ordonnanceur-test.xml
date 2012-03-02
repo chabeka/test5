@@ -31,7 +31,7 @@
 
       <constructor-arg value="ecde.cer34.recouv" />
       <constructor-arg value="base" />
-      <constructor-arg value="false" />
+      <constructor-arg value="true" />
 
    </bean>
 
