@@ -7,13 +7,14 @@ import java.util.Map.Entry;
 
 import org.springframework.batch.item.ExecutionContext;
 
-import fr.urssaf.image.commons.cassandra.serializer.ObjectToJsonSerializer;
+import fr.urssaf.image.commons.cassandra.serializer.JettisonSerializer;
+import fr.urssaf.image.commons.cassandra.serializer.XMLSerializer;
 
 import me.prettyprint.cassandra.serializers.AbstractSerializer;
 
 /**
  * Classe de sérialisation/désérialisation des ExecutionContext
- * Elle utilise un sérialiser json.
+ * Elle utilise un sérialiser XML.
  */
 public class ExecutionContextSerializer extends
       AbstractSerializer<ExecutionContext> {
@@ -23,7 +24,7 @@ public class ExecutionContextSerializer extends
    @SuppressWarnings("unchecked")
    @Override
    public final ExecutionContext fromByteBuffer(ByteBuffer byteBuffer) {
-      Map<String, Object> map = (Map<String, Object>) ObjectToJsonSerializer
+      Map<String, Object> map = (Map<String, Object>) XMLSerializer
             .get().fromByteBuffer(byteBuffer);
       return new ExecutionContext(map);
    }
@@ -34,7 +35,7 @@ public class ExecutionContextSerializer extends
       for (Entry<String, Object> me : executionContext.entrySet()) {
          map.put(me.getKey(), me.getValue());
       }
-      return ObjectToJsonSerializer.get().toByteBuffer(map);
+      return XMLSerializer.get().toByteBuffer(map);
    }
 
    /**

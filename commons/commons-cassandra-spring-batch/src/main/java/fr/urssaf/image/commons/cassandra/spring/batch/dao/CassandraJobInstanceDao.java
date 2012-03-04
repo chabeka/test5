@@ -190,9 +190,9 @@ public class CassandraJobInstanceDao extends AbstractCassandraDAO implements
    /**
     * Crée un jobInstance à partir de colonnes lues dans cassandra
     * 
-    * @param instanceId
-    * @param result
-    * @return
+    * @param instanceId    id de l'instance
+    * @param result        résultat d'une requête cassandra
+    * @return              le jobInstance
     */
    private JobInstance getJobInstance(Long instanceId,
          ColumnFamilyResult<Long, String> result) {

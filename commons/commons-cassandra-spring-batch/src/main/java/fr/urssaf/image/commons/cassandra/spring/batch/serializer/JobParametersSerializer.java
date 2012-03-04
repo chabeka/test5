@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import me.prettyprint.cassandra.serializers.AbstractSerializer;
+
+import org.apache.commons.lang.SerializationException;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 
-import fr.urssaf.image.commons.cassandra.serializer.ObjectToJsonSerializer;
-import fr.urssaf.image.commons.cassandra.serializer.exception.SerializerException;
-
-import me.prettyprint.cassandra.serializers.AbstractSerializer;
+import fr.urssaf.image.commons.cassandra.serializer.XMLSerializer;
 
 /**
  * Classe de sérialisation/désérialisation des JobParameters
@@ -25,7 +25,7 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
    @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "unchecked", "PMD.IfElseStmtsMustUseBraces" })   
    @Override
    public final JobParameters fromByteBuffer(ByteBuffer byteBuffer) {
-      Map<String, Object> mapObject = (Map<String, Object>) ObjectToJsonSerializer
+      Map<String, Object> mapObject = (Map<String, Object>) XMLSerializer
             .get().fromByteBuffer(byteBuffer);
       Map<String, JobParameter> mapParam = new HashMap<String, JobParameter>(
             mapObject.size());
@@ -41,7 +41,7 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
          else if (value instanceof Double)
             mapParam.put(key, new JobParameter((Double) value));
          else
-            throw new SerializerException(
+            throw new SerializationException(
                   "Erreur lors de la désérialisation : la classe de la valeur ("
                         + value.getClass() + ") n'est pas prévue");
       }
@@ -51,7 +51,7 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
    @Override
    public final ByteBuffer toByteBuffer(JobParameters jobParameters) {
       Map<String, JobParameter> mapParam = jobParameters.getParameters();
-      // On transforma la map de JobParameter en map d'objets
+      // On transforme la map de JobParameter en map d'objets
       Map<String, Object> mapObject = new HashMap<String, Object>(mapParam
             .size());
       for (Entry<String, JobParameter> entySet : mapParam.entrySet()) {
@@ -59,7 +59,7 @@ public class JobParametersSerializer extends AbstractSerializer<JobParameters> {
          JobParameter parameter = entySet.getValue();
          mapObject.put(key, parameter.getValue());
       }
-      return ObjectToJsonSerializer.get().toByteBuffer(mapObject);
+      return XMLSerializer.get().toByteBuffer(mapObject);
    }
 
    /**

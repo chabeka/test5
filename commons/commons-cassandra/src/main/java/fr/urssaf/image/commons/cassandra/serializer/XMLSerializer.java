@@ -2,29 +2,29 @@ package fr.urssaf.image.commons.cassandra.serializer;
 
 import java.nio.ByteBuffer;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
-
 import me.prettyprint.cassandra.serializers.AbstractSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 /**
- * Classe de sérialisation d'un objet en json, qui utilise
- * xstream avec le driver Jettisson
+ * Classe de sérialisation d'un objet en XML, qui utilise
+ * xstream
  *
  */
-public class ObjectToJsonSerializer extends AbstractSerializer<Object> {
+public class XMLSerializer extends AbstractSerializer<Object> {
 
    private final XStream xstream;
-   private static final ObjectToJsonSerializer INSTANCE = new ObjectToJsonSerializer();
+   private static final XMLSerializer INSTANCE = new XMLSerializer();
 
    /**
     * Constructeur
     */
-   public ObjectToJsonSerializer() {
+   public XMLSerializer() {
       super();
-      HierarchicalStreamDriver driver = new JettisonMappedXmlDriver();
+      HierarchicalStreamDriver driver = new DomDriver();
       xstream = new XStream(driver);
    }
 
@@ -43,7 +43,7 @@ public class ObjectToJsonSerializer extends AbstractSerializer<Object> {
     * Renvoie un singleton
     * @return singleton
     */
-   public static ObjectToJsonSerializer get() {
+   public static XMLSerializer get() {
       return INSTANCE;
    }
 }
