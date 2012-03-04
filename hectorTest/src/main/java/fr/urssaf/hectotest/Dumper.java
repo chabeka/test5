@@ -10,6 +10,7 @@ import java.util.List;
 import me.prettyprint.cassandra.model.CqlRows;
 import me.prettyprint.cassandra.serializers.BytesArraySerializer;
 import me.prettyprint.cassandra.serializers.CompositeSerializer;
+import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
@@ -22,6 +23,7 @@ import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.beans.SuperSlice;
 import me.prettyprint.hector.api.beans.AbstractComposite.Component;
 import me.prettyprint.hector.api.factory.HFactory;
+import me.prettyprint.hector.api.query.ColumnQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.SuperSliceQuery;
@@ -31,9 +33,14 @@ public class Dumper {
 	Keyspace keyspace;
 	PrintStream sysout;
 	public boolean printKeyInHex = false;
+	public boolean printKeyInLong = false;
 	public boolean printColumnNameInHex = false;
 	public boolean printColumnNameInComposite = false;
 	public boolean deserializeValue = false;
+	/**
+	 * On n'affiche que les maxValueLenght 1er caractères
+	 */
+   public int     maxValueLenght = 200;
 	
 	/**
 	 * Si on affiche le nom de colonne en mode "composite", on peut indiquer dans ce tableau
@@ -152,6 +159,16 @@ public class Dumper {
 		dumpCF_slice(CFName, key, new byte[0], new byte[0], 1000);
 	}
 
+	public byte[] getColumnValue(String CFName, byte[] key, byte[] columnName) {
+		
+		ColumnQuery<byte[], byte[], byte[]> columnQuery =
+			HFactory.createColumnQuery(keyspace, BytesArraySerializer.get(), BytesArraySerializer.get(), BytesArraySerializer.get());
+		columnQuery.setColumnFamily(CFName).setKey(key).setName(columnName);
+		QueryResult<HColumn<byte[], byte[]>> result = columnQuery.execute();
+		if (result.get() == null) return null;
+		return result.get().getValue();
+	}
+	
 	/**
 	 * Dump un ensemble (un slice) de colonnes d'une column family pour une clé donnée
 	 * @param CFName
@@ -168,9 +185,10 @@ public class Dumper {
 		rangeSlicesQuery.setRange(sliceStart, sliceEnd, false, count);
 		QueryResult<OrderedRows<byte[], byte[], byte[]>> result = rangeSlicesQuery
 				.execute();
-		dumpQueryResult(result);
+		dumpQueryResult(result);		
 	}
 
+	
 
 	public void dumpCF(String CFName, String key) throws Exception {
 		dumpCF(CFName, key.getBytes());
@@ -206,6 +224,10 @@ public class Dumper {
 			if (printKeyInHex) {
 				String key = ConvertHelper.getHexString(row.getKey());
 				sysout.println("Key (hex) : " + key);
+			}
+			else if (printKeyInLong) {
+				Long key = LongSerializer.get().fromBytes(row.getKey());
+				sysout.println("Key (long) : " + key);
 			}
 			else {
 				String key = ConvertHelper.getReadableUTF8String(row.getKey());
@@ -259,9 +281,9 @@ public class Dumper {
 				s += " - DeseriazedValue : " + o.toString();
 			}
 			else {
-				if (value.length > 200) {
-					byte [] dst = new byte[200];
-					System.arraycopy( value, 0, dst, 0, 200 );
+				if (value.length > maxValueLenght) {
+					byte [] dst = new byte[maxValueLenght];
+					System.arraycopy( value, 0, dst, 0, maxValueLenght );
 					value = dst;
 				}
 				//int ttl = column.getTtl();

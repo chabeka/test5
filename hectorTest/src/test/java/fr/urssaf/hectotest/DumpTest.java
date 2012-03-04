@@ -1,26 +1,18 @@
 package fr.urssaf.hectotest;
 
-import static me.prettyprint.hector.api.ddl.ComparatorType.UTF8TYPE;
-
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.sql.Array;
+import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import me.prettyprint.cassandra.connection.DynamicLoadBalancingPolicy;
 import me.prettyprint.cassandra.model.ConfigurableConsistencyLevel;
 import me.prettyprint.cassandra.model.CqlQuery;
 import me.prettyprint.cassandra.model.CqlRows;
@@ -31,6 +23,7 @@ import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.cassandra.service.CassandraHostConfigurator;
 import me.prettyprint.cassandra.service.FailoverPolicy;
 import me.prettyprint.cassandra.service.template.ColumnFamilyTemplate;
+import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
 import me.prettyprint.cassandra.service.template.ThriftColumnFamilyTemplate;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.HConsistencyLevel;
@@ -38,21 +31,18 @@ import me.prettyprint.hector.api.Keyspace;
 import me.prettyprint.hector.api.beans.ColumnSlice;
 import me.prettyprint.hector.api.beans.Composite;
 import me.prettyprint.hector.api.beans.HColumn;
-import me.prettyprint.hector.api.beans.HSuperColumn;
 import me.prettyprint.hector.api.beans.OrderedRows;
 import me.prettyprint.hector.api.beans.Row;
-import me.prettyprint.hector.api.beans.SuperRow;
-import me.prettyprint.hector.api.beans.SuperRows;
-import me.prettyprint.hector.api.beans.SuperSlice;
-import me.prettyprint.hector.api.beans.AbstractComposite.ComponentEquality;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
-import me.prettyprint.hector.api.query.MultigetSuperSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.RangeSlicesQuery;
 import me.prettyprint.hector.api.query.SliceQuery;
-import me.prettyprint.hector.api.query.SuperSliceQuery;
 import me.prettyprint.hom.EntityManagerImpl;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /**
@@ -66,21 +56,27 @@ public class DumpTest
 	PrintStream sysout;
 	Dumper dumper;
 	
-	@Before  
+	@SuppressWarnings("serial")
+   @Before  
 	public void init() throws Exception {
 		ConfigurableConsistencyLevel ccl = new ConfigurableConsistencyLevel();
 		ccl.setDefaultReadConsistencyLevel(HConsistencyLevel.QUORUM);
 		ccl.setDefaultWriteConsistencyLevel(HConsistencyLevel.QUORUM);
 		HashMap<String,String> credentials = new HashMap<String, String>() {{ put("username", "root");}{ put("password", "regina4932");}};
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cnp69saecas1:9160, cnp69saecas2:9160, cnp69saecas3:9160, cnp31saecas1.cer31.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160,cer69imageint9.cer69.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint10.cer69.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69imageint9.cer69.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("10.203.34.39:9160" )); //noufnouf
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69givnsaecas1.cer69.recouv:9160,hwi69givnsaecas2.cer69.recouv:9160" ));
-		//cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("cer69-saeint1.cer69.recouv:9160" ));
-		cluster = HFactory.getOrCreateCluster("Docubase", new CassandraHostConfigurator("hwi69devsaecas1.cer69.recouv:9160,hwi69devsaecas2.cer69.recouv:9160" ));
-
+		String servers;
+		//servers = "cnp69saecas1:9160, cnp69saecas2:9160, cnp69saecas3:9160, cnp31saecas1.cer31.recouv:9160";
+		//servers = "hwi54saecas1.cve.recouv:9160";	// CNH
+		//servers = "cer69imageint9.cer69.recouv:9160";
+		//servers = "cer69imageint10.cer69.recouv:9160";
+		//servers = "10.203.34.39:9160";		// Noufnouf
+		//servers = "hwi69givnsaecas1.cer69.recouv:9160,hwi69givnsaecas2.cer69.recouv:9160";
+      servers = "hwi69devsaecas1.cer69.recouv:9160,hwi69devsaecas2.cer69.recouv:9160";
+      //servers = "hwi69ginsaecas2.cer69.recouv:9160";
+      //servers = "cer69-saeint3:9160";
+		
+		CassandraHostConfigurator hostConfigurator = new CassandraHostConfigurator(servers);
+		hostConfigurator.setLoadBalancingPolicy(new DynamicLoadBalancingPolicy());
+		cluster = HFactory.getOrCreateCluster("Docubase", hostConfigurator);
 		keyspace = HFactory.createKeyspace("Docubase", cluster, ccl, FailoverPolicy.ON_FAIL_TRY_ALL_AVAILABLE, credentials);
 
 		sysout = new PrintStream(System.out, true, "UTF-8");
@@ -110,7 +106,7 @@ public class DumpTest
 	@Test
 	public void testDumpDocInfo() throws Exception {
 		dumper.printKeyInHex = true;
-		dumper.dumpCF("DocInfo", 500);
+		dumper.dumpCF("DocInfo", 50);
 	}
 
 	@Test
@@ -122,22 +118,65 @@ public class DumpTest
 	@Test
 	public void testExtractOneDocInfo() throws Exception {
 		//extractOneDocInfo  ("32100f97-5d05-4d6c-b2e3-6e9cc8f2bf86");
-		extractOneDocInfo  ("dd498a1d-66fa-4777-8eda-cfdafe19b2ce");
-		//extractOneDocInfo("bf15608f-1f17-4819-944d-e377c7bd726d");
+		extractOneDocInfo  ("05A5CB97-196B-423C-9A3C-F438F160DD03");
+		extractOneDocInfo  ("3E915A0A-3878-47B4-8225-666F1ECAB779");
+		//extractOneDocInfo("1c577d7e-19bf-45b0-ae51-456b3ba084f8");
 		//extractOneDocInfo("6fd809ec-8fd7-44f3-9d6f-ee655fa7e54a");		
 	}
 
 	private void extractOneDocInfo(String uuid) throws Exception {
+		/*
+		// Version qui fonctionne avec DFCE 0.9
+		byte[] key = ConvertHelper.stringToBytesWithDocubaseDelimiter(uuid + "|||0.0.0");
+		dumper.dumpCF("DocInfo",key);	
+		*/
+		
+		byte[] key =  uuidToDocInfoKey(uuid);
+		dumper.dumpCF("DocInfo",key);
+	}
+
+	private byte[] uuidToDocInfoKey(String uuid) {
 		String startKey = "0010";
 		String endKey = "000005" + ConvertHelper.stringToHex("0.0.0") + "00";
 		byte[] key =  ConvertHelper.hexStringToByteArray(startKey + uuid.replace("-", "") + endKey);
-		dumper.dumpCF("DocInfo",key);
+		return key;		
+	}
+
+	/**
+	 * Renvoie un FILE_UUID à partir d'un UUID
+	 * @param uuid	: uuid du document
+	 * @return	file_uuid : uuid du fichier
+	 * @throws Exception
+	 */
+	private byte[] uuidToFileUUID(String uuid) throws Exception {
+		byte[] fileUUID = dumper.getColumnValue("DocInfo", uuidToDocInfoKey(uuid), 
+					ConvertHelper.stringToBytes("SM_FILE_UUID"));
+		return fileUUID;
 	}
 	
 	@Test
 	public void testGetDocCount() throws Exception {
+		// Ne compte que 2 blocs sur 50
+		getDocCount(200, 2);
+		
+		// Comptage exhaustif, par bloc de 50
+		//getDocCount(50, 50);
+	}
+	
+	/**
+	 * Compte le nombre de documents de la base.
+	 * Le comptage peut être long s'il y a beaucoup de documents. On compte donc par bloc,
+	 * pour pouvoir afficher l'avancement du comptage.
+	 * De plus, on permet de ne compter qu'une partie des documents, et d'évaluer le nombre
+	 * total par extrapolation
+	 * 
+	 * @param blocCount		: l'espace des UUID sera divisé par ce nombre de bloc
+	 * @param blocsToCount	: nombre de blocs à compter (égal à blocCount si on veut compter
+	 * 						  tous les documents) 
+	 * @throws Exception
+	 */
+	private void getDocCount(int blocCount, int blocsToCount) throws Exception {
 		/*
-		 
 		//Méthode trop lente
 		
 		int count = dumper.getKeysCount("DocInfo");
@@ -146,43 +185,101 @@ public class DumpTest
 		sysout.println("Nombre de clés dans Documents : " + count);
 		*/
 		
-		List<byte[]> keys = dumper.getKeys("TermInfoRangeUUID", 1000);
-		if (keys.size() == 1000) throw new Exception("Attention : trop de clés");
+		int maxKeys = 1000;
+		List<byte[]> keys = dumper.getKeys("TermInfoRangeUUID", maxKeys);
+		if (keys.size() == maxKeys) throw new Exception("Attention : trop de clés");
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
 
-		byte[] sliceStart = getTermInfoRangeUUIDSliceBytes("\u0000");
-		byte[] sliceEnd = getTermInfoRangeUUIDSliceBytes("\uFFFF");
+		//byte[] sliceStart = getTermInfoRangeUUIDSliceBytes("\u0000");
+		//byte[] sliceEnd = getTermInfoRangeUUIDSliceBytes("\uFFFF");
 
+		// On découpe l'espace des UUID
+		String[][] slices = getUUIDSlices(blocCount);
+		
+		int maxColPerBloc = 1000000;
 		int total = 0;
+		
+		// Il faut parcourir plusieurs clés, car DFCE crée une clé par base DFCE, et
+		// il y a au moins 2 bases DFCE : la base SAE et la base DAILY_LOG_ARCHIVE_BASE
 		for (byte[] key : keys) {
 			String displayableKey = ConvertHelper.getReadableUTF8String(key);
 			if (displayableKey.contains("SM_UUID")) {
-				sysout.print("Nombre de colonnes pour la clé " + displayableKey + " ...");
+				sysout.println("Nombre de colonnes pour la clé " + displayableKey + " ...");
 				ThriftCountQuery<byte[], byte[]> cq = new ThriftCountQuery<byte[], byte[]>(keyspace, bytesSerializer, bytesSerializer);
 			    cq.setColumnFamily("TermInfoRangeUUID").setKey(key);
-			    cq.setRange(sliceStart, sliceEnd , 10000000);
-			    QueryResult<Integer> r = cq.execute();
-			    int count = r.get();
-				sysout.println(count);
-				total += count;
+			    int totalForKey = 0;
+			    for (int i = 0; i < slices.length; i++) {
+					byte[] sliceStart = getTermInfoRangeUUIDSliceBytes(slices[i][0]);
+					byte[] sliceEnd = getTermInfoRangeUUIDSliceBytes(slices[i][1]);
+			    	cq.setRange(sliceStart, sliceEnd , maxColPerBloc);
+			    	QueryResult<Integer> r = cq.execute();
+			    	int count = r.get();
+			    	if (count == maxColPerBloc) throw new Exception("Attention : trop de colonnes");
+			    	totalForKey += count;
+			    	sysout.print(" " + totalForKey);
+			    	if (i == blocsToCount - 1) break;
+			    }
+			    total += totalForKey;
+			    sysout.println();
 			}
 		}
-		sysout.print("Nombre total de documents : " + total);		
+		sysout.println("Nombre total de documents comptés : " + total);
+		if (blocsToCount != blocCount) {
+			int extrapolation = total * blocCount / blocsToCount;
+			sysout.println("Nombre total de documents (extrapolation) : " + extrapolation);
+		}
 	}
+
 	
+	/**
+	 * Permet de séparer l'espace des UUID en plusieurs tranches.
+	 * Utile pour faire des traitements par blocs, sur des blocs d'UUID. 
+	 * @param blocCount : nombre de tranches à obtenir
+	 * @return tableau de slices - un slice est un tableau à 2 éléments dont le 1er représente la borne
+	 * 			inférieure du slice et le 2ème représente la borne supérieure.
+	 * @throws Exception
+	 */
+	private String[][] getUUIDSlices(int blocCount) throws Exception {
+		byte[] maxUUID = ConvertHelper.hexStringToByteArray("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+		BigInteger max = new BigInteger(1, maxUUID);
+		BigInteger delta = max.divide(new BigInteger(Integer.toString(blocCount)));
+		BigInteger un = new BigInteger("1");
+		delta = delta.subtract(un);
+		BigInteger b = new BigInteger("0");
+		String[][] tab = new String[blocCount][];
+		for (int i = 0; i < blocCount; i++) {
+			String s1 = ConvertHelper.getHexString(b.toByteArray());
+			if (s1.startsWith("00")) s1 = s1.substring(2);
+			if (s1.equals("")) s1 = "00";
+			b = b.add(delta);
+			if (i == blocCount - 1) b = max;
+			String s2 = ConvertHelper.getHexString(b.toByteArray());
+			if (s2.startsWith("00")) s2 = s2.substring(2);
+			b = b.add(un);
+			
+			//sysout.println(s1 + " - " + s2);
+			tab[i] = new String[2];
+			tab[i][0] = s1;
+			tab[i][1] = s2;
+		}
+		return tab;
+	}
+
 	@Test
 	public void testDumpDocuments() throws Exception {
-		dumper.dumpCF("Documents", 150);
+		dumper.dumpCF("Documents", 5);
 	}
 	
 	@Test
 	public void testDumpOneDocument() throws Exception {
-		dumper.dumpCF("Documents", "651b658e-e0ca-4dce-abf5-aed4d32557e3");
+		dumper.dumpCF("Documents", "f02d0eba-8897-4fbf-933b-e1255b17914d");
 	}
 
 	@Test
 	public void testExtractOneDocument() throws Exception {
-		ExtractOneDocument("651b658e-e0ca-4dce-abf5-aed4d32557e4", "c:\\temp\\test.csv");
+	   ExtractOneDocument("97CB2F0E-7330-4A5D-B24E-EF5B49FF0BE6", "c:\\temp\\test.pdf");	   
+		//ExtractOneDocument("D1DC3F43-591B-4299-BE87-EE970A62DC90", "c:\\temp\\alex2\\5.pdf");
+		//ExtractOneDocument("5F72669A-BECD-4513-849C-ECCEF216001D", "c:\\temp\\alex2\\6.pdf");
 		//ExtractOneDocument("017961ff-1899-40a7-8d3d-6d32729780ef", "c:\\temp\\test2.pdf");
 		//ExtractOneDocument("0125e102-a096-4db0-9746-edf0c314498a", "c:\\temp\\test3.pdf");
 		//ExtractOneDocument("0f5003e0-8698-4405-9804-a098ed6e5575", "c:\\temp\\test4.pdf");
@@ -190,12 +287,25 @@ public class DumpTest
 
 	/***
 	 * Extrait le corps de la version 1 du document dont l'uuid est passé en paramètre
-	 * @param uuid : uuid du fichier à extraire
+	 * @param uuid : uuid du document à extraire
 	 * @param fileName : fichier à créer
 	 * @throws Exception
 	 */
 	private void ExtractOneDocument(String uuid, String fileName) throws Exception {
-		String key = uuid;
+		byte[] fileUuid = uuidToFileUUID(uuid);
+		if (fileUuid == null) throw new Exception("Pas de fileUUID trouvé pour cet uuid : " + uuid);
+		String stringFileUuid = ConvertHelper.getReadableUTF8String(fileUuid);
+		ExtractOneDocumentFromFileUUID(stringFileUuid, fileName);
+	}
+	
+	/***
+	 * Extrait le corps de la version 1 du document dont l'uuid est passé en paramètre
+	 * @param fileUuid : uuid du fichier à extraire
+	 * @param fileName : fichier à créer
+	 * @throws Exception
+	 */
+	private void ExtractOneDocumentFromFileUUID(String fileUuid, String fileName) throws Exception {
+		String key = fileUuid.toLowerCase();
 		
 		StringSerializer stringSerializer = StringSerializer.get();
 		BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
@@ -211,7 +321,7 @@ public class DumpTest
 		
 		// On ne reçoit normalement qu'une seule ligne
 		Row<String, String, byte[]> row = orderedRows.getByKey(key);
-		if (row == null) throw new IllegalArgumentException("On n'a pas trouvé de fichier dont l'uuid est " + uuid);
+		if (row == null) throw new IllegalArgumentException("On n'a pas trouvé de fichier dont l'uuid est " + fileUuid);
 		
 		sysout.println("Création du fichier " + fileName + "...");
 		File someFile = new File(fileName);
@@ -285,12 +395,20 @@ public class DumpTest
 		dumper.compositeDisplayTypeMapper = new boolean[]{false, true, false};
 		dumper.dumpCF("TermInfoRangeDate", 15);
 	}
+	
 	@Test
 	public void testDumpTermInfoRangeDateTime() throws Exception {
 		dumper.deserializeValue = true;
 		dumper.printColumnNameInComposite = true;
 		dumper.compositeDisplayTypeMapper = new boolean[]{false, true, false};
 		dumper.dumpCF("TermInfoRangeDatetime", 15);
+		
+		/*
+		//SM_LIFE_CYCLE_REFERENCE_DATE
+		byte[] sliceStart = getTermInfoRangeUUIDSliceBytes("20120117000000000");
+		byte[] sliceEnd = getTermInfoRangeUUIDSliceBytes  ("20120518000000000");
+		dumper.dumpCF_slice("TermInfoRangeDatetime", sliceStart, sliceEnd, 50);
+		*/
 	}
 
 	@Test
@@ -353,7 +471,6 @@ public class DumpTest
 		Composite c = getTermInfoRangeUUIDSliceComposite(docUUID);
 		return new CompositeSerializer().toBytes(c);
 	}
-
 	
 	@Test
 	public void testDumpNotes() throws Exception {
@@ -443,6 +560,64 @@ public class DumpTest
 		dumper.dumpCF("Versions", 15);
 	}
 	
+	@SuppressWarnings("unchecked")
+   @Test
+	/**
+	 * Recherche de "doublons" par échantillonnage.
+	 * On parcours 5000 clés de TermInfo. Si la clé concerne une index sur siren (srn), on
+	 * compte le nombre de documents
+	 */
+	public void testLookForDoublons() throws Exception {
+		int compteurKO = 0;
+		int compteurOK = 0;
+		List<byte[]> keys = dumper.getKeys("TermInfo", 5000);
+		for (int i = 0; i < keys.size(); i++) {
+			byte[] key = keys.get(i);
+			String displayableKey = ConvertHelper.getReadableUTF8String(key);
+			if (displayableKey.contains("srn")) {
+				//dumper.dumpCF("TermInfo", key);
+				BytesArraySerializer  bytesSerializer = BytesArraySerializer.get();
+				SliceQuery<byte[], byte[], byte[]> query = HFactory.createSliceQuery(keyspace, bytesSerializer, bytesSerializer, bytesSerializer);
+				query.setColumnFamily("TermInfo");
+				query.setKey(key);
+				query.setRange(new byte[0], new byte[0], false, 100);
+				QueryResult<ColumnSlice<byte[], byte[]>> result = query.execute();
+				ColumnSlice<byte[], byte[]> slice = result.get();
+				List<HColumn<byte[], byte[]>> columns = slice.getColumns();
+				//sysout.println("Key :" + displayableKey);
+				Map<String, List<String>> docs = new HashMap<String, List<String>>();
+				for (HColumn<byte[], byte[]> column : columns) {
+					byte[] value =  column.getValue();
+					// La valeur est une map sérialisée. On la désérialise
+				    ByteArrayInputStream bis = new ByteArrayInputStream(value);
+				    ObjectInputStream ois= new ObjectInputStream(bis);
+				    Map<String, ArrayList<String>> map = (Map) ois.readObject();
+				    //sysout.println(map);
+				    String siren = (String) map.get("srn").get(0);
+				    String title = (String) map.get("SM_TITLE").get(0);
+				    String date =  (String) map.get("SM_ARCHIVAGE_DATE").get(0);
+				    String uuid =  (String) map.get("SM_UUID").get(0);
+				    if (!docs.containsKey(title)) docs.put(title, new ArrayList<String>());
+				    docs.get(title).add("Siren : " + siren + "  Title : " + title + "  Date : " + date + "  UUID : " + uuid); 
+				}
+				for(Map.Entry<String, List<String>> doc : docs.entrySet()) {
+					List<String> list = doc.getValue();
+					if (list.size() > 1) {
+						compteurKO++;
+						for (String element : list) {
+							sysout.println(element);
+						}
+						sysout.println();
+					}
+					else {
+						compteurOK++;
+					}
+				}
+			}
+		}
+		sysout.println("Nombre de OK : " + compteurOK);
+		sysout.println("Nombre de KO : " + compteurKO);
+	}
 	
 	@Test
 	public void testCQL() throws Exception {
@@ -471,7 +646,16 @@ public class DumpTest
 		mutator.delete(key, cf, null, nameSerializer);
 	}
 	
-	
+	public void testUpdate() {
+		ColumnFamilyTemplate<String, String> template = 
+            new ThriftColumnFamilyTemplate<String, String>(keyspace,
+                                                           "myColFamily", 
+                                                           StringSerializer.get(),        
+                                                           StringSerializer.get());
+		ColumnFamilyUpdater<String, String> updater = template.createUpdater("a key");
+		updater.setString("domain", "www.datastax.com");
+
+	}
 
     
 	@Test
@@ -487,12 +671,8 @@ public class DumpTest
 		 * em.save(pojo1);
 		 */
 
-		// do some stuff
-
-		// MyPojo pojo2 = em.load(MyPojo.class, pojo1.getId());
 		MyPojo pojo2 = em.load(MyPojo.class, UUID.randomUUID());
 
-		// do some more stuff
 		if (pojo2 == null) {
 			sysout.println("Entity non trouvée");
 		}

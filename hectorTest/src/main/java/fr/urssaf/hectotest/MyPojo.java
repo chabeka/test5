@@ -13,6 +13,7 @@ import me.prettyprint.hom.annotations.*;
 
 @Entity
 @Table(name="DocInfo")
+@AnonymousPropertyHandling(adder = "addAnonymousProp", getter = "getAnonymousProps")
 public class MyPojo {
   @Id
   private UUID id;
@@ -22,12 +23,11 @@ public class MyPojo {
 
   private Map<String, String> anonymousProps = new HashMap<String, String>();
 
-  @AnonymousPropertyAddHandler
+  
   public void addAnonymousProp(String name, String value) {
     anonymousProps.put(name, value);
   }
 
-  @AnonymousPropertyCollectionGetter
   public Collection<Entry<String, String>> getAnonymousProps() {
     return anonymousProps.entrySet();
   }
