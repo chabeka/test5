@@ -12,6 +12,50 @@
    <version>12.5.10.2-SNAPSHOT</version>
    <description>Gestion de la pile d'exécution des traitements asynchrones</description>
 
+   <build>
+
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+               <execution>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                     <artifactSet>
+                        <excludes>
+                           <exclude>commons-logging:commons-logging:jar:</exclude>
+                        </excludes>
+                     </artifactSet>
+                     <transformers>
+                        <transformer
+                           implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                           <mainClass>fr.urssaf.image.sae.ordonnanceur.OrdonnanceurMain</mainClass>
+                        </transformer>
+                        <transformer
+                           implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                           <resource>META-INF/spring.handlers</resource>
+                        </transformer>
+                        <transformer
+                           implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                           <resource>META-INF/spring.schemas</resource>
+                        </transformer>
+                     </transformers>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
+
+   </build>
+
+
+
    <dependencies>
 
       <!-- SAE-ECDE -->
