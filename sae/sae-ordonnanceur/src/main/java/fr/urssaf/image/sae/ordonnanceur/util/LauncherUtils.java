@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +50,11 @@ public final class LauncherUtils {
     *           commande à lancer
     * @param parameters
     *           paramètres de la commande
+    * @return processus lancé
     */
-   public static void launch(String executable, Object... parameters) {
+   public static Process launch(String executable, Object... parameters) {
+
+      Validate.notEmpty(executable, "'executable' is required");
 
       Runtime runtime = Runtime.getRuntime();
 
@@ -59,20 +63,24 @@ public final class LauncherUtils {
             StringUtils.join(parameters, SEPARATOR) }, SEPARATOR);
 
       LOG.debug("Lancement du processus: {}", command);
+
+      Process process;
       try {
 
-         final Process process = runtime.exec(command);
-
-         // on trace ici les exceptions levées par le lancement du processus
-         // par exemple : le commande est incomprise, les options d'exécution
-         // n'existent pas, les droits sont insuffissants
-
-         new InputStreamProcess(process).start();
-         new ErrorStreamProcess(process).start();
+         process = runtime.exec(command);
 
       } catch (IOException e) {
-
+         throw new NestableRuntimeException(e);
       }
+
+      // on trace ici les exceptions levées par le lancement du processus
+      // par exemple : le commande est incomprise, les options d'exécution
+      // n'existent pas, les droits sont insuffissants
+
+      new InputStreamProcess(process).start();
+      new ErrorStreamProcess(process).start();
+
+      return process;
    }
 
    // on récupère les flux du processus
