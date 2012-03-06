@@ -47,6 +47,17 @@ import fr.urssaf.image.sae.webservices.service.factory.ObjectModelFactory;
 import fr.urssaf.image.sae.webservices.service.model.Metadata;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 
+
+/**
+ * Tests de l'opération "archivageUnitairePJ" pour lesquels on attend une réponse
+ * correcte (pas de SoapFault)<br>
+ * <br>
+ * Il faut penser à configurer son SAE local pour établir une configuration ECDE entre :<br>
+ *  - DNS : ecde.cer69.recouv
+ *  - Point de montage : REPERTOIRE_TEMP_UTILISATEUR\ecde
+ *                       Exemple : C:\DOCUME~1\CER699~1\LOCALS~1\Temp\ecde 
+ * 
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-webservices.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
@@ -78,7 +89,7 @@ public class ArchivageUnitairePJTest {
    }  
    
    @Test
-   public void archivageUnitairePJ_success() throws URISyntaxException,
+   public void archivageUnitairePJ_success_AvecContenu_SansMtom() throws URISyntaxException,
          FileNotFoundException, IOException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -149,7 +160,7 @@ public class ArchivageUnitairePJTest {
    
    
    @Test
-   public void archivageUnitairePJ_URLEcdeSuccess() throws URISyntaxException,
+   public void archivageUnitairePJ_success_AvecUrlEcde() throws URISyntaxException,
          FileNotFoundException, IOException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -230,9 +241,8 @@ public class ArchivageUnitairePJTest {
 
    }
    
-   //--------------------------- MTOM ------------------------------------
    @Test
-   public void archivageUnitairePJ_Mtom() throws IOException {
+   public void archivageUnitairePJ_success_AvecContenu_AvecMtom() throws IOException {
      
       service._getServiceClient().getOptions().setProperty(
             Constants.Configuration.ENABLE_MTOM, Constants.VALUE_TRUE);

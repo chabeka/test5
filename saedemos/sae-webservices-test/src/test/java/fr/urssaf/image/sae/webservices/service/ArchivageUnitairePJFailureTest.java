@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.webservices.service;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +36,16 @@ import fr.urssaf.image.sae.webservices.service.model.Metadata;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 import fr.urssaf.image.sae.webservices.util.SoapTestUtils;
 
+
+/**
+ * Tests de l'opération "archivageUnitairePJ" pour lesquels on attend une SoapFault<br>
+ * <br>
+ * Il faut penser à configurer son SAE local pour établir une configuration ECDE entre :<br>
+ *  - DNS : ecde.cer69.recouv
+ *  - Point de montage : REPERTOIRE_TEMP_UTILISATEUR\ecde
+ *                       Exemple : C:\DOCUME~1\CER699~1\LOCALS~1\Temp\ecde 
+ * 
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-webservices.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions",
@@ -126,7 +134,7 @@ public class ArchivageUnitairePJFailureTest {
 
    @Test
    @Ignore("Ajouter dans son ecde local un fichier vide attestation_vide.txt")
-   public void archivageUnitairePJ_failure_CaptureFichierVide()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureFichierVide()
          throws IOException {
 
       // appel du service archivage unitaire
@@ -150,7 +158,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureMetadonneesInconnu()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureMetadonneesInconnu()
          throws IOException {
 
       // appel du service archivage unitaire
@@ -180,7 +188,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureMetadonneesDoublon()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureMetadonneesDoublon()
          throws IOException {
 
       @SuppressWarnings("unchecked")
@@ -212,7 +220,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureMetadonneesFormatTypeNonValide()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureMetadonneesFormatTypeNonValide()
          throws IOException {
 
       putMetadata("DateCreation", "01/01/2012");
@@ -238,7 +246,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureMetadonneesInterdites()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureMetadonneesInterdites()
          throws IOException {
 
       putMetadata("DureeConservation", "1825");
@@ -264,7 +272,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureMetadonneesArchivageObligatoire()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureMetadonneesArchivageObligatoire()
          throws IOException {
 
       metadatasRef.remove("ApplicationProductrice");
@@ -290,7 +298,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureCodeRndInterdit()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureCodeRndInterdit()
          throws IOException {
 
       putMetadata("CodeRND", "toto");
@@ -313,7 +321,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_ErreurInterneCapture_Hash()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureHashErreur()
          throws IOException {
 
       putMetadata("Hash", "toto");
@@ -336,7 +344,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureUrlEcdeFichierIntrouvable()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureUrlEcdeFichierIntrouvable()
          throws IOException {
 
       try {
@@ -362,7 +370,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureUrlEcdeIncorrecte()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureUrlEcdeIncorrecte()
          throws IOException {
 
       try {
@@ -389,7 +397,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitairePJ_failure_CaptureMetadonneesVide()
+   public void archivageUnitairePJ_failure_AvecUrlEcde_CaptureMetadonneesVide()
          throws IOException {
 
       Collection<Metadata> metadatas = new ArrayList<Metadata>();
@@ -410,7 +418,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitairePJ_failure_CaptureContenuVide()
+   public void archivageUnitairePJ_failure_AvecContenu_CaptureFichierVide()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -432,7 +440,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitairePJ_failure_CaptureNomVide()
+   public void archivageUnitairePJ_failure_AvecContenu_NomFichierVide_chaineVide()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -456,7 +464,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitairePJ_failure_CaptureNomEspace()
+   public void archivageUnitairePJ_failure_AvecContenu_NomFichierVide_chaineAvecDesEspaces()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -464,7 +472,7 @@ public class ArchivageUnitairePJFailureTest {
       try {
          
          byte[] contenu = new byte[20];
-         String fileName = "   ";
+         String fileName = "   "; // on met des espaces pour vérifier si le trim est bien fait
          
          service.archivageUnitairePJ(fileName, contenu, metadatas);
 
@@ -481,7 +489,7 @@ public class ArchivageUnitairePJFailureTest {
    
    @Test
    @Ignore("A mettre à jour une fois la gestion des extensions faite par DFCE.")
-   public void archivageUnitairePJ_failure_CaptureSansExtension()
+   public void archivageUnitairePJ_failure_AvecContenu_CaptureSansExtension()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -494,7 +502,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitairePJ_failure_contentNull() throws URISyntaxException,
+   public void archivageUnitairePJ_failure_AvecContenu_CaptureFichierVide_null() throws URISyntaxException,
          FileNotFoundException, IOException {
 
       
@@ -545,7 +553,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitairePJ_failure_content0octet() throws URISyntaxException,
+   public void archivageUnitairePJ_failure_AvecContenu_CaptureFichierVide_0octet() throws URISyntaxException,
          FileNotFoundException, IOException {
 
       try {

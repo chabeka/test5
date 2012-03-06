@@ -33,6 +33,16 @@ import fr.urssaf.image.sae.webservices.service.model.Metadata;
 import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
 import fr.urssaf.image.sae.webservices.util.SoapTestUtils;
 
+
+/**
+ * Tests de l'opération "archivageUnitaire" pour lesquels on attend une SoapFault<br>
+ * <br>
+ * Il faut penser à configurer son SAE local pour établir une configuration ECDE entre :<br>
+ *  - DNS : ecde.cer69.recouv
+ *  - Point de montage : REPERTOIRE_TEMP_UTILISATEUR\ecde
+ *                       Exemple : C:\DOCUME~1\CER699~1\LOCALS~1\Temp\ecde 
+ * 
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-webservices.xml" })
 @SuppressWarnings( { "PMD.MethodNamingConventions",
@@ -308,7 +318,7 @@ public class ArchivageUnitaireFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_ErreurInterneCapture_Hash()
+   public void archivageUnitaire_failure_CaptureHashErreur()
          throws IOException {
 
       putMetadata("Hash", "toto");
