@@ -28,16 +28,18 @@ public class TraitementAsynchroneServiceValidationTest {
       service = new TraitementAsynchroneService() {
 
          @Override
-         public void ajouterJobCaptureMasse(String urlECDE, UUID uuid) {
+         public long ajouterJobCaptureMasse(String urlECDE, UUID uuid) {
 
             // aucune implémentation
+            return 0;
 
          }
 
          @Override
-         public void lancerJob(long idJob) {
+         public String lancerJob(long idJob) {
 
             // aucune implémentation
+            return null;
 
          }
 

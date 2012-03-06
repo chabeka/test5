@@ -2,6 +2,8 @@ package fr.urssaf.image.sae.services.batch;
 
 import java.util.UUID;
 
+import fr.urssaf.image.sae.services.batch.exception.JobInexistantException;
+
 /**
  * Service des traitements de masse.<br>
  * <ul>
@@ -21,14 +23,22 @@ public interface TraitementAsynchroneService {
     *           URL Ecde du fichier sommaire.xml
     * @param uuid
     *           identifiant unique
+    * @return identifiant du traitement dans la pile des travaux
+    * 
     */
-   void ajouterJobCaptureMasse(String urlECDE, UUID uuid);
+   long ajouterJobCaptureMasse(String urlECDE, UUID uuid);
 
    /**
     * Exécute un traitement de masse stocké dans la pile des traitements en
-    * attente    * 
+    * attente
+    * 
     * @param idJob
     *           identifiant du traitement à lancer
+    * @return code sortie du traitement, correspond à un code
+    *         {@link org.springframework.batch.core.ExitStatus}
+    * @throws JobInexistantException
+    *            Exception levée si le job correspondant à l'idJob passé en
+    *            paramètre n'existe pas
     */
-   void lancerJob(long idJob);
+   String lancerJob(long idJob) throws JobInexistantException;
 }

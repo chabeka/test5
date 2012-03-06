@@ -19,7 +19,7 @@ public class TraitementAsynchroneServiceValidation {
 
    private static final String CLASS = "fr.urssaf.image.sae.services.batch.TraitementAsynchroneService.";
 
-   private static final String METHOD_1 = "execution(void " + CLASS
+   private static final String METHOD_1 = "execution(long " + CLASS
          + "ajouterJobCaptureMasse(*,*))" + "&& args(urlEcde,uuid)";
 
    private static final String ARG_EMPTY = "L''argument ''{0}'' doit être renseigné.";

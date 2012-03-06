@@ -63,7 +63,8 @@
                         <configuration>
                            <target name="suppressWarnings('PMD')">
                               <replace dir="${basedir}/src/main/java"
-                                 includes="fr/urssaf/image/sae/services/capturemasse/modele/*/*.java" token="public class"
+                                 includes="fr/urssaf/image/sae/services/capturemasse/modele/*/*.java"
+                                 token="public class"
                                  value="@SuppressWarnings(&quot;PMD&quot;)&#xA;public class" />
                            </target>
                         </configuration>
@@ -216,6 +217,13 @@
          </exclusions>
       </dependency>
 
+      <!-- CASSANDRA -->
+
+      <dependency>
+         <groupId>fr.urssaf.image.commons</groupId>
+         <artifactId>commons-cassandra-spring-batch</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
       <!-- JASPECT -->
       <dependency>
