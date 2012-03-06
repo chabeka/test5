@@ -45,29 +45,29 @@ public class VIHandler extends AbstractHandler {
       // Ajout de l'en-tête WS-Security chargé depuis un fichier de ressource XML
       try {
          
-         
          // Génération de l'en-tête wsse
          String wsse = genererEnTeteWsse();
          
          // Insertion du VI dans l'en-tête SOAP
          
+         // Récupération de l'objet SoapEnvelope
          Document doc = Axis2Util.getDocumentFromSOAPEnvelope(
                msgCtx.getEnvelope(), 
                true);
+         SOAPEnvelope soapEnv = (SOAPEnvelope) doc.getDocumentElement();
+         msgCtx.setEnvelope(soapEnv);
+         soapEnv.build();
          
-         msgCtx.setEnvelope((SOAPEnvelope) doc.getDocumentElement());
-         
-         SOAPHeader soapHeader = msgCtx.getEnvelope().getHeader();
-         
+         // Ajout du WSSE incluant le VI dans l'en-tête SOAP
+         SOAPHeader soapHeader = soapEnv.getHeader();
          soapHeader.addChild(
                org.apache.axis2.util.XMLUtils.toOM(
                      new StringReader(wsse)));
+         soapEnv.build();
          
-         soapHeader.build();
-         
+         // Sérialisation du SOAP
          StringWriter sWriter = new StringWriter(); 
-         msgCtx.getEnvelope().serialize(sWriter);
-         
+         soapEnv.serialize(sWriter);
          
       } catch (Exception e) {
          throw new IllegalStateException(e);

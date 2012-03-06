@@ -1,9 +1,15 @@
 package sae.client.demo.webservice.factory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.DataHandler;
+
+import org.apache.axiom.attachments.ByteArrayDataSource;
+import org.apache.axiom.attachments.utils.IOUtils;
 import org.apache.axis2.databinding.types.URI;
 import org.apache.axis2.databinding.types.URI.MalformedURIException;
 
@@ -11,11 +17,15 @@ import sae.client.demo.exception.DemoRuntimeException;
 import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageMasse;
 import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageMasseRequestType;
 import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitaire;
+import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitairePJ;
+import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitairePJRequestType;
+import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitairePJRequestTypeChoice_type0;
 import sae.client.demo.webservice.modele.SaeServiceStub.ArchivageUnitaireRequestType;
 import sae.client.demo.webservice.modele.SaeServiceStub.Consultation;
 import sae.client.demo.webservice.modele.SaeServiceStub.ConsultationMTOM;
 import sae.client.demo.webservice.modele.SaeServiceStub.ConsultationMTOMRequestType;
 import sae.client.demo.webservice.modele.SaeServiceStub.ConsultationRequestType;
+import sae.client.demo.webservice.modele.SaeServiceStub.DataFileType;
 import sae.client.demo.webservice.modele.SaeServiceStub.EcdeUrlSommaireType;
 import sae.client.demo.webservice.modele.SaeServiceStub.EcdeUrlType;
 import sae.client.demo.webservice.modele.SaeServiceStub.ListeMetadonneeCodeType;
@@ -49,44 +59,12 @@ public class Axis2ObjectFactory {
       
       
       // URL ECDE
-      EcdeUrlType ecdeUrl = new EcdeUrlType();
+      EcdeUrlType ecdeUrl = buildEcdeUrl(urlEcdeFichier);
       archivageUnitaireRequest.setEcdeUrl(ecdeUrl);
-      URI uriEcdeFichier;
-      try {
-         uriEcdeFichier = new URI(urlEcdeFichier);
-      } catch (MalformedURIException e) {
-         throw new DemoRuntimeException(e);
-      }
-      ecdeUrl.setEcdeUrlType(uriEcdeFichier);
-      
       
       // Métadonnées
-      ListeMetadonneeType listeMetadonnee = new ListeMetadonneeType(); 
+      ListeMetadonneeType listeMetadonnee = buildListeMeta(metadonnees); 
       archivageUnitaireRequest.setMetadonnees(listeMetadonnee);
-      MetadonneeType metadonnee;
-      MetadonneeCodeType metaCode;
-      MetadonneeValeurType metaValeur;
-      String code;
-      String valeur;
-      for (Map.Entry<String, String> entry: metadonnees.entrySet()) {
-         
-         code = entry.getKey();
-         valeur = entry.getValue();
-         
-         metadonnee = new MetadonneeType();
-         
-         metaCode = new MetadonneeCodeType();
-         metaCode.setMetadonneeCodeType(code);
-         metadonnee.setCode(metaCode);
-         
-         metaValeur = new MetadonneeValeurType();
-         metaValeur.setMetadonneeValeurType(valeur);
-         metadonnee.setValeur(metaValeur);
-         
-         listeMetadonnee.addMetadonnee(metadonnee);
-         
-      }
-      
       
       // Renvoie du paramètre d'entrée de l'opération archivageUnitaire
       return archivageUnitaire;
@@ -280,6 +258,129 @@ public class Axis2ObjectFactory {
       
       // Renvoie du paramètre d'entrée de l'opération archivageMasse
       return archivageMasse;
+      
+   }
+   
+   
+   
+   private static EcdeUrlType buildEcdeUrl(String urlEcde) {
+      
+      EcdeUrlType ecdeUrl = new EcdeUrlType();
+      URI uriEcdeFichier;
+      try {
+         uriEcdeFichier = new URI(urlEcde);
+      } catch (MalformedURIException e) {
+         throw new DemoRuntimeException(e);
+      }
+      ecdeUrl.setEcdeUrlType(uriEcdeFichier);
+      
+      return ecdeUrl;
+      
+   }
+   
+   
+   
+   private static ListeMetadonneeType buildListeMeta(HashMap<String,String> metadonnees) {
+      
+      ListeMetadonneeType listeMetadonnee = new ListeMetadonneeType(); 
+      
+      MetadonneeType metadonnee;
+      MetadonneeCodeType metaCode;
+      MetadonneeValeurType metaValeur;
+      String code;
+      String valeur;
+      for (Map.Entry<String, String> entry: metadonnees.entrySet()) {
+         
+         code = entry.getKey();
+         valeur = entry.getValue();
+         
+         metadonnee = new MetadonneeType();
+         
+         metaCode = new MetadonneeCodeType();
+         metaCode.setMetadonneeCodeType(code);
+         metadonnee.setCode(metaCode);
+         
+         metaValeur = new MetadonneeValeurType();
+         metaValeur.setMetadonneeValeurType(valeur);
+         metadonnee.setValeur(metaValeur);
+         
+         listeMetadonnee.addMetadonnee(metadonnee);
+         
+      }
+      
+      return listeMetadonnee;
+      
+   }
+   
+   
+   
+   public static ArchivageUnitairePJ contruitParamsEntreeArchivageUnitairePJavecUrlEcde(
+         String urlEcdeFichier,
+         HashMap<String,String> metadonnees) {
+      
+      
+      ArchivageUnitairePJ archivageUnitairePJ = 
+         new ArchivageUnitairePJ();
+
+      ArchivageUnitairePJRequestType archivageUnitairePJRequest = 
+         new ArchivageUnitairePJRequestType();  
+      
+      archivageUnitairePJ.setArchivageUnitairePJ(archivageUnitairePJRequest);
+      
+      
+      // URL ECDE
+      EcdeUrlType ecdeUrl = buildEcdeUrl(urlEcdeFichier);
+      ArchivageUnitairePJRequestTypeChoice_type0 choice = new ArchivageUnitairePJRequestTypeChoice_type0();
+      archivageUnitairePJRequest.setArchivageUnitairePJRequestTypeChoice_type0(choice);
+      choice.setEcdeUrl(ecdeUrl);
+      
+      // Métadonnées
+      ListeMetadonneeType listeMetadonnee = buildListeMeta(metadonnees); 
+      archivageUnitairePJRequest.setMetadonnees(listeMetadonnee);
+
+      // Renvoie du paramètre d'entrée de l'opération archivageUnitairePJ
+      return archivageUnitairePJ;
+      
+   }
+   
+   
+   
+   public static ArchivageUnitairePJ contruitParamsEntreeArchivageUnitairePJavecContenu(
+         String nomFichier,
+         InputStream contenu,
+         HashMap<String,String> metadonnees) {
+      
+      
+      ArchivageUnitairePJ archivageUnitairePJ = 
+         new ArchivageUnitairePJ();
+
+      ArchivageUnitairePJRequestType archivageUnitairePJRequest = 
+         new ArchivageUnitairePJRequestType();  
+      
+      archivageUnitairePJ.setArchivageUnitairePJ(archivageUnitairePJRequest);
+      
+      // Nom et contenu du fichier
+      DataFileType dataFile = new DataFileType() ;
+      dataFile.setFileName(nomFichier);
+      byte[] contenuBytes;
+      try {
+         contenuBytes = IOUtils.getStreamAsByteArray(contenu);
+      } catch (IOException e) {
+         throw new DemoRuntimeException(e);
+      }
+      ByteArrayDataSource byteArray = new ByteArrayDataSource(contenuBytes);
+      DataHandler dataHandler = new DataHandler(byteArray);
+      dataFile.setFile(dataHandler);
+      ArchivageUnitairePJRequestTypeChoice_type0 choice = new ArchivageUnitairePJRequestTypeChoice_type0();
+      archivageUnitairePJRequest.setArchivageUnitairePJRequestTypeChoice_type0(choice);
+      choice.setDataFile(dataFile);
+      
+      // Métadonnées
+      ListeMetadonneeType listeMetadonnee = buildListeMeta(metadonnees); 
+      archivageUnitairePJRequest.setMetadonnees(listeMetadonnee);
+
+      // Renvoie du paramètre d'entrée de l'opération archivageUnitairePJ
+      return archivageUnitairePJ;
       
    }
    
