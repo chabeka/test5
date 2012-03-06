@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.cirtil.www.saeservice.Consultation;
-import fr.cirtil.www.saeservice.ConsultationRequestType;
+import fr.cirtil.www.saeservice.ConsultationMTOM;
+import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
 import fr.cirtil.www.saeservice.ConsultationResponse;
+import fr.cirtil.www.saeservice.ListeMetadonneeCodeType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedDocument;
 import fr.urssaf.image.sae.bo.model.untyped.UntypedMetadata;
@@ -35,12 +37,17 @@ import fr.urssaf.image.sae.webservices.util.CollectionUtils;
  */
 @Service
 public class WSConsultationServiceImpl implements WSConsultationService {
+   
+   
    private static final Logger LOG = LoggerFactory
          .getLogger(WSConsultationServiceImpl.class);
+   
+   
    @Autowired
    @Qualifier("documentService")
    private SAEDocumentService saeService;
 
+   
    /**
     * {@inheritDoc}
     */
@@ -48,33 +55,100 @@ public class WSConsultationServiceImpl implements WSConsultationService {
    public final ConsultationResponse consultation(Consultation request)
          throws ConsultationAxisFault {
 
-      ConsultationResponse response;
       // Traces debug - entrée méthode
-      String prefixeTrc = "Opération consultationSecure()";
+      String prefixeTrc = "consultation()";
       LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      
+      // Lecture de l'UUID depuis l'objet de requête de la couche ws
       UUID uuid = UUID.fromString(request.getConsultation().getIdArchive()
             .getUuidType());
       LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,
             uuid);
+      
+      // Lecture des métadonnées depuis l'objet de requête de la couche ws
+      ListeMetadonneeCodeType listeMetas = request.getConsultation().getMetadonnees();
+      
+      // Appel de la méthode commune entre avec MTOM et sans MTOM
+      // Cette méthode se charge des vérifications et de la levée des AxisFault
+      UntypedDocument untypedDocument = consultationCommune(uuid, listeMetas);
+      
+      // Conversion de l'objet UntypedDocument en un objet de la couche web service
+      List<MetadonneeType> metadatas = convertListeMetasServiceToWebService(untypedDocument.getUMetadatas());
+      ConsultationResponse response = ObjectConsultationFactory.createConsultationResponse(
+            untypedDocument.getContent(), 
+            metadatas);
+      
+      // Traces debug - sortie méthode
+      LOG.debug("{} - Sortie", prefixeTrc);
+      
+      // Renvoie l'objet de réponse de la couche web service
+      return response;
+      
+   }
+   
+   
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public final ConsultationMTOMResponse consultationMTOM(ConsultationMTOM request)
+         throws ConsultationAxisFault {
+
+      // Traces debug - entrée méthode
+      String prefixeTrc = "consultationMTOM()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      
+      // Lecture de l'UUID depuis l'objet de requête de la couche ws
+      UUID uuid = UUID.fromString(request.getConsultationMTOM().getIdArchive()
+            .getUuidType());
+      LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,
+            uuid);
+      
+      // Lecture des métadonnées depuis l'objet de requête de la couche ws
+      ListeMetadonneeCodeType listeMetas = request.getConsultationMTOM().getMetadonnees();
+      
+      // Appel de la méthode commune entre avec MTOM et sans MTOM
+      // Cette méthode se charge des vérifications et de la levée des AxisFault
+      UntypedDocument untypedDocument = consultationCommune(uuid, listeMetas);
+      
+      // Conversion de l'objet UntypedDocument en un objet de la couche web service
+      List<MetadonneeType> metadatas = convertListeMetasServiceToWebService(untypedDocument.getUMetadatas());
+      ConsultationMTOMResponse response = ObjectConsultationFactory.createConsultationMTOMResponse(
+            untypedDocument.getContent(), metadatas);
+      
+      // Traces debug - sortie méthode
+      LOG.debug("{} - Sortie", prefixeTrc);
+      
+      // Renvoie l'objet de réponse de la couche web service
+      return response;
+      
+   }
+   
+   
+      
+   private UntypedDocument consultationCommune(UUID uuid, ListeMetadonneeCodeType listeMeta)
+         throws ConsultationAxisFault {
+
+      // Traces debug - entrée méthode
+      String prefixeTrc = "consultationCommune()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+      
       try {
 
-         List<String> listDatas = null;
-         ConsultationRequestType consultation = request.getConsultation();
-
-         if (consultation.getMetadonnees() != null) {
-
-            listDatas = ObjectTypeFactory.buildMetaCodeFromWS(consultation
-                  .getMetadonnees());
-         }
-
-         // ObjectTypeFactory.buildMetaCodeFromWS(request.getConsultation()
-         // .getMetadonnees().getMetadonneeCode());
-
-         ConsultParams consultParams = new ConsultParams(uuid, listDatas);
-
+         // Convertit la liste des métadonnées de l'objet de la couche ws vers un
+         // objet plus exploitable
+         List<String> listMetas = convertListeMetasWebServiceToService(listeMeta);
+         
+         // Appel de la couche service
+         ConsultParams consultParams = new ConsultParams(uuid, listMetas);
          UntypedDocument untypedDocument = saeService
                .consultation(consultParams);
 
+         // Regarde si l'archive a été retrouvée dans le SAE. Si ce n'est pas le
+         // cas, on lève la SoapFault correspondante
          if (untypedDocument == null) {
             LOG
                   .debug(
@@ -86,38 +160,14 @@ public class WSConsultationServiceImpl implements WSConsultationService {
 
          } else {
 
-            List<MetadonneeType> metadatas = new ArrayList<MetadonneeType>();
-
-            for (UntypedMetadata untypedMetadata : CollectionUtils
-                  .loadListNotNull(untypedDocument.getUMetadatas())) {
-
-               String code = untypedMetadata.getLongCode();
-               String valeur = untypedMetadata.getValue();
-               if (untypedMetadata.getValue() == null) {
-                  valeur = StringUtils.EMPTY;
-               }
-               MetadonneeType metadonnee = ObjectTypeFactory
-                     .createMetadonneeType(code, valeur);
-
-               metadatas.add(metadonnee);
-            }
-
-            byte[] content = untypedDocument.getContent();
-            // Trace à activer pour afficher le résultat de la consultation
-            // LOG
-            // .debug(
-            // "{} - Valeur de retour le contenue du document ({}) et la liste des métadonnés ({})",
-            // new Object[] {
-            // prefixeTrc,
-            // content,
-            // FormatUtils.buildMessageFromList(untypedDocument
-            // .getUMetadatas()) });
-            response = ObjectConsultationFactory.createConsultationResponse(
-                  content, metadatas);
+            // Traces debug - sortie méthode
+            LOG.debug("{} - Sortie", prefixeTrc);
+            
+            // Renvoie le UntypedDocument
+            return untypedDocument;
 
          }
-         LOG.debug("{} - Sortie", prefixeTrc);
-         // Fin des traces debug - sortie méthode
+         
       } catch (SAEConsultationServiceException e) {
          throw new ConsultationAxisFault(e);
       
@@ -129,7 +179,40 @@ public class WSConsultationServiceImpl implements WSConsultationService {
                "ConsultationMetadonneesNonAutorisees", e);
       }
 
-      return response;
+   }
+   
+   
+   private List<String> convertListeMetasWebServiceToService(ListeMetadonneeCodeType listeMetaWs) {
+
+      if (listeMetaWs==null) {
+         return null ;
+      } else {
+         return ObjectTypeFactory.buildMetaCodeFromWS(listeMetaWs);
+      }
+      
+   }
+   
+   
+   private List<MetadonneeType> convertListeMetasServiceToWebService(List<UntypedMetadata> listeMetasService) {
+      
+      List<MetadonneeType> metadatas = new ArrayList<MetadonneeType>();
+
+      for (UntypedMetadata untypedMetadata : CollectionUtils
+            .loadListNotNull(listeMetasService)) {
+
+         String code = untypedMetadata.getLongCode();
+         String valeur = untypedMetadata.getValue();
+         if (untypedMetadata.getValue() == null) {
+            valeur = StringUtils.EMPTY;
+         }
+         MetadonneeType metadonnee = ObjectTypeFactory
+               .createMetadonneeType(code, valeur);
+
+         metadatas.add(metadonnee);
+      }
+      
+      return metadatas;
+      
    }
 
 }

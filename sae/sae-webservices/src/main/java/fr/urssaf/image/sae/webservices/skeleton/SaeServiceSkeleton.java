@@ -32,7 +32,6 @@ import fr.cirtil.www.saeservice.Consultation;
 import fr.cirtil.www.saeservice.ConsultationMTOM;
 import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
 import fr.cirtil.www.saeservice.ConsultationResponse;
-import fr.cirtil.www.saeservice.EcdeUrlType;
 import fr.cirtil.www.saeservice.PingRequest;
 import fr.cirtil.www.saeservice.PingResponse;
 import fr.cirtil.www.saeservice.PingSecureRequest;
@@ -46,47 +45,20 @@ import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
 import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
-import fr.urssaf.image.sae.webservices.service.WSConsultationMTOMService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
-import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
 import fr.urssaf.image.sae.webservices.util.MessageRessourcesUtils;
 
 /**
  * Skeleton du web service coté serveur<br>
- * La configuration dans <code>services.xml</code>
- * 
- * <pre>
- * 
- * &lt;service name="SaeService">
- *       &lt;messageReceivers>
- *          &lt;messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
- *             class="fr.urssaf.image.sae.webservices.skeleton.SaeServiceMessageReceiverInOut" />
- *       &lt;/messageReceivers>
- *       &lt;parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringAppContextAwareObjectSupplier
- *       &lt;/parameter>
- *       &lt;parameter name="SpringBeanName" locked="false">saeServiceSkeleton
- *       &lt;/parameter>
- *       &lt;parameter name="useOriginalwsdl">true&lt;/parameter>
- *       &lt;parameter name="modifyUserWSDLPortAddress">false&lt;/parameter>
- *       &lt;operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out"
- *          namespace="http://www.cirtil.fr/saeService">
- *          &lt;actionMapping>Ping&lt;/actionMapping>
- *          &lt;outputActionMapping>Ping&lt;/outputActionMapping>
- *       &lt;/operation>
- *       &lt;operation name="PingSecure" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://www.cirtil.fr/saeService">
- *             &lt;actionMapping>PingSecure&lt;/actionMapping>
- *             &lt;outputActionMapping>PingSecure&lt;/outputActionMapping>
- *         &lt;/operation>
- *    &lt;/service>
- * 
- * </pre>
- * 
- * Code généré à partir du plugin maven
+ * <br>
+ * La configuration se trouve dans le fichier <code>services.xml</code><br>
+ * <br>
+ * Code généré la 1ère fois à partir du plugin maven
  * <code>axis2-wsdl2code-maven-plugin</code><br>
  * <br>
- * Il est nécessaire d'injecter dans les endpoints générés l'implémentation des
- * services
+ * La classe doit ensuite être mise à jour manuellement selon l'évolution du
+ * WSDL.
  * 
  */
 @Component
@@ -98,9 +70,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    @Autowired
    private WSConsultationService consultation;
-   
-   @Autowired
-   private WSConsultationMTOMService consultationMTOM;
 
    @Autowired
    private WSRechercheService search;
@@ -113,10 +82,10 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    @Autowired
    private DfceInfoService dfceInfoService;
-   
+
    private static final String STOCKAGE_INDISPO = "StockageIndisponible";
    private static final String MES_STOCKAGE = "ws.dfce.stockage";
-   
+
    /**
     * Instanciation du service {@link SaeService}
     * 
@@ -165,58 +134,43 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ArchivageUnitaireResponse archivageUnitaireSecure(
          ArchivageUnitaire request) throws CaptureAxisFault {
-
-      return archivageUnitaire(request, "archivageUnitaireSecure");
-   }
-   
-   /**
-    * Methode privée qui sera utilisée dans le cas d'une captureUnitaire simple
-    * et dans le cas d'une captureUnitairePJ.
-    * 
-    */
-   private final ArchivageUnitaireResponse archivageUnitaire(
-         ArchivageUnitaire request, String archivageUnitaireOuPJ) throws CaptureAxisFault {
-
       try {
+
          // Traces debug - entrée méthode
-         String prefixeTrc = "Opération " + archivageUnitaireOuPJ + "()";
+         String prefixeTrc = "Opération archivageUnitaireSecure()";
          LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+
          boolean dfceUp = dfceInfoService.isDfceUp();
-         if (!dfceUp) {
-            LOG.debug("{} - Sortie", prefixeTrc);
-            
-            setCodeHttp412();
-            
-            throw new CaptureAxisFault(STOCKAGE_INDISPO,
-                                       MessageRessourcesUtils.recupererMessage(
-                                                            MES_STOCKAGE, null));
-         } else {
-         
-            // Fin des traces debug - entrée méthode
+         if (dfceUp) {
+
             ArchivageUnitaireResponse response = capture
                   .archivageUnitaire(request);
 
             // Traces debug - sortie méthode
-            if (response != null
-                  && response.getArchivageUnitaireResponse() != null) {
-               LOG.debug("{} - Valeur de retour : \"{}\"", prefixeTrc, response
-                     .getArchivageUnitaireResponse().getIdArchive());
-            } else {
-               LOG.debug("{} - Valeur de retour : null", prefixeTrc);
-            }
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
+
             return response;
-         }   
+
+         } else {
+
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new CaptureAxisFault(STOCKAGE_INDISPO, MessageRessourcesUtils
+                  .recupererMessage(MES_STOCKAGE, null));
+
+         }
       } catch (CaptureAxisFault ex) {
          logSoapFault(ex);
          throw ex;
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } 
+      }
+
    }
-   
+
    /**
     * {@inheritDoc}
     * 
@@ -225,64 +179,33 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ArchivageUnitairePJResponse archivageUnitairePJSecure(
          ArchivageUnitairePJ request) throws AxisFault {
-      
-      // si l'appel a été réalisé avec une urlEcde alors appel de la capture unitaire sans PJ
-      // si l'appel a été réalisé avec un contenu et un nom de fichier alors appel archivageUnitairePJ
-      ArchivageUnitairePJResponse response = null;
-      EcdeUrlType ecdeUrlType = request.getArchivageUnitairePJ().getArchivageUnitairePJRequestTypeChoice_type0().getEcdeUrl();
-      if (ecdeUrlType != null)  {
-            // conversion objet archivageUnitairePJ en archivageUnitaire
-            ArchivageUnitaire archivageUnitaire = ObjectArchivageUnitaireFactory.convertToArchivageUnitaire(request);
-            
-            // conversion objet archivageUnitaireResponse en archivageUnitairePJResponse
-            // aprés appel de la capture unitaire sans PJ
-            ArchivageUnitaireResponse archivageUnitaireResponse = archivageUnitaire(archivageUnitaire, "archivageUnitairePJSecure");
-            
-            response = ObjectArchivageUnitaireFactory.convertToArchivageUnitairePJResponse(archivageUnitaireResponse); 
-      }      
-      else {
-            response = archivageUnitairePJ(request);
-      }   
-      
-      return response;
-   }
-   
-   private ArchivageUnitairePJResponse archivageUnitairePJ(
-         ArchivageUnitairePJ request) throws AxisFault {
-      
-      // Mise en place du contexte pour les traces
       try {
+
          // Traces debug - entrée méthode
-         String prefixeTrc = "Opération archivageUnitairePJ()";
+         String prefixeTrc = "Opération archivageUnitairePJSecure()";
          LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+
          boolean dfceUp = dfceInfoService.isDfceUp();
-         if (!dfceUp) {
-            LOG.debug("{} - Sortie", prefixeTrc);
-            
-            setCodeHttp412();
-            
-            throw new CaptureAxisFault(STOCKAGE_INDISPO,
-                                       MessageRessourcesUtils.recupererMessage(
-                                                            MES_STOCKAGE, null));
-         } else {
-            
-            // Fin des traces debug - entrée méthode
+         if (dfceUp) {
+
             ArchivageUnitairePJResponse response = capture
                   .archivageUnitairePJ(request);
-            // Nettoyage du contexte pour les logs
-            //clearLogContext();
+
             // Traces debug - sortie méthode
-            if (response != null
-                  && response.getArchivageUnitairePJResponse() != null) {
-               LOG.debug("{} - Valeur de retour : \"{}\"", prefixeTrc, response
-                     .getArchivageUnitairePJResponse().getIdArchive());
-            } else {
-               LOG.debug("{} - Valeur de retour : null", prefixeTrc);
-            }
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
+
             return response;
-         }   
+
+         } else {
+
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new CaptureAxisFault(STOCKAGE_INDISPO, MessageRessourcesUtils
+                  .recupererMessage(MES_STOCKAGE, null));
+
+         }
       } catch (CaptureAxisFault ex) {
          logSoapFault(ex);
          throw ex;
@@ -291,7 +214,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          throw ex;
       }
    }
-   
+
    /**
     * {@inheritDoc}
     * 
@@ -300,38 +223,40 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ArchivageMasseResponse archivageMasseSecure(
          ArchivageMasse request) throws CaptureAxisFault {
-      // Mise en place du contexte pour les traces
-      //buildLogContext();
       try {
+
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération archivageMasseSecure()";
          LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+
          boolean dfceUp = dfceInfoService.isDfceUp();
-         if (!dfceUp) {
-            LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp412();
-            throw new CaptureAxisFault(STOCKAGE_INDISPO,
-                                       MessageRessourcesUtils.recupererMessage(
-                                                         MES_STOCKAGE, null));
-            
-         }
-         else {
-         
-            // Fin des traces debug - entrée méthode
-            ArchivageMasseResponse response = captureMasse.archivageEnMasse(request);
-            // Nettoyage du contexte pour les logs
-            //clearLogContext();
+         if (dfceUp) {
+
+            ArchivageMasseResponse response = captureMasse
+                  .archivageEnMasse(request);
+
+            // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
+
             return response;
-         }   
+
+         } else {
+
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new CaptureAxisFault(STOCKAGE_INDISPO, MessageRessourcesUtils
+                  .recupererMessage(MES_STOCKAGE, null));
+
+         }
       } catch (CaptureAxisFault ex) {
          logSoapFault(ex);
          throw ex;
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } 
+      }
    }
 
    /**
@@ -342,28 +267,31 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final RechercheResponse rechercheSecure(Recherche request)
          throws RechercheAxis2Fault {
-      // Mise en place du contexte pour les traces
-      //buildLogContext();
       try {
+
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération rechercheSecure()";
          LOG.debug("{} - Début", prefixeTrc);
+         // Fin des traces debug - entrée méthode
+
          boolean dfceUp = dfceInfoService.isDfceUp();
-         if (!dfceUp) {
-            LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp412();
-            throw new RechercheAxis2Fault(STOCKAGE_INDISPO,
-                                       MessageRessourcesUtils.recupererMessage(
-                                                               MES_STOCKAGE, null));
-         } else {
-            // Fin des traces debug - entrée méthode
+         if (dfceUp) {
+
             RechercheResponse response = search.search(request);
-            // Nettoyage du contexte pour les logs
-            //clearLogContext();
+
             // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
+
             return response;
+
+         } else {
+
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new RechercheAxis2Fault(STOCKAGE_INDISPO,
+                  MessageRessourcesUtils.recupererMessage(MES_STOCKAGE, null));
+
          }
       } catch (RechercheAxis2Fault ex) {
          logSoapFault(ex);
@@ -371,7 +299,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       } catch (RuntimeException ex) {
          logRuntimeException(ex);
          throw ex;
-      } 
+      }
    }
 
    /**
@@ -380,31 +308,32 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ConsultationResponse consultationSecure(Consultation request)
          throws ConsultationAxisFault {
-      // Mise en place du contexte pour les traces
-      //buildLogContext();
       try {
+
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération consultationSecure()";
          LOG.debug("{} - Début", prefixeTrc);
-         
+         // Fin des traces debug - entrée méthode
+
          boolean dfceUp = dfceInfoService.isDfceUp();
-         if (!dfceUp) {
-            LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp412();
-            throw new ConsultationAxisFault(MessageRessourcesUtils.recupererMessage(
-                                            MES_STOCKAGE, null),
-                                            STOCKAGE_INDISPO
-                                            );
-         } else {
-            
-            // Fin des traces debug - entrée méthode
+         if (dfceUp) {
+
             ConsultationResponse response = consultation.consultation(request);
-            //clearLogContext();
+
+            // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
+
             return response;
-         
-         }   
+
+         } else {
+
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new ConsultationAxisFault(MessageRessourcesUtils
+                  .recupererMessage(MES_STOCKAGE, null), STOCKAGE_INDISPO);
+
+         }
       } catch (ConsultationAxisFault ex) {
          logSoapFault(ex);
          throw ex;
@@ -413,37 +342,40 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          throw ex;
       }
    }
-   
-   
+
    /**
     * {@inheritDoc}
     */
    @Override
-   public final ConsultationMTOMResponse consultationMTOMSecure(ConsultationMTOM request)
-         throws ConsultationAxisFault {
-      
+   public final ConsultationMTOMResponse consultationMTOMSecure(
+         ConsultationMTOM request) throws ConsultationAxisFault {
       try {
+
          // Traces debug - entrée méthode
          String prefixeTrc = "Opération consultationMTOMSecure()";
          LOG.debug("{} - Début", prefixeTrc);
-         
+         // Fin des traces debug - entrée méthode
+
          boolean dfceUp = dfceInfoService.isDfceUp();
-         if (!dfceUp) {
-            LOG.debug("{} - Sortie", prefixeTrc);
-            setCodeHttp412();
-            throw new ConsultationAxisFault(MessageRessourcesUtils.recupererMessage(
-                                            MES_STOCKAGE, null),
-                                            STOCKAGE_INDISPO
-                                            );
-         } else {
-            
-            // Fin des traces debug - entrée méthode
-            ConsultationMTOMResponse responseMTOM = consultationMTOM.consultationMTOM(request);
-            
+         if (dfceUp) {
+
+            ConsultationMTOMResponse responseMTOM = consultation
+                  .consultationMTOM(request);
+
+            // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
+
             return responseMTOM;
-         }   
+
+         } else {
+
+            LOG.debug("{} - Sortie", prefixeTrc);
+            setCodeHttp412();
+            throw new ConsultationAxisFault(MessageRessourcesUtils
+                  .recupererMessage(MES_STOCKAGE, null), STOCKAGE_INDISPO);
+
+         }
       } catch (ConsultationAxisFault ex) {
          logSoapFault(ex);
          throw ex;
@@ -452,9 +384,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          throw ex;
       }
    }
-   
-   
-   
 
    private void logSoapFault(AxisFault fault) {
       LOG.warn("Une exception AxisFault a été levée", fault);
@@ -463,7 +392,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    private void logRuntimeException(RuntimeException exception) {
       LOG.warn("Une exception RuntimeException a été levée", exception);
    }
-   
+
    /**
     * Methode qui set le code de la reponse HTTP à 412<br>
     * si DFCE is down.
@@ -472,21 +401,20 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
     */
    private void setCodeHttp412() {
       HttpServletResponse response = (HttpServletResponse) MessageContext
-                                                               .getCurrentMessageContext().getProperty(
-                                                                    HTTPConstants.MC_HTTP_SERVLETRESPONSE);
-      
+            .getCurrentMessageContext().getProperty(
+                  HTTPConstants.MC_HTTP_SERVLETRESPONSE);
+
       if (response != null) {
          response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
-         
+
          try {
             // on force le status a 412
             response.flushBuffer();
-            
+
          } catch (IOException e) {
             throw new RuntimeException(e);
          }
       }
    }
 
-    
 }
