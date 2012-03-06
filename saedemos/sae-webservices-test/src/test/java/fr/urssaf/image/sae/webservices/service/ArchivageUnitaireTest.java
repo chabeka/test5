@@ -133,9 +133,9 @@ public class ArchivageUnitaireTest {
       expectedMetadatas.put("TailleFichier", Long.toString(FileUtils
             .sizeOf(srcFile)));
 
-      ConsultationTest consultationTest = new ConsultationTest();
+      ConsultationUtilsTest consultationTest = new ConsultationUtilsTest();
 
-      consultationTest.consultation(consultation.consultation(idArchive),
+      consultationTest.assertConsultationResponse(consultation.consultation(idArchive),
             expectedMetadatas, srcFile);
 
    }

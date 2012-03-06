@@ -139,9 +139,9 @@ public class ArchivageUnitairePJTest {
       expectedMetadatas.put("Hash", att_hash);
       expectedMetadatas.put("TailleFichier", ""+contenu.length);
 
-      ConsultationTest consultationTest = new ConsultationTest();
+      ConsultationUtilsTest consultationTest = new ConsultationUtilsTest();
 
-      consultationTest.consultation(consultation.consultation(idArchive),
+      consultationTest.assertConsultationResponse(consultation.consultation(idArchive),
             expectedMetadatas);
 
    }
@@ -223,9 +223,9 @@ public class ArchivageUnitairePJTest {
       expectedMetadatas.put("TailleFichier", Long.toString(FileUtils
             .sizeOf(srcFile)));
 
-      ConsultationTest consultationTest = new ConsultationTest();
+      ConsultationUtilsTest consultationTest = new ConsultationUtilsTest();
 
-      consultationTest.consultation(consultation.consultation(idArchive),
+      consultationTest.assertConsultationResponse(consultation.consultation(idArchive),
             expectedMetadatas, srcFile);
 
    }
@@ -290,9 +290,9 @@ public class ArchivageUnitairePJTest {
       expectedMetadatas.put("Hash", att_hash);
       expectedMetadatas.put("TailleFichier", "73791");
 
-      ConsultationTest consultationTest = new ConsultationTest();
+      ConsultationUtilsTest consultationTest = new ConsultationUtilsTest();
 
-      consultationTest.consultation(consultation.consultation(idArchive),
+      consultationTest.assertConsultationResponse(consultation.consultation(idArchive),
             expectedMetadatas);
 
    }
