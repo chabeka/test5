@@ -35,7 +35,7 @@ import fr.urssaf.image.sae.webservices.util.AuthenticateUtils;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext-sae-webservices.xml" })
-public class ConsultationMTOMTestAll {
+public class ConsultationMTOMTest {
 
    /**
     * TODO : remplacer ici l'UUID par un UUID existant
