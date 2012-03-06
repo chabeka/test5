@@ -1,7 +1,5 @@
 package fr.urssaf.image.sae.webservices.service;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,11 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.configuration.ConfigurationException;
@@ -150,96 +146,7 @@ public class ArchivageUnitairePJTest {
 
    }
    
-   @Test
-   public void archivageUnitairePJ_contentNull() throws URISyntaxException,
-         FileNotFoundException, IOException {
-
-      
-      try {
-         AuthenticateUtils.authenticate("ROLE_TOUS");
-         String fileName = "NomFichier.txt";
-         byte[] contenu = null;
-         
-         List<Metadata> metadatas = new ArrayList<Metadata>();
    
-         metadatas.add(ObjectModelFactory.createMetadata("ApplicationProductrice",
-               "ADELAIDE"));
-         metadatas.add(ObjectModelFactory.createMetadata(
-               "CodeOrganismeProprietaire", "CER69"));
-         metadatas.add(ObjectModelFactory.createMetadata(
-               "CodeOrganismeGestionnaire", "UR750"));
-         metadatas.add(ObjectModelFactory.createMetadata("CodeRND", "2.3.1.1.12"));
-         metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
-         metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
-         metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
-               "fmt/1354"));
-         metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
-               "2012-01-01"));
-         metadatas.add(ObjectModelFactory.createMetadata("Titre",
-               "Attestation de vigilance"));
-         metadatas.add(ObjectModelFactory.createMetadata("TypeHash", "SHA-1"));
-         metadatas.add(ObjectModelFactory.createMetadata("Hash", ""));
-         metadatas.add(ObjectModelFactory.createMetadata("DateReception",
-               "1999-11-25"));
-         metadatas.add(ObjectModelFactory.createMetadata("DateDebutConservation",
-               "2011-09-02"));
-   
-         
-         archivagePJ
-               .archivageUnitairePJ(fileName, contenu, metadatas);
-   
-      }
-      catch(AxisFault axisFault) {
-         assertEquals("L'axisFault retournée n'est pas correct", 
-                      "Le contenu du fichier à archiver est vide.",
-                      axisFault.getMessage());
-      }
-   }
-   
-   @Test
-   public void archivageUnitairePJ_content0octet() throws URISyntaxException,
-         FileNotFoundException, IOException {
-
-      try {
-         AuthenticateUtils.authenticate("ROLE_TOUS");
-         String fileName = "NomFichier.txt";
-         byte[] contenu = new byte[0];
-         String att_hash = DigestUtils.shaHex(contenu);
-         List<Metadata> metadatas = new ArrayList<Metadata>();
-   
-         metadatas.add(ObjectModelFactory.createMetadata("ApplicationProductrice",
-               "ADELAIDE"));
-         metadatas.add(ObjectModelFactory.createMetadata(
-               "CodeOrganismeProprietaire", "CER69"));
-         metadatas.add(ObjectModelFactory.createMetadata(
-               "CodeOrganismeGestionnaire", "UR750"));
-         metadatas.add(ObjectModelFactory.createMetadata("CodeRND", "2.3.1.1.12"));
-         metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
-         metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
-         metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
-               "fmt/1354"));
-         metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
-               "2012-01-01"));
-         metadatas.add(ObjectModelFactory.createMetadata("Titre",
-               "Attestation de vigilance"));
-         metadatas.add(ObjectModelFactory.createMetadata("TypeHash", "SHA-1"));
-         metadatas.add(ObjectModelFactory.createMetadata("Hash", att_hash));
-         metadatas.add(ObjectModelFactory.createMetadata("DateReception",
-               "1999-11-25"));
-         metadatas.add(ObjectModelFactory.createMetadata("DateDebutConservation",
-               "2011-09-02"));
-   
-         
-         archivagePJ
-               .archivageUnitairePJ(fileName, contenu, metadatas);
-   
-      }
-      catch(AxisFault axisFault) {
-         assertEquals("L'axisFault retournée n'est pas correct", 
-                      "Le contenu du fichier à archiver est vide.",
-                      axisFault.getMessage());
-      }
-   }
    
    @Test
    public void archivageUnitairePJ_URLEcdeSuccess() throws URISyntaxException,

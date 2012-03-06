@@ -1,12 +1,17 @@
 package fr.urssaf.image.sae.webservices.service;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.axis2.AxisFault;
@@ -121,7 +126,7 @@ public class ArchivageUnitairePJFailureTest {
 
    @Test
    @Ignore("Ajouter dans son ecde local un fichier vide attestation_vide.txt")
-   public void archivageUnitaire_failure_CaptureFichierVide()
+   public void archivageUnitairePJ_failure_CaptureFichierVide()
          throws IOException {
 
       // appel du service archivage unitaire
@@ -145,7 +150,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureMetadonneesInconnu()
+   public void archivageUnitairePJ_failure_CaptureMetadonneesInconnu()
          throws IOException {
 
       // appel du service archivage unitaire
@@ -175,7 +180,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureMetadonneesDoublon()
+   public void archivageUnitairePJ_failure_CaptureMetadonneesDoublon()
          throws IOException {
 
       @SuppressWarnings("unchecked")
@@ -207,7 +212,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureMetadonneesFormatTypeNonValide()
+   public void archivageUnitairePJ_failure_CaptureMetadonneesFormatTypeNonValide()
          throws IOException {
 
       putMetadata("DateCreation", "01/01/2012");
@@ -233,7 +238,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureMetadonneesInterdites()
+   public void archivageUnitairePJ_failure_CaptureMetadonneesInterdites()
          throws IOException {
 
       putMetadata("DureeConservation", "1825");
@@ -259,7 +264,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureMetadonneesArchivageObligatoire()
+   public void archivageUnitairePJ_failure_CaptureMetadonneesArchivageObligatoire()
          throws IOException {
 
       metadatasRef.remove("ApplicationProductrice");
@@ -285,7 +290,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureCodeRndInterdit()
+   public void archivageUnitairePJ_failure_CaptureCodeRndInterdit()
          throws IOException {
 
       putMetadata("CodeRND", "toto");
@@ -308,7 +313,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_ErreurInterneCapture_Hash()
+   public void archivageUnitairePJ_failure_ErreurInterneCapture_Hash()
          throws IOException {
 
       putMetadata("Hash", "toto");
@@ -331,7 +336,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureUrlEcdeFichierIntrouvable()
+   public void archivageUnitairePJ_failure_CaptureUrlEcdeFichierIntrouvable()
          throws IOException {
 
       try {
@@ -357,7 +362,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureUrlEcdeIncorrecte()
+   public void archivageUnitairePJ_failure_CaptureUrlEcdeIncorrecte()
          throws IOException {
 
       try {
@@ -384,7 +389,7 @@ public class ArchivageUnitairePJFailureTest {
    }
 
    @Test
-   public void archivageUnitaire_failure_CaptureMetadonneesVide()
+   public void archivageUnitairePJ_failure_CaptureMetadonneesVide()
          throws IOException {
 
       Collection<Metadata> metadatas = new ArrayList<Metadata>();
@@ -404,9 +409,8 @@ public class ArchivageUnitairePJFailureTest {
       }
    }
    
-   
    @Test
-   public void archivageUnitaire_failure_CaptureContenuVide()
+   public void archivageUnitairePJ_failure_CaptureContenuVide()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -428,7 +432,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitaire_failure_CaptureNomVide()
+   public void archivageUnitairePJ_failure_CaptureNomVide()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -452,7 +456,7 @@ public class ArchivageUnitairePJFailureTest {
    }
    
    @Test
-   public void archivageUnitaire_failure_CaptureNomEspace()
+   public void archivageUnitairePJ_failure_CaptureNomEspace()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -477,7 +481,7 @@ public class ArchivageUnitairePJFailureTest {
    
    @Test
    @Ignore("A mettre à jour une fois la gestion des extensions faite par DFCE.")
-   public void archivageUnitaire_failure_CaptureSansExtension()
+   public void archivageUnitairePJ_failure_CaptureSansExtension()
          throws IOException {
 
       Collection<Metadata> metadatas = metadatasRef.values();
@@ -487,6 +491,105 @@ public class ArchivageUnitairePJFailureTest {
          
       service.archivageUnitairePJ(fileName, contenu, metadatas);
 
+   }
+   
+   @Test
+   public void archivageUnitairePJ_failure_contentNull() throws URISyntaxException,
+         FileNotFoundException, IOException {
+
+      
+      try {
+         AuthenticateUtils.authenticate("ROLE_TOUS");
+         String fileName = "NomFichier.txt";
+         byte[] contenu = null;
+         
+         List<Metadata> metadatas = new ArrayList<Metadata>();
+   
+         metadatas.add(ObjectModelFactory.createMetadata("ApplicationProductrice",
+               "ADELAIDE"));
+         metadatas.add(ObjectModelFactory.createMetadata(
+               "CodeOrganismeProprietaire", "CER69"));
+         metadatas.add(ObjectModelFactory.createMetadata(
+               "CodeOrganismeGestionnaire", "UR750"));
+         metadatas.add(ObjectModelFactory.createMetadata("CodeRND", "2.3.1.1.12"));
+         metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
+         metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
+         metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
+               "fmt/1354"));
+         metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
+               "2012-01-01"));
+         metadatas.add(ObjectModelFactory.createMetadata("Titre",
+               "Attestation de vigilance"));
+         metadatas.add(ObjectModelFactory.createMetadata("TypeHash", "SHA-1"));
+         metadatas.add(ObjectModelFactory.createMetadata("Hash", ""));
+         metadatas.add(ObjectModelFactory.createMetadata("DateReception",
+               "1999-11-25"));
+         metadatas.add(ObjectModelFactory.createMetadata("DateDebutConservation",
+               "2011-09-02"));
+   
+         
+         service
+               .archivageUnitairePJ(fileName, contenu, metadatas);
+         
+         Assert.fail(SoapTestUtils.FAIL_MSG);
+   
+      }
+      catch(AxisFault axisFault) {
+         
+         SoapTestUtils.assertAxisFault(axisFault,
+               "Le contenu du fichier à archiver est vide.",
+               "CaptureFichierVide", SoapTestUtils.SAE_NAMESPACE,
+               SoapTestUtils.SAE_PREFIX);
+         
+      }
+   }
+   
+   @Test
+   public void archivageUnitairePJ_failure_content0octet() throws URISyntaxException,
+         FileNotFoundException, IOException {
+
+      try {
+         AuthenticateUtils.authenticate("ROLE_TOUS");
+         String fileName = "NomFichier.txt";
+         byte[] contenu = new byte[0];
+         String att_hash = DigestUtils.shaHex(contenu);
+         List<Metadata> metadatas = new ArrayList<Metadata>();
+   
+         metadatas.add(ObjectModelFactory.createMetadata("ApplicationProductrice",
+               "ADELAIDE"));
+         metadatas.add(ObjectModelFactory.createMetadata(
+               "CodeOrganismeProprietaire", "CER69"));
+         metadatas.add(ObjectModelFactory.createMetadata(
+               "CodeOrganismeGestionnaire", "UR750"));
+         metadatas.add(ObjectModelFactory.createMetadata("CodeRND", "2.3.1.1.12"));
+         metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
+         metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
+         metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
+               "fmt/1354"));
+         metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
+               "2012-01-01"));
+         metadatas.add(ObjectModelFactory.createMetadata("Titre",
+               "Attestation de vigilance"));
+         metadatas.add(ObjectModelFactory.createMetadata("TypeHash", "SHA-1"));
+         metadatas.add(ObjectModelFactory.createMetadata("Hash", att_hash));
+         metadatas.add(ObjectModelFactory.createMetadata("DateReception",
+               "1999-11-25"));
+         metadatas.add(ObjectModelFactory.createMetadata("DateDebutConservation",
+               "2011-09-02"));
+   
+         
+         service
+               .archivageUnitairePJ(fileName, contenu, metadatas);
+   
+      }
+      catch(AxisFault axisFault) {
+         
+         SoapTestUtils.assertAxisFault(axisFault,
+               "Le contenu du fichier à archiver est vide.",
+               "CaptureFichierVide", SoapTestUtils.SAE_NAMESPACE,
+               SoapTestUtils.SAE_PREFIX);
+      }
+      
    }
 
 }
