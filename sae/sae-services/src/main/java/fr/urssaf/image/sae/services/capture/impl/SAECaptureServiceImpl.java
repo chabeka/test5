@@ -147,7 +147,7 @@ public class SAECaptureServiceImpl implements SAECaptureService {
          UnknownHashCodeEx, EmptyFileNameEx {
 
       // Traces debug - entrée méthode
-      String prefixeTrc = "capture()";
+      String prefixeTrc = "capture avec optimisation MTOM";
       LOG.debug("{} - Début", prefixeTrc);
       LOG.debug("{} - Liste des métadonnées : \"{}\"", prefixeTrc,
             buildMessageFromList(metadatas));

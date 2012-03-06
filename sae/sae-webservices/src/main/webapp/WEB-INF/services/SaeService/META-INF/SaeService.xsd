@@ -467,6 +467,8 @@
 
    <xsd:element name="archivageUnitaire" type="sae:archivageUnitaireRequestType" />
    <xsd:element name="archivageUnitaireResponse" type="sae:archivageUnitaireResponseType" />
+   <xsd:element name="archivageUnitairePJ" type="sae:archivageUnitairePJRequestType" />
+   <xsd:element name="archivageUnitairePJResponse" type="sae:archivageUnitairePJResponseType" />
    <xsd:element name="archivageMasse" type="sae:archivageMasseRequestType" />
    <xsd:element name="archivageMasseResponse" type="sae:archivageMasseResponseType" />
    <xsd:element name="recherche" type="sae:rechercheRequestType" />
@@ -475,8 +477,6 @@
    <xsd:element name="consultationResponse" type="sae:consultationResponseType" />
    <xsd:element name="consultationMTOM" type="sae:consultationMTOMRequestType" />
    <xsd:element name="consultationMTOMResponse" type="sae:consultationMTOMResponseType" />
-   <xsd:element name="archivageUnitairePJ" type="sae:archivageUnitairePJRequestType" />
-   <xsd:element name="archivageUnitairePJResponse" type="sae:archivageUnitairePJResponseType" />
    
    
 </xsd:schema>

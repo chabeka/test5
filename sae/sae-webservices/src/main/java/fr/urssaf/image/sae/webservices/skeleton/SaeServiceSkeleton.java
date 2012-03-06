@@ -162,11 +162,21 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
    @Override
    public final ArchivageUnitaireResponse archivageUnitaireSecure(
          ArchivageUnitaire request) throws CaptureAxisFault {
-      // Mise en place du contexte pour les traces
-      //buildLogContext();
+
+      return archivageUnitaire(request, "archivageUnitaireSecure");
+   }
+   
+   /**
+    * Methode privée qui sera utilisée dans le cas d'une captureUnitaire simple
+    * et dans le cas d'une captureUnitairePJ.
+    * 
+    */
+   private final ArchivageUnitaireResponse archivageUnitaire(
+         ArchivageUnitaire request, String archivageUnitaireOuPJ) throws CaptureAxisFault {
+
       try {
          // Traces debug - entrée méthode
-         String prefixeTrc = "Opération archivageUnitaireSecure()";
+         String prefixeTrc = "Opération " + archivageUnitaireOuPJ + "()";
          LOG.debug("{} - Début", prefixeTrc);
          boolean dfceUp = dfceInfoService.isDfceUp();
          if (!dfceUp) {
@@ -182,8 +192,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             // Fin des traces debug - entrée méthode
             ArchivageUnitaireResponse response = capture
                   .archivageUnitaire(request);
-            // Nettoyage du contexte pour les logs
-            //clearLogContext();
+
             // Traces debug - sortie méthode
             if (response != null
                   && response.getArchivageUnitaireResponse() != null) {
@@ -205,6 +214,8 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
       } 
    }
    
+   
+   
    /**
     * {@inheritDoc}
     * 
@@ -224,7 +235,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
             
             // conversion objet archivageUnitaireResponse en archivageUnitairePJResponse
             // aprés appel de la capture unitaire sans PJ
-            ArchivageUnitaireResponse archivageUnitaireResponse = this.archivageUnitaireSecure(archivageUnitaire);
+            ArchivageUnitaireResponse archivageUnitaireResponse = archivageUnitaire(archivageUnitaire, "archivageUnitairePJSecure");
             
             response = ObjectArchivageUnitaireFactory.convertToArchivageUnitairePJResponse(archivageUnitaireResponse); 
       }      
