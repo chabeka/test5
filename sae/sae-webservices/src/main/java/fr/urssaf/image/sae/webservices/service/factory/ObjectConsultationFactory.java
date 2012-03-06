@@ -2,9 +2,15 @@ package fr.urssaf.image.sae.webservices.service.factory;
 
 import java.util.List;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.util.Assert;
 
+import fr.cirtil.www.saeservice.ConsultationMTOMResponse;
+import fr.cirtil.www.saeservice.ConsultationMTOMResponseType;
 import fr.cirtil.www.saeservice.ConsultationResponse;
 import fr.cirtil.www.saeservice.ConsultationResponseType;
 import fr.cirtil.www.saeservice.ListeMetadonneeType;
@@ -91,4 +97,47 @@ public final class ObjectConsultationFactory {
 
       return response;
    }
+   
+   
+   
+   /**
+    * instanciation de {@link ConsultationMTOMResponse}.<br>
+    * Implementation de {@link ConsultationMTOMResponseType}
+    * 
+    * @param content
+    *           valeur de <code>objetNumeriqueType</code> non vide
+    * @param metadonnees
+    *           valeur de <code>listeMetadonneeType</code>
+    * @return instance de {@link ConsultationMTOMResponse}
+    */
+   public static ConsultationMTOMResponse createConsultationMTOMResponse(
+         byte[] content, List<MetadonneeType> metadonnees) {
+
+      Assert.notNull(content, "content is required");
+
+      ConsultationMTOMResponse responseMTOM = new ConsultationMTOMResponse();
+      ConsultationMTOMResponseType responseMTOMType = new ConsultationMTOMResponseType();
+      
+      DataSource dataSource = new ByteArrayDataSource(content);
+      DataHandler dataHandler = new DataHandler (dataSource);
+      responseMTOMType.setContenu(dataHandler);
+      
+      ListeMetadonneeType listeMetadonnee = new ListeMetadonneeType();
+
+      if (CollectionUtils.isNotEmpty(metadonnees)) {
+
+         for (MetadonneeType metadonnee : metadonnees) {
+
+            listeMetadonnee.addMetadonnee(metadonnee);
+         }
+
+      }
+      
+      responseMTOMType.setMetadonnees(listeMetadonnee);
+      responseMTOM.setConsultationMTOMResponse(responseMTOMType);
+      return responseMTOM;
+   }
+   
+   
+   
 }

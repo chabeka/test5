@@ -44,9 +44,9 @@ import fr.urssaf.image.sae.webservices.SaeService;
 import fr.urssaf.image.sae.webservices.exception.CaptureAxisFault;
 import fr.urssaf.image.sae.webservices.exception.ConsultationAxisFault;
 import fr.urssaf.image.sae.webservices.exception.RechercheAxis2Fault;
-import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 import fr.urssaf.image.sae.webservices.service.WSCaptureMasseService;
 import fr.urssaf.image.sae.webservices.service.WSCaptureService;
+import fr.urssaf.image.sae.webservices.service.WSConsultationMTOMService;
 import fr.urssaf.image.sae.webservices.service.WSConsultationService;
 import fr.urssaf.image.sae.webservices.service.WSRechercheService;
 import fr.urssaf.image.sae.webservices.service.factory.ObjectArchivageUnitaireFactory;
@@ -98,6 +98,9 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
 
    @Autowired
    private WSConsultationService consultation;
+   
+   @Autowired
+   private WSConsultationMTOMService consultationMTOM;
 
    @Autowired
    private WSRechercheService search;
@@ -213,8 +216,6 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          throw ex;
       } 
    }
-   
-   
    
    /**
     * {@inheritDoc}
@@ -437,9 +438,7 @@ public class SaeServiceSkeleton implements SaeServiceSkeletonInterface {
          } else {
             
             // Fin des traces debug - entrée méthode
-            Consultation consult = ObjectTypeFactory.convertToConsultation(request);
-            ConsultationResponse response = consultation.consultation(consult);
-            ConsultationMTOMResponse responseMTOM = ObjectTypeFactory.convertToConsultRespMTOM(response);
+            ConsultationMTOMResponse responseMTOM = consultationMTOM.consultationMTOM(request);
             
             LOG.debug("{} - Sortie", prefixeTrc);
             // Fin des traces debug - sortie méthode
