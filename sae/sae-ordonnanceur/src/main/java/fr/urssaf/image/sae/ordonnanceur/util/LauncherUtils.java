@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.slf4j.Logger;
@@ -30,48 +29,33 @@ public final class LauncherUtils {
    private static final Logger LOG = LoggerFactory
          .getLogger(LauncherUtils.class);
 
-   private static final String SEPARATOR = " ";
-
    private LauncherUtils() {
 
    }
 
    /**
     * 
-    * 
     * La méthode lance le processus en appelant la classe
-    * {@link Runtime#exec(String)}<br>
+    * {@link Runtime#exec(String)} avec le paramètre <code>command</code><br>
     * <br>
-    * La commande est composée du paramètre <code>executable</code> et de la
-    * suite des <code>parameters</code> séparé par des espaces
+    * Exemples de commandes :
+    * <ul>
+    * <li><code>java -jar exemple.jar arg1 arg2 arg2</code></li>
+    * </ul>
     * 
-    * 
-    * @param executable
+    * @param command
     *           commande à lancer
-    * @param parameters
-    *           paramètres de la commande
     * @return processus lancé
+    * @throws IOException
+    *            une exception est levée lors de l'exécution de la commande
     */
-   public static Process launch(String executable, Object... parameters) {
+   public static Process launch(String command) throws IOException {
 
-      Validate.notEmpty(executable, "'executable' is required");
+      Validate.notEmpty(command, "'executable' is required");
 
       Runtime runtime = Runtime.getRuntime();
 
-      // TODO préférer un exécutable avec des paramètres {0},{1}...
-      String command = StringUtils.join(new String[] { executable,
-            StringUtils.join(parameters, SEPARATOR) }, SEPARATOR);
-
-      LOG.debug("Lancement du processus: {}", command);
-
-      Process process;
-      try {
-
-         process = runtime.exec(command);
-
-      } catch (IOException e) {
-         throw new NestableRuntimeException(e);
-      }
+      Process process = runtime.exec(command);
 
       // on trace ici les exceptions levées par le lancement du processus
       // par exemple : le commande est incomprise, les options d'exécution

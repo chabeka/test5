@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
+import fr.urssaf.image.sae.ordonnanceur.exception.AucunJobALancerException;
 import fr.urssaf.image.sae.ordonnanceur.exception.OrdonnanceurRuntimeException;
 import fr.urssaf.image.sae.ordonnanceur.factory.OrdonnanceurContexteFactory;
 import fr.urssaf.image.sae.ordonnanceur.model.OrdonnanceurConfiguration;
@@ -23,6 +24,8 @@ public final class OrdonnanceurMain {
 
    private static final Logger LOG = LoggerFactory
          .getLogger(OrdonnanceurMain.class);
+
+   private static final String PREFIX_LOG = "ordonnanceur()";
 
    private final String configLocation;
 
@@ -74,8 +77,15 @@ public final class OrdonnanceurMain {
             "'intervalle' must be greater than or equal to 1.");
 
       try {
+
          coordination.lancerTraitement();
+
+      } catch (AucunJobALancerException e) {
+
+         LOG.debug("{} - il n'y a aucun traitement à lancer", PREFIX_LOG);
+
       } catch (Exception e) {
+
          LOG.warn("Erreur grave lors du traitement de l'ordonnanceur.", e);
       }
 
@@ -83,6 +93,10 @@ public final class OrdonnanceurMain {
       int max = min * 2;
       int waitTime = RandomUtils.random(min, max);
 
+      LOG
+            .debug(
+                  "{} - prochaine tentative de lancement d'un traitement dans {} secondes",
+                  PREFIX_LOG, waitTime);
       try {
          Thread.sleep(waitTime * INTERVAL);
       } catch (InterruptedException e) {
