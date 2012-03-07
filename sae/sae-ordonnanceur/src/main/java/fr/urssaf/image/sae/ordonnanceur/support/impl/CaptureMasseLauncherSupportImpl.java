@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 import fr.urssaf.image.sae.ordonnanceur.exception.OrdonnanceurRuntimeException;
+import fr.urssaf.image.sae.ordonnanceur.support.CaptureMasseSupport;
 import fr.urssaf.image.sae.ordonnanceur.support.TraitementLauncherSupport;
 import fr.urssaf.image.sae.ordonnanceur.util.LauncherUtils;
 
@@ -78,7 +79,16 @@ public class CaptureMasseLauncherSupportImpl implements
    protected final String createCommand(JobInstance captureMasse) {
 
       String idTraitement = captureMasse.getJobParameters().getString(
-            "capture.masse.idtraitement");
+            CaptureMasseSupport.CAPTURE_MASSE_ID);
+
+      // vérification que le paramètre 'capture.masse.idtraitement' est bien
+      // renseigné
+      if (StringUtils.isBlank(idTraitement)) {
+
+         throw new IllegalArgumentException("Le paramètre '"
+               + CaptureMasseSupport.CAPTURE_MASSE_ID
+               + "' du traitement de capture en masse doit être renseigné");
+      }
 
       // remplacement de _UUID_TO_REPLACE
       String command = StringUtils.replace(this.executable, "_UUID_TO_REPLACE",

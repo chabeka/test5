@@ -42,7 +42,7 @@ public class CaptureMasseLauncherSupportImplTest {
    }
 
    @Test
-   public void createCommand() throws IOException {
+   public void createCommand_success() throws IOException {
 
       Resource saeConfigResource = new FileSystemResource(
             "src/test/resources/config/sae-config-test.properties");
@@ -86,5 +86,40 @@ public class CaptureMasseLauncherSupportImplTest {
 
       Assert.assertEquals("l'exécutable du traitement de masse est inattendu",
             expectedCommand.toString(), commande);
+   }
+
+   @Test
+   public void createCommand_failure_empty_idtraitement() {
+
+      Resource saeConfigResource = new FileSystemResource(
+            "src/test/resources/config/sae-config-test.properties");
+
+      CaptureMasseLauncherSupportImpl launcher = new CaptureMasseLauncherSupportImpl(
+            "executable", saeConfigResource);
+
+      Map<String, JobParameter> parameters = new HashMap<String, JobParameter>();
+      JobParameters jobParameters = new JobParameters(parameters);
+
+      long idJob = 3;
+
+      JobInstance captureMasse = new JobInstance(idJob, jobParameters,
+            "jobTest");
+
+      try {
+
+         launcher.createCommand(captureMasse);
+
+         Assert
+               .fail("Une exception de type IllegalArgumentException doit être levée");
+
+      } catch (IllegalArgumentException e) {
+
+         Assert
+               .assertEquals(
+                     "Le message de l'exception est inattendu",
+                     "Le paramètre 'capture.masse.idtraitement' du traitement de capture en masse doit être renseigné",
+                     e.getMessage());
+      }
+
    }
 }

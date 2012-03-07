@@ -23,9 +23,22 @@ import fr.urssaf.image.sae.ecde.modele.source.EcdeSources;
 @Component
 public class CaptureMasseSupport {
 
-   private static final String CAPTURE_MASSE_ECDE = "capture.masse.sommaire";
+   /**
+    * Paramètre indiquant l'URL ECDE du sommaire.xml pour un traitement de
+    * capture en masse
+    */
+   public static final String CAPTURE_MASSE_ECDE = "capture.masse.sommaire";
 
+   /**
+    * Paramètre indiquant l'identifiant du traitement de la capture en masse
+    */
+   public static final String CAPTURE_MASSE_ID = "capture.masse.idtraitement";
+
+   /**
+    * Nom du job d'un traitement de capture en masse
+    */
    public static final String CAPTURE_MASSE_JN = "capture_masse";
+
 
    private final EcdeSources ecdeSources;
 
