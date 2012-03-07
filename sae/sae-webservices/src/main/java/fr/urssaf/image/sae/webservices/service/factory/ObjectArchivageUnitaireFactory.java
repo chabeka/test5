@@ -5,14 +5,10 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.cirtil.www.saeservice.ArchivageUnitaire;
-import fr.cirtil.www.saeservice.ArchivageUnitairePJ;
 import fr.cirtil.www.saeservice.ArchivageUnitairePJResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitairePJResponseType;
-import fr.cirtil.www.saeservice.ArchivageUnitaireRequestType;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponse;
 import fr.cirtil.www.saeservice.ArchivageUnitaireResponseType;
-import fr.cirtil.www.saeservice.EcdeUrlType;
 import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
 
 /**
@@ -75,7 +71,7 @@ public final class ObjectArchivageUnitaireFactory {
     * 
     * @return instance de {@link ArchivageUnitaireResponse}
     */
-   public static ArchivageUnitaireResponse createArchivageUnitaireResponse() {
+   private static ArchivageUnitaireResponse createArchivageUnitaireResponse() {
 
       ArchivageUnitaireResponse response = new ArchivageUnitaireResponse();
       ArchivageUnitaireResponseType responseType = new ArchivageUnitaireResponseType();
@@ -132,53 +128,13 @@ public final class ObjectArchivageUnitaireFactory {
     * 
     * @return instance de {@link ArchivageUnitairePJResponse}
     */
-   public static ArchivageUnitairePJResponse createArchivageUnitairePJResponse() {
+   private static ArchivageUnitairePJResponse createArchivageUnitairePJResponse() {
 
       ArchivageUnitairePJResponse response = new ArchivageUnitairePJResponse();
       ArchivageUnitairePJResponseType responseType = new ArchivageUnitairePJResponseType();
       response.setArchivageUnitairePJResponse(responseType);
 
       return response;
-   }
-   
-   
-   /**
-    * Conversion d'un objet archivageUnitairePJ en archivageUnitaire
-    * 
-    * @param archivageUnitairePJ objet a convertir
-    * @return ArchivageUnitaire archivageUnitaire
-    */
-   public static ArchivageUnitaire convertToArchivageUnitaire(ArchivageUnitairePJ archivageUnitairePJ) {
-      
-      EcdeUrlType ecdeUrlType = archivageUnitairePJ.getArchivageUnitairePJ().getArchivageUnitairePJRequestTypeChoice_type0().getEcdeUrl();
-      
-      ArchivageUnitaire archivageUnitaire = new ArchivageUnitaire();
-      
-      ArchivageUnitaireRequestType archivageUType = new ArchivageUnitaireRequestType();
-      archivageUType.setEcdeUrl(ecdeUrlType);
-      archivageUType.setMetadonnees(archivageUnitairePJ.getArchivageUnitairePJ().getMetadonnees());
-      
-      archivageUnitaire.setArchivageUnitaire(archivageUType);
-      
-      return archivageUnitaire;
-   }
-   
-   
-   /**
-    * Conversion d'un objet ArchivageUnitaireResponse en ArchivageUnitairePJResponse
-    * 
-    * @param archivageUnitaireResponse objet a convertir
-    * @return ArchivageUnitairePJResponse archivageUnitairePJResponse
-    */
-   public static ArchivageUnitairePJResponse convertToArchivageUnitairePJResponse(ArchivageUnitaireResponse archivageUnitaireResponse) {
-
-      ArchivageUnitairePJResponse archivageUnitairePJResponse = new ArchivageUnitairePJResponse();
-      ArchivageUnitairePJResponseType archivageUnitairePJResponseType = new ArchivageUnitairePJResponseType();
-      archivageUnitairePJResponseType.setIdArchive(archivageUnitaireResponse.getArchivageUnitaireResponse().getIdArchive());
-      
-      archivageUnitairePJResponse.setArchivageUnitairePJResponse(archivageUnitairePJResponseType);
-      
-      return archivageUnitairePJResponse;
    }
    
 
