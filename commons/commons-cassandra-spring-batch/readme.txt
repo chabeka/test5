@@ -19,7 +19,7 @@ zookeeper.local						: mettre "true" pour utiliser un serveur zookeeper local la
 zookeeper.hosts						: nom des serveurs zookeeper, séparés par des virgules
 zookeeper.namespace					: espace de nom utilisé par zookeeper (normalement : "SAE", sauf si vous voulez vous isoler)
 
-Exemple :
+Exemple 1 : serveur cassandra et zookeeper distants
 
 cassandra.local=false
 cassandra.hosts=cer69imageint9.cer69.recouv:9160
@@ -30,6 +30,16 @@ zookeeper.local=false
 zookeeper.hosts=cer69-ds4int.cer69.recouv
 zookeeper.namespace=SAE
 
+Exemple 2 : serveurs cassandra et zookeeper locaux et temporaires, pour tests unitaires
+
+cassandra.local=true
+cassandra.hosts=localhost:9171
+cassandra.username=
+cassandra.password=
+cassandra.keyspace=Batch
+zookeeper.local=true
+zookeeper.hosts=localhost
+zookeeper.port=2181
+zookeeper.namespace=Batch
 
  
-

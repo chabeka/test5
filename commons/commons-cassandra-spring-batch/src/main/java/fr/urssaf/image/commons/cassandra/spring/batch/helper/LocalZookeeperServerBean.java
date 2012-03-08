@@ -38,12 +38,15 @@ public class LocalZookeeperServerBean implements InitializingBean, DisposableBea
    
    @Override
    public final void destroy() throws Exception {
-      if (testingServer != null) testingServer.close();
+      if (testingServer != null) {
+         LOG.debug("LocalZookeeperServerBean : closing server...");
+         testingServer.close();
+      }
    }
 
    @Override
    public final void afterPropertiesSet() throws Exception {
-      LOG.debug("initLocalZookeeperServer : shouldInit={} - port={}", shouldInit, port);
+      LOG.debug("LocalZookeeperServerBean : shouldInit={} - port={}", shouldInit, port);
       if (shouldInit) testingServer = new TestingServer(port);
    }
 }
