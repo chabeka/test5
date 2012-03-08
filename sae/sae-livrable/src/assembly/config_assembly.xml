@@ -27,6 +27,22 @@
       <fileSet>
          <directory>src/config/</directory>
          <includes>
+            <include>logback-sae-lotinstallmaj.xml</include>
+         </includes>
+         <outputDirectory />
+      </fileSet>
+      
+      <fileSet>
+         <directory>src/config/</directory>
+         <includes>
+            <include>logback-sae-ordonnanceur.xml</include>
+         </includes>
+         <outputDirectory />
+      </fileSet>
+      
+      <fileSet>
+         <directory>src/config/</directory>
+         <includes>
             <include>sae-dfce-config.properties</include>
          </includes>
          <outputDirectory />
@@ -112,6 +128,19 @@
    </fileSets>
    <!-- Application finale web contenant le service web SaeService -->   
    <files>
+      
+       <file>
+         <source>${project.parent.basedir}/sae-ordonnanceur/target/sae-ordonnanceur-${version}.jar</source>
+         <outputDirectory/>
+         <destName>sae-ordonnanceur.jar</destName>
+       </file>
+       
+       <file>
+         <source>${project.parent.basedir}/../sae-lotinstallmaj/target/sae-lotinstallmaj-${version}.jar</source>
+         <outputDirectory/>
+         <destName>sae-lotinstallmaj.jar</destName>
+       </file>
+   
        <file>
          <source>${project.parent.basedir}/sae-webservices/target/sae-webservices-${version}.war</source>
          <outputDirectory/>
