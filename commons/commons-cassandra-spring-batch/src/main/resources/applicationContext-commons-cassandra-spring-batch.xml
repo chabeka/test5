@@ -97,17 +97,13 @@
       </property>
    </bean>
 
-   <!-- Pour tests unitaires : création éventuelle de serveurs zookeeper et cassandra locaux -->
-   <bean id="localZookeeperServer"
-      class="fr.urssaf.image.commons.cassandra.spring.batch.helper.CassandraTestHelper"
-      factory-method="initLocalZookeeperServer">
-      <constructor-arg index="0" value="${zookeeper.local}" />
-      <constructor-arg index="1" value="${zookeeper.port}" />
+   <bean id="localZookeeperServer" class="fr.urssaf.image.commons.cassandra.spring.batch.helper.LocalZookeeperServerBean">
+      <property name="shouldInit" value="${zookeeper.local}"/>
+      <property name="port" value="${zookeeper.port}"/>
    </bean>
-   <bean id="localCassandraServer" class="fr.urssaf.image.commons.cassandra.spring.batch.helper.CassandraTestHelper"
-      factory-method="initLocalCassandraServer">
-      <constructor-arg index="0" value="${cassandra.local}" />
-      <constructor-arg index="1" value="dataSet-commons-cassandra-spring-batch.xml" />
+   <bean id="localCassandraServer" class="fr.urssaf.image.commons.cassandra.spring.batch.helper.LocalCassandraServerBean">
+      <property name="shouldInit" value="${cassandra.local}"/>
+      <property name="dataSet" value="dataSet-commons-cassandra-spring-batch.xml"/>
    </bean>
 
 </beans>
