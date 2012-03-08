@@ -10,7 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext-sae-ordonnanceur-service-test.xml" })
+@ContextConfiguration(locations = { "/applicationContext-sae-ordonnanceur-service-test.xml",
+                                    "/applicationContext-sae-ordonnanceur-cassandra-test.xml"}) 
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class EcdeSupportTest {
 

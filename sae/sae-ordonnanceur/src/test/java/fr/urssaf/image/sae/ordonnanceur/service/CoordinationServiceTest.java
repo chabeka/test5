@@ -23,7 +23,8 @@ import fr.urssaf.image.sae.ordonnanceur.exception.JobInexistantException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
       "/applicationContext-sae-ordonnanceur-service-test.xml",
-      "/applicationContext-sae-ordonnanceur-mock-test.xml" })
+      "/applicationContext-sae-ordonnanceur-mock-test.xml",
+      "/applicationContext-sae-ordonnanceur-cassandra-test.xml"})
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class CoordinationServiceTest {
 
