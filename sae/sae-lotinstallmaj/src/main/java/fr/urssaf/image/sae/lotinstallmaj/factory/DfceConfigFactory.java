@@ -49,7 +49,7 @@ public final class DfceConfigFactory {
          
          // Une erreur non prévue s'est produite lors de la création de la
          // configuration d'accès à DFCE.
-         throw new MajLotRuntimeException(exception.getCause());
+         throw new MajLotRuntimeException(exception);
       }
    }
    
@@ -88,7 +88,7 @@ public final class DfceConfigFactory {
       // secure
       String secure = "http";
       String propSecure = props.getProperty("db.secure"); 
-      boolean https = Boolean.valueOf(propSecure).booleanValue();
+      boolean https = Boolean.valueOf(propSecure);
       if (https) {
          secure = "https";
       }

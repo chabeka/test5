@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fr.urssaf.image.sae.lotinstallmaj.Main;
+
 import fr.urssaf.image.sae.lotinstallmaj.exception.MajLotGeneralException;
 import fr.urssaf.image.sae.lotinstallmaj.service.impl.MajLotServiceImpl;
 
@@ -19,89 +19,115 @@ import fr.urssaf.image.sae.lotinstallmaj.service.impl.MajLotServiceImpl;
 @Aspect
 public class MainValidation {
 
-   // LOGGER
-   private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+   private static final Logger LOG = LoggerFactory
+         .getLogger(MainValidation.class);
 
-   private static final String MAIN_METHOD = "execution(void fr.urssaf.image.sae.lotinstallmaj.Main.main(*))"
-         + "&& args(args)";
+   private static final String MAIN_METHOD = "execution(void fr.urssaf.image.sae.lotinstallmaj.Main.main(*)) && args(args)";
 
    /**
     * Methode permettant de venir verifier si les paramétres d'entree de la
     * methode main de classe principale MAIN sont bien corrects.
     * 
     * @param args
-    *           chemin complet du fichier de configuration SAE
-    *           operations a effectuée
-    * @throws Exception 
+    *           chemin complet du fichier de configuration SAE operations a
+    *           effectuée
+    * @throws MajLotGeneralException en cas d'échec de validation de args
     * 
     */
    @Before(MAIN_METHOD)
-   public final void main(String[] args) throws Exception {
+   public final void main(String[] args) throws MajLotGeneralException {
 
-      if (args != null && args.length > 0 ) {
+      if (args != null && args.length > 0) {
+
+         // Extrait le 1er argument de la ligne de commande
          String pathFile = args[0];
 
-         // chemin du fichier de configuration
-         checkPathConfig(args, pathFile);
+         // Vérifie que ce 1er argument soit bien le chemin complet du
+         // fichier de configuration SAE
+         checkPathConfig(pathFile);
 
          // nom de l'opération
          checkOperationName(args);
-         
-      } else {
-         LOG
-               .warn("Erreur : Il faut indiquer, en argument de la ligne de commande,"
-                     + "le chemin complet du fichier de configuration du SAE.");
 
-         throw new MajLotGeneralException(
-               "Erreur: Argument de la ligne de commande mal renseigné ou null! Valeurs entrées : " + String.valueOf(args));
+      } else {
+
+         // Aucun argument n'a été passé à la ligne de commande
+         // Ajout d'un log, et levée d'une exception
+
+         String message = "Erreur : Il faut indiquer, en premier argument de la ligne de commande, le chemin complet du fichier de configuration du SAE.";
+
+         LOG.warn(message);
+
+         throw new MajLotGeneralException(message);
+
       }
    }
 
    /**
     * Vérification du chemin du fichier de configuration
-    * 
-    * @throws Exception
     */
-   private void checkPathConfig(String[] args, String pathFile)
-         throws MajLotGeneralException {
+   private void checkPathConfig(String pathFile) throws MajLotGeneralException {
 
       File file = new File(pathFile);
-      if (args.length == 0 || StringUtils.isBlank(pathFile) || !file.exists()) {
 
-         LOG
-               .warn("Erreur : Il faut indiquer, en argument de la ligne de commande,"
-                     + "le chemin complet du fichier de configuration du SAE.");
+      if (StringUtils.isBlank(pathFile) || !file.exists() || !file.isFile()) {
 
-         throw new MajLotGeneralException("Erreur : Il faut indiquer, en argument de la ligne de commande,"
-                     + "le chemin complet du fichier de configuration du SAE.");
+         StringBuffer strBuff = new StringBuffer();
+         strBuff
+               .append("Erreur : Il faut indiquer, en premier argument de la ligne de commande, le chemin complet du fichier de configuration du SAE");
+         strBuff.append(String.format(" (argument fourni : %s).", pathFile));
+         String message = strBuff.toString();
+
+         LOG.warn(message);
+
+         throw new MajLotGeneralException(message);
+
       }
    }
-   
+
    /**
-    * Vérification du nom de l'opération
+    * Vérification du nom de l'opération<br>
+    * <br>
+    * Ce nom doit être transmis comme 2ème argument de la ligne de commande
     */
    private void checkOperationName(String[] args) throws MajLotGeneralException {
-      
+
+      // Vérifie qu'il y a un 2ème argument dans la ligne de commande
       if (args.length < 2 || StringUtils.isBlank(args[1])) {
-         LOG
-               .warn("Erreur : Il faut indiquer, en deuxieme argument de la ligne de commande,"
-               + "le nom de l'opération à réaliser.");
 
-         throw new MajLotGeneralException(
-               "Erreur : Il faut indiquer, en deuxieme argument de la ligne de commande,"
-               + "le nom de l'opération à réaliser.");
-      }
-      String operation = args[1];
-      if (! MajLotServiceImpl.CODE_ACTIVITE.equalsIgnoreCase(operation)) {
-         LOG
-               .warn("Erreur : Opération inconnue : " + operation);
+         String message = "Erreur : Il faut indiquer, en deuxième argument de la ligne de commande, le nom de l'opération à réaliser.";
 
-         throw new MajLotGeneralException(
-               "Erreur : Opération inconnue : " + operation);
+         LOG.warn(message);
+
+         throw new MajLotGeneralException(message);
       }
-      
-      // TODO - Pour le moment l'opération durée de conservation demande délai cotisant n'est pas implémmentée
-      // Attente du JIRA DFCE
-      
+
+      // Extrait le nom de l'opération de la ligne de commande
+      String nomOperation = args[1];
+
+      // Vérifie que l'opération est connue
+      checkOperationName(nomOperation);
+
    }
+
+   private void checkOperationName(String nomOperation)
+         throws MajLotGeneralException {
+
+      // Pour l'instant, on ne connait qu'une seule opération
+
+      // TODO : Traiter le cas de la mise à jour de la durée de conservation de
+      // 3.1.3.1.1 (en attente du JIRA CRTL-81)
+      if (!MajLotServiceImpl.CODE_ACTIVITE.equalsIgnoreCase(nomOperation)) {
+
+         String message = String.format("Erreur : Opération inconnue : %s",
+               nomOperation);
+
+         LOG.warn(message);
+
+         throw new MajLotGeneralException(message);
+
+      }
+
+   }
+
 }

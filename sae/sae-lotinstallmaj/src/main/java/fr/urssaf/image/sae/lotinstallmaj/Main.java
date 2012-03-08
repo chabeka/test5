@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.lotinstallmaj;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,31 +26,37 @@ public final class Main {
     * @param args 
     *           arguments de la ligne de commande du JAR Executable
     */
-   public static void main(String []args) {
+   public static void main(String[] args) {
       
-      // démarrage du contexte spring
-      ApplicationContext context = startContextSpring(args);
+      // Extrait les infos de la ligne de commandes
+      // La vérification du tableau args est faite par la validation AOP
+      String cheminFicConfSae = args[0];
+      String nomOperation = args[1];
       
+      // Démarrage du contexte spring
+      ApplicationContext context = startContextSpring(cheminFicConfSae);
+      
+      // Récupération du contexte Spring du bean permettant de lancer l'opération
       MajLotService majLotService = context.getBean(
                                              "majLotServiceImpl",
                                              MajLotService.class);
 
-      // Affichage dans la console d'une description
-      // des oéprations qui seront effectuees
-      showConsole(args);
       
-      // Demande de confirmation de la console
-      demarre(majLotService, args);
+      // Retire des arguments de la ligne de commande ceux que l'on a déjà traités.
+      // On ne laisse que les arguments spécifiques à l'opération
+      String[] argsSpecifiques = (String[])ArrayUtils.remove(args, 0);
+      argsSpecifiques = (String[])ArrayUtils.remove(args, 0);
       
+      // Démarre l'opération
+      majLotService.demarre(nomOperation,argsSpecifiques);
       
    }
+   
    
    /**
     * Démarage du contexte Spring
     */
-   private static ApplicationContext startContextSpring(String []args) {
-      
-      String filePathConfigSae = args[0]; 
+   private static ApplicationContext startContextSpring(String cheminFicConfSae) {
       
       String contextConfig = "/applicationContext-sae-lotinstallmaj.xml";
 
@@ -58,7 +65,7 @@ public final class Main {
       BeanDefinitionBuilder appliConfigBean = BeanDefinitionBuilder
             .genericBeanDefinition(FileSystemResource.class);
 
-      appliConfigBean.addConstructorArgValue(filePathConfigSae);
+      appliConfigBean.addConstructorArgValue(cheminFicConfSae);
 
       genericContext.registerBeanDefinition(
             "saeConfigResource", 
@@ -72,20 +79,5 @@ public final class Main {
       return context;
    }
    
-   /**
-    * Affichage dans la console des opérations effectuées
-    */
-   private static void showConsole(String[] args) {
 
-      System.out.println("L'opération réalisée lors de cette mise à jour est :\r\n" +args[1]);
-   }
-   
-   /**
-    * Démarrage de la mise à jour
-    */
-   private static void demarre(MajLotService majLotService, String []args ) {
-
-      majLotService.demarre(args);
-
-   }
 }

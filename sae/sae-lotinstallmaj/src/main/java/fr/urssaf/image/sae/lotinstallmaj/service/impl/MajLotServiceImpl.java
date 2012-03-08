@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.urssaf.image.sae.lotinstallmaj.exception.MajLotRuntimeException;
 import fr.urssaf.image.sae.lotinstallmaj.modele.DfceConfig;
 import fr.urssaf.image.sae.lotinstallmaj.service.MajLotService;
-import fr.urssaf.image.sae.lotinstallmaj.utils.ResourceMessagesUtils;
 
 
 /**
@@ -44,28 +44,29 @@ public final class MajLotServiceImpl implements MajLotService {
     * {@inheritDoc}
     */
    @Override
-   public void demarre(String[] args) {
+   public void demarre(String nomOperation, String[] argSpecifiques) {
       
-      // connection à DFCE
+      // Connection à DFCE
       connectDfce();
       
-      String operation = args[1];
-      
-      if (CODE_ACTIVITE.equalsIgnoreCase(operation) ) {
-         String message = ResourceMessagesUtils.loadMessage("debut.modification.structure"); 
-         LOG.info(message);
-         System.out.println(message);
-         // mise à jour de la metadonnée codeActivite pour la rendre non obligatoire
+      // Selon l'opération à lancer
+      if (CODE_ACTIVITE.equalsIgnoreCase(nomOperation) ) {
+         
          updateCodeActivite();
-      }
-   
-      if (DUREE_CONSERVATION.equalsIgnoreCase(operation) ) {
-         String message = ResourceMessagesUtils.loadMessage("debut.regle.cycle.vie"); 
-         LOG.info(message);
-         System.out.println(message);
-         // mise à jour de la durée de conservation du type de document 3.1.3.1.1
+         
+      } else if (DUREE_CONSERVATION.equalsIgnoreCase(nomOperation) ) {
+         
          updateDureeConservation();
+         
+      } else {
+         
+         // Opération inconnue => log + exception runtime
+         String message = String.format("Erreur technique : L'opération %s est inconnue",nomOperation) ;
+         LOG.error(message);
+         throw new MajLotRuntimeException(message);
+         
       }
+      
             
    }
 
@@ -83,9 +84,11 @@ public final class MajLotServiceImpl implements MajLotService {
    
    /**
     * Mise à jour de la base métier pour la métadonnée CodeActivite à rendre non obligatoire.
-    * 
     */
    private void updateCodeActivite() {
+      
+      // Log
+      LOG.info("Début de l'opération : Modification de la structure de la base DFCE pour rendre la métadonnée CodeActivite non obligatoire");
       
       // recupération de la metadonnee CodeActivite et verification qu'elle est bien dans l'état
       // attendu, à savoir qu'elle est obligatoire.
@@ -94,18 +97,22 @@ public final class MajLotServiceImpl implements MajLotService {
       BaseCategory baseCategory = base.getBaseCategory("act");
       int minValues = baseCategory.getMinimumValues();
       
-      // si minValues égal à 1, alors mise à jour de la structure de la base
+      // Vérifie que la mise à jour est à faire
       if (minValues == 1) { 
+         
+         // Il faut mettre à jour la structure de la base
          baseCategory.setMinimumValues(0);
-         String message = ResourceMessagesUtils.loadMessage("modification.structure"); 
-         LOG.info(message);
-         System.out.println(message);
          baseService.updateBase(base);
+         
+         // Log
+         LOG.info("Mise à jour effectuée avec succès : le CodeActivite n'est plus obligatoire");
+         
       }   
       else {
-         String message = ResourceMessagesUtils.loadMessage("maj.existante.structure"); 
-         LOG.info(message);
-         System.out.println(message);
+         
+         // Le code activité n'est pas obligatoire (maj déjà effectuée, ou nouvelle base)
+         LOG.info("Rien à faire : la métadonnée CodeActivite est déjà en non obligatoire ");
+         
       }
 
    }
@@ -115,29 +122,25 @@ public final class MajLotServiceImpl implements MajLotService {
     */
    private void updateDureeConservation() {
       
-      // récupération de la durée de conservation existante
-      StorageAdministrationService storageAdmin = serviceProvider.getStorageAdministrationService();
+      // Log
+      LOG.info("Début de l'opération : Modification de la durée de conservation du type de document 3.1.3.1.1 (1643 -> 1825)");
       
+      // Récupération de la durée de conservation existante
+      StorageAdministrationService storageAdmin = serviceProvider.getStorageAdministrationService();
       LifeCycleRule lifeCycleRule = storageAdmin.getLifeCycleRule("3.1.3.1.1");
-            
       int dureeConservation = lifeCycleRule.getLifeCycleLength();
       
-      // Si durée conservation vaut 1643 alors on met à jour la durée de conservation
-      //TODO : en attente du traitement du JIRA CRTL-81
-      
+      // Vérifie que la mise à jour est à faire
       if (dureeConservation == DUREE_1825) {
-         String dureeConsOK = ResourceMessagesUtils.loadMessage("dureeConservationOK");
-         System.out.println(dureeConsOK);
-         LOG.info(dureeConsOK);
-      }
-      
-      if(dureeConservation != DUREE_1643 ||
-         dureeConservation != DUREE_1825  
-         ) {
          
-         String dureeConsKO = ResourceMessagesUtils.loadMessage("dureeConservationKO");
-         System.out.println(dureeConsKO);
-         LOG.info(dureeConsKO);
+         // La durée de conservation est déjà bonne
+         LOG.info("Rien à faire : la durée de conservation de 3.1.3.1.1 est déjà bonne (1825)");
+         
+      } else {
+         
+         // TODO : en attente du traitement du JIRA CRTL-81
+         throw new MajLotRuntimeException("Opération non réalisable : en attente du traitement du JIRA CRTL-81");
+         
       }
       
    }

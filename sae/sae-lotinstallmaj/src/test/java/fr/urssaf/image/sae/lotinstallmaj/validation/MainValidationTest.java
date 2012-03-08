@@ -49,6 +49,7 @@ public class MainValidationTest {
    @Test
    @Ignore("Faire le test sur son poste en lancant le jar executable" +
    		  "avec en paramètre le fichier properties et le nom de l'opération souhaitée.")
+   @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
    public void mainCheminNumeroSuccess() {
       String[] args = new String[2];
       args[0] = "src/test/resources/test.txt";

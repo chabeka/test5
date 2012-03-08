@@ -12,7 +12,8 @@ public interface MajLotService {
    /**
     * Réalise les opérations de mise à jour.
     * 
-    * @param args arguments de la ligne de commande.
+    * @param nomOperation le nom de l'opération à réaliser
+    * @param argSpecifiques les arguments de la ligne de commande spécifiques pour l'opération à réaliser
     */
-   void demarre(String[] args);
+   void demarre(String nomOperation, String[] argSpecifiques);
 }
