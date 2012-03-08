@@ -1,19 +1,20 @@
 package fr.urssaf.image.sae.ordonnanceur.support;
 
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fr.urssaf.image.sae.ecde.modele.source.EcdeSource;
-import fr.urssaf.image.sae.ecde.modele.source.EcdeSources;
+import fr.urssaf.image.sae.ordonnanceur.exception.OrdonnanceurRuntimeException;
+import fr.urssaf.image.sae.ordonnanceur.util.HostUtils;
 
 /**
  * Support pour les traitements de capture en masse
@@ -39,46 +40,46 @@ public class CaptureMasseSupport {
     */
    public static final String CAPTURE_MASSE_JN = "capture_masse";
 
+   /**
+    * Clé indiquant dans le contexte d'exécution du job le DNS du serveur où est
+    * exécuté le traitement
+    */
+   public static final String CONTEXT_SERVEUR = "serveur";
 
-   private final EcdeSources ecdeSources;
+   private final EcdeSupport ecdeSupport;
 
    /**
     * 
-    * @param ecdeSources
-    *           liste des {@link EcdeSource} configurées pour l'ordonnanceur
+    * @param ecdeSupport
+    *           service sur l'ECDE
+    * 
     */
    @Autowired
-   public CaptureMasseSupport(EcdeSources ecdeSources) {
+   public CaptureMasseSupport(EcdeSupport ecdeSupport) {
 
-      this.ecdeSources = ecdeSources;
+      this.ecdeSupport = ecdeSupport;
    }
 
    /**
     * Filtre les instances des traitements de masse pour ne récupérer que ceux
     * concernant les capture en masse pour l'ECDE local.<br>
     * <br>
-    * Un traitement de capture en masse indique dans son {@link org.springframework.batch.core.JobParameter} '
-    * {@value #CAPTURE_MASSE_ECDE}' l'URL ECDE du fichier sommaire.xml.<br>
-    * A chaque URL ECDE correspond une configuration de {@link EcdeSource} pour
-    * l'ordonnanceur.<br>
+    * Les traitements de capture en masse sont indiqués par la propriété
+    * <code>jobName</code> de l'instance {@link JobInstance}.<br>
+    * Si il indique '{@value #CAPTURE_MASSE_JN}' alors il s'agit d'une capture
+    * en masse.<br>
     * <br>
-    * La méthode {@link EcdeSource#isLocal()} indique si l'URL ECDE est local
-    * pour le CNP courant. <br>
-    * <ul>
-    * <li>{@link EcdeSource#isLocal()} renvoie <code>true</code> : le traitement
-    * concerne l'ECDE local</li>
-    * <li>{@link EcdeSource#isLocal()} renvoie <code>false</code> : le
-    * traitement ne concerne pas l'ECDE local</li>
-    * <li>si aucune instance de {@link EcdeSource} n'est trouvée : le traitement
-    * ne concerne pas l'ECDE local</li>
-    * </ul>
-    * 
+    * Un traitement de capture en masse indique dans ses
+    * {@link JobInstance#getJobParameters()} le paramètre '
+    * {@value #CAPTURE_MASSE_ECDE}' pour l'URL ECDE du fichier sommaire.xml.<br>
+    * on s'appuie sur {@link EcdeSupport#isLocal(URI)} pour savoir si il s'agit
+    * d'une URL ECDE local ou non.
     * 
     * @param jobInstances
     *           traitements de masse
     * @return traitements de capture en masse filtrés
     */
-   public final List<JobInstance> filtrerJobInstanceByECDELocal(
+   public final List<JobInstance> filtrerJobInstanceLocal(
          List<JobInstance> jobInstances) {
 
       @SuppressWarnings("unchecked")
@@ -90,7 +91,11 @@ public class CaptureMasseSupport {
 
                   JobInstance jobInstance = (JobInstance) object;
 
-                  return evaluateCaptureMasse(jobInstance);
+                  boolean isCaptureMasse = isCaptureMasse(jobInstance);
+
+                  boolean isLocal = isLocal(jobInstance);
+
+                  return isCaptureMasse && isLocal;
                }
 
             });
@@ -100,17 +105,25 @@ public class CaptureMasseSupport {
 
    /**
     * Filtre les exécutions de traitements de masse pour ne récupérer que ceux
-    * concernant les capture en masse pour l'ECDE local.<br>
+    * concernant les capture en masse sur le serveur courant.<br>
     * <br>
-    * Le filtrage est identique à celui de
-    * {@link #filtrerJobInstanceByECDELocal(List)}
-    * 
+    * Les traitements de capture en masse sont indiqués par la propriété
+    * <code>jobName</code> de l'instance {@link JobInstance}.<br>
+    * Si il indique '{@value #CAPTURE_MASSE_JN}' alors il s'agit d'une capture
+    * en masse.<br>
+    * <br>
+    * Pour filtrer les traitements de capture en masse sur le serveur courant,
+    * on récupère dans l'instance {@link ExecutionContext} de l'instance
+    * {@link JobExecution} le DNS du serveur courant indiqué par '
+    * {@value #CONTEXT_SERVEUR}'.<br>
+    * Si la valeur est indique au hostname du serveur courant alors il s'agit
+    * d'un traitement local.
     * 
     * @param jobExecutions
     *           traitements de masse
     * @return traitements de capture en masse filtrés
     */
-   public final List<JobExecution> filtrerJobExecutionByECDELocal(
+   public final List<JobExecution> filtrerJobExecutionLocal(
          Collection<JobExecution> jobExecutions) {
 
       @SuppressWarnings("unchecked")
@@ -120,10 +133,15 @@ public class CaptureMasseSupport {
                @Override
                public boolean evaluate(Object object) {
 
-                  JobInstance jobInstance = ((JobExecution) object)
-                        .getJobInstance();
+                  JobExecution jobExecution = (JobExecution) object;
 
-                  return evaluateCaptureMasse(jobInstance);
+                  JobInstance jobInstance = jobExecution.getJobInstance();
+
+                  boolean isCaptureMasse = isCaptureMasse(jobInstance);
+
+                  boolean isLocal = isLocal(jobExecution);
+
+                  return isCaptureMasse && isLocal;
                }
 
             });
@@ -131,33 +149,48 @@ public class CaptureMasseSupport {
       return jobCaptureMasse;
    }
 
-   private boolean evaluateCaptureMasse(JobInstance jobInstance) {
+   private boolean isLocal(JobExecution jobExecution) {
 
-      boolean isLocal = evaluateLocal(jobInstance);
+      ExecutionContext executionContext = jobExecution.getExecutionContext();
+
+      String hostname = executionContext.getString(CONTEXT_SERVEUR, null);
+
+      String serverName;
+      try {
+
+         serverName = HostUtils.getLocalHostName();
+
+      } catch (UnknownHostException e) {
+
+         throw new OrdonnanceurRuntimeException(e);
+      }
+
+      boolean isLocal = serverName.equals(hostname);
+
+      return isLocal;
+   }
+
+   private boolean isCaptureMasse(JobInstance jobInstance) {
 
       boolean isCaptureMasse = CAPTURE_MASSE_JN
             .equals(jobInstance.getJobName());
 
-      return isLocal && isCaptureMasse;
+      return isCaptureMasse;
    }
 
-   private boolean evaluateLocal(JobInstance jobInstance) {
+   private boolean isLocal(JobInstance jobInstance) {
+
+      String ecdeUrl = jobInstance.getJobParameters().getString(
+            CAPTURE_MASSE_ECDE);
 
       boolean isLocal = false;
 
-      String ecdeParameter = jobInstance.getJobParameters().getString(
-            CAPTURE_MASSE_ECDE);
-
-      if (ecdeParameter != null) {
+      if (ecdeUrl != null) {
 
          try {
-            URI ecdeURL = URI.create(ecdeParameter);
+            URI ecdeURL = URI.create(ecdeUrl);
 
-            EcdeSource ecdeSource = loadEcdeSource(ecdeURL);
-
-            if (ecdeSource != null) {
-               isLocal = ecdeSource.isLocal();
-            }
+            isLocal = ecdeSupport.isLocal(ecdeURL);
 
          } catch (IllegalArgumentException e) {
 
@@ -171,23 +204,6 @@ public class CaptureMasseSupport {
       }
 
       return isLocal;
-   }
-
-   private EcdeSource loadEcdeSource(URI ecdeURL) {
-
-      EcdeSource source = null;
-
-      for (EcdeSource ecdeSource : ecdeSources.getSources()) {
-
-         if (StringUtils.equals(ecdeURL.getAuthority(), ecdeSource.getHost())) {
-
-            source = ecdeSource;
-            break;
-
-         }
-      }
-
-      return source;
    }
 
 }

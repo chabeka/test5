@@ -45,7 +45,7 @@ public class DecisionServiceImpl implements DecisionService {
 
       // filtrage des capture en masse sur l'ECDE local
       List<JobInstance> jobInstances = captureMasseSupport
-            .filtrerJobInstanceByECDELocal(jobsEnAttente);
+            .filtrerJobInstanceLocal(jobsEnAttente);
 
       // vérification que des traitements de capture en masse sur l'ECDE local
       // sont à lancer
@@ -57,7 +57,7 @@ public class DecisionServiceImpl implements DecisionService {
       // serveur courant
       if (!CollectionUtils.isEmpty(jobsEnCours)) {
          Collection<JobExecution> traitementsEnCours = captureMasseSupport
-               .filtrerJobExecutionByECDELocal(jobsEnCours);
+               .filtrerJobExecutionLocal(jobsEnCours);
 
          // si un traitement de capture en masse est en cours alors aucun
          // traitement n'est à lancer sur le serveur

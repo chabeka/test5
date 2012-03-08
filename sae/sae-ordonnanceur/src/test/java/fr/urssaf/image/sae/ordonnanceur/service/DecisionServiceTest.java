@@ -1,5 +1,6 @@
 package fr.urssaf.image.sae.ordonnanceur.service;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 import junit.framework.Assert;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobExecution;
@@ -19,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.urssaf.image.sae.ordonnanceur.exception.AucunJobALancerException;
+import fr.urssaf.image.sae.ordonnanceur.util.HostUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -33,6 +36,19 @@ public class DecisionServiceTest {
 
    private static final String CER44_SOMMAIRE = "ecde://ecde.cer44.recouv/sommaire.xml";
 
+   private static final String CONTEXT_HOST = "serveur";
+
+   private static final String HOST_VALUE;
+
+   static {
+
+      try {
+         HOST_VALUE = HostUtils.getLocalHostName();
+      } catch (UnknownHostException e) {
+         throw new NestableRuntimeException(e);
+      }
+   }
+
    @Autowired
    private DecisionService decisionService;
 
@@ -42,9 +58,9 @@ public class DecisionServiceTest {
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
 
       jobsEnCours.add(createJobExecutionCaptureMasse(528, CAPTURE_MASSE_JN,
-            CER44_SOMMAIRE));
+            CONTEXT_HOST, "ecde.cer44.recouv"));
       jobsEnCours.add(createJobExecutionCaptureMasse(435, "autre_traitement",
-            CER69_SOMMAIRE));
+            CONTEXT_HOST, "ecde.cer69.recouv"));
 
       List<JobInstance> jobsEnAttente = new ArrayList<JobInstance>();
 
@@ -136,7 +152,7 @@ public class DecisionServiceTest {
 
       List<JobExecution> jobsEnCours = new ArrayList<JobExecution>();
       jobsEnCours.add(createJobExecutionCaptureMasse(202, CAPTURE_MASSE_JN,
-            CER69_SOMMAIRE));
+            CONTEXT_HOST, HOST_VALUE));
 
       List<JobInstance> jobsEnAttente = new ArrayList<JobInstance>();
 
@@ -162,11 +178,16 @@ public class DecisionServiceTest {
    }
 
    private JobExecution createJobExecutionCaptureMasse(long instanceId,
-         String jobName, String urlECDE) {
+         String jobName, String contextName, String contextValue) {
 
-      JobInstance job = this
-            .createJobCaptureMasse(instanceId, jobName, urlECDE);
+      Map<String, JobParameter> parameters = new HashMap<String, JobParameter>();
+      parameters.put("id", new JobParameter(UUID.randomUUID().toString()));
+      JobParameters jobParameters = new JobParameters(parameters);
+
+      JobInstance job = new JobInstance(instanceId, jobParameters, jobName);
+
       JobExecution execution = new JobExecution(job);
+      execution.getExecutionContext().put(contextName, contextValue);
 
       return execution;
    }
