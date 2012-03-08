@@ -50,7 +50,7 @@
    </bean>
 
    <!-- Client de connexion à zookeeper -->
-   <bean id="zkClient"
+   <bean id="zkClient" depends-on="localZookeeperServer"
       class="fr.urssaf.image.commons.zookeeper.ZookeeperClientFactory"
       factory-method="getClient">
       <constructor-arg value="${zookeeper.hosts}" />
@@ -61,12 +61,12 @@
       le keyspace cassandra à utiliser pour stocker les méta-data des
       jobs
    -->
-   <bean id="keyspace" class="me.prettyprint.hector.api.factory.HFactory"
+   <bean id="keyspace" class="me.prettyprint.hector.api.factory.HFactory" depends-on="localCassandraServer"
       factory-method="createKeyspace">
       <constructor-arg value="${cassandra.keyspace}" />
       <constructor-arg ref="cluster" />
       <constructor-arg ref="consistencyLevelPolicy" />
-      <constructor-arg value="ON_FAIL_TRY_ALL_AVAILABLE" />
+      <constructor-arg type="me.prettyprint.cassandra.service.FailoverPolicy" value="ON_FAIL_TRY_ALL_AVAILABLE" />
       <constructor-arg ref="cassandraCredentials" />
    </bean>
    
@@ -95,6 +95,19 @@
             <entry key="password" value="${cassandra.password}" />
          </map>
       </property>
+   </bean>
+
+   <!-- Pour tests unitaires : création éventuelle de serveurs zookeeper et cassandra locaux -->
+   <bean id="localZookeeperServer"
+      class="fr.urssaf.image.commons.cassandra.spring.batch.helper.CassandraTestHelper"
+      factory-method="initLocalZookeeperServer">
+      <constructor-arg index="0" value="${zookeeper.local}" />
+      <constructor-arg index="1" value="${zookeeper.port}" />
+   </bean>
+   <bean id="localCassandraServer" class="fr.urssaf.image.commons.cassandra.spring.batch.helper.CassandraTestHelper"
+      factory-method="initLocalCassandraServer">
+      <constructor-arg index="0" value="${cassandra.local}" />
+      <constructor-arg index="1" value="dataSet-commons-cassandra-spring-batch.xml" />
    </bean>
 
 </beans>

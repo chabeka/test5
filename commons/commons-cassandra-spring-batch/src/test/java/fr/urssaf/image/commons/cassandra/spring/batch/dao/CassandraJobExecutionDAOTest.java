@@ -45,7 +45,7 @@ public class CassandraJobExecutionDAOTest extends
 
    @Override
    public DataSet getDataSet() {
-      return new ClassPathXmlDataSet("batchDataSet.xml");
+      return new ClassPathXmlDataSet("dataSet-commons-cassandra-spring-batch.xml");
    }
 
    @Before
