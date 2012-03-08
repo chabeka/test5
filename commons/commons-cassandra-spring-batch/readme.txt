@@ -15,7 +15,7 @@ cassandra.hosts						: listes des serveurs cassandra, avec le port(9160), sépar
 cassandra.username					: username pour la connexion à cassandra 
 cassandra.password					: mot de passe pour la connexion à cassandra
 cassandra.keyspace					: nom du keyspace cassandra à utiliser (normalement "SAE", sauf si vous voulez vous créer un keyspace personnel)
-cassandra.local						: mettre "true" pour utiliser un serveur zookeeper local lancé à la volée (utile pour les tests unitaires)
+zookeeper.local						: mettre "true" pour utiliser un serveur zookeeper local lancé à la volée (utile pour les tests unitaires)
 zookeeper.hosts						: nom des serveurs zookeeper, séparés par des virgules
 zookeeper.namespace					: espace de nom utilisé par zookeeper (normalement : "SAE", sauf si vous voulez vous isoler)
 
