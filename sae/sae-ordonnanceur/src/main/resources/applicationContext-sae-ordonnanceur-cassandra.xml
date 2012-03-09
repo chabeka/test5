@@ -7,10 +7,13 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-   <!-- mock pour le service de mock de la pile des travaux -->
-   <bean id="jobServiceImpl" factory-bean="serviceMockFactory"
-      factory-method="createJobService" />
 
-  
+   <!-- importation du contexte de commons cassandra spring batch  -->
+   <import resource="applicationContext-commons-cassandra-spring-batch.xml" />
+
+
+   <!-- bean job service qui encapsule les DAO de cassandra  -->
+   <bean id="jobService"
+      class="fr.urssaf.image.sae.ordonnanceur.service.impl.JobServiceImpl" />
 
 </beans>

@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import fr.urssaf.image.commons.cassandra.spring.batch.dao.CassandraJobExecutionDao;
 import fr.urssaf.image.commons.cassandra.spring.batch.dao.CassandraJobInstanceDao;
@@ -27,7 +26,6 @@ import fr.urssaf.image.sae.ordonnanceur.util.HostUtils;
  * 
  * 
  */
-@Service
 public class JobServiceImpl implements JobService {
 
    private final CassandraJobExecutionDao jobExecutionDao;

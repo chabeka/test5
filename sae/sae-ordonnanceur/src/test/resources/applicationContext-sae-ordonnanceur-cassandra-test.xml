@@ -13,5 +13,7 @@
          <value>classpath:config/commons-cassandra.properties</value>
       </property>
    </bean>
+   
+    <import resource="applicationContext-sae-ordonnanceur-cassandra.xml" />
 
 </beans>

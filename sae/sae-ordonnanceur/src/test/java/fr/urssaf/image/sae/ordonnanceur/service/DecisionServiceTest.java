@@ -26,7 +26,7 @@ import fr.urssaf.image.sae.ordonnanceur.util.HostUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
       "/applicationContext-sae-ordonnanceur-service-test.xml",
-      "/applicationContext-sae-ordonnanceur-cassandra-test.xml" })
+      "/applicationContext-sae-ordonnanceur-mock-test.xml"})
 @SuppressWarnings("PMD.MethodNamingConventions")
 public class DecisionServiceTest {
 

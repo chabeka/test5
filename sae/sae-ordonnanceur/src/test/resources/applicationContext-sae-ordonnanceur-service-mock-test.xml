@@ -7,10 +7,11 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-   <!-- mock pour le service de mock de la pile des travaux -->
-   <bean id="jobServiceImpl" factory-bean="serviceMockFactory"
-      factory-method="createJobService" />
+   <import resource="applicationContext-sae-ordonnanceur-mock-test.xml" />
 
-  
+   <!-- mock pour le service de mock de prise de décision -->
+   <bean id="decisionServiceImpl" factory-bean="serviceMockFactory"
+      factory-method="createDecisionService" />
+
 
 </beans>
