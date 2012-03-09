@@ -17,6 +17,7 @@ import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -32,6 +33,7 @@ import fr.urssaf.image.sae.ordonnanceur.util.HostUtils;
       "/applicationContext-sae-ordonnanceur-service-test.xml",
       "/applicationContext-sae-ordonnanceur-cassandra-test.xml" })
 @SuppressWarnings("PMD.MethodNamingConventions")
+@DirtiesContext
 public class JobServiceTest {
 
    @Autowired
