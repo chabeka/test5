@@ -1,11 +1,15 @@
 package fr.urssaf.image.commons.cassandra.spring.batch.dao;
 
+import me.prettyprint.cassandra.service.template.ColumnFamilyUpdater;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.Serializer;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.repository.dao.ExecutionContextDao;
 import org.springframework.batch.item.ExecutionContext;
+
+import fr.urssaf.image.commons.cassandra.spring.batch.serializer.ExecutionContextSerializer;
 
 /**
  * Classe implémentant ExecutionContextDao, qui utilise cassandra.
@@ -66,20 +70,13 @@ public class CassandraExecutionContextDao extends AbstractCassandraDAO
    }
 
    @Override
-   public void updateExecutionContext(JobExecution jobExecution) {
-      // Dans l'implémentation cassandra, le contexte est sérialisé en même
-      // temps que les autres propriétés du jobExecution.
-      // Donc on ne fait rien de plus.
-
-      // Sinon, on pourrait faire :
-      /*
-       * ColumnFamilyUpdater<Long, String> updater =
-       * jobExecutionTemplate.createUpdater(jobExecution.getId());
-       * Serializer<Object> os = ObjectSerializer.get();
-       * updater.setByteArray(JS_EXECUTION_CONTEXT_COLUMN,
-       * os.toBytes(jobExecution.getExecutionContext()));
-       * jobExecutionTemplate.update(updater);
-       */
+   public final void updateExecutionContext(JobExecution jobExecution) {
+      Serializer<ExecutionContext> oSlz = ExecutionContextSerializer.get();
+      ColumnFamilyUpdater<Long, String> updater =
+      jobExecutionTemplate.createUpdater(jobExecution.getId());
+      updater.setByteArray(JE_EXECUTION_CONTEXT_COLUMN,
+      oSlz.toBytes(jobExecution.getExecutionContext()));
+      jobExecutionTemplate.update(updater);
    }
 
    @Override
