@@ -10,7 +10,7 @@
    <bean
       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
       <property name="locations">
-         <value>classpath:config/commons-cassandra.properties</value>
+         <value>classpath:config/commons-cassandra-local.properties</value>
       </property>
    </bean>
    
