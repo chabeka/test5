@@ -16,6 +16,21 @@
       <logback.version>1.0.0</logback.version>
       <curator.version>1.1.2</curator.version>
    </properties>
+   
+   
+   <!-- Configuration SVN pour le plug-in maven-release -->
+   <scm>
+      <url>
+        scm:svn:svn://cer69-svn.cer69.recouv/image/java/trunk/commons/commons-cassandra
+      </url>
+      <developerConnection>
+        scm:svn:svn://cer69-svn.cer69.recouv/image/java/trunk/commons/commons-cassandra
+      </developerConnection>
+      <connection>
+        scm:svn:svn://cer69-svn.cer69.recouv/image/java/trunk/commons/commons-cassandra
+      </connection>
+   </scm>
+   
 
    <dependencies>
    
@@ -221,6 +236,20 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>1.0-beta-2</version>
+         </plugin>
+         
+         <!--
+         Pour la gestion des release
+         -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.2.1</version>
+            <configuration>
+               <preparationGoals>clean javadoc:jar install</preparationGoals>
+               <autoVersionSubmodules>true</autoVersionSubmodules>
+               <useReleaseProfile>false</useReleaseProfile>
+            </configuration>
          </plugin>
 
       </plugins>
