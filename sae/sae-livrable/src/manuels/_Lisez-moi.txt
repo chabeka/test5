@@ -44,20 +44,6 @@ Du coup, le point de distribution des CRL de cette PKI est :
 
 
 
-// --------------------------------------------------------------------
-// Nommage des programmes Java
-// --------------------------------------------------------------------
-
-Les programmes Java sont zippés avec leur numéro de version Maven.
-Il faut les renommer comme cela :
-
-sae-webservices-VERSION.war => sae.war
-sae-igcmaj-VERSION-exe.jar => sae-igcmaj-exe.jar
-sae-services-executable-VERSION.jar => sae-services-executable.jar 
-sae-dfce-admin-exploit-VERSION.jar => sae-dfce-admin-exploit.jar
-
-
-
 
 // --------------------------------------------------------------------
 // Répertoires d'installation
@@ -99,6 +85,15 @@ Les fichiers ci-dessous sont installés dans @@SAE_HOME@@/sae-dfce-admin-exploit
   saeBase.xml
   LifeCycleRule.xml
 
+
+Les fichiers ci-dessous sont installés dans @@SAE_HOME@@/sae-lotinstallmaj/
+ sae-lotinstallmaj.jar
+ logback-sae-lotinstallmaj.xml
+ 
+
+Les fichiers ci-dessous sont installés dans @@SAE_HOME@@/sae-ordonnanceur/
+ sae-ordonnanceur.jar
+ logback-sae-ordonnanceur.xml
 
 
 
@@ -150,6 +145,23 @@ java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logbac
 // Pour lancer la mise à jour des durée de conservation des documents
 java -jar -Dlogback.configurationFile=@@SAE_HOME@@/sae-dfce-admin-exploit/logback-sae-dfce-admin-exploit.xml @@SAE_HOME@@/sae-dfce-admin-exploit/sae-dfce-admin-exploit.jar updateLifecycleRules @@SAE_HOME@@/sae-config.properties @@SAE_HOME@@/sae-dfce-admin-exploit/LifeCycleRule.xml
 
+
+
+// --------------------------------------------------------------------
+// Commandes de lancement de sae-lotinstallmaj
+// --------------------------------------------------------------------
+
+// Installation du lot SAE-120510 - Pour rendre le code activité non obligatoire
+java -Dlogback.configurationFile=@@SAE_HOME@@/sae-lotinstallmaj/logback-sae-lotinstallmaj.xml -jar @@SAE_HOME@@/sae-lotinstallmaj/sae-lotinstallmaj.jar @@SAE_HOME@@/sae-config.properties CODEACTIVITENONOBLIGATOIRE 
+
+
+
+// --------------------------------------------------------------------
+// Commandes de lancement de sae-ordonnanceur
+// --------------------------------------------------------------------
+
+// Attention : l'ordonnanceur ne rend pas la main, et est censé être en permanance en cours d'exécution
+java -Dlogback.configurationFile=@@SAE_HOME@@/sae-ordonnanceur/logback-sae-ordonnanceur.xml -jar @@SAE_HOME@@/sae-ordonnanceur/sae-ordonnanceur.jar @@SAE_HOME@@/sae-config.properties 
 
 
 
