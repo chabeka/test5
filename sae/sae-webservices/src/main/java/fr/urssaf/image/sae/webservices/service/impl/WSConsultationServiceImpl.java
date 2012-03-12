@@ -35,113 +35,128 @@ import fr.urssaf.image.sae.webservices.util.CollectionUtils;
  * L'implémentation est annotée par {@link Service}
  * 
  */
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @Service
-public class WSConsultationServiceImpl implements WSConsultationService {
-   
-   
+public final class WSConsultationServiceImpl implements WSConsultationService {
+
    private static final Logger LOG = LoggerFactory
          .getLogger(WSConsultationServiceImpl.class);
-   
-   
+
+   private static final String FORMAT_FICHIER = "FormatFichier";
+
    @Autowired
    @Qualifier("documentService")
    private SAEDocumentService saeService;
 
-   
    /**
     * {@inheritDoc}
     */
    @Override
-   public final ConsultationResponse consultation(Consultation request)
+   public ConsultationResponse consultation(Consultation request)
          throws ConsultationAxisFault {
 
       // Traces debug - entrée méthode
       String prefixeTrc = "consultation()";
       LOG.debug("{} - Début", prefixeTrc);
       // Fin des traces debug - entrée méthode
-      
+
       // Lecture de l'UUID depuis l'objet de requête de la couche ws
       UUID uuid = UUID.fromString(request.getConsultation().getIdArchive()
             .getUuidType());
       LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,
             uuid);
-      
+
       // Lecture des métadonnées depuis l'objet de requête de la couche ws
-      ListeMetadonneeCodeType listeMetas = request.getConsultation().getMetadonnees();
-      
+      ListeMetadonneeCodeType listeMetaWs = request.getConsultation()
+            .getMetadonnees();
+
+      // Convertit la liste des métadonnées de l'objet de la couche ws vers un
+      // objet plus exploitable
+      List<String> listeMetas = convertListeMetasWebServiceToService(listeMetaWs);
+
       // Appel de la méthode commune entre avec MTOM et sans MTOM
       // Cette méthode se charge des vérifications et de la levée des AxisFault
       UntypedDocument untypedDocument = consultationCommune(uuid, listeMetas);
-      
-      // Conversion de l'objet UntypedDocument en un objet de la couche web service
-      List<MetadonneeType> metadatas = convertListeMetasServiceToWebService(untypedDocument.getUMetadatas());
-      ConsultationResponse response = ObjectConsultationFactory.createConsultationResponse(
-            untypedDocument.getContent(), 
-            metadatas);
-      
+
+      // Conversion de l'objet UntypedDocument en un objet de la couche web
+      // service
+      List<MetadonneeType> metadatas = convertListeMetasServiceToWebService(untypedDocument
+            .getUMetadatas());
+      ConsultationResponse response = ObjectConsultationFactory
+            .createConsultationResponse(untypedDocument.getContent(), metadatas);
+
       // Traces debug - sortie méthode
       LOG.debug("{} - Sortie", prefixeTrc);
-      
+
       // Renvoie l'objet de réponse de la couche web service
       return response;
-      
+
    }
-   
-   
+
    /**
     * {@inheritDoc}
     */
    @Override
-   public final ConsultationMTOMResponse consultationMTOM(ConsultationMTOM request)
+   public ConsultationMTOMResponse consultationMTOM(ConsultationMTOM request)
          throws ConsultationAxisFault {
 
       // Traces debug - entrée méthode
       String prefixeTrc = "consultationMTOM()";
       LOG.debug("{} - Début", prefixeTrc);
       // Fin des traces debug - entrée méthode
-      
+
       // Lecture de l'UUID depuis l'objet de requête de la couche ws
       UUID uuid = UUID.fromString(request.getConsultationMTOM().getIdArchive()
             .getUuidType());
       LOG.debug("{} - UUID envoyé par l'application cliente : {}", prefixeTrc,
             uuid);
-      
+
       // Lecture des métadonnées depuis l'objet de requête de la couche ws
-      ListeMetadonneeCodeType listeMetas = request.getConsultationMTOM().getMetadonnees();
-      
+      ListeMetadonneeCodeType listeMetaWs = request.getConsultationMTOM()
+            .getMetadonnees();
+
+      // Convertit la liste des métadonnées de l'objet de la couche ws vers un
+      // objet plus exploitable
+      List<String> listeMetas = convertListeMetasWebServiceToService(listeMetaWs);
+
+      // Ajout de la métadonnée FormatFichier si besoin
+      // Pour pouvoir récupérer le type MIME par la suite
+      boolean fmtFicAjoute = ajouteSiBesoinMetadonneeFormatFichier(listeMetas);
+
       // Appel de la méthode commune entre avec MTOM et sans MTOM
       // Cette méthode se charge des vérifications et de la levée des AxisFault
       UntypedDocument untypedDocument = consultationCommune(uuid, listeMetas);
-      
-      // Conversion de l'objet UntypedDocument en un objet de la couche web service
-      List<MetadonneeType> metadatas = convertListeMetasServiceToWebService(untypedDocument.getUMetadatas());
-      ConsultationMTOMResponse response = ObjectConsultationFactory.createConsultationMTOMResponse(
-            untypedDocument.getContent(), metadatas);
-      
+
+      // Récupération du type MIME et suppression si besoin de FormatFichier
+      String typeMime = typeMimeDepuisFormatFichier(untypedDocument
+            .getUMetadatas(), fmtFicAjoute);
+
+      // Conversion de l'objet UntypedDocument en un objet de la couche web
+      // service
+      List<MetadonneeType> metadatas = convertListeMetasServiceToWebService(untypedDocument
+            .getUMetadatas());
+      ConsultationMTOMResponse response = ObjectConsultationFactory
+            .createConsultationMTOMResponse(untypedDocument.getContent(),
+                  metadatas, typeMime);
+
       // Traces debug - sortie méthode
       LOG.debug("{} - Sortie", prefixeTrc);
-      
+
       // Renvoie l'objet de réponse de la couche web service
       return response;
-      
+
    }
-   
-   
-      
-   private UntypedDocument consultationCommune(UUID uuid, ListeMetadonneeCodeType listeMeta)
+
+   private UntypedDocument consultationCommune(UUID uuid, List<String> listMetas)
          throws ConsultationAxisFault {
 
       // Traces debug - entrée méthode
       String prefixeTrc = "consultationCommune()";
       LOG.debug("{} - Début", prefixeTrc);
       // Fin des traces debug - entrée méthode
-      
+
       try {
 
-         // Convertit la liste des métadonnées de l'objet de la couche ws vers un
-         // objet plus exploitable
-         List<String> listMetas = convertListeMetasWebServiceToService(listeMeta);
-         
          // Appel de la couche service
          ConsultParams consultParams = new ConsultParams(uuid, listMetas);
          UntypedDocument untypedDocument = saeService
@@ -162,15 +177,15 @@ public class WSConsultationServiceImpl implements WSConsultationService {
 
             // Traces debug - sortie méthode
             LOG.debug("{} - Sortie", prefixeTrc);
-            
+
             // Renvoie le UntypedDocument
             return untypedDocument;
 
          }
-         
+
       } catch (SAEConsultationServiceException e) {
          throw new ConsultationAxisFault(e);
-      
+
       } catch (UnknownDesiredMetadataEx e) {
          throw new ConsultationAxisFault(e.getMessage(),
                "ConsultationMetadonneesInexistante", e);
@@ -180,21 +195,21 @@ public class WSConsultationServiceImpl implements WSConsultationService {
       }
 
    }
-   
-   
-   private List<String> convertListeMetasWebServiceToService(ListeMetadonneeCodeType listeMetaWs) {
 
-      if (listeMetaWs==null) {
-         return null ;
+   private List<String> convertListeMetasWebServiceToService(
+         ListeMetadonneeCodeType listeMetaWs) {
+
+      if (listeMetaWs == null) {
+         return null;
       } else {
          return ObjectTypeFactory.buildMetaCodeFromWS(listeMetaWs);
       }
-      
+
    }
-   
-   
-   private List<MetadonneeType> convertListeMetasServiceToWebService(List<UntypedMetadata> listeMetasService) {
-      
+
+   private List<MetadonneeType> convertListeMetasServiceToWebService(
+         List<UntypedMetadata> listeMetasService) {
+
       List<MetadonneeType> metadatas = new ArrayList<MetadonneeType>();
 
       for (UntypedMetadata untypedMetadata : CollectionUtils
@@ -205,14 +220,161 @@ public class WSConsultationServiceImpl implements WSConsultationService {
          if (untypedMetadata.getValue() == null) {
             valeur = StringUtils.EMPTY;
          }
-         MetadonneeType metadonnee = ObjectTypeFactory
-               .createMetadonneeType(code, valeur);
+         MetadonneeType metadonnee = ObjectTypeFactory.createMetadonneeType(
+               code, valeur);
 
          metadatas.add(metadonnee);
       }
-      
+
       return metadatas;
-      
+
+   }
+
+   /**
+    * Ajoute la métadonnée FormatFichier à la liste des métadonnées demandées :<br>
+    * <ul>
+    * <li>si la liste n'est pas vide. En effet, si la liste est vide, la
+    * métadonnée FormatFichier sera renvoyée par la couche service, car elle est
+    * "consultée par défaut"</li>
+    * <li>si la liste ne contient pas déjà la métadonnée FormatFichier</li>
+    * </ul>
+    * 
+    * @param listeMetas
+    *           la liste des métadonnées demandées par l'application cliente
+    * @return true si la métadonnée FormatFichier a dû être ajoutée à la liste,
+    *         false dans le cas contraire
+    */
+   protected boolean ajouteSiBesoinMetadonneeFormatFichier(
+         List<String> listeMetas) {
+
+      // Traces debug - entrée méthode
+      String prefixeTrc = "ajouteSiBesoinMetadonneeFormatFichier()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+
+      boolean metaAjoutee;
+
+      if (org.apache.commons.collections.CollectionUtils.isEmpty(listeMetas)
+            || listeMetas.contains(FORMAT_FICHIER)) {
+
+         LOG
+               .debug(
+                     "{} - La métadonnée FormatFichier n'a pas besoin d'être ajoutée à la liste",
+                     prefixeTrc);
+         metaAjoutee = false;
+
+      } else {
+
+         LOG
+               .debug(
+                     "{} - Ajout automatique et temporaire de la métadonnée FormatFichier",
+                     prefixeTrc);
+         metaAjoutee = listeMetas.add(FORMAT_FICHIER);
+
+      }
+
+      LOG.debug("{} - Sortie", prefixeTrc);
+      return metaAjoutee;
+
+   }
+
+   /**
+    * Renvoie le type MIME déterminé à partir de la métadonnée FormatFichier.<br>
+    * Supprime éventuellement la métadonnée FormatFichier de liste des
+    * métadonnées.
+    * 
+    * @param listeMetas
+    *           la liste des métadonnées issues de la couche service
+    * @param supprMetaFmtFic
+    *           flag indiquant s'il faut retirer la métadonnée FormatFichier de
+    *           la liste des métadonnées
+    * @return le type MIME
+    * @throws ConsultationAxisFault
+    *            levée si la métadonnée FormatFichier n'est pas présente dans la
+    *            liste des métadonnées
+    */
+   protected String typeMimeDepuisFormatFichier(
+         List<UntypedMetadata> listeMetas, boolean supprMetaFmtFic)
+         throws ConsultationAxisFault {
+
+      // Traces debug - entrée méthode
+      String prefixeTrc = "typeMimeDepuisFormatFichier()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+
+      // Cherche la métadonnée FormatFichier
+      UntypedMetadata metaFormatFichier = null;
+      if (!org.apache.commons.collections.CollectionUtils.isEmpty(listeMetas)) {
+         for (UntypedMetadata meta : listeMetas) {
+            if (FORMAT_FICHIER.equals(meta.getLongCode())) {
+               metaFormatFichier = meta;
+               break;
+            }
+         }
+      }
+      if (metaFormatFichier == null) {
+         // Erreur technique et non fonctionnelle
+         LOG
+               .debug(
+                     "{} - Levée d'une ConsultationAxisFault : la métadonnée FormatFichier n'a pas été trouvée dans la liste des mtadonnées, alors qu'elle est censée être présente.",
+                     prefixeTrc);
+         throw new ConsultationAxisFault(
+               "Une erreur interne à l'application est survenue.",
+               "ErreurInterne");
+      }
+
+      // Si besoin, supprime la métadonnée FormatFichier de la liste des
+      // métadonnées
+      if (supprMetaFmtFic) {
+         LOG
+               .debug(
+                     "{} - Suppression de la métadonnée FormatFichier de la liste des métadonnées.",
+                     prefixeTrc);
+         listeMetas.remove(metaFormatFichier);
+      }
+
+      // Convertit le type PRONOM en type MIME
+      String typePronom = metaFormatFichier.getValue();
+      LOG.debug("{} - Type PRONOM : {}", prefixeTrc, typePronom);
+      String typeMime = convertitPronomEnTypeMime(metaFormatFichier.getValue());
+      LOG.debug("{} - Type Mime déduit : {}", prefixeTrc, typeMime);
+
+      // Renvoie du type MIME à l'appelant
+      LOG.debug("{} - Sortie", prefixeTrc);
+      return typeMime;
+
+   }
+
+   /**
+    * Convertit un type PRONOM en type MIME<br>
+    * <br>
+    * NB : extraire plus tard cette méthode dans la future gestion des formats<br>
+    * 
+    * @param typePronom
+    *           le type PRONOM
+    * @return le type MIME correspondant
+    */
+   protected String convertitPronomEnTypeMime(String typePronom) {
+
+      // Traces debug - entrée méthode
+      String prefixeTrc = "convertitPronomEnTypeMime()";
+      LOG.debug("{} - Début", prefixeTrc);
+      // Fin des traces debug - entrée méthode
+
+      // C'est parti pour une clause if
+      // Pour l'instant, le SAE n'accepte que le "fmt/354"
+      String typeMime;
+      if (StringUtils.equalsIgnoreCase("fmt/354", typePronom)) {
+         typeMime = "application/pdf";
+      } else {
+         typeMime = "application/octet-stream"; // correspond à la valeur par
+         // défaut précédemment utilisée
+      }
+
+      // Renvoie du type MIME à l'appelant
+      LOG.debug("{} - Sortie", prefixeTrc);
+      return typeMime;
+
    }
 
 }

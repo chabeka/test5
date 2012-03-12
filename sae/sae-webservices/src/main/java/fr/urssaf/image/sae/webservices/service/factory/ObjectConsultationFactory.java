@@ -5,7 +5,6 @@ import java.util.List;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.util.Assert;
 
@@ -17,6 +16,7 @@ import fr.cirtil.www.saeservice.ListeMetadonneeType;
 import fr.cirtil.www.saeservice.MetadonneeType;
 import fr.cirtil.www.saeservice.ObjetNumeriqueConsultationType;
 import fr.urssaf.image.sae.webservices.factory.ObjectTypeFactory;
+import fr.urssaf.image.sae.webservices.modele.ConsultationDataSource;
 
 /**
  * Classe d'instanciation de :
@@ -78,7 +78,7 @@ public final class ObjectConsultationFactory {
          }
 
       }
-      
+
       responseType.setMetadonnees(listeMetadonnee);
       response.setConsultationResponse(responseType);
       return response;
@@ -97,9 +97,7 @@ public final class ObjectConsultationFactory {
 
       return response;
    }
-   
-   
-   
+
    /**
     * instanciation de {@link ConsultationMTOMResponse}.<br>
     * Implementation de {@link ConsultationMTOMResponseType}
@@ -108,20 +106,23 @@ public final class ObjectConsultationFactory {
     *           valeur de <code>objetNumeriqueType</code> non vide
     * @param metadonnees
     *           valeur de <code>listeMetadonneeType</code>
+    * @param typeMime
+    *           le type MIME à associer à la pièce jointe
     * @return instance de {@link ConsultationMTOMResponse}
     */
    public static ConsultationMTOMResponse createConsultationMTOMResponse(
-         byte[] content, List<MetadonneeType> metadonnees) {
+         byte[] content, List<MetadonneeType> metadonnees, String typeMime) {
 
       Assert.notNull(content, "content is required");
 
       ConsultationMTOMResponse responseMTOM = new ConsultationMTOMResponse();
       ConsultationMTOMResponseType responseMTOMType = new ConsultationMTOMResponseType();
-      
-      DataSource dataSource = new ByteArrayDataSource(content);
-      DataHandler dataHandler = new DataHandler (dataSource);
+
+      DataSource dataSource = new ConsultationDataSource(content, typeMime);
+      DataHandler dataHandler = new DataHandler(dataSource);
+
       responseMTOMType.setContenu(dataHandler);
-      
+
       ListeMetadonneeType listeMetadonnee = new ListeMetadonneeType();
 
       if (CollectionUtils.isNotEmpty(metadonnees)) {
@@ -132,12 +133,10 @@ public final class ObjectConsultationFactory {
          }
 
       }
-      
+
       responseMTOMType.setMetadonnees(listeMetadonnee);
       responseMTOM.setConsultationMTOMResponse(responseMTOMType);
       return responseMTOM;
    }
-   
-   
-   
+
 }
