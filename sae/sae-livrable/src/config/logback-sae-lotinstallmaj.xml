@@ -1,55 +1,30 @@
-<configuration scan="true" scanPeriod="30 seconds">
-   
-   <!-- 
-   
-   Rappels des niveaux de trace : TRACE, DEBUG, INFO, WARN, ERROR, OFF
-   
-   
-   Tableau de sortie des traces en fonction du niveau de trace demande
-   dans l'appel du logger et du niveau de trace actif dans la config
-   
-   |________________________________________________________________________|
-   | Niveau de trace      | Niveau de trace effectif dans la configuration  |
-   | utilise dans l'appel |                                                 |
-   | du logger            | TRACE | DEBUG | INFO  | WARN  | ERROR | OFF     |
-   |________________________________________________________________________|
-   | TRACE                |  Oui  |  Non  |  Non  |  Non  |  Non  |  Non    |
-   |________________________________________________________________________|
-   | DEBUG                |  Oui  |  Oui  |  Non  |  Non  |  Non  |  Non    |
-   |________________________________________________________________________|
-   | INFO                 |  Oui  |  Oui  |  Oui  |  Oui  |  Non  |  Non    |
-   |________________________________________________________________________|
-   | WARN                 |  Oui  |  Oui  |  Oui  |  Oui  |  Non  |  Non    |
-   |________________________________________________________________________|
-   | ERROR                |  Oui  |  Oui  |  Oui  |  Oui  |  Oui  |  Non    |
-   |________________________________________________________________________|
-   
-   -->
-   
-   
+<configuration>
+
+
    <property name="LOGS_FOLDER" value="@@LOGS_PATH@@" />
    
    <property name="LOGS_FILENAME_PREFIXE" value="sae_lotinstallmaj" />
    
-   <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSSk} %-5level %logger%n                                %msg%n" />
+   <property name="LOGS_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSSk} %-5level %logger - %msg%n" />
    
    
-   <timestamp key="byDay" datePattern="yyyyMMdd" />
-   
-   
-   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+
+   <appender name="consoleInfo" class="ch.qos.logback.core.ConsoleAppender">
+      
+      <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+         <level>INFO</level>
+      </filter>
+      
       <encoder>
-         <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSk} %-5level %logger - %msg%n</pattern>
+         <pattern>%d{yyyy-MM-dd HH:mm:ss.SSSk} %-5level - %msg%n</pattern>
       </encoder>
+      
    </appender>
 
 
 
-   <!--
-   L'appender fichier pour les traces de niveaux WARN et ERROR
-   -->
    <appender name="log-file"
-      class="ch.qos.logback.core.rolling.RollingFileAppender">
+      class="ch.qos.logback.core.FileAppender">
       
       <file>${LOGS_FOLDER}/${LOGS_FILENAME_PREFIXE}.log</file>
       
@@ -57,64 +32,23 @@
          <level>INFO</level>
       </filter>
       
-      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-         <fileNamePattern>${LOGS_FOLDER}/${LOGS_FILENAME_PREFIXE}.%d{yyyyMMdd}.log</fileNamePattern>
-         <maxHistory>15</maxHistory>
-      </rollingPolicy>
-      
       <encoder>
-         <pattern>${PATTERN}</pattern>
+         <pattern>${LOGS_PATTERN}</pattern>
       </encoder>
       
    </appender>
    
 
-   <!-- 
-   L'appender fichier pour les traces de niveau INFO, DEBUG et TRACE
-   -->
-   <appender name="debug-file"
-      class="ch.qos.logback.core.rolling.RollingFileAppender">
-      
-      <file>${LOGS_FOLDER}/${LOGS_FILENAME_PREFIXE}-debug.log</file>
-      
-      <rollingPolicy
-         class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-         <fileNamePattern>${LOGS_FOLDER}/${LOGS_FILENAME_PREFIXE}-debug.%i.log</fileNamePattern>
-         <maxIndex>10</maxIndex>
-      </rollingPolicy>
-      
-      <triggeringPolicy
-         class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-         <maxFileSize>10MB</maxFileSize>
-      </triggeringPolicy>
-      
-      <encoder>
-         <pattern>${PATTERN}</pattern>
-      </encoder>
-      
-   </appender>
-   
-   
-   
-   
-   <!-- 
-   Exemples d'activation des traces DEBUG
-   -->
-   <!--
-   <logger name="fr.urssaf.image.sae.admin.dfce.exploit" level="DEBUG" additivity="false">
+   <!-- Pour que les traces INFO du SAE apparaissent dans la console -->
+   <logger name="fr.urssaf.image.sae.lotinstallmaj" level="INFO" additivity="false">
       <appender-ref ref="log-file" />
-      <appender-ref ref="debug-file" />
+      <appender-ref ref="consoleInfo" />
    </logger>
-   -->
    
-   
-   <logger name="org.springframework" level="WARN" />
-
    
    <!-- Niveau general pour l'application -->
    <root level="INFO">
       <appender-ref ref="log-file" />
-      <appender-ref ref="debug-file" />
    </root>
    
    
