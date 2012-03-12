@@ -47,6 +47,22 @@ public abstract class SaeServiceCallbackHandler{
 
         
            /**
+            * auto generated Axis2 call back method for archivageUnitairePJ method
+            * override this method for handling normal response from archivageUnitairePJ operation
+            */
+           public void receiveResultarchivageUnitairePJ(
+                    fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ArchivageUnitairePJResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from archivageUnitairePJ operation
+           */
+            public void receiveErrorarchivageUnitairePJ(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for recherche method
             * override this method for handling normal response from recherche operation
             */
@@ -124,6 +140,22 @@ public abstract class SaeServiceCallbackHandler{
            * override this method for handling error response from consultation operation
            */
             public void receiveErrorconsultation(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for consultationMTOM method
+            * override this method for handling normal response from consultationMTOM operation
+            */
+           public void receiveResultconsultationMTOM(
+                    fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationMTOMResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from consultationMTOM operation
+           */
+            public void receiveErrorconsultationMTOM(java.lang.Exception e) {
             }
                 
            /**

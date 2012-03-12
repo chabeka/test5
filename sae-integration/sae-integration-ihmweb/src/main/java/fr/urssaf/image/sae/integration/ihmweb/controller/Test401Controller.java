@@ -9,9 +9,9 @@ import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureUnitaireFormulai
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ConsultationFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.Test401Formulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.CaptureUnitaireResultat;
+import fr.urssaf.image.sae.integration.ihmweb.modele.ConsultationResultat;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceObjectExtractor;
 
 
@@ -165,7 +165,7 @@ public class Test401Controller extends AbstractTestWsController<Test401Formulair
       }
       
       // Lance le test
-      ConsultationResponse response = getConsultationTestService().appelWsOpConsultationReponseCorrecteAttendue(
+      ConsultationResultat response = getConsultationTestService().appelWsOpConsultationReponseCorrecteAttendue(
             formulaire.getUrlServiceWeb(),
             formConsult, 
             sha1attendu);
@@ -173,7 +173,7 @@ public class Test401Controller extends AbstractTestWsController<Test401Formulair
       // Vérifie les métadonnées attendues
       if (response!=null) { // <= response est null si on a obtenu une SoapFault
       
-         MetadonneeValeurList metas = SaeServiceObjectExtractor.extraitMetadonnees(response);
+         MetadonneeValeurList metas = SaeServiceObjectExtractor.extraitMetadonnees(response.getMetadonnees());
          getTestsMetasService().verifiePresenceEtValeurAvecLog(
                formConsult.getResultats(), 
                metas, 

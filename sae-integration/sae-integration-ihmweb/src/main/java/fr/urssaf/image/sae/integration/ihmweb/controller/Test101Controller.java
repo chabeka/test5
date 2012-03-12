@@ -11,10 +11,10 @@ import fr.urssaf.image.sae.integration.ihmweb.formulaire.RechercheFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.Test101Formulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.CaptureUnitaireResultat;
 import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
+import fr.urssaf.image.sae.integration.ihmweb.modele.ConsultationResultat;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.RechercheResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceObjectExtractor;
@@ -274,7 +274,7 @@ public class Test101Controller extends
       }
 
       // Lance le test
-      ConsultationResponse response = getConsultationTestService()
+      ConsultationResultat response = getConsultationTestService()
             .appelWsOpConsultationReponseCorrecteAttendue(
                   formulaire.getUrlServiceWeb(), formConsult, sha1attendu);
 
@@ -283,7 +283,7 @@ public class Test101Controller extends
          // SoapFault
 
          MetadonneeValeurList metas = SaeServiceObjectExtractor
-               .extraitMetadonnees(response);
+               .extraitMetadonnees(response.getMetadonnees());
          getTestsMetasService().verifiePresenceEtValeurAvecLog(
                formConsult.getResultats(), metas, "Titre",
                "Attestation de vigilance");

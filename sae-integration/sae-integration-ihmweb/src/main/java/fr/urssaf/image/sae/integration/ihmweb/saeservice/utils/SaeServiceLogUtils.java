@@ -24,6 +24,7 @@ import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureMasseFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.CaptureUnitaireFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ConsultationFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.RechercheFormulaire;
+import fr.urssaf.image.sae.integration.ihmweb.modele.ConsultationResultat;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeur;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
@@ -33,14 +34,10 @@ import fr.urssaf.image.sae.integration.ihmweb.modele.somres.resultats.ResultatsT
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.comparator.ResultatRechercheComparator;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.comparator.ResultatRechercheComparator.TypeComparaison;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ArchivageUnitaireResponseType;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationResponseType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ListeMetadonneeType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.MetadonneeType;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ObjetNumeriqueConsultationType;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ObjetNumeriqueConsultationTypeChoice_type0;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.RechercheResponseType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ResultatRechercheType;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.UrlConsultationDirecteType;
 import fr.urssaf.image.sae.integration.ihmweb.utils.Base64Utils;
 
 /**
@@ -127,132 +124,94 @@ public final class SaeServiceLogUtils {
       }
    }
 
+   
    /**
     * Ajoute, dans le log du résultat du test, un résultat de l'opération
-    * "consultation"
+    * "consultation" ou "consultationMTOM"
     * 
     * @param resultatTest
     *           les résultats du test à mettre à jour
-    * @param consultResponse
+    * @param resultat
     *           la réponse de l'opération "consultation"
     */
-   public static void logResultatConsultation(ResultatTest resultatTest,
-         ConsultationResponseType consultResponse) {
-
-      // Vérifie le null
-      if (consultResponse == null) {
-         resultatTest.getLog().appendLogLn(
-               "Le résultat de la consultation est null");
-      } else {
-
-         // L'objet numérique
-         logObjetNumeriqueConsultation(resultatTest, consultResponse
-               .getObjetNumerique());
-
-         // Les métadonnées
-         resultatTest.getLog().appendLogNewLine();
-         resultatTest.getLog().appendLogLn(
-               "Métadonnées associées à l'objet numérique :");
-         logMetadonnees(resultatTest.getLog(), consultResponse.getMetadonnees());
-
-      }
-
+   public static void logResultatConsultation(ResultatTest resultatTest,ConsultationResultat resultat) {
+      
+      // Le contenu
+      logConsultationDataHandler(resultatTest,resultat.getContenu());
+      
+      // Les métadonnées
+      resultatTest.getLog().appendLogNewLine();
+      resultatTest.getLog().appendLogLn(
+            "Métadonnées :");
+      logMetadonnees(resultatTest.getLog(),resultat.getMetadonnees());
+      
    }
+   
 
-   /**
-    * Ajoute, dans le log du résultat du test, un objet numérique
-    * 
-    * @param resultatTest
-    *           les résultats du test à mettre à jour
-    * @param objNum
-    *           l'objet numérique
-    */
-   public static void logObjetNumeriqueConsultation(ResultatTest resultatTest,
-         ObjetNumeriqueConsultationType objNum) {
-
+   
+   
+   
+   private static void logConsultationDataHandler(
+         ResultatTest resultatTest,
+         DataHandler contenu) {
+      
+      
       ResultatTestLog log = resultatTest.getLog();
+      if (contenu == null) {
 
-      if (objNum == null) {
-
-         log.appendLogLn("L'objet numérique consultation est null");
-
-      } else if (objNum.getObjetNumeriqueConsultationTypeChoice_type0() == null) {
-
-         log.appendLogLn("L'objet numérique consultation est null");
-
+         log
+               .appendLogLn("Le contenu est null");
+         
       } else {
-
-         ObjetNumeriqueConsultationTypeChoice_type0 typeIntermediaire = objNum
-               .getObjetNumeriqueConsultationTypeChoice_type0();
-
-         // URL de consultation directe ?
-         UrlConsultationDirecteType urlConsult = typeIntermediaire.getUrl();
-         if (urlConsult == null) {
-            log
-                  .appendLogLn("L'objet numérique consultation ne contient pas d'URL de consultation directe.");
-         } else {
-            log
-                  .appendLogLn("L'objet numérique consultation contient une URL de consultation directe :");
-            log.appendLogLn(urlConsult.getUrlConsultationDirecteType()
-                  .toString());
+      
+         log.appendLog("Le contenu est renseigné : ");
+         
+         // Création d'un fichier temporaire
+         File file;
+         try {
+            file = File.createTempFile("SAE_Integration_", null);
+         } catch (IOException e) {
+            throw new IntegrationRuntimeException(e);
+         }
+         // LOG.debug("Création d'un fichier temporaire nommé " +
+         // file.getAbsolutePath());
+         OutputStream outputStream = null;
+         try {
+            outputStream = new FileOutputStream(file);
+         } catch (FileNotFoundException e) {
+            throw new IntegrationRuntimeException(e);
+         }
+         try {
+            contenu.writeTo(outputStream);
+         } catch (IOException e) {
+            throw new IntegrationRuntimeException(e);
          }
 
-         // Contenu en base 64 ?
-         DataHandler contenu = typeIntermediaire.getContenu();
-         if (contenu == null) {
+         // Ajout du lien de téléchargement dans le fichier résultat
+         String nomFichierComplet = file.getAbsolutePath();
+         String nomFichier = FilenameUtils.getName(nomFichierComplet);
+         int idLien = resultatTest.getLiens().ajouteLien("objet numérique",
+               "download.do?filename=" + nomFichier);
 
-            log
-                  .appendLogLn("L'objet numérique consultation ne contient pas de contenu en base 64.");
+         // Ajout le log du lien
+         log.appendLog("[Voir Lien n°" + idLien + "]");
 
-         } else {
-
-            log
-                  .appendLog("L'objet numérique consultation contient un contenu en base 64 : ");
-
-            // Création d'un fichier temporaire
-            File file;
-            try {
-               file = File.createTempFile("SAE_Integration_", null);
-            } catch (IOException e) {
-               throw new IntegrationRuntimeException(e);
-            }
-            // LOG.debug("Création d'un fichier temporaire nommé " +
-            // file.getAbsolutePath());
-            OutputStream outputStream = null;
-            try {
-               outputStream = new FileOutputStream(file);
-            } catch (FileNotFoundException e) {
-               throw new IntegrationRuntimeException(e);
-            }
-            try {
-               contenu.writeTo(outputStream);
-            } catch (IOException e) {
-               throw new IntegrationRuntimeException(e);
-            }
-
-            // Ajout du lien de téléchargement dans le fichier résultat
-            String nomFichierComplet = file.getAbsolutePath();
-            String nomFichier = FilenameUtils.getName(nomFichierComplet);
-            int idLien = resultatTest.getLiens().ajouteLien("objet numérique",
-                  "download.do?filename=" + nomFichier);
-
-            // Ajout le log du lien
-            log.appendLog("[Voir Lien n°" + idLien + "]");
-
-            // Log du SHA-1
-            String sha1 = null;
-            try {
-               sha1 = DigestUtils.shaHex(contenu.getInputStream());
-            } catch (IOException e) {
-               throw new IntegrationRuntimeException(e);
-            }
-            log.appendLogLn(" (SHA-1 = " + sha1 + ")");
-
+         // Log du SHA-1
+         String sha1 = null;
+         try {
+            sha1 = DigestUtils.shaHex(contenu.getInputStream());
+         } catch (IOException e) {
+            throw new IntegrationRuntimeException(e);
          }
-
+         log.appendLogLn("SHA-1 = " + sha1);
+         
+         // Type MIME
+         log.appendLogLn("Type MIME = " + contenu.getContentType());
+         
       }
-
+      
    }
+   
 
    /**
     * Ajoute, dans le log du résultat du test, une réponse de l'opération
@@ -382,6 +341,7 @@ public final class SaeServiceLogUtils {
    public static void logAppelConsultation(ResultatTestLog log,
          ConsultationFormulaire formulaire) {
       log.appendLogLn("Appel de l'opération consultation");
+      log.appendLogLn("Mode d'appel : " + formulaire.getModeConsult());
       log.appendLogLn("Paramètres :");
       log.appendLogLn("Id archivage : " + formulaire.getIdArchivage());
       log.appendLogLn("Métadonnées :");
@@ -437,7 +397,7 @@ public final class SaeServiceLogUtils {
     *           attendue
     */
    public static void logConsultationReponseAuLieuDeSoapFault(
-         ResultatTest resultatTest, ConsultationResponseType repConsult,
+         ResultatTest resultatTest, ConsultationResultat repConsult,
          SoapFault faultAttendue, Object[] argsMsgSoapFault) {
 
       ResultatTestLog log = resultatTest.getLog();

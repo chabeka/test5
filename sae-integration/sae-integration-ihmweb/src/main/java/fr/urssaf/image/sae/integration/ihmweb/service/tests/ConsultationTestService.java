@@ -15,23 +15,25 @@ import org.springframework.stereotype.Service;
 import fr.urssaf.image.sae.integration.ihmweb.exception.IntegrationRuntimeException;
 import fr.urssaf.image.sae.integration.ihmweb.formulaire.ConsultationFormulaire;
 import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
+import fr.urssaf.image.sae.integration.ihmweb.modele.ConsultationResultat;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeDefinition;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeur;
 import fr.urssaf.image.sae.integration.ihmweb.modele.MetadonneeValeurList;
+import fr.urssaf.image.sae.integration.ihmweb.modele.ModeConsultationEnum;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTestLog;
 import fr.urssaf.image.sae.integration.ihmweb.modele.SoapFault;
 import fr.urssaf.image.sae.integration.ihmweb.modele.TestStatusEnum;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.Consultation;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationMTOM;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationMTOMResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationResponse;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ListeMetadonneeType;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ObjetNumeriqueConsultationType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceLogUtils;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceObjectExtractor;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceObjectFactory;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceStubUtils;
-import fr.urssaf.image.sae.integration.ihmweb.saeservice.utils.SaeServiceTypeUtils;
 import fr.urssaf.image.sae.integration.ihmweb.service.referentiels.ReferentielMetadonneesService;
 import fr.urssaf.image.sae.integration.ihmweb.service.referentiels.ReferentielSoapFaultService;
 import fr.urssaf.image.sae.integration.ihmweb.service.tests.listeners.WsTestListener;
@@ -60,12 +62,12 @@ public class ConsultationTestService {
    @Autowired
    private ReferentielMetadonneesService referentielMetadonneesService;
 
-   private ConsultationResponse appelWsOpConsultation(String urlServiceWeb,
+   private ConsultationResultat appelWsOpConsultation(String urlServiceWeb,
          String ficRessourceVi, ConsultationFormulaire formulaire,
          WsTestListener wsListener) {
 
       // Initialise le résultat
-      ConsultationResponse result = null;
+      ConsultationResultat result = null;
 
       // Vide le résultat du test précédent
       ResultatTest resultatTest = formulaire.getResultats();
@@ -83,17 +85,40 @@ public class ConsultationTestService {
       // Appel du service web et gestion de erreurs
       try {
 
-         // Construction du paramètre d'entrée de l'opération
-         Consultation paramsService = SaeServiceObjectFactory
-               .buildConsultationRequest(formulaire.getIdArchivage(),
-                     formulaire.getCodeMetadonnees());
+         // Selon s'il faut appeler le service avec ou sans MTOM
+         if (ModeConsultationEnum.AncienServiceSansMtom.equals(formulaire.getModeConsult())) {
+            
+            // Ancien service sans MTOM
+            
+            // Construction du paramètre d'entrée de l'opération
+            Consultation paramsService = SaeServiceObjectFactory
+                  .buildConsultationRequest(formulaire.getIdArchivage(),
+                        formulaire.getCodeMetadonnees());
+            
+            // Appel du service web
+            ConsultationResponse response = service.consultation(paramsService);
+            
+            // Transtypage de l'objet de la couche ws vers l'objet du modèle
+            result = fromConsultationAncienService(response);
+            
+            
+         } else {
+          
+            // Nouveau service sans MTOM
+            
+            // Construction du paramètre d'entrée de l'opération
+            ConsultationMTOM paramsService = SaeServiceObjectFactory
+                  .buildConsultationMTOMRequest(formulaire.getIdArchivage(),
+                        formulaire.getCodeMetadonnees());
 
-         // Appel du service web
-         ConsultationResponse response = service.consultation(paramsService);
-
-         // Mémorise la réponse pour le retour de la méthode
-         result = response;
-
+            // Appel du service web
+            ConsultationMTOMResponse response = service.consultationMTOM(paramsService);
+            
+            // Transtypage de l'objet de la couche ws vers l'objet du modèle
+            result = fromConsultationNouveauService(response);
+            
+         }
+         
          // Appel du listener
          wsListener.onRetourWsSansErreur(resultatTest, service
                ._getServiceClient().getServiceContext()
@@ -102,8 +127,7 @@ public class ConsultationTestService {
          // Log de la réponse obtenue
          log
                .appendLogLn("Détails de la réponse obtenue de l'opération \"consultation\" :");
-         SaeServiceLogUtils.logResultatConsultation(resultatTest, response
-               .getConsultationResponse());
+         SaeServiceLogUtils.logResultatConsultation(resultatTest, result);
 
       } catch (AxisFault fault) {
 
@@ -184,7 +208,7 @@ public class ConsultationTestService {
    }
 
    private void wsVerifieRetour(ConsultationFormulaire formulaire,
-         ConsultationResponse response, String sha1attendu,
+         ConsultationResultat response, String sha1attendu,
          CodeMetadonneeList codesMetasAttendues,
          List<MetadonneeValeur> metaAttendues) {
 
@@ -195,38 +219,19 @@ public class ConsultationTestService {
       // Initialise un flag pour suivre l'état du test
       boolean testKo = false;
 
-      // Récupère l'objet numérique dans le bon type, pour des besoins
-      // techniques
-      ObjetNumeriqueConsultationType objNum = response
-            .getConsultationResponse().getObjetNumerique();
-
-      // Fait le point sur ce qu'on a demandé par rapport à ce qu'on a récupéré
-      boolean urlConsultDemandee = false;
-      boolean urlConsultRecuperee = SaeServiceTypeUtils
-            .isObjetNumeriqueUrlConsultDirecte(objNum);
-      boolean contenuBase64recupere = SaeServiceTypeUtils
-            .isObjetNumeriqueContenuBase64(objNum);
-
-      // Vérification que ce qu'on a reçu correspond à ce qu'on a demandé
-      boolean testKoTemp = wsIsRecuConformeAdemande(urlConsultDemandee,
-            urlConsultRecuperee, contenuBase64recupere, log);
-      if (testKoTemp) {
-         testKo = true;
-      }
-
       // Vérification du contenu (SHA-1) si fourni en paramètre + contenu base
       // 64
       if (sha1attendu != null) {
-         testKoTemp = wsVerifSha1(urlConsultDemandee, contenuBase64recupere,
-               sha1attendu, log, objNum);
+         boolean testKoTemp = wsVerifSha1(response.getContenu(), sha1attendu, log);
          if (testKoTemp) {
             testKo = true;
          }
       }
 
       // Vérification des métadonnes
-      testKo = wsVerifieRetourMetaDemandees(resultatTest, codesMetasAttendues,
-            metaAttendues, response.getConsultationResponse().getMetadonnees());
+      testKo = wsVerifieRetourMetaDemandees(
+            resultatTest, codesMetasAttendues,
+            metaAttendues, response.getMetadonnees());
 
       // Etat du test
       if (testKo) {
@@ -237,95 +242,6 @@ public class ConsultationTestService {
 
    }
 
-   private boolean wsIsRecuConformeAdemande(boolean urlConsultDemandee,
-         boolean urlConsultRecuperee, boolean contenuBase64recupere,
-         ResultatTestLog log) {
-
-      boolean testKo = false;
-
-      if (urlConsultDemandee) {
-
-         // On a demandé une URL de consultation directe
-
-         if (!urlConsultRecuperee) {
-            // Pourtant, on ne l'a pas reçu
-            testKo = true;
-            log
-                  .appendLogLn("On a demandé au service web de consultation une URL de consultation directe, hors on ne l'a pas reçu");
-         }
-
-         if (contenuBase64recupere) {
-            // Pourtant, on a reçu un contenu en base64
-            testKo = true;
-            log
-                  .appendLogLn("On a demandé au service web de consultation une URL de consultation directe, pourtant on a reçu un contenu en base64");
-         }
-
-      } else {
-
-         // On n'a PAS demandé d'URL de consultation directe
-
-         if (urlConsultRecuperee) {
-            // Pourtant, on en a reçu une
-            testKo = true;
-            log
-                  .appendLogLn("On n'a PAS demandé au service web de recevoir une URL de consultation directe, pourtant on en a reçu une");
-         }
-
-         if (!contenuBase64recupere) {
-            // Pourtant, on a reçu un contenu en base64
-            testKo = true;
-            log
-                  .appendLogLn("On n'a PAS demandé au service web de recevoir une URL de consultation directe, pourtant on n'a pas reçu de contenu en base64");
-         }
-
-      }
-
-      return testKo;
-
-   }
-
-   private boolean wsVerifSha1(boolean urlConsultDemandee,
-         boolean contenuBase64recupere, String sha1attendu,
-         ResultatTestLog log, ObjetNumeriqueConsultationType objNum) {
-
-      // Initialise le résultat
-      boolean testKo = false;
-
-      // Vérification du contenu (SHA-1) si fourni en paramètre + contenu base
-      // 64
-      if ((!urlConsultDemandee) && (contenuBase64recupere)
-            && (StringUtils.isNotBlank(sha1attendu))) {
-
-         // Récupère le contenu du document renvoyé dans la réponse de
-         // consultation
-         DataHandler contenu = objNum
-               .getObjetNumeriqueConsultationTypeChoice_type0().getContenu();
-
-         // Calcul du SHA-1
-         String sha1obtenu = null;
-         try {
-            sha1obtenu = ChecksumUtils.sha1(contenu.getInputStream());
-         } catch (IOException e) {
-            throw new IntegrationRuntimeException(e);
-         }
-
-         // Comparaison des SHA-1
-         if (!StringUtils.equalsIgnoreCase(sha1obtenu, sha1attendu)) {
-            testKo = true;
-            log
-                  .appendLogLn("Le SHA-1 du contenu de l'archive renvoyée ("
-                        + sha1obtenu
-                        + ") n'est pas identique au SHA-1 du document que l'on attendait ("
-                        + sha1attendu + ")");
-         }
-
-      }
-
-      // Renvoie des résultat
-      return testKo;
-
-   }
 
    /**
     * Test d'appel à l'opération "consultation" du service web SaeService.<br>
@@ -340,7 +256,7 @@ public class ConsultationTestService {
     * @return la réponse de l'opération "consultation", ou null si une exception
     *         s'est produite
     */
-   public final ConsultationResponse appelWsOpConsultationReponseCorrecteAttendue(
+   public final ConsultationResultat appelWsOpConsultationReponseCorrecteAttendue(
          String urlServiceWeb, ConsultationFormulaire formulaire,
          String sha1attendu) {
 
@@ -368,7 +284,7 @@ public class ConsultationTestService {
     * @return la réponse de l'opération "consultation", ou null si une exception
     *         s'est produite
     */
-   public final ConsultationResponse appelWsOpConsultationReponseCorrecteAttendue(
+   public final ConsultationResultat appelWsOpConsultationReponseCorrecteAttendue(
          String urlServiceWeb, ConsultationFormulaire formulaire,
          String sha1attendu, CodeMetadonneeList codesMetasAttendues,
          List<MetadonneeValeur> metaAttendues) {
@@ -378,7 +294,7 @@ public class ConsultationTestService {
       WsTestListener testAvecReponse = new WsTestListenerImplReponseAttendue();
 
       // Appel de la méthode "générique" de test
-      ConsultationResponse response = appelWsOpConsultation(urlServiceWeb,
+      ConsultationResultat response = appelWsOpConsultation(urlServiceWeb,
             ViUtils.FIC_VI_OK, formulaire, testAvecReponse);
 
       // On vérifie le résultat obtenu (si le test n'a pas échoué dans les
@@ -410,7 +326,46 @@ public class ConsultationTestService {
       return response;
 
    }
-
+   
+   
+   private ConsultationResultat fromConsultationAncienService(ConsultationResponse response) {
+      
+      // Création de l'objet résultat
+      ConsultationResultat result = new ConsultationResultat();
+      
+      // Extrait le contenu (DataHandler)
+      DataHandler contenu = response.getConsultationResponse().getObjetNumerique().getObjetNumeriqueConsultationTypeChoice_type0().getContenu(); 
+      result.setContenu(contenu);
+      
+      // Extrait les métadonnées
+      ListeMetadonneeType metadonnees = response.getConsultationResponse().getMetadonnees();
+      result.setMetadonnees(metadonnees);
+      
+      // Renvoie du résultat
+      return result;
+      
+   }
+   
+   
+   private ConsultationResultat fromConsultationNouveauService(ConsultationMTOMResponse response) {
+      
+      // Création de l'objet résultat
+      ConsultationResultat result = new ConsultationResultat();
+      
+      // Extrait le contenu (DataHandler)
+      DataHandler contenu = response.getConsultationMTOMResponse().getContenu();
+      result.setContenu(contenu);
+      
+      // Extrait les métadonnées
+      ListeMetadonneeType metadonnees = response.getConsultationMTOMResponse().getMetadonnees();
+      result.setMetadonnees(metadonnees);
+      
+      // Renvoie du résultat
+      return result;
+      
+   }
+   
+   
    private boolean wsVerifieRetourMetaDemandees(ResultatTest resultatTest,
          CodeMetadonneeList codesMetaAttendues,
          List<MetadonneeValeur> metaAttendues, ListeMetadonneeType metaObtenues) {
@@ -502,6 +457,36 @@ public class ConsultationTestService {
       // Renvoie du résultat
       return testKo;
 
+   }
+   
+   
+   private boolean wsVerifSha1(
+         DataHandler contenu,
+         String sha1attendu,
+         ResultatTestLog log) {
+      
+      boolean testKo = false;
+      
+      // Calcul du SHA-1
+      String sha1obtenu = null;
+      try {
+         sha1obtenu = ChecksumUtils.sha1(contenu.getInputStream());
+      } catch (IOException e) {
+         throw new IntegrationRuntimeException(e);
+      }
+
+      // Comparaison des SHA-1
+      if (!StringUtils.equalsIgnoreCase(sha1obtenu, sha1attendu)) {
+         testKo = true;
+         log
+               .appendLogLn("Le SHA-1 du contenu de l'archive renvoyée ("
+                     + sha1obtenu
+                     + ") n'est pas identique au SHA-1 du document que l'on attendait ("
+                     + sha1attendu + ")");
+      }
+      
+      return testKo;
+      
    }
 
 }

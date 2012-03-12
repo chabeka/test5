@@ -16,6 +16,8 @@ import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.A
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ArchivageUnitaire;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ArchivageUnitaireRequestType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.Consultation;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationMTOM;
+import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationMTOMRequestType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.ConsultationRequestType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.EcdeUrlSommaireType;
 import fr.urssaf.image.sae.integration.ihmweb.saeservice.modele.SaeServiceStub.EcdeUrlType;
@@ -264,6 +266,44 @@ public final class SaeServiceObjectFactory {
          new ConsultationRequestType();
       
       consultation.setConsultation(consultationReqType);
+      
+      
+      // UUID
+      UuidType uuid = SaeServiceObjectFactory.buildUuid(idArchivage);
+      consultationReqType.setIdArchive(uuid);
+      
+      // Les codes des métadonnées souhaitées
+      // Les métadonnées ne sont ajoutées que SI au moins 1 métadonnée est demandée
+      if (!CollectionUtils.isEmpty(codeMetadonnees)) {
+         ListeMetadonneeCodeType codesMetadonnees = 
+            SaeServiceObjectFactory.buildListeCodesMetadonnes(codeMetadonnees);
+         consultationReqType.setMetadonnees(codesMetadonnees);
+      }
+      
+      // fin
+      return consultation;
+      
+   }
+   
+   
+   
+   /**
+    * Construit un objet de requête pour le service web "consultationMTOM"
+    * 
+    * @param idArchivage l'identifiant d'archivage
+    * @param la liste des codes des métadonnées souhaitées
+    * @return l'objet pour la couche WebService
+    */
+   public static ConsultationMTOM buildConsultationMTOMRequest(
+         String idArchivage,
+         CodeMetadonneeList codeMetadonnees) {
+      
+      ConsultationMTOM consultation = new ConsultationMTOM();
+      
+      ConsultationMTOMRequestType consultationReqType = 
+         new ConsultationMTOMRequestType();
+      
+      consultation.setConsultationMTOM(consultationReqType);
       
       
       // UUID

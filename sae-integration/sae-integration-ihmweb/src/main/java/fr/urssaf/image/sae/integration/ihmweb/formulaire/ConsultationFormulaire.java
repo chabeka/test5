@@ -1,6 +1,7 @@
 package fr.urssaf.image.sae.integration.ihmweb.formulaire;
 
 import fr.urssaf.image.sae.integration.ihmweb.modele.CodeMetadonneeList;
+import fr.urssaf.image.sae.integration.ihmweb.modele.ModeConsultationEnum;
 import fr.urssaf.image.sae.integration.ihmweb.modele.ResultatTest;
 
 /**
@@ -17,6 +18,8 @@ public class ConsultationFormulaire extends GenericForm {
    private String idArchivage;
 
    private CodeMetadonneeList codeMetadonnees = new CodeMetadonneeList();
+   
+   private ModeConsultationEnum modeConsult = ModeConsultationEnum.AncienServiceSansMtom;
 
    /**
     * @param parent
@@ -84,6 +87,26 @@ public class ConsultationFormulaire extends GenericForm {
     */
    public final void setCodeMetadonnees(CodeMetadonneeList codeMetadonnees) {
       this.codeMetadonnees = codeMetadonnees;
+   }
+
+   
+   /**
+    * Le mode d'utilisation de la consultation
+    * 
+    * @return Le mode d'utilisation de la consultation
+    */
+   public final ModeConsultationEnum getModeConsult() {
+      return modeConsult;
+   }
+
+   
+   /**
+    * Le mode d'utilisation de la consultation
+    * 
+    * @param modeConsult Le mode d'utilisation de la consultation
+    */
+   public final void setModeConsult(ModeConsultationEnum modeConsult) {
+      this.modeConsult = modeConsult;
    }
 
 }

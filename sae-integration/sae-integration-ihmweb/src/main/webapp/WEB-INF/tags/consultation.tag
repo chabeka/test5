@@ -17,15 +17,24 @@ Etape <c:out value="${numeroEtape}"/> : Appel du service web de consultation
       <td style="width:50%;">
          <table border=0 cellspacing=3 cellpadding=3 style="width:100%;">
             <tr>
-               <td style="width:20%;">Id archivage:</td>
-               <td style="width:80%;">
+               <td style="width:20%;vertical-align:top;">Service à appeler:</td>
+               <td style="width:80%;" >
+                  <form:radiobutton path="${pathFormulaire}.modeConsult" value="AncienServiceSansMtom" title="Ancien service - sans MTOM" label="Ancien service - sans MTOM" />
+                  <br />
+                  <form:radiobutton path="${pathFormulaire}.modeConsult" value="NouveauServiceAvecMtom" title="Nouveau service - avec MTOM" label="Nouveau service - avec MTOM" />
+               </td>
+            </tr>
+            
+            <tr>
+               <td>Id archivage:</td>
+               <td>
                   <form:input path="${pathFormulaire}.idArchivage" cssStyle="width:100%;" readonly="${readonly}" />
                </td>
             </tr>
             <tr style="vertical-align:top;">
                <td>Code des métadonnées souhaitées :</td>
                <td>
-                  <form:textarea path="${pathFormulaire}.codeMetadonnees" cssStyle="width:100%;height:190pt;" readonly="${readonly}" />
+                  <form:textarea path="${pathFormulaire}.codeMetadonnees" cssStyle="width:100%;height:150pt;" readonly="${readonly}" />
                </td>
             </tr>
          </table>
