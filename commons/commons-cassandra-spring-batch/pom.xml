@@ -16,6 +16,19 @@
       <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
       <junit.version>4.8.1</junit.version>            
    </properties>
+   
+   <!-- Configuration SVN pour le plug-in maven-release -->
+   <scm>
+      <url>
+        scm:svn:svn://cer69-svn.cer69.recouv/image/java/trunk/commons/commons-cassandra-spring-batch
+      </url>
+      <developerConnection>
+        scm:svn:svn://cer69-svn.cer69.recouv/image/java/trunk/commons/commons-cassandra-spring-batch
+      </developerConnection>
+      <connection>
+        scm:svn:svn://cer69-svn.cer69.recouv/image/java/trunk/commons/commons-cassandra-spring-batch
+      </connection>
+   </scm>
 
    <dependencies>
       <!--  Cassandra -->
@@ -215,6 +228,20 @@
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>1.0-beta-2</version>
+         </plugin>
+         
+         <!--
+         Pour la gestion des release
+         -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>2.2.1</version>
+            <configuration>
+               <preparationGoals>clean javadoc:jar install</preparationGoals>
+               <autoVersionSubmodules>true</autoVersionSubmodules>
+               <useReleaseProfile>false</useReleaseProfile>
+            </configuration>
          </plugin>
 
       </plugins>
