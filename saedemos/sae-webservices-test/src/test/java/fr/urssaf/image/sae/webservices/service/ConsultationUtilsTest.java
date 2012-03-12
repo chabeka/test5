@@ -57,7 +57,7 @@ public class ConsultationUtilsTest {
    private static final String TYPE_HASH = "SHA-1";
    private static final String TITRE = "Attestation de vigilance";
    private static final String DATE_CREATION = "2012-01-01";
-   private static final String FORMAT_FICHIER = "fmt/1354";
+   private static final String FORMAT_FICHIER = "fmt/354";
    private static final String NB_PAGE = "2";
    private static final String VERSION_RND = "11.1";
    private static final String APPLICATION_PRODUCTRICE = "ADELAIDE";

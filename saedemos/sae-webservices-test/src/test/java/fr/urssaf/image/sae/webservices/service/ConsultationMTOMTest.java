@@ -4,12 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import javax.activation.DataHandler;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -43,7 +47,7 @@ public class ConsultationMTOMTest {
     * Pour archiver un document, utiliser le TU
     * ConsultationUtilsTest.prepareData()
     */
-   private static final String UUID_EXISTANT = "448b8c83-c2e1-4c2b-8574-8c0255086208";
+   private static final String UUID_EXISTANT = "4f9193c8-4d7d-41c5-ba77-6e696f6f9b4b";
 
    private static final String[] DEFAULT_META = new String[] { "Titre",
          "DateCreation", "DateReception", "CodeOrganismeProprietaire",
@@ -116,6 +120,8 @@ public class ConsultationMTOMTest {
                      .getMetadonneeValeurType());
       }
 
+      checkContenu(responseType.getContenu());
+
       SecurityConfiguration.cleanSecurityContext();
    }
 
@@ -127,7 +133,8 @@ public class ConsultationMTOMTest {
     */
    @Test
    @Ignore
-   public final void consultation_success_ListMetaVide() throws RemoteException {
+   public final void consultationMTOM_success_ListMetaVide()
+         throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
 
@@ -165,6 +172,8 @@ public class ConsultationMTOMTest {
                      .getMetadonneeValeurType());
       }
 
+      checkContenu(responseType.getContenu());
+
       SecurityConfiguration.cleanSecurityContext();
    }
 
@@ -176,7 +185,7 @@ public class ConsultationMTOMTest {
     */
    @Test
    @Ignore
-   public final void testSuccessUidNotNullListWithMetaData()
+   public final void consultationMTOM_success_ListMetaRemplie()
          throws RemoteException {
 
       AuthenticateUtils.authenticate("ROLE_TOUS");
@@ -217,7 +226,31 @@ public class ConsultationMTOMTest {
                      .getMetadonneeValeurType());
       }
 
+      checkContenu(responseType.getContenu());
+
       SecurityConfiguration.cleanSecurityContext();
+   }
+
+   private void checkContenu(DataHandler contenu) {
+
+      // Non null
+      assertNotNull("Le contenu ne devrait pas être null", contenu);
+
+      // Taille
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      try {
+         contenu.writeTo(byteStream);
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+      byte[] tabOctets = byteStream.toByteArray();
+      assertEquals("La taille du contenu est incorrect", 73791,
+            tabOctets.length);
+
+      // Type MIME
+      assertEquals("Le type MIME est incorrect", "application/pdf", contenu
+            .getContentType());
+
    }
 
 }

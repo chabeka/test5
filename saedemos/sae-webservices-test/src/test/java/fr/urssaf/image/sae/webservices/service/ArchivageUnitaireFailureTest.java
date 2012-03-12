@@ -109,7 +109,7 @@ public class ArchivageUnitaireFailureTest {
       putMetadata("CodeOrganismeGestionnaire", "UR750");
       putMetadata("VersionRND", "11.1");
       putMetadata("NbPages", "2");
-      putMetadata("FormatFichier", "fmt/1354");
+      putMetadata("FormatFichier", "fmt/354");
       putMetadata("DateCreation", "2012-01-01");
       putMetadata("Titre", "Attestation de vigilance");
       putMetadata("TypeHash", "SHA-1");

@@ -112,7 +112,7 @@ public class ArchivageUnitairePJFailureTest {
       putMetadata("CodeOrganismeGestionnaire", "UR750");
       putMetadata("VersionRND", "11.1");
       putMetadata("NbPages", "2");
-      putMetadata("FormatFichier", "fmt/1354");
+      putMetadata("FormatFichier", "fmt/354");
       putMetadata("DateCreation", "2012-01-01");
       putMetadata("Titre", "Attestation de vigilance");
       putMetadata("TypeHash", "SHA-1");
@@ -523,7 +523,7 @@ public class ArchivageUnitairePJFailureTest {
          metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
          metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
          metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
-               "fmt/1354"));
+               "fmt/354"));
          metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
                "2012-01-01"));
          metadatas.add(ObjectModelFactory.createMetadata("Titre",
@@ -573,7 +573,7 @@ public class ArchivageUnitairePJFailureTest {
          metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
          metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
          metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
-               "fmt/1354"));
+               "fmt/354"));
          metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
                "2012-01-01"));
          metadatas.add(ObjectModelFactory.createMetadata("Titre",

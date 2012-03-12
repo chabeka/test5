@@ -110,7 +110,7 @@ public class ArchivageUnitairePJTest {
       metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
       metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
       metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
-            "fmt/1354"));
+            "fmt/354"));
       metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
             "2012-01-01"));
       metadatas.add(ObjectModelFactory.createMetadata("Titre",
@@ -145,7 +145,7 @@ public class ArchivageUnitairePJTest {
       expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
       expectedMetadatas.put("CodeRND", "2.3.1.1.12");
       expectedMetadatas.put("NomFichier", "NomFichier.txt");
-      expectedMetadatas.put("FormatFichier", "fmt/1354");
+      expectedMetadatas.put("FormatFichier", "fmt/354");
       expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
       expectedMetadatas.put("Hash", att_hash);
       expectedMetadatas.put("TailleFichier", ""+contenu.length);
@@ -191,7 +191,7 @@ public class ArchivageUnitairePJTest {
       metadatas.add(ObjectModelFactory.createMetadata("VersionRND", "11.1"));
       metadatas.add(ObjectModelFactory.createMetadata("NbPages", "2"));
       metadatas.add(ObjectModelFactory.createMetadata("FormatFichier",
-            "fmt/1354"));
+            "fmt/354"));
       metadatas.add(ObjectModelFactory.createMetadata("DateCreation",
             "2012-01-01"));
       metadatas.add(ObjectModelFactory.createMetadata("Titre",
@@ -228,7 +228,7 @@ public class ArchivageUnitairePJTest {
       expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
       expectedMetadatas.put("CodeRND", "2.3.1.1.12");
       expectedMetadatas.put("NomFichier", "attestation.pdf");
-      expectedMetadatas.put("FormatFichier", "fmt/1354");
+      expectedMetadatas.put("FormatFichier", "fmt/354");
       expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
       expectedMetadatas.put("Hash", hash);
       expectedMetadatas.put("TailleFichier", Long.toString(FileUtils
@@ -295,7 +295,7 @@ public class ArchivageUnitairePJTest {
       expectedMetadatas.put("CodeOrganismeProprietaire", "CER69");
       expectedMetadatas.put("CodeRND", "2.3.1.1.12");
       expectedMetadatas.put("NomFichier", "NomFichier.txt");
-      expectedMetadatas.put("FormatFichier", "fmt/1354");
+      expectedMetadatas.put("FormatFichier", "fmt/354");
       expectedMetadatas.put("ContratDeService", "ATT_PROD_001");
       expectedMetadatas.put("Hash", att_hash);
       expectedMetadatas.put("TailleFichier", "73791");
@@ -370,7 +370,7 @@ public class ArchivageUnitairePJTest {
       code7.setMetadonneeCodeType("FormatFichier");
       meta7.setCode(code7);
       MetadonneeValeurType valeur7 = new MetadonneeValeurType();
-      valeur7.setMetadonneeValeurType("fmt/1354");
+      valeur7.setMetadonneeValeurType("fmt/354");
       meta7.setValeur(valeur7);
       listeMetaType.addMetadonnee(meta7);
       

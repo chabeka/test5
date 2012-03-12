@@ -4,12 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import javax.activation.DataHandler;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -43,7 +47,7 @@ public class ConsultationTest {
     * Pour archiver un document, utiliser le TU
     * ConsultationUtilsTest.prepareData()
     */
-   private static final String UUID_EXISTANT = "448b8c83-c2e1-4c2b-8574-8c0255086208";
+   private static final String UUID_EXISTANT = "4f9193c8-4d7d-41c5-ba77-6e696f6f9b4b";
 
    private static final String[] DEFAULT_META = new String[] { "Titre",
          "DateCreation", "DateReception", "CodeOrganismeProprietaire",
@@ -115,6 +119,9 @@ public class ConsultationTest {
                      .getMetadonneeValeurType());
       }
 
+      checkContenu(responseType.getObjetNumerique()
+            .getObjetNumeriqueConsultationTypeChoice_type0().getContenu());
+
       SecurityConfiguration.cleanSecurityContext();
    }
 
@@ -162,6 +169,9 @@ public class ConsultationTest {
                expectedMetadatas.get(code), metaData.getValeur()
                      .getMetadonneeValeurType());
       }
+
+      checkContenu(responseType.getObjetNumerique()
+            .getObjetNumeriqueConsultationTypeChoice_type0().getContenu());
 
       SecurityConfiguration.cleanSecurityContext();
    }
@@ -215,7 +225,33 @@ public class ConsultationTest {
                      .getMetadonneeValeurType());
       }
 
+      checkContenu(responseType.getObjetNumerique()
+            .getObjetNumeriqueConsultationTypeChoice_type0().getContenu());
+
       SecurityConfiguration.cleanSecurityContext();
+   }
+
+   private void checkContenu(DataHandler contenu) {
+
+      // Non null
+      assertNotNull("Le contenu ne devrait pas être null", contenu);
+
+      // Taille
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      try {
+         contenu.writeTo(byteStream);
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+      byte[] tabOctets = byteStream.toByteArray();
+      assertEquals("La taille du contenu est incorrect", 73791,
+            tabOctets.length);
+
+      // Type MIME
+      // Non setté dans la consultation non MTOM
+      // System.out.println(contenu.getContentType()) donne
+      // "application/octet-string"
+
    }
 
 }
