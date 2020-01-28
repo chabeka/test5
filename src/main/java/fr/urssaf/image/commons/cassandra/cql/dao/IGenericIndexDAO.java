@@ -15,9 +15,9 @@ import java.util.Iterator;
  */
 public interface IGenericIndexDAO<I, ID> extends ICommonDAO<I, ID> {
 
-  /**
-   * @param id
-   * @return
-   */
+   /**
+    * @param id
+    * @return
+    */
   Iterator<I> findAllWithMapperById(ID id);
 }

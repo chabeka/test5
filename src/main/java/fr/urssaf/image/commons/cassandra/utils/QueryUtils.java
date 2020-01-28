@@ -21,25 +21,20 @@ import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 
 /**
- * TODO (AC75095028) Description du type
+ * Classe utilitaire pour le requetage dans la base cassandra
  */
 public class QueryUtils {
-  /**
-   * TODO (AC75095028) Description du champ
-   */
+
+  public static final Logger LOG = Logger.getLogger(QueryUtils.class);
+  
   private static final String END_BATCH = " APPLY BATCH";
 
-  /**
-   * TODO (AC75095028) Description du champ
-   */
   private static final String BEGIN_BATCH = "BEGIN BATCH ";
 
   /**
    * échappement des guillements autour du nom de la CF
    */
   private static final String BACKSLASH = "\"";
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(QueryUtils.class);
 
   /**
    * create an insert query with fields and associated value of fields

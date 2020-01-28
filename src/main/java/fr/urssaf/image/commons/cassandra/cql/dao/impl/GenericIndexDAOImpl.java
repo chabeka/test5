@@ -28,80 +28,80 @@ import fr.urssaf.image.commons.cassandra.utils.ColumnUtil;
  */
 public class GenericIndexDAOImpl<T, ID> implements IGenericIndexDAO<T, ID> {
 
-  @Autowired
-  protected CassandraCQLClientFactory ccf;
+   @Autowired
+   protected CassandraCQLClientFactory ccf;
 
-  protected Class<? extends T> daoType;
+   protected Class<? extends T> daoType;
 
-  protected Mapper<T> mapper;
+   protected Mapper<T> mapper;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GenericIndexDAOImpl.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(GenericIndexDAOImpl.class);
 
-  public GenericIndexDAOImpl() {
-    final Type t = getClass().getGenericSuperclass();
-    final ParameterizedType pt = (ParameterizedType) t;
-    daoType = (Class) pt.getActualTypeArguments()[0];
-  }
+   public GenericIndexDAOImpl() {
+      final Type t = getClass().getGenericSuperclass();
+      final ParameterizedType pt = (ParameterizedType) t;
+      daoType = (Class) pt.getActualTypeArguments()[0];
+   }
 
-  /**
-   * Mapper le type T à la table cassandra
-   *
-   * @return
-   */
-  @Override
-  @SuppressWarnings("unchecked")
-  public Mapper<T> getMapper() {
-    if (mapper == null) {
+   /**
+    * Mapper le type T à la table cassandra
+    *
+    * @return
+    */
+   @Override
+   @SuppressWarnings("unchecked")
+   public Mapper<T> getMapper() {
+      if (mapper == null) {
       // manager = new MappingManager(ccf.getSession());
       // On récupère le mapper du mapping manager au niveau cassandraClientFactory AC75095351
       mapper = (Mapper<T>) ccf.getManager().mapper(daoType);
       // mapper = (Mapper<T>) manager.mapper(daoType);
-    }
-    return mapper;
-  }
+      }
+      return mapper;
+   }
 
-  /**
-   * @return the daoType
-   */
-  @Override
-  public Class<? extends T> getDaoType() {
-    return daoType;
-  }
+   /**
+    * @return the daoType
+    */
+   @Override
+   public Class<? extends T> getDaoType() {
+      return daoType;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public CassandraCQLClientFactory getCcf() {
-    return ccf;
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public CassandraCQLClientFactory getCcf() {
+      return ccf;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Logger getLogger() {
-    return LOGGER;
-  }
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public Logger getLogger() {
+      return LOGGER;
+   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Iterator<T> findAllWithMapperById(final ID id) {
-    Assert.notNull(id, "L'id ne peut être null");
-    final Select select = QueryBuilder.select().from(ccf.getKeyspace(), getTypeArgumentsName());
-    final Field keyField = ColumnUtil.getSimplePartionKeyField(daoType);
-    Assert.notNull(keyField, "La clé de l'entité à chercher ne peut être null");
+   /**
+    * {@inheritDoc}
+    */
+   @Override
+   public Iterator<T> findAllWithMapperById(final ID id) {
+      Assert.notNull(id, "L'id ne peut être null");
+      final Select select = QueryBuilder.select().from(ccf.getKeyspace(), getTypeArgumentsName());
+      final Field keyField = ColumnUtil.getSimplePartionKeyField(daoType);
+      Assert.notNull(keyField, "La clé de l'entité à chercher ne peut être null");
 
-    final String keyName = keyField.getName();
-    select.where(QueryBuilder.eq(keyName, id));
-    return getMapper().map(getSession().execute(select)).iterator();
-  }
+      final String keyName = keyField.getName();
+      select.where(QueryBuilder.eq(keyName, id));
+      return getMapper().map(getSession().execute(select)).iterator();
+   }
 
-  @Override
+	@Override
   public void setCcf(final CassandraCQLClientFactory ccf) {
-    this.ccf = ccf;
-  }
+		this.ccf = ccf;
+	}
 
 }
